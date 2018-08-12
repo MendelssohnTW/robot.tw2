@@ -1,0 +1,238 @@
+<div class="win-content">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="win-main robotTW2" scrollbar="" style="position: relative;">
+		<div class="box-paper content-settings">
+			<p class="center">{{introducing}}</p>
+			<div class="scroll-wrap" style="margin-bottom: 80px">
+				<h5 class="twx-section collapse">{{settings}}</h5>
+				<div>
+					<table class="tbl-border-light tbl-striped" id="preset-list">
+						<colgroup>
+							<col width="*">
+							<col width="25%">
+							<col width="15%">
+							<col width="50">
+							<col width="25%">
+							<col width="15%">
+							<col width="*">
+						</colgroup>
+						<tbody>
+							<tr>
+								<td colspan="6"><label for="input-text"
+									style="margin-left: 12px; margin-right: 12px;">{{time_interval_headquarter}}</label><input
+									id="input-text" class="input-border input-created" type="text"
+									style="width: 120px;" value="interval_headquarter" ng-blur="set()" tooltip
+									tooltip-content="{{tooltip_input}}"></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="tbl-border-light tbl-striped">
+						<colgroup>
+							<col width="*">
+							<col width="40%">
+							<col width="50">
+							<col width="40%">
+							<col width="*">
+						</colgroup>
+						<tr>
+							<td class="cell-space"></td>
+							<td class="cell-space">
+								<h5 class="twx-section">{{priority}}</h5>
+								<table class="tbl-border-light tbl-striped" id="preset-list">
+									<colgroup>
+										<col width="*">
+										<col width="20">
+										<col width="20">
+										<col width="26">
+									</colgroup>
+									<tbody>
+										<tr
+											ng-repeat="buildingOrder in data_headquarter.BUILDINGORDER"
+											style="height: 56px">
+											<td ng-class="{'resource-text' : compare(buildingOrder)}"
+												class="cell-space"><span>{{getKey(buildingOrder)}}</span></td>
+											<td class="cell-space"><span>{{getValue(buildingOrder)}}</span></td>
+											<td class="cell-space"><span
+												class="size-12x12 btn-orange icon-26x26-rte-building"
+												ng-click="selectbuildingOrder(buildingOrder)" tooltip
+												tooltip-content="{{tooltip_button}}"></span></td>
+											<td class="cell-space"><div
+													ng-show="compare(buildingOrder)">
+													<span
+														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+														ng-click="up(data_headquarter, buildingOrder)"></span> <span
+														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+														ng-click="down(data_headquarter, buildingOrder)"></span>
+												</div></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+							<td class="cell-space"></td>
+							<td class="cell-space">
+								<h5 class="twx-section">{{levels}}</h5>
+								<table class="tbl-border-light tbl-striped" id="preset-list">
+
+									<colgroup>
+										<col width="*">
+										<col width="20">
+										<col width="26">
+									</colgroup>
+									<tbody>
+										<tr
+											ng-repeat="buildingLimit in data_headquarter.BUILDINGLIMIT">
+											<td class="cell-space"><span>{{getKey(buildingLimit)}}</span></td>
+											<td class="cell-space"><span>{{getValue(buildingLimit)}}</span></td>
+											<td class="cell-space"><span
+												class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+												ng-click="levelup(buildingLimit)"></span> <span
+												class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+												ng-click="leveldown(buildingLimit)"></span></td>
+											<td class="cell-space"></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+							<td class="cell-space"></td>
+						</tr>
+					</table>
+				</div>
+
+				<h5 class="twx-section collapse">{{settings_for_villages}}</h5>
+				<div>
+					<table class="tbl-border-light tbl-striped" id="preset-list">
+						<colgroup>
+							<col width="20%">
+							<col width="20">
+							<col width="*">
+						</colgroup>
+						<tbody>
+							<tr ng-repeat="village in villages">
+								<td class="cell-space"><span>{{village.data.name}}
+										({{village.data.x}}|{{village.data.y}})</span></td>
+								<td class="cell-space">
+									<div class="checkbox box-border-dark">
+										<div switch-slider="" border="true" enabled="true"
+											value="village.EXECUTEBUILDINGORDER" vertical="false"
+											size="'56x28'" ng-model="village.EXECUTEBUILDINGORDER">
+											<div ng-class="{'box-border-dark box-filter': border}"
+												class="box-border-dark box-filter">
+												<div class="switch switch-56x28 switch-horizontal"
+													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false, 'switch-premium': enabled &amp;&amp; (premium == true)}">
+													<span class="size-26x26 switch-thumb"> <span
+														class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-resource-premium': premium, 'icon-26x26-switch-on': value &amp;&amp; !premium, 'icon-26x26-switch-off': !value &amp;&amp; !premium, 'icon-inactive': enabled == false}"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td class="cell-space">
+									<h5 class="twx-section collapse">{{village.data.name}}</h5>
+									<table class="tbl-border-light tbl-striped" id="preset-list">
+										<colgroup>
+											<col width="2%">
+											<col width="46%">
+											<col width="4%">
+											<col width="46%">
+											<col width="2%">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td class="cell-space"></td>
+												<td class="cell-space">
+													<h5 class="twx-section">{{priority}}</h5>
+													<table class="tbl-border-light tbl-striped"
+														id="preset-list">
+														<colgroup>
+															<col width="*">
+															<col width="20">
+															<col width="20">
+															<col width="26">
+														</colgroup>
+														<tbody>
+															<tr ng-repeat="buildingOrder in village.BUILDINGORDER"
+																style="height: 56px">
+																<td
+																	ng-class="{'resource-text' : comparevillagebuildingOrder(village.data.villageId, buildingOrder)}"
+																	class="cell-space"><span>{{getKey(buildingOrder)}}</span></td>
+																<td class="cell-space"><span>{{getValue(buildingOrder)}}</span></td>
+																<td class="cell-space"><span
+																	class="size-12x12 btn-orange icon-26x26-rte-building"
+																	ng-click="selectvillagebuildingOrder(village.data.villageId, buildingOrder)"></span></td>
+																<td class="cell-space"><div
+																		ng-show="comparevillagebuildingOrder(village.data.villageId, buildingOrder)">
+																		<span
+																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																			ng-click="up(village, buildingOrder)"></span> <span
+																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																			ng-click="down(village, buildingOrder)"></span>
+																	</div></td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+												<td class="cell-space"></td>
+												<td class="cell-space">
+													<h5 class="twx-section">{{levels}}</h5>
+													<table class="tbl-border-light tbl-striped"
+														id="preset-list">
+														<colgroup>
+															<col width="*">
+															<col width="20">
+															<col width="26">
+														</colgroup>
+														<tbody>
+															<tr ng-repeat="buildingLimit in village.BUILDINGLIMIT">
+																<td class="cell-space"><span>{{getKey(buildingLimit)}}</span></td>
+																<td class="cell-space"><span>{{getValue(buildingLimit)}}</span></td>
+																<td class="cell-space"><span
+																	class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																	ng-click="levelup(buildingLimit)"></span> <span
+																	class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																	ng-click="leveldown(buildingLimit)"></span></td>
+																<td class="cell-space"></td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+												<td class="cell-space"></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li><a class="btn-orange btn-border save" ng-click="savedata()">{{save}}</a></li>
+			<li><a class="btn-orange btn-border restore" ng-click="restoredata()">{{restore}}</a></li>
+			<li><a class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+		</ul>
+	</footer>
+</div>
+

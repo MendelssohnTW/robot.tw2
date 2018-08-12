@@ -1,0 +1,89 @@
+<div class="win-content" ng-app="robotMain">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="win-main" scrollbar="" style="position: relative;">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap" style="margin-bottom: 80px">
+				<div>
+					<table class="tbl-border-light tbl-striped" id="preset-list">
+						<colgroup>
+							<col width="*">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+						</colgroup>
+						<tbody>
+							<tr>
+								<td class="cell-center"><h5>{{module}}</h5></td>
+								<td class="cell-center"><h5>{{state}}</h5></td>
+								<td class="cell-center"><h5>{{init_standard}}</h5></td>
+								<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
+							</tr>
+							<tr ng-repeat="(key, value) in extensions">
+								<td class="cell-space"><span>{{key}}</span></td>
+								<td class="cell-center">
+									<div class="checkbox box-border-dark">
+										<div tooltip tooltip-content="{{value.ENABLED ? key : extension_disabled}}" switch-slider="" border="true" enabled="value.ENABLED" value="value.ATIVATE"
+											vertical="false" size="'56x28'" ng-click="toggleValueState(key, value)">
+											<div ng-class="{'box-border-dark box-filter': border}"
+												class="box-border-dark box-filter">
+												<div class="switch switch-56x28 switch-horizontal"
+													ng-class="{'switch-checked': value}">
+													<span class="size-26x26 switch-thumb"> <span
+														class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value &amp;&amp; 'icon-26x26-switch-off': !value &amp;&amp; 'icon-inactive': enabled == false}"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td class="cell-center">
+									<div class="checkbox box-border-dark">
+										<div switch-slider="" border="true" enabled="value.ATIVATE && value.ENABLED" value="value.INIT_ATIVATE"
+											vertical="false" size="'56x28'" ng-click="toggleValueInit(key, value)">
+											<div ng-class="{'box-border-dark box-filter': border}"
+												class="box-border-dark box-filter">
+												<div class="switch switch-56x28 switch-horizontal"
+													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
+													<span class="size-26x26 switch-thumb"> <span
+														class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value &amp;&amp; 'icon-26x26-switch-off': !value &amp;&amp; 'icon-inactive': enabled == false}"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td class="cell-center">{{gethotkey(key)}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+		</ul>
+	</footer>
+</div>
+

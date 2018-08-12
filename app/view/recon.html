@@ -1,0 +1,91 @@
+<div class="win-content">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="win-main robotTW2" scrollbar="" style="position: relative;">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap" style="margin-bottom: 80px">
+				<div>
+
+					<h5 class="twx-section ">{{introducing}}</h5>
+					<div>
+						<table class="tbl-border-light tbl-striped" id="preset-list">
+							<colgroup>
+								<col width="*">
+								<col width="56">
+								<col width="56">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td class="cell-space">
+										<div>
+											<span>{{rename_command}}</span>
+										</div>
+									</td>
+									<td class="cell-space">
+										<div class="checkbox box-border-dark">
+											<div switch-slider="" border="true" enabled="true"
+												value="rename" vertical="false" size="'56x28'"
+												ng-model="rename">
+												<div ng-class="{'box-border-dark box-filter': border}"
+													class="box-border-dark box-filter">
+													<div class="switch switch-56x28 switch-horizontal"
+														ng-class="{'switch-checked': value}">
+														<span class="size-26x26 switch-thumb"> <span
+															class="simple icon-26x26-switch-off"
+															ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value}"></span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</td>
+									<td class="cell-space">
+										<div class="checkbox box-border-dark" tooltip tooltip-content="{{rename_snob}}">
+											<div switch-slider="" border="true" enabled="rename"
+												value="renameSnob" vertical="false" size="'56x28'"
+												ng-model="renameSnob">
+												<div ng-class="{'box-border-dark box-filter': border}"
+													class="box-border-dark box-filter">
+													<div class="switch switch-56x28 switch-horizontal"
+														ng-class="{'switch-checked': value}">
+														<span class="size-26x26 switch-thumb"> <span
+															class="simple icon-26x26-switch-off"
+															ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value}"></span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+		</ul>
+	</footer>
+</div>
+

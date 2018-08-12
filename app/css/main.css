@@ -1,0 +1,62 @@
+.robotTW2 .center {
+	display: flex;
+	justify-content: center
+}
+
+.robotTW2 .indicator {
+	margin-rigth: 4px;
+	float: right
+}
+
+.robotTW2 .tr-top {
+	vertical-align: top;
+}
+
+.robotTW2 .name-wrapper {
+	display: inline-block;
+	height: 36px;
+	float: left
+}
+
+.robotTW2 .name-wrapper .name {
+	margin-top: 1px;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 104px
+}
+
+.robotTW2 .name-wrapper .tribe-friend {
+	color: #ff0000;
+	margin-top: 1px;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 104px
+}
+
+.robotTW2 .farm {
+	display: flex;
+}
+
+.robotTW2 .farm .settings-farm {
+	margin-left: 20px;
+	margin-right: 20px;
+	max-width: 900px;
+}
+
+.robotTW2 .farm .villages-farm {
+	margin-left: 20px;
+	margin-right: 20px;
+	width: 300px;
+	min-width: 240px;
+}
+
+.robotTW2 .farm .villages-exception {
+	margin-left: 20px;
+	margin-right: 20px;
+	width : 300px;
+	min-width: 240px;
+}

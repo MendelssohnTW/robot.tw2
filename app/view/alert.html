@@ -1,0 +1,136 @@
+<div class="win-content">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="win-main robotTW2" scrollbar="" style="position: relative;">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap" style="margin-bottom: 80px">
+				<div>
+					<table class="tbl-border-light tbl-striped" id="preset-list">
+						<colgroup>
+							<col width="3%">
+							<col width="31%">
+							<col width="3%">
+							<col width="60%">
+							<col width="3%">
+						</colgroup>
+						<tbody>
+							<tr class="tr-top">
+								<td></td>
+								<td>
+									<h5 class="twx-section collapse">{{text_underattack}}</h5>
+									<div>
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="34">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="member in underattack track by $index">
+													<td class="cell-space">
+														<div class="name-wrapper">
+															<span class="name">{{member.name}}</span> <span
+																class="tribe-friend">{{getTribeName(member.id)}}</span>
+														</div>
+													</td>
+													<td class="cell-space">
+														<div class="checkbox box-border-dark">
+															<a href="#" class="size-26x26 btn-red icon-26x26-close"
+																ng-click="remove(member_name)"></a>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</td>
+								<td></td>
+								<td>
+									<h5 class="twx-section collapse">{{settings_for_member}}</h5>
+									<div>
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="50">
+												<col width="50">
+												<col width="50">
+												<col width="50">
+												<col width="56">
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="cell-center"><h5>{{text_member}}</h5></td>
+													<td class="cell-center"><h5>{{text_points}}</h5></td>
+													<td class="cell-center"><h5>{{text_villages}}</h5></td>
+													<td class="cell-center"><h5>{{text_ranking}}</h5></td>
+													<td class="cell-center"><h5>{{state}}</h5></td>
+												</tr>
+												<tr ng-repeat="member in members track by member.name">
+													<td class="cell-space">
+														<div class="name-wrapper">
+															<span class="name" tooltip tooltip-content="{{member.name}}">{{member.name}}</span>
+															<span class="friend"></span>
+														</div>
+														<div ng-if="member.under_attack"
+															class="icon-34x34-attack indicator" tooltip=""
+															tooltip-content="{{text_underattack}}"></div>
+													</td>
+													<td class="cell-center"><span>{{member.points}}</span></td>
+													<td class="cell-center"><span>{{member.villages}}</span></td>
+													<td class="cell-center"><span>{{member.global_rank}}</span></td>
+													<td class="cell-space">
+														<div class="checkbox box-border-dark">
+															<div switch-slider="" border="true" enabled="true"
+																value="member.isFriend" vertical="false" size="'56x28'"
+																ng-click="toggleValue(member)"
+																ng-model="member.isFriend">
+																<div ng-class="{'box-border-dark box-filter': border}"
+																	class="box-border-dark box-filter">
+																	<div class="switch switch-56x28 switch-horizontal"
+																		ng-class="{'switch-checked': value}">
+																		<span class="size-26x26 switch-thumb"> <span
+																			class="simple icon-26x26-switch-off"
+																			ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value}"></span>
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+		</ul>
+	</footer>
+</div>
+
