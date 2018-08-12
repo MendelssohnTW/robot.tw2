@@ -23,6 +23,6 @@ function injectScript (url) {
 setTimeout(function () {
     
 	checkIfLoadedInject(function () {
-    	injectScript('https://robot.tw2/1.0.0/injectRobot.js')
+    	injectScript('https://mendelssohntw.github.io/robot.tw2/injectRobot.js')
     });
 }, 1000);
