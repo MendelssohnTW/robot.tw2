@@ -1,0 +1,21 @@
+{
+	"name": "TW2 Inject Robot",
+	"version": "0.1.0",
+	"description": "Ferramentas TW2.",
+	"permissions": [
+        "https://*.tribalwars2.com/*",
+				"https://*.mendelssohntw.github.io/robot.tw2/*"
+    ],
+	"icons": {
+		"128": "robo02.png"
+	},
+	"content_scripts": [{
+		"js": ["inject.js"],
+		"matches": ["https://*.tribalwars2.com/game.php*"],
+		"run_at": "document_start"
+	}],
+	"manifest_version": 2,
+	"web_accessible_resources": [
+        "https://*.mendelssohntw.github.io/robot.tw2/*"
+    ]
+}
