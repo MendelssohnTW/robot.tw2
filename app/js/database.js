@@ -256,7 +256,7 @@ define("robotTW2/data_deposit", [
 	var getDeposit = function(){
 		return database.get("data_deposit")
 	}
-	
+
 	var getTimeCicle = function(){
 		return database.get("data_deposit").INTERVAL
 	}
@@ -299,12 +299,155 @@ define("robotTW2/data_deposit", [
 			getDeposit			: getDeposit,
 			getTimeCicle		: getTimeCicle,
 			setTimeCicle		: setTimeCicle
-			
 	}
 
 	Object.setPrototypeOf(data_deposit, fn);
 
 	return data_deposit;
+})
+,
+define("robotTW2/data_recruit", [
+	"robotTW2/database",
+	"robotTW2/conf",
+	"robotTW2/services"
+	], function(
+			database,
+			conf,
+			services
+	) {
+	var setRecruit = function(data_recruit){
+		if(data_recruit){
+			database.set("data_recruit", data_recruit, true)
+		}
+	}
+
+	var getRecruit = function(){
+		return database.get("data_recruit")
+	}
+
+	var getTimeCicle = function(){
+		return database.get("data_recruit").INTERVAL
+	}
+
+	var setTimeCicle = function(timecicle){
+		if(timecicle){
+			var data = database.get("data_recruit")
+			data.INTERVAL = timecicle
+			database.set("data_recruit", data, true)
+		}
+	}
+
+	var data_recruit = database.get("data_recruit");
+	var dataNew = {
+			INIT_ATIVATE			: false,
+			ATIVATE 				: false,
+			ENABLED 				: false,
+			HOTKEY					: conf.HOTKEY.RECRUIT,
+			VERSION					: conf.VERSION.RECRUIT,
+			INTERVAL				: conf.INTERVAL.RECRUIT,
+			RESERVA 				: {
+				FOOD			: conf.RESERVA.FOOD,
+				WOOD			: conf.RESERVA.WOOD,
+				CLAY			: conf.RESERVA.CLAY,
+				IRON			: conf.RESERVA.IRON,
+				SLOTS			: conf.RESERVA.SLOTS
+			},
+			TROOPS_NOT				: conf.TROOPS_NOT,
+			GROUPS					: {}
+	}
+
+	if(!data_recruit){
+		data_recruit = dataNew
+		database.set("data_recruit", data_recruit, true)
+	} else {
+		if(!data_recruit.VERSION || data_recruit.VERSION < conf.VERSION.RECRUIT){
+			data_recruit = dataNew
+			database.set("data_recruit", data_recruit, true)
+		} else {
+			if(!data_recruit.INIT_ATIVATE) data_recruit.ATIVATE = !1;
+			if(data_recruit.INIT_ATIVATE) data_recruit.ATIVATE = !0;
+			database.set("data_recruit", data_recruit, true)		
+		}
+	}
+
+	var fn = {
+			setRecruit			: setRecruit,
+			getRecruit			: getRecruit,
+			getTimeCicle		: getTimeCicle,
+			setTimeCicle		: setTimeCicle
+	}
+
+	Object.setPrototypeOf(data_recruit, fn);
+
+	return data_recruit;
+})
+,
+define("robotTW2/data_spy", [
+	"robotTW2/database",
+	"robotTW2/conf",
+	"robotTW2/services"
+	], function(
+			database,
+			conf,
+			services
+	) {
+	var setSpy = function(data_spy){
+		if(data_spy){
+			database.set("data_spy", data_spy, true)
+		}
+	}
+
+	var getSpy = function(){
+		return database.get("data_spy")
+	}
+
+	var getTimeCicle = function(){
+		return database.get("data_spy").INTERVAL
+	}
+
+	var setTimeCicle = function(timecicle){
+		if(timecicle){
+			var data = database.get("data_spy")
+			data.INTERVAL = timecicle
+			database.set("data_spy", data, true)
+		}
+	}
+
+	var data_spy = database.get("data_spy");
+	var dataNew = {
+			INIT_ATIVATE			: false,
+			ATIVATE 				: false,
+			ENABLED 				: false,
+			HOTKEY					: conf.HOTKEY.SPY,
+			VERSION					: conf.VERSION.SPY,
+			INTERVAL				: conf.INTERVAL.SPY,
+	}
+
+	if(!data_spy){
+		data_spy = dataNew
+		database.set("data_spy", data_spy, true)
+	} else {
+		if(!data_spy.VERSION || data_spy.VERSION < conf.VERSION.SPY){
+			data_spy = dataNew
+			database.set("data_spy", data_spy, true)
+		} else {
+			if(!data_spy.INIT_ATIVATE) data_spy.ATIVATE = !1;
+			if(data_spy.INIT_ATIVATE) data_spy.ATIVATE = !0;
+			database.set("data_spy", data_spy, true)		
+		}
+	}
+
+	var fn = {
+			setSpy				: setSpy,
+			getSpy				: getSpy,
+			getTimeCicle		: getTimeCicle,
+			setTimeCicle		: setTimeCicle
+
+	}
+
+	Object.setPrototypeOf(data_spy, fn);
+
+	return data_spy;
 })
 ,
 define("robotTW2/data_alert", [
@@ -522,25 +665,41 @@ define("robotTW2/data_villages", [
 	) {
 	var villages = {}
 	, villagesExtended = {}
-
-
-
-	/*
-	Deverá ser implementado verificação de aldeias perdidas ou conquistadas. Manter dados das aldeias existentes
-	*/
+	, updated = false;
 
 	angular.extend(villages, services.modelDataService.getVillages())
 	angular.merge(villagesExtended, villages)
 
-	Object.values(villagesExtended).forEach(function(village){
-		angular.merge(village, {
-			EXECUTEBUILDINGORDER 	: conf.EXECUTEBUILDINGORDER,
-			BUILDINGORDER 			: conf.BUILDINGORDER,
-			BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
-			BUILDINGLEVELS 			: conf.BUILDINGLEVELS
-		})
+	var data_villages = database.get("data_villages")
+
+	Object.keys(data_villages.VILLAGES).map(function(m){
+		return m
+	}).forEach(function(v){
+		if(!Object.keys(villagesExtended).map(function(m){
+			return m
+		}).find(f=>f==v)){
+			delete data_villages.VILLAGES[v]
+			updated = true;
+		}
 	})
 
+	Object.keys(villagesExtended).map(function(m){
+		return m
+	}).forEach(function(v){
+		if(!Object.keys(data_villages.VILLAGES).map(function(m){
+			return m
+		}).find(f=>f==v)){
+			angular.merge(villagesExtended[v], {
+				EXECUTEBUILDINGORDER 	: conf.EXECUTEBUILDINGORDER,
+				BUILDINGORDER 			: conf.BUILDINGORDER,
+				BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
+				BUILDINGLEVELS 			: conf.BUILDINGLEVELS
+			})
+			data_villages.VILLAGES[v] = villagesExtended[v]
+			updated = true;
+		}
+	})
+	
 	var setVillages = function(villages){
 		var data_villages = database.get("data_villages")
 		data_villages.VILLAGES = villages;
@@ -554,29 +713,17 @@ define("robotTW2/data_villages", [
 	}
 
 	var data_vills = {
-			VILLAGES 		: villagesExtended ,
+			VILLAGES 		: data_villages.VILLAGES,
 			VERSION 		: conf.VERSION.VILLAGES
 	}
 
-	var data_villages = database.get("data_villages")
-	if(!data_villages) {
+	if(!data_villages || updated) {
 		data_villages = data_vills
 		database.set("data_villages", data_villages, true)
 	} else {
 		if(!data_villages.VERSION || data_villages.VERSION < conf.VERSION.VILLAGES){
 			data_villages = data_vills
 			database.set("data_villages", data_villages, true)
-		} else {
-			var muded = false;
-			for (v in data_vills.VILLAGES) {
-				if(!villagesExtended[v]){
-					delete data_vills.VILLAGES[v]
-					muded = true;
-				}
-			}
-			if(muded){
-				database.set("data_villages", data_villages, true)
-			}
 		}
 	}
 
@@ -586,7 +733,7 @@ define("robotTW2/data_villages", [
 	}
 
 	var lostVillage = function($event, data){
-		var villages = getVillages();
+		var villages = services.modelDataService.getVillages();
 		var vills = Object.keys(villages).map(function(key, index, array){
 			if (villages[key].data.villageId != data.villageId) {
 				return {[key]:villages[key]}
@@ -603,7 +750,7 @@ define("robotTW2/data_villages", [
 	}
 
 	var conqueredVillage = function($event, data){
-		var villages = getVillages();
+		var villages = services.modelDataService.getVillages();
 		angular.extend(villages, data.village)
 		setVillages(villages)
 	}

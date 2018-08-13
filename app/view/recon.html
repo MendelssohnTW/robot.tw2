@@ -1,4 +1,4 @@
-<div class="win-content">
+<div class="win-content robotTW2">
 	<header class="win-head">
 		<h2>{{title}}</h2>
 		<ul class="list-btn">
@@ -6,7 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main robotTW2" scrollbar="" style="position: relative;">
+	<div class="win-main" scrollbar="" style="position: relative;">
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap" style="margin-bottom: 80px">
 				<div>
@@ -30,7 +30,7 @@
 										<div class="checkbox box-border-dark">
 											<div switch-slider="" border="true" enabled="true"
 												value="rename" vertical="false" size="'56x28'"
-												ng-model="rename">
+												ng-model="rename" ng-click="toggleRename(rename)">
 												<div ng-class="{'box-border-dark box-filter': border}"
 													class="box-border-dark box-filter">
 													<div class="switch switch-56x28 switch-horizontal"
@@ -48,7 +48,7 @@
 										<div class="checkbox box-border-dark" tooltip tooltip-content="{{rename_snob}}">
 											<div switch-slider="" border="true" enabled="rename"
 												value="renameSnob" vertical="false" size="'56x28'"
-												ng-model="renameSnob">
+												ng-model="renameSnob" ng-click="toggleRenameSnob(renameSnob)">
 												<div ng-class="{'box-border-dark box-filter': border}"
 													class="box-border-dark box-filter">
 													<div class="switch switch-56x28 switch-horizontal"

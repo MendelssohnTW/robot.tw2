@@ -1,4 +1,4 @@
-<div class="win-content">
+<div class="win-content robotTW2">
 	<header class="win-head">
 		<h2>{{title}}</h2>
 		<ul class="list-btn">
@@ -6,7 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main robotTW2" scrollbar="" style="position: relative;">
+	<div class="win-main" scrollbar="" style="position: relative;">
 		<div class="box-paper content-settings">
 			<p class="center">{{introducing}}</p>
 			<div class="scroll-wrap" style="margin-bottom: 80px">
@@ -27,7 +27,7 @@
 								<td colspan="6"><label for="input-text"
 									style="margin-left: 12px; margin-right: 12px;">{{time_interval_headquarter}}</label><input
 									id="input-text" class="input-border input-created" type="text"
-									style="width: 120px;" value="interval_headquarter" ng-blur="set()" tooltip
+									style="width: 120px;" value="{{interval_headquarter}}" ng-blur="set()" tooltip
 									tooltip-content="{{tooltip_input}}"></td>
 							</tr>
 						</tbody>
