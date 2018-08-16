@@ -286,7 +286,7 @@ define("robotTW2/farm", [
 									console.log("preset length " + comandos_preset.length)
 									if(isRunning){
 										if(isPaused){
-											var listener_resume = $rootScope.$on("resume", function(){
+											var listener_resume = $rootScope.$on("resume_farm", function(){
 												P()
 												listener_resume()
 												listener_resume = undefined;
@@ -308,7 +308,7 @@ define("robotTW2/farm", [
 							console.log("preset length " + comandos_preset.length)
 							if(isRunning){
 								if(isPaused){
-									var listener_resume = $rootScope.$on("resume", function(){
+									var listener_resume = $rootScope.$on("resume_farm", function(){
 										P()
 										listener_resume()
 										listener_resume = undefined;
@@ -329,7 +329,7 @@ define("robotTW2/farm", [
 		}
 		if(isRunning){
 			if(isPaused){
-				var listener_resume = $rootScope.$on("resume", function(){
+				var listener_resume = $rootScope.$on("resume_farm", function(){
 					P()
 					listener_resume()
 					listener_resume = undefined;
@@ -421,7 +421,7 @@ define("robotTW2/farm", [
 			};
 			if(isRunning){
 				if(isPaused){
-					var listener_resume = $rootScope.$on("resume", function(){
+					var listener_resume = $rootScope.$on("resume_farm", function(){
 						list_assigned_villages.length > 0 ? n() : callback();
 						listener_resume()
 						listener_resume = undefined;
@@ -457,7 +457,7 @@ define("robotTW2/farm", [
 					if (comandos_preset.length > 0){
 						if(isRunning){
 							if(isPaused){
-								var listener_resume = $rootScope.$on("resume", function(){
+								var listener_resume = $rootScope.$on("resume_farm", function(){
 									prox();
 									listener_resume()
 									listener_resume = undefined;
@@ -476,7 +476,7 @@ define("robotTW2/farm", [
 
 			if(isRunning){
 				if(isPaused){
-					var listener_resume = $rootScope.$on("resume", function(){
+					var listener_resume = $rootScope.$on("resume_farm", function(){
 						proc()
 						listener_resume()
 						listener_resume = undefined;
@@ -594,6 +594,7 @@ define("robotTW2/farm", [
 		if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
 			new Promise(function(resolve, reject){
 				services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function (data_result){
+					if(!data_result){reject()}
 					data_result.presets.forEach(function(preset){
 						preset_list[preset.id] = preset;
 					});
@@ -607,7 +608,7 @@ define("robotTW2/farm", [
 					timeoutIdFarm[i] = execute_preset(preset_list, tempo)
 				}
 			}, function(reason) {
-
+				return
 			});
 		} else {
 			Object.keys(timeoutIdFarm).map(function(key) {
@@ -621,7 +622,7 @@ define("robotTW2/farm", [
 		data = data_farm.getFarm()
 		var villages = services.modelDataService.getSelectedCharacter().getVillages()
 		for (v in villages) {
-			!data.LIST_ATIVATE[v] ? data.LIST_ATIVATE[v] = true : null;
+			typeof(data.LIST_ATIVATE[v]) != "boolean" ? data.LIST_ATIVATE[v] = true : null;
 		}
 		data_farm.setFarm(data);
 		var tempo_de_farm_miliseconds = data.TEMPO_DE_FARM;
@@ -672,7 +673,7 @@ define("robotTW2/farm", [
 	}
 	, resume = function (){
 		isPaused = !1
-		$rootScope.$broadcast("resume")
+		$rootScope.$broadcast("resume_farm")
 	}
 	return	{
 		init			: init,
@@ -700,6 +701,7 @@ define("robotTW2/farm/ui", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/data_farm",
+	"robotTW2/data_main",
 	"helper/time",
 	"robotTW2/conf"
 	], function(
@@ -708,6 +710,7 @@ define("robotTW2/farm/ui", [
 			services,
 			providers,
 			data_farm,
+			data_main,
 			helper,
 			conf
 	){
@@ -719,8 +722,9 @@ define("robotTW2/farm/ui", [
 		return $window
 	}
 	, injectScope = function(){
-		$($window.$data.rootnode).addClass("fullsize");
+		//$($window.$data.rootnode).addClass("fullsize");
 		var $scope = $window.$data.scope;
+		$($window.$data.rootnode)[0].setAttribute("style", "width:850px;");
 		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "farm");
 		$scope.farm_running = services.$filter("i18n")("farm_running", $rootScope.loc.ale, "farm");
 		$scope.time_max = services.$filter("i18n")("time_max", $rootScope.loc.ale, "farm");
@@ -741,10 +745,12 @@ define("robotTW2/farm/ui", [
 		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 		$scope.data = data_farm.getFarm();
-		$scope.paused = !1;
+		
+		$scope.extensions = data_main.getExtensions();
 
 		$window.$data.ativate = $scope.data.ATIVATE;
 		$scope.isRunning = farm.isRunning();
+		$scope.paused = farm.isPaused();
 
 		var villages = services.modelDataService.getSelectedCharacter().getVillages()
 		for (v in villages) {
@@ -823,6 +829,7 @@ define("robotTW2/farm/ui", [
 				callback()
 			}
 		}
+		
 
 		$scope.$watchCollection("data.LIST_ATIVATE", function(){
 			data_farm.setFarm($scope.data);
@@ -836,13 +843,9 @@ define("robotTW2/farm/ui", [
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
-		$scope.blurConfig = function(){
-			data_farm.setFarm($scope.data);
-			if (!$rootScope.$$phase) $rootScope.$apply();
-		}
-
 		$scope.getVillage = function(id){
 			var village = services.modelDataService.getSelectedCharacter().getVillage(id);
+			if(!village){return null}
 			return village.getName() + " - (" + village.getX() + "|" + village.getY() + ")"
 		}
 
@@ -875,6 +878,8 @@ define("robotTW2/farm/ui", [
 			});
 		}
 		$scope.stop_farm = function(){
+//			$scope.extensions["FARM"].INIT_ATIVATE = false
+//			data_main.setExtensions($scope.extensions);
 			farm.stop();
 			$scope.isRunning = farm.isRunning();
 		}
@@ -887,6 +892,11 @@ define("robotTW2/farm/ui", [
 			$scope.paused = !1;
 		}
 
+		$scope.save_farm= function(){
+			data_farm.setFarm($scope.data);
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		}
+
 		if (!$rootScope.$$phase) {
 			$rootScope.$apply();
 		}
@@ -894,9 +904,10 @@ define("robotTW2/farm/ui", [
 		services.$timeout(function(){
 			$window.setCollapse();
 			$window.recalcScrollbar();
+			$(".win-foot .btn-orange").forEach(function(d){
+				d.setAttribute("style", "min-width:80px")
+			})
 		}, 500)
-
-
 	}
 
 	Object.setPrototypeOf(farm, {

@@ -37,43 +37,39 @@
 	max-width: 104px
 }
 
-.robotTW2 .farm {
-	display: flex;
+.robotTW2 .input-created {
+	width: 70px;
+	height: 26px;
+	line-height: 20px;
 }
 
-.robotTW2 .farm .settings-farm {
-	margin-left: 20px;
-	margin-right: 20px;
-	max-width: 900px;
+.robotTW2 .input-time {
+	width: 120px;
+	height: 26px;
+	line-height: 20px;
 }
 
-.robotTW2 .farm .villages-farm {
-	margin-left: 20px;
-	margin-right: 20px;
-	width: 300px;
-	min-width: 240px;
-}
-
-.robotTW2 .farm .villages-exception {
-	margin-left: 20px;
-	margin-right: 20px;
-	width: 300px;
-	min-width: 240px;
+.robotTW2 .input-date {
+	width: 160px;
+	height: 26px;
+	line-height: 20px;
 }
 
 .robotTW2 .recruit .input-created {
+	width: 70px;
+	min-width: 50px;
+	height: 26px;
+	line-height: 20px;
+}
+
+.robotTW2 .recruit .input-list-collapse {
 	width: 100px;
 	min-width: 70px;
 	height: 26px;
 	line-height: 20px;
 }
 
-.robotTW2 .recruit .input-created.reservas{
-	width: 70px;
-	min-width: 50px;
-}
-
-.robotTW2 .recruit .settings-recruit {
+.robotTW2 .list-collapse {
 	margin-left: 20px;
 	margin-right: 20px;
 }

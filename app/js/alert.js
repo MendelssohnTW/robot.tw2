@@ -170,7 +170,6 @@ define("robotTW2/alert/ui", [
 		$scope.settings_for_member = services.$filter("i18n")("settings_for_member", $rootScope.loc.ale, "alert");
 		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.restore = services.$filter("i18n")("RESTORE", $rootScope.loc.ale);
 		$scope.start = services.$filter("i18n")("START", $rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 		$scope.data_alert = data_alert.getAlert();

@@ -7,6 +7,7 @@ define("robotTW2/services", [], function() {
 		modelDataService : injector.get("modelDataService"),
 		socketService : injector.get("socketService"),
 		httpService : injector.get("httpService"),
+		groupService : injector.get("groupService"),
 		windowManagerService : injector.get("windowManagerService"),
 		villageService : injector.get("villageService"),
 		buildingService : injector.get("buildingService"),

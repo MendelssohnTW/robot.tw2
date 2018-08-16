@@ -19,7 +19,7 @@ define("robotTW2/database", [
 		try {
 			localStorage.setItem(keyName, keyValue);
 		} catch (e) {
-			if (console) console.warn("database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está cheio.");
+			if (console) console.warn("database nÃ£o pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage estÃ¡ cheio.");
 		}
 	}
 	, database.get = function (key, missing, options) {
@@ -604,7 +604,6 @@ define("robotTW2/data_farm", [
 	var dataNew = {
 			INIT_ATIVATE			: false,
 			ATIVATE 				: false,
-			PAUSED	 				: false,
 			ENABLED 				: false,
 			HOTKEY					: "ctrl+alt+f",
 			MAX_COMMANDS			: conf.MAX_COMMANDS,
@@ -663,66 +662,91 @@ define("robotTW2/data_villages", [
 			services,
 			providers
 	) {
-	var villages = {}
+	var villagesDB = {}
 	, villagesExtended = {}
-	, updated = false;
+	, updated = false
+	, data_villages = {};
 
-	angular.extend(villages, services.modelDataService.getVillages())
-	angular.merge(villagesExtended, villages)
+	angular.extend(villagesDB, services.modelDataService.getVillages())
+	angular.merge(villagesExtended, villagesDB)
 
-	var data_villages = database.get("data_villages")
+	data_villages = database.get("data_villages")
 
-	Object.keys(data_villages.VILLAGES).map(function(m){
-		return m
-	}).forEach(function(v){
-		if(!Object.keys(villagesExtended).map(function(m){
-			return m
-		}).find(f=>f==v)){
-			delete data_villages.VILLAGES[v]
-			updated = true;
+	function verifyDB(data_villages, villagesExtended){
+		if (data_villages == undefined){
+		return false;
 		}
-	})
-
-	Object.keys(villagesExtended).map(function(m){
-		return m
-	}).forEach(function(v){
-		if(!Object.keys(data_villages.VILLAGES).map(function(m){
+		updated = false;
+		Object.keys(data_villages.VILLAGES).map(function(m){
 			return m
-		}).find(f=>f==v)){
-			angular.merge(villagesExtended[v], {
-				EXECUTEBUILDINGORDER 	: conf.EXECUTEBUILDINGORDER,
-				BUILDINGORDER 			: conf.BUILDINGORDER,
-				BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
-				BUILDINGLEVELS 			: conf.BUILDINGLEVELS
-			})
-			data_villages.VILLAGES[v] = villagesExtended[v]
-			updated = true;
+		}).forEach(function(v){
+			if(!Object.keys(villagesExtended).map(function(m){
+				return m
+			}).find(f=>f==v)){
+				delete data_villages.VILLAGES[v]
+				updated = true;
+			}
+		})
+		return updated;
+	}
+
+	function verifyVillages(data_villages, villagesExtended){
+		updated = false;
+		if (data_villages == undefined){
+		return false;
 		}
-	})
-	
-	var setVillages = function(villages){
+		Object.keys(villagesExtended).map(function(m){
+			return m
+		}).forEach(function(v){
+			if(!Object.keys(data_villages.VILLAGES).map(function(m){
+				return m
+			}).find(f=>f==v)){
+				angular.merge(villagesExtended[v], {
+					EXECUTEBUILDINGORDER 	: conf.EXECUTEBUILDINGORDER,
+					BUILDINGORDER 			: conf.BUILDINGORDER,
+					BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
+					BUILDINGLEVELS 			: conf.BUILDINGLEVELS
+				})
+				data_villages.VILLAGES[v] = villagesExtended[v]
+				updated = true;
+			}
+		})
+		if(updated){setVillages(data_villages.VILLAGES)}
+		return updated
+	}
+
+	var setVillages = function(vs){
 		var data_villages = database.get("data_villages")
-		data_villages.VILLAGES = villages;
+		
+		data_villages.VILLAGES = vs;
 		database.set("data_villages", data_villages, true)
 	}
 
 	var getVillages = function(){
 		var data_villages = database.get("data_villages")
-		var villages = data_villages.VILLAGES
-		return villages
+		var villagesDB = data_villages.VILLAGES
+		return villagesDB
 	}
 
-	var data_vills = {
-			VILLAGES 		: data_villages.VILLAGES,
-			VERSION 		: conf.VERSION.VILLAGES
-	}
 
-	if(!data_villages || updated) {
-		data_villages = data_vills
+	if(!data_villages || verifyDB(data_villages, villagesExtended) || verifyVillages(data_villages, villagesExtended)) {
+		if (data_villages == undefined){
+			data_villages = {}
+			,  vb = {}
+			, ve = {}
+			angular.extend(vb, services.modelDataService.getVillages())
+		angular.merge(ve, vb)
+		data_villages.VERSION = conf.VERSION.VILLAGES
+		data_villages.VILLAGES = {}
 		database.set("data_villages", data_villages, true)
+			verifyVillages(data_villages, ve)
+		} else {
+		database.set("data_villages", data_villages, true)	
+		}
+		
 	} else {
 		if(!data_villages.VERSION || data_villages.VERSION < conf.VERSION.VILLAGES){
-			data_villages = data_vills
+			data_villages.VERSION = conf.VERSION.VILLAGES
 			database.set("data_villages", data_villages, true)
 		}
 	}
@@ -733,32 +757,42 @@ define("robotTW2/data_villages", [
 	}
 
 	var lostVillage = function($event, data){
-		var villages = services.modelDataService.getVillages();
-		var vills = Object.keys(villages).map(function(key, index, array){
-			if (villages[key].data.villageId != data.villageId) {
-				return {[key]:villages[key]}
+		data_villages = database.get("data_villages")
+		var vills = Object.keys(data_villages.VILLAGES).map(function(key, index, array){
+			if (data_villages.VILLAGES[key].data.villageId != data.villageId) {
+				return {[key]:data_villages.VILLAGES[key]}
 			} else {
 				return
 			}
 		}).filter(f => f != undefined);
-		var vill = {};
+		var villT = {};
 		vills.forEach(function(e){
-			vill[Object.keys(e)[0]] = Object.values(e)[0]
+			villT[Object.keys(e)[0]] = Object.values(e)[0]
 
 		})
-		setVillages(vill)
+		setVillages(villT)
+	}
+
+	var renameVillage = function($event, data){
+		data_villages = database.get("data_villages")
+		var id = data.village_id;
+		!data_villages.VILLAGES[id] ? !1 : data_villages.VILLAGES[id].data.name = data.name
+				setVillages(data_villages.VILLAGES)
 	}
 
 	var conqueredVillage = function($event, data){
-		var villages = services.modelDataService.getVillages();
-		angular.extend(villages, data.village)
-		setVillages(villages)
+		data_villages = database.get("data_villages")
+		var vb = {}, ve = {};
+		angular.extend(vb, services.modelDataService.getVillages())
+		angular.merge(ve, vb)
+		verifyVillages(data_villages, ve)
 	}
 
 	Object.setPrototypeOf(data_villages, fn);
 
 	$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, lostVillage);
 	$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, conqueredVillage);
+	$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, renameVillage);
 
 	return data_villages;
 })

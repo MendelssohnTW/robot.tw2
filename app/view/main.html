@@ -2,7 +2,7 @@
 	<header class="win-head">
 		<h2>{{title}}</h2>
 		<ul class="list-btn">
-			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
+			<li><a class="size-34x34 btn-red icon-26x26-close"
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
@@ -13,9 +13,10 @@
 					<table class="tbl-border-light tbl-striped" id="preset-list">
 						<colgroup>
 							<col width="*">
-							<col width="100">
-							<col width="100">
-							<col width="100">
+							<col width="100px">
+							<col width="100px">
+							<col width="100px">
+							<col width="50px">
 						</colgroup>
 						<tbody>
 							<tr>
@@ -23,13 +24,17 @@
 								<td class="cell-center"><h5>{{state}}</h5></td>
 								<td class="cell-center"><h5>{{init_standard}}</h5></td>
 								<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
+								<td class="cell-center"><h5>{{text_status}}</h5></td>
 							</tr>
 							<tr ng-repeat="(key, value) in extensions">
 								<td class="cell-space"><span>{{key}}</span></td>
 								<td class="cell-center">
 									<div class="checkbox box-border-dark">
-										<div tooltip tooltip-content="{{value.ENABLED ? key : extension_disabled}}" switch-slider="" border="true" enabled="value.ENABLED" value="value.ATIVATE"
-											vertical="false" size="'56x28'" ng-click="toggleValueState(key, value)">
+										<div tooltip
+											tooltip-content="{{value.ENABLED ? key + ' ' + extension_enabled : key + ' ' + extension_disabled}}"
+											switch-slider="" border="true" enabled="value.ENABLED"
+											value="value.ATIVATE" vertical="false" size="'56x28'"
+											ng-click="toggleValueState(key, value)">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -45,8 +50,10 @@
 								</td>
 								<td class="cell-center">
 									<div class="checkbox box-border-dark">
-										<div switch-slider="" border="true" enabled="value.ATIVATE && value.ENABLED" value="value.INIT_ATIVATE"
-											vertical="false" size="'56x28'" ng-click="toggleValueInit(key, value)">
+										<div switch-slider="" border="true"
+											enabled="value.ATIVATE && value.ENABLED"
+											value="value.INIT_ATIVATE" vertical="false" size="'56x28'"
+											ng-click="toggleValueInit(key, value)">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -61,6 +68,11 @@
 									</div>
 								</td>
 								<td class="cell-center">{{gethotkey(key)}}</td>
+								<td class="cell-center">
+								<div tooltip tooltip-content="{{getTooltip(key)}}">
+										<span
+											ng-class="{'icon-26x26-dot-green' : {{getstatus(key)}}, 'icon-26x26-dot-red' : {{!getstatus(key)}}, 'icon-26x26-dot-blue' : {{getstatus(key)}} && {{getpaused(key)}}}"></span>{{farm_running}}
+									</div></td>
 							</tr>
 						</tbody>
 					</table>

@@ -26,11 +26,16 @@ define("robotTW2/pt_br", function() {
 			"title"						: "Configurações principais",
 			"introducing"				: "Ativação e desativação dos módulos",
 			"settings"					: "Configurações padrões",
-			"state"						: "Estado",
+			"state"						: "Ativado/desativado",
+			"stopped"					: "Parado",
+			"running"					: "Rodando",
+			"paused"					: "Pausado",
 			"module"					: "Módulo",
 			"text_hotkey"				: "Atalho",
+			"text_status"				: "Estado",
 			"init_standard" 			: "Inicialização automática",
-			"extension_disabled" 		: "Módulo de extensão não carregado"
+			"extension_disabled" 		: "desativado",
+			"extension_enabled" 		: "ativado"
 		}, 
 		"headquarter": {
 			"title"						: "Automatização do Quartel",
@@ -64,7 +69,7 @@ define("robotTW2/pt_br", function() {
 			"tooltip_button"			: "Selecionar edifício",
 		},
 		"alert": {
-			"title"						: "Configurações para alerta de ataques a membros",
+			"title"						: "Alerta de ataques a membros",
 			"introducing"				: "Ativar/Desativar alerta de ataques para membros",
 			"state"						: "Estado",
 			"text_underattack"			: "Sob ataque",
@@ -89,14 +94,14 @@ define("robotTW2/pt_br", function() {
 			"catapult" 					: "catapulta",
 			"snob" 						: "nobre",
 			"trebuchet" 				: "trabuco",
-			"title" 					: "Configurações para reconhecimento de unidades",
+			"title" 					: "Reconhecimento de unidades",
 			"introducing" 				: "Renomeação dos comandos",
 			"rename_command"			: "Renomear comandos",
 			"rename_snob"				: "Renomear somente nobres"
 
 		},
 		"farm": {
-			"title"						: "Configurações para coleta de recursos",
+			"title"						: "Coleta de recursos",
 			"wait_init"					: "Aguardando início do ciclo de Farm",
 			"farm_init"					: "Ciclo de Farm iniciado",
 			"farm_no_init"				: "Ciclo de Farm não iniciado. Término de farm inferior ao tempo mínimo de ciclo",
@@ -110,8 +115,31 @@ define("robotTW2/pt_br", function() {
 			"text_cmd_max"				: "Limite de comandos",
 			"text_min_point"			: "Pontuação mínima",
 			"text_max_point"			: "Pontuação máxima",
-			"exceptions"				: "Lista de excessão de aldeias",
-			"villages_selections"		: "Ativação / desativação de aldeias"
+			"exceptions"				: "Lista de excessão",
+			"villages_selections"		: "Ativação / desativação"
+
+		},
+		"recruit": {
+			"title"						: "Recrutamento de tropas",
+			"settings"					: "Configurações para recrutamento de tropas",
+			"recruit_running"			: "Estado atual do recrutamento",
+			"text_interval_recruit"		: "Tempo de ciclo em horas",
+			"text_reserva_food"			: "Reserva de provisões",
+			"text_reserva_slots"		: "Quantidade de slots",
+			"text_reserva_wood"			: "Reserva de madeira",
+			"text_reserva_clay"			: "Reserva de argila",
+			"text_reserva_iron"			: "Reserva de ferro",
+			"text_spear"				: "Lanceiro",
+			"text_archer"				: "Arqueiro",
+			"text_axe"					: "Viking",
+			"text_sword"				: "Espada",
+			"text_catapult"				: "Catapulta",
+			"text_heavy_cavalry"		: "Cavalaria pesada",
+			"text_light_cavalry"		: "Cavalaria leve",
+			"text_mounted_archer"		: "Arqueiro montado",
+			"text_ram"					: "Ariete",
+			"groups_selection"			: "Seleção de grupo",
+			"unit_settings"				: "Unidades do grupo"
 
 		}
 	}

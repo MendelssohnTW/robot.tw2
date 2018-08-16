@@ -46,14 +46,13 @@ define("robotTW2/main/ui", [
 		$window = new builderWindow(hotkey, templateName, callback)
 		var extensions = data_main.getExtensions();
 		for (var extension in extensions) {
-			
-				var fn = requestFn.get(extension.toLowerCase(), true);
-				if(!fn) {
-					extensions[extension].ENABLED = false;
-					continue
-				} else {
-					extensions[extension].ENABLED = true;
-				}
+			var fn = requestFn.get(extension.toLowerCase(), true);
+			if(!fn) {
+				extensions[extension].ENABLED = false;
+				continue
+			} else {
+				extensions[extension].ENABLED = true;
+			}
 			if(extensions[extension].ATIVATE && extensions[extension].INIT_ATIVATE){
 				if(fn.isInitialized())
 					return !1;	
@@ -68,12 +67,17 @@ define("robotTW2/main/ui", [
 
 		var $scope = $window.$data.scope;
 		$scope.extension_disabled = services.$filter("i18n")("extension_disabled", $rootScope.loc.ale, "main");
+		$scope.extension_enabled = services.$filter("i18n")("extension_enabled", $rootScope.loc.ale, "main");
 		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "main");
 		$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "main");
 		$scope.settings = services.$filter("i18n")("settings", $rootScope.loc.ale, "main");
 		$scope.init_standard = services.$filter("i18n")("init_standard", $rootScope.loc.ale, "main");
 		$scope.module = services.$filter("i18n")("module", $rootScope.loc.ale, "main");
 		$scope.text_hotkey = services.$filter("i18n")("text_hotkey", $rootScope.loc.ale, "main");
+		$scope.text_status = services.$filter("i18n")("text_status", $rootScope.loc.ale, "main");
+		$scope.running = services.$filter("i18n")("running", $rootScope.loc.ale, "main");
+		$scope.stopped = services.$filter("i18n")("stopped", $rootScope.loc.ale, "main");
+		$scope.paused = services.$filter("i18n")("paused", $rootScope.loc.ale, "main");
 		$scope.state = services.$filter("i18n")("state", $rootScope.loc.ale, "main");
 		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -82,6 +86,28 @@ define("robotTW2/main/ui", [
 
 		$scope.gethotkey = function(a) {
 			return $scope.hotkeys[a] ? $scope.hotkeys[a].toUpperCase() : "";
+		}
+
+		$scope.getstatus = function(extension) {
+			var fn = requestFn.get(extension.toLowerCase(), true);
+			if(!fn) {
+				return false
+			} else {
+				return fn.isRunning();
+			}
+		}
+		
+		$scope.getTooltip = function(key) {
+			return !$scope.getstatus(key) ? $scope.stopped : ($scope.getpaused(key) ? $scope.paused : $scope.running);
+		}
+		
+		$scope.getpaused = function(extension) {
+			var fn = requestFn.get(extension.toLowerCase(), true);
+			if(!fn) {
+				return false
+			} else {
+				return fn.isPaused ? fn.isPaused() : false;
+			}
 		}
 
 		$scope.toggleValueState = function(key, value) {

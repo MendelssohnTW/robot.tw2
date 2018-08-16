@@ -45,10 +45,12 @@
 										</div>
 									</td>
 									<td class="cell-space">
-										<div class="checkbox box-border-dark" tooltip tooltip-content="{{rename_snob}}">
+										<div class="checkbox box-border-dark" tooltip
+											tooltip-content="{{rename_snob}}">
 											<div switch-slider="" border="true" enabled="rename"
 												value="renameSnob" vertical="false" size="'56x28'"
-												ng-model="renameSnob" ng-click="toggleRenameSnob(renameSnob)">
+												ng-model="renameSnob"
+												ng-click="toggleRenameSnob(renameSnob)">
 												<div ng-class="{'box-border-dark box-filter': border}"
 													class="box-border-dark box-filter">
 													<div class="switch switch-56x28 switch-horizontal"
@@ -83,8 +85,12 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li class="robotTW2-button-settings"><a
-				class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+			<li><a id="button-pause" class="btn-border btn-orange btn-pause"
+				ng-click="pause_recon()"><span>{{pause}}</span></a></li>
+			<li><a id="button-resume"
+				class="btn-border btn-orange btn-resume" ng-click="resume_recon()"><span>{{resume}}</span></a></li>
+			<li><a id="button-close"
+				class="btn-orange btn-border btn-close" ng-click="closeWindow()">{{close}}</a></li>
 		</ul>
 	</footer>
 </div>

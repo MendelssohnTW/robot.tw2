@@ -65,7 +65,7 @@ define("robotTW2/headquarter", [
 				}
 			}) 
 		} else {
-			callback(!1)
+			callback(!1, {[village.data.name] : village.getBuildingData().getDataForBuilding(build).upgradeability})
 		}
 	}
 	, cicle_building = function(){
@@ -172,6 +172,7 @@ define("robotTW2/headquarter", [
 
 						return typeof(callback) == "function" ? callback() : !0;
 					} else {
+						console.log(Object.keys(build)[0] + "-" + JSON.stringify(data))
 						next()
 					}
 				})
@@ -396,12 +397,6 @@ define("robotTW2/headquarter/ui", [
 			$window.recalcScrollbar();
 		}, 500)
 
-	}
-
-	var t = {
-			build : function(){
-				build(injectScope)
-			}
 	}
 
 	Object.setPrototypeOf(headquarter, {

@@ -114,14 +114,14 @@
 							<col width="*">
 						</colgroup>
 						<tbody>
-							<tr ng-repeat="village in villages">
-								<td class="cell-space"><span>{{village.data.name}}
-										({{village.data.x}}|{{village.data.y}})</span></td>
+							<tr ng-repeat="vill in villages">
+								<td class="cell-space"><span>{{vill.data.name}}
+										({{vill.data.x}}|{{vill.data.y}})</span></td>
 								<td class="cell-space">
 									<div class="checkbox box-border-dark">
 										<div switch-slider="" border="true" enabled="true"
-											value="village.EXECUTEBUILDINGORDER" vertical="false"
-											size="'56x28'" ng-model="village.EXECUTEBUILDINGORDER">
+											value="vill.EXECUTEBUILDINGORDER" vertical="false"
+											size="'56x28'" ng-model="vill.EXECUTEBUILDINGORDER">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -136,7 +136,7 @@
 									</div>
 								</td>
 								<td class="cell-space">
-									<h5 class="twx-section collapse">{{village.data.name}}</h5>
+									<h5 class="twx-section collapse">{{vill.data.name}}</h5>
 									<table class="tbl-border-light tbl-striped" id="preset-list">
 										<colgroup>
 											<col width="2%">
@@ -159,22 +159,22 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingOrder in village.BUILDINGORDER"
+															<tr ng-repeat="buildingOrder in vill.BUILDINGORDER"
 																style="height: 56px">
 																<td
-																	ng-class="{'resource-text' : comparevillagebuildingOrder(village.data.villageId, buildingOrder)}"
+																	ng-class="{'resource-text' : comparevillagebuildingOrder(vill.data.villageId, buildingOrder)}"
 																	class="cell-space"><span>{{getKey(buildingOrder)}}</span></td>
 																<td class="cell-space"><span>{{getValue(buildingOrder)}}</span></td>
 																<td class="cell-space"><span
 																	class="size-12x12 btn-orange icon-26x26-rte-building"
-																	ng-click="selectvillagebuildingOrder(village.data.villageId, buildingOrder)"></span></td>
+																	ng-click="selectvillagebuildingOrder(vill.data.villageId, buildingOrder)"></span></td>
 																<td class="cell-space"><div
-																		ng-show="comparevillagebuildingOrder(village.data.villageId, buildingOrder)">
+																		ng-show="comparevillagebuildingOrder(vill.data.villageId, buildingOrder)">
 																		<span
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																			ng-click="up(village, buildingOrder)"></span> <span
+																			ng-click="up(vill, buildingOrder)"></span> <span
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																			ng-click="down(village, buildingOrder)"></span>
+																			ng-click="down(vill, buildingOrder)"></span>
 																	</div></td>
 															</tr>
 														</tbody>
@@ -191,7 +191,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingLimit in village.BUILDINGLIMIT">
+															<tr ng-repeat="buildingLimit in vill.BUILDINGLIMIT">
 																<td class="cell-space"><span>{{getKey(buildingLimit)}}</span></td>
 																<td class="cell-space"><span>{{getValue(buildingLimit)}}</span></td>
 																<td class="cell-space"><span

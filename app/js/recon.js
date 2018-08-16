@@ -13,11 +13,15 @@ define("robotTW2/recon", [
 	){
 	var isInitialized = !1
 	, isRunning = !1
+	, isPaused = !1
+	, data = data_recon.getRecon()
 	, getrenameCmdAtackRecon = function (command, unitText) {
+		if(command.command_name != unitText){
 		services.socketService.emit(providers.routeProvider.COMMAND_RENAME, {
 			command_id: command.command_id,
 			name: unitText
 		});
+		}
 	}
 	, getAttackTypeAtackRecon = function (command, i) {
 		var x1 = command.origin_x
@@ -45,21 +49,31 @@ define("robotTW2/recon", [
 		if (target_character_name == "Bárbaros"){
 			return "Farm BB";
 		} else {
-			var units_type = services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+
+			var t = services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 				return [obj.speed, obj.name]
 			}).map(m => {
 				return [m[0], m[1], Math.abs(minutes_duration - Math.round(m[0] * distancia))];
 			}).sort((a, b) => {
 				return a[2] - b[2];
-			}).map(function(obj, index, array){
-				if(obj[0] == 14) {
+			});
+
+			var units_ret = [];
+
+			angular.extend(units_ret, t);
+
+			var unit = units_ret.shift();
+
+
+			var y = t.map(function(obj, index, array){
+				if(obj[0] == unit[0]) {
 					return services.$filter("i18n")(obj[1], $rootScope.loc.ale, "recon");
 				} else {
 					return
 				} 
 			}).sort(function(a, b){return a < b}).filter(f=>f!=undefined).join(" / ")
 
-			var unitText = units_type;
+			var unitText = y;
 
 			var classe = "icon-34x34-attack-red";
 
@@ -126,17 +140,23 @@ define("robotTW2/recon", [
 		services.overviewService.formatCommand = function (command) {
 			services.overviewService.gameFormatCommand(command);
 
-			!OverviewController ? OverviewController = loadController("OverviewController") : OverviewController;
+			if(isPaused){return}
+			
+			OverviewController = loadController("OverviewController");
+			data = data_recon.getRecon()
 
+			t++;
 			services.$timeout(function(){
-				t++;
+				
 				if (OverviewController){
-					var elem = $($(".command-type")[i])[0].querySelector("div");
+					var elem = undefined;
+					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
+					if(elem){
 					if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
 						var unitText = getAttackTypeAtackRecon(command, i);
 						//if (unitText != undefined && data_recon.getRecon().RENAME_COMMAND){
 						if (unitText != undefined){
-							var rename = data_recon.getRename();
+							var rename = data.RENAME_COMMAND;
 							if(rename == true){
 								var renameCmd = getrenameCmdAtackRecon(command, unitText);
 							} else if(rename == "snob" && unitText == services.$filter("i18n")("snob", $rootScope.loc.ale, "recon")){
@@ -152,11 +172,12 @@ define("robotTW2/recon", [
 
 					} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
 						elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
-						i++;
+							i++;
 						if ($('span.type').length === i) {
 							i = 0;
 							t = 0;
 						}
+
 					}
 					elem.addEventListener("mouseenter", function(a) {
 						$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
@@ -164,6 +185,7 @@ define("robotTW2/recon", [
 					elem.addEventListener("mouseleave", function() {
 						$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
 					})
+					}
 					if (!$rootScope.$$phase) $rootScope.$apply();
 				}
 			}, 100 * t)
@@ -173,6 +195,9 @@ define("robotTW2/recon", [
 		if(isRunning) {return}
 		isRunning = !0
 		setNewHandlersAtackRecon();
+	}
+	, pause = function (){
+		isPaused = !0
 	}
 	, stop = function (){
 		isRunning = !1
@@ -185,12 +210,16 @@ define("robotTW2/recon", [
 	return	{
 		init			: init,
 		start 			: start,
+		pause 			: pause,
 		stop 			: stop,
 		isRunning		: function() {
 			return isRunning
 		},
 		isInitialized	: function(){
 			return isInitialized
+		},
+		isPaused		: function(){
+			return isPaused
 		},
 		version			: "1.0.0",
 		name			: "recon"
@@ -237,31 +266,71 @@ define("robotTW2/recon/ui", [
 
 		$scope.data = data_recon.getRecon();
 		$scope.renameSnob = false;
+		$scope.rename = true;
 
-		$scope.data.RENAME_COMMAND != "snob" ? $scope.rename = $scope.data.RENAME_COMMAND : $scope.renameSnob = true;
+		if($scope.data.RENAME_COMMAND == "snob"){
+			$scope.rename = true;
+			$scope.renameSnob = true;
+		} else if ($scope.data.RENAME_COMMAND == false){
+			$scope.rename = false;
+			$scope.renameSnob = false;
+		} else {
+			$scope.rename = true;
+			$scope.renameSnob = false;
+		}
 
-		$scope.$watch("rename", function(){
-			$scope.data.RENAME_COMMAND = $scope.rename
+		$scope.toggleRename = function(rename){
+			$scope.rename = rename;
+			if($scope.rename == false){
+				$scope.data.RENAME_COMMAND = false
+			} else {
+				if($scope.renameSnob == false){
+					$scope.data.RENAME_COMMAND = true
+				} else {
+					$scope.data.RENAME_COMMAND = "snob";
+					$scope.renameSnob = true
+				}
+			}
 			data_recon.setRecon($scope.data)
 			if (!$rootScope.$$phase) $rootScope.$apply();
-		})
+		}
 
-		$scope.$watch("renameSnob", function(){
-			if($scope.renamSnob == true) {
+		$scope.toggleRenameSnob = function(renameSnob){
+			$scope.renameSnob = renameSnob;
+			if($scope.renameSnob == true) {
 				$scope.data.RENAME_COMMAND = "snob"
-			} 
+			} else {
+				if($scope.rename == false){
+					$scope.data.RENAME_COMMAND = false
+				} else {
+					$scope.data.RENAME_COMMAND = true
+				}
+			}
 			data_recon.setRecon($scope.data)
 			if (!$rootScope.$$phase) $rootScope.$apply();
-		})
-
-		$scope.paused = !1;
+		}
 
 		$window.$data.ativate = $scope.data.ATIVATE;
 		$scope.isRunning = recon.isRunning();
+		$scope.paused = recon.isPaused();
 		
+		$scope.pause_recon = function(){
+			recon.pause();
+			$scope.paused = !0;
+		}
+		$scope.resume_recon = function(){
+			recon.resume();
+			$scope.paused = !1;
+		}
+
 		if (!$rootScope.$$phase) {
 			$rootScope.$apply();
 		}
+		
+		services.$timeout(function(){
+			$window.setCollapse();
+			$window.recalcScrollbar();
+		}, 500)
 
 
 	}
