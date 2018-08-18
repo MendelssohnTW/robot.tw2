@@ -19,7 +19,7 @@ define("robotTW2/database", [
 		try {
 			localStorage.setItem(keyName, keyValue);
 		} catch (e) {
-			if (console) console.warn("database nÃ£o pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage estÃ¡ cheio.");
+			if (console) console.warn("database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está¡ cheio.");
 		}
 	}
 	, database.get = function (key, missing, options) {
@@ -66,47 +66,56 @@ define("robotTW2/data_main", [
 				HEADQUARTER		: {
 					ATIVATE : database.get("data_headquarter") ? database.get("data_headquarter").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_headquarter") ? database.get("data_headquarter").INIT_ATIVATE : false,
-									ENABLED : database.get("data_headquarter") ? database.get("data_headquarter").ENABLED : false
+									ENABLED : database.get("data_headquarter") ? database.get("data_headquarter").ENABLED : false,
+											name : "HEADQUARTER"
 				},
 				FARM			: {
 					ATIVATE : database.get("data_farm") ? database.get("data_farm").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_farm") ? database.get("data_farm").INIT_ATIVATE : false,
-									ENABLED : database.get("data_farm") ? database.get("data_farm").ENABLED : false
+									ENABLED : database.get("data_farm") ? database.get("data_farm").ENABLED : false,
+											name : "FARM"
 				},
 				DEPOSIT			: {
 					ATIVATE : database.get("data_deposit") ? database.get("data_deposit").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_deposit") ? database.get("data_deposit").INIT_ATIVATE : false,
-									ENABLED : database.get("data_deposit") ? database.get("data_deposit").ENABLED : false
+									ENABLED : database.get("data_deposit") ? database.get("data_deposit").ENABLED : false,
+											name : "DEPOSIT"
 				},
 				ATTACK			: {
 					ATIVATE : database.get("data_attack") ? database.get("data_attack").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_attack") ? database.get("data_attack").INIT_ATIVATE : false,
-									ENABLED : database.get("data_attack") ? database.get("data_attack").ENABLED : false
+									ENABLED : database.get("data_attack") ? database.get("data_attack").ENABLED : false,
+											name : "ATTACK"
 				},
 				DEFENSE			: {
 					ATIVATE : database.get("data_defense") ? database.get("data_defense").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_defense") ? database.get("data_defense").INIT_ATIVATE : false,
-									ENABLED : database.get("data_defense") ? database.get("data_defense").ENABLED : false
+									ENABLED : database.get("data_defense") ? database.get("data_defense").ENABLED : false,
+											name : "DEFENSE"
 				},
 				SPY				: {
 					ATIVATE : database.get("data_spy") ? database.get("data_spy").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_spy") ? database.get("data_spy").INIT_ATIVATE : false,
-									ENABLED : database.get("data_spy") ? database.get("data_spy").ENABLED : false
+									ENABLED : database.get("data_spy") ? database.get("data_spy").ENABLED : false,
+											name : "SPY"
 				},
 				RECRUIT			: {
 					ATIVATE : database.get("data_recruit") ? database.get("data_recruit").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_recruit") ? database.get("data_recruit").INIT_ATIVATE : false,
-									ENABLED : database.get("data_recruit") ? database.get("data_recruit").ENABLED : false
+									ENABLED : database.get("data_recruit") ? database.get("data_recruit").ENABLED : false,
+											name : "RECRUIT"
 				},
 				ALERT			: {
 					ATIVATE : database.get("data_alert") ? database.get("data_alert").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_alert") ? database.get("data_alert").INIT_ATIVATE : false,
-									ENABLED : database.get("data_alert") ? database.get("data_alert").ENABLED : false
+									ENABLED : database.get("data_alert") ? database.get("data_alert").ENABLED : false,
+											name : "ALERT"
 				},
 				RECON			: {
 					ATIVATE : database.get("data_recon") ? database.get("data_recon").ATIVATE : false,
 							INIT_ATIVATE : database.get("data_recon") ? database.get("data_recon").INIT_ATIVATE : false,
-									ENABLED : database.get("data_recon") ? database.get("data_recon").ENABLED : false
+									ENABLED : database.get("data_recon") ? database.get("data_recon").ENABLED : false,
+											name : "RECON"
 				},
 		}
 		return extensions

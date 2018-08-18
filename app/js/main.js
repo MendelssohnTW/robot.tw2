@@ -58,6 +58,7 @@ define("robotTW2/main/ui", [
 					return !1;	
 				fn.init();
 				fn.build();
+				if(typeof(fn.analytics) == "function"){fn.analytics()}
 			}
 		}
 		data_main.setExtensions(extensions);
@@ -95,6 +96,7 @@ define("robotTW2/main/ui", [
 			} else {
 				return fn.isRunning();
 			}
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 		
 		$scope.getTooltip = function(key) {
@@ -108,17 +110,18 @@ define("robotTW2/main/ui", [
 			} else {
 				return fn.isPaused ? fn.isPaused() : false;
 			}
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
-		$scope.toggleValueState = function(key, value) {
-			if(!value.ATIVATE){
-				value.INIT_ATIVATE = false;
-				$scope.extensions[key].INIT_ATIVATE = value.INIT_ATIVATE
+		$scope.toggleValueState = function(ext) {
+			if(!ext.ATIVATE){
+				ext.INIT_ATIVATE = false;
+				$scope.extensions[ext.name].INIT_ATIVATE = ext.INIT_ATIVATE
 			}
-			$scope.extensions[key].ATIVATE = value.ATIVATE
+			$scope.extensions[ext.name].ATIVATE = ext.ATIVATE
 			data_main.setExtensions($scope.extensions);
-			var fn = requestFn.get(key.toLowerCase(), true);
-			if(value.ATIVATE){
+			var fn = requestFn.get(ext.name.toLowerCase(), true);
+			if(ext.ATIVATE){
 				if(fn.isInitialized())
 					return !1;	
 				fn.init();
@@ -129,13 +132,11 @@ define("robotTW2/main/ui", [
 				if(fn.isRunning())
 					fn.stop();
 			}
-			if (!$rootScope.$$phase) $rootScope.$apply();
 		};
 
-		$scope.toggleValueInit= function(key, value) {
-			$scope.extensions[key].INIT_ATIVATE = value.INIT_ATIVATE
+		$scope.toggleValueInit= function(ext) {
+			$scope.extensions[ext.name].INIT_ATIVATE = ext.INIT_ATIVATE
 			data_main.setExtensions($scope.extensions);
-			if (!$rootScope.$$phase) $rootScope.$apply();
 		};
 
 		if (!$rootScope.$$phase) {

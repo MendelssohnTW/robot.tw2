@@ -71,10 +71,13 @@ define("robotTW2/pt_br", function() {
 		"alert": {
 			"title"						: "Alerta de ataques a membros",
 			"introducing"				: "Ativar/Desativar alerta de ataques para membros",
+			"time_interval_alert"		: "Intervalo de verificação",
+			"select_all"				: "Selecionar todos",
+			"remove_all"				: "Remover todos",
 			"state"						: "Estado",
 			"text_underattack"			: "Sob ataque",
 			"init_standard" 			: "Inicialização automática",
-			"settings_for_member" 			: "Configurações para os membros",
+			"settings_for_member" 		: "Configurações para os membros",
 			"text_member" 				: "Membro",
 			"text_points" 				: "Pontos",
 			"text_villages" 			: "Aldeias",
@@ -140,7 +143,12 @@ define("robotTW2/pt_br", function() {
 			"text_ram"					: "Ariete",
 			"groups_selection"			: "Seleção de grupo",
 			"unit_settings"				: "Unidades do grupo"
-
+		},
+		"deposit": {
+			"title"						: "Coleta de depósito",
+			"settings"					: "Configurações para coleta",
+			"time_interval_deposit"		: "Intervalo de verificação",
+			"use_reroll_deposit"		: "Sortear novamente automático"
 		}
 	}
 })

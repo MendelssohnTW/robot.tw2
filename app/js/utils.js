@@ -114,21 +114,21 @@ define("robotTW2/conf", [
 	var limitBuilding = [
 		{"headquarter": 20},
 		{"barracks": 15},
-		{"tavern": 7},
-		{"hospital": 3},  
+		{"tavern": 13},
+		{"hospital": 5},  
 		{"preceptory": 0},  
 		{"church": 0},
 		{"chapel": 0},
 		{"academy": 1},  
-		{"rally_point": 3},  
-		{"statue": 3},
-		{"market": 5},
-		{"timber_camp": 19},  
-		{"clay_pit": 19},
-		{"iron_mine": 19},  
-		{"farm": 27},
-		{"warehouse": 24},  
-		{"wall": 10}
+		{"rally_point": 5},  
+		{"statue": 5},
+		{"market": 15},
+		{"timber_camp": 23},  
+		{"clay_pit": 23},
+		{"iron_mine": 25},  
+		{"farm": 30},
+		{"warehouse": 25},  
+		{"wall": 18}
 		]
 
 	var seg = 1000 // 1000 milisegundos
@@ -148,9 +148,8 @@ define("robotTW2/conf", [
 			MAX_POINTS				: 12000,
 			MAP_CHUNCK_LEN 			: 30 / 2,
 			VERSION					: {
-				CONF			: 2.04,
 				VILLAGES		: 2.01,
-				HEADQUARTER		: 2.01,
+				HEADQUARTER		: 2.02,
 				ALERT			: 2.01,
 				RECON			: 2.02,
 				SPY				: 2.01,
@@ -178,29 +177,29 @@ define("robotTW2/conf", [
 				DEFENSE		 	: "ctrl+alt+d",
 				FARM		 	: "ctrl+alt+f",
 				RECRUIT		 	: "ctrl+alt+e",
-				DEPOSIT		 	: "ctrl+alt+t"
+				DEPOSIT		 	: "ctrl+alt+g"
 			},
 			RESERVA				: {
-				FOOD			: 200,
-				WOOD			: 500,
-				CLAY			: 500,
-				IRON			: 500,
+				FOOD			: 500,
+				WOOD			: 2000,
+				CLAY			: 2000,
+				IRON			: 2000,
 				SLOTS			: 2
 			},
 			TROOPS_NOT				: []
 
 	}
 
-	var data_conf = database.get("conf");
-	if(!data_conf) {
-		data_conf = conf;
-		database.set("conf", data_conf, true)
-	} else {
-		if(!data_conf.VERSION.CONF || data_conf.VERSION.CONF < conf.VERSION.CONF){
-			data_conf = conf;
-			database.set("conf", data_conf, true)
-		}
-	}
-	return data_conf;
+//	var data_conf = database.get("conf");
+//	if(!data_conf) {
+//		data_conf = conf;
+//		database.set("conf", data_conf, true)
+//	} else {
+//		if(!data_conf.VERSION.CONF || data_conf.VERSION.CONF < conf.VERSION.CONF){
+//			data_conf = conf;
+//			database.set("conf", data_conf, true)
+//		}
+//	}
+	return conf;
 
 })

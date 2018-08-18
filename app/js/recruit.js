@@ -94,6 +94,7 @@ define("robotTW2/recruit", [
 	}
 	, getTotalUnitsAndResources = function (village_id, callback) { //busca as unidades da aldeia pelo ID
 		return services.socketService.emit(providers.routeProvider.VILLAGE_UNIT_INFO, {village_id: village_id}, function (data) {
+			if(!data){callback(null, null)}
 			var villageUnits = {};
 			for (var unit in data.available_units) {
 				villageUnits[unit] = data.available_units[unit].total;
@@ -109,6 +110,7 @@ define("robotTW2/recruit", [
 	, recruitSteps = function(village_id){
 		data = data_recruit.getRecruit()
 		getTotalUnitsAndResources(village_id, function (villageUnits, res) {
+			if(villageUnits == null || res == null) {return}
 			var listGroups = services.modelDataService.getGroupList().getVillageGroups(village_id)
 			, copia_listGroups = []
 			, copia_res = []
@@ -291,7 +293,10 @@ define("robotTW2/recruit", [
 	}
 	, list = [conf.INTERVAL.RECRUIT]
 	, recruit = function(){
-		var d = 0;
+		var d = 0
+		, reqD = 0
+		, respD = 0;
+
 		data = data_recruit.getRecruit();
 		if(isPaused){
 			var listener_resume = $rootScope.$on("resume_recruit", function(){
@@ -302,10 +307,11 @@ define("robotTW2/recruit", [
 			})
 		}
 		Object.keys(villages).map(function(village_id){
-			d++
+			reqD++
 			services.$timeout(function(){
 				var village = services.modelDataService.getSelectedCharacter().getVillage(village_id);
 				var tam = village.getRecruitingQueue("barracks").length || 0;
+				respD++
 				if (tam < data.RESERVA.SLOTS || tam < 1){
 					recruitSteps(village_id);
 				} else {
@@ -315,15 +321,18 @@ define("robotTW2/recruit", [
 						list.push(dif);
 					}
 				}
-			}, d * 3000)
+				if(reqD == respD){
+					if (list.length > 0){
+						data.INTERVAL = Math.min.apply(null, list);
+						data.INTERVAL == 0 ? data.INTERVAL = conf.h : data.INTERVAL;
+						data_recruit.setRecruit(data)
+						list = [];
+					}
+					wait();			
+				}
+			}, reqD * 3000)
 		})
-		if (list.length > 0){
-			data.INTERVAL = Math.min.apply(null, list);
-			data.INTERVAL == 0 ? data.INTERVAL = conf.h : data.INTERVAL;
-			data_recruit.setRecruit(data)
-			list = [];
-		}
-			wait();
+
 	}
 	, init = function (){
 		isInitialized = !0

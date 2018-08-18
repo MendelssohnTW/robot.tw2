@@ -8,8 +8,8 @@ define("robotTW2/requestFn", [], function (){
 	}
 	,
 	service.trigger = function(key, fn) {
-		fns.hasOwnProperty(key) && fns[key].forEach(function(a) {
-			fns.apply(this, fn)
+		fns.hasOwnProperty(key) && fns[key].forEach(function(fs) {
+			fs.apply(this, fn)
 		})
 	}
 	,

@@ -156,7 +156,6 @@ define("robotTW2/alert/ui", [
 			}
 		}
 
-
 		var $scope = $window.$data.scope;
 		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "alert");
 		$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "alert");
@@ -166,6 +165,9 @@ define("robotTW2/alert/ui", [
 		$scope.text_underattack = services.$filter("i18n")("text_underattack", $rootScope.loc.ale, "alert");
 		$scope.text_villages = services.$filter("i18n")("text_villages", $rootScope.loc.ale, "alert");
 		$scope.text_ranking = services.$filter("i18n")("text_ranking", $rootScope.loc.ale, "alert");
+		$scope.time_interval_alert = services.$filter("i18n")("time_interval_alert", $rootScope.loc.ale, "alert");
+		$scope.select_all = services.$filter("i18n")("select_all", $rootScope.loc.ale, "alert");
+		$scope.remove_all = services.$filter("i18n")("remove_all", $rootScope.loc.ale, "alert");
 		$scope.state = services.$filter("i18n")("state", $rootScope.loc.ale, "alert");
 		$scope.settings_for_member = services.$filter("i18n")("settings_for_member", $rootScope.loc.ale, "alert");
 		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
@@ -186,6 +188,43 @@ define("robotTW2/alert/ui", [
 		});
 
 		$scope.getTribeName = getTribeName;
+
+		$scope.set = function(interval_alert){
+			if(interval_alert.length <= 5){
+				interval_alert = interval_alert + ":00"
+			}
+			if (helper.unreadableSeconds(interval_alert) * 1e3 > 30*60*1000){
+				data_alert.setTimeCicle(30*60*1000)
+				$scope.interval_alert = 30*60*1000;
+			} else if (helper.unreadableSeconds(interval_alert) * 1e3 < 5*60*1000){
+				data_alert.setTimeCicle(5*60*1000)
+				$scope.interval_alert = 5*60*1000;
+			} else {
+				data_alert.setTimeCicle(helper.unreadableSeconds(interval_alert) * 1e3)
+				$scope.interval_alert = interval_alert;
+			}
+			document.getElementById("input-text-time-interval").value = $scope.interval_alert; 
+			if (!$rootScope.$$phase) $rootScope.$apply();
+			
+		}
+
+		$scope.selectAll = function(){
+			$scope.members.forEach(function(member){
+				if(!$scope.friends.find(f=>f==member.name)){
+					$scope.friends.push(member.name)
+				}
+			})
+			data_alert.setFriends($scope.friends);
+			upDate($scope.members)
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		}
+
+		$scope.removeAll = function(){
+			$scope.friends = [];
+			data_alert.setFriends($scope.friends);
+			upDate($scope.members)
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		}
 
 		$scope.remove = function(name){
 			$scope.friends = $scope.friends.filter(f => f != name);

@@ -154,7 +154,53 @@ define("robotTW2/deposit/ui", [
 		return $window
 	}
 	, injectScope = function(){
+		var $scope = $window.$data.scope;
+		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "deposit");
+		$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "deposit");
+		$scope.time_interval_deposit = services.$filter("i18n")("time_interval_deposit", $rootScope.loc.ale, "deposit");
+		$scope.use_reroll_deposit = services.$filter("i18n")("use_reroll_deposit", $rootScope.loc.ale, "deposit");
+		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
+		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+		$scope.start = services.$filter("i18n")("START", $rootScope.loc.ale);
+		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
+		$scope.data_deposit = data_deposit.getDeposit();
 
+		$window.$data.ativate = $scope.data_deposit.ATIVATE;
+		
+		$scope.set = function(interval_deposit){
+			if(interval_deposit.length <= 5){
+				interval_deposit = interval_deposit + ":00"
+			}
+			if (helper.unreadableSeconds(interval_deposit) * 1e3 > 2 *60*60*1000){
+				data_deposit.setTimeCicle(2 *60*60*1000)
+				$scope.interval_deposit = 2 *60*60*1000;
+			} else if (helper.unreadableSeconds(interval_deposit) * 1e3 < 10*60*1000){
+				data_deposit.setTimeCicle(10*60*1000)
+				$scope.interval_deposit = 10*60*1000;
+			} else {
+				data_deposit.setTimeCicle(helper.unreadableSeconds(interval_deposit) * 1e3)
+				$scope.interval_deposit = interval_deposit;
+			}
+			document.getElementById("input-text-time-interval").value = $scope.interval_deposit; 
+			if (!$rootScope.$$phase) $rootScope.$apply();
+			
+		}
+		
+		$scope.$watch("data_deposit.USE_REROLL", function(){
+			data_deposit.setDeposit($scope.data_deposit)
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		})
+		
+		$scope.interval_deposit = helper.readableMilliseconds(data_deposit.getTimeCicle())
+
+		if (!$rootScope.$$phase) {
+			$rootScope.$apply();
+		}
+
+		services.$timeout(function(){
+			$window.setCollapse();
+			$window.recalcScrollbar();
+		}, 500)
 	}
 
 	Object.setPrototypeOf(deposit, {

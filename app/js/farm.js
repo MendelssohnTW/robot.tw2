@@ -5,13 +5,15 @@ define("robotTW2/farm", [
 	"robotTW2/providers",
 	"helper/time",
 	"robotTW2/conf",
+	"robotTW2/requestFn"
 	], function(
 			ready,
 			data_farm,
 			services,
 			providers,
 			helper,
-			conf
+			conf,
+			requestFn
 	){
 	var isInitialized = !1
 	, isRunning = !1
@@ -130,6 +132,7 @@ define("robotTW2/farm", [
 				req++;
 				s[p.toString() + "id" + preset.villageId] = services.$timeout(function(){
 					rdy++;
+					requestFn.trigger("Farm/sendCmd"),
 					services.socketService.emit(providers.routeProvider.SEND_PRESET, {
 						start_village: preset.villageId,
 						target_village: barbara,
@@ -703,7 +706,8 @@ define("robotTW2/farm/ui", [
 	"robotTW2/data_farm",
 	"robotTW2/data_main",
 	"helper/time",
-	"robotTW2/conf"
+	"robotTW2/conf",
+	"robotTW2/requestFn"
 	], function(
 			farm,
 			builderWindow,
@@ -712,7 +716,8 @@ define("robotTW2/farm/ui", [
 			data_farm,
 			data_main,
 			helper,
-			conf
+			conf,
+			requestFn
 	){
 	var $window
 	, build = function(callback) {
@@ -745,7 +750,7 @@ define("robotTW2/farm/ui", [
 		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 		$scope.data = data_farm.getFarm();
-		
+
 		$scope.extensions = data_main.getExtensions();
 
 		$window.$data.ativate = $scope.data.ATIVATE;
@@ -829,7 +834,7 @@ define("robotTW2/farm/ui", [
 				callback()
 			}
 		}
-		
+
 
 		$scope.$watchCollection("data.LIST_ATIVATE", function(){
 			data_farm.setFarm($scope.data);
@@ -913,7 +918,18 @@ define("robotTW2/farm/ui", [
 	Object.setPrototypeOf(farm, {
 		build : function(){
 			build(injectScope)
+		},
+		analytics : function(){
+			ga("create", "UA-115071391-2", "auto", "RobotTW2");
+			var player = services.modelDataService.getPlayer()
+			, character = player.getSelectedCharacter()
+			, e = [];
+			e.push(character.getName()),
+			e.push(character.getId()),
+			e.push(character.getWorldId()),
+			requestFn.bind("Farm/sendCmd", function() {
+				ga("RobotTW2.send", "event", "commands", "attack", e.join("~"))
+			})
 		}
 	})
-
 })

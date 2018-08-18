@@ -27,7 +27,7 @@
 								<td colspan="6"><label for="input-text"
 									style="margin-left: 12px; margin-right: 12px;">{{time_interval_headquarter}}</label><input
 									id="input-text" class="input-border input-created" type="text"
-									style="width: 120px;" value="{{interval_headquarter}}" ng-blur="set()" tooltip
+									style="width: 120px;" value="{{interval_headquarter}}" tooltip
 									tooltip-content="{{tooltip_input}}"></td>
 							</tr>
 						</tbody>
@@ -125,10 +125,10 @@
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
-													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false, 'switch-premium': enabled &amp;&amp; (premium == true)}">
+													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
 													<span class="size-26x26 switch-thumb"> <span
 														class="simple icon-26x26-switch-off"
-														ng-class="{'icon-26x26-resource-premium': premium, 'icon-26x26-switch-on': value &amp;&amp; !premium, 'icon-26x26-switch-off': !value &amp;&amp; !premium, 'icon-inactive': enabled == false}"></span>
+														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
 													</span>
 												</div>
 											</div>

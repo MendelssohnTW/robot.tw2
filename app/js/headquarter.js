@@ -315,8 +315,8 @@ define("robotTW2/headquarter/ui", [
 			data_headquarter.setHeadquarter($scope.data_headquarter);
 
 			var input_value = $window.$data.rootnode.querySelector("#input-text").value
-			if (helper.unreadableSeconds(input_value) * 1e3 < 1800000){
-				data_headquarter.setTimeCicle(helper.unreadableSeconds(1800000) * 1e3)
+			if (helper.unreadableSeconds(input_value) * 1e3 < 30*60*1000){
+				data_headquarter.setTimeCicle(30*60*1000)
 			} else {
 				data_headquarter.setTimeCicle(helper.unreadableSeconds(input_value) * 1e3)	
 			}
@@ -332,16 +332,16 @@ define("robotTW2/headquarter/ui", [
 		$scope.restoredata = function(){
 			data_headquarter.setTimeCicle(conf.INTERVAL)
 
-			var dataNew = {
-				INIT_ATIVATE			: false,
-				ATIVATE 				: false,
-				INTERVAL 				: conf.INTERVAL.HEADQUARTER,
-				VERSION					: conf.VERSION.HEADQUARTER,
-				BUILDINGORDER 			: conf.BUILDINGORDER,
-				BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
-				BUILDINGLEVELS 			: conf.BUILDINGLEVELS
-			}
-			, villages = {}
+//			var dataNew = {
+//				INIT_ATIVATE			: false,
+//				ATIVATE 				: false,
+//				INTERVAL 				: conf.INTERVAL.HEADQUARTER,
+//				VERSION					: conf.VERSION.HEADQUARTER,
+//				BUILDINGORDER 			: conf.BUILDINGORDER,
+//				BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
+//				BUILDINGLEVELS 			: conf.BUILDINGLEVELS
+//			}
+			var villages = {}
 			, villagesExtended = {}
 
 			angular.extend(villages, services.modelDataService.getVillages())
@@ -350,12 +350,12 @@ define("robotTW2/headquarter/ui", [
 			Object.values(villagesExtended).forEach(function(village){
 				angular.merge(village, {
 					EXECUTEBUILDINGORDER 	: conf.EXECUTEBUILDINGORDER,
-					BUILDINGORDER 			: conf.BUILDINGORDER,
-					BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
-					BUILDINGLEVELS 			: conf.BUILDINGLEVELS
+					BUILDINGORDER 			: $scope.data_headquarter.BUILDINGORDER,
+					BUILDINGLIMIT 			: $scope.data_headquarter.BUILDINGLIMIT,
+					BUILDINGLEVELS 			: $scope.data_headquarter.BUILDINGLEVELS
 				})
 			})
-			data_headquarter.setHeadquarter(dataNew);
+			//data_headquarter.setHeadquarter(dataNew);
 			data_villages.setVillages(villagesExtended);
 			$scope.data_headquarter = data_headquarter.getHeadquarter();
 			$scope.villages = data_villages.getVillages();

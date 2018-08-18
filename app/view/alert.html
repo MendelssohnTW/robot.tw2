@@ -19,6 +19,23 @@
 							<col width="3%">
 						</colgroup>
 						<tbody>
+							<tr>
+								<td class="cell-right" colspan="3"><label for="input-text"
+									style="margin-left: 12px; margin-right: 12px;">{{time_interval_alert}}</label><input
+									id="input-text-time-interval"
+									class="input-border input-created low" type="text"
+									value="{{interval_alert}}"
+									tooltip tooltip-content="{{tooltip_input}}"> <span
+									class="btn-orange icon-26x26-check-positive" ng-click="set(interval_alert)" tooltip tooltip-content="{{save}}"></span></td>
+								<td colspan="2">
+									<ul class="list-btn list-center buttons">
+										<li><a class="btn-orange btn-border select-all"
+											ng-click="selectAll()">{{select_all}}</a></li>
+										<li><a class="btn-orange btn-border remove-all"
+											ng-click="removeAll()">{{remove_all}}</a></li>
+									</ul>
+								</td>
+							</tr>
 							<tr class="tr-top">
 								<td></td>
 								<td>
@@ -72,7 +89,8 @@
 												<tr ng-repeat="member in members track by member.name">
 													<td class="cell-space">
 														<div class="name-wrapper">
-															<span class="name" tooltip tooltip-content="{{member.name}}">{{member.name}}</span>
+															<span class="name" tooltip
+																tooltip-content="{{member.name}}">{{member.name}}</span>
 															<span class="friend"></span>
 														</div>
 														<div ng-if="member.under_attack"
@@ -128,8 +146,8 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li class="robotTW2-button-settings"><a
-				class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+			<li><a class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>
 	</footer>
 </div>
