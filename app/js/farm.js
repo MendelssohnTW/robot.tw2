@@ -345,6 +345,7 @@ define("robotTW2/farm", [
 		}
 	}
 	, execute_preset = function(preset_list, tempo){
+		requestFn.trigger("Farm/cicle")
 		var calcular_Distancia = function (bonus, unidades){
 			function return_min(tempo){
 				if (tempo != undefined){
@@ -658,6 +659,7 @@ define("robotTW2/farm", [
 	}
 	, start = function (){
 		if(isRunning){return}
+		requestFn.trigger("Farm/run"),
 		isRunning = !0
 		ready(initCicle, ["all_villages_ready"])
 	}
@@ -928,7 +930,13 @@ define("robotTW2/farm/ui", [
 			e.push(character.getId()),
 			e.push(character.getWorldId()),
 			requestFn.bind("Farm/sendCmd", function() {
-				ga("RobotTW2.send", "event", "commands", "attack", e.join("~"))
+				ga("RobotTW2.send", "event", "commands", "farm_command", e.join("~"))
+			})
+			requestFn.bind("Farm/run", function() {
+				ga("RobotTW2.send", "event", "run", "farm_run", e.join("~"))
+			})
+			requestFn.bind("Farm/cicle", function() {
+				ga("RobotTW2.send", "event", "cicle", "farm_cicle", e.join("~"))
 			})
 		}
 	})
