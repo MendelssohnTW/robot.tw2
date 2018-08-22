@@ -22,34 +22,33 @@
 							<col width="*">
 						</colgroup>
 						<tr>
-							<td class="cell-right"><label for="interval_recruit"
-								style="margin-left: 12px; margin-right: 12px;">{{text_interval_recruit}}</label><input
-								id="interval_recruit" class="input-border input-created"
-								type="number" value="{{interval_recruit}}"
-								ng-model="interval_recruit"></td>
-							<td class="cell-right"><label for="reserva_food"
-								style="margin-left: 12px; margin-right: 12px;">{{text_reserva_food}}</label><input
-								id="reserva_food" class="input-border input-created" type="number"
-								value="{{data.RESERVA.FOOD}}" ng-model="data.RESERVA.FOOD"></td>
-							<td class="cell-right"><label for="reserva_slots"
-								style="margin-left: 12px; margin-right: 12px;">{{text_reserva_slots}}</label><input
+							<td class="cell-right"><label for="interval_recruit">{{text_interval_recruit}}</label><input
+								id="interval_recruit"
+								class="input-border input-created disabled" type=text
+								value="{{interval_recruit}}" ng-model="interval_recruit"
+								disabled></td>
+							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
+								id="reserva_food" class="input-border input-created"
+								type="number" value="{{data_recruit.RESERVA.FOOD}}"
+								ng-model="data_recruit.RESERVA.FOOD"></td>
+							<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
 								id="reserva_slots" class="input-border input-created"
-								type="number" value="{{data.RESERVA.SLOTS}}"
-								ng-model="data.RESERVA.SLOTS"></td>
+								type="number" value="{{data_recruit.RESERVA.SLOTS}}"
+								ng-model="data_recruit.RESERVA.SLOTS"></td>
 						</tr>
 						<tr>
-							<td class="cell-right"><label for="reserva_wood"
-								style="margin-left: 12px; margin-right: 12px;">{{text_reserva_wood}}</label><input
-								id="reserva_wood" class="input-border input-created" type="number"
-								value="{{data.RESERVA.WOOD}}" ng-model="data.RESERVA.WOOD"></td>
-							<td class="cell-right"><label for="reserva_clay"
-								style="margin-left: 12px; margin-right: 12px;">{{text_reserva_clay}}</label><input
-								id="reserva_clay" class="input-border input-created" type="number"
-								value="{{data.RESERVA.CLAY}}" ng-model="data.RESERVA.CLAY"></td>
-							<td class="cell-right"><label for="reserva_iron"
-								style="margin-left: 12px; margin-right: 12px;">{{text_reserva_iron}}</label><input
-								id="reserva_iron" class="input-border input-created" type="number"
-								value="{{data.RESERVA.IRON}}" ng-model="data.RESERVA.IRON"></td>
+							<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
+								id="reserva_wood" class="input-border input-created"
+								type="number" value="{{data_recruit.RESERVA.WOOD}}"
+								ng-model="data_recruit.RESERVA.WOOD"></td>
+							<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
+								id="reserva_clay" class="input-border input-created"
+								type="number" value="{{data_recruit.RESERVA.CLAY}}"
+								ng-model="data_recruit.RESERVA.CLAY"></td>
+							<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
+								id="reserva_iron" class="input-border input-created"
+								type="number" value="{{data_recruit.RESERVA.IRON}}"
+								ng-model="data_recruit.RESERVA.IRON"></td>
 						</tr>
 						<tr>
 							<td class="cell-top">
@@ -61,9 +60,21 @@
 												<col width="*">
 											</colgroup>
 											<tr>
-												<td class="cell-space"><select class="input-border" id="grupo" ng-change="changeGroup()" ng-model="grupo">
-														<option ng-repeat="grupo in data.GROUPS" value="{{grupo.id}}">{{grupo.name}}</option>
-												</select></td>
+												<td class="cell-space">
+													<table class="tbl-border-light tbl-striped">
+														<colgroup>
+															<col width="*">
+														</colgroup>
+														<tr ng-repeat="gr in data_recruit.GROUPS">
+															<td ng-class="{'selected': grupo == gr}"
+																ng-click="onchangeGroup(gr)">
+																<canvas icon-generator="gr.icon" icon-type="'group'"
+																	width="26" height="26"></canvas> <span
+																class="group-name overflow-ellipsis ng-binding">{{gr.name}}</span>
+															</td>
+														</tr>
+													</table>
+												</td>
 											</tr>
 										</table>
 									</div>
@@ -71,17 +82,17 @@
 							</td>
 							<td class="cell-top" colspan=2>
 								<div class="list-collapse">
-									<h5 class="twx-section collapse">{{unit_settings}}</h5>
+									<h5 class="twx-section">{{unit_settings}}</h5>
 									<div>
 										<table class="tbl-border-light tbl-striped">
 											<colgroup>
 												<col width="*">
 											</colgroup>
-											<tr ng-repeat="(key, value) in data.GROUPS[grupo].units">
-												<td class="cell-right"><label for=key
-													style="margin-left: 12px; margin-right: 12px;">{{getText(key)}}</label><input
-													id={{key}} class="input-border input-list-collapse" type="number"
-													value="units[key]" ng-model="units[key]"></td>
+											<tr ng-repeat="(key, value) in grupo.units">
+												<td class="cell-right"><label for=key>{{getText(key)}}</label><span class="span-icon"
+													ng-class="getClass(key)"></span><input id={{key}}
+													class="input-border input-list-collapse" type="number"
+													value="grupo.units[key]" ng-model="grupo.units[key]"></td>
 											</tr>
 										</table>
 									</div>
@@ -106,17 +117,17 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li><a id="button-start"class="btn-orange btn-border start"
+			<li><a class="btn-orange btn-border start"
 				ng-click="start_recruit()">{{start}}</a></li>
-			<li><a id="button-stop"class="btn-orange btn-border stop"
+			<li><a class="btn-orange btn-border stop"
 				ng-click="stop_recruit()">{{stop}}</a></li>
-			<li><a id="button-pause"
-				class="btn-border btn-orange btn-pause" ng-click="pause_recruit()"><span>{{pause}}</span></a></li>
-			<li><a id="button-resume"
-				class="btn-border btn-orange btn-resume" ng-click="resume_recruit()"><span>{{resume}}</span></a></li>
-			<li><a id="button-save"class="btn-orange btn-border save"
+			<li><a class="btn-border btn-orange btn-pause"
+				ng-click="pause_recruit()"><span>{{pause}}</span></a></li>
+			<li><a class="btn-border btn-orange btn-resume"
+				ng-click="resume_recruit()"><span>{{resume}}</span></a></li>
+			<li><a class="btn-orange btn-border save"
 				ng-click="save_recruit()">{{save}}</a></li>
-			<li><a id="button-close"class="btn-orange btn-border close"
+			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>
 	</footer>

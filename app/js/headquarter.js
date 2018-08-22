@@ -26,10 +26,15 @@ define("robotTW2/headquarter", [
 	, s
 	, isInitialized = !1
 	, isRunning = !1
+	, isPaused = !1
 	, x = {}
 	, y = {}
+	, reqD = 0
+	, respD = 0	
+	, data = data_headquarter.getHeadquarter()
 	, villages = data_villages.getVillages()
 	, listener_building_level_change = undefined
+	, listener_resume = undefined
 	, checkBuildingOrderLimit = function(vill) {
 		var buildingLevels = vill.BUILDINGLEVELS
 		, buildingLimit = vill.BUILDINGLIMIT
@@ -39,7 +44,7 @@ define("robotTW2/headquarter", [
 				function(e){
 					buildingLimit.map(
 							function(d){
-								if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] < Object.values(d)[0]){
+								if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] <= Object.values(d)[0]){
 									builds.push({[Object.keys(e)[0]] : Object.values(e)[0]})
 								}
 							}
@@ -68,144 +73,189 @@ define("robotTW2/headquarter", [
 			callback(!1, {[village.data.name] : village.getBuildingData().getDataForBuilding(build).upgradeability})
 		}
 	}
-	, cicle_building = function(){
-		character = services.modelDataService.getSelectedCharacter()
-		, !listener_building_level_change ? listener_building_level_change = $rootScope.$on(providers.eventTypeProvider.BUILDING_LEVEL_CHANGED, function($event, data) {
-			if (!isInitialized)
-				return !1;
-			services.$timeout(function() {
-				var village = character.getVillage(data.village_id)
-				isRunning = !0
-				upgradeBuilding(village)
-			}, 1e3)
-		}) : listener_building_level_change
-		, vills = Object.values(villages).map(function(e){
-			return e
-		})
-		, n = function(){
-			if(vills.length){
-				var vill = vills.shift();
-				upgradeBuilding(vill, function(){
-					isRunning ? n() : !1;
-				})
+	, list = [conf.INTERVAL.HEADQUARTER]
+	, upgradeBuilding = function(village_id){
+		reqD++
+		services.$timeout(function(){
+			respD++
+			var village = character.getVillage(village_id);
+			services.buildingService.compute(village)
+			var buildingQueue = village.getBuildingQueue()
+			, levels = village.buildingData.getBuildingLevels()
+			, buildingLevels = angular.copy(Object.keys(levels).map(function(key){return {[key] : levels[key]}}))
+			, queues = village.buildingQueue.getQueue()
+			, readyState = village.checkReadyState()
+			, buildState = villages[village_id].EXECUTEBUILDINGORDER
+			, buildAmounts = buildingQueue.getAmountJobs()
+			, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
+			if (
+					!(
+							buildAmounts !== buildUnlockedSlots
+							&& buildState
+							&& buildAmounts < data_headquarter.getHeadquarter().RESERVA.SLOTS
+							&& (readyState.buildingQueue || readyState.buildings) 
+							&& (village.isInitialized() || services.villageService.initializeVillage(village))
+					) 
+			) {
+				return;
 			}
-		}
-		n();
 
-	}
-	, upgradeBuilding = function(vill, callback){
-		var village = character.getVillage(vill.data.villageId)
-		var readyState = village.checkReadyState()
-		, buildState = vill.EXECUTEBUILDINGORDER
-		, buildingQueue = village.getBuildingQueue()
-		, buildAmounts = buildingQueue.getAmountJobs()
-		, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
-		if (
-				!(
-						buildAmounts !== buildUnlockedSlots
-						&& buildState
-						&& buildAmounts < 1
-						&& (readyState.buildingQueue || readyState.buildings) 
-						&& (village.isInitialized() || services.villageService.initializeVillage(village))
-				) 
-		) {
-			return typeof(callback) == "function" ? callback() : !1;
-		}
+			villages[village_id].BUILDINGLEVELS = buildingLevels;
+			if (queues.length) {
+				queues.forEach(
+						function(queue) {
+							villages[village_id].BUILDINGLEVELS.map(function(value){value[queue.building]++})
+						}
+				)
+			}
 
-		var levels = village.buildingData.getBuildingLevels()
-		var buildingLevels = angular.copy(Object.keys(levels).map(function(key){return {[key] : levels[key]}}))
-		, queues = village.buildingQueue.getQueue()
+			villages[village_id].builds = checkBuildingOrderLimit(villages[village_id]);
 
-		vill.BUILDINGLEVELS = buildingLevels;
-		if (queues.lenght) {
-			queues.forEach(
-					function(queue) {
-						vill.BUILDINGLEVELS.map(function(value){value[queue]++})
-						//vill.BUILDINGLEVELS[queue.building]++
+			if(!villages[village_id].builds.length) {
+				return;
+			}
+
+			var reBuilds = villages[village_id].BUILDINGORDER.map(function(key){
+				return villages[village_id].builds.map(function(key){return Object.keys(key)[0]}).find(f=>f==Object.keys(key)[0])
+			}).filter(f => f != undefined)
+			, g = [];
+
+			reBuilds.forEach(function(i){
+				g.push(villages[village_id].builds.map(
+						function(key){
+							return Object.keys(key)[0] == i ? {[Object.keys(key)[0]] : Object.values(key)[0]} : undefined
+						}
+				)
+				.filter(f => f != undefined)[0]
+				)
+			})
+
+			if (g.length > 0 && isRunning){
+				
+				var next = function() {
+					if(g.length > 0){
+						var build = g.shift();
+						var buildLevel = Object.keys(build)[0]
+						services.buildingService.compute(village)
+						if(!(buildAmounts !== buildUnlockedSlots && buildAmounts < data_headquarter.getHeadquarter().RESERVA.SLOTS)) {
+							return !1;
+						}
+						isUpgradeable(village, buildLevel, function(success, data) {
+							if (success) {
+								++buildAmounts;
+								return !0;
+							} else {
+								//console.log(Object.keys(build)[0] + "-" + JSON.stringify(data))
+								next()
+							}
+						})
+						return !1;
 					}
-			)
-		}
-
-
-		vill.builds = checkBuildingOrderLimit(vill);
-
-		if(!vill.builds.length) {
-			return typeof(callback) == "function" ? callback() : !1;
-		}
-
-		var reBuilds = vill.BUILDINGORDER.map(function(key){
-			return vill.builds.map(function(key){return Object.keys(key)[0]}).find(f=>f==Object.keys(key)[0])
-		}).filter(f => f != undefined)
-
-		var g = [];
-		reBuilds.forEach(function(i){
-			g.push(vill.builds.map(
-					function(key){
-						return Object.keys(key)[0] == i ? {[Object.keys(key)[0]] : Object.values(key)[0]} : undefined
-					}
-			)
-			.filter(f => f != undefined)[0]
-			)
-		})
-
-		var next = function() {
-			if(g.length && isRunning){
-				var build = g.shift();
-				var buildLevel = Object.keys(build)[0]
-				services.buildingService.compute(village)
-				if(!(buildAmounts !== buildUnlockedSlots && buildAmounts < 1)) {
-					return typeof(callback) == "function" ? callback() : !1;
 				}
-				isUpgradeable(village, buildLevel, function(success, data) {
-					if (success) {
-						++buildAmounts;
-//						var d = Date.now()
-//						, e = [{
-//						x: village.getX(),
-//						y: village.getY(),
-//						name: village.getName(),
-//						id: village.getId()
-//						}, data.job.building, data.job.level, d];
-//						eventQueue.trigger("Builder/jobStarted", e)//,
-//						//s.unshift(e)//,
-//						//j.set("builder-log", s)
-
-						return typeof(callback) == "function" ? callback() : !0;
-					} else {
-						console.log(Object.keys(build)[0] + "-" + JSON.stringify(data))
-						next()
-					}
-				})
+				next()
 			} else {
-				return typeof(callback) == "function" ? callback() : !0;
+				var timer = village.getBuildingQueue().getQueue()[0].time_completed * 1000;
+				var dif = timer - helper.gameTime(); 
+				if (dif < data_headquarter.getHeadquarter().INTERVAL){
+					list.push(dif);
+				}
 			}
+			if(reqD == respD){
+				if (list.length > 0){
+					var dt = data_headquarter.getHeadquarter();
+					dt.INTERVAL = Math.min.apply(null, list);
+					dt.INTERVAL == 0 ? dt.INTERVAL = conf.h : dt.INTERVAL;
+					data_headquarter.setHeadquarter(dt)
+					list = [conf.INTERVAL.HEADQUARTER];
+				}
+				reqD = 0;
+				respD = 0;
+				
+				wait();
+				return !0;
+			}
+		}, reqD * 3000)
+	}
+	, cicle_building = function($event, data){
+		
+
+		if (!isInitialized)
+			return;
+
+		character = services.modelDataService.getSelectedCharacter();
+		if(isPaused){
+			listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT, function(){
+				var data_resume = data;
+				if(data_resume != undefined){
+					cicle_building(null, data_resume)
+				} else {
+					cicle_building()
+				}
+				listener_resume()
+				listener_resume = undefined;
+				return
+			})
 		}
-		next()
+
+		if(data != undefined){
+			services.$timeout(function() {
+				isRunning = !0
+				upgradeBuilding(data.village_id)
+			}, 3e3)
+		} else {
+			Object.keys(villages).map(function(village_id){
+				upgradeBuilding(village_id)
+			})
+		}
 	}
-	, start = function(){
-		if(isRunning){return}
-		isRunning = !0
-		!interval_builder ? interval_builder = setInterval(cicle_building, data_headquarter.getTimeCicle()) : null;
-		ready(cicle_building, ["all_villages_ready"])
-	}
-	, stop = function(){
-		isRunning = !1
-		typeof(listener_building_level_change) == "function" ? listener_building_level_change(): null;
-		listener_building_level_change = undefined
-		clearInterval(interval_builder)
-		eventQueue.trigger("Builder/stop")
+	, wait = function(){
+		if(!interval_builder){
+			interval_builder = services.$timeout(cicle_building, data_headquarter.getTimeCicle())
+		} else {
+			services.$timeout.cancel(interval_builder);
+			interval_builder = services.$timeout(cicle_building, data_headquarter.getTimeCicle())
+		}
+		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 	}
 	, init = function(){
 		isInitialized = !0
 		start();
 	}
+	, start = function(){
+		if(isRunning){return}
+		listener_building_level_change = $rootScope.$on(providers.eventTypeProvider.BUILDING_LEVEL_CHANGED, cicle_building)
+		isRunning = !0
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
+		wait();
+		ready(cicle_building, ["all_villages_ready"])
+	}
+	, stop = function(){
+		isRunning = !1
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
+		typeof(listener_building_level_change) == "function" ? listener_building_level_change(): null;
+		listener_building_level_change = undefined
+	}
+	, pause = function (){
+		isPaused = !0
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
+	}
+	, resume = function (){
+		isPaused = !1
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
+		$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_HEADQUARTER)
+	}
 
 	return {
 		init			: init,
 		start			: start,
+		pause			: pause,
+		resume 			: resume,
 		stop			: stop,
 		isRunning		: function() {
 			return isRunning
+		},
+		isPaused		: function() {
+			return isPaused
 		},
 		isInitialized	: function(){
 			return isInitialized
@@ -219,6 +269,7 @@ define("robotTW2/headquarter/ui", [
 	"robotTW2/headquarter",
 	"robotTW2/builderWindow",
 	"robotTW2/services",
+	"robotTW2/providers",
 	"robotTW2/data_villages",
 	"robotTW2/data_headquarter",
 	"helper/time",
@@ -227,6 +278,7 @@ define("robotTW2/headquarter/ui", [
 			headquarter,
 			builderWindow,
 			services,
+			providers,
 			data_villages,
 			data_headquarter,
 			helper,
@@ -244,8 +296,14 @@ define("robotTW2/headquarter/ui", [
 		var $scope = $window.$data.scope;
 		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "headquarter");
 		$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "headquarter");
-		$scope.time_interval_headquarter = services.$filter("i18n")("time_interval_headquarter", $rootScope.loc.ale, "headquarter");
+		$scope.text_interval_headquarter = services.$filter("i18n")("text_interval_headquarter", $rootScope.loc.ale, "headquarter");
+		$scope.text_reserva_food = services.$filter("i18n")("text_reserva_food", $rootScope.loc.ale, "headquarter");
+		$scope.text_reserva_slots = services.$filter("i18n")("text_reserva_slots", $rootScope.loc.ale, "headquarter");
+		$scope.text_reserva_wood = services.$filter("i18n")("text_reserva_wood", $rootScope.loc.ale, "headquarter");
+		$scope.text_reserva_clay = services.$filter("i18n")("text_reserva_clay", $rootScope.loc.ale, "headquarter");
+		$scope.text_reserva_iron = services.$filter("i18n")("text_reserva_iron", $rootScope.loc.ale, "headquarter");
 		$scope.settings = services.$filter("i18n")("settings", $rootScope.loc.ale, "headquarter");
+		$scope.headquarter_running = services.$filter("i18n")("headquarter_running", $rootScope.loc.ale, "headquarter");
 		$scope.priority = services.$filter("i18n")("priority", $rootScope.loc.ale, "headquarter");
 		$scope.settings_for_villages = services.$filter("i18n")("settings_for_villages", $rootScope.loc.ale, "headquarter");
 		$scope.levels = services.$filter("i18n")("levels", $rootScope.loc.ale, "headquarter");
@@ -253,15 +311,20 @@ define("robotTW2/headquarter/ui", [
 		$scope.ativate = services.$filter("i18n")("ativate", $rootScope.loc.ale, "headquarter");
 		$scope.tooltip_input = services.$filter("i18n")("tooltip_input", $rootScope.loc.ale, "headquarter");
 		$scope.tooltip_button = services.$filter("i18n")("tooltip_button", $rootScope.loc.ale, "headquarter");
+		$scope.restore = services.$filter("i18n")("RESTORE", $rootScope.loc.ale);
 		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.restore = services.$filter("i18n")("RESTORE", $rootScope.loc.ale);
 		$scope.start = services.$filter("i18n")("START", $rootScope.loc.ale);
+		$scope.pause = services.$filter("i18n")("PAUSE", $rootScope.loc.ale);
+		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 		$scope.data_headquarter = data_headquarter.getHeadquarter();
 		$scope.villages = data_villages.getVillages();
 
 		$window.$data.ativate = $scope.data_headquarter.ATIVATE;
+
+		$scope.isRunning = headquarter.isRunning();
+		$scope.paused = headquarter.isPaused();
 
 		$scope.interval_headquarter = helper.readableMilliseconds(data_headquarter.getTimeCicle())
 
@@ -269,23 +332,20 @@ define("robotTW2/headquarter/ui", [
 			return services.$filter("i18n")(Object.keys(buildingOrder)[0], $rootScope.loc.ale, "headquarter");
 		}
 
-//		$scope.set = function(){
-//		$scope.interval_headquarter = $("#input_text_time_interval").val();
-//		if($scope.interval_headquarter.length <= 5){
-//		$scope.interval_headquarter = $scope.interval_headquarter + ":00"
-//		}
-//		if (!$rootScope.$$phase) $rootScope.$apply();
-//		}
+		$scope.getClass = function(buildingOrder){
+			return "icon-20x20-building-" + Object.keys(buildingOrder)[0];
+		}
 
 		$scope.getValue = function(buildingOrder){
 			return Object.values(buildingOrder)[0];
 		}
+
 		$scope.up = function(data, buildingOrder){
 			var ant = data.BUILDINGORDER.find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]-1})
 			ant[Object.keys(ant)[0]] += 1
 			buildingOrder[Object.keys(buildingOrder)[0]] -= 1
 			data.BUILDINGORDER = data.BUILDINGORDER.map(function(key,index,array){return delete data.BUILDINGORDER[index].$$hashKey ? data.BUILDINGORDER[index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
-			if (!$rootScope.$$phase) {$rootScope.$apply();}
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
 		$scope.down = function(data, buildingOrder){
@@ -293,7 +353,7 @@ define("robotTW2/headquarter/ui", [
 			prox[Object.keys(prox)[0]] -= 1
 			buildingOrder[Object.keys(buildingOrder)[0]] += 1
 			data.BUILDINGORDER = data.BUILDINGORDER.map(function(key,index,array){return delete data.BUILDINGORDER[index].$$hashKey ? data.BUILDINGORDER[index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
-			if (!$rootScope.$$phase) {$rootScope.$apply();}
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
 		$scope.levelup = function(buildingLimit){
@@ -308,39 +368,42 @@ define("robotTW2/headquarter/ui", [
 
 		$scope.leveldown = function(buildingLimit){
 			buildingLimit[Object.keys(buildingLimit)[0]] -= 1
-			if (!$rootScope.$$phase) {$rootScope.$apply();}
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.savedata = function(){
+		$scope.start_headquarter = function(){
+			headquarter.start();
+			$scope.isRunning = headquarter.isRunning();
+		}
+
+		$scope.stop_headquarter = function(){
+			headquarter.stop();
+			$scope.isRunning = headquarter.isRunning();
+		}
+
+		$scope.pause_headquarter = function(){
+			headquarter.pause();
+			$scope.paused = !0;
+		}
+
+		$scope.resume_headquarter = function(){
+			headquarter.resume();
+			$scope.paused = !1;
+		}
+
+		$scope.save_headquarter = function(){
 			data_headquarter.setHeadquarter($scope.data_headquarter);
-
-			var input_value = $window.$data.rootnode.querySelector("#input-text").value
-			if (helper.unreadableSeconds(input_value) * 1e3 < 30*60*1000){
-				data_headquarter.setTimeCicle(30*60*1000)
-			} else {
-				data_headquarter.setTimeCicle(helper.unreadableSeconds(input_value) * 1e3)	
-			}
-
 			data_villages.setVillages($scope.villages)
 
 			$scope.data_headquarter = data_headquarter.getHeadquarter();
 			$scope.villages = data_villages.getVillages();
 
-			if (!$rootScope.$$phase) {$rootScope.$apply();}
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.restoredata = function(){
+		$scope.restore_headquarter = function(){
 			data_headquarter.setTimeCicle(conf.INTERVAL)
 
-//			var dataNew = {
-//				INIT_ATIVATE			: false,
-//				ATIVATE 				: false,
-//				INTERVAL 				: conf.INTERVAL.HEADQUARTER,
-//				VERSION					: conf.VERSION.HEADQUARTER,
-//				BUILDINGORDER 			: conf.BUILDINGORDER,
-//				BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
-//				BUILDINGLEVELS 			: conf.BUILDINGLEVELS
-//			}
 			var villages = {}
 			, villagesExtended = {}
 
@@ -355,11 +418,10 @@ define("robotTW2/headquarter/ui", [
 					BUILDINGLEVELS 			: $scope.data_headquarter.BUILDINGLEVELS
 				})
 			})
-			//data_headquarter.setHeadquarter(dataNew);
 			data_villages.setVillages(villagesExtended);
 			$scope.data_headquarter = data_headquarter.getHeadquarter();
 			$scope.villages = data_villages.getVillages();
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			if (!$scope.$$phase) $scope.$apply();
 
 		}
 
@@ -368,12 +430,12 @@ define("robotTW2/headquarter/ui", [
 
 		$scope.selectbuildingOrder = function(buildingOrder){
 			$scope.selected_buildingOrder = buildingOrder;
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.selectvillagebuildingOrder = function(villageId, buildingOrder){
 			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.comparevillagebuildingOrder = function(villageId, buildingOrder){
@@ -387,14 +449,25 @@ define("robotTW2/headquarter/ui", [
 		$scope.toggleVillage = function(village){
 			angular.merge($scope.villages[village.data.villageId], village);
 		}
+		
+		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function() {
+			$scope.interval_headquarter = helper.readableMilliseconds(data_headquarter.getTimeCicle())
+			if (!$scope.$$phase) {
+				$scope.$apply();
+			}
+		})
 
-		if (!$rootScope.$$phase) {
-			$rootScope.$apply();
+		if (!$scope.$$phase) {
+			$scope.$apply();
 		}
 
 		services.$timeout(function(){
+			$window.$data.rootnode.setAttribute("style", "width:900px;");
 			$window.setCollapse();
 			$window.recalcScrollbar();
+			$(".win-foot .btn-orange").forEach(function(d){
+				d.setAttribute("style", "min-width:80px")
+			})
 		}, 500)
 
 	}

@@ -20,8 +20,12 @@ define("robotTW2/providers", function() {
 	var eventTypeProvider = injector.get("eventTypeProvider")
 	, routeProvider = injector.get("routeProvider")
 	angular.merge(eventTypeProvider, {
-		"OPEN_ATTACK"			: "Internal/robotTW2/open_attack",
-		"HEADQUARTER_READY"		: "Internal/robotTW2/headquarter_ready",
+		"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
+		"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
+		"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
+		"INTERVAL_CHANGE_RECRUIT"		: "Internal/robotTW2/interval_change_recruit",
+		"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
+		"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter"
 	})
 	angular.merge(routeProvider, {
 		"INIT_DATA":{

@@ -77,13 +77,15 @@ define("robotTW2/spy", [
 	, start = function (){
 		!listener_spy ? listener_spy = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
 		isRunning = !0;
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
 		wait();
 		recruit_spy();
 	}
 	, stop = function (){
 		typeof(listener_spy) == "function" ? listener_spy(): null;
 		listener_spy = undefined;
-		isRunning = !1,
+		isRunning = !1
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
 		services.$timeout.cancel(interval_spy);
 		interval_spy = undefined;
 	}

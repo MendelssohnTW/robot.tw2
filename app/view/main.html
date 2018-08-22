@@ -26,14 +26,14 @@
 								<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
 								<td class="cell-center"><h5>{{text_status}}</h5></td>
 							</tr>
-							<tr ng-repeat="ext in extensions">
+							<tr ng-repeat="ext in extensions_copy">
 								<td class="cell-space"><span>{{ext.name}}</span></td>
 								<td class="cell-center">
 									<div class="checkbox box-border-dark">
 										<div tooltip
 											tooltip-content="{{ext.ENABLED ? key + ' ' + extension_enabled : key + ' ' + extension_disabled}}"
 											switch-slider="" border="true" enabled="ext.ENABLED"
-											value="ext.ATIVATE" ng-model="ext.ATIVATE" ng-click="toggleValueState(ext)" vertical="false" size="'56x28'">
+											value="ext.ATIVATE" ng-click="toggleValueState(ext)" vertical="false" size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -51,7 +51,7 @@
 									<div class="checkbox box-border-dark">
 										<div switch-slider="" border="true"
 											enabled="ext.ATIVATE && ext.ENABLED"
-											value="ext.INIT_ATIVATE" ng-model="ext.INIT_ATIVATE" ng-click="toggleValueInit(ext)" vertical="false" size="'56x28'">
+											value="ext.INIT_ATIVATE" ng-click="toggleValueInit(ext)" vertical="false" size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -65,11 +65,11 @@
 										</div>
 									</div>
 								</td>
-								<td class="cell-center">{{gethotkey(ext.name)}}</td>
+								<td class="cell-center">{{hotkeys[ext.name].toUpperCase()}}</td>
 								<td class="cell-center">
-								<div tooltip tooltip-content="{{getTooltip(ext.name)}}">
+								<div tooltip tooltip-content="{{ext.STATUS}}">
 										<span
-											ng-class="{'icon-26x26-dot-green' : {{getstatus(ext.name)}}, 'icon-26x26-dot-red' : {{!getstatus(ext.name)}}, 'icon-26x26-dot-blue' : {{getstatus(ext.name)}} && {{getpaused(ext.name)}}}"></span>
+											ng-class="{'icon-26x26-dot-green' : ext.STATUS == running, 'icon-26x26-dot-red' : ext.STATUS == stopped, 'icon-26x26-dot-blue' : ext.STATUS == paused}"></span>
 									</div></td>
 							</tr>
 						</tbody>

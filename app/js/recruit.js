@@ -28,6 +28,7 @@ define("robotTW2/recruit", [
 	, listener_group_created = undefined
 	, listener_group_destroyed = undefined
 	, listener_window_recruit = undefined
+	, listener_resume = undefined
 	, prices = undefined
 	, data = data_recruit.getRecruit()
 	, grupos = data.GROUPS
@@ -281,7 +282,6 @@ define("robotTW2/recruit", [
 	}
 	, prices = getUnitPrices()
 	, villages = data_villages.getVillages()
-
 	, wait = function(){
 		data = data_recruit.getRecruit();
 		if(!interval_recruit){
@@ -290,16 +290,16 @@ define("robotTW2/recruit", [
 			services.$timeout.cancel(interval_recruit);
 			interval_recruit = services.$timeout(recruit, data.INTERVAL)
 		}
+		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
 	}
 	, list = [conf.INTERVAL.RECRUIT]
 	, recruit = function(){
-		var d = 0
-		, reqD = 0
+		var reqD = 0
 		, respD = 0;
 
 		data = data_recruit.getRecruit();
 		if(isPaused){
-			var listener_resume = $rootScope.$on("resume_recruit", function(){
+			listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT, function(){
 				recruit()
 				listener_resume()
 				listener_resume = undefined;
@@ -326,8 +326,9 @@ define("robotTW2/recruit", [
 						data.INTERVAL = Math.min.apply(null, list);
 						data.INTERVAL == 0 ? data.INTERVAL = conf.h : data.INTERVAL;
 						data_recruit.setRecruit(data)
-						list = [];
+						list = [conf.INTERVAL.RECRUIT];
 					}
+					
 					wait();			
 				}
 			}, reqD * 3000)
@@ -346,8 +347,9 @@ define("robotTW2/recruit", [
 		listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
 		listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verificarGroups)
 		isRunning = !0;
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 		wait();
-		recruit();
+		ready(recruit, ["all_villages_ready"])
 	}
 	, stop = function (){
 		typeof(listener_recruit) == "function" ? listener_recruit(): null;
@@ -358,16 +360,19 @@ define("robotTW2/recruit", [
 		listener_group_updated = undefined;
 		listener_group_created = undefined;
 		listener_group_destroyed = undefined;
-		isRunning = !1,
+		isRunning = !1
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 		services.$timeout.cancel(listener_recruit);
 		services.$timeout.cancel(listener_window_recruit);
 	}
 	, pause = function (){
 		isPaused = !0
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 	}
 	, resume = function (){
 		isPaused = !1
-		$rootScope.$broadcast("resume_recruit")
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
+		$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT)
 	}
 
 	return	{
@@ -420,6 +425,17 @@ define("robotTW2/recruit/ui", [
 		return $window
 	}
 	, injectScope = function(){
+
+		function return_units(unitTypes){
+			var units = {};
+			Object.keys(unitTypes).map(function(key){
+				if(unitTypes[key] != "knight" && unitTypes[key] != "snob" && unitTypes[key] != "doppelsoldner" && unitTypes[key] != "trebuchet"){
+					units[unitTypes[key]] = 0
+				}
+			})
+			return units
+		}
+
 		var $scope = $window.$data.scope;
 		$($window.$data.rootnode)[0].setAttribute("style", "width:850px;");
 		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "recruit");
@@ -440,51 +456,44 @@ define("robotTW2/recruit/ui", [
 		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 
-		$scope.data = data_recruit.getRecruit();
+		$scope.data_recruit = data_recruit.getRecruit();
+		$scope.grupo = $scope.data_recruit.GROUPS[Object.keys($scope.data_recruit.GROUPS)[0]]
 
-		$window.$data.ativate = $scope.data.ATIVATE;
+		$window.$data.ativate = $scope.data_recruit.ATIVATE;
 		$scope.isRunning = recruit.isRunning();
 		$scope.paused = recruit.isPaused();
 
-		$scope.interval_recruit = $scope.data.INTERVAL / conf.h 
+		$scope.interval_recruit = helper.readableMilliseconds(data_recruit.getTimeCicle())
 
-//		$scope.units = {}
-//		Object.keys(unitTypes).map(function(key){
-//		if(unitTypes[key] != "knight" && unitTypes[key] != "snob" && unitTypes[key] != "doppelsoldner" && unitTypes[key] != "trebuchet"){
-//		$scope.units[unitTypes[key]] = 0
-//		}
-//		})
-
-		$scope.changeGroup = function (){
-			$scope.grupo = this.grupo;
-			if($scope.data.GROUPS[$scope.grupo].units != undefined){
-				$scope.units = $scope.data.GROUPS[$scope.grupo].units;
-			} else {
-				$scope.units = {}
-				Object.keys(unitTypes).map(function(key){
-					if(unitTypes[key] != "knight" && unitTypes[key] != "snob" && unitTypes[key] != "doppelsoldner" && unitTypes[key] != "trebuchet"){
-						$scope.units[unitTypes[key]] = 0
-					}
-				})
-				$scope.data.GROUPS[$scope.grupo].units = $scope.units
+		$scope.onchangeGroup = function (gr){
+			$scope.grupo = gr;
+			if(!$scope.grupo.units){
+				$scope.grupo.units = return_units(unitTypes);
 			}
-
-			if (!$rootScope.$$phase) {$rootScope.$apply()}
+			if (!$scope.$$phase) {$scope.$apply()}
 		}
 
 		$scope.getText = function(key){
 			return services.$filter("i18n")("text_" + key, $rootScope.loc.ale, "recruit");
 		}
-
+		
+		$scope.getClass = function(key){
+			return "icon-20x20-unit-" + key;
+		}
+		
+		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function() {
+			$scope.interval_recruit = helper.readableMilliseconds(data_recruit.getTimeCicle())
+			if (!$scope.$$phase) {
+				$scope.$apply();
+			}
+		})
+		
 		$scope.start_recruit = function(){
 			recruit.start();
 			$scope.isRunning = recruit.isRunning();
 		}
 
 		$scope.stop_recruit = function(){
-//			var extensions = data_main.getExtensions()
-//			extensions["RECRUIT"].INIT_ATIVATE = false
-//			data_main.setExtensions(extensions);
 			recruit.stop();
 			$scope.isRunning = recruit.isRunning();
 		}
@@ -499,26 +508,21 @@ define("robotTW2/recruit/ui", [
 		}
 
 		$scope.save_recruit = function(){
-			var t = parseInt(document.getElementById("interval_recruit").value);
-			t > 0 ? $scope.data.INTERVAL = t * conf.h : t = conf.h;
-			Object.keys($scope.data.GROUPS).map(m => $scope.data.GROUPS[m]).find(f => f.id == $scope.grupo).units = $scope.units
-			data_recruit.setRecruit($scope.data);
+			Object.keys($scope.data_recruit.GROUPS).map(m => $scope.data_recruit.GROUPS[m]).find(f => f.id == $scope.grupo.id).units = $scope.grupo.units
+			data_recruit.setRecruit($scope.data_recruit);
 		}
 
-		if (!$rootScope.$$phase) {
-			$rootScope.$apply();
+		if (!$scope.$$phase) {
+			$scope.$apply();
 		}
 
 		services.$timeout(function(){
-			$scope.grupo = document.getElementById("grupo").value;
+			$scope.onchangeGroup($scope.grupo)
 			$window.setCollapse();
 			$window.recalcScrollbar();
 			$(".win-foot .btn-orange").forEach(function(d){
 				d.setAttribute("style", "min-width:80px")
 			})
-			document.getElementById("grupo").selectedIndex = "1";
-			$scope.grupo = document.getElementById("grupo").value;
-			$scope.changeGroup()
 		}, 500)
 	}
 

@@ -22,6 +22,7 @@ define("robotTW2/farm", [
 	, data = data_farm.getFarm()
 	, timeoutIdFarm = {}
 	, listener_report = undefined
+	, listener_resume = undefined
 	, req = 0
 	, rdy = 0
 	, s = {}
@@ -289,7 +290,7 @@ define("robotTW2/farm", [
 									console.log("preset length " + comandos_preset.length)
 									if(isRunning){
 										if(isPaused){
-											var listener_resume = $rootScope.$on("resume_farm", function(){
+											listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
 												P()
 												listener_resume()
 												listener_resume = undefined;
@@ -311,7 +312,7 @@ define("robotTW2/farm", [
 							console.log("preset length " + comandos_preset.length)
 							if(isRunning){
 								if(isPaused){
-									var listener_resume = $rootScope.$on("resume_farm", function(){
+									listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
 										P()
 										listener_resume()
 										listener_resume = undefined;
@@ -332,7 +333,7 @@ define("robotTW2/farm", [
 		}
 		if(isRunning){
 			if(isPaused){
-				var listener_resume = $rootScope.$on("resume_farm", function(){
+				listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
 					P()
 					listener_resume()
 					listener_resume = undefined;
@@ -425,7 +426,7 @@ define("robotTW2/farm", [
 			};
 			if(isRunning){
 				if(isPaused){
-					var listener_resume = $rootScope.$on("resume_farm", function(){
+					listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
 						list_assigned_villages.length > 0 ? n() : callback();
 						listener_resume()
 						listener_resume = undefined;
@@ -461,7 +462,7 @@ define("robotTW2/farm", [
 					if (comandos_preset.length > 0){
 						if(isRunning){
 							if(isPaused){
-								var listener_resume = $rootScope.$on("resume_farm", function(){
+								listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
 									prox();
 									listener_resume()
 									listener_resume = undefined;
@@ -480,7 +481,7 @@ define("robotTW2/farm", [
 
 			if(isRunning){
 				if(isPaused){
-					var listener_resume = $rootScope.$on("resume_farm", function(){
+					listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
 						proc()
 						listener_resume()
 						listener_resume = undefined;
@@ -661,6 +662,7 @@ define("robotTW2/farm", [
 		if(isRunning){return}
 		requestFn.trigger("Farm/run"),
 		isRunning = !0
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		ready(initCicle, ["all_villages_ready"])
 	}
 	, stop = function (){
@@ -672,13 +674,16 @@ define("robotTW2/farm", [
 		data_farm.clearBB();
 		timeoutIdFarm = {};
 		isRunning = !1
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 	}
 	, pause = function (){
 		isPaused = !0
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 	}
 	, resume = function (){
 		isPaused = !1
-		$rootScope.$broadcast("resume_farm")
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
+		$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_FARM, {name:"FARM"})
 	}
 	return	{
 		init			: init,
@@ -758,7 +763,6 @@ define("robotTW2/farm/ui", [
 		$window.$data.ativate = $scope.data.ATIVATE;
 		$scope.isRunning = farm.isRunning();
 		$scope.paused = farm.isPaused();
-
 		var villages = services.modelDataService.getSelectedCharacter().getVillages()
 		for (v in villages) {
 			$scope.data.LIST_ATIVATE[v] == undefined ? $scope.data.LIST_ATIVATE[v] = true : null;

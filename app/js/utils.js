@@ -149,14 +149,14 @@ define("robotTW2/conf", [
 			MAP_CHUNCK_LEN 			: 30 / 2,
 			VERSION					: {
 				VILLAGES		: 2.01,
-				HEADQUARTER		: 2.02,
+				HEADQUARTER		: 2.03,
 				ALERT			: 2.01,
 				RECON			: 2.02,
 				SPY				: 2.01,
 				ATTACK			: 2.01,
 				DEFENSE			: 2.01,
 				FARM			: 2.01,
-				RECRUIT			: 2.02,
+				RECRUIT			: 2.03,
 				DEPOSIT			: 2.01
 			},
 			TEMPO_DE_PERCURSO		: h,
@@ -180,11 +180,21 @@ define("robotTW2/conf", [
 				DEPOSIT		 	: "ctrl+alt+g"
 			},
 			RESERVA				: {
-				FOOD			: 500,
-				WOOD			: 2000,
-				CLAY			: 2000,
-				IRON			: 2000,
-				SLOTS			: 2
+				RECRUIT : {
+					FOOD			: 500,
+					WOOD			: 2000,
+					CLAY			: 2000,
+					IRON			: 2000,
+					SLOTS			: 2
+				},
+				HEADQUARTER : {
+					FOOD			: 500,
+					WOOD			: 2000,
+					CLAY			: 2000,
+					IRON			: 2000,
+					SLOTS			: 2
+				}
+
 			},
 			TROOPS_NOT				: []
 

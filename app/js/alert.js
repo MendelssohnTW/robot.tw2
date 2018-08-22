@@ -48,10 +48,12 @@ define("robotTW2/alert", [
 	, start = function (){
 		if(isRunning){return} 
 		isRunning = !0;
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ALERT"})
 		verify_alert();
 	}
 	, stop = function (){
 		isRunning = !1;
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ALERT"})
 		typeof(listener_tab_alert) == "function" ? listener_tab_alert(): null;
 		listener_tab_alert = undefined;
 		services.$timeout.cancel(interval_alert);

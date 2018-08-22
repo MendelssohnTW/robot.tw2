@@ -30,6 +30,7 @@ define("robotTW2/main/ui", [
 	"robotTW2/data_main",
 	"robotTW2/requestFn",
 	"robotTW2/services",
+	"robotTW2/providers",
 	"robotTW2/conf"
 	], function(
 			main,
@@ -37,6 +38,7 @@ define("robotTW2/main/ui", [
 			data_main,
 			requestFn,
 			services,
+			providers,
 			conf
 	) {
 	var $window
@@ -83,34 +85,24 @@ define("robotTW2/main/ui", [
 		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		$scope.extensions = data_main.getExtensions();
+		$scope.extensions_copy = {};
 		$scope.hotkeys = conf.HOTKEY;
-
-		$scope.gethotkey = function(a) {
-			return $scope.hotkeys[a] ? $scope.hotkeys[a].toUpperCase() : "";
-		}
-
-		$scope.getstatus = function(extension) {
-			var fn = requestFn.get(extension.toLowerCase(), true);
-			if(!fn) {
-				return false
-			} else {
-				return fn.isRunning();
-			}
-			if (!$rootScope.$$phase) $rootScope.$apply();
-		}
 		
-		$scope.getTooltip = function(key) {
-			return !$scope.getstatus(key) ? $scope.stopped : ($scope.getpaused(key) ? $scope.paused : $scope.running);
-		}
+		angular.merge($scope.extensions_copy, $scope.extensions);
 		
-		$scope.getpaused = function(extension) {
-			var fn = requestFn.get(extension.toLowerCase(), true);
-			if(!fn) {
-				return false
+		for (ext in $scope.extensions){
+			var fn = requestFn.get(ext.toLowerCase(), true);
+			if(!fn){
+				continue	
 			} else {
-				return fn.isPaused ? fn.isPaused() : false;
+				$scope.extensions_copy[ext].ISRUNNING = fn.isRunning()
+				if(typeof(fn.isPaused)=="function"){
+					$scope.extensions_copy[ext].ISPAUSED = fn.isPaused()
+				} else {
+					$scope.extensions_copy[ext].ISPAUSED = false;
+				}
 			}
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			!$scope.extensions_copy[ext].ISRUNNING ? $scope.extensions_copy[ext].STATUS = $scope.stopped : ($scope.extensions_copy[ext].ISPAUSED ? $scope.extensions_copy[ext].STATUS = $scope.paused : $scope.extensions_copy[ext].STATUS = $scope.running)
 		}
 
 		$scope.toggleValueState = function(ext) {
@@ -122,25 +114,42 @@ define("robotTW2/main/ui", [
 			data_main.setExtensions($scope.extensions);
 			var fn = requestFn.get(ext.name.toLowerCase(), true);
 			if(ext.ATIVATE){
-				if(fn.isInitialized())
-					return !1;	
-				fn.init();
-				fn.build();
+				if(!fn.isInitialized()){
+					fn.init();
+					fn.build();
+				} else {
+					fn.start();
+				}
 			} else {
-				if(!fn.isInitialized())
-					return !1;	
-				if(fn.isRunning())
+				if(fn.isRunning()){
 					fn.stop();
+				}
 			}
+			angular.merge($scope.extensions_copy, $scope.extensions);
 		};
+		
+		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+			var fn = requestFn.get(data.name.toLowerCase(), true);
+			$scope.extensions_copy[data.name].ISRUNNING = fn.isRunning();
+			!$scope.extensions_copy[data.name].ISRUNNING ? $scope.extensions_copy[data.name].STATUS = $scope.stopped : ($scope.extensions_copy[data.name].ISPAUSED ? $scope.extensions_copy[data.name].STATUS = $scope.paused : $scope.extensions_copy[data.name].STATUS = $scope.running)
+			if(typeof(fn.isPaused)=="function"){
+				$scope.extensions_copy[data.name].ISPAUSED = fn.isPaused()
+			} else {
+				$scope.extensions_copy[data.name].ISPAUSED = false;
+			}
+			if (!$scope.$$phase) {
+				$scope.$apply();
+			}
+		})
 
 		$scope.toggleValueInit= function(ext) {
 			$scope.extensions[ext.name].INIT_ATIVATE = ext.INIT_ATIVATE
 			data_main.setExtensions($scope.extensions);
+			angular.merge($scope.extensions_copy, $scope.extensions);
 		};
 
-		if (!$rootScope.$$phase) {
-			$rootScope.$apply();
+		if (!$scope.$$phase) {
+			$scope.$apply();
 		}
 
 		setTimeout(function(){

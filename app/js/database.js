@@ -163,6 +163,13 @@ define("robotTW2/data_headquarter", [
 			HOTKEY					: conf.HOTKEY.HEADQUARTER,
 			INTERVAL				: conf.INTERVAL.HEADQUARTER,
 			VERSION					: conf.VERSION.HEADQUARTER,
+			RESERVA 				: {
+				FOOD			: conf.RESERVA.HEADQUARTER.FOOD,
+				WOOD			: conf.RESERVA.HEADQUARTER.WOOD,
+				CLAY			: conf.RESERVA.HEADQUARTER.CLAY,
+				IRON			: conf.RESERVA.HEADQUARTER.IRON,
+				SLOTS			: conf.RESERVA.HEADQUARTER.SLOTS
+			},
 			BUILDINGORDER 			: conf.BUILDINGORDER,
 			BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
 			BUILDINGLEVELS 			: conf.BUILDINGLEVELS
@@ -355,11 +362,11 @@ define("robotTW2/data_recruit", [
 			VERSION					: conf.VERSION.RECRUIT,
 			INTERVAL				: conf.INTERVAL.RECRUIT,
 			RESERVA 				: {
-				FOOD			: conf.RESERVA.FOOD,
-				WOOD			: conf.RESERVA.WOOD,
-				CLAY			: conf.RESERVA.CLAY,
-				IRON			: conf.RESERVA.IRON,
-				SLOTS			: conf.RESERVA.SLOTS
+				FOOD			: conf.RESERVA.RECRUIT.FOOD,
+				WOOD			: conf.RESERVA.RECRUIT.WOOD,
+				CLAY			: conf.RESERVA.RECRUIT.CLAY,
+				IRON			: conf.RESERVA.RECRUIT.IRON,
+				SLOTS			: conf.RESERVA.RECRUIT.SLOTS
 			},
 			TROOPS_NOT				: conf.TROOPS_NOT,
 			GROUPS					: {}

@@ -8,29 +8,48 @@
 	</header>
 	<div class="win-main" scrollbar="" style="position: relative;">
 		<div class="box-paper content-settings">
-			<p class="center">{{introducing}}</p>
-			<div class="scroll-wrap" style="margin-bottom: 80px">
+			<div class="scroll-wrap headquarter" style="margin-bottom: 80px">
+				<div>
+					<span
+						ng-class="{'icon-26x26-dot-green' : isRunning, 'icon-26x26-dot-red' : !isRunning, 'icon-26x26-dot-blue' : isRunning && paused}"></span>{{headquarter_running}}
+				</div>
 				<h5 class="twx-section collapse">{{settings}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-striped" id="preset-list">
+					<table class="tbl-border-light tbl-striped">
 						<colgroup>
-							<col width="*">
-							<col width="25%">
-							<col width="15%">
-							<col width="50">
-							<col width="25%">
-							<col width="15%">
+							<col width="33%">
+							<col width="33%">
 							<col width="*">
 						</colgroup>
-						<tbody>
-							<tr>
-								<td colspan="6"><label for="input-text"
-									style="margin-left: 12px; margin-right: 12px;">{{time_interval_headquarter}}</label><input
-									id="input-text" class="input-border input-created" type="text"
-									style="width: 120px;" value="{{interval_headquarter}}" tooltip
-									tooltip-content="{{tooltip_input}}"></td>
-							</tr>
-						</tbody>
+						<tr>
+							<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
+								id="interval_headquarter"
+								class="input-border input-created disabled" type=text
+								value="{{interval_headquarter}}" ng-model="interval_headquarter"
+								disabled></td>
+							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
+								id="reserva_food" class="input-border input-created"
+								type="number" value="{{data_headquarter.RESERVA.FOOD}}"
+								ng-model="data_headquarter.RESERVA.FOOD"></td>
+							<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
+								id="reserva_slots" class="input-border input-created"
+								type="number" value="{{data_headquarter.RESERVA.SLOTS}}"
+								ng-model="data_headquarter.RESERVA.SLOTS"></td>
+						</tr>
+						<tr>
+							<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
+								id="reserva_wood" class="input-border input-created"
+								type="number" value="{{data_headquarter.RESERVA.WOOD}}"
+								ng-model="data_headquarter.RESERVA.WOOD"></td>
+							<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
+								id="reserva_clay" class="input-border input-created"
+								type="number" value="{{data_headquarter.RESERVA.CLAY}}"
+								ng-model="data_headquarter.RESERVA.CLAY"></td>
+							<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
+								id="reserva_iron" class="input-border input-created"
+								type="number" value="{{data_headquarter.RESERVA.IRON}}"
+								ng-model="data_headquarter.RESERVA.IRON"></td>
+						</tr>
 					</table>
 
 					<table class="tbl-border-light tbl-striped">
@@ -57,13 +76,14 @@
 											ng-repeat="buildingOrder in data_headquarter.BUILDINGORDER"
 											style="height: 56px">
 											<td ng-class="{'resource-text' : compare(buildingOrder)}"
-												class="cell-space"><span>{{getKey(buildingOrder)}}</span></td>
-											<td class="cell-space"><span>{{getValue(buildingOrder)}}</span></td>
-											<td class="cell-space"><span
+												class="cell-right"><span>{{getKey(buildingOrder)}}</span><span class="span-icon"
+												ng-class="getClass(buildingOrder)"></span></td>
+											<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
+											<td class="cell-right"><span
 												class="size-12x12 btn-orange icon-26x26-rte-building"
 												ng-click="selectbuildingOrder(buildingOrder)" tooltip
 												tooltip-content="{{tooltip_button}}"></span></td>
-											<td class="cell-space"><div
+											<td class="cell-right"><div
 													ng-show="compare(buildingOrder)">
 													<span
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
@@ -75,8 +95,8 @@
 									</tbody>
 								</table>
 							</td>
-							<td class="cell-space"></td>
-							<td class="cell-space">
+							<td class="cell-right"></td>
+							<td class="cell-right">
 								<h5 class="twx-section">{{levels}}</h5>
 								<table class="tbl-border-light tbl-striped" id="preset-list">
 
@@ -88,19 +108,20 @@
 									<tbody>
 										<tr
 											ng-repeat="buildingLimit in data_headquarter.BUILDINGLIMIT">
-											<td class="cell-space"><span>{{getKey(buildingLimit)}}</span></td>
-											<td class="cell-space"><span>{{getValue(buildingLimit)}}</span></td>
-											<td class="cell-space"><span
+											<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span class="span-icon"
+												ng-class="getClass(buildingLimit)"></span></td>
+											<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
+											<td class="cell-right"><span
 												class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 												ng-click="levelup(buildingLimit)"></span> <span
 												class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 												ng-click="leveldown(buildingLimit)"></span></td>
-											<td class="cell-space"></td>
+											<td class="cell-right"></td>
 										</tr>
 									</tbody>
 								</table>
 							</td>
-							<td class="cell-space"></td>
+							<td class="cell-right"></td>
 						</tr>
 					</table>
 				</div>
@@ -115,9 +136,9 @@
 						</colgroup>
 						<tbody>
 							<tr ng-repeat="vill in villages">
-								<td class="cell-space"><span>{{vill.data.name}}
+								<td class="cell-right"><span>{{vill.data.name}}
 										({{vill.data.x}}|{{vill.data.y}})</span></td>
-								<td class="cell-space">
+								<td class="cell-right">
 									<div class="checkbox box-border-dark">
 										<div switch-slider="" border="true" enabled="true"
 											value="vill.EXECUTEBUILDINGORDER" vertical="false"
@@ -163,12 +184,13 @@
 																style="height: 56px">
 																<td
 																	ng-class="{'resource-text' : comparevillagebuildingOrder(vill.data.villageId, buildingOrder)}"
-																	class="cell-space"><span>{{getKey(buildingOrder)}}</span></td>
-																<td class="cell-space"><span>{{getValue(buildingOrder)}}</span></td>
-																<td class="cell-space"><span
+																	class="cell-right"><span>{{getKey(buildingOrder)}}</span><span class="span-icon"
+																	ng-class="getClass(buildingOrder)"></span></td>
+																<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
+																<td class="cell-right"><span
 																	class="size-12x12 btn-orange icon-26x26-rte-building"
 																	ng-click="selectvillagebuildingOrder(vill.data.villageId, buildingOrder)"></span></td>
-																<td class="cell-space"><div
+																<td class="cell-right"><div
 																		ng-show="comparevillagebuildingOrder(vill.data.villageId, buildingOrder)">
 																		<span
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
@@ -180,8 +202,8 @@
 														</tbody>
 													</table>
 												</td>
-												<td class="cell-space"></td>
-												<td class="cell-space">
+												<td class="cell-right"></td>
+												<td class="cell-right">
 													<h5 class="twx-section">{{levels}}</h5>
 													<table class="tbl-border-light tbl-striped"
 														id="preset-list">
@@ -192,14 +214,15 @@
 														</colgroup>
 														<tbody>
 															<tr ng-repeat="buildingLimit in vill.BUILDINGLIMIT">
-																<td class="cell-space"><span>{{getKey(buildingLimit)}}</span></td>
-																<td class="cell-space"><span>{{getValue(buildingLimit)}}</span></td>
-																<td class="cell-space"><span
+																<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span class="span-icon"
+																	ng-class="getClass(buildingLimit)"></span></td>
+																<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
+																<td class="cell-right"><span
 																	class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																	ng-click="levelup(buildingLimit)"></span> <span
 																	class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 																	ng-click="leveldown(buildingLimit)"></span></td>
-																<td class="cell-space"></td>
+																<td class="cell-right"></td>
 															</tr>
 														</tbody>
 													</table>
@@ -229,9 +252,21 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li><a class="btn-orange btn-border save" ng-click="savedata()">{{save}}</a></li>
-			<li><a class="btn-orange btn-border restore" ng-click="restoredata()">{{restore}}</a></li>
-			<li><a class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+			<li><a class="btn-orange btn-border start"
+				ng-click="start_headquarter()">{{start}}</a></li>
+			<li><a class="btn-orange btn-border stop"
+				ng-click="stop_headquarter()">{{stop}}</a></li>
+			<li><a class="btn-border btn-orange btn-pause"
+				ng-click="pause_headquarter()"><span>{{pause}}</span></a></li>
+			<li><a class="btn-border btn-orange btn-resume"
+				ng-click="resume_headquarter()"><span>{{resume}}</span></a></li>
+			<li><a class="btn-orange btn-border save"
+				ng-click="save_headquarter()">{{save}}</a></li>
+			<li><a class="btn-orange btn-border restore"
+				ng-click="restore_headquarter()">{{restore}}</a></li>
+			<li><a class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{close}}</a></li>
+
 		</ul>
 	</footer>
 </div>

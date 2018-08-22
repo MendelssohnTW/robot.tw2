@@ -194,13 +194,16 @@ define("robotTW2/recon", [
 	, start = function (){
 		if(isRunning) {return}
 		isRunning = !0
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 		setNewHandlersAtackRecon();
 	}
 	, pause = function (){
 		isPaused = !0
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 	}
 	, stop = function (){
 		isRunning = !1
+		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 		services.overviewService.formatCommand = services.overviewService.gameFormatCommand;
 	}
 	, init = function (){

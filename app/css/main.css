@@ -1,3 +1,8 @@
+[class^="span-icon"], [class*="span-icon"] {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
 .robotTW2 .center {
 	display: flex;
 	justify-content: center
@@ -43,6 +48,12 @@
 	line-height: 20px;
 }
 
+.robotTW2 label {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+}
 .robotTW2 .input-time {
 	width: 120px;
 	height: 26px;
@@ -55,11 +66,19 @@
 	line-height: 20px;
 }
 
+.robotTW2 .selected {
+	color: darkred;
+	font-weight: bold;
+}
+
+.robotTW2 .disabled {
+	color: #d8c836;
+	background: #5f482e;
+}
+
 .robotTW2 .recruit .input-created {
-	width: 70px;
 	min-width: 50px;
-	height: 26px;
-	line-height: 20px;
+	font-size: 12px;
 }
 
 .robotTW2 .recruit .input-list-collapse {
@@ -67,6 +86,11 @@
 	min-width: 70px;
 	height: 26px;
 	line-height: 20px;
+}
+
+.robotTW2 .headquarter .input-created {
+	min-width: 50px;
+	font-size: 12px;
 }
 
 .robotTW2 .list-collapse {
