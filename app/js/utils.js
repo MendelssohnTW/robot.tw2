@@ -156,7 +156,7 @@ define("robotTW2/conf", [
 				ATTACK			: 2.01,
 				DEFENSE			: 2.01,
 				FARM			: 2.01,
-				RECRUIT			: 2.03,
+				RECRUIT			: 2.04,
 				DEPOSIT			: 2.01
 			},
 			TEMPO_DE_PERCURSO		: h,
@@ -196,7 +196,7 @@ define("robotTW2/conf", [
 				}
 
 			},
-			TROOPS_NOT				: []
+			TROOPS_NOT				: ["knight", "snob", "doppelsoldner", "trebuchet"]
 
 	}
 

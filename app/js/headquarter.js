@@ -5,6 +5,7 @@ define("robotTW2/headquarter", [
 	"robotTW2/data_headquarter",
 	"conf/upgradeabilityStates", 
 	"conf/locationTypes", 
+	"helper/time",
 	"robotTW2/conf", 
 	"robotTW2/services",
 	"robotTW2/providers"
@@ -15,6 +16,7 @@ define("robotTW2/headquarter", [
 			data_headquarter,
 			upgradeabilityStates,
 			locationTypes,
+			helper,
 			conf, 
 			services,
 			providers
@@ -55,23 +57,46 @@ define("robotTW2/headquarter", [
 		return builds
 
 	}
+	, getResources = function (village_id, callback) { 
+		return services.socketService.emit(providers.routeProvider.VILLAGE_GET_VILLAGE, {village_id: village_id}, function (data) {
+			if(!data){callback(null)}
+			if(typeof(callback) == "function") {callback(data.resources)} else {return}
+		})
+	}
 	, isUpgradeable = function(village, build, callback) {
-		if(village.getBuildingData().getDataForBuilding(build).upgradeability === upgradeabilityStates.POSSIBLE) {
-			services.socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
-				building: build,
-				village_id: village.getId(),
-				location: locationTypes.MASS_SCREEN,
-				premium: !1
-			}, function(data, b) {
-				if(data.code == "Route/notPublic") {
-					callback(!1)	
-				} else {
-					callback(!0, data)	
+		var buildingData = village.getBuildingData().getDataForBuilding(build)
+		, nextLevelCosts = buildingData.nextLevelCosts
+		, not_enough_resources = false;
+
+		getResources(village.data.villageId, function(resources){
+			Object.keys(resources).forEach(function(resource_type){
+				if(resources[resource_type] + data.RESERVA[resource_type.toUpperCase()] < nextLevelCosts[resource_type]){
+					not_enough_resources = true;
 				}
-			}) 
-		} else {
-			callback(!1, {[village.data.name] : village.getBuildingData().getDataForBuilding(build).upgradeability})
-		}
+			})
+
+			if(not_enough_resources){
+				callback(!1, {[village.data.name] : "not_enough_resources"})
+			} else{
+
+				if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
+					services.socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
+						building: build,
+						village_id: village.getId(),
+						location: locationTypes.MASS_SCREEN,
+						premium: !1
+					}, function(data, b) {
+						if(data.code == "Route/notPublic") {
+							callback(!1)	
+						} else {
+							callback(!0, data)	
+						}
+					}) 
+				} else {
+					callback(!1, {[village.data.name] : buildingData.upgradeability})
+				}
+			}
+		})
 	}
 	, list = [conf.INTERVAL.HEADQUARTER]
 	, upgradeBuilding = function(village_id){
@@ -130,36 +155,31 @@ define("robotTW2/headquarter", [
 				)
 			})
 
-			if (g.length > 0 && isRunning){
-				
-				var next = function() {
-					if(g.length > 0){
-						var build = g.shift();
-						var buildLevel = Object.keys(build)[0]
-						services.buildingService.compute(village)
-						if(!(buildAmounts !== buildUnlockedSlots && buildAmounts < data_headquarter.getHeadquarter().RESERVA.SLOTS)) {
-							return !1;
-						}
+			var next = function() {
+				if(g.length > 0 && isRunning){
+					var build = g.shift();
+					var buildLevel = Object.keys(build)[0]
+					services.buildingService.compute(village)
+					if(!(buildAmounts !== buildUnlockedSlots && buildAmounts < data_headquarter.getHeadquarter().RESERVA.SLOTS)) {
+						next()
+					} else {
 						isUpgradeable(village, buildLevel, function(success, data) {
 							if (success) {
 								++buildAmounts;
-								return !0;
-							} else {
-								//console.log(Object.keys(build)[0] + "-" + JSON.stringify(data))
-								next()
 							}
+							next()
 						})
-						return !1;
+					}
+				} else {
+					var timer = village.getBuildingQueue().getQueue()[0].time_completed * 1000;
+					var dif = timer - helper.gameTime(); 
+					if (dif < data_headquarter.getHeadquarter().INTERVAL){
+						list.push(dif);
 					}
 				}
-				next()
-			} else {
-				var timer = village.getBuildingQueue().getQueue()[0].time_completed * 1000;
-				var dif = timer - helper.gameTime(); 
-				if (dif < data_headquarter.getHeadquarter().INTERVAL){
-					list.push(dif);
-				}
 			}
+			next()
+
 			if(reqD == respD){
 				if (list.length > 0){
 					var dt = data_headquarter.getHeadquarter();
@@ -170,14 +190,14 @@ define("robotTW2/headquarter", [
 				}
 				reqD = 0;
 				respD = 0;
-				
+
 				wait();
 				return !0;
 			}
 		}, reqD * 3000)
 	}
 	, cicle_building = function($event, data){
-		
+
 
 		if (!isInitialized)
 			return;
@@ -449,7 +469,7 @@ define("robotTW2/headquarter/ui", [
 		$scope.toggleVillage = function(village){
 			angular.merge($scope.villages[village.data.villageId], village);
 		}
-		
+
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function() {
 			$scope.interval_headquarter = helper.readableMilliseconds(data_headquarter.getTimeCicle())
 			if (!$scope.$$phase) {
@@ -462,7 +482,7 @@ define("robotTW2/headquarter/ui", [
 		}
 
 		services.$timeout(function(){
-			$window.$data.rootnode.setAttribute("style", "width:900px;");
+			$window.$data.rootnode.setAttribute("style", "width:850px;");
 			$window.setCollapse();
 			$window.recalcScrollbar();
 			$(".win-foot .btn-orange").forEach(function(d){

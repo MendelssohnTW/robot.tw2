@@ -95,7 +95,9 @@ define("robotTW2/recruit", [
 	}
 	, getTotalUnitsAndResources = function (village_id, callback) { //busca as unidades da aldeia pelo ID
 		return services.socketService.emit(providers.routeProvider.VILLAGE_UNIT_INFO, {village_id: village_id}, function (data) {
-			if(!data){callback(null, null)}
+			if(!data){
+				if(typeof(callback) == "function") {callback(null, null)} else {return}
+			}
 			var villageUnits = {};
 			for (var unit in data.available_units) {
 				villageUnits[unit] = data.available_units[unit].total;
@@ -104,7 +106,7 @@ define("robotTW2/recruit", [
 				villageUnits[data.queues.barracks[i].unit_type] += data.queues.barracks[i].amount;
 			}
 			services.socketService.emit(providers.routeProvider.VILLAGE_GET_VILLAGE, {village_id: village_id}, function (data) {
-				callback(villageUnits, data.resources);
+				if(typeof(callback) == "function") {callback(villageUnits, data.resources)} else {return}
 			})
 		});
 	}
@@ -328,7 +330,7 @@ define("robotTW2/recruit", [
 						data_recruit.setRecruit(data)
 						list = [conf.INTERVAL.RECRUIT];
 					}
-					
+
 					wait();			
 				}
 			}, reqD * 3000)
@@ -429,8 +431,8 @@ define("robotTW2/recruit/ui", [
 		function return_units(unitTypes){
 			var units = {};
 			Object.keys(unitTypes).map(function(key){
-				if(unitTypes[key] != "knight" && unitTypes[key] != "snob" && unitTypes[key] != "doppelsoldner" && unitTypes[key] != "trebuchet"){
-					units[unitTypes[key]] = 0
+				if(data.TROOPS_NOT.some(elem => elem == unitTypes[key])){
+					delete units[unitTypes[key]]
 				}
 			})
 			return units
@@ -476,18 +478,18 @@ define("robotTW2/recruit/ui", [
 		$scope.getText = function(key){
 			return services.$filter("i18n")("text_" + key, $rootScope.loc.ale, "recruit");
 		}
-		
+
 		$scope.getClass = function(key){
 			return "icon-20x20-unit-" + key;
 		}
-		
+
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function() {
 			$scope.interval_recruit = helper.readableMilliseconds(data_recruit.getTimeCicle())
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
 		})
-		
+
 		$scope.start_recruit = function(){
 			recruit.start();
 			$scope.isRunning = recruit.isRunning();
