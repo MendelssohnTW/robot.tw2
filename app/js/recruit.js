@@ -431,8 +431,10 @@ define("robotTW2/recruit/ui", [
 		function return_units(unitTypes){
 			var units = {};
 			Object.keys(unitTypes).map(function(key){
-				if(data.TROOPS_NOT.some(elem => elem == unitTypes[key])){
+				if(data_recruit.getRecruit().TROOPS_NOT.some(elem => elem == unitTypes[key])){
 					delete units[unitTypes[key]]
+				} else {
+					units[unitTypes[key]] = 0
 				}
 			})
 			return units
