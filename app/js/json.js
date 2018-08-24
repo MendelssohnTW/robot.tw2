@@ -26,14 +26,15 @@ define("robotTW2/pt_br", function() {
 			"title"						: "Configurações principais",
 			"introducing"				: "Ativação e desativação dos módulos",
 			"settings"					: "Configurações padrões",
-			"state"						: "Ativado/desativado",
+			"settings_module"			: "Configurações dos módulos",
+			"state"						: "Ativação",
 			"stopped"					: "Parado",
 			"running"					: "Rodando",
 			"paused"					: "Pausado",
 			"module"					: "Módulo",
 			"text_hotkey"				: "Atalho",
 			"text_status"				: "Estado",
-			"init_standard" 			: "Inicialização automática",
+			"init_standard" 			: "Inicializar automático",
 			"extension_disabled" 		: "desativado",
 			"extension_enabled" 		: "ativado"
 		}, 
@@ -152,7 +153,7 @@ define("robotTW2/pt_br", function() {
 		"deposit": {
 			"title"						: "Coleta de depósito",
 			"settings"					: "Configurações para coleta",
-			"time_interval_deposit"		: "Intervalo de verificação",
+			"text_interval_deposit"		: "Intervalo de verificação",
 			"use_reroll_deposit"		: "Sortear novamente automático"
 		}
 	}

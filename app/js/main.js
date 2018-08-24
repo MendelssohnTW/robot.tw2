@@ -28,18 +28,22 @@ define("robotTW2/main/ui", [
 	"robotTW2/main",
 	"robotTW2/builderWindow",
 	"robotTW2/data_main",
+	"robotTW2/data_deposit",
 	"robotTW2/requestFn",
 	"robotTW2/services",
 	"robotTW2/providers",
-	"robotTW2/conf"
+	"robotTW2/conf",
+	"helper/time"
 	], function(
 			main,
 			builderWindow,
 			data_main,
+			data_deposit,
 			requestFn,
 			services,
 			providers,
-			conf
+			conf,
+			helper
 	) {
 	var $window
 	, build = function(callback) {
@@ -59,7 +63,7 @@ define("robotTW2/main/ui", [
 				if(fn.isInitialized())
 					return !1;	
 				fn.init();
-				fn.build();
+				if(typeof(fn.build) == "function"){fn.build()}
 				if(typeof(fn.analytics) == "function"){fn.analytics()}
 			}
 		}
@@ -67,13 +71,14 @@ define("robotTW2/main/ui", [
 		return $window
 	}
 	, injectScope = function() {
-
 		var $scope = $window.$data.scope;
+		$($window.$data.rootnode).addClass("fullsize");
 		$scope.extension_disabled = services.$filter("i18n")("extension_disabled", $rootScope.loc.ale, "main");
 		$scope.extension_enabled = services.$filter("i18n")("extension_enabled", $rootScope.loc.ale, "main");
 		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "main");
 		$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "main");
 		$scope.settings = services.$filter("i18n")("settings", $rootScope.loc.ale, "main");
+		$scope.settings_module = services.$filter("i18n")("settings_module", $rootScope.loc.ale, "main");
 		$scope.init_standard = services.$filter("i18n")("init_standard", $rootScope.loc.ale, "main");
 		$scope.module = services.$filter("i18n")("module", $rootScope.loc.ale, "main");
 		$scope.text_hotkey = services.$filter("i18n")("text_hotkey", $rootScope.loc.ale, "main");
@@ -84,9 +89,16 @@ define("robotTW2/main/ui", [
 		$scope.state = services.$filter("i18n")("state", $rootScope.loc.ale, "main");
 		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+		
+		$scope.text_interval_deposit = services.$filter("i18n")("text_interval_deposit", $rootScope.loc.ale, "deposit");
+		$scope.use_reroll_deposit = services.$filter("i18n")("use_reroll_deposit", $rootScope.loc.ale, "deposit");
+		$scope.settings_deposit = services.$filter("i18n")("settings", $rootScope.loc.ale, "deposit");
+		
 		$scope.extensions = data_main.getExtensions();
 		$scope.extensions_copy = {};
 		$scope.hotkeys = conf.HOTKEY;
+		
+		$scope.data_deposit = data_deposit.getDeposit();
 		
 		angular.merge($scope.extensions_copy, $scope.extensions);
 		
@@ -147,6 +159,45 @@ define("robotTW2/main/ui", [
 			data_main.setExtensions($scope.extensions);
 			angular.merge($scope.extensions_copy, $scope.extensions);
 		};
+		
+		
+		/*
+		 * Deposit
+		 */
+		
+		$scope.interval_deposit = helper.readableMilliseconds(data_deposit.getTimeCicle())
+		$scope.data_deposit.COMPLETED_AT ? $scope.deposit_completed_at = $scope.data_deposit.COMPLETED_AT : $scope.deposit_completed_at = 0;
+
+		helper.timer.add(function(){
+			if($scope.deposit_completed_at == 0) {return}
+			$scope.interval_deposit =  helper.readableMilliseconds($scope.deposit_completed_at - helper.gameTime());
+		});
+
+//		$scope.set = function(interval_deposit){
+//			if(interval_deposit.length <= 5){
+//				interval_deposit = interval_deposit + ":00"
+//			}
+//			if (helper.unreadableSeconds(interval_deposit) * 1e3 > 2 *60*60*1000){
+//				data_deposit.setTimeCicle(2 *60*60*1000)
+//				$scope.interval_deposit = 2 *60*60*1000;
+//			} else if (helper.unreadableSeconds(interval_deposit) * 1e3 < 10*60*1000){
+//				data_deposit.setTimeCicle(10*60*1000)
+//				$scope.interval_deposit = 10*60*1000;
+//			} else {
+//				data_deposit.setTimeCicle(helper.unreadableSeconds(interval_deposit) * 1e3)
+//				$scope.interval_deposit = interval_deposit;
+//			}
+//			document.getElementById("input-text-time-interval").value = $scope.interval_deposit; 
+//			if (!$rootScope.$$phase) $rootScope.$apply();
+//
+//		}
+
+		$scope.$watch("data_deposit.USE_REROLL", function(){
+			data_deposit.setDeposit($scope.data_deposit)
+			if (!$scope.$$phase) $scope.$apply();
+		})
+
+		
 
 		if (!$scope.$$phase) {
 			$scope.$apply();

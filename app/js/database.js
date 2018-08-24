@@ -154,6 +154,14 @@ define("robotTW2/data_headquarter", [
 			database.set("data_headquarter", data, true)
 		}
 	}
+	
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_headquarter")
+			data.COMPLETED_AT = time
+			database.set("data_headquarter", data, true)
+		}
+	}
 
 	var data_headquarter = database.get("data_headquarter");
 	var dataNew = {
@@ -193,7 +201,8 @@ define("robotTW2/data_headquarter", [
 			setHeadquarter			: setHeadquarter,
 			getHeadquarter			: getHeadquarter,
 			getTimeCicle			: getTimeCicle,
-			setTimeCicle			: setTimeCicle
+			setTimeCicle			: setTimeCicle,
+			setTimeComplete			: setTimeComplete
 	}
 
 	Object.setPrototypeOf(data_headquarter, fn);
@@ -284,6 +293,14 @@ define("robotTW2/data_deposit", [
 			database.set("data_deposit", data, true)
 		}
 	}
+	
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_deposit")
+			data.COMPLETED_AT = time
+			database.set("data_deposit", data, true)
+		}
+	}
 
 	var data_deposit = database.get("data_deposit");
 	var dataNew = {
@@ -314,7 +331,8 @@ define("robotTW2/data_deposit", [
 			setDeposit			: setDeposit,
 			getDeposit			: getDeposit,
 			getTimeCicle		: getTimeCicle,
-			setTimeCicle		: setTimeCicle
+			setTimeCicle		: setTimeCicle,
+			setTimeComplete		: setTimeComplete
 	}
 
 	Object.setPrototypeOf(data_deposit, fn);
@@ -349,6 +367,14 @@ define("robotTW2/data_recruit", [
 		if(timecicle){
 			var data = database.get("data_recruit")
 			data.INTERVAL = timecicle
+			database.set("data_recruit", data, true)
+		}
+	}
+	
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_recruit")
+			data.COMPLETED_AT = time
 			database.set("data_recruit", data, true)
 		}
 	}
@@ -390,7 +416,8 @@ define("robotTW2/data_recruit", [
 			setRecruit			: setRecruit,
 			getRecruit			: getRecruit,
 			getTimeCicle		: getTimeCicle,
-			setTimeCicle		: setTimeCicle
+			setTimeCicle		: setTimeCicle,
+			setTimeComplete		: setTimeComplete
 	}
 
 	Object.setPrototypeOf(data_recruit, fn);
@@ -428,6 +455,14 @@ define("robotTW2/data_spy", [
 			database.set("data_spy", data, true)
 		}
 	}
+	
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_spy")
+			data.COMPLETED_AT = time
+			database.set("data_spy", data, true)
+		}
+	}
 
 	var data_spy = database.get("data_spy");
 	var dataNew = {
@@ -457,7 +492,8 @@ define("robotTW2/data_spy", [
 			setSpy				: setSpy,
 			getSpy				: getSpy,
 			getTimeCicle		: getTimeCicle,
-			setTimeCicle		: setTimeCicle
+			setTimeCicle		: setTimeCicle,
+			setTimeComplete		: setTimeComplete
 
 	}
 
@@ -508,7 +544,15 @@ define("robotTW2/data_alert", [
 			database.set("data_alert", data, true)
 		}
 	}
-
+	
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_alert")
+			data.COMPLETED_AT = time
+			database.set("data_alert", data, true)
+		}
+	}
+	
 	var data_alert = database.get("data_alert");
 	var dataNew = {
 			INIT_ATIVATE			: false,
@@ -540,7 +584,8 @@ define("robotTW2/data_alert", [
 			setFriends			: setFriends,
 			getFriends			: getFriends,
 			getTimeCicle		: getTimeCicle,
-			setTimeCicle		: setTimeCicle
+			setTimeCicle		: setTimeCicle,
+			setTimeComplete		:setTimeComplete
 	}
 
 	Object.setPrototypeOf(data_alert, fn);
@@ -615,6 +660,14 @@ define("robotTW2/data_farm", [
 			database.set("data_farm", data_farm, true)
 		}
 	}
+	
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_farm")
+			data.COMPLETED_AT = time
+			database.set("data_farm", data, true)
+		}
+	}
 
 	var data_farm = database.get("data_farm");
 	var dataNew = {
@@ -659,7 +712,8 @@ define("robotTW2/data_farm", [
 			removeBB			: removeBB,
 			getBBs				: getBBs,
 			getFarm				: getFarm,
-			setFarm				: setFarm
+			setFarm				: setFarm,
+			setTimeComplete		: setTimeComplete
 	}
 
 	Object.setPrototypeOf(data_farm, fn);

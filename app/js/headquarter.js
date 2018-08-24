@@ -34,7 +34,6 @@ define("robotTW2/headquarter", [
 	, y = {}
 	, reqD = 0
 	, respD = 0	
-	, data = data_headquarter.getHeadquarter()
 	, villages = data_villages.getVillages()
 	, listener_building_level_change = undefined
 	, listener_resume = undefined
@@ -76,7 +75,7 @@ define("robotTW2/headquarter", [
 		} else {
 			getResources(village.data.villageId, function(resources){
 				Object.keys(resources).forEach(function(resource_type){
-					if(resources[resource_type] + data.RESERVA[resource_type.toUpperCase()] < nextLevelCosts[resource_type]){
+					if(resources[resource_type] + data_headquarter.getHeadquarter().RESERVA[resource_type.toUpperCase()] < nextLevelCosts[resource_type]){
 						not_enough_resources = true;
 					}
 				})
@@ -126,12 +125,11 @@ define("robotTW2/headquarter", [
 		return lt;
 	}
 	, setList = function(){
-		var dt = data_headquarter.getHeadquarter();
 		list.push(conf.INTERVAL.HEADQUARTER)
-		list.push(dt.INTERVAL)
-		dt.INTERVAL = Math.min.apply(null, list);
-		dt.COMPLETED_AT = helper.gameTime() + dt.INTERVAL;
-		data_headquarter.setHeadquarter(dt)
+		list.push(data_headquarter.getTimeCicle())
+		var t = Math.min.apply(null, list);
+		data_headquarter.setTimeCicle(t)
+		data_headquarter.setTimeComplete(helper.gameTime() + t)
 		list = [];
 		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 	}
@@ -263,14 +261,13 @@ define("robotTW2/headquarter", [
 		}
 	}
 	, wait = function(){
+		setList();
 		if(!interval_builder){
 			interval_builder = services.$timeout(cicle_building, data_headquarter.getTimeCicle())
 		} else {
 			services.$timeout.cancel(interval_builder);
 			interval_builder = services.$timeout(cicle_building, data_headquarter.getTimeCicle())
 		}
-		setList();
-
 	}
 	, init = function(){
 		isInitialized = !0
@@ -390,6 +387,7 @@ define("robotTW2/headquarter/ui", [
 		$scope.data_headquarter.COMPLETED_AT ? $scope.completed_at = $scope.data_headquarter.COMPLETED_AT : $scope.completed_at = 0;
 
 		helper.timer.add(function(){
+			if($scope.completed_at == 0) {return}
 			$scope.interval_headquarter =  helper.readableMilliseconds($scope.completed_at - helper.gameTime());
 		});
 

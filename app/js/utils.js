@@ -176,7 +176,7 @@ define("robotTW2/conf", [
 				DEFENSE		 	: "ctrl+alt+d",
 				FARM		 	: "ctrl+alt+f",
 				RECRUIT		 	: "ctrl+alt+e",
-				DEPOSIT		 	: "ctrl+alt+g"
+				DEPOSIT		 	: ""
 			},
 			RESERVA				: {
 				RECRUIT : {

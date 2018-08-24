@@ -21,7 +21,6 @@ define("robotTW2/recruit", [
 	var isInitialized = !1
 	, isRunning = !1
 	, isPaused = !1
-	, data = data_recruit.getRecruit()
 	, interval_recruit = null
 	, listener_recruit = undefined
 	, listener_group_updated = undefined
@@ -32,7 +31,7 @@ define("robotTW2/recruit", [
 	, list = []
 	, prices = undefined
 	, data = data_recruit.getRecruit()
-	, grupos = data.GROUPS
+	, grupos = data_recruit.getRecruit().GROUPS
 	, getUnitPrices = function (){
 		var unitData = services.modelDataService.getGameData().getUnits();
 		var prices = {};
@@ -47,11 +46,10 @@ define("robotTW2/recruit", [
 		return prices;
 	}
 	, verificarGroups = function (){
-		data = data_recruit.getRecruit()
-		if (data.GROUPS == undefined) {
+		if (data_recruit.getRecruit().GROUPS == undefined) {
 			grupos = {}
 		} else {
-			grupos = data.GROUPS
+			grupos = data_recruit.getRecruit().GROUPS
 		}
 		var dbGrp = function () {
 			var db = {};
@@ -79,8 +77,9 @@ define("robotTW2/recruit", [
 			}
 		});
 
-		data.GROUPS = grp.Groups
-		data_recruit.setRecruit(data);
+		var dt = data_recruit.getRecruit()
+		dt.GROUPS = grp.Groups
+		data_recruit.setRecruit(dt);
 		grp = dbGrp();
 
 		grp.GroupsKeys.forEach(function(id){
@@ -89,8 +88,8 @@ define("robotTW2/recruit", [
 			}
 		});
 
-		data.GROUPS = grp.Groups
-		data_recruit.setRecruit(data);
+		dt.GROUPS = grp.Groups
+		data_recruit.setRecruit(dt);
 
 		return;
 	}
@@ -151,7 +150,7 @@ define("robotTW2/recruit", [
 				if (villageUnits != undefined){
 					for (key in villageUnits){
 						if (villageUnits.hasOwnProperty(key)) {
-							if (villageUnits[key] == 0 || data.TROOPS_NOT.some(elem => elem == key)){
+							if (villageUnits[key] == 0 || data_recruit.getRecruit().TROOPS_NOT.some(elem => elem == key)){
 								delete villageUnits[key];
 							}
 						}
@@ -227,7 +226,7 @@ define("robotTW2/recruit", [
 								var ltz = [];
 								Object.keys(RESOURCE_TYPES).forEach(
 										function(name){
-											if (copia_res[RESOURCE_TYPES[name]] < data.RESERVA[name.toUpperCase()]){
+											if (copia_res[RESOURCE_TYPES[name]] < data_recruit.getRecruit().RESERVA[name.toUpperCase()]){
 												ltz.push(true);
 											} else {
 												ltz.push(false);
@@ -240,10 +239,10 @@ define("robotTW2/recruit", [
 								};
 								amount = Math.floor(
 										Math.min(
-												(copia_res.wood - data.RESERVA.WOOD) / prices[unitName][0], 
-												(copia_res.clay - data.RESERVA.CLAY) / prices[unitName][1], 
-												(copia_res.iron - data.RESERVA.IRON) / prices[unitName][2], 
-												(copia_res.food - data.RESERVA.FOOD) / prices[unitName][3]
+												(copia_res.wood - data_recruit.getRecruit().RESERVA.WOOD) / prices[unitName][0], 
+												(copia_res.clay - data_recruit.getRecruit().RESERVA.CLAY) / prices[unitName][1], 
+												(copia_res.iron - data_recruit.getRecruit().RESERVA.IRON) / prices[unitName][2], 
+												(copia_res.food - data_recruit.getRecruit().RESERVA.FOOD) / prices[unitName][3]
 										)
 								)
 
@@ -286,20 +285,20 @@ define("robotTW2/recruit", [
 	, prices = getUnitPrices()
 	, villages = data_villages.getVillages()
 	, wait = function(){
+		setList();
 		if(!interval_recruit){
 			interval_recruit = services.$timeout(recruit, data_recruit.getTimeCicle())
 		} else {
 			services.$timeout.cancel(interval_recruit);
 			interval_recruit = services.$timeout(recruit, data_recruit.getTimeCicle())
 		}
-		setList();
 	}
 	, getFinishedForFree = function (village, lt, tam){
 		var job = village.getRecruitingQueue("barracks").jobs[tam-1];
 		if(job){
 			var timer = job.data.time_completed * 1000;
 			var dif = timer - helper.gameTime(); 
-			if (dif < data.INTERVAL){
+			if (dif < data_recruit.getTimeCicle()){
 				dif < 0 ? dif = 0 : dif;
 				lt.push(dif);
 			}
@@ -307,12 +306,11 @@ define("robotTW2/recruit", [
 		return lt
 	}
 	, setList = function(){
-		var dt = data_recruit.getRecruit();
 		list.push(conf.INTERVAL.RECRUIT)
-		list.push(dt.INTERVAL)
-		dt.INTERVAL = Math.min.apply(null, list);
-		dt.COMPLETED_AT = helper.gameTime() + dt.INTERVAL;
-		data_recruit.setRecruit(dt)
+		list.push(data_recruit.getTimeCicle())
+		var t = Math.min.apply(null, list);
+		data_recruit.setTimeCicle(t)
+		data_recruit.setTimeComplete(helper.gameTime() + t)
 		list = [];
 		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
 	}
@@ -339,7 +337,7 @@ define("robotTW2/recruit", [
 				list = getFinishedForFree(village, list, tam)
 				respD++
 				setList();
-				if (tam < data.RESERVA.SLOTS || tam < 1){
+				if (tam < data_recruit.getRecruit().RESERVA.SLOTS || tam < 1){
 					recruitSteps(village_id);
 				}
 				if(reqD == respD){
@@ -490,6 +488,7 @@ define("robotTW2/recruit/ui", [
 		$scope.data_recruit.COMPLETED_AT ? $scope.completed_at = $scope.data_recruit.COMPLETED_AT : $scope.completed_at = 0;
 
 		helper.timer.add(function(){
+			if($scope.completed_at == 0) {return}
 			$scope.interval_recruit =  helper.readableMilliseconds($scope.completed_at - helper.gameTime());
 		});
 

@@ -8,69 +8,126 @@
 	</header>
 	<div class="win-main" scrollbar="" style="position: relative;">
 		<div class="box-paper content-settings">
-			<div class="scroll-wrap" style="margin-bottom: 80px">
+			<div class="scroll-wrap main" style="margin-bottom: 80px">
+
 				<div>
 					<table class="tbl-border-light tbl-striped" id="preset-list">
 						<colgroup>
 							<col width="*">
-							<col width="100px">
-							<col width="100px">
-							<col width="100px">
-							<col width="50px">
+							<col width="50%">
 						</colgroup>
 						<tbody>
 							<tr>
-								<td class="cell-center"><h5>{{module}}</h5></td>
-								<td class="cell-center"><h5>{{state}}</h5></td>
-								<td class="cell-center"><h5>{{init_standard}}</h5></td>
-								<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
-								<td class="cell-center"><h5>{{text_status}}</h5></td>
-							</tr>
-							<tr ng-repeat="ext in extensions_copy">
-								<td class="cell-space"><span>{{ext.name}}</span></td>
-								<td class="cell-center">
-									<div class="checkbox box-border-dark">
-										<div tooltip
-											tooltip-content="{{ext.ENABLED ? key + ' ' + extension_enabled : key + ' ' + extension_disabled}}"
-											switch-slider="" border="true" enabled="ext.ENABLED"
-											value="ext.ATIVATE" ng-click="toggleValueState(ext)" vertical="false" size="'56x28'">
-											<div ng-class="{'box-border-dark box-filter': border}"
-												class="box-border-dark box-filter">
-												<div class="switch switch-56x28 switch-horizontal"
-													ng-class="{'switch-checked': value}">
-													<span class="size-26x26 switch-thumb"> <span
-														class="simple icon-26x26-switch-off"
-														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-													</span>
-												</div>
-											</div>
-										</div>
+								<td>
+									<h5 class="twx-section collapse">{{settings_module}}</h5>
+									<div>
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="56px">
+												<col width="56px">
+												<col width="100px">
+												<col width="50px">
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="cell-center"><h5>{{module}}</h5></td>
+													<td class="cell-center"><h5>{{state}}</h5></td>
+													<td class="cell-center"><h5>{{init_standard}}</h5></td>
+													<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
+													<td class="cell-center"><h5>{{text_status}}</h5></td>
+												</tr>
+												<tr ng-repeat="ext in extensions_copy">
+													<td class="cell-right"><span>{{ext.name}}</span></td>
+													<td class="cell-center">
+														<div class="checkbox box-border-dark">
+															<div tooltip
+																tooltip-content="{{ext.ENABLED ? key + ' ' + extension_enabled : key + ' ' + extension_disabled}}"
+																switch-slider="" border="true" enabled="ext.ENABLED"
+																value="ext.ATIVATE" ng-click="toggleValueState(ext)"
+																vertical="false" size="'56x28'">
+																<div ng-class="{'box-border-dark box-filter': border}"
+																	class="box-border-dark box-filter">
+																	<div class="switch switch-56x28 switch-horizontal"
+																		ng-class="{'switch-checked': value}">
+																		<span class="size-26x26 switch-thumb"> <span
+																			class="simple icon-26x26-switch-off"
+																			ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</td>
+													<td class="cell-center">
+														<div class="checkbox box-border-dark">
+															<div switch-slider="" border="true"
+																enabled="ext.ATIVATE && ext.ENABLED"
+																value="ext.INIT_ATIVATE" ng-click="toggleValueInit(ext)"
+																vertical="false" size="'56x28'">
+																<div ng-class="{'box-border-dark box-filter': border}"
+																	class="box-border-dark box-filter">
+																	<div class="switch switch-56x28 switch-horizontal"
+																		ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
+																		<span class="size-26x26 switch-thumb"> <span
+																			class="simple icon-26x26-switch-off"
+																			ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</td>
+													<td class="cell-center">{{hotkeys[ext.name].toUpperCase()}}</td>
+													<td class="cell-center">
+														<div tooltip tooltip-content="{{ext.STATUS}}">
+															<span
+																ng-class="{'icon-26x26-dot-green' : ext.STATUS == running, 'icon-26x26-dot-red' : ext.STATUS == stopped, 'icon-26x26-dot-blue' : ext.STATUS == paused}"></span>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
 									</div>
 								</td>
-								<td class="cell-center">
-									<div class="checkbox box-border-dark">
-										<div switch-slider="" border="true"
-											enabled="ext.ATIVATE && ext.ENABLED"
-											value="ext.INIT_ATIVATE" ng-click="toggleValueInit(ext)" vertical="false" size="'56x28'">
-											<div ng-class="{'box-border-dark box-filter': border}"
-												class="box-border-dark box-filter">
-												<div class="switch switch-56x28 switch-horizontal"
-													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
-													<span class="size-26x26 switch-thumb"> <span
-														class="simple icon-26x26-switch-off"
-														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-													</span>
-												</div>
-											</div>
-										</div>
+								<td class="cell-top">
+									<h5 class="twx-section collapse">{{settings_deposit}}</h5>
+									<div>
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="50%">
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="cell-right"><label for="interval_deposit">{{text_interval_deposit}}</label><input
+														id="interval_deposit"
+														class="input-border input-created disabled" type=text
+														value="{{interval_deposit}}" disabled></td>
+													<td class="cell-right"><label
+														for="checkbox-interval-deposit">{{use_reroll_deposit}}</label>
+														<div id="checkbox-interval-deposit"
+															class="checkbox box-border-dark">
+															<div switch-slider="" border="true" enabled="true"
+																value="data_deposit.USE_REROLL" vertical="false"
+																size="'56x28'" ng-model="data_deposit.USE_REROLL">
+																<div ng-class="{'box-border-dark box-filter': border}"
+																	class="box-border-dark box-filter">
+																	<div class="switch switch-56x28 switch-horizontal"
+																		ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
+																		<span class="size-26x26 switch-thumb"> <span
+																			class="simple icon-26x26-switch-off"
+																			ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div></td>
+												</tr>
+											</tbody>
+										</table>
 									</div>
 								</td>
-								<td class="cell-center">{{hotkeys[ext.name].toUpperCase()}}</td>
-								<td class="cell-center">
-								<div tooltip tooltip-content="{{ext.STATUS}}">
-										<span
-											ng-class="{'icon-26x26-dot-green' : ext.STATUS == running, 'icon-26x26-dot-red' : ext.STATUS == stopped, 'icon-26x26-dot-blue' : ext.STATUS == paused}"></span>
-									</div></td>
 							</tr>
 						</tbody>
 					</table>

@@ -37,7 +37,7 @@ require([
 		console.log(err)
 	})
 
-	require(["robotTW2/deposit", "robotTW2/deposit/ui"], function(deposit){
+	require(["robotTW2/deposit"], function(deposit){
 		deposit && typeof(deposit.init) == "function" ? requestFn.bind("robotTW2/deposit", deposit) : null;	
 	}, function(err){
 		console.log(err)
