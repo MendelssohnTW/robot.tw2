@@ -96,12 +96,14 @@ define("robotTW2/deposit", [
 	}
 	, start = function (){
 		if(isRunning){return}
-		isRunning = !0
-		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
-		!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;
-		!listener_job_rerolled ? listener_job_rerolled = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOBS_REROLLED, function(){services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_rerolled;
-		!listener_job_collectible ? listener_job_collectible = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTIBLE, function(){services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collectible;
-		verify_deposit();
+		ready(function(){
+			isRunning = !0
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
+			!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;
+			!listener_job_rerolled ? listener_job_rerolled = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOBS_REROLLED, function(){services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_rerolled;
+			!listener_job_collectible ? listener_job_collectible = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTIBLE, function(){services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collectible;
+			verify_deposit()
+		}, ["all_villages_ready"])
 	}
 	, stop = function (){
 		typeof(listener_job_collect) == "function" ? listener_job_collect(): null;
@@ -168,7 +170,7 @@ define("robotTW2/deposit/ui", [
 		$scope.data_deposit = data_deposit.getDeposit();
 
 		$window.$data.ativate = $scope.data_deposit.ATIVATE;
-		
+
 		$scope.set = function(interval_deposit){
 			if(interval_deposit.length <= 5){
 				interval_deposit = interval_deposit + ":00"
@@ -185,14 +187,14 @@ define("robotTW2/deposit/ui", [
 			}
 			document.getElementById("input-text-time-interval").value = $scope.interval_deposit; 
 			if (!$rootScope.$$phase) $rootScope.$apply();
-			
+
 		}
-		
+
 		$scope.$watch("data_deposit.USE_REROLL", function(){
 			data_deposit.setDeposit($scope.data_deposit)
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		})
-		
+
 		$scope.interval_deposit = helper.readableMilliseconds(data_deposit.getTimeCicle())
 
 		if (!$rootScope.$$phase) {

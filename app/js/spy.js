@@ -75,11 +75,14 @@ define("robotTW2/spy", [
 		start();
 	}
 	, start = function (){
-		!listener_spy ? listener_spy = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
-		isRunning = !0;
-		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
-		wait();
-		recruit_spy();
+		if(isRunning){return}
+		ready(function(){
+			isRunning = !0;
+			!listener_spy ? listener_spy = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
+			wait();
+			recruit_spy();
+		}, ["all_villages_ready"])
 	}
 	, stop = function (){
 		typeof(listener_spy) == "function" ? listener_spy(): null;

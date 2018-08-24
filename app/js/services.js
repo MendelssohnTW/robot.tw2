@@ -1,18 +1,19 @@
 var $rootScope = angular.element(document).scope()
 define("robotTW2/services", [], function() {
 	return {
-		$timeout : injector.get("$timeout"),
-		$filter : injector.get("$filter"),
-		hotkeys : injector.get("hotkeys"),
-		modelDataService : injector.get("modelDataService"),
-		socketService : injector.get("socketService"),
-		httpService : injector.get("httpService"),
-		groupService : injector.get("groupService"),
-		windowManagerService : injector.get("windowManagerService"),
-		villageService : injector.get("villageService"),
-		buildingService : injector.get("buildingService"),
-		overviewService : injector.get("overviewService"),
-		windowManagerService : injector.get("windowManagerService")
+		$timeout 				: injector.get("$timeout"),
+		$filter 				: injector.get("$filter"),
+		hotkeys 				: injector.get("hotkeys"),
+		modelDataService 		: injector.get("modelDataService"),
+		socketService 			: injector.get("socketService"),
+		httpService 			: injector.get("httpService"),
+		groupService 			: injector.get("groupService"),
+		windowManagerService 	: injector.get("windowManagerService"),
+		premiumActionService 	: injector.get("premiumActionService"),
+		villageService 			: injector.get("villageService"),
+		buildingService 		: injector.get("buildingService"),
+		overviewService 		: injector.get("overviewService"),
+		windowManagerService 	: injector.get("windowManagerService")
 	}
 })
 ,

@@ -1,11 +1,13 @@
 define("robotTW2/recon", [
 	"robotTW2/services",
+	"robotTW2/ready",
 	"robotTW2/providers",
 	"robotTW2/loadController",
 	"robotTW2/data_recon",
 	"helper/time"
 	], function(
 			services,
+			ready,
 			providers,
 			loadController,
 			data_recon,
@@ -17,10 +19,10 @@ define("robotTW2/recon", [
 	, data = data_recon.getRecon()
 	, getrenameCmdAtackRecon = function (command, unitText) {
 		if(command.command_name != unitText){
-		services.socketService.emit(providers.routeProvider.COMMAND_RENAME, {
-			command_id: command.command_id,
-			name: unitText
-		});
+			services.socketService.emit(providers.routeProvider.COMMAND_RENAME, {
+				command_id: command.command_id,
+				name: unitText
+			});
 		}
 	}
 	, getAttackTypeAtackRecon = function (command, i) {
@@ -130,7 +132,6 @@ define("robotTW2/recon", [
 			return unitText;
 		}
 	}
-
 	, setNewHandlersAtackRecon = function(){
 		services.overviewService.gameFormatCommand = services.overviewService.formatCommand;
 		var i = 0
@@ -141,50 +142,50 @@ define("robotTW2/recon", [
 			services.overviewService.gameFormatCommand(command);
 
 			if(isPaused){return}
-			
+
 			OverviewController = loadController("OverviewController");
 			data = data_recon.getRecon()
 
 			t++;
 			services.$timeout(function(){
-				
+
 				if (OverviewController){
 					var elem = undefined;
 					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
 					if(elem){
-					if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
-						var unitText = getAttackTypeAtackRecon(command, i);
-						//if (unitText != undefined && data_recon.getRecon().RENAME_COMMAND){
-						if (unitText != undefined){
-							var rename = data.RENAME_COMMAND;
-							if(rename == true){
-								var renameCmd = getrenameCmdAtackRecon(command, unitText);
-							} else if(rename == "snob" && unitText == services.$filter("i18n")("snob", $rootScope.loc.ale, "recon")){
-								var renameCmd = getrenameCmdAtackRecon(command, unitText);
+						if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
+							var unitText = getAttackTypeAtackRecon(command, i);
+							//if (unitText != undefined && data_recon.getRecon().RENAME_COMMAND){
+							if (unitText != undefined){
+								var rename = data.RENAME_COMMAND;
+								if(rename == true){
+									var renameCmd = getrenameCmdAtackRecon(command, unitText);
+								} else if(rename == "snob" && unitText == services.$filter("i18n")("snob", $rootScope.loc.ale, "recon")){
+									var renameCmd = getrenameCmdAtackRecon(command, unitText);
+								}
 							}
-						}
-						elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
-						i++;
-						if ($('span.type').length === i) {
-							i = 0;
-							t = 0;
-						}
-
-					} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
-						elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
+							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
 							i++;
-						if ($('span.type').length === i) {
-							i = 0;
-							t = 0;
-						}
+							if ($('span.type').length === i) {
+								i = 0;
+								t = 0;
+							}
 
-					}
-					elem.addEventListener("mouseenter", function(a) {
-						$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
-					}),
-					elem.addEventListener("mouseleave", function() {
-						$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
-					})
+						} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
+							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
+							i++;
+							if ($('span.type').length === i) {
+								i = 0;
+								t = 0;
+							}
+
+						}
+						elem.addEventListener("mouseenter", function(a) {
+							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
+						}),
+						elem.addEventListener("mouseleave", function() {
+							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
+						})
 					}
 					if (!$rootScope.$$phase) $rootScope.$apply();
 				}
@@ -193,9 +194,11 @@ define("robotTW2/recon", [
 	}
 	, start = function (){
 		if(isRunning) {return}
-		isRunning = !0
-		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
-		setNewHandlersAtackRecon();
+		ready(function(){
+			isRunning = !0
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
+			setNewHandlersAtackRecon()
+		}, ["all_villages_ready"])
 	}
 	, pause = function (){
 		isPaused = !0
@@ -316,7 +319,7 @@ define("robotTW2/recon/ui", [
 		$window.$data.ativate = $scope.data.ATIVATE;
 		$scope.isRunning = recon.isRunning();
 		$scope.paused = recon.isPaused();
-		
+
 		$scope.pause_recon = function(){
 			recon.pause();
 			$scope.paused = !0;
@@ -329,7 +332,7 @@ define("robotTW2/recon/ui", [
 		if (!$rootScope.$$phase) {
 			$rootScope.$apply();
 		}
-		
+
 		services.$timeout(function(){
 			$window.setCollapse();
 			$window.recalcScrollbar();

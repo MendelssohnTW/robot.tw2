@@ -29,6 +29,7 @@ define("robotTW2/headquarter", [
 	, isInitialized = !1
 	, isRunning = !1
 	, isPaused = !1
+	, list = []
 	, x = {}
 	, y = {}
 	, reqD = 0
@@ -66,39 +67,74 @@ define("robotTW2/headquarter", [
 	, isUpgradeable = function(village, build, callback) {
 		var buildingData = village.getBuildingData().getDataForBuilding(build)
 		, nextLevelCosts = buildingData.nextLevelCosts
-		, not_enough_resources = false;
+		, not_enough_resources = false
+		, firstQueue = village.getBuildingQueue().getQueue()[0];
 
-		getResources(village.data.villageId, function(resources){
-			Object.keys(resources).forEach(function(resource_type){
-				if(resources[resource_type] + data.RESERVA[resource_type.toUpperCase()] < nextLevelCosts[resource_type]){
-					not_enough_resources = true;
+		if(firstQueue && firstQueue.canBeFinishedForFree){
+			services.premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
+			callback(!1, "instant")
+		} else {
+			getResources(village.data.villageId, function(resources){
+				Object.keys(resources).forEach(function(resource_type){
+					if(resources[resource_type] + data.RESERVA[resource_type.toUpperCase()] < nextLevelCosts[resource_type]){
+						not_enough_resources = true;
+					}
+				})
+
+				if(not_enough_resources){
+					callback(!1, {[village.data.name] : "not_enough_resources"})
+				} else{
+
+					if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
+
+						services.socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
+							building: build,
+							village_id: village.getId(),
+							location: locationTypes.MASS_SCREEN,
+							premium: !1
+						}, function(data, b) {
+							if(data.code == "Route/notPublic") {
+								callback(!1)
+							} else {
+								callback(!0, data)	
+							}
+						}) 
+					} else {
+						callback(!1, {[village.data.name] : buildingData.upgradeability})
+					}
 				}
 			})
-
-			if(not_enough_resources){
-				callback(!1, {[village.data.name] : "not_enough_resources"})
-			} else{
-
-				if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
-					services.socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
-						building: build,
-						village_id: village.getId(),
-						location: locationTypes.MASS_SCREEN,
-						premium: !1
-					}, function(data, b) {
-						if(data.code == "Route/notPublic") {
-							callback(!1)	
-						} else {
-							callback(!0, data)	
-						}
-					}) 
-				} else {
-					callback(!1, {[village.data.name] : buildingData.upgradeability})
-				}
-			}
-		})
+		}
 	}
-	, list = [conf.INTERVAL.HEADQUARTER]
+	, canBeFinishedForFree = function(village){
+		if (village.getBuildingQueue()){
+			var queue = village.getBuildingQueue().getQueue()[0];
+			var d = services.modelDataService.getWorldConfig().getFreeSecondsPerBuildingLevel() * village.getBuildingLevel("headquarter")
+			return queue.finishedIn - d;
+		} else {
+			return data_headquarter.getHeadquarter().INTERVAL / 1e3;
+		}
+	}
+	, getFinishedForFree = function (village, lt){
+		if(village.getBuildingQueue().getQueue().length > 0){
+			var timer = Math.round(canBeFinishedForFree(village) * 1e3) + 5000;
+			if (timer < data_headquarter.getHeadquarter().INTERVAL){
+				timer < 0 ? timer = 0 : timer;
+				lt.push(timer);
+			}
+		}
+		return lt;
+	}
+	, setList = function(){
+		var dt = data_headquarter.getHeadquarter();
+		list.push(conf.INTERVAL.HEADQUARTER)
+		list.push(dt.INTERVAL)
+		dt.INTERVAL = Math.min.apply(null, list);
+		dt.COMPLETED_AT = helper.gameTime() + dt.INTERVAL;
+		data_headquarter.setHeadquarter(dt)
+		list = [];
+		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
+	}
 	, upgradeBuilding = function(village_id){
 		reqD++
 		services.$timeout(function(){
@@ -106,13 +142,26 @@ define("robotTW2/headquarter", [
 			var village = character.getVillage(village_id);
 			services.buildingService.compute(village)
 			var buildingQueue = village.getBuildingQueue()
-			, levels = village.buildingData.getBuildingLevels()
+			, buildingData = village.getBuildingData()
+			, levels = buildingData.getBuildingLevels()
 			, buildingLevels = angular.copy(Object.keys(levels).map(function(key){return {[key] : levels[key]}}))
 			, queues = village.buildingQueue.getQueue()
 			, readyState = village.checkReadyState()
 			, buildState = villages[village_id].EXECUTEBUILDINGORDER
 			, buildAmounts = buildingQueue.getAmountJobs()
 			, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
+			, firstQueue = queues[0];
+
+			if(firstQueue && firstQueue.canBeFinishedForFree){
+				services.premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
+				return upgradeBuilding(village_id)
+
+			}
+
+			list = getFinishedForFree(village, list)
+
+			setList();
+
 			if (
 					!(
 							buildAmounts !== buildUnlockedSlots
@@ -166,42 +215,27 @@ define("robotTW2/headquarter", [
 						isUpgradeable(village, buildLevel, function(success, data) {
 							if (success) {
 								++buildAmounts;
+							} else if(data == "instant"){
+								g.unshift(build);
 							}
 							next()
 						})
-					}
-				} else {
-					var timer = village.getBuildingQueue().getQueue()[0].time_completed * 1000;
-					var dif = timer - helper.gameTime(); 
-					if (dif < data_headquarter.getHeadquarter().INTERVAL){
-						list.push(dif);
 					}
 				}
 			}
 			next()
 
 			if(reqD == respD){
-				if (list.length > 0){
-					var dt = data_headquarter.getHeadquarter();
-					dt.INTERVAL = Math.min.apply(null, list);
-					dt.INTERVAL == 0 ? dt.INTERVAL = conf.h : dt.INTERVAL;
-					data_headquarter.setHeadquarter(dt)
-					list = [conf.INTERVAL.HEADQUARTER];
-				}
 				reqD = 0;
 				respD = 0;
-
 				wait();
 				return !0;
 			}
 		}, reqD * 3000)
 	}
 	, cicle_building = function($event, data){
-
-
 		if (!isInitialized)
 			return;
-
 		character = services.modelDataService.getSelectedCharacter();
 		if(isPaused){
 			listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT, function(){
@@ -235,7 +269,8 @@ define("robotTW2/headquarter", [
 			services.$timeout.cancel(interval_builder);
 			interval_builder = services.$timeout(cicle_building, data_headquarter.getTimeCicle())
 		}
-		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
+		setList();
+
 	}
 	, init = function(){
 		isInitialized = !0
@@ -243,11 +278,16 @@ define("robotTW2/headquarter", [
 	}
 	, start = function(){
 		if(isRunning){return}
-		listener_building_level_change = $rootScope.$on(providers.eventTypeProvider.BUILDING_LEVEL_CHANGED, cicle_building)
-		isRunning = !0
-		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
-		wait();
-		ready(cicle_building, ["all_villages_ready"])
+		ready(function(){
+			var d = data_headquarter.getHeadquarter();
+			d.INTERVAL = conf.INTERVAL.HEADQUARTER;
+			data_headquarter.setHeadquarter(d);
+			listener_building_level_change = $rootScope.$on(providers.eventTypeProvider.BUILDING_LEVEL_CHANGED, cicle_building)
+			isRunning = !0
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
+			wait();
+			cicle_building()
+		}, ["all_villages_ready"])
 	}
 	, stop = function(){
 		isRunning = !1
@@ -347,6 +387,11 @@ define("robotTW2/headquarter/ui", [
 		$scope.paused = headquarter.isPaused();
 
 		$scope.interval_headquarter = helper.readableMilliseconds(data_headquarter.getTimeCicle())
+		$scope.data_headquarter.COMPLETED_AT ? $scope.completed_at = $scope.data_headquarter.COMPLETED_AT : $scope.completed_at = 0;
+
+		helper.timer.add(function(){
+			$scope.interval_headquarter =  helper.readableMilliseconds($scope.completed_at - helper.gameTime());
+		});
 
 		$scope.getKey = function(buildingOrder){
 			return services.$filter("i18n")(Object.keys(buildingOrder)[0], $rootScope.loc.ale, "headquarter");
@@ -422,7 +467,7 @@ define("robotTW2/headquarter/ui", [
 		}
 
 		$scope.restore_headquarter = function(){
-			data_headquarter.setTimeCicle(conf.INTERVAL)
+			data_headquarter.setTimeCicle(conf.INTERVAL.HEADQUARTER)
 
 			var villages = {}
 			, villagesExtended = {}

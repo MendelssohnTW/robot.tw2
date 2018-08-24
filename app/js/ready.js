@@ -28,7 +28,7 @@ define("robotTW2/ready", [
 					})
 				},
 				tribe_relations: function() {
-					var character = services.modelDataServiservicesce.getSelectedCharacter();
+					var character = services.modelDataService.getSelectedCharacter();
 					if (character) {
 						var tribe_relations = character.getTribeRelations();
 						if (!character.getTribeId() || tribe_relations)

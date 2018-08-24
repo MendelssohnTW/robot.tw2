@@ -58,10 +58,9 @@ define("robotTW2/templates", [], function(){
 	var get = function(template, onLoad){
 		var onLoadWrapper = function onLoadWrapper(responseText) {
 			onLoad(responseText);
-
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
+//			if (!$rootScope.$$phase) {
+//				$rootScope.$apply();
+//			}
 		};
 		var docs = $("div[ng-include]");
 		var doc = docs.map(

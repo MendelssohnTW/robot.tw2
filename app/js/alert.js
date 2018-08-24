@@ -1,9 +1,11 @@
 define("robotTW2/alert", [
 	"robotTW2/data_alert",
+	"robotTW2/ready",
 	"robotTW2/services",
 	"robotTW2/providers"
 	], function(
 			data_alert,
+			ready,
 			services,
 			providers
 	){
@@ -46,10 +48,12 @@ define("robotTW2/alert", [
 		start();
 	}
 	, start = function (){
-		if(isRunning){return} 
-		isRunning = !0;
-		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ALERT"})
-		verify_alert();
+		if(isRunning){return}
+		ready(function(){
+			isRunning = !0;
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ALERT"})
+			verify_alert()
+		}, ["tribe_relations"])
 	}
 	, stop = function (){
 		isRunning = !1;
@@ -207,7 +211,7 @@ define("robotTW2/alert/ui", [
 			}
 			document.getElementById("input-text-time-interval").value = $scope.interval_alert; 
 			if (!$rootScope.$$phase) $rootScope.$apply();
-			
+
 		}
 
 		$scope.selectAll = function(){

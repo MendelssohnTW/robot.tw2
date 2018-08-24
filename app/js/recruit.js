@@ -29,6 +29,7 @@ define("robotTW2/recruit", [
 	, listener_group_destroyed = undefined
 	, listener_window_recruit = undefined
 	, listener_resume = undefined
+	, list = []
 	, prices = undefined
 	, data = data_recruit.getRecruit()
 	, grupos = data.GROUPS
@@ -223,17 +224,17 @@ define("robotTW2/recruit", [
 								var unit = units_sorted.shift();
 								unitName = Object.keys(unit)[0];
 								var RESOURCE_TYPES = services.modelDataService.getGameData().getResourceTypes();
-								var list = [];
+								var ltz = [];
 								Object.keys(RESOURCE_TYPES).forEach(
 										function(name){
 											if (copia_res[RESOURCE_TYPES[name]] < data.RESERVA[name.toUpperCase()]){
-												list.push(true);
+												ltz.push(true);
 											} else {
-												list.push(false);
+												ltz.push(false);
 											}
 										});
 
-								if (list.every(f => f == true)) {
+								if (ltz.every(f => f == true)) {
 									unitsLoop(units_sorted);
 									return;
 								};
@@ -285,21 +286,42 @@ define("robotTW2/recruit", [
 	, prices = getUnitPrices()
 	, villages = data_villages.getVillages()
 	, wait = function(){
-		data = data_recruit.getRecruit();
 		if(!interval_recruit){
-			interval_recruit = services.$timeout(recruit, data.INTERVAL)
+			interval_recruit = services.$timeout(recruit, data_recruit.getTimeCicle())
 		} else {
 			services.$timeout.cancel(interval_recruit);
-			interval_recruit = services.$timeout(recruit, data.INTERVAL)
+			interval_recruit = services.$timeout(recruit, data_recruit.getTimeCicle())
 		}
+		setList();
+	}
+	, getFinishedForFree = function (village, lt, tam){
+		var job = village.getRecruitingQueue("barracks").jobs[tam-1];
+		if(job){
+			var timer = job.data.time_completed * 1000;
+			var dif = timer - helper.gameTime(); 
+			if (dif < data.INTERVAL){
+				dif < 0 ? dif = 0 : dif;
+				lt.push(dif);
+			}
+		}
+		return lt
+	}
+	, setList = function(){
+		var dt = data_recruit.getRecruit();
+		list.push(conf.INTERVAL.RECRUIT)
+		list.push(dt.INTERVAL)
+		dt.INTERVAL = Math.min.apply(null, list);
+		dt.COMPLETED_AT = helper.gameTime() + dt.INTERVAL;
+		data_recruit.setRecruit(dt)
+		list = [];
 		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
 	}
-	, list = [conf.INTERVAL.RECRUIT]
 	, recruit = function(){
 		var reqD = 0
 		, respD = 0;
 
 		data = data_recruit.getRecruit();
+
 		if(isPaused){
 			listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT, function(){
 				recruit()
@@ -309,28 +331,18 @@ define("robotTW2/recruit", [
 			})
 		}
 		Object.keys(villages).map(function(village_id){
+
 			reqD++
 			services.$timeout(function(){
 				var village = services.modelDataService.getSelectedCharacter().getVillage(village_id);
 				var tam = village.getRecruitingQueue("barracks").length || 0;
+				list = getFinishedForFree(village, list, tam)
 				respD++
+				setList();
 				if (tam < data.RESERVA.SLOTS || tam < 1){
 					recruitSteps(village_id);
-				} else {
-					var timer = village.getRecruitingQueue("barracks").jobs[tam-1].data.time_completed * 1000;
-					var dif = timer - helper.gameTime(); 
-					if (dif < data.INTERVAL){
-						list.push(dif);
-					}
 				}
 				if(reqD == respD){
-					if (list.length > 0){
-						data.INTERVAL = Math.min.apply(null, list);
-						data.INTERVAL == 0 ? data.INTERVAL = conf.h : data.INTERVAL;
-						data_recruit.setRecruit(data)
-						list = [conf.INTERVAL.RECRUIT];
-					}
-
 					wait();			
 				}
 			}, reqD * 3000)
@@ -342,16 +354,22 @@ define("robotTW2/recruit", [
 		start();
 	}
 	, start = function (){
-		villages = data_villages.getVillages();
-		verificarGroups();
-		listener_recruit = $rootScope.$on(providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
-		listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
-		listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
-		listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verificarGroups)
-		isRunning = !0;
-		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
-		wait();
-		ready(recruit, ["all_villages_ready"])
+		if(isRunning){return}
+		ready(function(){
+			villages = data_villages.getVillages();
+			verificarGroups();
+			var d = data_recruit.getRecruit();
+			d.INTERVAL = conf.INTERVAL.RECRUIT;
+			data_recruit.setRecruit(d);
+			listener_recruit = $rootScope.$on(providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
+			listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
+			listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
+			listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verificarGroups)
+			isRunning = !0;
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
+			wait();
+			recruit()
+		}, ["all_villages_ready"])
 	}
 	, stop = function (){
 		typeof(listener_recruit) == "function" ? listener_recruit(): null;
@@ -468,6 +486,13 @@ define("robotTW2/recruit/ui", [
 		$scope.paused = recruit.isPaused();
 
 		$scope.interval_recruit = helper.readableMilliseconds(data_recruit.getTimeCicle())
+
+		$scope.data_recruit.COMPLETED_AT ? $scope.completed_at = $scope.data_recruit.COMPLETED_AT : $scope.completed_at = 0;
+
+		helper.timer.add(function(){
+			$scope.interval_recruit =  helper.readableMilliseconds($scope.completed_at - helper.gameTime());
+		});
+
 
 		$scope.onchangeGroup = function (gr){
 			$scope.grupo = gr;

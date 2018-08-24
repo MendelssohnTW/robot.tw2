@@ -669,28 +669,21 @@ define("robotTW2/data_farm", [
 ,
 define("robotTW2/data_villages", [
 	"robotTW2/database",
+	"robotTW2/ready",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/providers"
 	], function(
 			database,
+			ready,
 			conf,
 			services,
 			providers
 	) {
-	var villagesDB = {}
-	, villagesExtended = {}
-	, updated = false
-	, data_villages = {};
 
-	angular.extend(villagesDB, services.modelDataService.getVillages())
-	angular.merge(villagesExtended, villagesDB)
-
-	data_villages = database.get("data_villages")
-
-	function verifyDB(data_villages, villagesExtended){
+	var verifyDB = function (data_villages, villagesExtended){
 		if (data_villages == undefined){
-		return false;
+			return false;
 		}
 		updated = false;
 		Object.keys(data_villages.VILLAGES).map(function(m){
@@ -705,11 +698,10 @@ define("robotTW2/data_villages", [
 		})
 		return updated;
 	}
-
-	function verifyVillages(data_villages, villagesExtended){
+	, verifyVillages = function (data_villages, villagesExtended){
 		updated = false;
 		if (data_villages == undefined){
-		return false;
+			return false;
 		}
 		Object.keys(villagesExtended).map(function(m){
 			return m
@@ -730,85 +722,68 @@ define("robotTW2/data_villages", [
 		if(updated){setVillages(data_villages.VILLAGES)}
 		return updated
 	}
-
-	var setVillages = function(vs){
+	, setVillages = function(vs){
 		var data_villages = database.get("data_villages")
-		
+
 		data_villages.VILLAGES = vs;
 		database.set("data_villages", data_villages, true)
 	}
-
-	var getVillages = function(){
+	, getVillages = function(){
 		var data_villages = database.get("data_villages")
 		var villagesDB = data_villages.VILLAGES
 		return villagesDB
 	}
+	, updateVillages = function($event){
+		var villagesDB = {}
+		, villagesExtended = {}
+		, updated = false
+		, dt_villages = {};
 
+		angular.extend(villagesDB, services.modelDataService.getVillages())
+		angular.merge(villagesExtended, villagesDB)
 
-	if(!data_villages || verifyDB(data_villages, villagesExtended) || verifyVillages(data_villages, villagesExtended)) {
-		if (data_villages == undefined){
-			data_villages = {}
-			,  vb = {}
-			, ve = {}
-			angular.extend(vb, services.modelDataService.getVillages())
-		angular.merge(ve, vb)
-		data_villages.VERSION = conf.VERSION.VILLAGES
-		data_villages.VILLAGES = {}
-		database.set("data_villages", data_villages, true)
-			verifyVillages(data_villages, ve)
-		} else {
-		database.set("data_villages", data_villages, true)	
-		}
-		
-	} else {
-		if(!data_villages.VERSION || data_villages.VERSION < conf.VERSION.VILLAGES){
-			data_villages.VERSION = conf.VERSION.VILLAGES
-			database.set("data_villages", data_villages, true)
-		}
-	}
+		dt_villages = database.get("data_villages")
 
-	var fn = {
-			setVillages 	: setVillages,
-			getVillages 	: getVillages
-	}
-
-	var lostVillage = function($event, data){
-		data_villages = database.get("data_villages")
-		var vills = Object.keys(data_villages.VILLAGES).map(function(key, index, array){
-			if (data_villages.VILLAGES[key].data.villageId != data.villageId) {
-				return {[key]:data_villages.VILLAGES[key]}
+		if(!dt_villages || verifyDB(dt_villages, villagesExtended) || verifyVillages(dt_villages, villagesExtended)) {
+			if (dt_villages == undefined){
+				dt_villages = {}
+				, vb = {}
+				, ve = {}
+				angular.extend(vb, services.modelDataService.getVillages())
+				angular.merge(ve, vb)
+				dt_villages.VERSION = conf.VERSION.VILLAGES
+				dt_villages.VILLAGES = {}
+				database.set("data_villages", dt_villages, true)
+				verifyVillages(dt_villages, ve)
 			} else {
-				return
+				database.set("data_villages", dt_villages, true)	
 			}
-		}).filter(f => f != undefined);
-		var villT = {};
-		vills.forEach(function(e){
-			villT[Object.keys(e)[0]] = Object.values(e)[0]
 
-		})
-		setVillages(villT)
+		} else {
+			if(!dt_villages.VERSION || dt_villages.VERSION < conf.VERSION.VILLAGES){
+				dt_villages.VERSION = conf.VERSION.VILLAGES
+				database.set("data_villages", dt_villages, true)
+			}
+		}
+		return dt_villages;
 	}
-
-	var renameVillage = function($event, data){
+	, renameVillage = function($event, data){
 		data_villages = database.get("data_villages")
 		var id = data.village_id;
 		!data_villages.VILLAGES[id] ? !1 : data_villages.VILLAGES[id].data.name = data.name
 				setVillages(data_villages.VILLAGES)
 	}
+	, fn = {
+			setVillages 	: setVillages,
+			getVillages 	: getVillages
+	};
 
-	var conqueredVillage = function($event, data){
-		data_villages = database.get("data_villages")
-		var vb = {}, ve = {};
-		angular.extend(vb, services.modelDataService.getVillages())
-		angular.merge(ve, vb)
-		verifyVillages(data_villages, ve)
-	}
-
-	Object.setPrototypeOf(data_villages, fn);
-
-	$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, lostVillage);
-	$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, conqueredVillage);
+	$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, updateVillages);
+	$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, updateVillages);
 	$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, renameVillage);
 
+	var data_villages = updateVillages()
+	Object.setPrototypeOf(data_villages, fn);
 	return data_villages;
+
 })

@@ -272,7 +272,7 @@ define("robotTW2/farm", [
 				var cmds = data.MAX_COMMANDS - cmds_length;
 
 				function st(){
-					console.log("Ciclo de farm terminado");
+					//console.log("Ciclo de farm terminado");
 					return;	
 				}
 
@@ -287,7 +287,7 @@ define("robotTW2/farm", [
 						services.$timeout(function(){
 							sendCmd(preset, lista_barbaras, function(){
 								if (comandos_preset.length > 0){
-									console.log("preset length " + comandos_preset.length)
+									//console.log("preset length " + comandos_preset.length)
 									if(isRunning){
 										if(isPaused){
 											listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
@@ -660,10 +660,12 @@ define("robotTW2/farm", [
 	}
 	, start = function (){
 		if(isRunning){return}
-		requestFn.trigger("Farm/run"),
-		isRunning = !0
-		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
-		ready(initCicle, ["all_villages_ready"])
+		ready(function(){
+			requestFn.trigger("Farm/run"),
+			isRunning = !0
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
+			initCicle()
+		}, ["all_villages_ready"])
 	}
 	, stop = function (){
 		Object.keys(timeoutIdFarm).map(function(key) {
