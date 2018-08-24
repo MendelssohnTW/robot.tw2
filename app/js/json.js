@@ -152,7 +152,7 @@ define("robotTW2/pt_br", function() {
 		},
 		"deposit": {
 			"title"						: "Coleta de depósito",
-			"settings"					: "Configurações para coleta",
+			"settings"					: "Configurações para coleta do depósito",
 			"text_interval_deposit"		: "Intervalo de verificação",
 			"use_reroll_deposit"		: "Sortear novamente automático"
 		}
