@@ -29,21 +29,27 @@ define("robotTW2/main/ui", [
 	"robotTW2/builderWindow",
 	"robotTW2/data_main",
 	"robotTW2/data_deposit",
+	"robotTW2/data_recon",
 	"robotTW2/requestFn",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"helper/time"
+	"helper/time",
+	"robotTW2/unitTypes",
+	"robotTW2/unitTypesRenameRecon"
 	], function(
 			main,
 			builderWindow,
 			data_main,
 			data_deposit,
+			data_recon,
 			requestFn,
 			services,
 			providers,
 			conf,
-			helper
+			helper,
+			unitTypes,
+			unitTypesRenameRecon
 	) {
 	var $window
 	, build = function(callback) {
@@ -94,6 +100,8 @@ define("robotTW2/main/ui", [
 		$scope.use_reroll_deposit = services.$filter("i18n")("use_reroll_deposit", $rootScope.loc.ale, "deposit");
 		$scope.settings_deposit = services.$filter("i18n")("settings", $rootScope.loc.ale, "deposit");
 		
+		$scope.settings_recon = services.$filter("i18n")("settings", $rootScope.loc.ale, "recon");
+		
 		$scope.extensions = data_main.getExtensions();
 		$scope.extensions_copy = {};
 		$scope.hotkeys = conf.HOTKEY;
@@ -128,7 +136,8 @@ define("robotTW2/main/ui", [
 			if(ext.ATIVATE){
 				if(!fn.isInitialized()){
 					fn.init();
-					fn.build();
+					if(typeof(fn.build) == "function"){fn.build()}
+					if(typeof(fn.analytics) == "function"){fn.analytics()}
 				} else {
 					fn.start();
 				}
@@ -139,6 +148,7 @@ define("robotTW2/main/ui", [
 			}
 			angular.merge($scope.extensions_copy, $scope.extensions);
 		};
+		
 		
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			var fn = requestFn.get(data.name.toLowerCase(), true);
@@ -173,30 +183,37 @@ define("robotTW2/main/ui", [
 			$scope.interval_deposit =  helper.readableMilliseconds($scope.deposit_completed_at - helper.gameTime());
 		});
 
-//		$scope.set = function(interval_deposit){
-//			if(interval_deposit.length <= 5){
-//				interval_deposit = interval_deposit + ":00"
-//			}
-//			if (helper.unreadableSeconds(interval_deposit) * 1e3 > 2 *60*60*1000){
-//				data_deposit.setTimeCicle(2 *60*60*1000)
-//				$scope.interval_deposit = 2 *60*60*1000;
-//			} else if (helper.unreadableSeconds(interval_deposit) * 1e3 < 10*60*1000){
-//				data_deposit.setTimeCicle(10*60*1000)
-//				$scope.interval_deposit = 10*60*1000;
-//			} else {
-//				data_deposit.setTimeCicle(helper.unreadableSeconds(interval_deposit) * 1e3)
-//				$scope.interval_deposit = interval_deposit;
-//			}
-//			document.getElementById("input-text-time-interval").value = $scope.interval_deposit; 
-//			if (!$rootScope.$$phase) $rootScope.$apply();
-//
-//		}
-
 		$scope.$watch("data_deposit.USE_REROLL", function(){
 			data_deposit.setDeposit($scope.data_deposit)
 			if (!$scope.$$phase) $scope.$apply();
 		})
 
+		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function() {
+			$scope.interval_deposit = helper.readableMilliseconds(data_deposit.getTimeCicle())
+			if (!$scope.$$phase) {
+				$scope.$apply();
+			}
+		})
+		
+		
+		/*
+		 * Recon
+		 */
+		
+		$scope.getKey = function(k){
+			return services.$filter("i18n")(k, $rootScope.loc.ale, "recon");
+		}
+		
+		$scope.getClass = function(k){
+			return "icon-20x20-unit-" + Object.keys(k)[0];
+		}
+		
+		$scope.data_recon = data_recon.getRecon();
+		
+		$scope.$watchCollection("data_recon.RENAME", function(){
+			data_recon.setRecon($scope.data_recon)
+			if (!$scope.$$phase) $scope.$apply();
+		})
 		
 
 		if (!$scope.$$phase) {

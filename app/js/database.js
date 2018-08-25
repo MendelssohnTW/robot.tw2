@@ -127,11 +127,13 @@ define("robotTW2/data_main", [
 define("robotTW2/data_headquarter", [
 	"robotTW2/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			notify
 	) {
 	var setHeadquarter = function(data_headquarter){
 		if(data_headquarter){
@@ -188,6 +190,7 @@ define("robotTW2/data_headquarter", [
 		database.set("data_headquarter", data_headquarter, true)
 	} else {
 		if(!data_headquarter.VERSION || data_headquarter.VERSION < conf.VERSION.HEADQUARTER){
+			notify("data_headquarter");
 			data_headquarter = dataNew
 			database.set("data_headquarter", data_headquarter, true)
 		} else {
@@ -213,11 +216,15 @@ define("robotTW2/data_headquarter", [
 define("robotTW2/data_recon", [
 	"robotTW2/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/notify",
+	"robotTW2/unitTypesRenameRecon"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			notify,
+			unitTypesRenameRecon
 	) {
 	var setRecon = function(data_recon){
 		if(data_recon){
@@ -236,7 +243,7 @@ define("robotTW2/data_recon", [
 			ENABLED 				: false,
 			HOTKEY					: conf.HOTKEY.RECON,
 			VERSION					: conf.VERSION.RECON,
-			RENAME_COMMAND 			: "snob"
+			RENAME		 			: unitTypesRenameRecon
 	}
 
 	if(!data_recon){
@@ -244,6 +251,7 @@ define("robotTW2/data_recon", [
 		database.set("data_recon", data_recon, true)
 	} else {
 		if(!data_recon.VERSION || data_recon.VERSION < conf.VERSION.RECON){
+			notify("data_recon");
 			data_recon = dataNew
 			database.set("data_recon", data_recon, true)
 		} else {
@@ -266,11 +274,13 @@ define("robotTW2/data_recon", [
 define("robotTW2/data_deposit", [
 	"robotTW2/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			notify
 	) {
 	var setDeposit = function(data_deposit){
 		if(data_deposit){
@@ -318,6 +328,7 @@ define("robotTW2/data_deposit", [
 		database.set("data_deposit", data_deposit, true)
 	} else {
 		if(!data_deposit.VERSION || data_deposit.VERSION < conf.VERSION.DEPOSIT){
+			notify("data_deposit");
 			data_deposit = dataNew
 			database.set("data_deposit", data_deposit, true)
 		} else {
@@ -343,11 +354,13 @@ define("robotTW2/data_deposit", [
 define("robotTW2/data_recruit", [
 	"robotTW2/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			notify
 	) {
 	var setRecruit = function(data_recruit){
 		if(data_recruit){
@@ -403,6 +416,7 @@ define("robotTW2/data_recruit", [
 		database.set("data_recruit", data_recruit, true)
 	} else {
 		if(!data_recruit.VERSION || data_recruit.VERSION < conf.VERSION.RECRUIT){
+			notify("data_recruit");
 			data_recruit = dataNew
 			database.set("data_recruit", data_recruit, true)
 		} else {
@@ -428,11 +442,13 @@ define("robotTW2/data_recruit", [
 define("robotTW2/data_spy", [
 	"robotTW2/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			notify
 	) {
 	var setSpy = function(data_spy){
 		if(data_spy){
@@ -479,6 +495,7 @@ define("robotTW2/data_spy", [
 		database.set("data_spy", data_spy, true)
 	} else {
 		if(!data_spy.VERSION || data_spy.VERSION < conf.VERSION.SPY){
+			notify("data_spy");
 			data_spy = dataNew
 			database.set("data_spy", data_spy, true)
 		} else {
@@ -505,11 +522,13 @@ define("robotTW2/data_spy", [
 define("robotTW2/data_alert", [
 	"robotTW2/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			notify
 	) {
 	var setAlert = function(data_alert){
 		if(data_alert){
@@ -569,6 +588,7 @@ define("robotTW2/data_alert", [
 		database.set("data_alert", data_alert, true)
 	} else {
 		if(!data_alert.VERSION || data_alert.VERSION < conf.VERSION.ALERT){
+			notify("data_alert");
 			data_alert = dataNew
 			database.set("data_alert", data_alert, true)
 		} else {
@@ -597,11 +617,13 @@ define("robotTW2/data_farm", [
 	"robotTW2/database",
 	"robotTW2/conf",
 	"robotTW2/services",
+	"robotTW2/notify",
 	"helper/time"
 	], function(
 			database,
 			conf,
 			services,
+			notify,
 			helper
 	) {
 
@@ -694,6 +716,7 @@ define("robotTW2/data_farm", [
 		database.set("data_farm", data_farm, true)
 	} else {
 		if(!data_farm.VERSION || data_farm.VERSION < conf.VERSION.FARM){
+			notify("data_farm");
 			data_farm = dataNew
 			database.set("data_farm", data_farm, true)
 		} else {

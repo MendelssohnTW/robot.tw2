@@ -103,7 +103,7 @@ define("robotTW2/pt_br", function() {
 			"catapult" 					: "catapulta",
 			"snob" 						: "nobre",
 			"trebuchet" 				: "trabuco",
-			"title" 					: "Reconhecimento de unidades",
+			"settings" 					: "Reconhecimento de unidades (Renomear comandos)",
 			"introducing" 				: "Renomeação dos comandos",
 			"rename_command"			: "Renomear comandos",
 			"rename_snob"				: "Renomear somente nobres"
@@ -155,6 +155,14 @@ define("robotTW2/pt_br", function() {
 			"settings"					: "Configurações para coleta do depósito",
 			"text_interval_deposit"		: "Intervalo de verificação",
 			"use_reroll_deposit"		: "Sortear novamente automático"
+		},
+		"notify": {
+			"data_recon"				: "Robot TW2 - Banco de dados (RECON) atualizado, reative o módulo RECON",
+			"data_headquarter"			: "Robot TW2 - Banco de dados (HEADQUARTER) atualizado, reative o módulo HEADQUARTER",
+			"data_deposit"				: "Robot TW2 - Banco de dados (DEPOSIT) atualizado, reative o módulo DEPOSIT",
+			"data_recruit"				: "Robot TW2 - Banco de dados (RECRUIT) atualizado, reative o módulo RECRUIT",
+			"data_spy"					: "Robot TW2 - Banco de dados (SPY) atualizado, reative o módulo SPY",
+			"data_farm"					: "Robot TW2 - Banco de dados (FARM) atualizado, reative o módulo FARM"
 		}
 	}
 })

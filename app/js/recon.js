@@ -16,7 +16,6 @@ define("robotTW2/recon", [
 	var isInitialized = !1
 	, isRunning = !1
 	, isPaused = !1
-	, data = data_recon.getRecon()
 	, getrenameCmdAtackRecon = function (command, unitText) {
 		if(command.command_name != unitText){
 			services.socketService.emit(providers.routeProvider.COMMAND_RENAME, {
@@ -78,10 +77,6 @@ define("robotTW2/recon", [
 			var unitText = y;
 
 			var classe = "icon-34x34-attack-red";
-
-			if(unitText.includes("snob")){
-
-			}
 
 			var span_unit = undefined;
 			switch (true) {
@@ -155,13 +150,11 @@ define("robotTW2/recon", [
 					if(elem){
 						if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
 							var unitText = getAttackTypeAtackRecon(command, i);
-							//if (unitText != undefined && data_recon.getRecon().RENAME_COMMAND){
 							if (unitText != undefined){
-								var rename = data.RENAME_COMMAND;
-								if(rename == true){
-									var renameCmd = getrenameCmdAtackRecon(command, unitText);
-								} else if(rename == "snob" && unitText == services.$filter("i18n")("snob", $rootScope.loc.ale, "recon")){
-									var renameCmd = getrenameCmdAtackRecon(command, unitText);
+								if(Object.keys(data_recon.getRecon().RENAME).map(function(elem, index, array){
+									return unitText.includes(services.$filter("i18n")(elem, $rootScope.loc.ale, "recon"))
+								}).filter(f=>f!=undefined).length){
+									getrenameCmdAtackRecon(command, unitText);
 								}
 							}
 							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
@@ -232,118 +225,118 @@ define("robotTW2/recon", [
 	}
 
 })
-,
-define("robotTW2/recon/ui", [
-	"robotTW2/recon",
-	"robotTW2/builderWindow",
-	"robotTW2/services",
-	"robotTW2/providers",
-	"robotTW2/data_recon",
-	"helper/time",
-	"robotTW2/conf",
-	'conf/overviewTabs',
-	'conf/unitTypes'
-	], function(
-			recon,
-			builderWindow,
-			services,
-			providers,
-			data_recon,
-			helper,
-			conf,
-			OVERVIEW_TABS,
-			UNIT_TYPES
-	){
-	var $window
-	, build = function(callback) {
-		var hotkey = conf.HOTKEY.RECON;
-		var templateName = "recon";
-		$window = new builderWindow(hotkey, templateName, callback)
-		return $window
-		return null
-	}
-	, injectScope = function(){
-		var $scope = $window.$data.scope;
-		$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "recon");
-		$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "recon");
-		$scope.rename_command = services.$filter("i18n")("rename_command", $rootScope.loc.ale, "recon");
-		$scope.rename_snob = services.$filter("i18n")("rename_snob", $rootScope.loc.ale, "recon");
-		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+//,
+//define("robotTW2/recon/ui", [
+//"robotTW2/recon",
+//"robotTW2/builderWindow",
+//"robotTW2/services",
+//"robotTW2/providers",
+//"robotTW2/data_recon",
+//"helper/time",
+//"robotTW2/conf",
+//'conf/overviewTabs',
+//'conf/unitTypes'
+//], function(
+//recon,
+//builderWindow,
+//services,
+//providers,
+//data_recon,
+//helper,
+//conf,
+//OVERVIEW_TABS,
+//UNIT_TYPES
+//){
+//var $window
+//, build = function(callback) {
+//var hotkey = conf.HOTKEY.RECON;
+//var templateName = "recon";
+//$window = new builderWindow(hotkey, templateName, callback)
+//return $window
+//return null
+//}
+//, injectScope = function(){
+//var $scope = $window.$data.scope;
+//$scope.title = services.$filter("i18n")("title", $rootScope.loc.ale, "recon");
+//$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "recon");
+//$scope.rename_command = services.$filter("i18n")("rename_command", $rootScope.loc.ale, "recon");
+//$scope.rename_snob = services.$filter("i18n")("rename_snob", $rootScope.loc.ale, "recon");
+//$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 
-		$scope.data = data_recon.getRecon();
-		$scope.renameSnob = false;
-		$scope.rename = true;
+//$scope.data = data_recon.getRecon();
+//$scope.renameSnob = false;
+//$scope.rename = true;
 
-		if($scope.data.RENAME_COMMAND == "snob"){
-			$scope.rename = true;
-			$scope.renameSnob = true;
-		} else if ($scope.data.RENAME_COMMAND == false){
-			$scope.rename = false;
-			$scope.renameSnob = false;
-		} else {
-			$scope.rename = true;
-			$scope.renameSnob = false;
-		}
+//if($scope.data.RENAME_COMMAND == "snob"){
+//$scope.rename = true;
+//$scope.renameSnob = true;
+//} else if ($scope.data.RENAME_COMMAND == false){
+//$scope.rename = false;
+//$scope.renameSnob = false;
+//} else {
+//$scope.rename = true;
+//$scope.renameSnob = false;
+//}
 
-		$scope.toggleRename = function(rename){
-			$scope.rename = rename;
-			if($scope.rename == false){
-				$scope.data.RENAME_COMMAND = false
-			} else {
-				if($scope.renameSnob == false){
-					$scope.data.RENAME_COMMAND = true
-				} else {
-					$scope.data.RENAME_COMMAND = "snob";
-					$scope.renameSnob = true
-				}
-			}
-			data_recon.setRecon($scope.data)
-			if (!$rootScope.$$phase) $rootScope.$apply();
-		}
+//$scope.toggleRename = function(rename){
+//$scope.rename = rename;
+//if($scope.rename == false){
+//$scope.data.RENAME_COMMAND = false
+//} else {
+//if($scope.renameSnob == false){
+//$scope.data.RENAME_COMMAND = true
+//} else {
+//$scope.data.RENAME_COMMAND = "snob";
+//$scope.renameSnob = true
+//}
+//}
+//data_recon.setRecon($scope.data)
+//if (!$rootScope.$$phase) $rootScope.$apply();
+//}
 
-		$scope.toggleRenameSnob = function(renameSnob){
-			$scope.renameSnob = renameSnob;
-			if($scope.renameSnob == true) {
-				$scope.data.RENAME_COMMAND = "snob"
-			} else {
-				if($scope.rename == false){
-					$scope.data.RENAME_COMMAND = false
-				} else {
-					$scope.data.RENAME_COMMAND = true
-				}
-			}
-			data_recon.setRecon($scope.data)
-			if (!$rootScope.$$phase) $rootScope.$apply();
-		}
+//$scope.toggleRenameSnob = function(renameSnob){
+//$scope.renameSnob = renameSnob;
+//if($scope.renameSnob == true) {
+//$scope.data.RENAME_COMMAND = "snob"
+//} else {
+//if($scope.rename == false){
+//$scope.data.RENAME_COMMAND = false
+//} else {
+//$scope.data.RENAME_COMMAND = true
+//}
+//}
+//data_recon.setRecon($scope.data)
+//if (!$rootScope.$$phase) $rootScope.$apply();
+//}
 
-		$window.$data.ativate = $scope.data.ATIVATE;
-		$scope.isRunning = recon.isRunning();
-		$scope.paused = recon.isPaused();
+//$window.$data.ativate = $scope.data.ATIVATE;
+//$scope.isRunning = recon.isRunning();
+//$scope.paused = recon.isPaused();
 
-		$scope.pause_recon = function(){
-			recon.pause();
-			$scope.paused = !0;
-		}
-		$scope.resume_recon = function(){
-			recon.resume();
-			$scope.paused = !1;
-		}
+//$scope.pause_recon = function(){
+//recon.pause();
+//$scope.paused = !0;
+//}
+//$scope.resume_recon = function(){
+//recon.resume();
+//$scope.paused = !1;
+//}
 
-		if (!$rootScope.$$phase) {
-			$rootScope.$apply();
-		}
+//if (!$rootScope.$$phase) {
+//$rootScope.$apply();
+//}
 
-		services.$timeout(function(){
-			$window.setCollapse();
-			$window.recalcScrollbar();
-		}, 500)
+//services.$timeout(function(){
+//$window.setCollapse();
+//$window.recalcScrollbar();
+//}, 500)
 
 
-	}
+//}
 
-	Object.setPrototypeOf(recon, {
-		build : function(){
-			build(injectScope)
-		}
-	})
-})
+//Object.setPrototypeOf(recon, {
+//build : function(){
+//build(injectScope)
+//}
+//})
+//})

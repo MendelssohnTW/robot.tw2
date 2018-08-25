@@ -18,7 +18,7 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<td>
+								<td class="cell-top">
 									<div class="list-collapse">
 										<h5 class="twx-section collapse">{{settings_module}}</h5>
 										<div>
@@ -95,42 +95,102 @@
 								</td>
 								<td class="cell-top">
 									<div class="list-collapse">
-										<h5 class="twx-section collapse">{{settings_deposit}}</h5>
-										<div>
-											<table class="tbl-border-light tbl-striped" id="preset-list">
-												<colgroup>
-													<col width="*">
-													<col width="50%">
-												</colgroup>
-												<tbody>
-													<tr>
-														<td class="cell-right"><label for="interval_deposit">{{text_interval_deposit}}</label><input
-															id="interval_deposit"
-															class="input-border input-created disabled" type=text
-															value="{{interval_deposit}}" disabled></td>
-														<td class="cell-right"><label
-															for="checkbox-interval-deposit">{{use_reroll_deposit}}</label>
-															<div id="checkbox-interval-deposit"
-																class="checkbox box-border-dark">
-																<div switch-slider="" border="true" enabled="true"
-																	value="data_deposit.USE_REROLL" vertical="false"
-																	size="'56x28'" ng-model="data_deposit.USE_REROLL">
-																	<div ng-class="{'box-border-dark box-filter': border}"
-																		class="box-border-dark box-filter">
-																		<div class="switch switch-56x28 switch-horizontal"
-																			ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
-																			<span class="size-26x26 switch-thumb"> <span
-																				class="simple icon-26x26-switch-off"
-																				ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-																			</span>
-																		</div>
-																	</div>
-																</div>
-															</div></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="*">
+											</colgroup>
+											<tbody>
+												<tr>
+													<td>
+														<div ng-show="extensions.DEPOSIT.ATIVATE">
+															<h5 class="twx-section collapse">{{settings_deposit}}</h5>
+															<div>
+																<table class="tbl-border-light tbl-striped"
+																	id="preset-list">
+																	<colgroup>
+																		<col width="*">
+																		<col width="50%">
+																	</colgroup>
+																	<tbody>
+																		<tr>
+																			<td class="cell-right"><label
+																				for="interval_deposit">{{text_interval_deposit}}</label><input
+																				id="interval_deposit"
+																				class="input-border input-created disabled"
+																				type=text value="{{interval_deposit}}" disabled></td>
+																			<td class="cell-right"><label
+																				for="checkbox-interval-deposit">{{use_reroll_deposit}}</label>
+																				<div id="checkbox-interval-deposit"
+																					class="checkbox box-border-dark">
+																					<div switch-slider="" border="true" enabled="true"
+																						value="data_deposit.USE_REROLL" vertical="false"
+																						size="'56x28'" ng-model="data_deposit.USE_REROLL">
+																						<div
+																							ng-class="{'box-border-dark box-filter': border}"
+																							class="box-border-dark box-filter">
+																							<div
+																								class="switch switch-56x28 switch-horizontal"
+																								ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
+																								<span class="size-26x26 switch-thumb"> <span
+																									class="simple icon-26x26-switch-off"
+																									ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																								</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div></td>
+																		</tr>
+
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<div ng-show="extensions.RECON.ATIVATE">
+															<h5 class="twx-section collapse">{{settings_recon}}</h5>
+															<div>
+																<table class="tbl-border-light tbl-striped"
+																	id="preset-list">
+																	<colgroup>
+																		<col width="*">
+																		<col width="56">
+																	</colgroup>
+																	<tbody>
+																		<tr ng-repeat="(key, val) in data_recon.RENAME">
+																			<td class="cell-right"><label
+																				for="checkbox-unit-deposit">{{getKey(key)}}</label><span
+																				ng-class="getClass(key)"></span>
+																				<div id="checkbox-unit-recon"
+																					class="checkbox box-border-dark">
+																					<div switch-slider="" border="true" enabled="true"
+																						value="data_recon.RENAME[key]" vertical="false"
+																						size="'56x28'" ng-model="data_recon.RENAME[key]">
+																						<div
+																							ng-class="{'box-border-dark box-filter': border}"
+																							class="box-border-dark box-filter">
+																							<div
+																								class="switch switch-56x28 switch-horizontal"
+																								ng-class="{'switch-checked': value}">
+																								<span class="size-26x26 switch-thumb"> <span
+																									class="simple icon-26x26-switch-off"
+																									ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value}"></span>
+																								</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div></td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
 									</div>
 								</td>
 							</tr>

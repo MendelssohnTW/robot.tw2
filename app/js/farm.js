@@ -309,7 +309,7 @@ define("robotTW2/farm", [
 						}, delay)
 					} else {
 						if (comandos_preset.length > 0){
-							console.log("preset length " + comandos_preset.length)
+							//console.log("preset length " + comandos_preset.length)
 							if(isRunning){
 								if(isPaused){
 									listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_FARM, function(){
@@ -636,14 +636,14 @@ define("robotTW2/farm", [
 			var tempo_delay = data.INICIO_DE_FARM - helper.gameTime();
 			if (tempo_delay > 0){
 				interval_init = services.$timeout(function(){
-					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_SUCCESS, {message: services.$filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
+					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: services.$filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
 					init_preset(tempo_de_farm_miliseconds)
 				}, tempo_delay);
 				return;
 			} else {
 				data.INICIO_DE_FARM = helper.gameTime();
 				data_farm.setFarm(data);
-				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_SUCCESS, {message: services.$filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
+				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: services.$filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 				init_preset(tempo_de_farm_miliseconds)
 				return;
 			}

@@ -49,7 +49,7 @@ require([
 		console.log(err)
 	})
 	
-	require(["robotTW2/recon", "robotTW2/recon/ui"], function(recon){
+	require(["robotTW2/recon"], function(recon){
 		recon && typeof(recon.init) == "function" ? requestFn.bind("robotTW2/recon", recon) : null;	
 	}, function(err){
 		console.log(err)
@@ -61,7 +61,7 @@ require([
 		console.log(err)
 	})
 	
-	require(["robotTW2/spy", "robotTW2/spy/ui"], function(spy){
+	require(["robotTW2/spy"], function(spy){
 		spy && typeof(spy.init) == "function" ? requestFn.bind("robotTW2/spy", spy) : null;	
 	}, function(err){
 		console.log(err)

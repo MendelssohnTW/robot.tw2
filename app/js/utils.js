@@ -59,7 +59,7 @@ define("robotTW2/templates", [], function(){
 		var onLoadWrapper = function onLoadWrapper(responseText) {
 			onLoad(responseText);
 //			if (!$rootScope.$$phase) {
-//				$rootScope.$apply();
+//			$rootScope.$apply();
 //			}
 		};
 		var docs = $("div[ng-include]");
@@ -74,6 +74,71 @@ define("robotTW2/templates", [], function(){
 		}
 	}
 	return {get : get}
+})
+,
+define("robotTW2/notify", [
+	"robotTW2/services",
+	"robotTW2/providers"
+	], function(
+			services,
+			providers
+	) {
+	return function(message){
+		$rootScope.$broadcast(providers.eventTypeProvider.NOTIFICATION_NEW, {
+			message: services.$filter("i18n")(message, $rootScope.loc.ale, "notify"),
+			type: "achievement"
+		})
+	}
+})
+,
+define("robotTW2/unitTypesRenameRecon", [
+	"robotTW2/services"
+	], function(
+			services
+	) {
+	var l = {}
+	services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+		if(obj.name != "knight"){
+			{l[obj.name] = true}
+		}
+	});
+	return l
+})
+,
+define("robotTW2/unitTypes", [
+	"robotTW2/services"
+	], function(
+			services
+	) {
+	var t = services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+		return [obj.speed, obj.name]
+	}).map(m => {
+		return [m[0], m[1]];
+	}).sort((a, b) => {
+		return a[0] - b[0];
+	});
+
+	var no_repeat = t.map(function(elem, index, array){
+		if(index > 0) {
+			if(array[index][0] !== array[index-1][0]){
+				return elem
+			}
+		} else {
+			return elem
+		}
+	}).filter(f=>f!=undefined)
+
+	var list_units = [];
+	no_repeat.map(function(elem, i, ar){
+		list_units.push(t.map(function(obj, index, array){
+			if(obj[0] == elem[0]) {
+				return services.$filter("i18n")(obj[1], $rootScope.loc.ale, "recon");
+			} else {
+				return
+			} 
+		}).sort(function(a, b){return a < b}).filter(f=>f!=undefined).join(" / "))
+	}).filter(f=>f!=undefined)
+	return list_units
 })
 ,
 define("robotTW2/conf", [
@@ -150,8 +215,8 @@ define("robotTW2/conf", [
 				VILLAGES		: 2.01,
 				HEADQUARTER		: 2.03,
 				ALERT			: 2.01,
-				RECON			: 2.02,
-				SPY				: 2.01,
+				RECON			: 2.05,
+				SPY				: 2.04,
 				ATTACK			: 2.01,
 				DEFENSE			: 2.01,
 				FARM			: 2.01,
@@ -170,8 +235,8 @@ define("robotTW2/conf", [
 				MAIN 			: "ctrl+alt+p",
 				HEADQUARTER 	: "ctrl+alt+h",
 				ALERT		 	: "ctrl+alt+w",
-				RECON		 	: "ctrl+alt+r",
-				SPY			 	: "ctrl+alt+q",
+				RECON		 	: "",
+				SPY			 	: "",
 				ATTACK		 	: "ctrl+alt+a",
 				DEFENSE		 	: "ctrl+alt+d",
 				FARM		 	: "ctrl+alt+f",
@@ -198,17 +263,5 @@ define("robotTW2/conf", [
 			TROOPS_NOT				: ["knight", "snob", "doppelsoldner", "trebuchet"]
 
 	}
-
-//	var data_conf = database.get("conf");
-//	if(!data_conf) {
-//		data_conf = conf;
-//		database.set("conf", data_conf, true)
-//	} else {
-//		if(!data_conf.VERSION.CONF || data_conf.VERSION.CONF < conf.VERSION.CONF){
-//			data_conf = conf;
-//			database.set("conf", data_conf, true)
-//		}
-//	}
 	return conf;
-
 })
