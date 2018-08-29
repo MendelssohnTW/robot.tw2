@@ -42,11 +42,13 @@ define("robotTW2/database", [
 define("robotTW2/data_main", [
 	"robotTW2/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			notify
 	) {
 
 	var setExtensions = function(extensions){
