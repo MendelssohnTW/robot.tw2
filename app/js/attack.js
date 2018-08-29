@@ -249,39 +249,6 @@ define("robotTW2/attack", [
 		//})
 
 	}
-	,
-	verificar = function(scope){
-
-		if(scope){
-			var f; 
-			var e = services.modelDataService.getGameData().getOrderedUnitNames();
-			var h = [];
-			for (scope.unitOrderVisibleOnly = [], f = 0; f < e.length; f++){
-				var unit = scope.unitsToSend[e[f]];
-				var semunit = scope.empty = !1;
-				var resulunit = e[f];
-				undefined !== unit && (!semunit, scope.unitOrderVisibleOnly.push(resulunit));
-			}
-			var g = scope.unitOrderVisibleOnly;
-			if (g.length > 0) {
-				return true;
-			} else {
-				if (scope.enviarFull){
-					return true;
-				} else {
-					return false;    
-				}
-			}
-		}
-	}
-	,
-	toggle = function(scope){
-		if(verificar(scope)) {
-			$('a.btn-border.btn-orange.btn-prog').toggleClass("btn-grey", false);
-		} else {
-			$('a.btn-border.btn-orange.btn-prog').toggleClass("btn-grey", true);
-		}
-	}
 	, createLayoutAttack = function(){
 		var templateName = "attackcompletion";
 		$rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
@@ -298,7 +265,7 @@ define("robotTW2/attack", [
 				$scope.ms_init = 0;
 
 				$scope.enviarFull = false;
-				$scope.btnAtive = toggle($scope);
+				$scope.btnActive = false;
 
 				$scope.sendAttack = function(){
 					sendCommandAttack($scope)
@@ -307,14 +274,15 @@ define("robotTW2/attack", [
 				$scope.toggleFull = function(elem){
 					
 					$scope.enviarFull = elem.enviarFull;
+					$scope.btnActive = !$scope.armyEmpty || $scope.enviarFull;
 					if (!$scope.$$phase) {
 						$scope.$apply();
 					}
 				}
 				
-				$scope.$watch("unitsToSend", function(){
-					
-					$scope.btnAtive = toggle($scope);
+				$scope.$watch("armyEmpty", function(){
+					$scope.btnActive = !$scope.armyEmpty || $scope.enviarFull;
+				
 					if (!$scope.$$phase) {
 						$scope.$apply();
 					}
@@ -331,8 +299,10 @@ define("robotTW2/attack", [
 			if (!services.$templateCache.get(templateName)) {
 				services.$templateCache.put(templateName, template);
 			}
-			var elem = $('[ng-controller="ModalCustomArmyController"]').children("div").children(".box-paper").children(".scroll-wrap").append(template)
-			services.$compile(elem)(loadController("ModalCustomArmyController"))
+			var pai = $('[ng-controller="ModalCustomArmyController"]');
+			var filho = pai.children("div").children(".box-paper").children(".scroll-wrap"); 
+			filho.append(template)
+			services.$compile(template)(loadController("ModalCustomArmyController"))
 		}
 
 		if (services.$templateCache.get(templateName)) {

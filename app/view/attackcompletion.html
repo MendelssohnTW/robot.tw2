@@ -35,10 +35,13 @@
 				</div></td>
 			<td class="cell-space"><div tooltip
 					tooltip-content="{{enviarFull ? text_prog_full : text_prog}}">
-					<a id="button-prog" class="btn-border btn-orange btn-prog"><span
-						id="span-text" ng-click="sendAttack()">Programar</span></a>
+					<a id="button-prog" class="btn-border btn-orange btn-prog"
+						ng-click="sendAttack()"
+						ng-class="{'btn-grey': (armyEmpty || officerOffersVisible) && !btnActive}"><span
+						id="span-text">Programar</span></a>
 				</div></td>
 		</tr>
+
 
 	</tbody>
 </table>
