@@ -1,0 +1,32 @@
+<table class="tbl-border-light tbl-striped">
+	<colgroup>
+		<col width="40%">
+		<col width="60%">
+		<col width="*">
+	</colgroup>
+	<tbody>
+		<tr>
+			<td class="cell-space"><label for="input-date">{{text_date}}</label><input
+				id="input-date" class="input-border inputdate" type="date" value="{{date_init}}"></td>
+			<td class="cell-space"><label for="inputtime">{{text_hour}}</label><input
+				id="input-time" class="input-border inputtime" type="time" step="1"
+				min="00:00:00" max="23:59:59" value="{{hour_init}}"></td>
+			<td class="cell-space"><label for="input-ms">{{text_ms}}</label><input
+				id="input-ms" class="input-border inputcreated" type="number"
+				step="1" min="000" max="999" value="{{ms_init}}"></td>
+		</tr>
+		<tr>
+			<td class="cell-space">
+				<ul>
+					<li><a id="button-prog"
+						class="btn-border btn-orange btn-prog btn-grey"><span
+							id="span-text" ng-click="sendAttack()">Programar</span></a></li>
+					<li><div class="icon-26x26-dot-bg">
+							<span id="check-button" class="icon-26x26-dot-red"
+								  ng-click="toggleCheck()"></span>
+						</div></li>
+				</ul>
+			</td>
+		</tr>
+	</tbody>
+</table>

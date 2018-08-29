@@ -15,6 +15,93 @@ define("robotTW2/loadController", [
 	}
 })
 ,
+define("robotTW2/removeCommand", [
+	"robotTW2/database", 
+	"robotTW2/services",
+	"robotTW2/providers"
+	], function(
+			database, 
+			services,
+			providers
+	){
+	return function(id_command, db, timeoutId, opt_callback){
+		var dbase = database.get(db);
+		var comandos = dbase.COMMANDS;
+		comandos = comandos.filter(f => f.id_command != id_command);
+		if (timeoutId[id_command]){
+			services.$timeout.cancel(timeoutId[id_command]);
+			delete timeoutId[id_command]	
+		}
+		if(comandos){
+			dbase.COMMANDS = comandos;
+			database.set(db, dbase, true)
+			typeof(opt_callback) == "function" ? opt_callback() : null;
+		}
+	}
+})
+,
+define("robotTW2/addCommand", [
+	"robotTW2/database",
+	"robotTW2/conf",
+	"robotTW2/services",
+	"robotTW2/providers",
+	"robotTW2/data_attack",
+	"robotTW2/data_support"
+	], function(
+			database,
+			conf,
+			services,
+			providers,
+			data_attack,
+			data_support
+	){
+	return function(params, id_command, db, timeoutId, opt_callback){
+		var dbase = database.get(db);
+		var comandos = dbase.COMMANDS;
+		var t = {
+				id_command	: id_command,
+				type		: db
+		}
+		angular.merge(params, t);
+		var cmd = {
+				id_command: id_command,
+				params: params
+		}
+		var expires = 0;
+		var send = undefined;
+		var set = undefined;
+		switch (db){
+		case "data_attack" :{
+			expires = params.data_escolhida - params.duration
+			send = sendAttack;
+			set = data_attack.setAttack;
+			break
+		}
+		case "data_support" :{
+			expires = params.data_escolhida - params.TIME_SNIPER_ANT
+			send = sendSupport;
+			set = data_support.setSupport;
+			break
+		}
+		}
+
+		var timer_delay = expires - gameTime() - conf.TIME_CORRECTION_COMMAND;
+		if(timeoutId[id_command]){
+			$timeout.cancel(timeoutId[id_command])
+			delete (timeoutId[id_command])
+		}
+		if(timer_delay > 0){
+			timeoutId[id_command] = send(timer_delay, params, id_command, params.enviarFull);
+			!comandos.find(f => f.id_command == cmd.id_command) ? comandos.push(cmd) : null;
+		} else {
+			comandos = comandos.filter(f => f.id_command != cmd.id_command);
+			console.log("Comando da aldeia " + services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+		}
+		dbase.COMMANDS = comandos;
+		set(dbase)
+	}
+})
+,
 define("robotTW2/eventQueue", function() {
 	var events = {}
 	, service = {};
@@ -32,24 +119,35 @@ define("robotTW2/eventQueue", function() {
 	service
 })
 ,
-define("robotTW2/getScreen", [
+define("robotTW2/httpFormat", [
 	"robotTW2/templates",
 	"robotTW2/services"
 	], function(
 			templates,
 			services
 	){
-	!services.httpService.getUri ? services.httpService.getUri = services.httpService.get: null;
-	services.httpService.get = function(uri, onLoad){
-		if (0 === uri.indexOf("*")) {
-			uri = uri.substr(1);
-			templates.get(uri, onLoad)
-		} else {
-			services.httpService.getUri(uri, onLoad);
+	return function(){
+		!services.httpService.getUri ? services.httpService.getUri = services.httpService.get: null;
+		services.httpService.get = function(uri, onLoad){
+			if (0 === uri.indexOf("*")) {
+				uri = uri.substr(1);
+				templates.get(uri, onLoad)
+			} else {
+				services.httpService.getUri(uri, onLoad);
+			}
 		}
 	}
-
+})
+,
+define("robotTW2/getScreen", [
+	"robotTW2/services",
+	"robotTW2/httpFormat"
+	], function(
+			services,
+			httpFormat
+	){
 	return function(templateName, opt_scope, opt_loadCallback, opt_destroyCallback, opt_toggle){
+		httpFormat();
 		services.windowManagerService.getScreenWithInjectedScope("!*" + templateName, opt_scope, opt_loadCallback, opt_destroyCallback, opt_toggle);
 	}
 })
@@ -58,9 +156,6 @@ define("robotTW2/templates", [], function(){
 	var get = function(template, onLoad){
 		var onLoadWrapper = function onLoadWrapper(responseText) {
 			onLoad(responseText);
-//			if (!$rootScope.$$phase) {
-//			$rootScope.$apply();
-//			}
 		};
 		var docs = $("div[ng-include]");
 		var doc = docs.map(
@@ -211,7 +306,10 @@ define("robotTW2/conf", [
 			MIN_POINTS				: 0,
 			MAX_POINTS				: 12000,
 			MAP_CHUNCK_LEN 			: 30 / 2,
+			TIME_CORRECTION_COMMAND : -225,
+			MAX_CORRECTION_COMMAND 	: 3 * seg,
 			VERSION					: {
+				MAIN			: 2.01,
 				VILLAGES		: 2.01,
 				HEADQUARTER		: 2.03,
 				ALERT			: 2.01,
@@ -229,7 +327,8 @@ define("robotTW2/conf", [
 				HEADQUARTER	: h,
 				RECRUIT		: h,
 				DEPOSIT		: 15 * min,
-				ALERT		: 5 * min
+				ALERT		: 5 * min,
+				ATTACK		: h
 			},
 			HOTKEY					: {
 				MAIN 			: "ctrl+alt+p",

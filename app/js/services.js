@@ -3,6 +3,8 @@ define("robotTW2/services", [], function() {
 	return {
 		$timeout 				: injector.get("$timeout"),
 		$filter 				: injector.get("$filter"),
+		$templateCache 			: injector.get("$templateCache"),
+		$compile 				: injector.get("$compile"),
 		hotkeys 				: injector.get("hotkeys"),
 		modelDataService 		: injector.get("modelDataService"),
 		socketService 			: injector.get("socketService"),
@@ -13,7 +15,8 @@ define("robotTW2/services", [], function() {
 		villageService 			: injector.get("villageService"),
 		buildingService 		: injector.get("buildingService"),
 		overviewService 		: injector.get("overviewService"),
-		windowManagerService 	: injector.get("windowManagerService")
+		windowManagerService 	: injector.get("windowManagerService"),
+		armyService 			: injector.get("armyService")
 	}
 })
 ,

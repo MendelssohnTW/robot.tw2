@@ -24,50 +24,50 @@
 						<tr>
 							<td class="cell-right"><label for="tempo_de_percurso"
 								style="margin-left: 12px; margin-right: 12px;">{{time_max}}</label><input
-								class="input-border input-time" type="time"
+								class="input-border inputtime" type="time"
 								id="tempo_de_percurso" step="1" min="00:00:00" max="23:59:59"
 								value="{{tempo_de_percurso}}"></td>
 							<td class="cell-right"><label for="inicio_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
-								class="input-border input-time" type="time" id="inicio_de_farm"
+								class="input-border inputtime" type="time" id="inicio_de_farm"
 								step="1" min="00:00:00" max="23:59:59"
 								value="{{inicio_de_farm}}" ng-blur="blur()"></td>
 							<td class="cell-right"><label for="data_inicio_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
-								class="input-border input-date" type="date"
+								class="input-border inputdate" type="date"
 								id="data_inicio_de_farm" value="{{data_inicio_de_farm}}"
 								ng-blur="blur()"></td>
 						</tr>
 						<tr>
 							<td class="cell-right"><label for="tempo_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
-								class="input-border input-time" type="time" id="tempo_de_farm"
+								class="input-border inputtime" type="time" id="tempo_de_farm"
 								step="1" min="00:00:00" max="23:59:59" value="{{tempo_de_farm}}"></td>
 							<td class="cell-right"><label for="termino_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
-								class="input-border input-time" type="time" id="termino_de_farm"
+								class="input-border inputtime" type="time" id="termino_de_farm"
 								step="1" min="00:00:00" max="23:59:59"
 								value="{{termino_de_farm}}" ng-blur="blur()"></td>
 							<td class="cell-right"><label for="data_termino_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
-								class="input-border input-date" type="date"
+								class="input-border inputdate" type="date"
 								id="data_termino_de_farm" value="{{data_termino_de_farm}}"
 								ng-blur="blur()"></td>
 						</tr>
 						<tr>
 							<td class="cell-right"><label for="cmd_max"
 								style="margin-left: 12px; margin-right: 12px;">{{text_cmd_max}}</label><input
-								class="input-border input-created" type="number" id="cmd_max"
+								class="input-border inputcreated" type="number" id="cmd_max"
 								step="1" min="0" max="50" ng-model="data.MAX_COMMANDS"
 								></td>
 							<td class="cell-right"><label for="min_point"
 								style="margin-left: 12px; margin-right: 12px;">{{text_min_point}}</label><input
-								class="input-border input-created" type="number" id="min_point"
+								class="input-border inputcreated" type="number" id="min_point"
 								step="1" min="0" max="12000" ng-model="data.MIN_POINTS"
 								></td>
 							<td class="cell-right"><label for="max_point"
 								style="margin-left: 12px; margin-right: 12px;">{{text_max_point}}</label><input
-								class="input-border input-created" type="number" id="max_point"
+								class="input-border inputcreated" type="number" id="max_point"
 								step="1" min="00" max="12000" ng-model="data.MAX_POINTS"
 								></td>
 						</tr>

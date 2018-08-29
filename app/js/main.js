@@ -85,6 +85,7 @@ define("robotTW2/main/ui", [
 		$scope.introducing = services.$filter("i18n")("introducing", $rootScope.loc.ale, "main");
 		$scope.settings = services.$filter("i18n")("settings", $rootScope.loc.ale, "main");
 		$scope.settings_module = services.$filter("i18n")("settings_module", $rootScope.loc.ale, "main");
+		$scope.settings_main = services.$filter("i18n")("settings_main", $rootScope.loc.ale, "main");
 		$scope.init_standard = services.$filter("i18n")("init_standard", $rootScope.loc.ale, "main");
 		$scope.module = services.$filter("i18n")("module", $rootScope.loc.ale, "main");
 		$scope.text_hotkey = services.$filter("i18n")("text_hotkey", $rootScope.loc.ale, "main");
@@ -93,23 +94,28 @@ define("robotTW2/main/ui", [
 		$scope.stopped = services.$filter("i18n")("stopped", $rootScope.loc.ale, "main");
 		$scope.paused = services.$filter("i18n")("paused", $rootScope.loc.ale, "main");
 		$scope.state = services.$filter("i18n")("state", $rootScope.loc.ale, "main");
+		$scope.text_max_time_correction = services.$filter("i18n")("text_max_time_correction", $rootScope.loc.ale, "main");
+		$scope.text_time_correction_command = services.$filter("i18n")("text_time_correction_command", $rootScope.loc.ale, "main");
+
 		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		
+
 		$scope.text_interval_deposit = services.$filter("i18n")("text_interval_deposit", $rootScope.loc.ale, "deposit");
 		$scope.use_reroll_deposit = services.$filter("i18n")("use_reroll_deposit", $rootScope.loc.ale, "deposit");
 		$scope.settings_deposit = services.$filter("i18n")("settings", $rootScope.loc.ale, "deposit");
-		
+
 		$scope.settings_recon = services.$filter("i18n")("settings", $rootScope.loc.ale, "recon");
-		
+
+		$scope.data_main = data_main.getMain();
 		$scope.extensions = data_main.getExtensions();
+
 		$scope.extensions_copy = {};
 		$scope.hotkeys = conf.HOTKEY;
-		
+
 		$scope.data_deposit = data_deposit.getDeposit();
-		
+
 		angular.merge($scope.extensions_copy, $scope.extensions);
-		
+
 		for (ext in $scope.extensions){
 			var fn = requestFn.get(ext.toLowerCase(), true);
 			if(!fn){
@@ -123,6 +129,10 @@ define("robotTW2/main/ui", [
 				}
 			}
 			!$scope.extensions_copy[ext].ISRUNNING ? $scope.extensions_copy[ext].STATUS = $scope.stopped : ($scope.extensions_copy[ext].ISPAUSED ? $scope.extensions_copy[ext].STATUS = $scope.paused : $scope.extensions_copy[ext].STATUS = $scope.running)
+		}
+
+		$scope.saveCorrection = function(){
+			data_main.setMain($scope.data_main);
 		}
 
 		$scope.toggleValueState = function(ext) {
@@ -148,17 +158,17 @@ define("robotTW2/main/ui", [
 			}
 			angular.merge($scope.extensions_copy, $scope.extensions);
 		};
-		
-		
+
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+			if(!data){return} 
 			var fn = requestFn.get(data.name.toLowerCase(), true);
 			$scope.extensions_copy[data.name].ISRUNNING = fn.isRunning();
 			!$scope.extensions_copy[data.name].ISRUNNING ? $scope.extensions_copy[data.name].STATUS = $scope.stopped : ($scope.extensions_copy[data.name].ISPAUSED ? $scope.extensions_copy[data.name].STATUS = $scope.paused : $scope.extensions_copy[data.name].STATUS = $scope.running)
-			if(typeof(fn.isPaused)=="function"){
-				$scope.extensions_copy[data.name].ISPAUSED = fn.isPaused()
-			} else {
-				$scope.extensions_copy[data.name].ISPAUSED = false;
-			}
+					if(typeof(fn.isPaused)=="function"){
+						$scope.extensions_copy[data.name].ISPAUSED = fn.isPaused()
+					} else {
+						$scope.extensions_copy[data.name].ISPAUSED = false;
+					}
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
@@ -169,12 +179,12 @@ define("robotTW2/main/ui", [
 			data_main.setExtensions($scope.extensions);
 			angular.merge($scope.extensions_copy, $scope.extensions);
 		};
-		
-		
+
+
 		/*
 		 * Deposit
 		 */
-		
+
 		$scope.interval_deposit = helper.readableMilliseconds(data_deposit.getTimeCicle())
 		$scope.data_deposit.COMPLETED_AT ? $scope.deposit_completed_at = $scope.data_deposit.COMPLETED_AT : $scope.deposit_completed_at = 0;
 
@@ -185,7 +195,6 @@ define("robotTW2/main/ui", [
 
 		$scope.$watch("data_deposit.USE_REROLL", function(){
 			data_deposit.setDeposit($scope.data_deposit)
-			if (!$scope.$$phase) $scope.$apply();
 		})
 
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function() {
@@ -194,27 +203,25 @@ define("robotTW2/main/ui", [
 				$scope.$apply();
 			}
 		})
-		
-		
+
+
 		/*
 		 * Recon
 		 */
-		
+
 		$scope.getKey = function(k){
 			return services.$filter("i18n")(k, $rootScope.loc.ale, "recon");
 		}
-		
+
 		$scope.getClass = function(k){
-			return "icon-20x20-unit-" + Object.keys(k)[0];
+			return "icon-20x20-unit-" + k;
 		}
-		
+
 		$scope.data_recon = data_recon.getRecon();
-		
+
 		$scope.$watchCollection("data_recon.RENAME", function(){
 			data_recon.setRecon($scope.data_recon)
-			if (!$scope.$$phase) $scope.$apply();
 		})
-		
 
 		if (!$scope.$$phase) {
 			$scope.$apply();

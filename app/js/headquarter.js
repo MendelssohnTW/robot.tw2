@@ -150,8 +150,10 @@ define("robotTW2/headquarter", [
 			, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 			, firstQueue = queues[0];
 
+			var premiumActionService = injector.get("premiumActionService");
+
 			if(firstQueue && firstQueue.canBeFinishedForFree){
-				services.premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
+				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 				return upgradeBuilding(village_id)
 
 			}

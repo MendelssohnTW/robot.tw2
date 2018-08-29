@@ -48,8 +48,8 @@ define("robotTW2/data_main", [
 			conf,
 			services
 	) {
-	var data_main = {}
-	return data_main.setExtensions = function(extensions){
+
+	var setExtensions = function(extensions){
 		for (var extension in extensions){
 			var string = "data_" + extension.toLowerCase();
 			var db = database.get(string)
@@ -61,7 +61,8 @@ define("robotTW2/data_main", [
 			}
 		}
 	}
-	, data_main.getExtensions = function(){
+
+	var getExtensions = function(){
 		var extensions = {
 				HEADQUARTER		: {
 					ATIVATE : database.get("data_headquarter") ? database.get("data_headquarter").ATIVATE : false,
@@ -116,12 +117,218 @@ define("robotTW2/data_main", [
 							INIT_ATIVATE : database.get("data_recon") ? database.get("data_recon").INIT_ATIVATE : false,
 									ENABLED : database.get("data_recon") ? database.get("data_recon").ENABLED : false,
 											name : "RECON"
-				},
+				}
 		}
-		return extensions
+		return extensions;
 	}
-	, data_main
 
+	var setMain = function(data_main){
+		if(data_main){
+			database.set("data_main", data_main, true)
+		}
+	}
+
+	var getMain = function(){
+		return database.get("data_main")
+	}
+
+	var data_main = database.get("data_main");
+	var dataNew = {
+			MAX_TIME_CORRECTION		: conf.MAX_TIME_CORRECTION,
+			TIME_CORRECTION_COMMAND	: conf.TIME_CORRECTION_COMMAND,
+			HOTKEY					: conf.HOTKEY.MAIN,
+			VERSION					: conf.VERSION.MAIN
+	}
+
+	if(!data_main){
+		data_main = dataNew
+		database.set("data_main", data_main, true)
+	} else {
+		if(!data_main.VERSION || data_main.VERSION < conf.VERSION.ATTACK){
+			notify("data_main");
+			data_main = dataNew
+			database.set("data_main", data_main, true)
+		} else {
+			if(!data_main.INIT_ATIVATE) data_main.ATIVATE = !1;
+			if(data_main.INIT_ATIVATE) data_main.ATIVATE = !0;
+			database.set("data_main", data_main, true)		
+		}
+	}
+
+
+	var fn = {
+			setExtensions				: setExtensions,
+			getExtensions				: getExtensions,
+			setMain						: setMain,
+			getMain						: getMain
+	}
+
+	Object.setPrototypeOf(data_main, fn);
+
+	return data_main;
+
+
+})
+,
+define("robotTW2/data_attack", [
+	"robotTW2/database",
+	"robotTW2/conf",
+	"robotTW2/services",
+	"robotTW2/notify"
+	], function(
+			database,
+			conf,
+			services,
+			notify
+	) {
+	var setAttack = function(data_attack){
+		if(data_attack){
+			database.set("data_attack", data_attack, true)
+		}
+	}
+
+	var getAttack = function(){
+		return database.get("data_attack")
+	}
+
+	var getTimeCicle = function(){
+		return database.get("data_attack").INTERVAL
+	}
+
+	var setTimeCicle = function(timecicle){
+		if(timecicle){
+			var data = database.get("data_attack")
+			data.INTERVAL = timecicle
+			database.set("data_attack", data, true)
+		}
+	}
+
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_attack")
+			data.COMPLETED_AT = time
+			database.set("data_attack", data, true)
+		}
+	}
+
+	var data_attack = database.get("data_attack");
+	var dataNew = {
+			INIT_ATIVATE			: false,
+			ATIVATE 				: false,
+			ENABLED 				: false,
+			HOTKEY					: conf.HOTKEY.ATTACK,
+			INTERVAL				: conf.INTERVAL.ATTACK,
+			VERSION					: conf.VERSION.ATTACK,
+			COMMANDS				: []
+	}
+
+	if(!data_attack){
+		data_attack = dataNew
+		database.set("data_attack", data_attack, true)
+	} else {
+		if(!data_attack.VERSION || data_attack.VERSION < conf.VERSION.ATTACK){
+			notify("data_attack");
+			data_attack = dataNew
+			database.set("data_attack", data_attack, true)
+		} else {
+			if(!data_attack.INIT_ATIVATE) data_attack.ATIVATE = !1;
+			if(data_attack.INIT_ATIVATE) data_attack.ATIVATE = !0;
+			database.set("data_attack", data_attack, true)		
+		}
+	}
+
+	var fn = {
+			setAttack				: setAttack,
+			getAttack				: getAttack,
+			getTimeCicle			: getTimeCicle,
+			setTimeCicle			: setTimeCicle,
+			setTimeComplete			: setTimeComplete
+	}
+
+	Object.setPrototypeOf(data_attack, fn);
+
+	return data_attack;
+})
+,
+define("robotTW2/data_support", [
+	"robotTW2/database",
+	"robotTW2/conf",
+	"robotTW2/services",
+	"robotTW2/notify"
+	], function(
+			database,
+			conf,
+			services,
+			notify
+	) {
+	var setSupport = function(data_support){
+		if(data_support){
+			database.set("data_support", data_support, true)
+		}
+	}
+
+	var getSupport = function(){
+		return database.get("data_support")
+	}
+
+	var getTimeCicle = function(){
+		return database.get("data_support").INTERVAL
+	}
+
+	var setTimeCicle = function(timecicle){
+		if(timecicle){
+			var data = database.get("data_support")
+			data.INTERVAL = timecicle
+			database.set("data_support", data, true)
+		}
+	}
+
+	var setTimeComplete = function(time){
+		if(time){
+			var data = database.get("data_support")
+			data.COMPLETED_AT = time
+			database.set("data_support", data, true)
+		}
+	}
+
+	var data_support = database.get("data_support");
+	var dataNew = {
+			INIT_ATIVATE			: false,
+			ATIVATE 				: false,
+			ENABLED 				: false,
+			TIME_CORRECTION_COMMAND	: conf.TIME_CORRECTION_COMMAND,
+			HOTKEY					: conf.HOTKEY.ATTACK,
+			INTERVAL				: conf.INTERVAL.ATTACK,
+			VERSION					: conf.VERSION.ATTACK,
+			COMMANDS				: []
+	}
+
+	if(!data_support){
+		data_support = dataNew
+		database.set("data_support", data_support, true)
+	} else {
+		if(!data_support.VERSION || data_support.VERSION < conf.VERSION.SUPPORT){
+			notify("data_support");
+			data_support = dataNew
+			database.set("data_support", data_support, true)
+		} else {
+			if(!data_support.INIT_ATIVATE) data_support.ATIVATE = !1;
+			if(data_support.INIT_ATIVATE) data_support.ATIVATE = !0;
+			database.set("data_support", data_support, true)		
+		}
+	}
+
+	var fn = {
+			setSupport				: setSupport,
+			getSupport				: getSupport,
+			getTimeCicle			: getTimeCicle,
+			setTimeCicle			: setTimeCicle,
+			setTimeComplete			: setTimeComplete
+	}
+
+	Object.setPrototypeOf(data_support, fn);
+
+	return data_support;
 })
 ,
 define("robotTW2/data_headquarter", [
@@ -156,7 +363,7 @@ define("robotTW2/data_headquarter", [
 			database.set("data_headquarter", data, true)
 		}
 	}
-	
+
 	var setTimeComplete = function(time){
 		if(time){
 			var data = database.get("data_headquarter")
@@ -303,7 +510,7 @@ define("robotTW2/data_deposit", [
 			database.set("data_deposit", data, true)
 		}
 	}
-	
+
 	var setTimeComplete = function(time){
 		if(time){
 			var data = database.get("data_deposit")
@@ -383,7 +590,7 @@ define("robotTW2/data_recruit", [
 			database.set("data_recruit", data, true)
 		}
 	}
-	
+
 	var setTimeComplete = function(time){
 		if(time){
 			var data = database.get("data_recruit")
@@ -471,7 +678,7 @@ define("robotTW2/data_spy", [
 			database.set("data_spy", data, true)
 		}
 	}
-	
+
 	var setTimeComplete = function(time){
 		if(time){
 			var data = database.get("data_spy")
@@ -563,7 +770,7 @@ define("robotTW2/data_alert", [
 			database.set("data_alert", data, true)
 		}
 	}
-	
+
 	var setTimeComplete = function(time){
 		if(time){
 			var data = database.get("data_alert")
@@ -571,7 +778,7 @@ define("robotTW2/data_alert", [
 			database.set("data_alert", data, true)
 		}
 	}
-	
+
 	var data_alert = database.get("data_alert");
 	var dataNew = {
 			INIT_ATIVATE			: false,
@@ -682,7 +889,7 @@ define("robotTW2/data_farm", [
 			database.set("data_farm", data_farm, true)
 		}
 	}
-	
+
 	var setTimeComplete = function(time){
 		if(time){
 			var data = database.get("data_farm")

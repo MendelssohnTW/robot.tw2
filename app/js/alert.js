@@ -15,7 +15,7 @@ define("robotTW2/alert", [
 	, listener_alert_ready = undefined
 	, listener_tab_alert = undefined
 	, notifyAttacks = function() {
-		$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Jogadores sob ataque!"})
+		$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: "Jogadores sob ataque!"})
 	}
 	, verify_alert = function(){
 		try {

@@ -64,7 +64,10 @@ var scr = document.createElement("link");
 scr.setAttribute("rel", "stylesheet");
 scr.setAttribute("type", "text/css");
 scr.setAttribute("href", "https://mendelssohntw.github.io/robot.tw2/app/css/main.css");
-(document.head || document.body || document.documentElement).appendChild(scr);
+setTimeout(function(){
+	(document.head || document.body || document.documentElement).appendChild(scr)
+	}, 1000)
+
 
 if (!window.checkHTML){
 	window.checkHTML = function () {

@@ -100,6 +100,42 @@
 												<col width="*">
 											</colgroup>
 											<tbody>
+											<tr>
+													<td>
+														<div>
+															<h5 class="twx-section collapse">{{settings_main}}</h5>
+															<div>
+																<table class="tbl-border-light tbl-striped"
+																	id="preset-list">
+																	<colgroup>
+																		<col width="*">
+																		<col width="34px">
+																	</colgroup>
+																	<tbody>
+																		<tr>
+																			<td class="cell-right"><label
+																				for="time_correction_command">{{text_time_correction_command}}</label><input
+																				id="time_correction_command"
+																				class="input-border inputcreated disabled"
+																				type=text ng-model="data_main.TIME_CORRECTION_COMMAND" disabled></td>
+																			<td></td>
+																		</tr>
+																		<tr>
+																			<td class="cell-right"><label
+																				for="max_time_correction">{{text_max_time_correction}}</label><input
+																				id="max_time_correction"
+																				class="input-border inputcreated"
+																				type=text ng-model="data_main.MAX_TIME_CORRECTION"></td>
+																			<td class="cell-right"><div class="position-absolute btn-green size-34x34 icon-26x26-check-positive" ng-click="saveCorrection()"></div></td>
+																		</tr>
+
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</td>
+												</tr>
+												
 												<tr>
 													<td>
 														<div ng-show="extensions.DEPOSIT.ATIVATE">
@@ -116,7 +152,7 @@
 																			<td class="cell-right"><label
 																				for="interval_deposit">{{text_interval_deposit}}</label><input
 																				id="interval_deposit"
-																				class="input-border input-created disabled"
+																				class="input-border inputtime disabled"
 																				type=text value="{{interval_deposit}}" disabled></td>
 																			<td class="cell-right"><label
 																				for="checkbox-interval-deposit">{{use_reroll_deposit}}</label>
