@@ -18,11 +18,9 @@
 				id="input-ms" class="input-border inputcreated" type="number"
 				step="1" min="000" max="999" value="{{ms_init}}"></td>
 			<td class="cell-space"><div class="checkbox box-border-dark">
-					<div tooltip
-						tooltip-content="{{text_full + ' = ' + enviarFull}}"
-						switch-slider="" border="true" enabled="true"
-						value="enviarFull" ng-model="enviarFull"
-						vertical="false" size="'56x28'">
+					<div tooltip tooltip-content="{{text_full + ' = ' + enviarFull}}"
+						switch-slider="" border="true" enabled="true" value="enviarFull"
+						ng-click="toggleFull(this)" vertical="false" size="'56x28'">
 						<div ng-class="{'box-border-dark box-filter': border}"
 							class="box-border-dark box-filter">
 							<div class="switch switch-56x28 switch-horizontal"
@@ -35,9 +33,11 @@
 						</div>
 					</div>
 				</div></td>
-			<td class="cell-space"><a id="button-prog"
-				class="btn-border btn-orange btn-prog" ng-class="{'btn-grey': !btnActive}"><span
-					id="span-text" ng-click="sendAttack()">Programar</span></a></td>
+			<td class="cell-space"><div tooltip
+					tooltip-content="{{enviarFull ? text_prog_full : text_prog}}">
+					<a id="button-prog" class="btn-border btn-orange btn-prog"><span
+						id="span-text" ng-click="sendAttack()">Programar</span></a>
+				</div></td>
 		</tr>
 
 	</tbody>

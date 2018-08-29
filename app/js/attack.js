@@ -291,19 +291,30 @@ define("robotTW2/attack", [
 				$scope.text_hour = services.$filter("i18n")("text_hour", $rootScope.loc.ale, "attack");
 				$scope.text_ms = services.$filter("i18n")("text_ms", $rootScope.loc.ale, "attack");
 				$scope.text_full = services.$filter("i18n")("text_full", $rootScope.loc.ale, "attack");
+				$scope.text_prog_full = services.$filter("i18n")("text_prog_full", $rootScope.loc.ale, "attack");
+				$scope.text_prog = services.$filter("i18n")("text_prog", $rootScope.loc.ale, "attack");
 				$scope.date_init = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd")
 				$scope.hour_init = services.$filter("date")(new Date(helper.gameTime()), "HH:mm:ss")
 				$scope.ms_init = 0;
 
 				$scope.enviarFull = false;
+				$scope.btnAtive = toggle($scope);
 
 				$scope.sendAttack = function(){
 					sendCommandAttack($scope)
 				}
 
-				$scope.btnAtive = verificar();
+				$scope.toggleFull = function(elem){
+					
+					$scope.enviarFull = elem.enviarFull;
+					if (!$scope.$$phase) {
+						$scope.$apply();
+					}
+				}
+				
 				$scope.$watch("unitsToSend", function(){
-					toggle($scope)
+					
+					$scope.btnAtive = toggle($scope);
 					if (!$scope.$$phase) {
 						$scope.$apply();
 					}

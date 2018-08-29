@@ -173,7 +173,9 @@ define("robotTW2/pt_br", function() {
 			"text_date"					: "Data",
 			"text_hour"					: "Hora",
 			"text_ms"					: "Milisegundos",
-			"text_full"					: "Enviar todas as unidades"
+			"text_full"					: "Enviar todas as unidades",
+			"text_prog_full"			: "Programar hora de saída na origem",
+			"text_prog"					: "Programar hora de chegada no alvo"
 		}
 	}
 })
