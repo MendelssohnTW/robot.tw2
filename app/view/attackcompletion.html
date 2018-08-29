@@ -1,32 +1,30 @@
 <table class="tbl-border-light tbl-striped robotTW2">
 	<colgroup>
-		<col width="40%">
-		<col width="60%">
+		<col width="165px">
+		<col width="145px">
+		<col width="145px">
 		<col width="*">
+		<col width="160px">
 	</colgroup>
 	<tbody>
 		<tr>
 			<td class="cell-space"><label for="input-date">{{text_date}}</label><input
-				id="input-date" class="input-border inpd" type="date" value="{{date_init}}"></td>
+				id="input-date" class="input-border inpd" type="date"
+				value="{{date_init}}"></td>
 			<td class="cell-space"><label for="input-time">{{text_hour}}</label><input
 				id="input-time" class="input-border inpt" type="time" step="1"
 				min="00:00:00" max="23:59:59" value="{{hour_init}}"></td>
 			<td class="cell-space"><label for="input-ms">{{text_ms}}</label><input
 				id="input-ms" class="input-border inputcreated" type="number"
 				step="1" min="000" max="999" value="{{ms_init}}"></td>
+			<td class="cell-space"><div class="icon-26x26-dot-bg">
+					<span id="check-button" class="icon-26x26-dot-red"
+						ng-click="toggleCheck()"></span>
+				</div></td>
+			<td class="cell-space"><a id="button-prog"
+				class="btn-border btn-orange btn-prog btn-grey"><span
+					id="span-text" ng-click="sendAttack()">Programar</span></a></td>
 		</tr>
-		<tr>
-			<td class="cell-space">
-				<ul>
-					<li><a id="button-prog"
-						class="btn-border btn-orange btn-prog btn-grey"><span
-							id="span-text" ng-click="sendAttack()">Programar</span></a></li>
-					<li><div class="icon-26x26-dot-bg">
-							<span id="check-button" class="icon-26x26-dot-red"
-								  ng-click="toggleCheck()"></span>
-						</div></li>
-				</ul>
-			</td>
-		</tr>
+
 	</tbody>
 </table>
