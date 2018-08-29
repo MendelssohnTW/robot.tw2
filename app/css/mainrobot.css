@@ -100,3 +100,9 @@
 .robotTW2 .low {
 	font-size: 12px;
 }
+
+.robotTW2 .btn-border {
+    font-size: 14px;
+    line-height: 28px;
+    min-width: 150px;
+}

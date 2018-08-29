@@ -172,7 +172,8 @@ define("robotTW2/pt_br", function() {
 		"attack": {
 			"text_date"					: "Data",
 			"text_hour"					: "Hora",
-			"text_ms"					: "Milisegundos"
+			"text_ms"					: "Milisegundos",
+			"text_full"					: "Enviar todas as unidades"
 		}
 	}
 })
