@@ -307,6 +307,7 @@ define("robotTW2/conf", [
 			MAX_POINTS				: 12000,
 			MAP_CHUNCK_LEN 			: 30 / 2,
 			TIME_CORRECTION_COMMAND : -225,
+			TIME_DELAY_UPDATE		: 30 * seg,
 			MAX_CORRECTION_COMMAND 	: 3 * seg,
 			VERSION					: {
 				MAIN			: 2.01,

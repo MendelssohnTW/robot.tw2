@@ -15,6 +15,7 @@ define("robotTW2/pt_br", function() {
 		"LEVEL"				: "Ní­vel",
 		"CLOSE"				: "Fechar",
 		"RESTORE"			: "Restaurar",
+		"SCHEDULE"			: "Programar",
 		"CLEAR"				: "Limpar",
 		"START"				: "Iniciar",
 		"STOP"				: "Parar",
