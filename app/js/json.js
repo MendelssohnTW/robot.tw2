@@ -161,6 +161,7 @@ define("robotTW2/pt_br", function() {
 			"use_reroll_deposit"		: "Sortear novamente automático"
 		},
 		"notify": {
+			"data_main"					: "Robot TW2 - Banco de dados (MAIN) atualizado",
 			"data_recon"				: "Robot TW2 - Banco de dados (RECON) atualizado, reative o módulo RECON",
 			"data_headquarter"			: "Robot TW2 - Banco de dados (HEADQUARTER) atualizado, reative o módulo HEADQUARTER",
 			"data_deposit"				: "Robot TW2 - Banco de dados (DEPOSIT) atualizado, reative o módulo DEPOSIT",
