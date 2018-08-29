@@ -60,18 +60,17 @@ if (!window.injectHTML){
 	};
 }
 
-var scr = document.createElement("link");
-scr.setAttribute("rel", "stylesheet");
-scr.setAttribute("type", "text/css");
-scr.setAttribute("href", "https://mendelssohntw.github.io/robot.tw2/app/css/mainrobot.css");
-setTimeout(function(){
-	document.head.appendChild(scr)
-	}, 3000)
 
 
 if (!window.checkHTML){
 	window.checkHTML = function () {
-		if (document.getElementById("interface-bottom")) {
+		if (document.getElementById("interface-bottom")) {var scr = document.createElement("link");
+		scr.setAttribute("rel", "stylesheet");
+		scr.setAttribute("type", "text/css");
+		scr.setAttribute("href", "https://mendelssohntw.github.io/robot.tw2/app/css/mainrobot.css");
+
+			document.head.appendChild(scr)
+			
 			injectHTML([
 				urlServer + "view/main.html", 
 				urlServer + "view/headquarter.html", 
