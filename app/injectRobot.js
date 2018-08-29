@@ -74,12 +74,9 @@ if (!window.checkHTML){
 				urlServer + "view/headquarter.html", 
 				urlServer + "view/farm.html",
 				urlServer + "view/alert.html",
-				urlServer + "view/recon.html",
-				urlServer + "view/spy.html",
 				urlServer + "view/recruit.html",
 				urlServer + "view/attack.html",
-				urlServer + "view/defense.html",
-				urlServer + "view/deposit.html"
+				urlServer + "view/defense.html"
 				]);
 		} else {
 			setTimeout(checkHTML, 1000);

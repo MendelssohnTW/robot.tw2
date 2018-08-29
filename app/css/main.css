@@ -42,12 +42,6 @@
 	max-width: 104px
 }
 
-.robotTW2 .input-created {
-	width: 70px;
-	height: 26px;
-	line-height: 20px;
-}
-
 .robotTW2 label {
 	margin-left: 6px;
 	margin-right: 6px;
@@ -58,12 +52,14 @@
 	width: 120px;
 	height: 26px;
 	line-height: 20px;
+	font-size: 12px;
 }
 
 .robotTW2 .input-date {
 	width: 160px;
 	height: 26px;
 	line-height: 20px;
+	font-size: 12px;
 }
 
 .robotTW2 .selected {
@@ -76,9 +72,12 @@
 	background: #5f482e;
 }
 
-.robotTW2 .recruit .input-created {
-	min-width: 50px;
+.robotTW2 .input-created {
+	width: 50px;
+	min-width: 40px;
 	font-size: 12px;
+	line-height: 20px;
+	height: 26px;
 }
 
 .robotTW2 .recruit .input-list-collapse {
@@ -86,16 +85,6 @@
 	min-width: 70px;
 	height: 26px;
 	line-height: 20px;
-}
-
-.robotTW2 .headquarter .input-created {
-	min-width: 50px;
-	font-size: 12px;
-}
-
-.robotTW2 .main .input-created {
-	min-width: 50px;
-	font-size: 12px;
 }
 
 .robotTW2 .list-collapse {
