@@ -53,6 +53,7 @@
 	height: 26px;
 	line-height: 20px;
 	font-size: 12px;
+	min-width: 40px;
 }
 
 .robotTW2 .inputdate {
@@ -60,6 +61,7 @@
 	height: 26px;
 	line-height: 20px;
 	font-size: 12px;
+	min-width: 40px;
 }
 
 .robotTW2 .selected {
