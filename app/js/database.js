@@ -146,7 +146,7 @@ define("robotTW2/data_main", [
 		data_main = dataNew
 		database.set("data_main", data_main, true)
 	} else {
-		if(!data_main.VERSION || data_main.VERSION < conf.VERSION.ATTACK){
+		if(!data_main.VERSION || data_main.VERSION < conf.VERSION.MAIN){
 			notify("data_main");
 			data_main = dataNew
 			database.set("data_main", data_main, true)
@@ -529,7 +529,7 @@ define("robotTW2/data_deposit", [
 			USE_REROLL				: false,
 			HOTKEY					: conf.HOTKEY.DEPOSIT,
 			VERSION					: conf.VERSION.DEPOSIT,
-			INTERVAL				: conf.INTERVAL.DEPOSIT,
+			INTERVAL				: conf.INTERVAL.DEPOSIT
 	}
 
 	if(!data_deposit){

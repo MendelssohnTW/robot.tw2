@@ -177,7 +177,11 @@ define("robotTW2/pt_br", function() {
 			"text_ms"					: "Milisegundos",
 			"text_full"					: "Enviar todas as unidades",
 			"text_prog_full"			: "Programar hora de saída na origem",
-			"text_prog"					: "Programar hora de chegada no alvo"
+			"text_prog"					: "Programar hora de chegada no alvo",
+			"title"						: "Comandos programados",
+			"command_list"				: "Lista de comandos",
+			"ident_cmd"					: "Identificação do comando",
+			"exclude_button"			: "Excluir comando"
 		}
 	}
 })

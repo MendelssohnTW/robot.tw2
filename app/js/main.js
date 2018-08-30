@@ -145,11 +145,15 @@ define("robotTW2/main/ui", [
 			var fn = requestFn.get(ext.name.toLowerCase(), true);
 			if(ext.ATIVATE){
 				if(!fn.isInitialized()){
-					fn.init();
+					if(ext.name != "FARM"){
+						fn.init();
+					}
 					if(typeof(fn.build) == "function"){fn.build()}
 					if(typeof(fn.analytics) == "function"){fn.analytics()}
 				} else {
-					fn.start();
+					if(ext.name != "FARM"){
+						fn.start();
+					}
 				}
 			} else {
 				if(fn.isRunning()){
@@ -179,6 +183,13 @@ define("robotTW2/main/ui", [
 			data_main.setExtensions($scope.extensions);
 			angular.merge($scope.extensions_copy, $scope.extensions);
 		};
+
+		$rootScope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
+			$scope.data_main = data_main.getMain();
+			if (!$scope.$$phase) {
+				$scope.$apply();
+			}
+		})
 
 
 		/*

@@ -57,9 +57,13 @@ define("robotTW2/deposit", [
 	, verify_deposit = function() {
 		services.socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
 		var resourceDepositModel = services.modelDataService.getSelectedCharacter().getResourceDeposit();
-		var currentJob;
 		if (isRunning && resourceDepositModel != undefined && data_deposit.getDeposit().ATIVATE) {
-			if(!resourceDepositModel.getCurrentJob()){
+			var currentJob = resourceDepositModel.getCurrentJob();
+			if(currentJob && data_deposit.getDeposit().ATIVATE){
+				data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
+				$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
+				wait();
+			} else {
 				if (collectibleJobs()) {
 					var job = resourceDepositModel.getCollectibleJobs().shift();
 					job ? collectJob(job) : null;
@@ -72,32 +76,39 @@ define("robotTW2/deposit", [
 						services.socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
 							village_id: services.modelDataService.getSelectedVillage().getId(),
 							item_id: reroll.id
-						}, function(){verify_deposit()})
+						}, function(){
+							verify_deposit()
+							return
+						})
 					}
 					wait();
+					return
 				}
-			} else {
-				wait();
 			}
 		}
 	}
-	, setList = function(){
+	, setList = function(callback){
 		list.push(conf.INTERVAL.DEPOSIT)
 		list.push(data_deposit.getTimeCicle())
 		var t = Math.min.apply(null, list)
+		t < 3000 ? t = 3000 : t;
 		data_deposit.setTimeCicle(t)
 		data_deposit.setTimeComplete(helper.gameTime() + t)
 		list = [];
 		$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
+		if(callback && typeof(callback) == "function"){callback(t)}
 	}
 	, wait = function(){
-		setList();
-		if(!interval_deposit){
-			interval_deposit = services.$timeout(verify_deposit, data_deposit.getTimeCicle())
-		} else {
-			services.$timeout.cancel(interval_deposit);
-			interval_deposit = services.$timeout(verify_deposit, data_deposit.getTimeCicle())
-		}
+		setList(function(tm){
+			if(!interval_deposit){
+				interval_deposit = services.$timeout(function(){verify_deposit()}, tm)
+			} else {
+				services.$timeout.cancel(interval_deposit);
+				interval_deposit = undefined;
+				interval_deposit = services.$timeout(function(){verify_deposit()}, tm)
+			}	
+		});
+
 	}
 	, init = function (){
 		isInitialized = !0

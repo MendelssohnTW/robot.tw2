@@ -9,8 +9,183 @@
 	<div class="win-main" scrollbar="" style="position: relative;">
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap attack" style="margin-bottom: 80px">
-				<h5 class="twx-section collapse">{{settings}}</h5>
+				<h5 class="twx-section collapse">{{command_list}}</h5>
+				<div>
+					<table class="tbl-border-light tbl-striped">
+						<colgroup>
+							<col width="*">
+							<col width="235px">
+							<col width="235px">
+							<col width="45px">
+							<col width="60px">
+							<col width="100px">
+							<col width="100px">
+
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+
+							<col width="34px">
+						</colgroup>
+						<tr>
+							<td class="cell-center"><span>{{ident_cmd}}</span></td>
+							<td class="cell-center"><span
+								class="icon icon-34x34-units-outgoing"></span></td>
+							<td class="cell-center"><span
+								class="icon icon-34x34-village"></span></td>
+							<td class="cell-center"><span
+								class="icon icon-34x34-time-remaining"></span></td>
+							<td class="cell-center"><span class="icon icon-26x26-time"></span></td>
+							<td class="cell-center"><span
+								class="icon icon-34x34-time-completed"></span></td>
+							<td class="cell-center"><span>Data</span></td>
+
+							<td class="cell-center"><span class="icon-34x34-unit-spear"></span></td>
+							<td class="cell-center"><span class="icon-34x34-unit-sword"></span></td>
+							<td class="cell-center"><span class="icon-34x34-unit-axe"></span></td>
+							<td class="cell-center"><span class="icon-34x34-unit-archer"></span></td>
+							<td class="cell-center"><span
+								class="icon-34x34-unit-light_cavalry"></span></td>
+							<td class="cell-center"><span
+								class="icon-34x34-unit-mounted_archer"></span></td>
+							<td class="cell-center"><span
+								class="icon-34x34-unit-heavy_cavalry"></span></td>
+							<td class="cell-center"><span class="icon-34x34-unit-ram"></span></td>
+							<td class="cell-center"><span
+								class="icon-34x34-unit-catapult"></span></td>
+							<td class="cell-center"><span
+								class="icon-34x34-unit-doppelsoldner"></span></td>
+							<td class="cell-center"><span
+								class="icon-34x34-unit-trebuchet"></span></td>
+							<td class="cell-center"><span class="icon-34x34-unit-snob"></span></td>
+							<td class="cell-center"><span class="icon-34x34-unit-knight"></span></td>
+							<td class="cell-center"></td>
+						</tr>
+						<tr ng-repeat="comando in comandos">
+							<td class="cell-center"><span>{{comando.id_command}}</span></td>
+							<td class="cell-center">
+								<div>
+									<span>{{getVstart(comando.params.start_village)}}</span>
+								</div>
+								<div>
+									<span>{{getVcoordStart(comando.params.start_village)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.target_name}}</span>
+								</div>
+								<div>
+									<span>{{getVcoordTarget(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span class="type" ng-class="getClass(comando.params.type)"></span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{getTimeRest(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{getHoraSend(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{getDataAlvo(comando)}}</span>
+								</div>
+								<div>
+									<span>{{getHoraAlvo(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.spear || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.sword || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.axe || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.archer || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.light_cavalry || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.mounted_archer || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.heavy_cavalry || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.ram || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.catapult || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.doppelsoldner || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.trebuchet || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.snob || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.params.units.knight || 0}}</span>
+								</div>
+							</td>
+							<td class="cell-center"><a href="#"
+								class="size-34x34 btn-red icon-26x26-close"
+								ng-click="removeCommand(comando.id_command)" tooltip
+								tooltip-content="{{exclude_button}}"></a></td>
+
+						</tr>
+					</table>
 				</div>
+			</div>
 		</div>
 		<div>
 			<div class="jssb-y  ">
@@ -26,9 +201,10 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
+			<li><a class="btn-orange btn-border clear"
+				ng-click="clear_attack()">{{clear}}</a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>
 	</footer>
 </div>
-

@@ -31,7 +31,10 @@ define("robotTW2/providers", function() {
 		"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
 		"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
 		"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
-		"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands"
+		"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
+		"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
+		"CMD_SENT"						: "Internal/robotTW2/cmd_sent"
+			
 	})
 	angular.merge(routeProvider, {
 		"INIT_DATA":{
