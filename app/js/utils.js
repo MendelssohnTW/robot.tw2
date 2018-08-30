@@ -61,55 +61,55 @@ define("robotTW2/sendAttack", [
 		, command_s = function($event, data){
 			$rootScope.$broadcast(providers.eventTypeProvider.CMD_SENT, data)
 		}
-	};
 
-	return services.$timeout(function () {
-		var lista = [],
-		units = {};
-		if (params.enviarFull){
-			var village = services.modelDataService.getSelectedCharacter().getVillage(params.start_village);
-			if (village.unitInfo != undefined){
-				var unitInfo = village.unitInfo.units;
-				for(obj in unitInfo){
-					if (unitInfo.hasOwnProperty(obj)){
-						if (unitInfo[obj].available > 0){
-							units[obj] = unitInfo[obj].available
-							lista.push(units);
+		return services.$timeout(function () {
+			var lista = [],
+			units = {};
+			if (params.enviarFull){
+				var village = services.modelDataService.getSelectedCharacter().getVillage(params.start_village);
+				if (village.unitInfo != undefined){
+					var unitInfo = village.unitInfo.units;
+					for(obj in unitInfo){
+						if (unitInfo.hasOwnProperty(obj)){
+							if (unitInfo[obj].available > 0){
+								units[obj] = unitInfo[obj].available
+								lista.push(units);
+							}
 						}
 					}
-				}
-				params.units = units;
+					params.units = units;
+				};
 			};
-		};
-		if (lista.length > 0 || !params.enviarFull) {
-			var expires_send = params.data_escolhida - params.duration;
-			var timer_delay_send = expires_send - helper.gameTime() - data_main.getMain().TIME_CORRECTION_COMMAND;
-			if(timer_delay_send > 0){
-				services.$timeout(function(){
-					a[id_command] = {
-							listener 	: $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_s)
-					} 
-					services.socketService.emit(
-							providers.routeProvider.SEND_CUSTOM_ARMY, {
-								start_village: params.start_village,
-								target_village: params.target_village,
-								type: params.type,
-								units: params.units,
-								icon: 0,
-								officers: params.officers,
-								catapult_target: params.catapult_target
-							});
-				}, timer_delay_send)
+			if (lista.length > 0 || !params.enviarFull) {
+				var expires_send = params.data_escolhida - params.duration;
+				var timer_delay_send = expires_send - helper.gameTime() - data_main.getMain().TIME_CORRECTION_COMMAND;
+				if(timer_delay_send > 0){
+					services.$timeout(function(){
+						a[id_command] = {
+								listener 	: $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_s)
+						} 
+						services.socketService.emit(
+								providers.routeProvider.SEND_CUSTOM_ARMY, {
+									start_village: params.start_village,
+									target_village: params.target_village,
+									type: params.type,
+									units: params.units,
+									icon: 0,
+									officers: params.officers,
+									catapult_target: params.catapult_target
+								});
+					}, timer_delay_send)
 
+				} else {
+					console.log("Comando da aldeia " + services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+				}
 			} else {
-				console.log("Comando da aldeia " + services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+				console.log("Comando da aldeia " + services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
 			}
-		} else {
-			console.log("Comando da aldeia " + services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
-		}
-		$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
-	}, params.timer_delay - conf.TIME_DELAY_UPDATE);
+		}, params.timer_delay - conf.TIME_DELAY_UPDATE);
+	}
 })
 ,
 define("robotTW2/sendSupport", [], function(){})
