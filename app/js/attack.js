@@ -12,7 +12,8 @@ define("robotTW2/attack", [
 	"robotTW2/addCommand",
 	"robotTW2/templates",
 	"robotTW2/conf",
-	"robotTW2/sendAttack"
+	"robotTW2/sendAttack",
+	"robotTW2/listener"
 	], function(
 			services,
 			providers,
@@ -27,7 +28,8 @@ define("robotTW2/attack", [
 			addCommand,
 			templates,
 			conf,
-			sendAttack
+			sendAttack,
+			listener
 	){
 	var isInitialized = !1
 	, isRunning = !1
@@ -84,17 +86,7 @@ define("robotTW2/attack", [
 	}
 	, addCommandAttack = function(scp){
 
-//		var ModalCustomArmyController = loadController("ModalCustomArmyController");
-//		var a;
-//		var e = {}
 		var id_command = helper.gameTime();
-//		for (a in scp.officers) {
-//		if (scp.officers.hasOwnProperty(a)) {
-//		if (scp.officers[a].checked === !0){
-//		e[a] = scp.officers[a];
-//		}
-//		};
-//		}
 		var params = {
 				start_village		: scp.selectedVillage.data.villageId,
 				target_village		: scp.target.id,
@@ -114,16 +106,15 @@ define("robotTW2/attack", [
 	, sendCommandAttack = function(scope){
 		var army = {
 				'units': scope.unitsToSend,
-				'officers': scope.officers
+				'officers': {}
 		}
-//		for (officerName in scope.officers) {
-//		if (scope.officers.hasOwnProperty(officerName)) {
-//		if (scope.officers[officerName].checked === true) {
-//		army.officers[officerName] = true;
-//		}
-//		}
-//		}
-//		var durationInSeconds = services.armyService.getTravelTimeForDistance(army, scope.properties.travelTime, scope.distance, scope.activeTab, true);
+		for (officerName in scope.officers) {
+			if (scope.officers.hasOwnProperty(officerName)) {
+				if (scope.officers[officerName].checked === true) {
+					army.officers[officerName] = true;
+				}
+			}
+		}
 		var durationInSeconds = helper.unreadableSeconds(scope.properties.duration);
 		if (scope.enviarFull){
 			durationInSeconds = 0;
@@ -140,7 +131,6 @@ define("robotTW2/attack", [
 			if (get_data != undefined && get_time != undefined){
 				scope.milisegundos_duracao = durationInSeconds * 1000;
 				scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-//				var tempo_atual = new Date(new Date(helper.gameTime()).getFullYear(),new Date(helper.gameTime()).getMonth(),new Date(helper.gameTime()).getDate(), new Date(helper.gameTime()).getHours(), new Date(helper.gameTime()).getMinutes(), new Date(helper.gameTime()).getSeconds()).getTime();
 				if (scope.tempo_escolhido > (helper.gameTime() + scope.milisegundos_duracao)){
 					addCommandAttack(scope);
 					scope.closeWindow();
@@ -209,7 +199,7 @@ define("robotTW2/attack", [
 					});
 				}
 
-				function command_sent($event, data){
+				var command_sent = function ($event, data){
 					if(!data){
 						return;
 					}
@@ -305,7 +295,7 @@ define("robotTW2/attack", [
 							officers: {},
 							catapult_target: null
 						});
-					}, 10000);
+					}, 1000);
 				})
 			} else {
 				callback()
@@ -326,6 +316,7 @@ define("robotTW2/attack", [
 				$scope.text_full = services.$filter("i18n")("text_full", $rootScope.loc.ale, "attack");
 				$scope.text_prog_full = services.$filter("i18n")("text_prog_full", $rootScope.loc.ale, "attack");
 				$scope.text_prog = services.$filter("i18n")("text_prog", $rootScope.loc.ale, "attack");
+				$scope.text_check = services.$filter("i18n")("text_check", $rootScope.loc.ale, "attack");
 				$scope.date_init = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd")
 				$scope.hour_init = services.$filter("date")(new Date(helper.gameTime()), "HH:mm:ss")
 				$scope.schedule = services.$filter("i18n")("SCHEDULE", $rootScope.loc.ale);
@@ -369,7 +360,9 @@ define("robotTW2/attack", [
 			var pai = $('[ng-controller="ModalCustomArmyController"]');
 			var filho = pai.children("div").children(".box-paper").children(".scroll-wrap"); 
 			filho.append(template)
-			services.$compile(template)(loadController("ModalCustomArmyController"))
+			var scp = loadController("ModalCustomArmyController");
+			if(!scp){return}
+			services.$compile(template)(scp)
 		}
 
 		if (services.$templateCache.get(templateName)) {
@@ -421,11 +414,12 @@ define("robotTW2/attack", [
 		interval_reload = undefined;
 		isRunning = !1;
 	}
-	, command_s = function($event, data){
+	, command_s = function($event, data, params){
 		if(params.start_village == data.origin.id){
-			if(a[id_command] && typeof(a[id_command].listener) == "function") {
-				a[id_command].listener();
-				delete a[id_command];
+			var id_command = params.id_command;
+			if(listener[id_command] && typeof(listener[id_command].listener) == "function") {
+				listener[id_command].listener();
+				delete listener[id_command];
 			}
 			console.log("Comando da aldeia " 
 					+ data.home.name + 

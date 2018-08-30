@@ -15,6 +15,12 @@ define("robotTW2/loadController", [
 	}
 })
 ,
+define("robotTW2/listener", [
+	], function(
+	){
+	return {}
+})
+,
 define("robotTW2/removeCommand", [
 	"robotTW2/database", 
 	"robotTW2/services",
@@ -46,20 +52,21 @@ define("robotTW2/sendAttack", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"robotTW2/data_main"
+	"robotTW2/data_main",
+	"robotTW2/listener"
 	], function(
 			helper,
 			services,
 			providers,
 			conf,
-			data_main
+			data_main,
+			listener
 	){
 	return function(params){
 		var id_command = params.id_command;
-		var timer_delay = params.timer_delay;
-		var a = {}
+		var timer_delay = params.timer_delay
 		, command_s = function($event, data){
-			$rootScope.$broadcast(providers.eventTypeProvider.CMD_SENT, data)
+			$rootScope.$broadcast(providers.eventTypeProvider.CMD_SENT, data, params)
 		}
 
 		return services.$timeout(function () {
@@ -85,7 +92,7 @@ define("robotTW2/sendAttack", [
 				var timer_delay_send = expires_send - helper.gameTime() - data_main.getMain().TIME_CORRECTION_COMMAND;
 				if(timer_delay_send > 0){
 					services.$timeout(function(){
-						a[id_command] = {
+						listener[id_command] = {
 								listener 	: $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_s)
 						} 
 						services.socketService.emit(

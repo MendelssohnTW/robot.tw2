@@ -162,6 +162,7 @@ define("robotTW2/pt_br", function() {
 		},
 		"notify": {
 			"data_main"					: "Robot TW2 - Banco de dados (MAIN) atualizado",
+			"data_alert"					: "Robot TW2 - Banco de dados (ALERT) atualizado",
 			"data_recon"				: "Robot TW2 - Banco de dados (RECON) atualizado, reative o módulo RECON",
 			"data_headquarter"			: "Robot TW2 - Banco de dados (HEADQUARTER) atualizado, reative o módulo HEADQUARTER",
 			"data_deposit"				: "Robot TW2 - Banco de dados (DEPOSIT) atualizado, reative o módulo DEPOSIT",
@@ -178,6 +179,7 @@ define("robotTW2/pt_br", function() {
 			"text_full"					: "Enviar todas as unidades",
 			"text_prog_full"			: "Programar hora de saída na origem",
 			"text_prog"					: "Programar hora de chegada no alvo",
+			"text_check"				: "Enviar tudo",
 			"title"						: "Comandos programados",
 			"command_list"				: "Lista de comandos",
 			"ident_cmd"					: "Identificação do comando",
