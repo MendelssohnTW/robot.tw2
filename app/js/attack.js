@@ -44,6 +44,9 @@ define("robotTW2/attack", [
 		return a[0] - b[0];
 	})
 	, villages = data_villages.getVillages()
+	, tBody = function(){
+		$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+	}
 	, addAttack = function(params, id_command){
 		if(params && id_command){
 			var t = {
@@ -80,7 +83,18 @@ define("robotTW2/attack", [
 		}
 	}
 	, addCommandAttack = function(scp){
+
+//		var ModalCustomArmyController = loadController("ModalCustomArmyController");
+//		var a;
+//		var e = {}
 		var id_command = helper.gameTime();
+//		for (a in scp.officers) {
+//		if (scp.officers.hasOwnProperty(a)) {
+//		if (scp.officers[a].checked === !0){
+//		e[a] = scp.officers[a];
+//		}
+//		};
+//		}
 		var params = {
 				start_village		: scp.selectedVillage.data.villageId,
 				target_village		: scp.target.id,
@@ -102,6 +116,14 @@ define("robotTW2/attack", [
 				'units': scope.unitsToSend,
 				'officers': scope.officers
 		}
+//		for (officerName in scope.officers) {
+//		if (scope.officers.hasOwnProperty(officerName)) {
+//		if (scope.officers[officerName].checked === true) {
+//		army.officers[officerName] = true;
+//		}
+//		}
+//		}
+//		var durationInSeconds = services.armyService.getTravelTimeForDistance(army, scope.properties.travelTime, scope.distance, scope.activeTab, true);
 		var durationInSeconds = helper.unreadableSeconds(scope.properties.duration);
 		if (scope.enviarFull){
 			durationInSeconds = 0;
@@ -118,6 +140,7 @@ define("robotTW2/attack", [
 			if (get_data != undefined && get_time != undefined){
 				scope.milisegundos_duracao = durationInSeconds * 1000;
 				scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+//				var tempo_atual = new Date(new Date(helper.gameTime()).getFullYear(),new Date(helper.gameTime()).getMonth(),new Date(helper.gameTime()).getDate(), new Date(helper.gameTime()).getHours(), new Date(helper.gameTime()).getMinutes(), new Date(helper.gameTime()).getSeconds()).getTime();
 				if (scope.tempo_escolhido > (helper.gameTime() + scope.milisegundos_duracao)){
 					addCommandAttack(scope);
 					scope.closeWindow();
@@ -371,15 +394,15 @@ define("robotTW2/attack", [
 					start();	
 				}, data_attack.getAttack().INTERVAL)
 				listener_layout = $rootScope.$on(providers.eventTypeProvider.PREMIUM_SHOP_OFFERS, createLayoutAttack)
-				listener_cmd = $rootScope.$on(providers.eventTypeProvider.CMD_SENT, command_sent)
+				listener_cmd = $rootScope.$on(providers.eventTypeProvider.CMD_SENT, command_s)
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 
 				db.COMMANDS.forEach(function(cmd){
 					if(cmd.params.data_escolhida < helper.gameTime()){
-						removeCommand(cmd.id_command, "data_attack", timeoutIdAttack)
+						removeCommand(cmd.id_command, "data_attack", timeoutIdAttack, tBody)
 					} else {
-						addCommand(cmd.params, cmd.id_command, "data_attack", timeoutIdAttack);
+						addCommand(cmd.params, cmd.id_command, "data_attack", timeoutIdAttack, tBody);
 					}
 				})
 			})
@@ -398,7 +421,7 @@ define("robotTW2/attack", [
 		interval_reload = undefined;
 		isRunning = !1;
 	}
-	, command_sent = function($event, data){
+	, command_s = function($event, data){
 		if(params.start_village == data.origin.id){
 			if(a[id_command] && typeof(a[id_command].listener) == "function") {
 				a[id_command].listener();
@@ -419,7 +442,9 @@ define("robotTW2/attack", [
 				services.$timeout.cancel(timeoutIdAttack[id_command]);
 				delete timeoutIdAttack[id_command]	
 			}
-			removeCommand(id_command, "data_attack", timeoutIdAttack)
+			removeCommand(id_command, "data_attack", timeoutIdAttack, function(){
+				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+			})
 		}
 	}
 	return	{
@@ -427,7 +452,7 @@ define("robotTW2/attack", [
 		start				: start,
 		stop 				: stop,
 		removeCommand		: function(idc){
-			removeCommand(idc, "data_attack", timeoutIdAttack)
+			removeCommand(idc, "data_attack", timeoutIdAttack, tBody)
 		},
 		isRunning			: function() {
 			return isRunning
