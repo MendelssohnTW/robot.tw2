@@ -8,12 +8,10 @@ define("robotTW2/attack", [
 	"robotTW2/notify",
 	"robotTW2/ready",
 	"helper/time",
-	"robotTW2/removeCommand",
-	"robotTW2/addCommand",
 	"robotTW2/templates",
 	"robotTW2/conf",
-	"robotTW2/sendAttack",
-	"robotTW2/listener"
+	"robotTW2/listener",
+	"robotTW2/commandQueueAttack"
 	], function(
 			services,
 			providers,
@@ -24,20 +22,21 @@ define("robotTW2/attack", [
 			notify,
 			ready,
 			helper,
-			removeCommand,
-			addCommand,
 			templates,
 			conf,
-			sendAttack,
-			listener
+			listener,
+			commandQueueAttack
 	){
 	var isInitialized = !1
 	, isRunning = !1
 	, scope = {}
 	, listener_layout = undefined
-	, listener_cmd = undefined
 	, interval_reload = undefined
+	, listener_change = undefined
 	, timeoutIdAttack = {}
+	, that = this
+	, promiseReSendAttack
+	, queueReSendAttack = []
 	, timetable = services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 		return [obj.speed * 60, obj.name]
 	}).map(m => {
@@ -49,44 +48,113 @@ define("robotTW2/attack", [
 	, tBody = function(){
 		$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 	}
-	, addAttack = function(params, id_command){
-		if(params && id_command){
-			var t = {
-					id_command	: id_command,
-					type		: "attack"
-			}
-			angular.merge(params, t);
-			var cmd = {
-					id_command	: id_command,
-					params		: params
-			}
+	, resendAttack = function(params){
+		var id_command = params.id_command
+		var expires_send = params.data_escolhida - params.duration;
+		var timer_delay_send = expires_send - helper.gameTime() - data_main.getMain().TIME_CORRECTION_COMMAND;
+		if(timer_delay_send > 0){
+			return services.$timeout(function(){
+				listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
+					if(params.start_village == data.origin.id){
+						console.log("Comando da aldeia " 
+								+ data.home.name + 
+								" enviado as " 
+								+ new Date(helper.gameTime()) + 
+								" solicitado para sair as " 
+								+ new Date(data.time_start * 1000) + 
+								" solicitado para chegar as " 
+								+ new Date(params.data_escolhida) +
+								" com as seguintes unidades " 
+								+ JSON.stringify(data.units)
+						);
+						var id_command = params.id_command;
+						if(listener[id_command] && typeof(listener[id_command].listener) == "function") {
+							listener[id_command].listener();
+							delete listener[id_command];
+						}
+						commandQueueAttack.unbind(id_command, true, true)
+					}
+				})}
+				if (promiseReSendAttack) {
+					queueReSendAttack.push(arguments);
+					return;
+				}
 
-			var db = data_attack.getAttack();
-			var comandos = db.COMMANDS;
-			var expires = params.data_escolhida - params.duration;
-			var timer_delay = expires - helper.gameTime() - data_main.getMain().TIME_CORRECTION_COMMAND;
-			var p = {
-					timer_delay: timer_delay
-			}
-			angular.merge(params, p);
-			if(timeoutIdAttack[id_command]){
-				services.$timeout.cancel(timeoutIdAttack[id_command])
-				delete (timeoutIdAttack[id_command])
-			}
-			if(timer_delay > 0){
-				timeoutIdAttack[id_command] = sendAttack(params);
-				!comandos.find(f => f.id_command == cmd.id_command) ? comandos.push(cmd) : null;
+				services.socketService.emit(
+						providers.routeProvider.SEND_CUSTOM_ARMY, {
+							start_village: params.start_village,
+							target_village: params.target_village,
+							type: params.type,
+							units: params.units,
+							icon: 0,
+							officers: params.officers,
+							catapult_target: params.catapult_target
+						}
+				)
+
+			}, timer_delay_send)
+		} else {
+			commandQueueAttack.unbind(id_command, true, true)
+			console.log("Comando da aldeia " + services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+			return null
+		}
+
+	}
+	, sendAttack = function(params){
+		var id_command = params.id_command
+		, timer_delay = params.timer_delay;
+
+		return services.$timeout(function () {
+			var lista = [],
+			units = {};
+			if (params.enviarFull){
+				var village = services.modelDataService.getSelectedCharacter().getVillage(params.start_village);
+				if (village.unitInfo != undefined){
+					var unitInfo = village.unitInfo.units;
+					for(obj in unitInfo){
+						if (unitInfo.hasOwnProperty(obj)){
+							if (unitInfo[obj].available > 0){
+								units[obj] = unitInfo[obj].available
+								lista.push(units);
+							}
+						}
+					}
+					params.units = units;
+				};
+			};
+			if (lista.length > 0 || !params.enviarFull) {
+				timeoutIdAttack[id_command] = resendAttack(params)
 			} else {
-				comandos = comandos.filter(f => f.id_command != cmd.id_command);
-				console.log("Comando da aldeia " + services. modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+				commandQueueAttack.unbind(id_command, true, true)
+				console.log("Comando da aldeia " + services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
 			}
-			db.COMMANDS = comandos;
-			data_attack.setAttack(db);
+			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+
+		}, params.timer_delay - conf.TIME_DELAY_UPDATE)
+
+		return promiseSendAttack
+	}
+	, addAttack = function(params, opt_id){
+		if(!params){return}
+		var id_command = (Math.round(helper.gameTime() / 1e9)).toString() + params.data_escolhida.toString();
+		if(opt_id){
+			id_command = params.id_command
+		}
+		commandQueueAttack.bind(id_command, sendAttack)
+
+		var expires = params.data_escolhida - params.duration;
+		var timer_delay = expires - helper.gameTime() - data_main.getMain().TIME_CORRECTION_COMMAND;
+		params["id_command"] = id_command
+		params["timer_delay"] = timer_delay
+
+		if(timer_delay > 0){
+			commandQueueAttack.trigger(id_command, params, true)
+		} else {
+			commandQueueAttack.unbind(id_command, true, true)
+			console.log("Comando da aldeia " + services. modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 		}
 	}
-	, addCommandAttack = function(scp){
-
-		var id_command = helper.gameTime();
+	, addScopeAttack = function(scp){
 		var params = {
 				start_village		: scp.selectedVillage.data.villageId,
 				target_village		: scp.target.id,
@@ -98,20 +166,19 @@ define("robotTW2/attack", [
 				enviarFull			: scp.enviarFull,
 				data_escolhida		: scp.tempo_escolhido,
 				units				: scp.unitsToSend,
-				officers			: scp.officers,
+				officers			: scp.army.officers,
 				catapult_target		: scp.catapultTarget.value
 		}
-		addAttack(params, id_command);
+		addAttack(params);
 	}
 	, sendCommandAttack = function(scope){
-		var army = {
-				'units': scope.unitsToSend,
+		scope.army = {
 				'officers': {}
 		}
 		for (officerName in scope.officers) {
 			if (scope.officers.hasOwnProperty(officerName)) {
 				if (scope.officers[officerName].checked === true) {
-					army.officers[officerName] = true;
+					scope.army.officers[officerName] = true;
 				}
 			}
 		}
@@ -132,7 +199,7 @@ define("robotTW2/attack", [
 				scope.milisegundos_duracao = durationInSeconds * 1000;
 				scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
 				if (scope.tempo_escolhido > (helper.gameTime() + scope.milisegundos_duracao)){
-					addCommandAttack(scope);
+					addScopeAttack(scope);
 					scope.closeWindow();
 				} else {
 					notify("date_error");
@@ -284,7 +351,27 @@ define("robotTW2/attack", [
 					services.$timeout(function(){
 						listener_completed ? listener_completed() : listener_completed;
 						listener_completed = undefined;
-						listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_sent)
+						listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+							if(!data){
+								return;
+							}
+							if(data.direction =="forward" && data.origin.id == vl && duration){
+								var main = data_main.getMain();
+								var t = data.time_completed * 1000 - duration * 1000 - gTime;
+								if(!main.MAX_TIME_CORRECTION || (t > -main.MAX_TIME_CORRECTION && t < main.MAX_TIME_CORRECTION)) {
+									main.TIME_CORRECTION_COMMAND = t
+									data_main.setMain(main);
+									$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
+								}
+
+								services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
+									command_id: data.command_id
+								})
+								listener_completed();
+								listener_completed = undefined;
+								callback();
+							}
+						})
 						gTime = helper.gameTime();
 						services.socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 							start_village: village.getId(),
@@ -302,8 +389,6 @@ define("robotTW2/attack", [
 			}
 		}
 		nx()
-		//})
-
 	}
 	, createLayoutAttack = function(){
 		var templateName = "attackcompletion";
@@ -384,69 +469,41 @@ define("robotTW2/attack", [
 				data_attack.setAttack(db);
 				interval_reload = services.$timeout(function (){
 					stop();
-					start();	
+					start();
 				}, data_attack.getAttack().INTERVAL)
 				listener_layout = $rootScope.$on(providers.eventTypeProvider.PREMIUM_SHOP_OFFERS, createLayoutAttack)
-				listener_cmd = $rootScope.$on(providers.eventTypeProvider.CMD_SENT, command_s)
+				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
-				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
-
-				db.COMMANDS.forEach(function(cmd){
-					if(cmd.params.data_escolhida < helper.gameTime()){
-						removeCommand(cmd.id_command, "data_attack", timeoutIdAttack, tBody)
+				Object.values(db.COMMANDS).forEach(function(param){
+					if(param.data_escolhida < helper.gameTime()){
+						//removeCommandAttack(param.id_command)
+						commandQueueAttack.unbind(param.id_command, true, true)
 					} else {
-						addCommand(cmd.params, cmd.id_command, "data_attack", timeoutIdAttack, tBody);
+						addAttack(param, true);
 					}
 				})
 			})
 		}, ["all_villages_ready"])
 	}
 	, stop = function (){
-		Object.keys(timeoutIdAttack).map(function(key) {
-			services.$timeout.cancel(timeoutIdAttack[key]);
-			delete (timeoutIdAttack[key])
-		});
+		commandQueueAttack.unbindAll()
 		typeof(listener_layout) == "function" ? listener_layout(): null;
-		typeof(listener_cmd) == "function" ? listener_cmd(): null;
+		typeof(listener_change) == "function" ? listener_change(): null;
 		interval_reload ? services.$timeout.cancel(interval_reload): null;
 		listener_layout = undefined;
-		listener_cmd = undefined;
+		listener_change = undefined;
 		interval_reload = undefined;
 		isRunning = !1;
-	}
-	, command_s = function($event, data, params){
-		if(params.start_village == data.origin.id){
-			var id_command = params.id_command;
-			if(listener[id_command] && typeof(listener[id_command].listener) == "function") {
-				listener[id_command].listener();
-				delete listener[id_command];
-			}
-			console.log("Comando da aldeia " 
-					+ data.home.name + 
-					" enviado as " 
-					+ new Date(helper.gameTime()) + 
-					" solicitado para sair as " 
-					+ new Date(data.time_start * 1000) + 
-					" solicitado para chegar as " 
-					+ new Date(data.time_completed * 1000) +
-					" com as seguintes unidades " 
-					+ JSON.stringify(data.units)
-			);
-			if (timeoutIdAttack[id_command]){
-				services.$timeout.cancel(timeoutIdAttack[id_command]);
-				delete timeoutIdAttack[id_command]	
-			}
-			removeCommand(id_command, "data_attack", timeoutIdAttack, function(){
-				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
-			})
-		}
 	}
 	return	{
 		init				: init,
 		start				: start,
 		stop 				: stop,
-		removeCommand		: function(idc){
-			removeCommand(idc, "data_attack", timeoutIdAttack, tBody)
+		removeCommandAttack	: function(id_command){
+			commandQueueAttack.unbind(id_command, true, true)
+		},
+		removeAll			: function(id_command){
+			commandQueueAttack.unbindAll(true)
 		},
 		isRunning			: function() {
 			return isRunning
@@ -485,6 +542,7 @@ define("robotTW2/attack/ui", [
 		return $window
 	}
 	, injectScope = function(){
+		$($window.$data.rootnode).addClass("fullsize")
 		var $scope = $window.$data.scope;
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		$scope.clear = services.$filter("i18n")("CLEAR", $rootScope.loc.ale);
@@ -496,12 +554,15 @@ define("robotTW2/attack/ui", [
 		$scope.data_attack = data_attack.getAttack();
 		$scope.comandos = $scope.data_attack.COMMANDS;
 
-		$scope.getVstart = function(vid){
+		$scope.getVstart = function(param){
+			var vid = param.start_village;
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid).data.name
 		}
 
-		$scope.getVcoordStart = function(vid){
+		$scope.getVcoordStart = function(param){
+
+			var vid = param.start_village;
 			if(!vid){return}
 			var x = services.modelDataService.getSelectedCharacter().getVillage(vid).data.x
 			var y = services.modelDataService.getSelectedCharacter().getVillage(vid).data.y
@@ -527,32 +588,36 @@ define("robotTW2/attack/ui", [
 			return className
 		}
 
-		$scope.getHoraSend = function(cmd){
-			return services.$filter("date")(new Date(cmd.params.data_escolhida - cmd.params.duration), "HH:mm:ss.sss");
+		$scope.getHoraSend = function(param){
+
+			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
 		}
 
-		$scope.getHoraAlvo = function(cmd){
-			return services.$filter("date")(new Date(cmd.params.data_escolhida), "HH:mm:ss.sss");
+		$scope.getHoraAlvo = function(param){
+
+			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
 		}
 
-		$scope.getDataAlvo = function(cmd){
-			return services.$filter("date")(new Date(cmd.params.data_escolhida), "dd/MM/yyyy");
+		$scope.getDataAlvo = function(param){
+
+			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
 		}
 
-		$scope.getTimeRest = function(cmd){
-			var difTime = cmd.params.data_escolhida - helper.gameTime() - cmd.params.duration; 
+		$scope.getTimeRest = function(param){
+			var difTime = param.data_escolhida - helper.gameTime() - param.duration; 
 			return helper.readableMilliseconds(difTime)
 		}
 
-		$scope.getVcoordTarget = function(cmd){
-			return "(" + cmd.params.target_x + "/" + cmd.params.target_y + ")"
+		$scope.getVcoordTarget = function(param){
+
+			return "(" + param.target_x + "/" + param.target_y + ")"
 		}
 
 		$scope.clear_attack = function(){
-
+			attack.removeAll();
 		}
 
-		$scope.removeCommand = attack.removeCommand;
+		$scope.removeCommand = attack.removeCommandAttack;
 
 		$rootScope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			$scope.data_attack = data_attack.getAttack();
@@ -567,8 +632,6 @@ define("robotTW2/attack/ui", [
 		}
 
 		services.$timeout(function(){
-			//$window.$data.rootnode.setAttribute("style", "width:950px;");
-			$($window.$data.rootnode).addClass("fullsize")
 			$window.setCollapse();
 			$window.recalcScrollbar();
 		}, 500)

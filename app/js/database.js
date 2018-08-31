@@ -221,7 +221,7 @@ define("robotTW2/data_attack", [
 			HOTKEY					: conf.HOTKEY.ATTACK,
 			INTERVAL				: conf.INTERVAL.ATTACK,
 			VERSION					: conf.VERSION.ATTACK,
-			COMMANDS				: []
+			COMMANDS				: {}
 	}
 
 	if(!data_attack){
@@ -302,7 +302,7 @@ define("robotTW2/data_support", [
 			HOTKEY					: conf.HOTKEY.ATTACK,
 			INTERVAL				: conf.INTERVAL.ATTACK,
 			VERSION					: conf.VERSION.ATTACK,
-			COMMANDS				: []
+			COMMANDS				: {}
 	}
 
 	if(!data_support){

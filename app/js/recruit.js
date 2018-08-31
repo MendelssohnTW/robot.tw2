@@ -293,8 +293,8 @@ define("robotTW2/recruit", [
 			interval_recruit = services.$timeout(recruit, data_recruit.getTimeCicle())
 		}
 	}
-	, getFinishedForFree = function (village, lt, tam){
-		var job = village.getRecruitingQueue("barracks").jobs[tam-1];
+	, getFinishedForFree = function (village, lt){
+		var job = village.getRecruitingQueue("barracks").jobs[0];
 		if(job){
 			var timer = job.data.time_completed * 1000;
 			var dif = timer - helper.gameTime(); 
@@ -334,7 +334,7 @@ define("robotTW2/recruit", [
 			services.$timeout(function(){
 				var village = services.modelDataService.getSelectedCharacter().getVillage(village_id);
 				var tam = village.getRecruitingQueue("barracks").length || 0;
-				list = getFinishedForFree(village, list, tam)
+				list = getFinishedForFree(village, list)
 				respD++
 				setList();
 				if (tam < data_recruit.getRecruit().RESERVA.SLOTS || tam < 1){
@@ -482,16 +482,7 @@ define("robotTW2/recruit/ui", [
 		$window.$data.ativate = $scope.data_recruit.ATIVATE;
 		$scope.isRunning = recruit.isRunning();
 		$scope.paused = recruit.isPaused();
-
-		$scope.interval_recruit = helper.readableMilliseconds(data_recruit.getTimeCicle())
-
 		$scope.data_recruit.COMPLETED_AT ? $scope.completed_at = $scope.data_recruit.COMPLETED_AT : $scope.completed_at = 0;
-
-		helper.timer.add(function(){
-			if($scope.completed_at == 0) {return}
-			$scope.interval_recruit =  helper.readableMilliseconds($scope.completed_at - helper.gameTime());
-		});
-
 
 		$scope.onchangeGroup = function (gr){
 			$scope.grupo = gr;
@@ -499,6 +490,10 @@ define("robotTW2/recruit/ui", [
 				$scope.grupo.units = return_units(unitTypes);
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
+		}
+		
+		$scope.getTimeRest = function(){
+			return helper.readableMilliseconds($scope.completed_at - helper.gameTime()); 
 		}
 
 		$scope.getText = function(key){
@@ -510,7 +505,9 @@ define("robotTW2/recruit/ui", [
 		}
 
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function() {
-			$scope.interval_recruit = helper.readableMilliseconds(data_recruit.getTimeCicle())
+			$scope.data_recruit = data_recruit.getRecruit();
+			$scope.data_recruit.COMPLETED_AT ? $scope.completed_at = $scope.data_recruit.COMPLETED_AT : $scope.completed_at = 0;
+			
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}

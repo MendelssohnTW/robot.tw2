@@ -46,7 +46,7 @@ define("robotTW2/headquarter", [
 				function(e){
 					buildingLimit.map(
 							function(d){
-								if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] <= Object.values(d)[0]){
+								if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] < Object.values(d)[0]){
 									builds.push({[Object.keys(e)[0]] : Object.values(e)[0]})
 								}
 							}
@@ -385,13 +385,12 @@ define("robotTW2/headquarter/ui", [
 		$scope.isRunning = headquarter.isRunning();
 		$scope.paused = headquarter.isPaused();
 
-		$scope.interval_headquarter = helper.readableMilliseconds(data_headquarter.getTimeCicle())
 		$scope.data_headquarter.COMPLETED_AT ? $scope.completed_at = $scope.data_headquarter.COMPLETED_AT : $scope.completed_at = 0;
 
-		helper.timer.add(function(){
-			if($scope.completed_at == 0) {return}
-			$scope.interval_headquarter =  helper.readableMilliseconds($scope.completed_at - helper.gameTime());
-		});
+		
+		$scope.getTimeRest = function(){
+			return helper.readableMilliseconds($scope.completed_at - helper.gameTime()); 
+		}
 
 		$scope.getKey = function(buildingOrder){
 			return services.$filter("i18n")(Object.keys(buildingOrder)[0], $rootScope.loc.ale, "headquarter");
@@ -485,6 +484,7 @@ define("robotTW2/headquarter/ui", [
 			})
 			data_villages.setVillages(villagesExtended);
 			$scope.data_headquarter = data_headquarter.getHeadquarter();
+			$scope.data_headquarter.COMPLETED_AT ? $scope.completed_at = $scope.data_headquarter.COMPLETED_AT : $scope.completed_at = 0;
 			$scope.villages = data_villages.getVillages();
 			if (!$scope.$$phase) $scope.$apply();
 
@@ -516,7 +516,8 @@ define("robotTW2/headquarter/ui", [
 		}
 
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function() {
-			$scope.interval_headquarter = helper.readableMilliseconds(data_headquarter.getTimeCicle())
+			$scope.data_headquarter = data_headquarter.getHeadquarter();
+			$scope.data_headquarter.COMPLETED_AT ? $scope.completed_at = $scope.data_headquarter.COMPLETED_AT : $scope.completed_at = 0;
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}

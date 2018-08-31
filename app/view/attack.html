@@ -75,15 +75,15 @@
 							<td class="cell-center"><span>{{comando.id_command}}</span></td>
 							<td class="cell-center">
 								<div>
-									<span>{{getVstart(comando.params.start_village)}}</span>
+									<span>{{getVstart(comando)}}</span>
 								</div>
 								<div>
-									<span>{{getVcoordStart(comando.params.start_village)}}</span>
+									<span>{{getVcoordStart(comando)}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.target_name}}</span>
+									<span>{{comando.target_name}}</span>
 								</div>
 								<div>
 									<span>{{getVcoordTarget(comando)}}</span>
@@ -91,7 +91,7 @@
 							</td>
 							<td class="cell-center">
 								<div>
-									<span class="type" ng-class="getClass(comando.params.type)"></span>
+									<span class="type" ng-class="getClass(comando.type)"></span>
 								</div>
 							</td>
 							<td class="cell-center">
@@ -114,67 +114,67 @@
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.spear || 0}}</span>
+									<span>{{comando.units.spear || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.sword || 0}}</span>
+									<span>{{comando.units.sword || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.axe || 0}}</span>
+									<span>{{comando.units.axe || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.archer || 0}}</span>
+									<span>{{comando.units.archer || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.light_cavalry || 0}}</span>
+									<span>{{comando.units.light_cavalry || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.mounted_archer || 0}}</span>
+									<span>{{comando.units.mounted_archer || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.heavy_cavalry || 0}}</span>
+									<span>{{comando.units.heavy_cavalry || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.ram || 0}}</span>
+									<span>{{comando.units.ram || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.catapult || 0}}</span>
+									<span>{{comando.units.catapult || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.doppelsoldner || 0}}</span>
+									<span>{{comando.units.doppelsoldner || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.trebuchet || 0}}</span>
+									<span>{{comando.units.trebuchet || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.snob || 0}}</span>
+									<span>{{comando.units.snob || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.params.units.knight || 0}}</span>
+									<span>{{comando.units.knight || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center"><a href="#"
