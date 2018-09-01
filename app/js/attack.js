@@ -1,3 +1,4 @@
+//supportData
 define("robotTW2/attack", [
 	"robotTW2/services",
 	"robotTW2/providers",
@@ -209,7 +210,7 @@ define("robotTW2/attack", [
 			}
 		}
 	}
-	, calibrate_time = function(callback){
+	, calibrate_time = function(){
 		var duration = undefined
 		, sTime
 		, gTime
@@ -264,28 +265,6 @@ define("robotTW2/attack", [
 							}
 						} 
 					});
-				}
-
-				var command_sent = function ($event, data){
-					if(!data){
-						return;
-					}
-					if(data.direction =="forward" && data.origin.id == vl && duration){
-						var main = data_main.getMain();
-						var t = data.time_completed * 1000 - duration * 1000 - gTime;
-						if(!main.MAX_TIME_CORRECTION || (t > -main.MAX_TIME_CORRECTION && t < main.MAX_TIME_CORRECTION)) {
-							main.TIME_CORRECTION_COMMAND = t
-							data_main.setMain(main);
-							$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
-						}
-
-						services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
-							command_id: data.command_id
-						})
-						listener_completed();
-						listener_completed = undefined;
-						callback();
-					}
 				}
 
 				var v = list.shift();
@@ -369,7 +348,6 @@ define("robotTW2/attack", [
 								})
 								listener_completed();
 								listener_completed = undefined;
-								callback();
 							}
 						})
 						gTime = helper.gameTime();
@@ -384,8 +362,6 @@ define("robotTW2/attack", [
 						});
 					}, 1000);
 				})
-			} else {
-				callback()
 			}
 		}
 		nx()
@@ -463,25 +439,23 @@ define("robotTW2/attack", [
 	, start = function (){
 		if(isRunning){return}
 		ready(function(){
-			calibrate_time(function(){
-				var db = data_attack.getAttack();
-				db.INTERVAL = conf.INTERVAL.HEADQUARTER;
-				data_attack.setAttack(db);
-				interval_reload = services.$timeout(function (){
-					stop();
-					start();
-				}, data_attack.getAttack().INTERVAL)
-				listener_layout = $rootScope.$on(providers.eventTypeProvider.PREMIUM_SHOP_OFFERS, createLayoutAttack)
-				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
-				isRunning = !0
-				Object.values(db.COMMANDS).forEach(function(param){
-					if(param.data_escolhida < helper.gameTime()){
-						//removeCommandAttack(param.id_command)
-						commandQueueAttack.unbind(param.id_command, true, true)
-					} else {
-						addAttack(param, true);
-					}
-				})
+			calibrate_time()
+			var db = data_attack.getAttack();
+			db.INTERVAL = conf.INTERVAL.HEADQUARTER;
+			data_attack.setAttack(db);
+			interval_reload = services.$timeout(function (){
+				stop();
+				start();
+			}, data_attack.getAttack().INTERVAL)
+			listener_layout = $rootScope.$on(providers.eventTypeProvider.PREMIUM_SHOP_OFFERS, createLayoutAttack)
+			listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
+			isRunning = !0
+			Object.values(db.COMMANDS).forEach(function(param){
+				if(param.data_escolhida < helper.gameTime()){
+					commandQueueAttack.unbind(param.id_command, true, true)
+				} else {
+					addAttack(param, true);
+				}
 			})
 		}, ["all_villages_ready"])
 	}
@@ -499,6 +473,7 @@ define("robotTW2/attack", [
 		init				: init,
 		start				: start,
 		stop 				: stop,
+		calibrate_time		: calibrate_time,
 		removeCommandAttack	: function(id_command){
 			commandQueueAttack.unbind(id_command, true, true)
 		},
@@ -542,7 +517,18 @@ define("robotTW2/attack/ui", [
 		return $window
 	}
 	, injectScope = function(){
+		var TABS = {
+				ATTACK 	: services.$filter("i18n")("attack", $rootScope.loc.ale, "attack"),
+				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "attack")
+		}
+		, TAB_ORDER = [
+			TABS.ATTACK,
+			TABS.LOG,
+			]
+
 		$($window.$data.rootnode).addClass("fullsize")
+
+
 		var $scope = $window.$data.scope;
 		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		$scope.clear = services.$filter("i18n")("CLEAR", $rootScope.loc.ale);
@@ -551,8 +537,28 @@ define("robotTW2/attack/ui", [
 		$scope.ident_cmd = services.$filter("i18n")("ident_cmd", $rootScope.loc.ale, "attack");
 		$scope.exclude_button = services.$filter("i18n")("exclude_button", $rootScope.loc.ale, "attack");
 
+		$scope.requestedTab = TABS.ATTACK;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
+
+		var setActiveTab = function setActiveTab(tab) {
+			$scope.activeTab								= tab;
+			$scope.requestedTab								= null;
+		}
+		, initTab = function initTab() {
+			if (!$scope.activeTab) {
+				setActiveTab($scope.requestedTab);
+			}
+		}
+
+		initTab();
+
 		$scope.data_attack = data_attack.getAttack();
 		$scope.comandos = $scope.data_attack.COMMANDS;
+
+		$scope.userSetActiveTab = function(tab){
+			setActiveTab(tab);
+		}
 
 		$scope.getVstart = function(param){
 			var vid = param.start_village;

@@ -100,7 +100,7 @@
 												<col width="*">
 											</colgroup>
 											<tbody>
-											<tr>
+												<tr>
 													<td>
 														<div>
 															<h5 class="twx-section collapse">{{settings_main}}</h5>
@@ -116,17 +116,24 @@
 																			<td class="cell-right"><label
 																				for="time_correction_command">{{text_time_correction_command}}</label><input
 																				id="time_correction_command"
-																				class="input-border inputcreated disabled"
-																				type=text ng-model="data_main.TIME_CORRECTION_COMMAND" disabled></td>
-																			<td></td>
+																				class="input-border inputcreated disabled" type=text
+																				ng-model="data_main.TIME_CORRECTION_COMMAND"
+																				disabled></td>
+																			<td class="cell-right"><div
+																					class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
+																					ng-click="recalibrate()" tooltip
+																					tooltip-content="{{recal_button}}"></div></td>
 																		</tr>
 																		<tr>
 																			<td class="cell-right"><label
 																				for="max_time_correction">{{text_max_time_correction}}</label><input
 																				id="max_time_correction"
-																				class="input-border inputcreated"
-																				type=text ng-model="data_main.MAX_TIME_CORRECTION"></td>
-																			<td class="cell-right"><div class="position-absolute btn-green size-34x34 icon-26x26-check-positive" ng-click="saveCorrection()"></div></td>
+																				class="input-border inputcreated" type=text
+																				ng-model="data_main.MAX_TIME_CORRECTION"></td>
+																			<td class="cell-right"><div
+																					class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
+																					ng-click="saveCorrection()" tooltip
+																					tooltip-content="{{save_button}}"></div></td>
 																		</tr>
 
 																	</tbody>
@@ -135,7 +142,7 @@
 														</div>
 													</td>
 												</tr>
-												
+
 												<tr>
 													<td>
 														<div ng-show="extensions.DEPOSIT.ATIVATE">
@@ -152,8 +159,8 @@
 																			<td class="cell-right"><label
 																				for="interval_deposit">{{text_interval_deposit}}</label><input
 																				id="interval_deposit"
-																				class="input-border inpt disabled"
-																				type=text value="{{interval_deposit}}" disabled></td>
+																				class="input-border inpt disabled" type=text
+																				value="{{interval_deposit}}" disabled></td>
 																			<td class="cell-right"><label
 																				for="checkbox-interval-deposit">{{use_reroll_deposit}}</label>
 																				<div id="checkbox-interval-deposit"

@@ -37,6 +37,8 @@ define("robotTW2/pt_br", function() {
 			"text_hotkey"					: "Atalho",
 			"text_status"					: "Estado",
 			"init_standard" 				: "Inicializar automático",
+			"save_button" 					: "Salvar",
+			"recal_button" 					: "Recalibrar",
 			"extension_disabled" 			: "desativado",
 			"extension_enabled" 			: "ativado",
 			"text_time_correction_command" 	: "Correção atual de tempo para comandos",
@@ -174,6 +176,8 @@ define("robotTW2/pt_br", function() {
 			"date_error"				: "Data inferior ao tempo necessário de percurso"
 		},
 		"attack": {
+			"attack"					: "Ataque",
+			"log"						: "Log",
 			"text_date"					: "Data",
 			"text_hour"					: "Hora",
 			"text_ms"					: "Milisegundos",

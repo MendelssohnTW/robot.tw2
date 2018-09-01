@@ -87,6 +87,8 @@ define("robotTW2/main/ui", [
 		$scope.settings_module = services.$filter("i18n")("settings_module", $rootScope.loc.ale, "main");
 		$scope.settings_main = services.$filter("i18n")("settings_main", $rootScope.loc.ale, "main");
 		$scope.init_standard = services.$filter("i18n")("init_standard", $rootScope.loc.ale, "main");
+		$scope.save_button = services.$filter("i18n")("save_button", $rootScope.loc.ale, "main");
+		$scope.recal_button = services.$filter("i18n")("recal_button", $rootScope.loc.ale, "main");
 		$scope.module = services.$filter("i18n")("module", $rootScope.loc.ale, "main");
 		$scope.text_hotkey = services.$filter("i18n")("text_hotkey", $rootScope.loc.ale, "main");
 		$scope.text_status = services.$filter("i18n")("text_status", $rootScope.loc.ale, "main");
@@ -133,6 +135,10 @@ define("robotTW2/main/ui", [
 
 		$scope.saveCorrection = function(){
 			data_main.setMain($scope.data_main);
+		}
+		
+		$scope.recalibrate = function(){
+			attack.calibrate_time();
 		}
 
 		$scope.toggleValueState = function(ext) {
