@@ -19,7 +19,7 @@ define("robotTW2/farm", [
 	, isRunning = !1
 	, isPaused = !1
 	, interval_init = null
-	, data = data_farm.getFarm()
+	, d_farm = data_farm.getFarm()
 	, timeoutIdFarm = {}
 	, listener_report = undefined
 	, listener_resume = undefined
@@ -40,18 +40,18 @@ define("robotTW2/farm", [
 		});
 	}
 	, addExcept = function(id){
-		data = data_farm.getFarm();
-		var exceptions = data.LIST_EXCEPTIONS;
+		d_farm = data_farm.getFarm()
+		var exceptions = data_farm.getExceptions();
 		!exceptions.find(f => f == id) ? exceptions.push(id) : null;
-		data.LIST_EXCEPTIONS = exceptions;
-		data_farm.setFarm(data);
+		d_farm.LIST_EXCEPTIONS = exceptions;
+		data_farm.setFarm(d_farm);
 	}
 	, removeExcept = function(id){
-		data = data_farm.getFarm();
-		var exceptions = data.LIST_EXCEPTIONS;
+		d_farm = data_farm.getFarm();
+		var exceptions = data_farm.getExceptions();
 		exceptions ? exceptions = exceptions.filter(f => f != id) : null;
-		data.LIST_EXCEPTIONS = exceptions;
-		data_farm.setFarm(data);
+		d_farm.LIST_EXCEPTIONS = exceptions;
+		data_farm.setFarm(d_farm);
 	}
 	, addFarmSelector = function(){
 		services.$timeout(function(){
@@ -71,9 +71,7 @@ define("robotTW2/farm", [
 					}
 
 					BattleReportController.$watch('reportData', function() {
-						data = data_farm.getFarm();
-						var exceptions = data.LIST_EXCEPTIONS;
-						exceptions.find(f => f == BattleReportController.reportData.defVillageId) ? $("#check-button").removeClass("icon-26x26-dot-red").addClass("icon-26x26-dot-green") : $("#check-button").removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");;
+						data_farm.getExceptions().find(f => f == BattleReportController.reportData.defVillageId) ? $("#check-button").removeClass("icon-26x26-dot-red").addClass("icon-26x26-dot-green") : $("#check-button").removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");;
 						$("#check-button").click(function () {
 							if ($("#check-button").attr("class")[0] === 'icon-26x26-dot-green') {
 								$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
@@ -127,9 +125,11 @@ define("robotTW2/farm", [
 		var countCmd = village.getCommandListModel().data.length || 0;
 		var aldeia_units = angular.copy(village.unitInfo.units);
 		var preset_units = preset.preset_units;
+		lt_bb.splice(data_farm.getFarm().MAX_COMMANDS - countCmd);
+		data_farm.addBB(lt_bb);
 		lt_bb.forEach(function(barbara){
 			var interval_timeout_ciclo_command_farm = 1000 + (Math.random() * 1000 / 2);
-			if(units_analyze(preset_units, aldeia_units) && countCmd <= data_farm.getFarm().MAX_COMMANDS){
+			if(units_analyze(preset_units, aldeia_units)){
 				req++;
 				s[p.toString() + "id" + preset.villageId] = services.$timeout(function(){
 					rdy++;
@@ -152,8 +152,7 @@ define("robotTW2/farm", [
 				}, interval_timeout_ciclo_command_farm * countCmd);
 
 //				listaBarbaras.push(barbara);
-				countCmd++;
-				p++;
+//				countCmd++;
 				var unit = 0;
 				var rest = [];
 				for (unit_preset in preset_units){
@@ -263,17 +262,14 @@ define("robotTW2/farm", [
 	}
 	, prox = function(){
 		var countProc = 0;
-		data = data_farm.getFarm()
+		
 		var P = function(){
 			var preset = comandos_preset.shift();
 			var x = preset.x;
 			var y = preset.y;
 			var dist = preset.distancia;
 			exec(x, y, dist , function(listaGrid){
-				var cmds_length = services.modelDataService.getSelectedCharacter().getVillage(preset.villageId).getCommandListModel().data.length;
-				var cmds = data.MAX_COMMANDS - cmds_length;
-
-				loadVillages(cmds, listaGrid, function(lst_bb){
+				loadVillages(listaGrid, function(lst_bb){
 					if (lst_bb.length > 0){
 						countProc++;
 						var delay = 0;
@@ -342,6 +338,7 @@ define("robotTW2/farm", [
 	}
 	, execute_preset = function(preset_list, tempo){
 		data_farm.clearBB();
+		d_farm = data_farm.getFarm()
 		requestFn.trigger("Farm/cicle")
 		var calcular_Distancia = function (bonus, unidades){
 			function return_min(tempo){
@@ -400,6 +397,7 @@ define("robotTW2/farm", [
 					!(listaBarbaras.find(f => f === aldeia.targetVillageId)) ? listaBarbaras.push(aldeia.targetVillageId) : null;
 				})
 				data_farm.addBB(listaBarbaras);
+				d_farm = data_farm.getFarm()
 				if(aldeia_commands.length < data_farm.getFarm().MAX_COMMANDS && data_farm.getFarm().LIST_ATIVATE[village_id] == true){
 					if (units_analyze(preset_units, aldeia_units)){
 						var comando = {
@@ -437,7 +435,7 @@ define("robotTW2/farm", [
 			var lista_preset = []
 			, list_assigned_villages = []
 			, preset = {}
-			, data = data_farm.getFarm()
+			
 
 			function proc(){
 				Object.keys(preset_list).forEach(function(value, key, map){
@@ -488,19 +486,17 @@ define("robotTW2/farm", [
 			}
 		}, tempo);
 	}
-	, loadVillages = function (cmds, listaGrid, callback){
+	, loadVillages = function (listaGrid, callback){
 		var request = 0
 		, requestReady = 0
-		, lt_barbaras = data_farm.getBBs()
+		, lt_barbaras = []
 		, p = 0
 		, existRange = function (vill){
-			data = data_farm.getFarm();
-			if(vill.points >= data.MIN_POINTS && vill.points <= data.MAX_POINTS){
+			if(vill.points >= data_farm.getFarm().MIN_POINTS && vill.points <= data_farm.getFarm().MAX_POINTS){
 				return true
 			} else {
 				return false
 			}
-			return data_farm.getExceptions().find(f => f === id) ? true : false;
 		}
 		,
 		existException = function (id){
@@ -553,26 +549,19 @@ define("robotTW2/farm", [
 								});
 
 								for (j = 0; j < listaVil.length; j++){
-									if (listaVil[j].affiliation == "barbarian" && existRange(listaVil[j]) && !existException(listaVil[j].id) && !existBarbara(listaVil[j].id) && !existLista(listaVil[j].id, lt_barbaras) && p < cmds){
+									if (listaVil[j].affiliation == "barbarian" && existRange(listaVil[j]) && !existException(listaVil[j].id) && !existBarbara(listaVil[j].id) && !existLista(listaVil[j].id, lt_barbaras)){
 										lt_barbaras.push(listaVil[j].id);
-										p++;
+										p++
 									}
-								}
-								if(p >= cmds){
-									request = 0;
-									requestReady = 0;
-									data_farm.addBB(lt_barbaras);
-									callback(lt_barbaras);
-									return
 								}
 							} 
 							if (request == requestReady){
-								if (listaGrid.length > 0){
+								if (listaGrid.length > 0 && p < 50){
 									T();
 								} else {
+									p = 0;
 									request = 0;
 									requestReady = 0;
-									data_farm.addBB(lt_barbaras);
 									callback(lt_barbaras);
 									return
 								}
@@ -597,7 +586,8 @@ define("robotTW2/farm", [
 	}
 	, init_preset = function(tempo_de_farm_miliseconds){
 		data_farm.clearBB();
-		var qtd_ciclo = Math.trunc((data.TERMINO_DE_FARM - data.INICIO_DE_FARM) / tempo_de_farm_miliseconds);
+		d_farm = data_farm.getFarm()
+		var qtd_ciclo = Math.trunc((data_farm.getFarm().TERMINO_DE_FARM - data_farm.getFarm().INICIO_DE_FARM) / tempo_de_farm_miliseconds);
 		var preset_list = [];
 		var p = 0;
 		if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
@@ -628,17 +618,18 @@ define("robotTW2/farm", [
 	}
 	, initCicle = function(){
 		listener_report = $rootScope.$on(providers.eventTypeProvider.REPORT_VIEW, addFarmSelector);
-		data = data_farm.getFarm()
+		d_farm = data_farm.getFarm()
 		var villages = services.modelDataService.getSelectedCharacter().getVillages()
 		for (v in villages) {
-			typeof(data.LIST_ATIVATE[v]) != "boolean" ? data.LIST_ATIVATE[v] = true : null;
+			typeof(d_farm.LIST_ATIVATE[v]) != "boolean" ? d_farm.LIST_ATIVATE[v] = true : null;
 		}
-		data_farm.setFarm(data);
+		data_farm.setFarm(d_farm);
+		d_farm = data_farm.getFarm()
 		
-		var tempo_de_farm_miliseconds = data.TEMPO_DE_FARM;
-		var tempo_limite = (data.TERMINO_DE_FARM - helper.gameTime()) - tempo_de_farm_miliseconds;
+		var tempo_de_farm_miliseconds = data_farm.getFarm().TEMPO_DE_FARM;
+		var tempo_limite = (data_farm.getFarm().TERMINO_DE_FARM - helper.gameTime()) - tempo_de_farm_miliseconds;
 		if (tempo_limite > 0){
-			var tempo_delay = data.INICIO_DE_FARM - helper.gameTime();
+			var tempo_delay = data_farm.getFarm().INICIO_DE_FARM - helper.gameTime();
 			if (tempo_delay > 0){
 				interval_init = services.$timeout(function(){
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: services.$filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
@@ -647,8 +638,9 @@ define("robotTW2/farm", [
 				}, tempo_delay);
 				return;
 			} else {
-				data.INICIO_DE_FARM = helper.gameTime();
-				data_farm.setFarm(data);
+				d_farm.INICIO_DE_FARM = helper.gameTime();
+				data_farm.setFarm(d_farm);
+				d_farm = data_farm.getFarm()
 				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: services.$filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 				init_preset(tempo_de_farm_miliseconds)
 				return;
@@ -661,6 +653,7 @@ define("robotTW2/farm", [
 	}
 	, init = function (){
 		data_farm.clearBB();
+		d_farm = data_farm.getFarm()
 		isInitialized = !0
 		start();
 	}
@@ -680,6 +673,7 @@ define("robotTW2/farm", [
 		typeof(listener_report) == "function" ? listener_report(): null;
 		listener_report = undefined;
 		data_farm.clearBB();
+		d_farm = data_farm.getFarm()
 		timeoutIdFarm = {};
 		isRunning = !1
 		$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
