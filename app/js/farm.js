@@ -120,16 +120,16 @@ define("robotTW2/farm", [
 			grid: grid
 		};
 	}
-	, sendCmd = function(preset, lista_barbaras, callback){
-		var countCmd = 0;
-		data = data_farm.getFarm()
-		var listaBarbaras = data.LIST_BB
+	, sendCmd = function(preset, lt_bb, callback){
+//		data = data_farm.getFarm()
+//		var listaBarbaras = data.LIST_BB
 		var village = services.modelDataService.getSelectedCharacter().getVillage(preset.villageId);
+		var countCmd = village.getCommandListModel().data.length || 0;
 		var aldeia_units = angular.copy(village.unitInfo.units);
 		var preset_units = preset.preset_units;
-		lista_barbaras.forEach(function(barbara){
+		lt_bb.forEach(function(barbara){
 			var interval_timeout_ciclo_command_farm = 1000 + (Math.random() * 1000 / 2);
-			if(units_analyze(preset_units, aldeia_units)){
+			if(units_analyze(preset_units, aldeia_units) && countCmd <= data_farm.getFarm().MAX_COMMANDS){
 				req++;
 				s[p.toString() + "id" + preset.villageId] = services.$timeout(function(){
 					rdy++;
@@ -151,7 +151,7 @@ define("robotTW2/farm", [
 
 				}, interval_timeout_ciclo_command_farm * countCmd);
 
-				listaBarbaras.push(barbara);
+//				listaBarbaras.push(barbara);
 				countCmd++;
 				p++;
 				var unit = 0;
@@ -174,26 +174,28 @@ define("robotTW2/farm", [
 				}
 				aldeia_units = rest;
 			} else {
-				for (var i in listaBarbaras){
-					if (listaBarbaras.hasOwnProperty(i))    {
-						if (listaBarbaras[i] == barbara){
-							listaBarbaras.splice(i, 1);
-						} 
-					}
-				}
+				callback()
+				return
+//				for (var i in listaBarbaras){
+//					if (listaBarbaras.hasOwnProperty(i))    {
+//						if (listaBarbaras[i] == barbara){
+//							listaBarbaras.splice(i, 1);
+//						} 
+//					}
+//				}
 			}
 
 		});
-		if(req == rdy){
-			Object.keys(s).map(function(key) {
-				services.$timeout.cancel(s[key]);
-			});
-			s = {};
-			req = 0;
-			rdy = 0;
-			p = 0;
-		}
-		data_farm.addBB(listaBarbaras);
+//		if(req == rdy){
+//			Object.keys(s).map(function(key) {
+//				services.$timeout.cancel(s[key]);
+//			});
+//			s = {};
+//			req = 0;
+//			rdy = 0;
+//			p = 0;
+//		}
+//		data_farm.addBB(listaBarbaras);
 		callback();
 	}
 	, units_analyze = function(preset_units, aldeia_units){
@@ -239,17 +241,17 @@ define("robotTW2/farm", [
 		};
 		listaGrid.sort(function (a, b) {
 			if (Math.abs(a.x - x) != Math.abs(b.x - x)){
-				if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
+				if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
 					return 1;
 				};
-				if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
+				if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
 					return -1;
 				};
 			} else if(Math.abs(a.y - y) != Math.abs(b.y - y)){
-				if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
+				if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
 					return 1;
 				};
-				if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
+				if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
 					return -1;
 				};
 			} else {
@@ -271,13 +273,8 @@ define("robotTW2/farm", [
 				var cmds_length = services.modelDataService.getSelectedCharacter().getVillage(preset.villageId).getCommandListModel().data.length;
 				var cmds = data.MAX_COMMANDS - cmds_length;
 
-				function st(){
-					//console.log("Ciclo de farm terminado");
-					return;	
-				}
-
-				loadVillages(cmds, listaGrid, function(lista_barbaras){
-					if (lista_barbaras.length > 0){
+				loadVillages(cmds, listaGrid, function(lst_bb){
+					if (lst_bb.length > 0){
 						countProc++;
 						var delay = 0;
 						if (countProc > 10){
@@ -285,7 +282,7 @@ define("robotTW2/farm", [
 							delay = 10000;
 						}
 						services.$timeout(function(){
-							sendCmd(preset, lista_barbaras, function(){
+							sendCmd(preset, lst_bb, function(){
 								if (comandos_preset.length > 0){
 									//console.log("preset length " + comandos_preset.length)
 									if(isRunning){
@@ -302,7 +299,6 @@ define("robotTW2/farm", [
 										return
 									}
 								} else {
-									st();
 									return;
 								}
 							});
@@ -324,7 +320,6 @@ define("robotTW2/farm", [
 								return
 							}
 						} else {
-							st();
 							return
 						}
 					}
@@ -346,6 +341,7 @@ define("robotTW2/farm", [
 		}
 	}
 	, execute_preset = function(preset_list, tempo){
+		data_farm.clearBB();
 		requestFn.trigger("Farm/cicle")
 		var calcular_Distancia = function (bonus, unidades){
 			function return_min(tempo){
@@ -386,9 +382,6 @@ define("robotTW2/farm", [
 			return distancia;
 		}
 		, assigned_Villages = function (list_assigned_villages, callback){
-			data = data_farm.getFarm()
-			var listaBarbaras = data.LIST_BB;
-
 			var rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians();
 			function n(){
 				var preset = list_assigned_villages.shift();
@@ -402,11 +395,12 @@ define("robotTW2/farm", [
 				var preset_units = preset.units;
 				var village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100;
 				var aldeia_commands = village.getCommandListModel().data;
+				var listaBarbaras = data_farm.getBBs();
 				aldeia_commands.forEach(function(aldeia){
 					!(listaBarbaras.find(f => f === aldeia.targetVillageId)) ? listaBarbaras.push(aldeia.targetVillageId) : null;
 				})
 				data_farm.addBB(listaBarbaras);
-				if(aldeia_commands.length < data.MAX_COMMANDS && data_farm.getFarm().LIST_ATIVATE[village_id] == true){
+				if(aldeia_commands.length < data_farm.getFarm().MAX_COMMANDS && data_farm.getFarm().LIST_ATIVATE[village_id] == true){
 					if (units_analyze(preset_units, aldeia_units)){
 						var comando = {
 								villageId: village_id,
@@ -477,7 +471,7 @@ define("robotTW2/farm", [
 				});
 			}
 
-			data_farm.clearBB();
+//			data_farm.clearBB();
 
 			if(isRunning){
 				if(isPaused){
@@ -497,27 +491,28 @@ define("robotTW2/farm", [
 	, loadVillages = function (cmds, listaGrid, callback){
 		var request = 0
 		, requestReady = 0
-		,
-		existRange = function (vill){
+		, lt_barbaras = data_farm.getBBs()
+		, p = 0
+		, existRange = function (vill){
 			data = data_farm.getFarm();
 			if(vill.points >= data.MIN_POINTS && vill.points <= data.MAX_POINTS){
 				return true
 			} else {
 				return false
 			}
-			return data_farm.getFarm().LIST_EXCEPTIONS.find(f => f === id) ? true : false;
+			return data_farm.getExceptions().find(f => f === id) ? true : false;
 		}
 		,
 		existException = function (id){
-			return data_farm.getFarm().LIST_EXCEPTIONS.find(f => f === id) ? true : false;
+			return data_farm.getExceptions().find(f => f === id) ? true : false;
 		}
 		,
 		existBarbara = function (id){
-			return data_farm.getFarm().LIST_BB.find(f => f === id) ? true : false;
+			return data_farm.getBBs().find(f => f === id) ? true : false;
 		}
 		,
-		existLista = function (id, lista_barbaras){
-			return lista_barbaras.find(f => f === id) ? true : false;
+		existLista = function (id, lt_b){
+			return lt_b.find(f => f === id) ? true : false;
 		}
 		,
 		T = function (){
@@ -529,7 +524,6 @@ define("robotTW2/farm", [
 						request++;
 						services.socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function(data){
 							requestReady++;
-							var lista_barbaras = [];
 							if (data != undefined && data.villages != undefined && data.villages.length > 0){
 								var i = Math.round(Math.random() * 10);
 								var listaVil = angular.copy(data.villages);
@@ -540,29 +534,36 @@ define("robotTW2/farm", [
 								var r = yT + distT;
 								listaVil.sort(function (a, b) {
 									if (Math.abs(a.x - s) != Math.abs(b.x - s)){
-										if (Math.abs(a.x - s) < Math.abs(b.x - s)) {
+										if (Math.abs(a.x - s) > Math.abs(b.x - s)) {
 											return 1;
 										};
-										if (Math.abs(a.x - s) > Math.abs(b.x - s)) {
+										if (Math.abs(a.x - s) < Math.abs(b.x - s)) {
 											return -1;
 										};
 									} else if(Math.abs(a.y - r) != Math.abs(b.y - r)){
-										if (Math.abs(a.y - r) < Math.abs(b.y - r)) {
+										if (Math.abs(a.y - r) > Math.abs(b.y - r)) {
 											return 1;
 										};
-										if (Math.abs(a.y - r) > Math.abs(b.y - r)) {
+										if (Math.abs(a.y - r) < Math.abs(b.y - r)) {
 											return -1;
 										};
 									} else {
 										return 0;	
 									}
 								});
-								var p = 0;
+
 								for (j = 0; j < listaVil.length; j++){
-									if (listaVil[j].affiliation == "barbarian" && existRange(listaVil[j]) && !existException(listaVil[j].id) && !existBarbara(listaVil[j].id) && !existLista(listaVil[j].id, lista_barbaras) && p < cmds){
-										lista_barbaras.push(listaVil[j].id);
+									if (listaVil[j].affiliation == "barbarian" && existRange(listaVil[j]) && !existException(listaVil[j].id) && !existBarbara(listaVil[j].id) && !existLista(listaVil[j].id, lt_barbaras) && p < cmds){
+										lt_barbaras.push(listaVil[j].id);
 										p++;
 									}
+								}
+								if(p >= cmds){
+									request = 0;
+									requestReady = 0;
+									data_farm.addBB(lt_barbaras);
+									callback(lt_barbaras);
+									return
 								}
 							} 
 							if (request == requestReady){
@@ -571,7 +572,9 @@ define("robotTW2/farm", [
 								} else {
 									request = 0;
 									requestReady = 0;
-									callback(lista_barbaras);
+									data_farm.addBB(lt_barbaras);
+									callback(lt_barbaras);
+									return
 								}
 							};
 						});
@@ -593,6 +596,7 @@ define("robotTW2/farm", [
 		}
 	}
 	, init_preset = function(tempo_de_farm_miliseconds){
+		data_farm.clearBB();
 		var qtd_ciclo = Math.trunc((data.TERMINO_DE_FARM - data.INICIO_DE_FARM) / tempo_de_farm_miliseconds);
 		var preset_list = [];
 		var p = 0;
@@ -630,6 +634,7 @@ define("robotTW2/farm", [
 			typeof(data.LIST_ATIVATE[v]) != "boolean" ? data.LIST_ATIVATE[v] = true : null;
 		}
 		data_farm.setFarm(data);
+		
 		var tempo_de_farm_miliseconds = data.TEMPO_DE_FARM;
 		var tempo_limite = (data.TERMINO_DE_FARM - helper.gameTime()) - tempo_de_farm_miliseconds;
 		if (tempo_limite > 0){
@@ -637,6 +642,7 @@ define("robotTW2/farm", [
 			if (tempo_delay > 0){
 				interval_init = services.$timeout(function(){
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: services.$filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
+					
 					init_preset(tempo_de_farm_miliseconds)
 				}, tempo_delay);
 				return;

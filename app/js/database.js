@@ -882,7 +882,7 @@ define("robotTW2/data_farm", [
 			database.set("data_farm", data_farm, true)
 		}
 	}
-
+	
 	var clearBB = function(){
 		var data_farm = database.get("data_farm");
 		data_farm.LIST_BB = []
