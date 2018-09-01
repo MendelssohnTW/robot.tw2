@@ -22,7 +22,7 @@ define("robotTW2/database", [
 		var data = {};
 		if(tb){data = tb.data}else{tb = {"data":{}}}
 		
-		angular.merge(data, newValue);
+		angular.extend(data, newValue);
 		tb.data = data;
 		var keyValue = JSON.stringify(tb);
 		
@@ -875,31 +875,31 @@ define("robotTW2/data_farm", [
 		return database.get("data_farm").LIST_EXCEPTIONS
 	}
 
-	var addBB = function(bb){
-		if(bb){
-			var data_farm = database.get("data_farm");
-			angular.merge(data_farm.LIST_BB, bb)
-			database.set("data_farm", data_farm, true)
-		}
-	}
-	
-	var clearBB = function(){
-		var data_farm = database.get("data_farm");
-		data_farm.LIST_BB = []
-		database.set("data_farm", data_farm, true)
-	}
-
-	var removeBB = function(bb){
-		if(bb){
-			var data_farm = database.get("data_farm");
-			data_farm.LIST_BB = data_farm.LIST_BB.filter(f => f != bb)
-			database.set("data_farm", data_farm, true)
-		}
-	}
-
-	var getBBs = function(){
-		return database.get("data_farm").LIST_BB
-	}
+//	var addBB = function(bb){
+//		if(bb){
+//			var data_farm = database.get("data_farm");
+//			angular.merge(data_farm.LIST_BB, bb)
+//			database.set("data_farm", data_farm, true)
+//		}
+//	}
+//	
+//	var clearBB = function(){
+//		var data_farm = database.get("data_farm");
+//		data_farm.LIST_BB = []
+//		database.set("data_farm", data_farm, true)
+//	}
+//
+//	var removeBB = function(bb){
+//		if(bb){
+//			var data_farm = database.get("data_farm");
+//			data_farm.LIST_BB = data_farm.LIST_BB.filter(f => f != bb)
+//			database.set("data_farm", data_farm, true)
+//		}
+//	}
+//
+//	var getBBs = function(){
+//		return database.get("data_farm").LIST_BB
+//	}
 
 	var getFarm = function(){
 		return database.get("data_farm")
@@ -958,10 +958,10 @@ define("robotTW2/data_farm", [
 			addException		: addException,
 			removeException		: removeException,
 			getExceptions		: getExceptions,
-			addBB				: addBB,
-			clearBB				: clearBB,
-			removeBB			: removeBB,
-			getBBs				: getBBs,
+// 			addBB				: addBB,
+// 			clearBB				: clearBB,
+// 			removeBB			: removeBB,
+// 			getBBs				: getBBs,
 			getFarm				: getFarm,
 			setFarm				: setFarm,
 			setTimeComplete		: setTimeComplete

@@ -107,16 +107,12 @@ define("robotTW2/notify", [
 		, that = this
 		, queue = []
 		, fireworkSystem = new firework.FireworkSystem(32, 'notificationCanvas')
-		, display = function display(message, type, iconname, duration, title, news, offer, opt_action, opt_cancel, opt_onHide) {
+		, display = function display(message) {
 
-			var icon = 'icon-90x90-achievement-loot'
-				, type = "achievement"
-					, duration = 8e3
-					, title = services.$filter('i18n')('title', $rootScope.loc.ale, 'notify') 
-
-					if (!message) {
-						return;
-					}
+			var duration = 1e9;
+			if (!message) {
+				return;
+			}
 
 			if (promise) {
 				queue.push(arguments);
@@ -125,34 +121,19 @@ define("robotTW2/notify", [
 
 			$rootScope.$broadcast(providers.eventTypeProvider.NOTIFICATION_SHOW);
 
-			if (!icon) {
-				switch (type) {
-				case DEBUG:
-					icon = 'icon-44x44-info';
-					break;
-				case ERROR:
-					icon = 'icon-44x44-error';
-					break;
-				case SUCCESS:
-					icon = 'icon-44x44-check';
-					break;
-				}
-			}
-
 			$scope.content			= message;
-			$scope.type				= type;
-			$scope.title			= title || null;
-			$scope.notificationId	= news || null;
-			$scope.icon				= icon || null;
-			$scope.offer			= offer || null;
-			$scope.visible			= VISIBLE;
-			$scope.action			= opt_action || null;
-			$scope.cancel			= opt_cancel || null;
-			$scope.onHide			= opt_onHide || null;
+			$scope.type				= "achievement";
+			$scope.title			= services.$filter('i18n')('title', $rootScope.loc.ale, 'notify');
+			$scope.notificationId	= null;
+			$scope.icon				= "icon-90x90-achievement-loot";
+			$scope.offer			= null;
+			$scope.visible			= "visible";
+			$scope.action			= null;
+			$scope.cancel			= null;
+			$scope.onHide			= null;
+			$scope.wideModal		= true;
 
-			if (type === "achievement") {
-				fireworkSystem.play();
-			}
+			fireworkSystem.play();
 
 			if (!$rootScope.$$phase) {
 				$scope.$digest();
@@ -168,9 +149,7 @@ define("robotTW2/notify", [
 				}
 			}, duration)).then(function() {
 				promise = null;
-				if (type === "achievement") {
-					fireworkSystem.stop();
-				}
+				fireworkSystem.stop();
 				display.apply(that, queue.pop());
 			});
 		}
