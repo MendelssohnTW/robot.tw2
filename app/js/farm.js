@@ -440,6 +440,7 @@ define("robotTW2/farm", [
 
 		return services.$timeout(function () {
 			var lista_preset = []
+			, countCommands = {}
 			, list_assigned_villages = []
 			, preset = {}
 			function proc(){
