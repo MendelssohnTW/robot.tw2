@@ -37,12 +37,6 @@ define("robotTW2/deposit", [
 			job_id: job.id,
 			village_id: services.modelDataService.getSelectedVillage().getId()
 		})
-		if(!interval_deposit){
-			interval_deposit = services.$timeout(verify_deposit, data_deposit.getTimeCicle())
-		} else {
-			services.$timeout.cancel(interval_deposit);
-			interval_deposit = services.$timeout(verify_deposit, data_deposit.getTimeCicle())
-		}
 	}
 	, readyJobs = function (resourceDepositModel) {
 		var resourceDepositModel = services.modelDataService.getSelectedCharacter().getResourceDeposit();
@@ -59,7 +53,7 @@ define("robotTW2/deposit", [
 		var resourceDepositModel = services.modelDataService.getSelectedCharacter().getResourceDeposit();
 		if (isRunning && resourceDepositModel != undefined && data_deposit.getDeposit().ATIVATE) {
 			var currentJob = resourceDepositModel.getCurrentJob();
-			if(currentJob && data_deposit.getDeposit().ATIVATE){
+			if(currentJob){
 				data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
 				$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
 				wait();

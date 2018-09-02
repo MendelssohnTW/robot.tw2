@@ -124,7 +124,8 @@ define("robotTW2/headquarter", [
 		}
 		return lt;
 	}
-	, setList = function(){
+	, setList = function(lt){
+		if(lt){list = lt}
 		list.push(conf.INTERVAL.HEADQUARTER)
 		list.push(data_headquarter.getTimeCicle())
 		var t = Math.min.apply(null, list);
@@ -160,7 +161,7 @@ define("robotTW2/headquarter", [
 
 			list = getFinishedForFree(village, list)
 
-			setList();
+			setList(list);
 
 			if (
 					!(
