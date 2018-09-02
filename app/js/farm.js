@@ -276,8 +276,7 @@ define("robotTW2/farm", [
 				loadVillages(preset, listaGrid, function(lst_bb){
 					if (lst_bb.length > 0){
 						countProc++;
-						var delay = 2000 * countProc++;
-						services.$timeout(function(){
+
 							sendCmd(preset, lst_bb, function(){
 								if (comandos_preset.length > 0){
 									//console.log("preset length " + comandos_preset.length)
@@ -298,7 +297,7 @@ define("robotTW2/farm", [
 									return;
 								}
 							});
-						}, delay)
+
 					} else {
 						if (comandos_preset.length > 0){
 							//console.log("preset length " + comandos_preset.length)
@@ -337,7 +336,7 @@ define("robotTW2/farm", [
 		}
 	}
 	, execute_preset = function(preset_list, tempo){
-		countCommands = {}
+		
 //		data_farm.clearBB();
 		d_farm = data_farm.getFarm()
 		requestFn.trigger("Farm/cicle")
@@ -380,6 +379,7 @@ define("robotTW2/farm", [
 			return distancia;
 		}
 		, assigned_Villages = function (list_assigned_villages, callback){
+			countCommands = {}
 			var rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians();
 			function n(){
 				var preset = list_assigned_villages.shift();
@@ -471,6 +471,8 @@ define("robotTW2/farm", [
 						} else {
 							return
 						}
+					} else {
+						return
 					}
 				});
 			}
@@ -512,7 +514,7 @@ define("robotTW2/farm", [
 		,
 		existBarbara = function (id){
 			var lt = Object.values(countCommands).map(function(key) {
-				if(key == id){return true} else {return false}
+				if(key.find(f=>f==id)){return true} else {return false}
 			}).filter(f => f != false);
 			if(lt.length){return true} else {return false}
 			//countCommands[village_id]
@@ -593,7 +595,7 @@ define("robotTW2/farm", [
 				} else {
 					callback([]);
 				}
-			}, 3000)
+			}, request * 2000)
 		}
 		if (listaGrid.length > 0 && p < data_farm.getFarm().MAX_COMMANDS){
 			T();
@@ -605,7 +607,6 @@ define("robotTW2/farm", [
 	}
 	, init_preset = function(tempo_de_farm_miliseconds){
 //		data_farm.clearBB();
-		countCommands = {}
 		d_farm = data_farm.getFarm()
 		var qtd_ciclo = Math.trunc((data_farm.getFarm().TERMINO_DE_FARM - data_farm.getFarm().INICIO_DE_FARM) / tempo_de_farm_miliseconds);
 		var preset_list = [];
@@ -672,7 +673,6 @@ define("robotTW2/farm", [
 	}
 	, init = function (){
 //		data_farm.clearBB();
-		countCommands = {}
 		d_farm = data_farm.getFarm()
 		isInitialized = !0
 		start();
@@ -693,7 +693,6 @@ define("robotTW2/farm", [
 		typeof(listener_report) == "function" ? listener_report(): null;
 		listener_report = undefined;
 //		data_farm.clearBB();
-		countCommands = {}
 		d_farm = data_farm.getFarm()
 		timeoutIdFarm = {};
 		isRunning = !1
