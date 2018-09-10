@@ -102,8 +102,21 @@
 }
 
 .robotTW2 .btn-border {
-    font-size: 14px;
-    line-height: 28px;
-    min-width: 150px;
-    height: 28px;
+	font-size: 14px;
+	line-height: 28px;
+	min-width: 150px;
+	height: 28px;
+}
+
+.robotTW2 .quadrant {
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.robotTW2 label .with-margin{
+	margin-left: 12px;
+	margin-rigth: 12px;
 }
