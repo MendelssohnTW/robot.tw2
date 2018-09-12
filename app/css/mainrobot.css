@@ -1,4 +1,9 @@
-[class^="span-icon"], [class*="span-icon"] {
+.robotTW2 [class^="span-icon"], [class*="span-icon"] {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+.robotTW2 [class^="with-margin"], [class*="with-margin"] {
 	margin-left: 6px;
 	margin-right: 6px;
 }
@@ -9,7 +14,7 @@
 }
 
 .robotTW2 .indicator {
-	margin-rigth: 4px;
+	margin-right: 4px;
 	float: right
 }
 
@@ -45,14 +50,6 @@
 .robotTW2 label {
 	margin-left: 6px;
 	margin-right: 6px;
-}
-
-.robotTW2 .inp-datetime {
-	width: 130px;
-	height: 26px;
-	line-height: 20px;
-	font-size: 12px;
-	min-width: 100px;
 }
 
 .robotTW2 .inpt {
@@ -122,9 +119,4 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
-}
-
-.robotTW2 label .with-margin{
-	margin-left: 12px;
-	margin-rigth: 12px;
 }
