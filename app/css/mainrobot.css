@@ -71,7 +71,7 @@
 .robotTW2 .selected {
 	color: darkred;
 	font-weight: bold;
-	background: darkred;
+    background: darkred;
 }
 
 .robotTW2 .disabled {
@@ -115,11 +115,7 @@
 }
 
 .robotTW2 .quadrant {
-	align-items: center;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
+	display: inline-block;
     width: 100px;
     height: 100px;
 }
