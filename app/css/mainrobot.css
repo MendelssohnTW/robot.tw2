@@ -71,6 +71,7 @@
 .robotTW2 .selected {
 	color: darkred;
 	font-weight: bold;
+	background: darkred;
 }
 
 .robotTW2 .disabled {
