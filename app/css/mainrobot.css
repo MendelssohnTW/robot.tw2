@@ -131,6 +131,14 @@
 	border-style: solid;
     border-width: 1px;
     border-color: white;
+	text-align: center;
+}
+
+.robotTW2 .quadrant div span{
+    color: white;
+    font-size: 20px;
+    display: inline-block;
+    transform: translate(50%, 50%);
 }
 
 .robotTW2 .jssb-applied > .box-paper {
