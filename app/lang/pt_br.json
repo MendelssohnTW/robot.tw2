@@ -1,11 +1,6 @@
 {
-	"OK": "Ok",
-	"CANCEL": "Cancelar",
 	"CONFIRM": "Confirmar",
 	"SAVE": "Salvar",
-	"DELETE": "Excluir",
-	"LEVEL": "Ní­vel",
-	"CLOSE": "Fechar",
 	"RESTORE": "Restaurar",
 	"SCHEDULE": "Programar",
 	"CLEAR": "Limpar",
@@ -13,8 +8,6 @@
 	"STOP": "Parar",
 	"PAUSE": "Pausar",
 	"RESUME": "Retomar",
-	"YES": "Sim",
-	"NO": "Não",
 	"main": {
 		"title": "Configurações principais",
 		"introducing": "Ativação e desativação dos módulos",
