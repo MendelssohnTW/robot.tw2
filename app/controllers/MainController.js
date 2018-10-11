@@ -1,6 +1,6 @@
 define("MainController", [], function(){
 	return function MainController($rootScope, $scope) {
-		var self = this;
+		var t = this;
 		var update = function(){
 			var extensions = data_main.getExtensions();
 
