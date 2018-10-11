@@ -31,12 +31,21 @@
 	"use strict";
 
 	var host = "https://mendelssohntw.github.io/robot.tw2/app";
-	$rootScope = $rootScope || window.injector.get('$rootScope')
-	, $templateCache = $templateCache || window.injector.get('$templateCache')
-	, $compile = $compile || window.injector.get('$compile')
-	, httpService =  injector.get("httpService")
-	, windowManagerService =  injector.get("windowManagerService")
-	, templateManagerService =  injector.get("templateManagerService")
+	$rootScope 					= injector.get('$rootScope')
+	, $filter 					= injector.get('$filter')
+	, $templateCache 			= injector.get('$templateCache')
+	, $compile 					= injector.get('$compile')
+	, httpService 				= injector.get("httpService")
+	, windowManagerService 		= injector.get("windowManagerService")
+	, templateManagerService 	= injector.get("templateManagerService")
+	, hotkeys 					= injector.get("hotkeys")
+	, modelDataService 			= injector.get("modelDataService")
+	, socketService 			= injector.get("socketService")
+	, socketService 			= injector.get("socketService")
+	, premiumActionService 		= injector.get("premiumActionService")
+	, villageService 			= injector.get("villageService")
+	, buildingService 			= injector.get("buildingService")
+	, armyService 				= injector.get("armyService")
 	, getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -117,19 +126,33 @@
 				opt_onError(data, status, headers, config);
 			}
 		}, true);
-	}
-	, init = function init(){
-		requestFile($rootScope.loc.ale);
-		windowManagerService.getScreen("farm")
-	}
+	};
+	
+	exports.$rootScope 					= $rootScope;
+	exports.$templateCache 				= $templateCache;
+	exports.$compile 					= $compile;
+	exports.$filter 					= $filter;
+	exports.httpService 				= httpService;
+	exports.windowManagerService 		= windowManagerService;
+	exports.templateManagerService 		= templateManagerService;
+	exports.hotkeys 					= hotkeys;
+	exports.modelDataService 			= modelDataService;
+	exports.socketService 				= socketService;
+	exports.socketService 				= socketService;
+	exports.premiumActionService 		= premiumActionService;
+	exports.villageService 				= villageService;
+	exports.buildingService 			= buildingService;
+	exports.armyService 				= armyService;
 
-	exports.init = init;
+	(function ($rootScope){
+		requestFile($rootScope.loc.ale);
+	})($rootScope);
 
 	return exports;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
-		robotTW2.init();
+	
 	});
 
 }.call(this)
