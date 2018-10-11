@@ -8,10 +8,8 @@
 			"helper/i18n",
 			"queues/EventQueue"
 			] , factory);
-	} else if (typeof exports === "object") {
-		factory(require("app"));
 	} else {
-		factory(app);
+		return
 	}
 }
 )(this, (function(
@@ -32,20 +30,11 @@
 
 	var host = "https://mendelssohntw.github.io/robot.tw2/app";
 	$rootScope 					= injector.get('$rootScope')
-	, $filter 					= injector.get('$filter')
 	, $templateCache 			= injector.get('$templateCache')
 	, $compile 					= injector.get('$compile')
 	, httpService 				= injector.get("httpService")
 	, windowManagerService 		= injector.get("windowManagerService")
 	, templateManagerService 	= injector.get("templateManagerService")
-	, hotkeys 					= injector.get("hotkeys")
-	, modelDataService 			= injector.get("modelDataService")
-	, socketService 			= injector.get("socketService")
-	, socketService 			= injector.get("socketService")
-	, premiumActionService 		= injector.get("premiumActionService")
-	, villageService 			= injector.get("villageService")
-	, buildingService 			= injector.get("buildingService")
-	, armyService 				= injector.get("armyService")
 	, getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -126,23 +115,31 @@
 				opt_onError(data, status, headers, config);
 			}
 		}, true);
+	},
+	register = function(type, name, value){
+		switch (type){
+		case "services" : {
+			if(!exports.services[name] || typeof(exports.services[name]) !== "function"){
+				exports.services[name] = injector.get(name)
+			}
+			break
+		}
+		case "providers" : {
+			if(!exports.providers[name] || typeof(exports.providers[name]) !== "object"){
+				exports.providers[name] = injector.get(name)
+			}
+			angular.merge(exports.providers[name], value)
+			break
+		}
+		}
 	};
-	
+
 	exports.$rootScope 					= $rootScope;
 	exports.$templateCache 				= $templateCache;
 	exports.$compile 					= $compile;
-	exports.$filter 					= $filter;
 	exports.httpService 				= httpService;
 	exports.windowManagerService 		= windowManagerService;
 	exports.templateManagerService 		= templateManagerService;
-	exports.hotkeys 					= hotkeys;
-	exports.modelDataService 			= modelDataService;
-	exports.socketService 				= socketService;
-	exports.socketService 				= socketService;
-	exports.premiumActionService 		= premiumActionService;
-	exports.villageService 				= villageService;
-	exports.buildingService 			= buildingService;
-	exports.armyService 				= armyService;
 
 	(function ($rootScope){
 		requestFile($rootScope.loc.ale);
@@ -152,7 +149,36 @@
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
-	
+		robotTW2.register("services", "hotkeys");
+		robotTW2.register("services", "modelDataService");
+		robotTW2.register("services", "socketService");
+		robotTW2.register("services", "premiumActionService");
+		robotTW2.register("services", "villageService");
+		robotTW2.register("services", "buildingService");
+		robotTW2.register("services", "armyService");
+		robotTW2.register("services", "$filter");
+
+		robotTW2.register("providers", "routeProvider", {
+			"INIT_DATA":{
+				type:"init_data",
+				data:["character_id"],
+			}
+		});
+
+		robotTW2.register("providers", "eventTypeProvider", {
+			"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
+			"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
+			"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
+			"INTERVAL_CHANGE_RECRUIT"		: "Internal/robotTW2/interval_change_recruit",
+			"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
+			"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
+			"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
+			"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
+			"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
+			"CMD_SENT"						: "Internal/robotTW2/cmd_sent",
+			"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
+			"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command"
+		});
 	});
 
 }.call(this)
