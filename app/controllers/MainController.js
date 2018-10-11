@@ -1,4 +1,4 @@
-define("controllers/MainController", ["robotTW2"], function(robotTW2){
+define("robotTW2/controllers/MainController", [], function(){
 	return function MainController($rootScope, $scope) {
 		var self = this;
 		var update = function(){
