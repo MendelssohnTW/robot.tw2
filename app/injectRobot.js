@@ -12,7 +12,7 @@ if (!window.inject){
 			var dependencies_loaded = true;
 			var i = 0;
 			for (var d in dependencies) {
-				if(dependecies.hasOwnProperty(d)){
+				if(dependencies.hasOwnProperty(d)){
 				if (!loadedJs.some(f => f.toLowerCase() === dependencies[d].toLowerCase())) {
 					dependencies_loaded = false;
 					if (i <= 60) {
