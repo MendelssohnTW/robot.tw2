@@ -1,4 +1,4 @@
-define(function(){
+define("MainController", [], function(){
 	return function MainController($rootScope, $scope) {
 		var self = this;
 		var update = function(){
