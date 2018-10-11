@@ -1,4 +1,4 @@
-define("MainController", [robotTW2.host + '/controllers/MainController.js'], function(MainController){
+define(function(){
 	return function MainController($rootScope, $scope) {
 		var self = this;
 		var update = function(){
