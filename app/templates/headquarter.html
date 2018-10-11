@@ -23,10 +23,8 @@
 						</colgroup>
 						<tr>
 							<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
-								id="interval_headquarter"
-								class="input-border inpt disabled" type=text
-								value="{{getTimeRest()}}"
-								disabled></td>
+								id="interval_headquarter" class="input-border inpt disabled"
+								type=text value="{{getTimeRest()}}" disabled></td>
 							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
 								id="reserva_food" class="input-border inputcreated"
 								type="number" value="{{data_headquarter.RESERVA.FOOD}}"
@@ -76,8 +74,8 @@
 											ng-repeat="buildingOrder in data_headquarter.BUILDINGORDER"
 											style="height: 56px">
 											<td ng-class="{'resource-text' : compare(buildingOrder)}"
-												class="cell-right"><span>{{getKey(buildingOrder)}}</span><span class="span-icon"
-												ng-class="getClass(buildingOrder)"></span></td>
+												class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
+												class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
 											<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
 											<td class="cell-right"><span
 												class="size-12x12 btn-orange icon-26x26-rte-building"
@@ -108,8 +106,8 @@
 									<tbody>
 										<tr
 											ng-repeat="buildingLimit in data_headquarter.BUILDINGLIMIT">
-											<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span class="span-icon"
-												ng-class="getClass(buildingLimit)"></span></td>
+											<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
+												class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
 											<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
 											<td class="cell-right"><span
 												class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
@@ -184,8 +182,8 @@
 																style="height: 56px">
 																<td
 																	ng-class="{'resource-text' : comparevillagebuildingOrder(vill.data.villageId, buildingOrder)}"
-																	class="cell-right"><span>{{getKey(buildingOrder)}}</span><span class="span-icon"
-																	ng-class="getClass(buildingOrder)"></span></td>
+																	class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
+																	class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
 																<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
 																<td class="cell-right"><span
 																	class="size-12x12 btn-orange icon-26x26-rte-building"
@@ -214,8 +212,8 @@
 														</colgroup>
 														<tbody>
 															<tr ng-repeat="buildingLimit in vill.BUILDINGLIMIT">
-																<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span class="span-icon"
-																	ng-class="getClass(buildingLimit)"></span></td>
+																<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
+																	class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
 																<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
 																<td class="cell-right"><span
 																	class="size-12x12 btn-orange icon-26x26-normal-arrow-up"

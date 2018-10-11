@@ -9,8 +9,8 @@
 
 	<div class="tabs tabs-bg">
 		<div class="tabs-two-col">
-			<div ng-repeat="tabName in TAB_ORDER"
-				class="tab" ng-click="userSetActiveTab(tabName)"
+			<div ng-repeat="tabName in TAB_ORDER" class="tab"
+				ng-click="userSetActiveTab(tabName)"
 				ng-class="{'tab-active': activeTab === tabName}">
 				<div class="tab-inner">
 					<div
@@ -23,7 +23,8 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" style="position: relative;">
-		<div class="box-paper content-settings" ng-if="activeTab == TABS.ATTACK">
+		<div class="box-paper content-settings"
+			ng-if="activeTab == TABS.ATTACK">
 			<div class="scroll-wrap attack" style="margin-bottom: 80px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
@@ -219,8 +220,8 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li ng-if="activeTab == TABS.ATTACK"><a class="btn-orange btn-border clear"
-				ng-click="clear_attack()">{{clear}}</a></li>
+			<li ng-if="activeTab == TABS.ATTACK"><a
+				class="btn-orange btn-border clear" ng-click="clear_attack()">{{clear}}</a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>

@@ -1,6 +1,4 @@
-window.name = 'NG_ENABLE_DEBUG_INFO!'
-
-	var urlServer = "https://mendelssohntw.github.io/robot.tw2/app/";
+var urlServer = "https://mendelssohntw.github.io/robot.tw2/app/";
 
 if(!window.loadedJs){
 	window.loadedJs = []
@@ -27,7 +25,6 @@ if (!window.inject){
 			if (dependencies_loaded) {
 				var scr = document.createElement("script");
 				scr.type = "text/javascript";
-//				scr.src = chrome.extension.getURL(url);
 				scr.src = url;
 				(document.head || document.body || document.documentElement).appendChild(scr);
 				loadedJs.push(url);

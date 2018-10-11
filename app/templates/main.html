@@ -38,15 +38,16 @@
 														<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
 														<td class="cell-center"><h5>{{text_status}}</h5></td>
 													</tr>
-													<tr ng-repeat="ext in extensions_copy">
+													<tr ng-repeat="ext in extensions">
 														<td class="cell-right"><span>{{ext.name}}</span></td>
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div tooltip
-																	tooltip-content="{{ext.ENABLED ? key + ' ' + extension_enabled : key + ' ' + extension_disabled}}"
-																	switch-slider="" border="true" enabled="ext.ENABLED"
-																	value="ext.ATIVATE" ng-click="toggleValueState(ext)"
-																	vertical="false" size="'56x28'">
+																	tooltip-content="{{ext.activated ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
+																	switch-slider="" border="true" enabled="ext.activated"
+																	value="ext.initialized"
+																	ng-click="toggleValueState(ext)" vertical="false"
+																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
 																		class="box-border-dark box-filter">
 																		<div class="switch switch-56x28 switch-horizontal"
@@ -63,8 +64,8 @@
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div switch-slider="" border="true"
-																	enabled="ext.ATIVATE && ext.ENABLED"
-																	value="ext.INIT_ATIVATE"
+																	enabled="ext.activated && ext.initialized"
+																	value="ext.auto_initialize"
 																	ng-click="toggleValueInit(ext)" vertical="false"
 																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
@@ -80,11 +81,12 @@
 																</div>
 															</div>
 														</td>
-														<td class="cell-center">{{hotkeys[ext.name].toUpperCase()}}</td>
+														<td class="cell-center">{{ext.hotkey}}</td>
 														<td class="cell-center">
-															<div tooltip tooltip-content="{{ext.STATUS}}">
+															<div class="icon-26x26-dot-bg" tooltip
+																tooltip-content="{{ext.status}}">
 																<span
-																	ng-class="{'icon-26x26-dot-green' : ext.STATUS == running, 'icon-26x26-dot-red' : ext.STATUS == stopped, 'icon-26x26-dot-blue' : ext.STATUS == paused}"></span>
+																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status ==stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
 															</div>
 														</td>
 													</tr>
@@ -117,7 +119,7 @@
 																				for="time_correction_command">{{text_time_correction_command}}</label><input
 																				id="time_correction_command"
 																				class="input-border inputcreated disabled" type=text
-																				ng-model="data_main.TIME_CORRECTION_COMMAND"
+																				ng-model="data_main.time_correction_command"
 																				disabled></td>
 																			<td class="cell-right"><div
 																					class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
@@ -129,7 +131,7 @@
 																				for="max_time_correction">{{text_max_time_correction}}</label><input
 																				id="max_time_correction"
 																				class="input-border inputcreated" type=text
-																				ng-model="data_main.MAX_TIME_CORRECTION"></td>
+																				ng-model="data_main.max_time_correction"></td>
 																			<td class="cell-right"><div
 																					class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
 																					ng-click="saveCorrection()" tooltip
@@ -257,7 +259,7 @@
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
 			<li class="robotTW2-button-settings"><a
-				class="btn-orange btn-border close" ng-click="closeWindow()">{{close}}</a></li>
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>
 	</footer>
 </div>

@@ -23,10 +23,8 @@
 						</colgroup>
 						<tr>
 							<td class="cell-right"><label for="interval_recruit">{{text_interval_recruit}}</label><input
-								id="interval_recruit"
-								class="input-border inpt disabled" type=text
-								value="{{getTimeRest()}}"
-								disabled></td>
+								id="interval_recruit" class="input-border inpt disabled"
+								type=text value="{{getTimeRest()}}" disabled></td>
 							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
 								id="reserva_food" class="input-border inputcreated"
 								type="number" value="{{data_recruit.RESERVA.FOOD}}"
@@ -89,10 +87,11 @@
 												<col width="*">
 											</colgroup>
 											<tr ng-repeat="(key, value) in grupo.units">
-												<td class="cell-right"><label for=key>{{getText(key)}}</label><span class="span-icon"
-													ng-class="getClass(key)"></span><input id={{key}}
-													class="input-border input-list-collapse" type="number"
-													value="grupo.units[key]" ng-model="grupo.units[key]"></td>
+												<td class="cell-right"><label for=key>{{getText(key)}}</label><span
+													class="span-icon" ng-class="getClass(key)"></span><input
+													id={{key}} class="input-border input-list-collapse"
+													type="number" value="grupo.units[key]"
+													ng-model="grupo.units[key]"></td>
 											</tr>
 										</table>
 									</div>
