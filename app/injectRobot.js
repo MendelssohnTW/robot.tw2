@@ -13,6 +13,7 @@ if (!window.inject){
 			var i = 0;
 			for (var d in dependencies) {
 				if(dependencies.hasOwnProperty(d)){
+<<<<<<< HEAD
 					if (!loadedJs.some(f => f.toLowerCase() === dependencies[d].toLowerCase())) {
 						dependencies_loaded = false;
 						if (i <= 60) {
@@ -20,9 +21,22 @@ if (!window.inject){
 						} else {
 							return;
 						}
+=======
+				if (!loadedJs.some(f => f.toLowerCase() === dependencies[d].toLowerCase())) {
+					dependencies_loaded = false;
+					if (i <= 60) {
+						setTimeout(inject, 1000, dependencies[d], [], callback);
+					} else {
+						return;
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 					}
 					i++;
 				}
+<<<<<<< HEAD
+=======
+				i++;
+				}
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 			}
 			if (dependencies_loaded) {
 				var scr = document.createElement("script");
