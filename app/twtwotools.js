@@ -89,7 +89,11 @@
 		if ($templateCache.get(path.substr(1))) {
 			success($templateCache.get(path.substr(1)), 304);
 		} else {
-			httpService.get(path, success, error, true);
+			if (!cdnConf.versionMap[path]){
+				httpService.get(path, success, error, true);
+			} else {
+				httpService.get(path, success, error);
+			}
 		}
 	}
 	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
