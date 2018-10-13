@@ -20,28 +20,183 @@
 		i18n,
 		EventQueue
 ){
-	var exports = {},
-	$timeout,
-	$rootScope,
-	$templateCache,
-	$compile;
+	var exports = {}
 
 	"use strict";
 
 	var host = "https://mendelssohntw.github.io/robot.tw2/app";
-	$rootScope 					= injector.get('$rootScope')
-	, $templateCache 			= injector.get('$templateCache')
-	, $compile 					= injector.get('$compile')
-	, httpService 				= injector.get("httpService")
-	, windowManagerService 		= injector.get("windowManagerService")
-	, templateManagerService 	= injector.get("templateManagerService")
-	, getPath = function getPath(origPath, opt_noHost) {
+	var $rootScope				= injector.get('$rootScope');
+	var $templateCache 			= injector.get('$templateCache');
+	var $timeout	 			= injector.get('$timeout');
+	var $compile 				= injector.get('$compile');
+	var httpService 			= injector.get("httpService");
+	var windowManagerService 	= injector.get("windowManagerService");
+	var templateManagerService 	= injector.get("templateManagerService");
+	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
 		}
 		return host + origPath;
 	}
-	, httpService.get = function get(uri, onLoad, onError, opt_host) {
+	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
+		var I18N_PATH_EXT = ['/lang/', '.json'];
+		var uri	= I18N_PATH_EXT.join(fileName)
+		, onFileLoaded = function onFileLoaded() {
+			$timeout = $timeout || window.injector.get('$timeout');
+			$timeout(function () {
+				i18n.updateLocAle(true);
+				if (onLoad) {
+					onLoad();
+				}
+			});
+		};
+
+		httpService.get(uri, function(jsont) {
+			i18n.setJSON(jsont);
+			onFileLoaded();
+		}, function error(data, status, headers, config) {
+			if (angular.isFunction(opt_onError)) {
+				opt_onError(data, status, headers, config);
+			}
+		}, true);
+	}
+	, register = function(type, name, value){
+		switch (type){
+		case "services" : {
+			if(!exports.services[name] || typeof(exports.services[name]) !== "function"){
+				exports.services[name] = injector.get(name)
+			}
+			break
+		}
+		case "controllers" : {
+			if(!exports.controllers[name] || typeof(exports.controllers[name]) !== "function"){
+				exports.controllers[name] = value
+			}
+			break
+		}
+		case "providers" : {
+			if(!exports.providers[name] || typeof(exports.providers[name]) !== "object"){
+				exports.providers[name] = injector.get(name)
+			}
+			angular.merge(exports.providers[name], value)
+			break
+		}
+		}
+	}
+	, builderWindow = function (params){
+		this.controller = params.controller;
+//		this.scopeLang = params.scopeLang;
+//		this.style = params.style;
+		this.hotkey = params.hotkey;
+//		this.classes = params.classes;
+		this.templateName = params.templateName;
+//		screens[params.templateName] = this;
+		params.hotkey ? this.addhotkey() : null;
+		return this
+	}
+	, build = function(params){
+		return new builderWindow(params)
+	}
+
+	builderWindow.prototype.buildWin = function() {
+		var scope = $rootScope.$new();
+		var self = this;
+//		angular.extend(scope, screens[templateName].scopeLang)
+		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
+		!self.listener ? self.listener = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
+			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
+			self.recalcScrollbar()
+			self.setCollapse()
+		}): null;
+		new Promise(function(res, rej){
+			var opt_loadCallback = function(data){
+				res(data)
+			};
+			
+			var opt_destroyCallback = undefined;
+			var opt_toggle = undefined;
+			
+			exports.services.windowManagerService.getScreenWithInjectedScope(self.templateName, scope, opt_loadCallback, opt_destroyCallback, opt_toggle)
+//			getScreen(templateName, scope, function(data){
+//				res(data)
+//			})
+		})
+		.then(function(data){
+			var rootnode = data.rootnode;
+			var tempName = self.templateName;
+			var tempUpperCase = tempName.charAt(0).toUpperCase() + tempName.slice(1);
+
+			if(self.style){
+				Object.keys(self.style).forEach(function(key){
+					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");	
+				})
+			}
+
+			if(self.classes){
+				if(typeof(self.classes) == "string"){
+					self.classes = [self.classes]
+				}
+				var cls = self.classes.join(" ");
+				$(rootnode).addClass(cls);
+			}
+
+			self.$window = rootnode;
+			$(".win-main").removeClass("jssb-focus")
+			$(".win-main").removeClass("jssb-applied")
+			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
+			self.recalcScrollbar = function() {
+				self.$scrollbar.recalc()
+			};
+			self.setCollapse = function() {
+				var a = screens[this.templateName];
+				a.$window.querySelectorAll(".twx-section.collapse").forEach(function(b) {
+					var c = !b.classList.contains("hidden-content")
+					, d = document.createElement("span");
+					d.className = "min-max-btn";
+					var e = document.createElement("a");
+					e.className = "btn-orange icon-26x26-" + (c ? "minus" : "plus"),
+					c || (b.nextSibling.style.display = "none"),
+					d.appendChild(e),
+					b.appendChild(d),
+					d.addEventListener("click", function() {
+						"none" === b.nextElementSibling.style.display ? (b.nextElementSibling.style.display = "",
+								e.className = e.className.replace("plus", "minus"),
+								c = !0) : (b.nextElementSibling.style.display = "none",
+										e.className = e.className.replace("minus", "plus"),
+										c = !1),
+										a.recalcScrollbar()
+					})
+				})
+				if(a.templateName == "farm"){
+					$(".win-foot .btn-orange").forEach(function(d){
+						d.setAttribute("style", "min-width:80px")
+					})
+				}
+			}
+
+			if(self.openned){
+				self.recalcScrollbar()
+				self.setCollapse()
+			}
+
+			self.controller.apply(self.controller, [data.rootScope, data.scope])
+
+		}, function(reason) {
+			//console.log(reason); // Error!
+		});
+
+	}
+	,
+	builderWindow.prototype.addhotkey = function() {
+		var fnThis = this.buildWin;
+		var that = this;
+		exports.services.hotkeys.add(this.hotkey, function(){
+			//fnThis.call(getTemp())
+			fnThis.apply(that, null)
+		}, ["INPUT", "SELECT", "TEXTAREA"])
+	}
+
+	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
 			onLoad(responseText);
 			if (!$rootScope.$$phase) {
@@ -59,7 +214,8 @@
 			}
 		}
 	}
-	, templateManagerService.load = function(templateName, onSuccess, opt_onError) {
+
+	templateManagerService.load = function(templateName, onSuccess, opt_onError) {
 		var success = function success(data, status, headers, config) {
 			$templateCache.put(path.substr(1), data);
 
@@ -94,52 +250,22 @@
 			}
 		}
 	}
-	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
-		var I18N_PATH_EXT = ['/lang/', '.json'];
-		var uri	= I18N_PATH_EXT.join(fileName)
-		, onFileLoaded = function onFileLoaded() {
-			$timeout = $timeout || window.injector.get('$timeout');
-			$timeout(function () {
-				i18n.updateLocAle(true);
-				if (onLoad) {
-					onLoad();
-				}
-			});
-		};
 
-		httpService.get(uri, function(jsont) {
-			i18n.setJSON(jsont);
-			onFileLoaded();
-		}, function error(data, status, headers, config) {
-			if (angular.isFunction(opt_onError)) {
-				opt_onError(data, status, headers, config);
-			}
-		}, true);
-	},
-	register = function(type, name, value){
-		switch (type){
-		case "services" : {
-			if(!exports.services[name] || typeof(exports.services[name]) !== "function"){
-				exports.services[name] = injector.get(name)
-			}
-			break
-		}
-		case "providers" : {
-			if(!exports.providers[name] || typeof(exports.providers[name]) !== "object"){
-				exports.providers[name] = injector.get(name)
-			}
-			angular.merge(exports.providers[name], value)
-			break
-		}
-		}
+	exports.services 		= {
+			$rootScope 					: $rootScope,
+			$templateCache 				: $templateCache,
+			$compile 					: $compile,
+			httpService 				: httpService,
+			windowManagerService 		: windowManagerService,
+			templateManagerService 		: templateManagerService
 	};
 
-	exports.$rootScope 					= $rootScope;
-	exports.$templateCache 				= $templateCache;
-	exports.$compile 					= $compile;
-	exports.httpService 				= httpService;
-	exports.windowManagerService 		= windowManagerService;
-	exports.templateManagerService 		= templateManagerService;
+	exports.providers 		= {};
+	exports.controllers		= {};
+
+	exports.register		= register;
+	exports.host			= host;
+	exports.build			= build;
 
 	(function ($rootScope){
 		requestFile($rootScope.loc.ale);
@@ -149,6 +275,35 @@
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
+		var $rootScope = robotTW2.services.$rootScope;
+		define("robotTW2/loadScript", function(){
+			return function(url){
+				var a = Math.round(Math.random() * 1e10)
+				var b = document.createElement("script");
+				b.type = "text/javascript";
+				b.onload = function(data){
+					var c = data.target.src.split(robotTW2.host)[1];
+					c = c.substr(1);
+					var d = c.split("/");
+					var e = "robotTW2";
+					var f = d[0];
+					var g = d[1].split(".")[0];
+					var h = [];
+					h.push(e);
+					h.push(f);
+					h.push(g);
+					var i = h.join("/")
+					require([i], function(controller){
+						robotTW2[f][g] = controller
+						$rootScope.$broadcast("ready");
+					})
+				};
+//				b.src = robotTW2.host + url + '?' + a;
+				b.src = robotTW2.host + url;
+				document.head.appendChild(b);
+			}
+		})
+
 		robotTW2.register("services", "hotkeys");
 		robotTW2.register("services", "modelDataService");
 		robotTW2.register("services", "socketService");
@@ -179,6 +334,36 @@
 			"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
 			"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command"
 		});
+		
+		define("robotTW2/databases", ["robotTW2/loadScript"], function(loadScript){
+			loadScript("/databases/database.js");
+		});
+		define("robotTW2/controllers", ["robotTW2/loadScript"], function(loadScript){
+			loadScript("/controllers/MainController.js");
+		});
+		define("robotTW2/services", ["robotTW2/loadScript"], function(loadScript){
+//			loadScript("/services/.js");
+		});
+		require(["robotTW2/databases"]);
+		require(["robotTW2/controllers"]);
+		require(["robotTW2/services"]);
+
+		$rootScope.$on("ready", function(){
+			robotTW2.build(
+					{
+						controller		: robotTW2.controllers.MainController,
+//						scopeLang 		: createScopeLang("main"),
+						hotkey 			: "ctrl+alt+p",
+						templateName 	: "main",
+						classes 		: null,
+						style 			: {
+							width : "850px"
+						}
+					}
+			)	
+		})
+
+
 	});
 
 }.call(this)
