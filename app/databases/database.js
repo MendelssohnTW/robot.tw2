@@ -1,4 +1,4 @@
-define("robotTW2/database", [
+define("robotTW2/databases/databases/database", [
 	"robotTW2/services"
 	], function(
 			services
@@ -58,8 +58,8 @@ define("robotTW2/database", [
 	, database;
 })
 ,
-define("robotTW2/data_main", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_main", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -173,8 +173,8 @@ define("robotTW2/data_main", [
 
 })
 ,
-define("robotTW2/data_attack", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_attack", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -253,8 +253,8 @@ define("robotTW2/data_attack", [
 	return data_attack;
 })
 ,
-define("robotTW2/data_support", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_support", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -334,8 +334,8 @@ define("robotTW2/data_support", [
 	return data_support;
 })
 ,
-define("robotTW2/data_headquarter", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_headquarter", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -423,8 +423,8 @@ define("robotTW2/data_headquarter", [
 	return data_headquarter;
 })
 ,
-define("robotTW2/data_recon", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_recon", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify",
@@ -481,8 +481,8 @@ define("robotTW2/data_recon", [
 	return data_recon;
 })
 ,
-define("robotTW2/data_deposit", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_deposit", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -561,8 +561,8 @@ define("robotTW2/data_deposit", [
 	return data_deposit;
 })
 ,
-define("robotTW2/data_recruit", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_recruit", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -649,8 +649,8 @@ define("robotTW2/data_recruit", [
 	return data_recruit;
 })
 ,
-define("robotTW2/data_spy", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_spy", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -729,8 +729,8 @@ define("robotTW2/data_spy", [
 	return data_spy;
 })
 ,
-define("robotTW2/data_alert", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_alert", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify"
@@ -822,8 +822,8 @@ define("robotTW2/data_alert", [
 	return data_alert;
 })
 ,
-define("robotTW2/data_farm", [
-	"robotTW2/database",
+define("robotTW2/databases/databases/database/data_farm", [
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify",
@@ -983,18 +983,10 @@ define("robotTW2/data_farm", [
 	return data_farm;
 })
 ,
-define("robotTW2/data_villages", [
-	"robotTW2/database",
-	"robotTW2/ready",
-	"robotTW2/conf",
-	"robotTW2/services",
-	"robotTW2/providers"
+define("robotTW2/databases/databases/database/data_villages", [
+	"robotTW2"
 	], function(
-			database,
-			ready,
-			conf,
-			services,
-			providers
+			robotTW2
 	) {
 
 	var data_villages = database.get("data_villages") || {}
