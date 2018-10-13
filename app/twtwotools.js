@@ -339,7 +339,7 @@
 			loadScript("/databases/database.js");
 			return robotTW2.database;
 		});
-		define("robotTW2/databases", ["robotTW2/loadScript"], function(loadScript){
+		define("robotTW2/providers", ["robotTW2/loadScript"], function(loadScript){
 			return robotTW2.providers;
 		});
 		define("robotTW2/controllers", ["robotTW2/loadScript"], function(loadScript){
