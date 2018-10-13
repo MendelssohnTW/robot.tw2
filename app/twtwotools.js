@@ -337,7 +337,7 @@
 		
 		define("robotTW2/databases", ["robotTW2/loadScript"], function(loadScript){
 			loadScript("/databases/database.js");
-			return robotTW2.database;
+			return robotTW2.databases;
 		});
 		define("robotTW2/providers", ["robotTW2/loadScript"], function(loadScript){
 			return robotTW2.providers;
