@@ -1,5 +1,5 @@
-define("robotTW2/databases/databases/database", [
-	"robotTW2/services"
+define("robotTW2/databases/database", [
+	"robotTW2.services"
 	], function(
 			services
 	) {
