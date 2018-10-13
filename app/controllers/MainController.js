@@ -1,4 +1,4 @@
-define("robotTW2/controllers/MainController", [], function(){
+define("robotTW2/controllers/MainController", ["robotTW2"], function(robotTW2){
 	return function MainController($rootScope, $scope) {
 		var self = this;
 		var update = function(){
@@ -69,7 +69,7 @@ define("robotTW2/controllers/MainController", [], function(){
 			update()
 		};
 
-		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+		$rootScope.$on(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
 			update();
 		})
@@ -80,7 +80,7 @@ define("robotTW2/controllers/MainController", [], function(){
 			update()
 		};
 
-		$rootScope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
+		$rootScope.$on(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			update()
 			if (!$scope.$$phase) {
 				$scope.$apply();
