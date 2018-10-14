@@ -1,5 +1,5 @@
 define("robotTW2/databases/data_farm", [
-	"robotTW2/databases",
+	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
 //	"robotTW2/notify",
