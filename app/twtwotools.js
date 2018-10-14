@@ -286,8 +286,9 @@
 					c = c.substr(1);
 					var d = c.split("/");
 					var e = "robotTW2";
-					var f = d[0];
-					var g = d[1].split(".")[0];
+					d = d.reverse();
+					var f = d[1];
+					var g = d[0].split(".")[0];
 					var h = [];
 					h.push(e);
 					h.push(f);
@@ -335,8 +336,137 @@
 			"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command"
 		});
 		
+		define("robotTW2/conf", [
+			"conf/buildingTypes"
+			], function(
+					buildingTypes
+			) {
+
+			var levelsBuilding = [];
+			for (var type in buildingTypes){
+				if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
+					levelsBuilding.push({[buildingTypes[type]] : 0})
+				}
+			}
+			var orderbuilding = [
+				{"academy": 1}, //Academia
+				{"headquarter": 2}, //Principal
+				{"farm": 3}, //Fazenda
+				{"warehouse": 4}, //Armazém
+				{"barracks": 5}, //Quartel
+				{"rally_point": 6}, //Ponto de encontro
+				{"timber_camp": 7}, //Bosque
+				{"iron_mine": 8}, //Mina de Ferro
+				{"clay_pit": 9}, //Poço de Argila
+				{"wall": 10}, //Muralha
+				{"statue": 11}, //Estátua
+				{"tavern": 12}, //Taverna
+				{"market": 13}, //Mercado
+				{"hospital": 14}, //Hospital
+				{"preceptory": 15}, //Salão das ordens
+				{"church": 16}, //Igreja
+				{"chapel": 17} //Caplea
+				]
+
+			var limitBuilding = [
+				{"headquarter": 20},
+				{"barracks": 15},
+				{"tavern": 13},
+				{"hospital": 5},  
+				{"preceptory": 0},  
+				{"church": 0},
+				{"chapel": 0},
+				{"academy": 1},  
+				{"rally_point": 5},  
+				{"statue": 5},
+				{"market": 15},
+				{"timber_camp": 23},  
+				{"clay_pit": 23},
+				{"iron_mine": 25},  
+				{"farm": 30},
+				{"warehouse": 25},  
+				{"wall": 18}
+				]
+
+			var seg = 1000 // 1000 milisegundos
+			, min = seg * 60
+			, h = min * 60
+
+			var conf = {
+					h						: h,
+					min						: min,
+					seg						: seg,
+					EXECUTEBUILDINGORDER 	: true,
+					BUILDINGORDER			: orderbuilding,
+					BUILDINGLIMIT			: limitBuilding,
+					BUILDINGLEVELS			: levelsBuilding,
+					MAX_COMMANDS			: 42,
+					MIN_POINTS				: 0,
+					MAX_POINTS				: 12000,
+					MAP_CHUNCK_LEN 			: 30 / 2,
+					TIME_CORRECTION_COMMAND : -225,
+					TIME_DELAY_UPDATE		: 30 * seg,
+					MAX_TIME_CORRECTION 	: 3 * seg,
+					VERSION					: {
+						MAIN			: 2.15,
+						VILLAGES		: 2.15,
+						HEADQUARTER		: 2.15,
+						ALERT			: 2.15,
+						RECON			: 2.15,
+						SPY				: 2.15,
+						ATTACK			: 2.15,
+						DEFENSE			: 2.15,
+						FARM			: 2.15,
+						RECRUIT			: 2.15,
+						DEPOSIT			: 2.15
+					},
+					JOURNEY_TIME     		: h,
+					FARM_TIME		      	: h,
+					INTERVAL				: {
+						HEADQUARTER	: h,
+						RECRUIT		: h,
+						DEPOSIT		: 15 * min,
+						ALERT		: 5 * min,
+						ATTACK		: h
+					},
+					HOTKEY					: {
+						MAIN 			: "ctrl+alt+p",
+						HEADQUARTER 	: "ctrl+alt+h",
+						ALERT		 	: "ctrl+alt+w",
+						RECON		 	: "",
+						SPY			 	: "",
+						ATTACK		 	: "ctrl+alt+a",
+						DEFENSE		 	: "ctrl+alt+d",
+						FARM		 	: "ctrl+alt+f",
+						RECRUIT		 	: "ctrl+alt+e",
+						DEPOSIT		 	: ""
+					},
+					RESERVA				: {
+						RECRUIT : {
+							FOOD			: 500,
+							WOOD			: 2000,
+							CLAY			: 2000,
+							IRON			: 2000,
+							SLOTS			: 2
+						},
+						HEADQUARTER : {
+							FOOD			: 500,
+							WOOD			: 2000,
+							CLAY			: 2000,
+							IRON			: 2000,
+							SLOTS			: 2
+						}
+
+					},
+					TROOPS_NOT				: ["knight", "snob", "doppelsoldner", "trebuchet"]
+
+			}
+			return conf;
+		})
+		
 		define("robotTW2/databases", ["robotTW2/loadScript"], function(loadScript){
-			loadScript("/databases/database.js");
+			loadScript("databases/database.js");
+			loadScript("databases/data_main.js");
 			return robotTW2.databases;
 		});
 		define("robotTW2/providers", ["robotTW2/loadScript"], function(loadScript){
