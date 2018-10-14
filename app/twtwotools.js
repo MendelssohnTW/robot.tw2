@@ -103,7 +103,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			var i = h.join("/")
 			require([i], function(controller){
 				robotTW2[f][g] = controller
-				$rootScope.$broadcast("ready");
+				$rootScope.$broadcast("ready", controller);
 			})
 		};
 //		b.src = host + url + '?' + a;
@@ -431,7 +431,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 			return conf;
 		})
-		robotTW2.services = define("robotTW2/services", [], function(){
+		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 //			robotTW2.loadScript("/services/.js");
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "modelDataService");
@@ -442,15 +442,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "armyService");
 			robotTW2.register("services", "$filter");
 			return robotTW2.services;
-		});
-		robotTW2.databases = define("robotTW2/databases", [], function(){
+		}))
+		angular.extend(robotTW2.databases, define("robotTW2/databases", [], function(){
 			robotTW2.loadScript("databases/database.js");
 			robotTW2.loadScript("databases/data_main.js");
 			robotTW2.loadScript("databases/data_villages.js");
 			robotTW2.loadScript("databases/data_farm.js");
 			return robotTW2.databases;
-		});
-		robotTW2.providers = define("robotTW2/providers", [], function(){
+		}))
+		angular.extend(robotTW2.providers, define("robotTW2/providers", [], function(){
 			robotTW2.register("providers", "routeProvider", {
 				"INIT_DATA":{
 					type:"init_data",
@@ -472,32 +472,38 @@ var robotTW2 = window.robotTW2 = undefined;
 				"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command"
 			});
 			return robotTW2.providers;
-		});
-		
-		robotTW2.controllers = define("robotTW2/controllers", [], function(){
+		}))
+
+		angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
 			robotTW2.loadScript("/controllers/MainController.js");
 			return robotTW2.controllers;
-		});
-		
+		}))
+
 		require(["robotTW2/services"]);
 		require(["robotTW2/databases"]);
 		require(["robotTW2/controllers"]);
 
 		var $rootScope = robotTW2.services.$rootScope;
-		
-		$rootScope.$on("ready", function(){
-			robotTW2.build(
-					{
-						controller		: robotTW2.controllers.MainController,
-//						scopeLang 		: createScopeLang("main"),
-						hotkey 			: "ctrl+alt+p",
-						templateName 	: "main",
-						classes 		: null,
-						style 			: {
-							width : "850px"
+
+		$rootScope.$on("ready", function(controller){
+			switch (controller) {
+			case robotTW2.controllers.MainController : {
+				robotTW2.build(
+						{
+							controller		: robotTW2.controllers.MainController,
+//							scopeLang 		: createScopeLang("main"),
+							hotkey 			: "ctrl+alt+p",
+							templateName 	: "main",
+							classes 		: null,
+							style 			: {
+								width : "850px"
+							}
 						}
-					}
-			)	
+				)
+				break
+			} 
+			}
+
 		})
 	});
 }.call(this)
