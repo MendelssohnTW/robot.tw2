@@ -1,6 +1,11 @@
-define("robotTW2/controllers/MainController", ["robotTW2"], function(robotTW2){
+define("robotTW2/controllers/MainController", [
+	"robotTW2"
+	], function(
+			robotTW2
+	){
 	return function MainController($rootScope, $scope) {
 		var self = this;
+		var data_main = robotTW2.databases.data_main;
 		var update = function(){
 			var extensions = data_main.getExtensions();
 
