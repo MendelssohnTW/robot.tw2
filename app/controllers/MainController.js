@@ -1,8 +1,12 @@
 define("robotTW2/controllers/MainController", [
 	"robotTW2/databases",
+	"robotTW2/services",
+	"robotTW2/providers",
 	"robotTW2/conf"
 	], function(
 			databases,
+			services,
+			providers,
 			conf
 	){
 	return function MainController($rootScope, $scope) {
@@ -76,7 +80,7 @@ define("robotTW2/controllers/MainController", [
 			update()
 		};
 
-		$rootScope.$on(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
 			update();
 		})
@@ -87,7 +91,7 @@ define("robotTW2/controllers/MainController", [
 			update()
 		};
 
-		$rootScope.$on(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
+		$rootScope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			update()
 			if (!$scope.$$phase) {
 				$scope.$apply();
