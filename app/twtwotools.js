@@ -106,8 +106,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				$rootScope.$broadcast("ready");
 			})
 		};
-//		b.src = robotTW2.host + url + '?' + a;
-		b.src = robotTW2.host + url;
+//		b.src = host + url + '?' + a;
+		b.src = host + url;
 		document.head.appendChild(b);
 	}
 	, builderWindow = function (params){
