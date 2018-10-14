@@ -1,6 +1,7 @@
+var robotTW2 = window.robotTW2 = undefined;
 (function(root, factory) {
 	if (typeof define === "function" && define.amd) { 
-		define("robotTW2", [
+		root.robotTW2 = define("robotTW2", [
 			"battlecat",
 			"conf/conf",
 			"cdn",
@@ -83,6 +84,32 @@
 		}
 		}
 	}
+	, loadScript = function(url){
+		var a = Math.round(Math.random() * 1e10)
+		var b = document.createElement("script");
+		b.type = "text/javascript";
+		b.onload = function(data){
+			var c = data.target.src.split(robotTW2.host)[1];
+			c = c.substr(1);
+			var d = c.split("/");
+			var e = "robotTW2";
+			d = d.reverse();
+			var f = d[1];
+			var g = d[0].split(".")[0];
+			var h = [];
+			h.push(e);
+			h.push(f);
+			h.push(g);
+			var i = h.join("/")
+			require([i], function(controller){
+				robotTW2[f][g] = controller
+				$rootScope.$broadcast("ready");
+			})
+		};
+//		b.src = robotTW2.host + url + '?' + a;
+		b.src = robotTW2.host + url;
+		document.head.appendChild(b);
+	}
 	, builderWindow = function (params){
 		this.controller = params.controller;
 //		this.scopeLang = params.scopeLang;
@@ -112,13 +139,13 @@
 			var opt_loadCallback = function(data){
 				res(data)
 			};
-			
+
 			var opt_destroyCallback = undefined;
 			var opt_toggle = undefined;
-			
+
 			exports.services.windowManagerService.getScreenWithInjectedScope(self.templateName, scope, opt_loadCallback, opt_destroyCallback, opt_toggle)
 //			getScreen(templateName, scope, function(data){
-//				res(data)
+//			res(data)
 //			})
 		})
 		.then(function(data){
@@ -266,6 +293,7 @@
 	exports.register		= register;
 	exports.host			= host;
 	exports.build			= build;
+	exports.loadScript		= loadScript;
 
 	(function ($rootScope){
 		requestFile($rootScope.loc.ale);
@@ -275,67 +303,6 @@
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
-		var $rootScope = robotTW2.services.$rootScope;
-		define("robotTW2/loadScript", function(){
-			return function(url){
-				var a = Math.round(Math.random() * 1e10)
-				var b = document.createElement("script");
-				b.type = "text/javascript";
-				b.onload = function(data){
-					var c = data.target.src.split(robotTW2.host)[1];
-					c = c.substr(1);
-					var d = c.split("/");
-					var e = "robotTW2";
-					d = d.reverse();
-					var f = d[1];
-					var g = d[0].split(".")[0];
-					var h = [];
-					h.push(e);
-					h.push(f);
-					h.push(g);
-					var i = h.join("/")
-					require([i], function(controller){
-						robotTW2[f][g] = controller
-						$rootScope.$broadcast("ready");
-					})
-				};
-//				b.src = robotTW2.host + url + '?' + a;
-				b.src = robotTW2.host + url;
-				document.head.appendChild(b);
-			}
-		})
-
-		robotTW2.register("services", "hotkeys");
-		robotTW2.register("services", "modelDataService");
-		robotTW2.register("services", "socketService");
-		robotTW2.register("services", "premiumActionService");
-		robotTW2.register("services", "villageService");
-		robotTW2.register("services", "buildingService");
-		robotTW2.register("services", "armyService");
-		robotTW2.register("services", "$filter");
-
-		robotTW2.register("providers", "routeProvider", {
-			"INIT_DATA":{
-				type:"init_data",
-				data:["character_id"],
-			}
-		});
-
-		robotTW2.register("providers", "eventTypeProvider", {
-			"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
-			"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
-			"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
-			"INTERVAL_CHANGE_RECRUIT"		: "Internal/robotTW2/interval_change_recruit",
-			"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
-			"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
-			"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
-			"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
-			"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
-			"CMD_SENT"						: "Internal/robotTW2/cmd_sent",
-			"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
-			"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command"
-		});
-		
 		define("robotTW2/conf", [
 			"conf/buildingTypes"
 			], function(
@@ -463,27 +430,60 @@
 			}
 			return conf;
 		})
-		
-		define("robotTW2/databases", ["robotTW2/loadScript"], function(loadScript){
-			loadScript("databases/database.js");
-			loadScript("databases/data_main.js");
-			return robotTW2.databases;
-		});
-		define("robotTW2/providers", ["robotTW2/loadScript"], function(loadScript){
-			return robotTW2.providers;
-		});
-		define("robotTW2/controllers", ["robotTW2/loadScript"], function(loadScript){
-			loadScript("/controllers/MainController.js");
-			return robotTW2.controllers;
-		});
-		define("robotTW2/services", ["robotTW2/loadScript"], function(loadScript){
-//			loadScript("/services/.js");
+		robotTW2.services = define("robotTW2/services", [], function(){
+//			robotTW2.loadScript("/services/.js");
+			robotTW2.register("services", "hotkeys");
+			robotTW2.register("services", "modelDataService");
+			robotTW2.register("services", "socketService");
+			robotTW2.register("services", "premiumActionService");
+			robotTW2.register("services", "villageService");
+			robotTW2.register("services", "buildingService");
+			robotTW2.register("services", "armyService");
+			robotTW2.register("services", "$filter");
 			return robotTW2.services;
 		});
+		robotTW2.databases = define("robotTW2/databases", [], function(){
+			robotTW2.loadScript("databases/database.js");
+			robotTW2.loadScript("databases/data_main.js");
+			robotTW2.loadScript("databases/data_villages.js");
+			robotTW2.loadScript("databases/data_farm.js");
+			return robotTW2.databases;
+		});
+		robotTW2.providers = define("robotTW2/providers", [], function(){
+			robotTW2.register("providers", "routeProvider", {
+				"INIT_DATA":{
+					type:"init_data",
+					data:["character_id"],
+				}
+			});
+			robotTW2.register("providers", "eventTypeProvider", {
+				"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
+				"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
+				"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
+				"INTERVAL_CHANGE_RECRUIT"		: "Internal/robotTW2/interval_change_recruit",
+				"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
+				"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
+				"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
+				"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
+				"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
+				"CMD_SENT"						: "Internal/robotTW2/cmd_sent",
+				"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
+				"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command"
+			});
+			return robotTW2.providers;
+		});
+		
+		robotTW2.controllers = define("robotTW2/controllers", [], function(){
+			robotTW2.loadScript("/controllers/MainController.js");
+			return robotTW2.controllers;
+		});
+		
+		require(["robotTW2/services"]);
 		require(["robotTW2/databases"]);
 		require(["robotTW2/controllers"]);
-		require(["robotTW2/services"]);
 
+		var $rootScope = robotTW2.services.$rootScope;
+		
 		$rootScope.$on("ready", function(){
 			robotTW2.build(
 					{
@@ -498,8 +498,5 @@
 					}
 			)	
 		})
-
-
 	});
-
 }.call(this)
