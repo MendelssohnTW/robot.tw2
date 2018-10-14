@@ -12,110 +12,110 @@ define("robotTW2/databases/data_farm", [
 			helper
 	) {
 
-	var service = {};
-	service.getPreset = function(id){
+	var db_farm = {};
+	db_farm.getPreset = function(id){
 		return database.get("data_farm").presets[id];
 	}
-	service.getPresets = function(){
+	db_farm.getPresets = function(){
 		return database.get("data_farm").presets;
 	}
-	service.setPresets = function(presets){
+	db_farm.setPresets = function(presets){
 		if(!presets){return}
 		data_farm.presets = presets;
-		service.save();
+		db_farm.save();
 	}
-	service.getJourneyTime = function(){
+	db_farm.getJourneyTime = function(){
 		return database.get("data_farm").journey_time;
 	}
-	service.setJourneyTime = function(journey_time){
+	db_farm.setJourneyTime = function(journey_time){
 		if(!journey_time){return}
 		data_farm.journey_time = journey_time;
-		service.save();
+		db_farm.save();
 	}
-	service.getJourneyDistance = function(){
+	db_farm.getJourneyDistance = function(){
 		return database.get("data_farm").journey_distance;
 	}
-	service.getMinJourneyDistance = function(){
+	db_farm.getMinJourneyDistance = function(){
 		return database.get("data_farm").min_journey_distance;
 	}
-	service.getFarmTime = function(){
+	db_farm.getFarmTime = function(){
 		return database.get("data_farm").farm_time;
 	}
-	service.setFarmTime = function(farm_time){
+	db_farm.setFarmTime = function(farm_time){
 		if(!farm_time){return}
 		data_farm.farm_time = farm_time;
-		service.save();
+		db_farm.save();
 	}
-	service.getFarmTimeStop = function(){
+	db_farm.getFarmTimeStop = function(){
 		return database.get("data_farm").farm_time_stop;
 	}
-	service.setFarmTimeStop = function(farm_time_stop){
+	db_farm.setFarmTimeStop = function(farm_time_stop){
 		if(!farm_time_stop){return}
 		data_farm.farm_time_stop = farm_time_stop;
-		service.save();
+		db_farm.save();
 	}
-	service.getFarmTimeStart = function(){
+	db_farm.getFarmTimeStart = function(){
 		return database.get("data_farm").farm_time_start;
 	}
-	service.setFarmTimeStart = function(farm_time_start){
+	db_farm.setFarmTimeStart = function(farm_time_start){
 		if(!farm_time_start){return}
 		data_farm.farm_time_start = farm_time_start;
-		service.save();
+		db_farm.save();
 	}
-	service.getMaxPointsFarm = function(){
+	db_farm.getMaxPointsFarm = function(){
 		return database.get("data_farm").max_points_farm;
 	}
-	service.getMinPointsFarm = function(){
+	db_farm.getMinPointsFarm = function(){
 		return database.get("data_farm").min_points_farm;
 	}
-	service.getMaxCommandsFarm = function(){
+	db_farm.getMaxCommandsFarm = function(){
 		return database.get("data_farm").max_commands_farm;
 	}
 
-	service.addException = function(exception){
+	db_farm.addException = function(exception){
 		if(exception){
 			!data_farm.list_exceptions.find(f => f == exception) ? data_farm.list_exceptions.push(exception) : null;
-			service.save();
+			db_farm.save();
 		}
 	}
 
-	service.removeException = function(exception){
+	db_farm.removeException = function(exception){
 		if(exception){
 			data_farm.list_exceptions = data_farm.list_exceptions.filter(f => f != exception)
-			service.save();
+			db_farm.save();
 		}
 	}
 
-	service.getExceptions = function(){
+	db_farm.getExceptions = function(){
 		return database.get("data_farm").list_exceptions
 	}
 
-	service.setExceptions = function(exceptions){
+	db_farm.setExceptions = function(exceptions){
 		if(exceptions){
 			angular.merge(data_farm.list_exceptions, exceptions)
-			service.save();
+			db_farm.save();
 		}
 	}
 
-	service.getTimeComplete = function(){
+	db_farm.getTimeComplete = function(){
 		return database.get("data_farm").completed_at;
 	}
 
-	service.setTimeComplete = function(time){
+	db_farm.setTimeComplete = function(time){
 		if(!time){return}
 		data_farm.completed_at = time
-		service.save();
+		db_farm.save();
 	}
 
-	service.getAutoInitialize = function(){
+	db_farm.getAutoInitialize = function(){
 		return database.get("data_farm").auto_initialize;
 	}
 
-	service.getInitialized = function(){
+	db_farm.getInitialized = function(){
 		return database.get("data_farm").initialized;
 	}
 
-	service.save = function(){
+	db_farm.save = function(){
 		database.set("data_farm", data_farm, true)
 	}
 
@@ -154,7 +154,7 @@ define("robotTW2/databases/data_farm", [
 		}
 	}
 
-	Object.setPrototypeOf(data_farm, service);
+	Object.setPrototypeOf(data_farm, db_farm);
 
 	return data_farm;
 })

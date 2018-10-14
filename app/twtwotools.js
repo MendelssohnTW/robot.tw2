@@ -99,15 +99,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			var h = [];
 			h.push(e);
 			h.push(f);
-			h.push(g);
+			h.push(g);	
 			var i = h.join("/")
 			require([i], function(controller){
-				robotTW2[f][g] = controller
+				exports[f][g] = controller
 				$rootScope.$broadcast("ready", controller);
 			})
 		};
-//		b.src = host + url + '?' + a;
-		b.src = host + url;
+		b.src = host + url + '?' + a;
+//		b.src = host + url;
 		document.head.appendChild(b);
 	}
 	, builderWindow = function (params){
@@ -290,6 +290,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	exports.providers 		= {};
 	exports.controllers		= {};
+	exports.databases		= {};
 
 	exports.register		= register;
 	exports.host			= host;
@@ -444,10 +445,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			return robotTW2.services;
 		}))
 		angular.extend(robotTW2.databases, define("robotTW2/databases", [], function(){
-			robotTW2.loadScript("databases/database.js");
-			robotTW2.loadScript("databases/data_main.js");
-			robotTW2.loadScript("databases/data_villages.js");
-			robotTW2.loadScript("databases/data_farm.js");
+			robotTW2.loadScript("/databases/database.js");
+			robotTW2.loadScript("/databases/data_main.js");
+			robotTW2.loadScript("/databases/data_villages.js");
+			robotTW2.loadScript("/databases/data_farm.js");
 			return robotTW2.databases;
 		}))
 		angular.extend(robotTW2.providers, define("robotTW2/providers", [], function(){
@@ -485,7 +486,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		var $rootScope = robotTW2.services.$rootScope;
 
-		$rootScope.$on("ready", function(controller){
+		$rootScope.$on("ready", function($event, controller){
 			switch (controller) {
 			case robotTW2.controllers.MainController : {
 				robotTW2.build(

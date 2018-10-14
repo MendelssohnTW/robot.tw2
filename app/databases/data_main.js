@@ -11,8 +11,8 @@ define("robotTW2/databases/data_main", [
 	){
 
 	var data_main = database.get("data_main")
-	, service = {};
-	service.setExtensions = function(extensions){
+	, db_main = {};
+	db_main.setExtensions = function(extensions){
 		for (var extension in extensions){
 			var string = "data_" + extension.toLowerCase();
 			var db = database.get(string)
@@ -24,7 +24,7 @@ define("robotTW2/databases/data_main", [
 			}
 		}
 	}
-	service.getExtensions = function(){
+	db_main.getExtensions = function(){
 		var extensions = {
 				HEADQUARTER		: {
 					initialized : database.get("data_headquarter") ? database.get("data_headquarter").initialized : false,
@@ -83,7 +83,7 @@ define("robotTW2/databases/data_main", [
 		}
 		return extensions;
 	}
-	service.save = function(){
+	db_main.save = function(){
 		database.set("data_main", data_main, true)
 	};
 
@@ -104,9 +104,9 @@ define("robotTW2/databases/data_main", [
 			if(data_main.auto_initialize) data_main.initialized = !0;
 		}
 	}
-	service.save()
+	db_main.save()
 
-	Object.setPrototypeOf(data_main, service);
+	Object.setPrototypeOf(data_main, db_main);
 	return data_main;
 
 })

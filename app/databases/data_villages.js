@@ -1,18 +1,20 @@
 define("robotTW2/databases/data_villages", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
+	"robotTW2/providers"
 //	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
+			providers
 //			notify
 	){
-
+	
 	var data_villages = database.get("data_villages") || {}
-	, service = {}
-	service.verifyDB = function (villagesExtended){
+	, db_villages = {}
+	db_villages.verifyDB = function (villagesExtended){
 		if (data_villages == undefined || data_villages.villages == undefined){
 			return false;
 		}
@@ -29,7 +31,7 @@ define("robotTW2/databases/data_villages", [
 		})
 		return updated;
 	}
-	service.verifyVillages = function (villagesExtended){
+	db_villages.verifyVillages = function (villagesExtended){
 		updated = false;
 		if (data_villages == undefined || data_villages.villages == undefined){
 			return false;
@@ -51,27 +53,27 @@ define("robotTW2/databases/data_villages", [
 				updated = true;
 			}
 		})
-		if(updated){service.setVillages(data_villages.villages)}
+		if(updated){db_villages.setVillages(data_villages.villages)}
 		return updated
 	}
-	service.getVillageActivate = function(vs){
+	db_villages.getVillageActivate = function(vs){
 		return database.get("data_villages").villages[vs].farm_activate
 	}
-	service.setVillageActivate = function(vs, opt){
+	db_villages.setVillageActivate = function(vs, opt){
 		data_villages.vs = opt;
-		service.save()
+		db_villages.save()
 	}
-	service.setVillages = function(vs){
+	db_villages.setVillages = function(vs){
 		data_villages.villages = vs;
-		service.save()
+		db_villages.save()
 	}
-	service.getVillages = function(){
+	db_villages.getVillages = function(){
 		return database.get("data_villages").villages
 	}
-	service.save = function(){
+	db_villages.save = function(){
 		database.set("data_villages", data_villages, true)
 	}
-	service.updateVillages = function($event){
+	db_villages.updateVillages = function($event){
 		var villagesDB = {}
 		, villagesExtended = {}
 		, updated = false;
@@ -79,7 +81,7 @@ define("robotTW2/databases/data_villages", [
 		angular.extend(villagesDB, services.modelDataService.getVillages())
 		angular.merge(villagesExtended, villagesDB)
 
-		if(!data_villages.villages || service.verifyDB(villagesExtended) || service.verifyVillages(villagesExtended)) {
+		if(!data_villages.villages || db_villages.verifyDB(villagesExtended) || db_villages.verifyVillages(villagesExtended)) {
 			if (data_villages == undefined || data_villages.villages == undefined){
 				data_villages = {}
 				, vb = {}
@@ -88,7 +90,7 @@ define("robotTW2/databases/data_villages", [
 				angular.merge(ve, vb)
 				data_villages.version = conf.VERSION.villages
 				data_villages.villages = {}
-				service.verifyVillages(villagesExtended, ve)
+				db_villages.verifyVillages(villagesExtended, ve)
 			}
 
 		} else {
@@ -96,21 +98,20 @@ define("robotTW2/databases/data_villages", [
 				data_villages.version = conf.VERSION.villages
 			}
 		} 
-		service.save();
+		db_villages.save();
 	}
-	service.renameVillage = function($event, data){
+	db_villages.renameVillage = function($event, data){
 		var id = data.village_id;
 		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name
-				service.setVillages(data_villages.villages)
+				db_villages.setVillages(data_villages.villages)
 	}
 
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
 
-	$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, service.updateVillages);
-	$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, service.updateVillages);
-	$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, service.renameVillage);
+	db_villages.updateVillages()
 
-	service.updateVillages()
-
-	Object.setPrototypeOf(data_villages, service);
+	Object.setPrototypeOf(data_villages, db_villages);
 	return data_villages;
 })
