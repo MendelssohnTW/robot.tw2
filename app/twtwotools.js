@@ -89,7 +89,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		var b = document.createElement("script");
 		b.type = "text/javascript";
 		b.onload = function(data){
-			var c = data.target.src.split(robotTW2.host)[1];
+			var c = data.target.src.split(host)[1];
 			c = c.substr(1);
 			var d = c.split("/");
 			var e = "robotTW2";
@@ -282,6 +282,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			$rootScope 					: $rootScope,
 			$templateCache 				: $templateCache,
 			$compile 					: $compile,
+			$timeout 					: $timeout,
 			httpService 				: httpService,
 			windowManagerService 		: windowManagerService,
 			templateManagerService 		: templateManagerService
