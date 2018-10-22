@@ -88,14 +88,14 @@ define("robotTW2/databases/data_villages", [
 				, ve = {}
 				angular.extend(vb, services.modelDataService.getVillages())
 				angular.merge(ve, vb)
-				data_villages.version = conf.VERSION.villages
+				data_villages.version = conf.VERSION.VILLAGES
 				data_villages.villages = {}
 				db_villages.verifyVillages(villagesExtended, ve)
 			}
 
 		} else {
 			if(!data_villages.version || data_villages.version < conf.VERSION.VILLAGES){
-				data_villages.version = conf.VERSION.villages
+				data_villages.version = conf.VERSION.VILLAGES
 			}
 		} 
 		db_villages.save();
