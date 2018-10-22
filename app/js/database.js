@@ -991,13 +991,13 @@ define("robotTW2/data_villages", [
 			return false;
 		}
 		updated = false;
-		Object.keys(data_villages.VILLAGES).map(function(m){
+		Object.keys(data_villages.villages).map(function(m){
 			return m
 		}).forEach(function(v){
 			if(!Object.keys(villagesExtended).map(function(m){
 				return m
 			}).find(f=>f==v)){
-				delete data_villages.VILLAGES[v]
+				delete data_villages.villages[v]
 				updated = true;
 			}
 		})
@@ -1011,7 +1011,7 @@ define("robotTW2/data_villages", [
 		Object.keys(villagesExtended).map(function(m){
 			return m
 		}).forEach(function(v){
-			if(!Object.keys(data_villages.VILLAGES).map(function(m){
+			if(!Object.keys(data_villages.villages).map(function(m){
 				return m
 			}).find(f=>f==v)){
 				angular.merge(villagesExtended[v], {
@@ -1020,22 +1020,22 @@ define("robotTW2/data_villages", [
 					BUILDINGLIMIT 			: conf.BUILDINGLIMIT,
 					BUILDINGLEVELS 			: conf.BUILDINGLEVELS
 				})
-				data_villages.VILLAGES[v] = villagesExtended[v]
+				data_villages.villages[v] = villagesExtended[v]
 				updated = true;
 			}
 		})
-		if(updated){setVillages(data_villages.VILLAGES)}
+		if(updated){setVillages(data_villages.villages)}
 		return updated
 	}
 	, setVillages = function(vs){
 		var data_villages = database.get("data_villages")
 
-		data_villages.VILLAGES = vs;
+		data_villages.villages = vs;
 		database.set("data_villages", data_villages, true)
 	}
 	, getVillages = function(){
 		var data_villages = database.get("data_villages")
-		var villagesDB = data_villages.VILLAGES
+		var villagesDB = data_villages.villages
 		return villagesDB
 	}
 	, updateVillages = function($event){
@@ -1056,8 +1056,8 @@ define("robotTW2/data_villages", [
 				, ve = {}
 				angular.extend(vb, services.modelDataService.getVillages())
 				angular.merge(ve, vb)
-				dt_villages.VERSION = conf.VERSION.VILLAGES
-				dt_villages.VILLAGES = {}
+				dt_villages.version = conf.VERSION.VILLAGES
+				dt_villages.villages = {}
 				database.set("data_villages", dt_villages, true)
 				verifyVillages(dt_villages, ve)
 			} else {
@@ -1065,8 +1065,8 @@ define("robotTW2/data_villages", [
 			}
 
 		} else {
-			if(!dt_villages.VERSION || dt_villages.VERSION < conf.VERSION.VILLAGES){
-				dt_villages.VERSION = conf.VERSION.VILLAGES
+			if(!dt_villages.version || dt_villages.version < conf.VERSION.VILLAGES){
+				dt_villages.version = conf.VERSION.VILLAGES
 				database.set("data_villages", dt_villages, true)
 			}
 		}
@@ -1075,8 +1075,8 @@ define("robotTW2/data_villages", [
 	, renameVillage = function($event, data){
 		data_villages = database.get("data_villages")
 		var id = data.village_id;
-		!data_villages.VILLAGES[id] ? !1 : data_villages.VILLAGES[id].data.name = data.name
-				setVillages(data_villages.VILLAGES)
+		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name
+				setVillages(data_villages.villages)
 	}
 	, fn = {
 			setVillages 	: setVillages,
