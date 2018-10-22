@@ -25,10 +25,11 @@ if (!window.inject){
 				}
 			}
 			if (dependencies_loaded) {
+				var r = Math.round(Math.random() * 1e10)
 				var scr = document.createElement("script");
 				scr.type = "text/javascript";
 				if(urlServer.length > 0) {
-					scr.src = url;
+					scr.src = urlServer + url + '?' + r;
 				} else {
 					scr.src = chrome.extension.getURL(url);
 				}
@@ -51,7 +52,12 @@ if (!window.injectHTML){
 				var scr = document.createElement("div");
 				scr.setAttribute("ng-include", "");
 				scr.setAttribute("style", "height:100%");
-				scr.setAttribute("src", "'" + chrome.extension.getURL(url) + "'");
+				if(urlServer.length > 0) {
+					scr.setAttribute("src", "'" + urlServer + url + "'");
+				} else {
+					scr.setAttribute("src", "'" + chrome.extension.getURL(url) + "'");
+				}
+				
 				(document.head || document.body || document.documentElement).appendChild(scr);
 				if(urls.length){next()}
 			} catch (error) {
@@ -73,14 +79,14 @@ if (!window.checkHTML){
 			scr.setAttribute("href", "https://mendelssohntw.github.io/robot.tw2/app/css/mainrobot.css");
 			document.head.appendChild(scr);
 			injectHTML([
-				"view/main.html", 
-				"view/headquarter.html", 
-				"view/farm.html",
-				"view/alert.html",
-				"view/recruit.html",
-				"view/attack.html",
-				"view/attackcompletion.html",
-				"view/defense.html"
+				"templates/main.html", 
+				"templates/headquarter.html", 
+				"templates/farm.html",
+				"templates/alert.html",
+				"templates/recruit.html",
+				"templates/attack.html",
+				"templates/attackcompletion.html",
+				"templates/defense.html"
 				]);
 		} else {
 			setTimeout(checkHTML, 1000);
@@ -92,30 +98,32 @@ if (!window.checkHTML){
 if (!window.check){
 	window.check = function () {
 		if (document.getElementById("interface-bottom")) {
-			setTimeout(inject, 300, urlServer + "js/ready.js", ["js/services.js"], function(){
-				setTimeout(inject, 300, urlServer + "js/database.js", ["js/ready.js"], function(){
-					setTimeout(inject, 300, urlServer + "js/utils.js", ["js/database.js"], function(){
-						setTimeout(inject, 300, urlServer + "js/builderWindow.js", ["js/utils.js"], function(){
-							setTimeout(inject, 300, urlServer + "js/headquarter.js", ["js/builderWindow.js"], function(){
-								setTimeout(inject, 300, urlServer + "js/alert.js", ["js/builderWindow.js"], function(){
-									setTimeout(inject, 300, urlServer + "js/recon.js", ["js/builderWindow.js"], function(){
-										setTimeout(inject, 300, urlServer + "js/spy.js", ["js/builderWindow.js"], function(){
-											setTimeout(inject, 300, urlServer + "js/attack.js", ["js/builderWindow.js"], function(){
-												setTimeout(inject, 300, urlServer + "js/defense.js", ["js/builderWindow.js"], function(){
-													setTimeout(inject, 300, urlServer + "js/recruit.js", ["js/builderWindow.js"], function(){
-														setTimeout(inject, 300, urlServer + "js/deposit.js", ["js/builderWindow.js"], function(){
-															setTimeout(inject, 300, urlServer + "js/farm.js", ["js/builderWindow.js"], function(){
-																setTimeout(inject, 300, urlServer + "js/services_queue.js", ["js/builderWindow.js"], function(){
-																	setTimeout(inject, 300, urlServer + "js/main.js", ["js/services_queue.js"], function(){
-																		setTimeout(inject, 300, urlServer + "init_main.js", ["js/main.js"], function(){
+			setTimeout(inject, 300,  "js/services.js", [], function(){
+				setTimeout(inject, 300,  "js/ready.js", ["js/services.js"], function(){
+					setTimeout(inject, 300,  "js/database.js", ["js/ready.js"], function(){
+						setTimeout(inject, 300,  "js/utils.js", ["js/database.js"], function(){
+							setTimeout(inject, 300,  "js/builderWindow.js", ["js/utils.js"], function(){
+								setTimeout(inject, 300,  "js/headquarter.js", ["js/builderWindow.js"], function(){
+									setTimeout(inject, 300,  "js/alert.js", ["js/builderWindow.js"], function(){
+										setTimeout(inject, 300,  "js/recon.js", ["js/builderWindow.js"], function(){
+											setTimeout(inject, 300,  "js/spy.js", ["js/builderWindow.js"], function(){
+												setTimeout(inject, 300,  "js/attack.js", ["js/builderWindow.js"], function(){
+													setTimeout(inject, 300,  "js/defense.js", ["js/builderWindow.js"], function(){
+														setTimeout(inject, 300,  "js/recruit.js", ["js/builderWindow.js"], function(){
+															setTimeout(inject, 300,  "js/deposit.js", ["js/builderWindow.js"], function(){
+																setTimeout(inject, 300,  "js/farm.js", ["js/builderWindow.js"], function(){
+																	setTimeout(inject, 300,  "js/services_queue.js", ["js/builderWindow.js"], function(){
+																		setTimeout(inject, 300,  "js/main.js", ["js/services_queue.js"], function(){
+																			setTimeout(inject, 300, "init_main.js", ["js/main.js"], function(){
+																			});	
 																		});	
 																	});	
 																});	
 															});	
 														});	
 													});	
-												});	
-											});	
+												});
+											});
 										});	
 									});	
 								});	
