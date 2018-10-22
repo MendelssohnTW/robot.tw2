@@ -10,6 +10,7 @@ define("robotTW2/controllers/MainController", [
 			conf
 	){
 	return function MainController($rootScope, $scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
 		var data_main = databases.data_main;
 		var update = function(){
@@ -17,7 +18,7 @@ define("robotTW2/controllers/MainController", [
 
 			Object.keys(extensions).forEach(function(key){
 				extensions[key].hotkey = conf.HOTKEY[key].toUpperCase();
-				var arFn = requestFn.get(key.toLowerCase(), true);
+				var arFn = $scope.requestFn.get(key.toLowerCase(), true);
 				if(!arFn){
 					extensions[key].status = $scope.disabled;
 					extensions[key].initialized = false;
@@ -56,7 +57,7 @@ define("robotTW2/controllers/MainController", [
 			}
 //			$scope.extensions[ext.name].initialized = ext.initialized
 			data_main.setExtensions($scope.extensions);
-			var arFn = requestFn.get(ext.name.toLowerCase(), true);
+			var arFn = $scope.requestFn.get(ext.name.toLowerCase(), true);
 			var fn = arFn.fn;
 			var params = arFn.params;
 

@@ -71,7 +71,6 @@
 .robotTW2 .selected {
 	color: darkred;
 	font-weight: bold;
-	background: darkred;
 }
 
 .robotTW2 .disabled {
@@ -80,9 +79,9 @@
 }
 
 .robotTW2 .inputcreated {
-	width: 50px;
+	width: 60px;
 	min-width: 40px;
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 20px;
 	height: 26px;
 }
@@ -115,19 +114,17 @@
 }
 
 .robotTW2 .quadrant {
-	display: inline-block;
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
 	width: 100px;
 	height: 100px;
 }
 
-.robotTW2 .quadrant span {
+.robotTW2 .quadrant div {
 	float: left;
 	width: 50px;
 	height: 50px;
-	border-style: solid;
-	border-width: 1px;
-	border-color: white;
-	color: white;
-	font-size: 20px;
-	padding-top: 10px;
 }

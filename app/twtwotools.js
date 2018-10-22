@@ -325,15 +325,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			templateManagerService 		: templateManagerService
 	};
 
-	exports.providers 		= {};
-	exports.controllers		= {};
-	exports.databases		= {};
+	exports.providers 			= {};
+	exports.controllers			= {};
+	exports.databases			= {};
 
-	exports.register		= register;
-	exports.host			= host;
-	exports.build			= build;
-	exports.loadScript		= loadScript;
-	exports.createScopeLang	= createScopeLang;
+	exports.register			= register;
+	exports.host				= host;
+	exports.build				= build;
+	exports.loadScript			= loadScript;
+	exports.createScopeLang 	= createScopeLang;
 
 	(function ($rootScope){
 		requestFile($rootScope.loc.ale);
@@ -524,10 +524,14 @@ var robotTW2 = window.robotTW2 = undefined;
 		$rootScope.$on("ready", function($event, controller){
 			switch (controller) {
 			case robotTW2.controllers.MainController : {
+				var scope = {};
+				scope.requestFn = robotTW2.requestFn;
+				angular.extend(scope, robotTW2.createScopeLang("main"));
+				
 				robotTW2.build(
 						{
 							controller		: robotTW2.controllers.MainController,
-							scopeLang 		: robotTW2.createScopeLang("main"),
+							scopeLang 		: scope,
 							hotkey 			: "ctrl+alt+p",
 							templateName 	: "main",
 							classes 		: null,
