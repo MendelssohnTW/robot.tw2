@@ -333,6 +333,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.host			= host;
 	exports.build			= build;
 	exports.loadScript		= loadScript;
+	exports.createScopeLang	= createScopeLang;
 
 	(function ($rootScope){
 		requestFile($rootScope.loc.ale);
