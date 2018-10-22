@@ -61,6 +61,43 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		}, true);
 	}
+	, requestFn = function(){
+		var fns = {}
+		, service = {};
+		return service.prefix = "robotTW2/" 
+			, service.bind = function(key, fn, params) {
+			fns.hasOwnProperty(key) || (fns[key] = []),
+			fns[key].push({fn:fn, params:params})
+		}
+		,
+		service.trigger = function(key, params) {
+			fns.hasOwnProperty(key) && fns[key].forEach(function(fs) {
+				fs.fn.apply(this, params)
+			})
+		}
+		,
+		service.get = function(key, opt_prefix, index) {
+			if(!key) return;
+			!index ? index = 0 : index;
+			return opt_prefix && fns[this.prefix + key] ? fns[this.prefix + key][index] : fns[key] ? fns[key][index] : null 
+		}
+		,
+		service
+	}
+	, createScopeLang = function(module){
+		var scope = {};
+		var jsont = window.getTextObject(module);
+		Object.keys(jsont).map(function(elem, index, array){
+			if(typeof(jsont[elem]) != "string") {
+				if(elem == module){
+					Object.keys(jsont[module]).map(function(e, i, a){
+						scope[e] = jsont[module][e];
+					})
+				}
+			}
+		})
+		return scope
+	}
 	, register = function(type, name, value){
 		switch (type){
 		case "services" : {
@@ -446,9 +483,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		}))
 		angular.extend(robotTW2.databases, define("robotTW2/databases", [], function(){
 			robotTW2.loadScript("/databases/database.js");
-			robotTW2.loadScript("/databases/data_main.js");
-			robotTW2.loadScript("/databases/data_villages.js");
-			robotTW2.loadScript("/databases/data_farm.js");
 			return robotTW2.databases;
 		}))
 		angular.extend(robotTW2.providers, define("robotTW2/providers", [], function(){
@@ -492,7 +526,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				robotTW2.build(
 						{
 							controller		: robotTW2.controllers.MainController,
-//							scopeLang 		: createScopeLang("main"),
+							scopeLang 		: robotTW2.createScopeLang("main"),
 							hotkey 			: "ctrl+alt+p",
 							templateName 	: "main",
 							classes 		: null,
@@ -502,9 +536,15 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 				)
 				break
-			} 
+			}
+			case robotTW2.databases.database : {
+				robotTW2.loadScript("/databases/data_main.js");
+				robotTW2.loadScript("/databases/data_villages.js");
+				robotTW2.loadScript("/databases/data_farm.js");
+				break
 			}
 
+			}
 		})
 	});
 }.call(this)
