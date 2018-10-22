@@ -108,9 +108,6 @@ if (!window.check){
 																setTimeout(inject, 300, urlServer + "js/services_queue.js", ["js/builderWindow.js"], function(){
 																	setTimeout(inject, 300, urlServer + "js/main.js", ["js/services_queue.js"], function(){
 																		setTimeout(inject, 300, urlServer + "init_main.js", ["js/main.js"], function(){
-//																			setTimeout(inject, 300, urlServer + "twtwotools.js", [], function(){
-
-//																			});
 																		});	
 																	});	
 																});	
