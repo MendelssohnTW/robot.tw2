@@ -29,7 +29,11 @@ if (!window.inject){
 				var scr = document.createElement("script");
 				scr.type = "text/javascript";
 				if(urlServer.length > 0) {
+<<<<<<< HEAD
 					scr.src = urlServer + url + '?' + r;
+=======
+					scr.src = url + '?' + r;
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 				} else {
 					scr.src = chrome.extension.getURL(url);
 				}
@@ -44,8 +48,13 @@ if (!window.inject){
 }
 
 if (!window.injectHTML){
+<<<<<<< HEAD
 	window.injectHTML = function injectHTML(urls) {
+=======
+window.injectHTML = function injectHTML(urls) {
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 
+<<<<<<< HEAD
 		function next(){
 			var url = urls.shift();
 			try {
@@ -68,9 +77,29 @@ if (!window.injectHTML){
 		}
 		next()
 	};
+=======
+function next(){
+var url = urls.shift();
+try {
+var scr = document.createElement("div");
+scr.setAttribute("ng-include", "");
+scr.setAttribute("style", "height:100%");
+scr.setAttribute("src", "'" + chrome.extension.getURL(url) + "'");
+(document.head || document.body || document.documentElement).appendChild(scr);
+if(urls.length){next()}
+} catch (error) {
+urls.unshift(url);
+setTimeout(injectHTML, 1000, urls);
+if(urls.length){next()}
+}
+}
+next()
+};
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 }
 
 if (!window.checkHTML){
+<<<<<<< HEAD
 	window.checkHTML = function () {
 		if (document.getElementById("interface-bottom")) {
 			var scr = document.createElement("link");
@@ -93,6 +122,30 @@ if (!window.checkHTML){
 		}
 	}
 	checkHTML();
+=======
+window.checkHTML = function () {
+if (document.getElementById("interface-bottom")) {
+var scr = document.createElement("link");
+scr.setAttribute("rel", "stylesheet");
+scr.setAttribute("type", "text/css");
+scr.setAttribute("href", "https://mendelssohntw.github.io/robot.tw2/app/css/mainrobot.css");
+document.head.appendChild(scr);
+injectHTML([
+"view/main.html", 
+"view/headquarter.html", 
+"view/farm.html",
+"view/alert.html",
+"view/recruit.html",
+"view/attack.html",
+"view/attackcompletion.html",
+"view/defense.html"
+]);
+} else {
+setTimeout(checkHTML, 1000);
+}
+}
+checkHTML();
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 }
 
 if (!window.check){
