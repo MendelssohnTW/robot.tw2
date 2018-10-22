@@ -1,4 +1,7 @@
+window.name = 'NG_ENABLE_DEBUG_INFO!';
+
 var urlServer = "https://mendelssohntw.github.io/robot.tw2/app/";
+urlServer = "";
 
 if(!window.loadedJs){
 	window.loadedJs = []
@@ -25,7 +28,11 @@ if (!window.inject){
 			if (dependencies_loaded) {
 				var scr = document.createElement("script");
 				scr.type = "text/javascript";
-				scr.src = url;
+				if(urlServer.lenght > 0) {
+					scr.src = url;
+				} else {
+					scr.src = chrome.extension.getURL(url);
+				}
 				(document.head || document.body || document.documentElement).appendChild(scr);
 				loadedJs.push(url);
 				callback()
@@ -86,45 +93,41 @@ if (!window.inject){
 if (!window.check){
 	window.check = function () {
 		if (document.getElementById("interface-bottom")) {
-//			setTimeout(inject, 300, "js/json.js", [], function(){
-//			setTimeout(inject, 300, "js/services.js", [], function(){
-//			setTimeout(inject, 300, "js/ready.js", ["js/services.js"], function(){
-//			setTimeout(inject, 300, "js/database.js", ["js/ready.js"], function(){
-//			setTimeout(inject, 300, "js/utils.js", ["js/database.js"], function(){
-//			setTimeout(inject, 300, "js/builderWindow.js", ["js/utils.js"], function(){
-//			setTimeout(inject, 300, "js/headquarter.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/alert.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/recon.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/spy.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/attack.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/defense.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/recruit.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/deposit.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/farm.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/services_queue.js", ["js/builderWindow.js"], function(){
-//			setTimeout(inject, 300, "js/main.js", ["js/services_queue.js"], function(){
-//			setTimeout(inject, 300, "init_main.js", ["js/main.js"], function(){
-			setTimeout(inject, 300, urlServer + "twtwotools.js", [], function(){
-
+			setTimeout(inject, 300, urlServer + "js/ready.js", ["js/services.js"], function(){
+				setTimeout(inject, 300, urlServer + "js/database.js", ["js/ready.js"], function(){
+					setTimeout(inject, 300, urlServer + "js/utils.js", ["js/database.js"], function(){
+						setTimeout(inject, 300, urlServer + "js/builderWindow.js", ["js/utils.js"], function(){
+							setTimeout(inject, 300, urlServer + "js/headquarter.js", ["js/builderWindow.js"], function(){
+								setTimeout(inject, 300, urlServer + "js/alert.js", ["js/builderWindow.js"], function(){
+									setTimeout(inject, 300, urlServer + "js/recon.js", ["js/builderWindow.js"], function(){
+										setTimeout(inject, 300, urlServer + "js/spy.js", ["js/builderWindow.js"], function(){
+											setTimeout(inject, 300, urlServer + "js/attack.js", ["js/builderWindow.js"], function(){
+												setTimeout(inject, 300, urlServer + "js/defense.js", ["js/builderWindow.js"], function(){
+													setTimeout(inject, 300, urlServer + "js/recruit.js", ["js/builderWindow.js"], function(){
+														setTimeout(inject, 300, urlServer + "js/deposit.js", ["js/builderWindow.js"], function(){
+															setTimeout(inject, 300, urlServer + "js/farm.js", ["js/builderWindow.js"], function(){
+																setTimeout(inject, 300, urlServer + "js/services_queue.js", ["js/builderWindow.js"], function(){
+																	setTimeout(inject, 300, urlServer + "js/main.js", ["js/services_queue.js"], function(){
+																		setTimeout(inject, 300, urlServer + "init_main.js", ["js/main.js"], function(){
+//																			setTimeout(inject, 300, urlServer + "twtwotools.js", [], function(){
+//
+//																			});
+																		});	
+																	});	
+																});	
+															});	
+														});	
+													});	
+												});	
+											});	
+										});	
+									});	
+								});	
+							});			
+						});			
+					});		
+				});	
 			});
-//			});
-//			});
-//			});	
-//			});	
-//			});	
-//			});	
-//			});	
-//			});	
-//			});	
-//			});	
-//			});	
-//			});	
-//			});	
-//			});			
-//			});			
-//			});		
-//			});	
-//			});
 
 		} else {
 			setTimeout(check, 1000);
