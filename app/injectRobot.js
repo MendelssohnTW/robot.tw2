@@ -25,10 +25,11 @@ if (!window.inject){
 				}
 			}
 			if (dependencies_loaded) {
+				var r = Math.round(Math.random() * 1e10)
 				var scr = document.createElement("script");
 				scr.type = "text/javascript";
 				if(urlServer.length > 0) {
-					scr.src = url;
+					scr.src = url + '?' + r;
 				} else {
 					scr.src = chrome.extension.getURL(url);
 				}
