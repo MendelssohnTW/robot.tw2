@@ -5,7 +5,10 @@ define("robotTW2/services/FarmService", [
 	){
 	return (function FarmService() {
 
-		var init, start, stop, pause, resume, isRunning, isPaused, isInitialized;
+		var init = function(){
+			
+		}
+		, start, stop, pause, resume, isRunning, isPaused, isInitialized;
 		return	{
 			init			: init,
 			start			: start,
