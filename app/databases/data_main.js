@@ -90,7 +90,8 @@ define("robotTW2/databases/data_main", [
 	var dataNew = {
 			max_time_correction		: conf.MAX_TIME_CORRECTION,
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
-			version					: conf.VERSION.MAIN
+			version					: conf.VERSION.MAIN,
+			name					: "data_main"
 	}
 
 	if(!data_main){

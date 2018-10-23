@@ -135,7 +135,8 @@ define("robotTW2/databases/data_farm", [
 			min_points_farm			: conf.MIN_POINTS,
 			max_commands_farm		: conf.MAX_COMMANDS,
 			list_exceptions			: [],
-			presets					: {}
+			presets					: {},
+			name					: "data_farm"
 	}
 
 
