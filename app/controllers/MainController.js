@@ -1,9 +1,11 @@
 define("robotTW2/controllers/MainController", [
+	"robotTW2",
 	"robotTW2/databases",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf"
 	], function(
+			robotTW2,
 			databases,
 			services,
 			providers,
@@ -18,8 +20,9 @@ define("robotTW2/controllers/MainController", [
 
 			Object.keys(extensions).forEach(function(key){
 				extensions[key].hotkey = conf.HOTKEY[key].toUpperCase();
-				var arFn = $scope.requestFn.get(key.toLowerCase(), true);
+				var arFn = robotTW2.requestFn.get(key.toLowerCase(), true);
 				if(!arFn){
+					extensions[key].activated = false;
 					extensions[key].status = $scope.disabled;
 					extensions[key].initialized = false;
 					extensions[key].auto_initialize = false;
