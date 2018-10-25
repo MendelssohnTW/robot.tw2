@@ -69,7 +69,7 @@
 		"priority": "Sequência de prioridades",
 		"levels": "Limite de níveis",
 		"ativate": "Estado atual",
-		"introducing": "Você pode criar customiza��es por aldeias. Inicialmente serão configuradas com as configurações globais",
+		"introducing": "Você pode criar customizações por aldeias. Inicialmente serão configuradas com as configurações globais",
 		"tooltip_input": "Tempo mínimo de 30 minutos",
 		"tooltip_button": "Selecionar edifício"
 	},
@@ -111,7 +111,7 @@
 		"title": "Coleta de recursos",
 		"wait_init": "Aguardando início do ciclo de Farm",
 		"farm_init": "Ciclo de Farm iniciado",
-		"farm_no_init": "Ciclo de Farm não iniciado. T�rmino de farm inferior ao tempo mínimo do ciclo",
+		"farm_no_init": "Ciclo de Farm não iniciado. Término de farm inferior ao tempo mínimo do ciclo",
 		"farm_running": "Estado atual do processamento de farm",
 		"time_max": "Tempo máximo de percurso",
 		"init_hour": "Hora de início",
