@@ -381,8 +381,6 @@ define("robotTW2/services/AttackService", [
 			init				: init,
 			start				: start,
 			stop 				: stop,
-			pause 				: pause,
-			resume 				: resume,
 			sendCommandAttack 	: sendCommandAttack,
 			calibrate_time		: calibrate_time,
 			removeCommandAttack	: function(id_command){
@@ -393,9 +391,6 @@ define("robotTW2/services/AttackService", [
 			},
 			isRunning			: function () {
 				return isRunning
-			},
-			isPaused			: function () {
-				return isPaused
 			},
 			isInitialized		: function () {
 				return isInitialized
