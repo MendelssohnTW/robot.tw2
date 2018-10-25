@@ -98,6 +98,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				delete fns[key];
 			}
 		}
+		, service.getFns = function(){return fns}
 		,
 		service
 	})()
@@ -597,7 +598,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						DEFENSE			: 2.3,
 						FARM			: 2.3,
 						RECRUIT			: 2.3,
-						DEPOSIT			: 2.3
+						DEPOSIT			: 2.3,
+						MEDIC			: 2.3
 					},
 					JOURNEY_TIME     		: h,
 					FARM_TIME		      	: h,
@@ -606,7 +608,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						RECRUIT		: h,
 						DEPOSIT		: 15 * min,
 						ALERT		: 5 * min,
-						ATTACK		: h
+						ATTACK		: h,
+						MEDIC		: h
 					},
 					HOTKEY					: {
 						MAIN 			: "ctrl+alt+p",
@@ -618,7 +621,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						DEFENSE		 	: "ctrl+alt+d",
 						FARM		 	: "ctrl+alt+f",
 						RECRUIT		 	: "ctrl+alt+e",
-						DEPOSIT		 	: ""
+						DEPOSIT		 	: "",
+						MEDIC		 	: ""
 					},
 					RESERVA				: {
 						RECRUIT : {
@@ -800,7 +804,6 @@ var robotTW2 = window.robotTW2 = undefined;
 							classes 		: "fullsize",
 							style 			: null
 					}		
-//					robotTW2.services.FarmService && typeof(robotTW2.services.FarmService.init) == "function" ? robotTW2.requestFn.bind("robotTW2/farm", robotTW2.services.FarmService.init) : null;	
 					robotTW2.build(params)
 					break
 				}
@@ -813,7 +816,6 @@ var robotTW2 = window.robotTW2 = undefined;
 							classes 		: "fullsize",
 							style 			: null
 					}		
-//					robotTW2.services.AttackService && typeof(robotTW2.services.AttackService.init) == "function" ? robotTW2.requestFn.bind("robotTW2/attack", robotTW2.services.AttackService.init) : null;	
 					robotTW2.build(params)
 					break
 				}
@@ -825,15 +827,23 @@ var robotTW2 = window.robotTW2 = undefined;
 							scopeLang 				: robotTW2.createScopeLang("attack"),
 							templateName 			: "attackcompletion"
 					}	
-//					robotTW2.services.AttackService && typeof(robotTW2.services.AttackService.init) == "function" ? robotTW2.requestFn.bind("robotTW2/attack", robotTW2.services.AttackService.init) : null;	
 					robotTW2.build(params)
 					break
 				}
+				case robotTW2.services.FarmService : {
+					robotTW2.services.FarmService && typeof(robotTW2.services.FarmService.init) == "function" ? robotTW2.requestFn.bind("farm", robotTW2.services.FarmService) : null;	
+					break
+				}
+				case robotTW2.services.AttackService : {
+					robotTW2.services.AttackService && typeof(robotTW2.services.AttackService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.AttackService) : null;	
+					break
+				}
+				
 				case "database" : {
-					robotTW2.loadScript("/databases/data_main.js");
 					robotTW2.loadScript("/databases/data_villages.js")
 					robotTW2.loadScript("/databases/data_farm.js");
 					robotTW2.loadScript("/databases/data_attack.js");
+					robotTW2.loadScript("/databases/data_main.js");
 					break
 				}
 				case "data_main" : {

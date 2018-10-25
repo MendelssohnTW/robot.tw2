@@ -18,14 +18,12 @@ define("robotTW2/services/MainService", [
 					continue
 				} else {
 					var fn = arFn.fn;
-					var params = arFn.params;
 					extensions[extension].hotkey = conf.HOTKEY[extension].toUpperCase();
 					extensions[extension].activated = true;
 					robotTW2.requestFn.trigger(fn, params);
 					if(extensions[extension].initialized && extensions[extension].auto_initialize){
 						if(fn.isInitialized())
 							return !1;	
-//						robotTW2.requestFn.trigger(extensions[extension].name.toLowerCase(), params);
 						if(typeof(fn.init) == "function"){fn.init()}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					}

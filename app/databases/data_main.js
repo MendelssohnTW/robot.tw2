@@ -79,6 +79,12 @@ define("robotTW2/databases/data_main", [
 							auto_initialize : database.get("data_recon") ? database.get("data_recon").auto_initialize : false,
 									activated : database.get("data_recon") ? database.get("data_recon").activated : false,
 											name : "RECON"
+				},
+				MEDIC			: {
+					initialized : database.get("data_medic") ? database.get("data_medic").initialized : false,
+							auto_initialize : database.get("data_medic") ? database.get("data_medic").auto_initialize : false,
+									activated : database.get("data_medic") ? database.get("data_medic").activated : false,
+											name : "MEDIC"
 				}
 		}
 		return extensions;
