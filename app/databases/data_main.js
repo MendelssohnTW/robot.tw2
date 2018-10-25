@@ -2,12 +2,12 @@ define("robotTW2/databases/data_main", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services"
-//	"robotTW2/notify"
+	"robotTW2/notify"
 	], function(
 			database,
 			conf,
 			services
-//			notify
+			notify
 	){
 
 	var data_main = database.get("data_main")
@@ -99,7 +99,7 @@ define("robotTW2/databases/data_main", [
 	} else {
 		if(!data_main.version || data_main.version < conf.VERSION.MAIN){
 			data_main = dataNew
-//			notify("data_main");
+			notify("data_main");
 		} else {
 			if(!data_main.auto_initialize) data_main.initialized = !1;
 			if(data_main.auto_initialize) data_main.initialized = !0;

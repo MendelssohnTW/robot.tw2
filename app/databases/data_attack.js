@@ -2,13 +2,13 @@ define("robotTW2/databases/data_attack", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
-//	"robotTW2/notify",
+	"robotTW2/notify",
 	"helper/time"
 	], function(
 			database,
 			conf,
 			services,
-//			notify,
+			notify,
 			helper
 	) {
 	var db_attack = {};

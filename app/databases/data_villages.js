@@ -3,13 +3,11 @@ define("robotTW2/databases/data_villages", [
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/providers"
-//	"robotTW2/notify"
 	], function(
 			database,
 			conf,
 			services,
 			providers
-//			notify
 	){
 	
 	var data_villages = database.get("data_villages") || {}
