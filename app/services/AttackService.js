@@ -57,7 +57,7 @@ define("robotTW2/services/AttackService", [
 		}).sort((a, b) => {
 			return a[0] - b[0];
 		})
-		, villages = data_villages.getVillages()
+		, villages = robotTW2.databases.data_villages.getVillages()
 		, calibrate_time = function(){
 			var duration = undefined
 			, sTime
