@@ -26,7 +26,6 @@ define("robotTW2/services/FarmService", [
 			},
 			version			: "1.0.0",
 			name			: "farm",
-//			build 			: function (params) {return new robotTW2.builderWindow(params)},
 			analytics 		: function () {
 				ga("create", "UA-115071391-2", "auto", "RobotTW2");
 				ga('send', 'pageview');
