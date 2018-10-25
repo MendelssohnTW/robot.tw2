@@ -11,22 +11,23 @@ define("robotTW2/databases/data_attack", [
 //			notify,
 			helper
 	) {
-
-	var set = function(data_attack){
+	var db_attack = {};
+	
+	db_attack.set = function(data_attack){
 		if(data_attack){
 			database.set("data_attack", data_attack, true)
 		}
 	}
 
-	var get = function(){
+	db_attack.get = function(){
 		return database.get("data_attack")
 	}
 
-	var getTimeCicle = function(){
+	db_attack.getTimeCicle = function(){
 		return database.get("data_attack").interval
 	}
 
-	var setTimeCicle = function(timecicle){
+	db_attack.setTimeCicle = function(timecicle){
 		if(timecicle){
 			var data = database.get("data_attack")
 			data.interval = timecicle
@@ -34,7 +35,7 @@ define("robotTW2/databases/data_attack", [
 		}
 	}
 
-	var setTimeComplete = function(time){
+	db_attack.setTimeComplete = function(time){
 		if(time){
 			var data = database.get("data_attack")
 			data.completed_at = time
@@ -68,15 +69,7 @@ define("robotTW2/databases/data_attack", [
 		}
 	}
 
-	var fn = {
-			setAttack				: setAttack,
-			getAttack				: getAttack,
-			getTimeCicle			: getTimeCicle,
-			setTimeCicle			: setTimeCicle,
-			setTimeComplete			: setTimeComplete
-	}
-
-	Object.setPrototypeOf(data_attack, fn);
+	Object.setPrototypeOf(data_attack, db_attack);
 
 	return data_attack;
 })
