@@ -222,23 +222,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		b.src = host + url;
 		document.head.appendChild(b);
 	}
-	, builderWindow = function (params){
-		this.included_controller 	= params.included_controller;
-		this.controller 			= params.controller;
-		this.provider_listener 		= params.provider_listener;
-		this.scopeLang 				= params.scopeLang;
-//		this.style 					= params.style;
-		this.hotkey 				= params.hotkey;
-//		this.classes 				= params.classes;
-		this.templateName 			= params.templateName;
-//		screens[params.templateName] 	= this;
-		params.hotkey ? this.addhotkey() : null;
-		params.provider_listener ? this.addlistener() : null;
-		return this
-	}
-	, build = function(params){
-		return new builderWindow(params)
-	}
 	, ready = function(opt_callback, array_keys){
 		array_keys = array_keys || ["map"];
 		var callback = function(key){
@@ -291,6 +274,53 @@ var robotTW2 = window.robotTW2 = undefined;
 		array_keys.forEach(function(key) {
 			obj_keys[key]()
 		})
+	}
+	, socketEmit = function(){
+		var loading_timeout;
+		require(["conf/conf"], function(conf){
+			loading_timeout = conf.LOADING_TIMEOUT
+		})
+
+		var timeouts = {}
+		, createTimeoutErrorCaptureFunction = function (id, route, data, emitCallback) {
+			var dt = {
+					id : id,	
+					route : route,
+					data : data
+			}
+			return emitCallback(dt)
+		}
+
+		exports.services.$rootScope.$on(exports.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, function($event, id, route, data, opt_callback, opt_callback_timeout) {
+			timeouts[id] = window.setTimeout(function(){createTimeoutErrorCaptureFunction(id, route, data, opt_callback_timeout)}, loading_timeout);
+		});
+
+		exports.services.$rootScope.$on(exports.providers.eventTypeProvider.SOCKET_RECEPT_COMMAND, function($event, id) {
+			window.clearTimeout(timeouts[id])
+			delete timeouts[id]
+		});
+
+		return function(id, route, data, opt_callback, opt_callback_timeout){
+			exports.services.$rootScope.$broadcast(exports.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, id, route, data, opt_callback, opt_callback_timeout);
+			exports.services.socketService.emit(route, data, opt_callback)
+		}
+	}
+	, build = function(params){
+		return new builderWindow(params)
+	}
+	, builderWindow = function (params){
+		this.included_controller 	= params.included_controller;
+		this.controller 			= params.controller;
+		this.provider_listener 		= params.provider_listener;
+		this.scopeLang 				= params.scopeLang;
+//		this.style 					= params.style;
+		this.hotkey 				= params.hotkey;
+//		this.classes 				= params.classes;
+		this.templateName 			= params.templateName;
+//		screens[params.templateName] 	= this;
+		params.hotkey ? this.addhotkey() : null;
+		params.provider_listener ? this.addlistener() : null;
+		return this
 	}
 
 	builderWindow.prototype.addWin = function() {
@@ -507,6 +537,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.createScopeLang 	= createScopeLang;
 	exports.requestFn 			= requestFn;
 	exports.commandQueueAttack 	= commandQueueAttack;
+	exports.socketEmit 			= socketEmit;
 
 	(function ($rootScope){
 		requestFile($rootScope.loc.ale);
@@ -516,6 +547,10 @@ var robotTW2 = window.robotTW2 = undefined;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
+
+		
+
+
 		define("robotTW2/conf", [
 			"conf/buildingTypes"
 			], function(
@@ -697,6 +732,48 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		var $rootScope = robotTW2.services.$rootScope;
 		
+		define("robotTW2/socketEmit", [
+			"conf/conf"
+			], function(
+					conf
+			){
+			var loading_timeout = conf.LOADING_TIMEOUT
+
+			var timeouts = {}
+			, createTimeoutErrorCaptureFunction = function (id, route, data, emitCallback) {
+				var dt = {
+						id : id,	
+						route : route,
+						data : data
+				}
+				return emitCallback(dt)
+			}
+
+			$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, function($event, id, route, data, opt_callback, opt_callback_timeout) {
+				timeouts[id] = window.setTimeout(function(){createTimeoutErrorCaptureFunction(id, route, data, opt_callback_timeout)}, loading_timeout);
+			});
+
+			$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_RECEPT_COMMAND, function($event, id) {
+				window.clearTimeout(timeouts[id])
+				delete timeouts[id]
+			});
+
+			return function(id, route, data, opt_callback, opt_callback_timeout){
+				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, id, route, data, opt_callback, opt_callback_timeout);
+				robotTW2.services.socketService.emit(route, data, opt_callback)
+			}
+		})
+		
+		define("robotTW2/unitTypesRenameRecon", [], function() {
+			var l = {}
+			robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+				if(obj.name != "knight"){
+					{l[obj.name] = true}
+				}
+			});
+			return l
+		})
+
 		define("robotTW2/notify", [
 			'helper/firework'
 			], function(
@@ -764,8 +841,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				switch (type) {
 				case robotTW2.controllers.MainController : {
 					robotTW2.loadScript("/controllers/FarmController.js");
-//					robotTW2.loadScript("/controllers/HeadquarterController.js");
 					robotTW2.loadScript("/controllers/AttackController.js");
+//					robotTW2.loadScript("/controllers/HeadquarterController.js");
 //					robotTW2.loadScript("/controllers/DefenseController.js");
 //					robotTW2.loadScript("/controllers/ReconController.js");
 //					robotTW2.loadScript("/controllers/AlertController.js");
