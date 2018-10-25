@@ -20,7 +20,6 @@ define("robotTW2/services/MainService", [
 					var fn = arFn.fn;
 					extensions[extension].hotkey = conf.HOTKEY[extension].toUpperCase();
 					extensions[extension].activated = true;
-					robotTW2.requestFn.trigger(fn, params);
 					if(extensions[extension].initialized && extensions[extension].auto_initialize){
 						if(fn.isInitialized())
 							return !1;	
