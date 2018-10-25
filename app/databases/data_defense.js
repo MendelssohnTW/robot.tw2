@@ -12,13 +12,13 @@ define("robotTW2/databases/data_defense", [
 	
 	var db_defense = {};
 	
-	db_defense.setSupport = function(data_defense){
+	db_defense.setDefense = function(data_defense){
 		if(data_defense){
 			database.set("data_defense", data_defense, true)
 		}
 	}
 
-	db_defense.getSupport = function(){
+	db_defense.getDefense = function(){
 		return database.get("data_defense")
 	}
 
@@ -57,7 +57,7 @@ define("robotTW2/databases/data_defense", [
 		data_defense = dataNew
 		database.set("data_defense", data_defense, true)
 	} else {
-		if(!data_defense.version || data_defense.version < conf.VERSION.SUPPORT){
+		if(!data_defense.version || data_defense.version < conf.VERSION.DEFENSE){
 
 			data_defense = dataNew
 			database.set("data_defense", data_defense, true)
