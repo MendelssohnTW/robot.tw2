@@ -1,12 +1,12 @@
 define("robotTW2/databases/data_main", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
-	"robotTW2/services"
+	"robotTW2/services",
 	"robotTW2/notify"
 	], function(
 			database,
 			conf,
-			services
+			services,
 			notify
 	){
 
