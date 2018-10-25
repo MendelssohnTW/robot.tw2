@@ -656,15 +656,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "armyService");
 			robotTW2.register("services", "$filter");
 
-//			robotTW2.loadScript("/services/HeadquarterService.js");
-//			robotTW2.loadScript("/services/DefenseService.js");
-//			robotTW2.loadScript("/services/ReconService.js");
-//			robotTW2.loadScript("/services/AlertService.js");
-//			robotTW2.loadScript("/services/SpyService.js");
-//			robotTW2.loadScript("/services/RecruitService.js");
-//			robotTW2.loadScript("/services/DepositService.js");
-//			robotTW2.loadScript("/services/MedicService.js");
-
 			return robotTW2.services;
 		}))
 		angular.extend(robotTW2.databases, define("robotTW2/databases", [], function(){
@@ -838,11 +829,50 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.AttackService && typeof(robotTW2.services.AttackService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.AttackService) : null;	
 					break
 				}
-				
+				case robotTW2.services.DefenseService : {
+					robotTW2.services.DefenseService && typeof(robotTW2.services.DefenseService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.DefenseService) : null;	
+					break
+				}
+				case robotTW2.services.DepositService : {
+					robotTW2.services.DepositService && typeof(robotTW2.services.DepositService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.DepositService) : null;	
+					break
+				}
+				case robotTW2.services.HeadquarterService : {
+					robotTW2.services.HeadquarterService && typeof(robotTW2.services.HeadquarterService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.HeadquarterService) : null;	
+					break
+				}
+				case robotTW2.services.ReconService : {
+					robotTW2.services.ReconService && typeof(robotTW2.services.ReconService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.ReconService) : null;	
+					break
+				}
+				case robotTW2.services.AlertService : {
+					robotTW2.services.AlertService && typeof(robotTW2.services.AlertService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.AlertService) : null;	
+					break
+				}
+				case robotTW2.services.RecruitService : {
+					robotTW2.services.RecruitService && typeof(robotTW2.services.RecruitService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.RecruitService) : null;	
+					break
+				}
+				case robotTW2.services.SpyService : {
+					robotTW2.services.SpyService && typeof(robotTW2.services.SpyService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.SpyService) : null;	
+					break
+				}
+				case robotTW2.services.MedicService : {
+					robotTW2.services.MedicService && typeof(robotTW2.services.MedicService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.MedicService) : null;	
+					break
+				}
 				case "database" : {
 					robotTW2.loadScript("/databases/data_villages.js")
 					robotTW2.loadScript("/databases/data_farm.js");
 					robotTW2.loadScript("/databases/data_attack.js");
+					robotTW2.loadScript("/databases/data_defense.js");
+					robotTW2.loadScript("/databases/data_deposit.js");
+					robotTW2.loadScript("/databases/data_headquarter.js");
+					robotTW2.loadScript("/databases/data_recon.js");
+					robotTW2.loadScript("/databases/data_alert.js");
+					robotTW2.loadScript("/databases/data_recruit.js");
+					robotTW2.loadScript("/databases/data_spy.js");
+					robotTW2.loadScript("/databases/data_medic.js");
 					robotTW2.loadScript("/databases/data_main.js");
 					break
 				}
@@ -856,6 +886,38 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_attack" : {
 					robotTW2.loadScript("/services/AttackService.js");
+					break
+				}
+				case "data_defense" : {
+					robotTW2.loadScript("/services/DefenseService.js");
+					break
+				}
+				case "data_deposit" : {
+					robotTW2.loadScript("/services/DepositService.js");
+					break
+				}
+				case "data_headquarter" : {
+					robotTW2.loadScript("/services/HeadquarterService.js");
+					break
+				}
+				case "data_recon" : {
+					robotTW2.loadScript("/services/ReconService.js");
+					break
+				}
+				case "data_alert" : {
+					robotTW2.loadScript("/services/AlertService.js");
+					break
+				}
+				case "data_recruit" : {
+					robotTW2.loadScript("/services/RecruitService.js");
+					break
+				}
+				case "data_spy" : {
+					robotTW2.loadScript("/services/SpyService.js");
+					break
+				}
+				case "data_medic" : {
+					robotTW2.loadScript("/services/MedicService.js");
 					break
 				}
 				}
