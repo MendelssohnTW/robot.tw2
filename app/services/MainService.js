@@ -1,13 +1,15 @@
 define("robotTW2/services/MainService", [
 	"robotTW2",
+	"robotTW2/databases",
 	"robotTW2/conf",
 	], function(
 			robotTW2,
+			databases,
 			conf
 	){
 	return (function MainService() {
 		var service = {};
-		var data_main = robotTW2.databases.data_main
+		var data_main = databases.data_main
 		return service.getExtensions = function(){
 			
 			var extensions = data_main.getExtensions();
