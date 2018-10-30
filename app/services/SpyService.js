@@ -1,7 +1,9 @@
 define("robotTW2/services/SpyService", [
-	"robotTW2"
+	"robotTW2",
+	"helper/time",
 	], function(
-			robotTW2
+			robotTW2,
+			helper
 	){
 	return (function SpyService() {
 
@@ -9,13 +11,14 @@ define("robotTW2/services/SpyService", [
 		, isRunning = !1
 		, interval_spy = null
 		, listener_spy = undefined
+		, list = []
 		, data_spy = robotTW2.databases.data_spy
 		, data_villages = robotTW2.databases.data_villages
 		, counterMeasureTypes = {
-			CAMOUFLAGE: "camouflage",
-			DUMMIES: "dummies",
-			EXCHANGE: "exchange",
-			SWITCH_WEAPONS: "switch_weapons"
+				CAMOUFLAGE: "camouflage",
+				DUMMIES: "dummies",
+				EXCHANGE: "exchange",
+				SWITCH_WEAPONS: "switch_weapons"
 		}
 		, getMaxSpies = function(researches, level){
 			var a, b, c = {}, d;
@@ -35,6 +38,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, recruit_spy = function (){
 			var lista_aldeias = data_villages.getVillages();
+			var l = [];
 			Object.keys(lista_aldeias).forEach(function(id){
 				var selectedVillage = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(id);
 				if(selectedVillage && selectedVillage.data.buildings) {
@@ -43,6 +47,9 @@ define("robotTW2/services/SpyService", [
 					var count = 0;
 					for (i = 0; i < maxSpies; i++ ){
 						var spy = spies[i];
+						if(spy.recruitingInProgress){
+							l.push(spy.timeCompleted);
+						}
 						if (spy.type == 0 && !spy.active) {
 							robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SCOUTING_RECRUIT, {
 								'village_id'	: selectedVillage.getId(),
@@ -50,16 +57,36 @@ define("robotTW2/services/SpyService", [
 							});
 						};
 					}
+					var t = helper.gameTime() - Math.min.apply(null, l)
+					t < 3000 ? t = 3000 : t;
+					data_spy.setTimeCicle(t)
+					data_spy.setTimeComplete(helper.gameTime() + t)
 				}
+				wait();
 			})
 		}
+		, setList = function(callback){
+			list.push(conf.INTERVAL.SPY)
+			list.push(data_spy.getTimeCicle())
+			var t = Math.min.apply(null, list)
+			t < 3000 ? t = 3000 : t;
+			data_spy.setTimeCicle(t)
+			data_spy.setTimeComplete(helper.gameTime() + t)
+			list = [];
+			robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_SPY)
+			if(callback && typeof(callback) == "function"){callback(t)}
+		}
 		, wait = function(){
-			if(!interval_spy){
-				interval_spy = robotTW2.services.$timeout(recruit_spy, data_spy.interval)
-			} else {
-				robotTW2.services.$timeout.cancel(interval_spy);
-				interval_spy = robotTW2.services.$timeout(recruit_spy, data_spy.interval)
-			}
+			setList(function(tm){
+				if(!interval_spy){
+					interval_spy = robotTW2.services.$timeout(function(){recruit_spy()}, tm)
+					interval_spy = robotTW2.services.$timeout(recruit_spy, data_spy.interval)
+				} else {
+					robotTW2.services.$timeout.cancel(interval_spy);
+					interval_spy = undefined;
+					interval_spy = robotTW2.services.$timeout(function(){recruit_spy()}, tm)
+				}
+			});
 		}
 		, init = function (){
 			isInitialized = !0
@@ -71,7 +98,6 @@ define("robotTW2/services/SpyService", [
 				isRunning = !0;
 				!listener_spy ? listener_spy = robotTW2.services.$rootScope.$on(robotTW2.providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
 				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
-				wait();
 				recruit_spy();
 			}, ["all_villages_ready"])
 		}
