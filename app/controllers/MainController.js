@@ -16,7 +16,7 @@ define("robotTW2/controllers/MainController", [
 		var self = this;
 		var data_main = databases.data_main;
 		var update = function(){
-			var extensions = services.MainService.getExtensions();
+			var extensions = data_main.getExtensions();
 
 			Object.keys(extensions).forEach(function(key){
 				extensions[key].hotkey = conf.HOTKEY[key].toUpperCase();
