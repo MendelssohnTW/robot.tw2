@@ -1,7 +1,9 @@
 define("robotTW2/services/DepositService", [
-	"robotTW2"
+	"robotTW2",
+	"robotTW2/conf"
 	], function(
-			robotTW2
+			robotTW2,
+			conf
 	){
 	return (function DepositService() {
 
