@@ -14,10 +14,10 @@ define("robotTW2/controllers/MainController", [
 	return function MainController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
-		
+
 		var data_main = databases.data_main;
 		var update = function(){
-			var extensions = data_main.getExtensions();
+			var extensions = robotTW2.services.MainService.getExtensions()
 
 			Object.keys(extensions).forEach(function(key){
 				extensions[key].hotkey = conf.HOTKEY[key].toUpperCase();
@@ -26,7 +26,11 @@ define("robotTW2/controllers/MainController", [
 					extensions[key].status = $scope.disabled;
 				} else {
 					var fn = arFn.fn;
-					fn.isRunning() && (typeof(fn.isPaused) == "function" && fn.isPaused()) ? extensions[key].status = $scope.paused : fn.isRunning() && (typeof(fn.isPaused) == "function" && !fn.isPaused()) ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;
+					if(typeof(fn.isPaused) == "function"){
+						fn.isRunning() && fn.isPaused() ? extensions[key].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;						
+					} else {
+						fn.isRunning() ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;
+					}
 				}
 			})
 
