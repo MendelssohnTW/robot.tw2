@@ -44,17 +44,17 @@ define("robotTW2/controllers/MainController", [
 
 			var arFn = robotTW2.requestFn.get(ext.name.toLowerCase(), true);
 			if(!arFn) {
-				$scope.extensions[ext].activated = false;
-				$scope.extensions[ext].status = $scope.disabled;
+				$scope.extensions[ext.name].activated = false;
+				$scope.extensions[ext.name].status = $scope.disabled;
 			} else {
 				var fn = arFn.fn;
-				$scope.extensions[ext].activated = true;
+				$scope.extensions[ext.name].activated = true;
 				if(ext.initialized){
 					if(fn.isInitialized()){
 						if(typeof(fn.isPaused) == "function"){
-							fn.isRunning() && fn.isPaused() ? $scope.extensions[key].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[key].status = $scope.running : $scope.extensions[key].status = $scope.stopped;						
+							fn.isRunning() && fn.isPaused() ? $scope.extensions[ext.name].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[ext.name].status = $scope.running : $scope.extensions[ext.name].status = $scope.stopped;						
 						} else {
-							fn.isRunning() ? $scope.extensions[key].status = $scope.running : $scope.extensions[key].status = $scope.stopped;
+							fn.isRunning() ? $scope.extensions[ext.name].status = $scope.running : $scope.extensions[ext.name].status = $scope.stopped;
 						}
 						return;
 					}
