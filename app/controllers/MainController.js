@@ -14,6 +14,7 @@ define("robotTW2/controllers/MainController", [
 	return function MainController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
+		
 		var data_main = databases.data_main;
 		var update = function(){
 			var extensions = data_main.getExtensions();

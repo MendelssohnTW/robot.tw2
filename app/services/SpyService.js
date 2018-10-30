@@ -1,9 +1,11 @@
 define("robotTW2/services/SpyService", [
 	"robotTW2",
 	"helper/time",
+	"robotTW2/conf"
 	], function(
 			robotTW2,
-			helper
+			helper,
+			conf
 	){
 	return (function SpyService() {
 
