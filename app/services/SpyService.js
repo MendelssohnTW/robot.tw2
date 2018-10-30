@@ -63,7 +63,7 @@ define("robotTW2/services/SpyService", [
 										return undefined;
 									}
 								}
-						).filter(elem => elem != undefined).some(elem => elem = false)
+						).filter(elem => elem != undefined).some(elem => elem == false)
 						if(spy.recruitingInProgress){
 							l.push(spy.timeCompleted);
 						}
