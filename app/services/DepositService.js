@@ -42,7 +42,7 @@ define("robotTW2/services/DepositService", [
 		, verify_deposit = function() {
 			robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
 			var resourceDepositModel = robotTW2.services.modelDataService.getSelectedCharacter().getResourceDeposit();
-			if (isRunning && resourceDepositModel != undefined && data_deposit.get().activate) {
+			if (isRunning && resourceDepositModel != undefined && data_deposit.get().activated) {
 				var currentJob = resourceDepositModel.getCurrentJob();
 				if(currentJob){
 					data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
