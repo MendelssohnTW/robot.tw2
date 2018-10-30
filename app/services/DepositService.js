@@ -103,7 +103,7 @@ define("robotTW2/services/DepositService", [
 			if(isRunning){return}
 			robotTW2.ready(function(){
 				data_deposit.get().interval = conf.INTERVAL.DEPOSIT;
-				data_deposit.setDeposit(data_deposit.get());
+				data_deposit.set(data_deposit.get());
 				isRunning = !0
 				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
 				!listener_job_collect ? listener_job_collect = robotTW2.services.$rootScope.$on(robotTW2.providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){robotTW2.services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;
