@@ -23,7 +23,7 @@ define("robotTW2/services/RecruitService", [
 		, db_villages = data_villages.get()
 		, grupos = db.groups
 		, getUnitPrices = function (){
-			var unitData = services.modelDataService.getGameData().getUnits();
+			var unitData = robotTW2.services.modelDataService.getGameData().getUnits();
 			var prices = {};
 			unitData.forEach(function(data){
 				var array_price  = [];
@@ -51,7 +51,7 @@ define("robotTW2/services/RecruitService", [
 			}
 			, gameGrp = function () {
 				var game = {};
-				game.Groups = services.groupService.getGroups();
+				game.Groups = robotTW2.services.groupService.getGroups();
 				game.GroupsKeys = Object.keys(game.Groups);
 				game.GroupsName = game.GroupsKeys.map(m => game.Groups[m].name);
 				game.GroupsCount = game.GroupsKeys.length;
@@ -84,7 +84,7 @@ define("robotTW2/services/RecruitService", [
 			return;
 		}
 		, getTotalUnitsAndResources = function (village_id, callback) { //busca as unidades da aldeia pelo ID
-			return services.socketService.emit(providers.routeProvider.VILLAGE_UNIT_INFO, {village_id: village_id}, function (data) {
+			return robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.VILLAGE_UNIT_INFO, {village_id: village_id}, function (data) {
 				if(!data){
 					if(typeof(callback) == "function") {callback(null, null)} else {return}
 				}
@@ -95,7 +95,7 @@ define("robotTW2/services/RecruitService", [
 				for (var i = 0; i < data.queues.barracks.length;  i++ ) {
 					villageUnits[data.queues.barracks[i].unit_type] += data.queues.barracks[i].amount;
 				}
-				services.socketService.emit(providers.routeProvider.VILLAGE_GET_VILLAGE, {village_id: village_id}, function (data) {
+				robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.VILLAGE_GET_VILLAGE, {village_id: village_id}, function (data) {
 					if(typeof(callback) == "function") {callback(villageUnits, data.resources)} else {return}
 				})
 			});
@@ -104,7 +104,7 @@ define("robotTW2/services/RecruitService", [
 			data = data_recruit.getRecruit()
 			getTotalUnitsAndResources(village_id, function (villageUnits, res) {
 				if(villageUnits == null || res == null) {return}
-				var listGroups = services.modelDataService.getGroupList().getVillageGroups(village_id)
+				var listGroups = robotTW2.services.modelDataService.getGroupList().getVillageGroups(village_id)
 				, copia_listGroups = []
 				, copia_res = []
 				, amount
@@ -180,7 +180,7 @@ define("robotTW2/services/RecruitService", [
 				}
 				, recruitRequest = function (village_id, unit_type, amount, callback) {
 					if (village_id && unit_type){
-						services.socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, {
+						robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.BARRACKS_RECRUIT, {
 							village_id: village_id, 
 							unit_type: unit_type, 
 							amount: amount
@@ -212,7 +212,7 @@ define("robotTW2/services/RecruitService", [
 								if (units_sorted.length){
 									var unit = units_sorted.shift();
 									unitName = Object.keys(unit)[0];
-									var RESOURCE_TYPES = services.modelDataService.getGameData().getResourceTypes();
+									var RESOURCE_TYPES = robotTW2.services.modelDataService.getGameData().getResourceTypes();
 									var ltz = [];
 									Object.keys(RESOURCE_TYPES).forEach(
 											function(name){
@@ -277,10 +277,10 @@ define("robotTW2/services/RecruitService", [
 		, wait = function(){
 			setList();
 			if(!interval_recruit){
-				interval_recruit = services.$timeout(recruit, data_recruit.getTimeCicle())
+				interval_recruit = robotTW2.services.$timeout(recruit, data_recruit.getTimeCicle())
 			} else {
-				services.$timeout.cancel(interval_recruit);
-				interval_recruit = services.$timeout(recruit, data_recruit.getTimeCicle())
+				robotTW2.services.$timeout.cancel(interval_recruit);
+				interval_recruit = robotTW2.services.$timeout(recruit, data_recruit.getTimeCicle())
 			}
 		}
 		, getFinishedForFree = function (village, lt){
@@ -302,7 +302,7 @@ define("robotTW2/services/RecruitService", [
 			data_recruit.setTimeCicle(t)
 			data_recruit.setTimeComplete(helper.gameTime() + t)
 			list = [];
-			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
+			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
 		}
 		, recruit = function(){
 			var reqD = 0
@@ -311,7 +311,7 @@ define("robotTW2/services/RecruitService", [
 			data = data_recruit.getRecruit();
 
 			if(isPaused){
-				listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT, function(){
+				listener_resume = $rootScope.$on(robotTW2.providers.eventTypeProvider.RESUME_CHANGE_RECRUIT, function(){
 					recruit()
 					listener_resume()
 					listener_resume = undefined;
@@ -321,8 +321,8 @@ define("robotTW2/services/RecruitService", [
 			Object.keys(villages).map(function(village_id){
 
 				reqD++
-				services.$timeout(function(){
-					var village = services.modelDataService.getSelectedCharacter().getVillage(village_id);
+				robotTW2.services.$timeout(function(){
+					var village = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village_id);
 					var tam = village.getRecruitingQueue("barracks").length || 0;
 					list = getFinishedForFree(village, list)
 					respD++
@@ -348,12 +348,12 @@ define("robotTW2/services/RecruitService", [
 				verificarGroups();
 				db.interval = conf.INTERVAL.RECRUIT;
 				data_recruit.set(db);
-				listener_recruit = $rootScope.$on(providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
-				listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
-				listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
-				listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verificarGroups)
+				listener_recruit = $rootScope.$on(robotTW2.providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
+				listener_group_updated = $rootScope.$on(robotTW2.providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
+				listener_group_created = $rootScope.$on(robotTW2.providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
+				listener_group_destroyed = $rootScope.$on(robotTW2.providers.eventTypeProvider.GROUPS_DESTROYED, verificarGroups)
 				isRunning = !0;
-				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
+				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 				wait();
 				recruit()
 			}, ["all_villages_ready"])
@@ -368,18 +368,18 @@ define("robotTW2/services/RecruitService", [
 			listener_group_created = undefined;
 			listener_group_destroyed = undefined;
 			isRunning = !1
-			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
-			services.$timeout.cancel(listener_recruit);
-			services.$timeout.cancel(listener_window_recruit);
+			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
+			robotTW2.services.$timeout.cancel(listener_recruit);
+			robotTW2.services.$timeout.cancel(listener_window_recruit);
 		}
 		, pause = function (){
 			isPaused = !0
-			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
+			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 		}
 		, resume = function (){
 			isPaused = !1
-			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
-			$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT)
+			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
+			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.RESUME_CHANGE_RECRUIT)
 		}
 
 		return	{
