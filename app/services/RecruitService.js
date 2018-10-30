@@ -20,10 +20,8 @@ define("robotTW2/services/RecruitService", [
 		, list = []
 		, prices = undefined
 		, data_recruit = robotTW2.databases.data_recruit
-		, db = data_recruit.get()
 		, data_villages = robotTW2.databases.data_villages
-		, db_villages = data_villages.get()
-		, grupos = db.groups
+		, grupos = data_recruit.groups
 		, getUnitPrices = function (){
 			var unitData = robotTW2.services.modelDataService.getGameData().getUnits();
 			var prices = {};
@@ -38,17 +36,17 @@ define("robotTW2/services/RecruitService", [
 			return prices;
 		}
 		, verificarGroups = function (){
-			if (db.groups == undefined) {
+			if (data_recruit.groups == undefined) {
 				grupos = {}
 			} else {
-				grupos = db.groups
+				grupos = data_recruit.groups
 			}
 			var dbGrp = function () {
 				var db = {};
-				db.Groups = grupos
-				db.GroupsKeys = Object.keys(db.Groups);
-				db.GroupsName = db.GroupsKeys.map(m => db.Groups[m].name);
-				db.GroupsCount = db.GroupsKeys.length;
+				data_recruit.Groups = grupos
+				data_recruit.GroupsKeys = Object.keys(data_recruit.Groups);
+				data_recruit.GroupsName = data_recruit.GroupsKeys.map(m => data_recruit.Groups[m].name);
+				data_recruit.GroupsCount = data_recruit.GroupsKeys.length;
 				return db;
 			}
 			, gameGrp = function () {
@@ -142,7 +140,7 @@ define("robotTW2/services/RecruitService", [
 					if (villageUnits != undefined){
 						for (key in villageUnits){
 							if (villageUnits.hasOwnProperty(key)) {
-								if (villageUnits[key] == 0 || db.troops_not.some(elem => elem == key)){
+								if (villageUnits[key] == 0 || data_recruit.troops_not.some(elem => elem == key)){
 									delete villageUnits[key];
 								}
 							}
@@ -218,7 +216,7 @@ define("robotTW2/services/RecruitService", [
 									var ltz = [];
 									Object.keys(RESOURCE_TYPES).forEach(
 											function(name){
-												if (copia_res[RESOURCE_TYPES[name]] < db.reserva[name.toUpperCase()]){
+												if (copia_res[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toUpperCase()]){
 													ltz.push(true);
 												} else {
 													ltz.push(false);
@@ -231,10 +229,10 @@ define("robotTW2/services/RecruitService", [
 									};
 									amount = Math.floor(
 											Math.min(
-													(copia_res.wood - db.reserva.wood) / prices[unitName][0], 
-													(copia_res.clay - db.reserva.clay) / prices[unitName][1], 
-													(copia_res.iron - db.reserva.iron) / prices[unitName][2], 
-													(copia_res.food - db.reserva.food) / prices[unitName][3]
+													(copia_res.wood - data_recruit.reserva.wood) / prices[unitName][0], 
+													(copia_res.clay - data_recruit.reserva.clay) / prices[unitName][1], 
+													(copia_res.iron - data_recruit.reserva.iron) / prices[unitName][2], 
+													(copia_res.food - data_recruit.reserva.food) / prices[unitName][3]
 											)
 									)
 
@@ -275,7 +273,7 @@ define("robotTW2/services/RecruitService", [
 			});
 		}
 		, prices = getUnitPrices()
-		, villages = db_villages.getVillages()
+		, villages = data_villages.getVillages()
 		, wait = function(){
 			setList();
 			if(!interval_recruit){
@@ -329,7 +327,7 @@ define("robotTW2/services/RecruitService", [
 					list = getFinishedForFree(village, list)
 					respD++
 					setList();
-					if (tam < db.reserva.slots || tam < 1){
+					if (tam < data_recruit.reserva.slots || tam < 1){
 						recruitSteps(village_id);
 					}
 					if(reqD == respD){
@@ -346,9 +344,9 @@ define("robotTW2/services/RecruitService", [
 		, start = function (){
 			if(isRunning){return}
 			robotTW2.ready(function(){
-				villages = db_villages.getVillages();
+				villages = data_villages.getVillages();
 				verificarGroups();
-				db.interval = conf.INTERVAL.RECRUIT;
+				data_recruit.interval = conf.INTERVAL.RECRUIT;
 				data_recruit.set(db);
 				listener_recruit = $rootScope.$on(robotTW2.providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
 				listener_group_updated = $rootScope.$on(robotTW2.providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)

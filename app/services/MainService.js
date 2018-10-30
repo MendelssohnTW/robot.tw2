@@ -7,10 +7,10 @@ define("robotTW2/services/MainService", [
 	){
 	return (function MainService() {
 		var service = {};
-		var db = robotTW2.databases.data_main
+		var data_main = robotTW2.databases.data_main
 		return service.getExtensions = function(){
 			
-			var extensions = db.getExtensions();
+			var extensions = data_main.getExtensions();
 			for (var extension in extensions) {
 				var arFn = robotTW2.requestFn.get(extension.toLowerCase(), true);
 				if(!arFn) {
@@ -28,7 +28,7 @@ define("robotTW2/services/MainService", [
 					}
 				}
 			}
-			db.setExtensions(extensions);
+			data_main.setExtensions(extensions);
 			return extensions
 		}
 		, service

@@ -11,7 +11,6 @@ define("robotTW2/services/ReconService", [
 		, isRunning = !1
 		, isPaused = !1
 		, data_recon = robotTW2.databases.data_recon
-		, db = data_recon.get()
 		, getrenameCmdAtackRecon = function (command, unitText) {
 			if(command.command_name != unitText){
 				robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_RENAME, {
@@ -146,7 +145,7 @@ define("robotTW2/services/ReconService", [
 							if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
 								var unitText = getAttackTypeAtackRecon(command, i);
 								if (unitText != undefined){
-									if(Object.keys(db.rename).map(function(elem, index, array){
+									if(Object.keys(data_recon.rename).map(function(elem, index, array){
 										return unitText.includes(robotTW2.services.$filter("i18n")(elem, robotTW2.services.$rootScope.loc.ale, "recon"))
 									}).filter(f=>f!=undefined).length){
 										getrenameCmdAtackRecon(command, unitText);

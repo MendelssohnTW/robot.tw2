@@ -10,7 +10,6 @@ define("robotTW2/services/AlertService", [
 		, listener_alert_ready = undefined
 		, listener_tab_alert = undefined
 		, data_alert = robotTW2.databases.data_alert
-		, db = data_alert.get()
 		, notifyAttacks = function() {
 			robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.MESSAGE_DEBUG, {message: "Jogadores sob ataque!"})
 		}
@@ -18,7 +17,7 @@ define("robotTW2/services/AlertService", [
 			try {
 				robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
 					robotTW2.services.$timeout(_ => {
-						var friends = db.getFriends();
+						var friends = data_alert.getFriends();
 						if (o.members != undefined){
 							if (o.members.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
 								notifyAttacks();
@@ -34,10 +33,10 @@ define("robotTW2/services/AlertService", [
 		}
 		, wait = function(){
 			if(!interval_alert){
-				interval_alert = robotTW2.services.$timeout(verify_alert, db.getTimeCicle())
+				interval_alert = robotTW2.services.$timeout(verify_alert, data_alert.getTimeCicle())
 			} else {
 				robotTW2.services.$timeout.cancel(interval_alert);
-				interval_alert = robotTW2.services.$timeout(verify_alert, db.getTimeCicle())
+				interval_alert = robotTW2.services.$timeout(verify_alert, data_alert.getTimeCicle())
 			}
 		}
 		, init = function (){

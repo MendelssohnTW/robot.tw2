@@ -11,7 +11,6 @@ define("robotTW2/services/SpyService", [
 		, listener_spy = undefined
 		, data_spy = robotTW2.databases.data_spy
 		, data_villages = robotTW2.databases.data_villages
-		, db = data_spy.get()
 		, counterMeasureTypes = {
 			CAMOUFLAGE: "camouflage",
 			DUMMIES: "dummies",
@@ -56,10 +55,10 @@ define("robotTW2/services/SpyService", [
 		}
 		, wait = function(){
 			if(!interval_spy){
-				interval_spy = robotTW2.services.$timeout(recruit_spy, db.interval)
+				interval_spy = robotTW2.services.$timeout(recruit_spy, data_spy.interval)
 			} else {
 				robotTW2.services.$timeout.cancel(interval_spy);
-				interval_spy = robotTW2.services.$timeout(recruit_spy, db.interval)
+				interval_spy = robotTW2.services.$timeout(recruit_spy, data_spy.interval)
 			}
 		}
 		, init = function (){
