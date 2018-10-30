@@ -42,7 +42,7 @@ define("robotTW2/controllers/MainController", [
 			}
 //			$scope.extensions[ext.name].initialized = ext.initialized
 
-			var arFn = robotTW2.requestFn.get(ext.toLowerCase(), true);
+			var arFn = robotTW2.requestFn.get(ext.name.toLowerCase(), true);
 			if(!arFn) {
 				$scope.extensions[ext].activated = false;
 				$scope.extensions[ext].status = $scope.disabled;
