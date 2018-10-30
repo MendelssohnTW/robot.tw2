@@ -10,13 +10,13 @@ define("robotTW2/databases/data_medic", [
 			notify
 	) {
 	var db_medic = {};
-	db_medic.setMedic = function(data_medic){
+	db_medic.set = function(data_medic){
 		if(data_medic){
 			database.set("data_medic", data_medic, true)
 		}
 	}
 
-	db_medic.getMedic = function(){
+	db_medic.get = function(){
 		return database.get("data_medic")
 	}
 

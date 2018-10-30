@@ -10,13 +10,13 @@ define("robotTW2/databases/data_alert", [
 			notify
 	) {
 	var db_alert = {};
-	db_alert.setAlert = function(data_alert){
+	db_alert.set = function(data_alert){
 		if(data_alert){
 			database.set("data_alert", data_alert, true)
 		}
 	}
 
-	db_alert.getAlert = function(){
+	db_alert.get = function(){
 		return database.get("data_alert")
 	}
 

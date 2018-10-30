@@ -10,13 +10,13 @@ define("robotTW2/databases/data_spy", [
 			notify
 	) {
 	var db_spy = {};
-	db_spy.setSpy = function(data_spy){
+	db_spy.set = function(data_spy){
 		if(data_spy){
 			database.set("data_spy", data_spy, true)
 		}
 	}
 
-	db_spy.getSpy = function(){
+	db_spy.get = function(){
 		return database.get("data_spy")
 	}
 

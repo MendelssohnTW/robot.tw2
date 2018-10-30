@@ -13,6 +13,14 @@ define("robotTW2/databases/data_farm", [
 	) {
 
 	var db_farm = {};
+	db_farm.set = function(data_farm){
+		if(data_farm){
+			database.set("data_farm", data_farm, true)
+		}
+	}
+	db_farm.get = function(){
+		return database.get("data_farm");
+	}
 	db_farm.getPreset = function(id){
 		return database.get("data_farm").presets[id];
 	}

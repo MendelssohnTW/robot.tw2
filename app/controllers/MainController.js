@@ -25,7 +25,7 @@ define("robotTW2/controllers/MainController", [
 					extensions[key].status = $scope.disabled;
 				} else {
 					var fn = arFn.fn;
-					fn.isRunning() && fn.isPaused() ? extensions[key].status = $scope.paused : fn.isRunning() && (typeof(fn.isPaused) == "function" && !fn.isPaused()) ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;
+					fn.isRunning() && (typeof(fn.isPaused) == "function" && fn.isPaused()) ? extensions[key].status = $scope.paused : fn.isRunning() && (typeof(fn.isPaused) == "function" && !fn.isPaused()) ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;
 				}
 			})
 

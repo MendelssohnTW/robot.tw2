@@ -12,6 +12,14 @@ define("robotTW2/databases/data_villages", [
 	
 	var data_villages = database.get("data_villages") || {}
 	, db_villages = {}
+	db_villages.set = function(data_villages){
+		if(data_villages){
+			database.set("data_villages", data_villages, true)
+		}
+	}
+	db_villages.get = function(){
+		return database.get("data_villages")
+	}
 	db_villages.verifyDB = function (villagesExtended){
 		if (data_villages == undefined || data_villages.villages == undefined){
 			return false;

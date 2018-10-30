@@ -10,13 +10,13 @@ define("robotTW2/databases/data_deposit", [
 			notify
 	) {
 	var db_deposit = {};
-	db_deposit.setDeposit = function(data_deposit){
+	db_deposit.set = function(data_deposit){
 		if(data_deposit){
 			database.set("data_deposit", data_deposit, true)
 		}
 	}
 
-	db_deposit.getDeposit = function(){
+	db_deposit.get = function(){
 		return database.get("data_deposit")
 	}
 

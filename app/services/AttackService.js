@@ -45,7 +45,10 @@ define("robotTW2/services/AttackService", [
 		, interval_reload = undefined
 //		, listener_change = undefined
 		, timeoutIdAttack = {}
-		, db = robotTW2.databases.data_attack.get()
+		, data_attack = robotTW2.databases.data_attack
+		, db = data_attack.get()
+		, data_main = robotTW2.databases.data_main
+		, db_main = data_main.get()
 		, interval = db.interval
 		, that = this
 		, promiseReSendAttack
@@ -183,11 +186,11 @@ define("robotTW2/services/AttackService", [
 									return;
 								}
 								if(data.direction =="forward" && data.origin.id == vl && duration){
-									var main = data_main.getMain();
+//									var db_main = data_main.get();
 									var t = data.time_completed * 1000 - duration * 1000 - gTime;
-									if(!main.MAX_TIME_CORRECTION || (t > -main.MAX_TIME_CORRECTION && t < main.MAX_TIME_CORRECTION)) {
-										main.TIME_CORRECTION_COMMAND = t
-										data_main.setMain(main);
+									if(!db_main.max_time_correction || (t > -db_main.max_time_correction && t < db_main.max_time_correction)) {
+										db_main.time_correction_command = t
+										db_main.set(main);
 										robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 									}
 
@@ -223,7 +226,7 @@ define("robotTW2/services/AttackService", [
 			robotTW2.commandQueueAttack.bind(id_command, sendAttack, db)
 
 			var expires = params.data_escolhida - params.duration;
-			var timer_delay = expires - helper.gameTime() - data_main.getMain().TIME_CORRECTION_COMMAND;
+			var timer_delay = expires - helper.gameTime() - db_main.time_correction_command;
 			params["id_command"] = id_command
 			params["timer_delay"] = timer_delay
 
@@ -269,10 +272,10 @@ define("robotTW2/services/AttackService", [
 			return promiseSendAttack
 		}
 		, resendAttack = function(params){
-			var data_main = robotTW2.databases.data_main.get()
+//			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
 			var expires_send = params.data_escolhida - params.duration;
-			var timer_delay_send = expires_send - helper.gameTime() - data_main.TIME_CORRECTION_COMMAND;
+			var timer_delay_send = expires_send - helper.gameTime() - db_main.time_correction_command;
 			if(timer_delay_send > 0){
 				return robotTW2.services.$timeout(function(){
 					listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){

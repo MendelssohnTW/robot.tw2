@@ -12,6 +12,15 @@ define("robotTW2/databases/data_main", [
 
 	var data_main = database.get("data_main")
 	, db_main = {};
+	db_main.set = function(data_main){
+		if(data_main){
+			database.set("data_main", data_main, true)
+		}
+	}
+
+	db_main.get = function(){
+		return database.get("data_main")
+	}
 	db_main.setExtensions = function(extensions){
 		for (var extension in extensions){
 			var string = "data_" + extension.toLowerCase();
