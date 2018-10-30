@@ -1,8 +1,10 @@
 define("robotTW2/services/RecruitService", [
 	"robotTW2",
+	"helper/time",
 	"robotTW2/conf",
 	], function(
 			robotTW2,
+			helper,
 			conf
 	){
 	return (function RecruitService() {
