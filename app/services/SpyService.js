@@ -53,13 +53,17 @@ define("robotTW2/services/SpyService", [
 						var spy = spies[i];
 						var resources = !Object.keys(selectedVillage.getResources().getComputed()).map(
 								function(elem){
-									if(prices[i][elem] > selectedVillage.getResources().getComputed()[elem].currentStock) {
-										return false
+									if(elem != "food"){
+										if(selectedVillage.getResources().getComputed()[elem].currentStock > prices[i][elem]) {
+											return true
+										} else {
+											return false
+										}
 									} else {
-										return true
+										return undefined;
 									}
 								}
-						).some(elem => elem = true)
+						).filter(elem => elem != undefined).some(elem => elem = false)
 						if(spy.recruitingInProgress){
 							l.push(spy.timeCompleted);
 						}
