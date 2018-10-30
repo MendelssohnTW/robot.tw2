@@ -51,11 +51,6 @@ define("robotTW2/controllers/MainController", [
 				$scope.extensions[ext.name].activated = true;
 				if(ext.initialized){
 					if(fn.isInitialized()){
-						if(typeof(fn.isPaused) == "function"){
-							fn.isRunning() && fn.isPaused() ? $scope.extensions[ext.name].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[ext.name].status = $scope.running : $scope.extensions[ext.name].status = $scope.stopped;						
-						} else {
-							fn.isRunning() ? $scope.extensions[ext.name].status = $scope.running : $scope.extensions[ext.name].status = $scope.stopped;
-						}
 						return;
 					}
 					if(typeof(fn.init) == "function"){fn.init()}
@@ -64,6 +59,11 @@ define("robotTW2/controllers/MainController", [
 					if(fn.isRunning()){
 						fn.stop();
 					}
+				}
+				if(typeof(fn.isPaused) == "function"){
+					fn.isRunning() && fn.isPaused() ? $scope.extensions[ext.name].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[ext.name].status = $scope.running : $scope.extensions[ext.name].status = $scope.stopped;						
+				} else {
+					fn.isRunning() ? $scope.extensions[ext.name].status = $scope.running : $scope.extensions[ext.name].status = $scope.stopped;
 				}
 			}
 			
