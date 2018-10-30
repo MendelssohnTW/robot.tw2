@@ -18,32 +18,8 @@ define("robotTW2/controllers/MainController", [
 		var data_main = databases.data_main;
 		var update = function(){
 
-//			var extensions = data_main.getExtensions();
-//			for (var extension in extensions) {
-//				var arFn = robotTW2.requestFn.get(extension.toLowerCase(), true);
-//				if(!arFn) {
-//					extensions[extension].activated = false;
-//					extensions[extension].status = $scope.disabled;
-//					continue
-//				} else {
-//					var fn = arFn.fn;
-//					extensions[extension].activated = true;
-//					if(fn.isInitialized())
-//						if(typeof(fn.isPaused) == "function"){
-//							fn.isRunning() && fn.isPaused() ? extensions[key].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;						
-//						} else {
-//							fn.isRunning() ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;
-//						}
-//					return !1;	
-//					if(typeof(fn.init) == "function"){fn.init()}
-//					if(typeof(fn.analytics) == "function"){fn.analytics()}
-//				}
-//			}
-//			data_main.setExtensions(extensions);
-//			data_main.save();
-
-			$scope.data_main = data_main;
-			$scope.extensions = extensions
+			$scope.data_main = data_main.get();
+			$scope.extensions = data_main.getExtensions();
 
 			if (!$scope.$$phase) {
 				$scope.$apply();
@@ -52,7 +28,7 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.saveCorrection = function(){
-			data_main.setMain($scope.data_main);
+			data_main.set($scope.data_main);
 		}
 
 		$scope.recalibrate = function(){
@@ -65,21 +41,20 @@ define("robotTW2/controllers/MainController", [
 				$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
 			}
 //			$scope.extensions[ext.name].initialized = ext.initialized
-			data_main.setExtensions($scope.extensions);
 
 			var arFn = robotTW2.requestFn.get(ext.toLowerCase(), true);
 			if(!arFn) {
-				extensions[extension].activated = false;
-				extensions[extension].status = $scope.disabled;
+				$scope.extensions[ext].activated = false;
+				$scope.extensions[ext].status = $scope.disabled;
 			} else {
 				var fn = arFn.fn;
-				extensions[ext].activated = true;
+				$scope.extensions[ext].activated = true;
 				if(ext.initialized){
 					if(fn.isInitialized()){
 						if(typeof(fn.isPaused) == "function"){
-							fn.isRunning() && fn.isPaused() ? extensions[key].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;						
+							fn.isRunning() && fn.isPaused() ? $scope.extensions[key].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[key].status = $scope.running : $scope.extensions[key].status = $scope.stopped;						
 						} else {
-							fn.isRunning() ? extensions[key].status = $scope.running : extensions[key].status = $scope.stopped;
+							fn.isRunning() ? $scope.extensions[key].status = $scope.running : $scope.extensions[key].status = $scope.stopped;
 						}
 						return;
 					}
@@ -91,6 +66,8 @@ define("robotTW2/controllers/MainController", [
 					}
 				}
 			}
+			
+			data_main.setExtensions($scope.extensions);
 			update()
 		};
 
