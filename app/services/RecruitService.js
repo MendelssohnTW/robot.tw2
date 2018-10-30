@@ -346,8 +346,8 @@ define("robotTW2/services/RecruitService", [
 			robotTW2.ready(function(){
 				villages = data_villages.getVillages();
 				verificarGroups();
-				data_recruit.interval = conf.INTERVAL.RECRUIT;
-				data_recruit.set(db);
+				data_recruit.get().interval = conf.INTERVAL.RECRUIT;
+				data_recruit.set(data_recruit.get());
 				listener_recruit = $rootScope.$on(robotTW2.providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
 				listener_group_updated = $rootScope.$on(robotTW2.providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
 				listener_group_created = $rootScope.$on(robotTW2.providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
