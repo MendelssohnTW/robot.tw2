@@ -42,15 +42,26 @@ define("robotTW2/services/SpyService", [
 			Object.keys(lista_aldeias).forEach(function(id){
 				var selectedVillage = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(id);
 				if(selectedVillage && selectedVillage.data.buildings) {
-					var spies = selectedVillage.scoutingInfo.spies;
+					var scoutingInfo = selectedVillage.scoutingInfo;
+					var spies = scoutingInfo.spies;
+					var prices = scoutingInfo.getData().spy_prices;
 					var maxSpies = getMaxSpies(selectedVillage.data.buildings.tavern.researches, selectedVillage.data.buildings.tavern.level);
 					var count = 0;
 					for (i = 0; i < maxSpies; i++ ){
 						var spy = spies[i];
+						var resources = !Object.keys(selectedVillage.getResources().getComputed()).map(
+								function(elem){
+									if(prices[i][elem] > selectedVillage.getResources().getComputed()[elem].currentStock) {
+										return false
+									} else {
+										return true
+									}
+								}
+						).some(elem => elem = false)
 						if(spy.recruitingInProgress){
 							l.push(spy.timeCompleted);
 						}
-						if (spy.type == 0 && !spy.active) {
+						if (spy.type == 0 && !spy.active && resources) {
 							robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SCOUTING_RECRUIT, {
 								'village_id'	: selectedVillage.getId(),
 								'slot'			: spy.id
