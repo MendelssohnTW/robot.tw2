@@ -70,10 +70,10 @@ define("robotTW2/services/SpyService", [
 							});
 						};
 					}
-					var t = Math.min.apply(null, l) - helper.gameTime();
-					t < 3000 ? t = 3000 : t;
-					data_spy.setTimeCicle(t)
-					data_spy.setTimeComplete(helper.gameTime() + t)
+					if(l.length > 0){
+						var t = Math.min.apply(null, l) - helper.gameTime();
+						data_spy.setTimeCicle(t)
+					}
 				}
 				wait();
 			})
