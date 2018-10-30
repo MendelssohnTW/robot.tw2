@@ -45,9 +45,9 @@ define("robotTW2/controllers/MainController", [
 			data_main.setMain($scope.data_main);
 		}
 
-//		$scope.recalibrate = function(){
-//		attack.calibrate_time();
-//		}
+		$scope.recalibrate = function(){
+			robotTW2.service.AttackService.calibrate_time();
+		}
 
 		$scope.toggleValueState = function(ext) {
 			if(!ext.initialized){
@@ -56,7 +56,7 @@ define("robotTW2/controllers/MainController", [
 			}
 //			$scope.extensions[ext.name].initialized = ext.initialized
 			data_main.setExtensions($scope.extensions);
-			var arFn = $scope.requestFn.get(ext.name.toLowerCase(), true);
+			var arFn = robotTW2.requestFn.get(ext.name.toLowerCase(), true);
 			var fn = arFn.fn;
 			var params = arFn.params;
 
