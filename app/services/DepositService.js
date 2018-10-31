@@ -43,36 +43,38 @@ define("robotTW2/services/DepositService", [
 		}
 		, verify_deposit = function() {
 			robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
-			var resourceDepositModel = robotTW2.services.modelDataService.getSelectedCharacter().getResourceDeposit();
-			if (isRunning && resourceDepositModel != undefined && data_deposit.get().activated) {
-				var currentJob = resourceDepositModel.getCurrentJob();
-				if(currentJob){
-					data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
-					robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
-					wait();
-				} else {
-					if (collectibleJobs()) {
-						var job = resourceDepositModel.getCollectibleJobs().shift();
-						job ? collectJob(job) : null;
-					} else if (readyJobs()) {
-						var job = resourceDepositModel.getReadyJobs().shift();
-						job ? startJob(job) : null;
-					} else {
-						var reroll = robotTW2.services.modelDataService.getInventory().getItemByType("resource_deposit_reroll");
-						if (reroll && reroll.amount > 0 && data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
-							robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.PREMIUM_USE_ITEM, {
-								village_id: robotTW2.services.modelDataService.getSelectedVillage().getId(),
-								item_id: reroll.id
-							}, function(){
-								verify_deposit()
-								return
-							})
-						}
+			robotTW2.services.$timeout(function(){
+				var resourceDepositModel = robotTW2.services.modelDataService.getSelectedCharacter().getResourceDeposit();
+				if (isRunning && resourceDepositModel != undefined && data_deposit.get().activated) {
+					var currentJob = resourceDepositModel.getCurrentJob();
+					if(currentJob){
+						data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
+						robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
 						wait();
-						return
+					} else {
+						if (collectibleJobs()) {
+							var job = resourceDepositModel.getCollectibleJobs().shift();
+							job ? collectJob(job) : null;
+						} else if (readyJobs()) {
+							var job = resourceDepositModel.getReadyJobs().shift();
+							job ? startJob(job) : null;
+						} else {
+							var reroll = robotTW2.services.modelDataService.getInventory().getItemByType("resource_deposit_reroll");
+							if (reroll && reroll.amount > 0 && data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
+								robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.PREMIUM_USE_ITEM, {
+									village_id: robotTW2.services.modelDataService.getSelectedVillage().getId(),
+									item_id: reroll.id
+								}, function(){
+									verify_deposit()
+									return
+								})
+							}
+							wait();
+							return
+						}
 					}
-				}
-			}
+				}	
+			}, 5000)
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.DEPOSIT)
