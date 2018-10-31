@@ -56,7 +56,7 @@ define("robotTW2/controllers/MainController", [
 				ext.auto_initialize = false;
 				$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
 			}
-//			$scope.extensions[ext.name].initialized = ext.initialized
+			$scope.extensions[ext.name].initialized = ext.initialized
 
 			var arFn = robotTW2.requestFn.get(ext.name.toLowerCase(), true);
 			if(!arFn) {
