@@ -40,7 +40,6 @@ define("robotTW2/services/SpyService", [
 		}
 		, recruit_spy = function (){
 			var lista_aldeias = data_villages.getVillages();
-			var l = [];
 			Object.keys(lista_aldeias).forEach(function(id){
 				var selectedVillage = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(id);
 				if(selectedVillage && selectedVillage.data.buildings) {
@@ -65,7 +64,7 @@ define("robotTW2/services/SpyService", [
 								}
 						).filter(elem => elem != undefined).some(elem => elem == false)
 						if(spy.recruitingInProgress){
-							l.push(spy.timeCompleted);
+							list.push(spy.timeCompleted);
 						}
 						if (spy.type == 0 && !spy.active && resources) {
 							robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SCOUTING_RECRUIT, {
@@ -74,13 +73,11 @@ define("robotTW2/services/SpyService", [
 							});
 						};
 					}
-					if(l.length > 0){
-						var t = Math.min.apply(null, l) - helper.gameTime();
-						data_spy.setTimeCicle(t)
-					}
+					
 				}
-				wait();
+				
 			})
+			wait();
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.SPY)
