@@ -17,7 +17,7 @@ define("robotTW2/controllers/MainController", [
 
 		var data_main = databases.data_main;
 		var update = function(){
-			
+
 			$scope.extensions = data_main.getExtensions();
 			for (var extension in $scope.extensions) {
 				var arFn = robotTW2.requestFn.get(extension.toLowerCase(), true);
@@ -67,11 +67,10 @@ define("robotTW2/controllers/MainController", [
 				$scope.extensions[ext.name].activated = true;
 				if(ext.initialized){
 					$scope.extensions[ext.name].status = $scope.running;
-					if(fn.isInitialized()){
-						return;
+					if(!fn.isInitialized()){
+						if(typeof(fn.init) == "function"){fn.init()}
+						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					}
-					if(typeof(fn.init) == "function"){fn.init()}
-					if(typeof(fn.analytics) == "function"){fn.analytics()}
 				} else {
 					if(fn.isRunning()){
 						$scope.extensions[ext.name].status = $scope.stopped
@@ -79,7 +78,7 @@ define("robotTW2/controllers/MainController", [
 					}
 				}
 			}
-			
+
 			data_main.setExtensions($scope.extensions);
 			update()
 		};
