@@ -112,6 +112,8 @@ define("robotTW2/services/SpyService", [
 		, start = function (){
 			if(isRunning){return}
 			robotTW2.ready(function(){
+				data_spy.get().interval = conf.INTERVAL.SPY;
+				data_spy.set(data_spy.get());
 				isRunning = !0;
 				!listener_spy ? listener_spy = robotTW2.services.$rootScope.$on(robotTW2.providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
 				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
