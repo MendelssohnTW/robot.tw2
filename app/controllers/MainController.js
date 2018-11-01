@@ -88,9 +88,8 @@ define("robotTW2/controllers/MainController", [
 			update();
 		})
 
-		$scope.toggleValueInit= function(ext) {
+		$scope.toggleValueInit = function(ext) {
 			$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
-			data_main.setExtensions($scope.extensions);
 			update()
 		};
 
