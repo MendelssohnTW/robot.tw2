@@ -52,6 +52,7 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.toggleValueState = function(ext) {
+			toggle = true;
 			if(!ext.initialized){
 				ext.auto_initialize = false;
 				$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
@@ -79,13 +80,21 @@ define("robotTW2/controllers/MainController", [
 				}
 			}
 
+			toggle = false;
+
 			data_main.setExtensions($scope.extensions);
 			update()
 		};
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
-			update();
+			if(data.name == "ALERT"){
+				if(!toggle){
+					update();
+				} else {
+					robotTW2.services.$timeout(function(){update()}, 3000)
+				}
+			}
 		})
 
 		$scope.toggleValueInit = function(ext) {
