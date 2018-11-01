@@ -23,6 +23,7 @@ define("robotTW2/services/MainService", [
 					extensions[extension].hotkey = conf.HOTKEY[extension].toUpperCase();
 					extensions[extension].activated = true;
 					if(extensions[extension].auto_initialize){
+						extensions[extension].initialized = true;
 						if(fn.isInitialized())
 							return !1;	
 						if(typeof(fn.init) == "function"){fn.init()}
