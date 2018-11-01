@@ -37,7 +37,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_headquarter")){
 			HEADQUARTER = {
 					HEADQUARTER : {
-						initialized 		: database.get("data_headquarter".initialized),
+						initialized 		: database.get("data_headquarter").initialized,
 						auto_initialize 	: database.get("data_headquarter").auto_initialized,
 						activated 			: database.get("data_headquarter").activated,
 						name 				: "HEADQUARTER",
@@ -61,7 +61,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_farm")){
 			FARM = {
 					FARM : {
-						initialized 		: database.get("data_farm".initialized),
+						initialized 		: database.get("data_farm").initialized,
 						auto_initialize 	: database.get("data_farm").auto_initialized,
 						activated 			: database.get("data_farm").activated,
 						name 				: "FARM",
@@ -85,7 +85,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_deposit")){
 			DEPOSIT = {
 					DEPOSIT : {
-						initialized 		: database.get("data_deposit".initialized),
+						initialized 		: database.get("data_deposit").initialized,
 						auto_initialize 	: database.get("data_deposit").auto_initialized,
 						activated 			: database.get("data_deposit").activated,
 						name 				: "DEPOSIT",
@@ -109,7 +109,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_attack")){
 			ATTACK = {
 					ATTACK : {
-						initialized 		: database.get("data_attack".initialized),
+						initialized 		: database.get("data_attack").initialized,
 						auto_initialize 	: database.get("data_attack").auto_initialized,
 						activated 			: database.get("data_attack").activated,
 						name 				: "ATTACK",
@@ -133,7 +133,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_defense")){
 			DEFENSE = {
 					DEFENSE : {
-						initialized 		: database.get("data_defense".initialized),
+						initialized 		: database.get("data_defense").initialized,
 						auto_initialize 	: database.get("data_defense").auto_initialized,
 						activated 			: database.get("data_defense").activated,
 						name 				: "DEFENSE",
@@ -157,7 +157,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_spy")){
 			SPY = {
 					SPY : {
-						initialized 		: database.get("data_spy".initialized),
+						initialized 		: database.get("data_spy").initialized,
 						auto_initialize 	: database.get("data_spy").auto_initialized,
 						activated 			: database.get("data_spy").activated,
 						name 				: "SPY",
@@ -181,7 +181,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_recruit")){
 			RECRUIT = {
 					RECRUIT : {
-						initialized 		: database.get("data_recruit".initialized),
+						initialized 		: database.get("data_recruit").initialized,
 						auto_initialize 	: database.get("data_recruit").auto_initialized,
 						activated 			: database.get("data_recruit").activated,
 						name 				: "RECRUIT",
@@ -205,7 +205,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_alert")){
 			ALERT = {
 					ALERT : {
-						initialized 		: database.get("data_alert".initialized),
+						initialized 		: database.get("data_alert").initialized,
 						auto_initialize 	: database.get("data_alert").auto_initialized,
 						activated 			: database.get("data_alert").activated,
 						name 				: "ALERT",
@@ -229,7 +229,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_recon")){
 			RECON = {
 					RECON : {
-						initialized 		: database.get("data_recon".initialized),
+						initialized 		: database.get("data_recon").initialized,
 						auto_initialize 	: database.get("data_recon").auto_initialized,
 						activated 			: database.get("data_recon").activated,
 						name 				: "RECON",
@@ -253,7 +253,7 @@ define("robotTW2/databases/data_main", [
 		if(database.get("data_medic")){
 			MEDIC = {
 					MEDIC : {
-						initialized 		: database.get("data_medic".initialized),
+						initialized 		: database.get("data_medic").initialized,
 						auto_initialize 	: database.get("data_medic").auto_initialized,
 						activated 			: database.get("data_medic").activated,
 						name 				: "MEDIC",
