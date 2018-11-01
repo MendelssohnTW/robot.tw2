@@ -38,7 +38,7 @@ define("robotTW2/databases/data_main", [
 			HEADQUARTER = {
 					HEADQUARTER : {
 						initialized 		: database.get("data_headquarter").initialized,
-						auto_initialize 	: database.get("data_headquarter").auto_initialized,
+						auto_initialize 	: database.get("data_headquarter").auto_initialize,
 						activated 			: database.get("data_headquarter").activated,
 						name 				: "HEADQUARTER",
 						hotkey				: conf.HOTKEY.HEADQUARTER
@@ -62,7 +62,7 @@ define("robotTW2/databases/data_main", [
 			FARM = {
 					FARM : {
 						initialized 		: database.get("data_farm").initialized,
-						auto_initialize 	: database.get("data_farm").auto_initialized,
+						auto_initialize 	: database.get("data_farm").auto_initialize,
 						activated 			: database.get("data_farm").activated,
 						name 				: "FARM",
 						hotkey				: conf.HOTKEY.FARM
@@ -86,7 +86,7 @@ define("robotTW2/databases/data_main", [
 			DEPOSIT = {
 					DEPOSIT : {
 						initialized 		: database.get("data_deposit").initialized,
-						auto_initialize 	: database.get("data_deposit").auto_initialized,
+						auto_initialize 	: database.get("data_deposit").auto_initialize,
 						activated 			: database.get("data_deposit").activated,
 						name 				: "DEPOSIT",
 						hotkey				: conf.HOTKEY.DEPOSIT
@@ -110,7 +110,7 @@ define("robotTW2/databases/data_main", [
 			ATTACK = {
 					ATTACK : {
 						initialized 		: database.get("data_attack").initialized,
-						auto_initialize 	: database.get("data_attack").auto_initialized,
+						auto_initialize 	: database.get("data_attack").auto_initialize,
 						activated 			: database.get("data_attack").activated,
 						name 				: "ATTACK",
 						hotkey				: conf.HOTKEY.ATTACK
@@ -134,7 +134,7 @@ define("robotTW2/databases/data_main", [
 			DEFENSE = {
 					DEFENSE : {
 						initialized 		: database.get("data_defense").initialized,
-						auto_initialize 	: database.get("data_defense").auto_initialized,
+						auto_initialize 	: database.get("data_defense").auto_initialize,
 						activated 			: database.get("data_defense").activated,
 						name 				: "DEFENSE",
 						hotkey				: conf.HOTKEY.DEFENSE
@@ -158,7 +158,7 @@ define("robotTW2/databases/data_main", [
 			SPY = {
 					SPY : {
 						initialized 		: database.get("data_spy").initialized,
-						auto_initialize 	: database.get("data_spy").auto_initialized,
+						auto_initialize 	: database.get("data_spy").auto_initialize,
 						activated 			: database.get("data_spy").activated,
 						name 				: "SPY",
 						hotkey				: conf.HOTKEY.SPY
@@ -182,7 +182,7 @@ define("robotTW2/databases/data_main", [
 			RECRUIT = {
 					RECRUIT : {
 						initialized 		: database.get("data_recruit").initialized,
-						auto_initialize 	: database.get("data_recruit").auto_initialized,
+						auto_initialize 	: database.get("data_recruit").auto_initialize,
 						activated 			: database.get("data_recruit").activated,
 						name 				: "RECRUIT",
 						hotkey				: conf.HOTKEY.RECRUIT
@@ -206,7 +206,7 @@ define("robotTW2/databases/data_main", [
 			ALERT = {
 					ALERT : {
 						initialized 		: database.get("data_alert").initialized,
-						auto_initialize 	: database.get("data_alert").auto_initialized,
+						auto_initialize 	: database.get("data_alert").auto_initialize,
 						activated 			: database.get("data_alert").activated,
 						name 				: "ALERT",
 						hotkey				: conf.HOTKEY.ALERT
@@ -230,7 +230,7 @@ define("robotTW2/databases/data_main", [
 			RECON = {
 					RECON : {
 						initialized 		: database.get("data_recon").initialized,
-						auto_initialize 	: database.get("data_recon").auto_initialized,
+						auto_initialize 	: database.get("data_recon").auto_initialize,
 						activated 			: database.get("data_recon").activated,
 						name 				: "RECON",
 						hotkey				: conf.HOTKEY.RECON
@@ -254,7 +254,7 @@ define("robotTW2/databases/data_main", [
 			MEDIC = {
 					MEDIC : {
 						initialized 		: database.get("data_medic").initialized,
-						auto_initialize 	: database.get("data_medic").auto_initialized,
+						auto_initialize 	: database.get("data_medic").auto_initialize,
 						activated 			: database.get("data_medic").activated,
 						name 				: "MEDIC",
 						hotkey				: conf.HOTKEY.MEDIC
