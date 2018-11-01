@@ -277,15 +277,17 @@ define("robotTW2/services/RecruitService", [
 		, prices = getUnitPrices()
 		, villages = data_villages.getVillages()
 		, wait = function(){
-			setList();
-			if(!interval_recruit){
-				interval_recruit = robotTW2.services.$timeout(recruit, data_recruit.getTimeCicle())
-			} else {
-				robotTW2.services.$timeout.cancel(interval_recruit);
-				interval_recruit = robotTW2.services.$timeout(recruit, data_recruit.getTimeCicle())
-			}
+			setList(function(tm){
+				if(!interval_recruit){
+					interval_recruit = robotTW2.services.$timeout(function(){recruit()}, tm)
+				} else {
+					robotTW2.services.$timeout.cancel(interval_recruit);
+					interval_recruit = robotTW2.services.$timeout(function(){recruit()}, tm)
+				}
+			});
 		}
-		, getFinishedForFree = function (village, lt){
+		, getFinishedForFree = function (village){
+			var lt = [];
 			var job = village.getRecruitingQueue("barracks").jobs[0];
 			if(job){
 				var timer = job.data.time_completed * 1000;
@@ -295,9 +297,13 @@ define("robotTW2/services/RecruitService", [
 					lt.push(dif);
 				}
 			}
-			return lt
+			var t = 3000;
+			if(lt.length){
+				t = Math.min.apply(null, lt);
+			}
+			return t;
 		}
-		, setList = function(){
+		, setList = function(callback){
 			list.push(conf.INTERVAL.RECRUIT)
 			list.push(data_recruit.getTimeCicle())
 			var t = Math.min.apply(null, list);
@@ -305,6 +311,7 @@ define("robotTW2/services/RecruitService", [
 			data_recruit.setTimeComplete(helper.gameTime() + t)
 			list = [];
 			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
+			if(callback && typeof(callback) == "function"){callback(t)}
 		}
 		, recruit = function(){
 			var reqD = 0
@@ -326,7 +333,7 @@ define("robotTW2/services/RecruitService", [
 				robotTW2.services.$timeout(function(){
 					var village = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village_id);
 					var tam = village.getRecruitingQueue("barracks").length || 0;
-					list = getFinishedForFree(village, list)
+					list.push(getFinishedForFree(village));
 					respD++
 					setList();
 					if (tam < data_recruit.reserva.slots || tam < 1){

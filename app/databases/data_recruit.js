@@ -44,8 +44,9 @@ define("robotTW2/databases/data_recruit", [
 	var data_recruit = database.get("data_recruit");
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 				: false,
+			initialized 			: false,
 			activated 				: false,
+			hotkey					: conf.HOTKEY.RECRUIT,
 			version					: conf.VERSION.RECRUIT,
 			interval				: conf.INTERVAL.RECRUIT,
 			reserva 				: {

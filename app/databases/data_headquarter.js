@@ -44,8 +44,9 @@ define("robotTW2/databases/data_headquarter", [
 	var data_headquarter = database.get("data_headquarter");
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 				: false,
+			initialized 			: false,
 			activated 				: false,
+			hotkey					: conf.HOTKEY.HEADQUARTER,
 			interval				: conf.INTERVAL.HEADQUARTER,
 			version					: conf.VERSION.HEADQUARTER,
 			reserva 				: {

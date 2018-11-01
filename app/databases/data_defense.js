@@ -45,9 +45,10 @@ define("robotTW2/databases/data_defense", [
 	var data_defense = database.get("data_defense");
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 				: false,
+			initialized 			: false,
 			activated 				: false,
-			TIME_CORRECTION_COMMAND	: conf.TIME_CORRECTION_COMMAND,
+			hotkey					: conf.HOTKEY.DEFENSE,
+			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
 			interval				: conf.INTERVAL.DEFENSE,
 			version					: conf.VERSION.DEFENSE,
 			commands				: {}

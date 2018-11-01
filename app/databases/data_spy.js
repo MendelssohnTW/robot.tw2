@@ -43,8 +43,9 @@ define("robotTW2/databases/data_spy", [
 	var data_spy = database.get("data_spy");
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 				: false,
+			initialized 			: false,
 			activated 				: false,
+			hotkey					: conf.HOTKEY.SPY,
 			version					: conf.VERSION.SPY,
 			interval				: conf.INTERVAL.SPY,
 	}

@@ -48,6 +48,7 @@ define("robotTW2/databases/data_attack", [
 			auto_initialize			: false,
 			initialized 			: false,
 			activated 				: false,
+			hotkey					: conf.HOTKEY.ATTACK,
 			interval				: conf.INTERVAL.ATTACK,
 			version					: conf.VERSION.ATTACK,
 			commands				: {}

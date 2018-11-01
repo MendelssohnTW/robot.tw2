@@ -45,6 +45,7 @@ define("robotTW2/databases/data_medic", [
 			auto_initialize			: false,
 			initialized 			: false,
 			activated 				: false,
+			hotkey					: conf.HOTKEY.MEDIC,
 			version					: conf.VERSION.MEDIC,
 			interval				: conf.INTERVAL.MEDIC
 	}

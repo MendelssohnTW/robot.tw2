@@ -34,68 +34,259 @@ define("robotTW2/databases/data_main", [
 		}
 	}
 	db_main.getExtensions = function(){
-		var extensions = {
-				HEADQUARTER		: {
-					initialized : database.get("data_headquarter") ? database.get("data_headquarter").initialized : false,
-							auto_initialize : database.get("data_headquarter") ? database.get("data_headquarter").auto_initialize : false,
-									activated : database.get("data_headquarter") ? database.get("data_headquarter").activated : false,
-											name : "HEADQUARTER"
-				},
-				FARM			: {
-					initialized : database.get("data_farm") ? database.get("data_farm").initialized : false,
-							auto_initialize : database.get("data_farm") ? database.get("data_farm").auto_initialize : false,
-									activated : database.get("data_farm") ? database.get("data_farm").activated : false,
-											name : "FARM"
-				},
-				DEPOSIT			: {
-					initialized : database.get("data_deposit") ? database.get("data_deposit").initialized : false,
-							auto_initialize : database.get("data_deposit") ? database.get("data_deposit").auto_initialize : false,
-									activated : database.get("data_deposit") ? database.get("data_deposit").activated : false,
-											name : "DEPOSIT"
-				},
-				ATTACK			: {
-					initialized : database.get("data_attack") ? database.get("data_attack").initialized : false,
-							auto_initialize : database.get("data_attack") ? database.get("data_attack").auto_initialize : false,
-									activated : database.get("data_attack") ? database.get("data_attack").activated : false,
-											name : "ATTACK"
-				},
-				DEFENSE			: {
-					initialized : database.get("data_defense") ? database.get("data_defense").initialized : false,
-							auto_initialize : database.get("data_defense") ? database.get("data_defense").auto_initialize : false,
-									activated : database.get("data_defense") ? database.get("data_defense").activated : false,
-											name : "DEFENSE"
-				},
-				SPY				: {
-					initialized : database.get("data_spy") ? database.get("data_spy").initialized : false,
-							auto_initialize : database.get("data_spy") ? database.get("data_spy").auto_initialize : false,
-									activated : database.get("data_spy") ? database.get("data_spy").activated : false,
-											name : "SPY"
-				},
-				RECRUIT			: {
-					initialized : database.get("data_recruit") ? database.get("data_recruit").initialized : false,
-							auto_initialize : database.get("data_recruit") ? database.get("data_recruit").auto_initialize : false,
-									activated : database.get("data_recruit") ? database.get("data_recruit").activated : false,
-											name : "RECRUIT"
-				},
-				ALERT			: {
-					initialized : database.get("data_alert") ? database.get("data_alert").initialized : false,
-							auto_initialize : database.get("data_alert") ? database.get("data_alert").auto_initialize : false,
-									activated : database.get("data_alert") ? database.get("data_alert").activated : false,
-											name : "ALERT"
-				},
-				RECON			: {
-					initialized : database.get("data_recon") ? database.get("data_recon").initialized : false,
-							auto_initialize : database.get("data_recon") ? database.get("data_recon").auto_initialize : false,
-									activated : database.get("data_recon") ? database.get("data_recon").activated : false,
-											name : "RECON"
-				},
-				MEDIC			: {
-					initialized : database.get("data_medic") ? database.get("data_medic").initialized : false,
-							auto_initialize : database.get("data_medic") ? database.get("data_medic").auto_initialize : false,
-									activated : database.get("data_medic") ? database.get("data_medic").activated : false,
-											name : "MEDIC"
-				}
+		if(database.get("data_headquarter")){
+			HEADQUARTER = {
+					HEADQUARTER : {
+						initialized 		: database.get("data_headquarter".initialized),
+						auto_initialize 	: database.get("data_headquarter").auto_initialized,
+						activated 			: database.get("data_headquarter").activated,
+						name 				: "HEADQUARTER",
+						hotkey				: conf.HOTKEY.HEADQUARTER
+
+					}
+			}
+		} else {
+			HEADQUARTER = {
+					HEADQUARTER : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "HEADQUARTER",
+						hotkey				: conf.HOTKEY.HEADQUARTER
+
+					}
+			}
 		}
+		
+		if(database.get("data_farm")){
+			FARM = {
+					FARM : {
+						initialized 		: database.get("data_farm".initialized),
+						auto_initialize 	: database.get("data_farm").auto_initialized,
+						activated 			: database.get("data_farm").activated,
+						name 				: "FARM",
+						hotkey				: conf.HOTKEY.FARM
+
+					}
+			}
+		} else {
+			FARM = {
+					FARM : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "FARM",
+						hotkey				: conf.HOTKEY.FARM
+
+					}
+			}
+		}
+		
+		if(database.get("data_deposit")){
+			DEPOSIT = {
+					DEPOSIT : {
+						initialized 		: database.get("data_deposit".initialized),
+						auto_initialize 	: database.get("data_deposit").auto_initialized,
+						activated 			: database.get("data_deposit").activated,
+						name 				: "DEPOSIT",
+						hotkey				: conf.HOTKEY.DEPOSIT
+
+					}
+			}
+		} else {
+			DEPOSIT = {
+					DEPOSIT : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "DEPOSIT",
+						hotkey				: conf.HOTKEY.DEPOSIT
+
+					}
+			}
+		}
+		
+		if(database.get("data_attack")){
+			ATTACK = {
+					ATTACK : {
+						initialized 		: database.get("data_attack".initialized),
+						auto_initialize 	: database.get("data_attack").auto_initialized,
+						activated 			: database.get("data_attack").activated,
+						name 				: "ATTACK",
+						hotkey				: conf.HOTKEY.ATTACK
+
+					}
+			}
+		} else {
+			ATTACK = {
+					ATTACK : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "ATTACK",
+						hotkey				: conf.HOTKEY.ATTACK
+
+					}
+			}
+		}
+		
+		if(database.get("data_defense")){
+			DEFENSE = {
+					DEFENSE : {
+						initialized 		: database.get("data_defense".initialized),
+						auto_initialize 	: database.get("data_defense").auto_initialized,
+						activated 			: database.get("data_defense").activated,
+						name 				: "DEFENSE",
+						hotkey				: conf.HOTKEY.DEFENSE
+
+					}
+			}
+		} else {
+			DEFENSE = {
+					DEFENSE : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "DEFENSE",
+						hotkey				: conf.HOTKEY.DEFENSE
+
+					}
+			}
+		}
+		
+		if(database.get("data_spy")){
+			SPY = {
+					SPY : {
+						initialized 		: database.get("data_spy".initialized),
+						auto_initialize 	: database.get("data_spy").auto_initialized,
+						activated 			: database.get("data_spy").activated,
+						name 				: "SPY",
+						hotkey				: conf.HOTKEY.SPY
+
+					}
+			}
+		} else {
+			SPY = {
+					SPY : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "SPY",
+						hotkey				: conf.HOTKEY.SPY
+
+					}
+			}
+		}
+
+		if(database.get("data_recruit")){
+			RECRUIT = {
+					RECRUIT : {
+						initialized 		: database.get("data_recruit".initialized),
+						auto_initialize 	: database.get("data_recruit").auto_initialized,
+						activated 			: database.get("data_recruit").activated,
+						name 				: "RECRUIT",
+						hotkey				: conf.HOTKEY.RECRUIT
+
+					}
+			}
+		} else {
+			RECRUIT = {
+					RECRUIT : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "RECRUIT",
+						hotkey				: conf.HOTKEY.RECRUIT
+
+					}
+			}
+		}
+		
+		if(database.get("data_alert")){
+			ALERT = {
+					ALERT : {
+						initialized 		: database.get("data_alert".initialized),
+						auto_initialize 	: database.get("data_alert").auto_initialized,
+						activated 			: database.get("data_alert").activated,
+						name 				: "ALERT",
+						hotkey				: conf.HOTKEY.ALERT
+
+					}
+			}
+		} else {
+			ALERT = {
+					ALERT : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "ALERT",
+						hotkey				: conf.HOTKEY.ALERT
+
+					}
+			}
+		}
+
+		if(database.get("data_recon")){
+			RECON = {
+					RECON : {
+						initialized 		: database.get("data_recon".initialized),
+						auto_initialize 	: database.get("data_recon").auto_initialized,
+						activated 			: database.get("data_recon").activated,
+						name 				: "RECON",
+						hotkey				: conf.HOTKEY.RECON
+
+					}
+			}
+		} else {
+			RECON = {
+					RECON : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "RECON",
+						hotkey				: conf.HOTKEY.RECON
+
+					}
+			}
+		}
+		
+		if(database.get("data_medic")){
+			MEDIC = {
+					MEDIC : {
+						initialized 		: database.get("data_medic".initialized),
+						auto_initialize 	: database.get("data_medic").auto_initialized,
+						activated 			: database.get("data_medic").activated,
+						name 				: "MEDIC",
+						hotkey				: conf.HOTKEY.MEDIC
+
+					}
+			}
+		} else {
+			MEDIC = {
+					MEDIC : {
+						initialized 		: false,
+						auto_initialize 	: false,
+						activated 			: false,
+						name 				: "MEDIC",
+						hotkey				: conf.HOTKEY.MEDIC
+
+					}
+			}
+		}
+		
+		var extensions = {
+				HEADQUARTER,
+				FARM,
+				DEPOSIT,
+				ATTACK,
+				DEFENSE,
+				SPY	,
+				RECRUIT,
+				ALER,
+				RECON,
+				MEDIC
+		}
+		
 		return extensions;
 	}
 	db_main.save = function(){

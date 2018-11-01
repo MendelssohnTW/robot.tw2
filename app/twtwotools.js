@@ -159,6 +159,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, createScopeLang = function(module){
 		var scope = {};
 		var jsont = window.getTextObject(module);
+		if(!jsont) return scope;
 		Object.keys(jsont).map(function(elem, index, array){
 			if(typeof(jsont[elem]) == "string") {
 				Object.keys(jsont).map(function(e, i, a){
@@ -317,7 +318,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.hotkey 				= params.hotkey;
 //		this.classes 				= params.classes;
 		this.templateName 			= params.templateName;
-//		screens[params.templateName] 	= this;
 		params.hotkey ? this.addhotkey() : null;
 		params.provider_listener ? this.addlistener() : null;
 		return this
@@ -455,7 +455,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, builderWindow.prototype.addlistener = function() {
 		var fnThis = this.addWin;
 		var self = this;
-		self.listener_layout = robotTW2.services.$rootScope.$on(self.provider_listener, function(){
+		self.listener_layout = exports.services.$rootScope.$on(self.provider_listener, function(){
 			fnThis.apply(self, null)
 		})
 	}
@@ -547,9 +547,6 @@ var robotTW2 = window.robotTW2 = undefined;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
-
-		
-
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes"
@@ -644,20 +641,21 @@ var robotTW2 = window.robotTW2 = undefined;
 						DEPOSIT		: 15 * min,
 						ALERT		: 5 * min,
 						ATTACK		: h,
-						MEDIC		: h
+						MEDIC		: h,
+						SPY			: 30 * min
 					},
 					HOTKEY					: {
-						MAIN 			: "ctrl+alt+p",
-						HEADQUARTER 	: "ctrl+alt+h",
 						ALERT		 	: "ctrl+alt+w",
-						RECON		 	: "",
-						SPY			 	: "",
 						ATTACK		 	: "ctrl+alt+a",
 						DEFENSE		 	: "ctrl+alt+d",
-						FARM		 	: "ctrl+alt+f",
-						RECRUIT		 	: "ctrl+alt+e",
 						DEPOSIT		 	: "",
-						MEDIC		 	: ""
+						FARM		 	: "ctrl+alt+f",
+						HEADQUARTER 	: "ctrl+alt+h",
+						MAIN 			: "ctrl+alt+p",
+						MEDIC		 	: "",
+						RECON		 	: "",
+						RECRUIT		 	: "ctrl+alt+e",
+						SPY			 	: ""
 					},
 					RESERVA				: {
 						RECRUIT : {
@@ -689,6 +687,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "villageService");
 			robotTW2.register("services", "buildingService");
 			robotTW2.register("services", "armyService");
+			robotTW2.register("services", "overviewService");
 			robotTW2.register("services", "$filter");
 
 			return robotTW2.services;
@@ -721,17 +720,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			return robotTW2.providers;
 		}))
 
-		angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
-			robotTW2.loadScript("/controllers/MainController.js");
-			return robotTW2.controllers;
-		}))
 
-		require(["robotTW2/services"]);
-		require(["robotTW2/databases"]);
-		require(["robotTW2/controllers"]);
 
 		var $rootScope = robotTW2.services.$rootScope;
-		
+
 		define("robotTW2/socketEmit", [
 			"conf/conf"
 			], function(
@@ -763,7 +755,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				robotTW2.services.socketService.emit(route, data, opt_callback)
 			}
 		})
-		
+
 		define("robotTW2/unitTypesRenameRecon", [], function() {
 			var l = {}
 			robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
@@ -835,6 +827,14 @@ var robotTW2 = window.robotTW2 = undefined;
 				return display(robotTW2.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));
 			}
 		})
+		require(["robotTW2/services"]);
+		require(["robotTW2/databases"]);
+		require(["robotTW2/controllers"]);
+
+		angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
+			robotTW2.loadScript("/controllers/MainController.js");
+			return robotTW2.controllers;
+		}))
 
 		$rootScope.$on("ready", function($event, type){
 			require(["robotTW2/conf"], function(conf){
@@ -842,25 +842,13 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.MainController : {
 					robotTW2.loadScript("/controllers/FarmController.js");
 					robotTW2.loadScript("/controllers/AttackController.js");
-//					robotTW2.loadScript("/controllers/HeadquarterController.js");
-//					robotTW2.loadScript("/controllers/DefenseController.js");
-//					robotTW2.loadScript("/controllers/ReconController.js");
-//					robotTW2.loadScript("/controllers/AlertController.js");
-//					robotTW2.loadScript("/controllers/SpyController.js");
-//					robotTW2.loadScript("/controllers/DepositController.js");
-//					robotTW2.loadScript("/controllers/MedicController.js");
-					robotTW2.build(
-							{
-								controller		: robotTW2.controllers.MainController,
-								scopeLang 		: robotTW2.createScopeLang("main"),
-								hotkey 			: conf.HOTKEY.MAIN,
-								templateName 	: "main",
-								classes 		: null,
-								style 			: {
-									width : "850px"
-								}
-							}
-					)
+					robotTW2.loadScript("/controllers/HeadquarterController.js");
+					robotTW2.loadScript("/controllers/DefenseController.js");
+					robotTW2.loadScript("/controllers/ReconController.js");
+					robotTW2.loadScript("/controllers/AlertController.js");
+					robotTW2.loadScript("/controllers/SpyController.js");
+					robotTW2.loadScript("/controllers/DepositController.js");
+					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
 				case robotTW2.controllers.FarmController : {
@@ -898,6 +886,24 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.build(params)
 					break
 				}
+				case robotTW2.services.MainService : {
+					robotTW2.services.$timeout(function(){
+						robotTW2.services.MainService && typeof(robotTW2.services.MainService.initExtensions) == "function" ? robotTW2.services.MainService.initExtensions() : null;
+						robotTW2.build(
+								{
+									controller		: robotTW2.controllers.MainController,
+									scopeLang 		: robotTW2.createScopeLang("main"),
+									hotkey 			: conf.HOTKEY.MAIN,
+									templateName 	: "main",
+									classes 		: null,
+									style 			: {
+										width : "850px"
+									}
+								}
+						)		
+					}, 3000)
+					break
+				}
 				case robotTW2.services.FarmService : {
 					robotTW2.services.FarmService && typeof(robotTW2.services.FarmService.init) == "function" ? robotTW2.requestFn.bind("farm", robotTW2.services.FarmService) : null;	
 					break
@@ -907,35 +913,35 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 				case robotTW2.services.DefenseService : {
-					robotTW2.services.DefenseService && typeof(robotTW2.services.DefenseService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.DefenseService) : null;	
+					robotTW2.services.DefenseService && typeof(robotTW2.services.DefenseService.init) == "function" ? robotTW2.requestFn.bind("defense", robotTW2.services.DefenseService) : null;	
 					break
 				}
 				case robotTW2.services.DepositService : {
-					robotTW2.services.DepositService && typeof(robotTW2.services.DepositService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.DepositService) : null;	
+					robotTW2.services.DepositService && typeof(robotTW2.services.DepositService.init) == "function" ? robotTW2.requestFn.bind("deposit", robotTW2.services.DepositService) : null;	
 					break
 				}
 				case robotTW2.services.HeadquarterService : {
-					robotTW2.services.HeadquarterService && typeof(robotTW2.services.HeadquarterService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.HeadquarterService) : null;	
+					robotTW2.services.HeadquarterService && typeof(robotTW2.services.HeadquarterService.init) == "function" ? robotTW2.requestFn.bind("headquarter", robotTW2.services.HeadquarterService) : null;	
 					break
 				}
 				case robotTW2.services.ReconService : {
-					robotTW2.services.ReconService && typeof(robotTW2.services.ReconService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.ReconService) : null;	
+					robotTW2.services.ReconService && typeof(robotTW2.services.ReconService.init) == "function" ? robotTW2.requestFn.bind("recon", robotTW2.services.ReconService) : null;	
 					break
 				}
 				case robotTW2.services.AlertService : {
-					robotTW2.services.AlertService && typeof(robotTW2.services.AlertService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.AlertService) : null;	
+					robotTW2.services.AlertService && typeof(robotTW2.services.AlertService.init) == "function" ? robotTW2.requestFn.bind("alert", robotTW2.services.AlertService) : null;	
 					break
 				}
 				case robotTW2.services.RecruitService : {
-					robotTW2.services.RecruitService && typeof(robotTW2.services.RecruitService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.RecruitService) : null;	
+					robotTW2.services.RecruitService && typeof(robotTW2.services.RecruitService.init) == "function" ? robotTW2.requestFn.bind("recruit", robotTW2.services.RecruitService) : null;	
 					break
 				}
 				case robotTW2.services.SpyService : {
-					robotTW2.services.SpyService && typeof(robotTW2.services.SpyService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.SpyService) : null;	
+					robotTW2.services.SpyService && typeof(robotTW2.services.SpyService.init) == "function" ? robotTW2.requestFn.bind("spy", robotTW2.services.SpyService) : null;	
 					break
 				}
 				case robotTW2.services.MedicService : {
-					robotTW2.services.MedicService && typeof(robotTW2.services.MedicService.init) == "function" ? robotTW2.requestFn.bind("attack", robotTW2.services.MedicService) : null;	
+					robotTW2.services.MedicService && typeof(robotTW2.services.MedicService.init) == "function" ? robotTW2.requestFn.bind("medic", robotTW2.services.MedicService) : null;	
 					break
 				}
 				case "database" : {

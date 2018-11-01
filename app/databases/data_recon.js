@@ -25,8 +25,9 @@ define("robotTW2/databases/data_recon", [
 	var data_recon = database.get("data_recon");
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 				: false,
+			initialized 			: false,
 			activated 				: false,
+			hotkey					: conf.HOTKEY.RECON,
 			version					: conf.VERSION.RECON,
 			rename		 			: unitTypesRenameRecon
 	}

@@ -94,7 +94,6 @@ define("robotTW2/services/SpyService", [
 			setList(function(tm){
 				if(!interval_spy){
 					interval_spy = robotTW2.services.$timeout(function(){recruit_spy()}, tm)
-					interval_spy = robotTW2.services.$timeout(recruit_spy, data_spy.interval)
 				} else {
 					robotTW2.services.$timeout.cancel(interval_spy);
 					interval_spy = undefined;

@@ -131,7 +131,8 @@ define("robotTW2/databases/data_farm", [
 	var dataNew = {
 			auto_initialize			: false, 
 			initialized				: false, 
-			activated				: false, 
+			activated				: false,
+			hotkey					: conf.HOTKEY.FARM,
 			version					: conf.VERSION.FARM,
 			farm_time				: conf.FARM_TIME,
 			farm_time_start			: helper.gameTime(),
