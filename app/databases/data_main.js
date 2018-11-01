@@ -282,7 +282,7 @@ define("robotTW2/databases/data_main", [
 				DEFENSE,
 				SPY	,
 				RECRUIT,
-				ALER,
+				ALERT,
 				RECON,
 				MEDIC
 		}
