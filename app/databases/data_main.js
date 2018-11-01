@@ -274,19 +274,19 @@ define("robotTW2/databases/data_main", [
 			}
 		}
 		
-		var extensions = {
-				HEADQUARTER,
-				FARM,
-				DEPOSIT,
-				ATTACK,
-				DEFENSE,
-				SPY	,
-				RECRUIT,
-				ALERT,
-				RECON,
-				MEDIC
-		}
-		
+		var extensions = {};
+		angular.extend(extensions, HEADQUARTER);
+		angular.extend(extensions, FARM);
+		angular.extend(extensions, DEPOSIT);
+		angular.extend(extensions, ATTACK);
+		angular.extend(extensions, DEFENSE);
+		angular.extend(extensions, SPY);
+		angular.extend(extensions, RECRUIT);
+		angular.extend(extensions, HEADQUARTER);
+		angular.extend(extensions, ALERT);
+		angular.extend(extensions, RECON);
+		angular.extend(extensions, MEDIC);
+
 		return extensions;
 	}
 	db_main.save = function(){
