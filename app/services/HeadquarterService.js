@@ -22,7 +22,7 @@ define("robotTW2/services/HeadquarterService", [
 		, y = {}
 		, reqD = 0
 		, respD = 0	
-		, data_villages = robotTW2.databases.data_villages.getVillages()
+		, data_villages = robotTW2.databases.data_villages
 		, villages = data_villages.getVillages()
 		, data_headquarter = robotTW2.databases.data_headquarter 
 		, listener_building_level_change = undefined
