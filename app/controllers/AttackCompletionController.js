@@ -1,7 +1,9 @@
 define("robotTW2/controllers/AttackCompletionController", [
-	"robotTW2"
+	"robotTW2",
+	"helper/time",
 	], function(
-			robotTW2
+			robotTW2,
+			helper
 	){
 	return function AttackCompletionController($rootScope, $scope) {
 		$scope.CLOSE = robotTW2.services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
