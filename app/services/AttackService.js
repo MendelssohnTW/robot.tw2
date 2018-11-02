@@ -2,10 +2,12 @@ define("robotTW2/services/AttackService", [
 	"robotTW2",
 	"helper/time",
 	"robotTW2/conf",
+	"robotTW2/notify",
 	], function(
 			robotTW2,
 			helper,
-			conf
+			conf,
+			notify
 	){
 	return (function AttackService() {
 
