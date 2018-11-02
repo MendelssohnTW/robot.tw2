@@ -72,6 +72,8 @@ define("robotTW2/controllers/MainController", [
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){fn.init()}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
+					} else {
+						if(typeof(fn.start) == "function"){fn.start()}
 					}
 				} else {
 					if(fn.isRunning()){
