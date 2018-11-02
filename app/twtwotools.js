@@ -33,6 +33,8 @@ var robotTW2 = window.robotTW2 = undefined;
 	var httpService 			= injector.get("httpService");
 	var windowManagerService 	= injector.get("windowManagerService");
 	var templateManagerService 	= injector.get("templateManagerService");
+	var CONTENT_CLASS		= 'win-content';
+	var BLOCKED_CLASS		= 'blocked';
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -322,35 +324,83 @@ var robotTW2 = window.robotTW2 = undefined;
 		params.provider_listener ? this.addlistener() : null;
 		return this
 	}
+	, load = function(templateName, onSuccess, opt_onError) {
+		var success = function success(data, status, headers, config) {
+			$templateCache.put(path.substr(1), data);
+
+			if (angular.isFunction(onSuccess)) {
+				onSuccess(data, status, headers, config);
+			}
+
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		},
+		error = function error(data, status, headers, config) {
+			if (angular.isFunction(opt_onError)) {
+				opt_onError(data, status, headers, config);
+			}
+		},
+		path;
+
+		if (0 !== templateName.indexOf('!')) {
+			path = conf.TEMPLATE_PATH_EXT.join(templateName);
+		} else {
+			path = templateName.substr(1);
+		}
+
+		if ($templateCache.get(path.substr(1))) {
+			success($templateCache.get(path.substr(1)), 304);
+		} else {
+			httpService.get(path, success, error);
+		}
+	}
 
 	builderWindow.prototype.addWin = function() {
 		var self = this;
-		!self.listener_include ? self.listener_include = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
+		var scope = exports.loadController(self.included_controller);
+		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
+		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
 			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-			var $scope = exports.loadController(self.included_controller);
-			if(!$scope) return;
-			self.scopeLang ? angular.extend($scope, self.scopeLang) : null;
 
 		}): null;
+
 		new Promise(function(res, rej){
-			var opt_loadCallback = function(data){
+			var opt_onSucess = function(data, status, headers, config){
 				res(data)
 			};
-
-			exports.services.windowManagerService.getScreen(self.templateName, opt_loadCallback, undefined, undefined)
+			
+			var opt_onError = function(data, status, headers, config){
+				rej(data)
+			};
+			
+			load(self.templateName, opt_onSucess, opt_onError)
 		})
 		.then(function(data){
 			var pai = $('[ng-controller=' + self.included_controller + ']');
 			var filho = pai.children("div").children(".box-paper").children(".scroll-wrap"); 
-			filho.append(template)
-			var scp = exports.loadController(self.included_controller);
-			if(!scp){return}
-			angular.extend(scp, self.scopeLang)
-			exports.services.$compile(template)(scp)
 
-			self.controller.apply(self.controller, [data.rootScope, data.scope])
+			var templateHTML = angular.element(data)
+			var compiledTemplate = $compile(templateHTML);
+			
+			compiledTemplate($rootScope.$new, function(clonedElement, scope) {
+				filho.append(compiledElements);
+			});
+			
+//			filho.append(compiledElements);
+//			var scope = $rootScope.$new();
+//			injetar scope do controller aqui
 
-		}, function(reason) {
+//			var scp = exports.loadController(self.included_controller);
+//			if(!scp){return}
+//
+//			var template = rootnode[0].firstChild.cloneNode(true);
+//			filho.append(template);
+//			data.scope.closeWindow();
+//			filho.append(template);
+//			self.controller.apply(self.controller, [exports.services.$rootScope, scp])
+
+		}, function(data) {
 			//console.log(reason); // Error!
 		});
 
@@ -374,9 +424,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			var opt_toggle = undefined;
 
 			exports.services.windowManagerService.getScreenWithInjectedScope(self.templateName, scope, opt_loadCallback, opt_destroyCallback, opt_toggle)
-//			getScreen(templateName, scope, function(data){
-//			res(data)
-//			})
 		})
 		.then(function(data){
 			var rootnode = data.rootnode;
@@ -534,6 +581,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.host				= host;
 	exports.build				= build;
 	exports.loadScript			= loadScript;
+	exports.loadController		= loadController;
 	exports.createScopeLang 	= createScopeLang;
 	exports.requestFn 			= requestFn;
 	exports.commandQueueAttack 	= commandQueueAttack;
@@ -842,13 +890,13 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.MainController : {
 					robotTW2.loadScript("/controllers/FarmController.js");
 					robotTW2.loadScript("/controllers/AttackController.js");
-					robotTW2.loadScript("/controllers/HeadquarterController.js");
-					robotTW2.loadScript("/controllers/DefenseController.js");
-					robotTW2.loadScript("/controllers/ReconController.js");
-					robotTW2.loadScript("/controllers/AlertController.js");
-					robotTW2.loadScript("/controllers/SpyController.js");
-					robotTW2.loadScript("/controllers/DepositController.js");
-					robotTW2.loadScript("/controllers/MedicController.js");
+//					robotTW2.loadScript("/controllers/HeadquarterController.js");
+//					robotTW2.loadScript("/controllers/DefenseController.js");
+//					robotTW2.loadScript("/controllers/ReconController.js");
+//					robotTW2.loadScript("/controllers/AlertController.js");
+//					robotTW2.loadScript("/controllers/SpyController.js");
+//					robotTW2.loadScript("/controllers/DepositController.js");
+//					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
 				case robotTW2.controllers.FarmController : {
