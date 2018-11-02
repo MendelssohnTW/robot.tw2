@@ -193,7 +193,7 @@ define("robotTW2/services/AttackService", [
 			if(opt_id){
 				id_command = params.id_command
 			}
-			robotTW2.commandQueueAttack.bind(id_command, sendAttack, db)
+			robotTW2.commandQueueAttack.bind(id_command, sendAttack, data_attack)
 
 			var expires = params.data_escolhida - params.duration;
 			var timer_delay = expires - helper.gameTime() - data_main.time_correction_command;
@@ -203,7 +203,7 @@ define("robotTW2/services/AttackService", [
 			if(timer_delay > 0){
 				robotTW2.commandQueueAttack.trigger(id_command, params)
 			} else {
-				robotTW2.commandQueueAttack.unbind(id_command, db)
+				robotTW2.commandQueueAttack.unbind(id_command, data_attack)
 				console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 			}
 		}
@@ -232,7 +232,7 @@ define("robotTW2/services/AttackService", [
 				if (lista.length > 0 || !params.enviarFull) {
 					timeoutIdAttack[id_command] = resendAttack(params)
 				} else {
-					robotTW2.commandQueueAttack.unbind(id_command, db)
+					robotTW2.commandQueueAttack.unbind(id_command, data_attack)
 					console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
 				}
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
@@ -266,7 +266,7 @@ define("robotTW2/services/AttackService", [
 								listener[id_command].listener();
 								delete listener[id_command];
 							}
-							robotTW2.commandQueueAttack.unbind(id_command, db)
+							robotTW2.commandQueueAttack.unbind(id_command, data_attack)
 						}
 					})}
 					if (promiseReSendAttack) {
@@ -288,7 +288,7 @@ define("robotTW2/services/AttackService", [
 
 				}, timer_delay_send)
 			} else {
-				robotTW2.commandQueueAttack.unbind(id_command, db)
+				robotTW2.commandQueueAttack.unbind(id_command, data_attack)
 				console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 				return null
 			}
@@ -374,7 +374,7 @@ define("robotTW2/services/AttackService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
-			robotTW2.commandQueueAttack.unbindAll(db)
+			robotTW2.commandQueueAttack.unbindAll(data_attack)
 //			typeof(listener_change) == "function" ? listener_change(): null;
 			interval_reload ? robotTW2.services.$timeout.cancel(interval_reload): null;
 //			listener_change = undefined;
@@ -389,10 +389,10 @@ define("robotTW2/services/AttackService", [
 			sendCommandAttack 	: sendCommandAttack,
 			calibrate_time		: calibrate_time,
 			removeCommandAttack	: function(id_command){
-				robotTW2.commandQueueAttack.unbind(id_command, db)
+				robotTW2.commandQueueAttack.unbind(id_command, data_attack)
 			},
 			removeAll			: function(id_command){
-				robotTW2.commandQueueAttack.unbindAll(db)
+				robotTW2.commandQueueAttack.unbindAll(data_attack)
 			},
 			isRunning			: function () {
 				return isRunning
