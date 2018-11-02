@@ -366,7 +366,7 @@ define("robotTW2/services/AttackService", [
 				isRunning = !0
 				Object.values(data_attack.commands).forEach(function(param){
 					if(param.data_escolhida < helper.gameTime()){
-						robotTW2.commandQueueAttack.unbind(param.id_command, true, true)
+						robotTW2.commandQueueAttack.unbind(param.id_command, data_attack)
 					} else {
 						addAttack(param, true);
 					}
@@ -374,6 +374,7 @@ define("robotTW2/services/AttackService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
+			robotTW2.removeScript("/controllers/AttackCompletionController.js");
 			robotTW2.commandQueueAttack.unbindAll(data_attack)
 //			typeof(listener_change) == "function" ? listener_change(): null;
 			interval_reload ? robotTW2.services.$timeout.cancel(interval_reload): null;
