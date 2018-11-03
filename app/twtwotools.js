@@ -35,6 +35,8 @@ var robotTW2 = window.robotTW2 = undefined;
 	var templateManagerService 	= injector.get("templateManagerService");
 	var CONTENT_CLASS		= 'win-content';
 	var BLOCKED_CLASS		= 'blocked';
+	var scripts_loaded = [];
+	var scripts_removed = [];
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -125,11 +127,11 @@ var robotTW2 = window.robotTW2 = undefined;
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
-				robotTW2.services.$timeout.cancel(requestFn.get(key));
+				exports.services.$timeout.cancel(requestFn.get(key));
 				var db = opt_db.get()
 				delete db.commands[key];
 				opt_db.set(db);
-				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_COMMANDS)
+				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
 			requestFn.unbind(key);
 		}
@@ -139,14 +141,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			var db = opt_db.get()
 			Object.keys(db).forEach(function(key) {
 				try {
-					robotTW2.services.$timeout.cancel(requestFn.get(key));
+					exports.services.$timeout.cancel(requestFn.get(key));
 				} catch(err){
 
 				}
 			})
 			db.commands = {}
 			opt_db.set(db);
-			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_COMMANDS)
+			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 		}
 		,
 		service
@@ -213,6 +215,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			h.push(g);	
 			var i = h.join("/")
 			require([i], function(type){
+				addScript(url)
 				exports[f][g] = type
 				if(f == "databases"){
 					$rootScope.$broadcast("ready", g);
@@ -223,7 +226,22 @@ var robotTW2 = window.robotTW2 = undefined;
 		};
 //		b.src = host + url + '?' + a;
 		b.src = host + url;
-		document.head.appendChild(b);
+
+		if(!scripts_loaded.some(f => f == url)){
+			if(!scripts_removed.some(f => f == url)){
+				document.head.appendChild(b);	
+			} else {
+				addScript(url);
+			}
+		}
+	}
+	, addScript = function(script){
+		scripts_loaded.push(script)
+		scripts_removed = scripts_removed.filter(f => f != script)
+	}
+	, removeScript = function(script){
+		scripts_loaded = scripts_loaded.filter(f => f != script)
+		scripts_removed.push(script);
 	}
 	, ready = function(opt_callback, array_keys){
 		array_keys = array_keys || ["map"];
@@ -316,6 +334,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.controller 			= params.controller;
 		this.provider_listener 		= params.provider_listener;
 		this.scopeLang 				= params.scopeLang;
+		this.url	 				= params.url;
 //		this.style 					= params.style;
 		this.hotkey 				= params.hotkey;
 //		this.classes 				= params.classes;
@@ -369,11 +388,11 @@ var robotTW2 = window.robotTW2 = undefined;
 			var opt_onSucess = function(data, status, headers, config){
 				res(data)
 			};
-			
+
 			var opt_onError = function(data, status, headers, config){
 				rej(data)
 			};
-			
+
 			load(self.templateName, opt_onSucess, opt_onError)
 		})
 		.then(function(data){
@@ -382,23 +401,12 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			var templateHTML = angular.element(data)
 			var compiledTemplate = $compile(templateHTML);
-			
-			compiledTemplate($rootScope.$new, function(clonedElement, scope) {
-				filho.append(compiledElements);
-			});
-			
-//			filho.append(compiledElements);
-//			var scope = $rootScope.$new();
-//			injetar scope do controller aqui
 
-//			var scp = exports.loadController(self.included_controller);
-//			if(!scp){return}
-//
-//			var template = rootnode[0].firstChild.cloneNode(true);
-//			filho.append(template);
-//			data.scope.closeWindow();
-//			filho.append(template);
-//			self.controller.apply(self.controller, [exports.services.$rootScope, scp])
+			compiledTemplate(scope, function(clonedElement, scope) {
+				filho.append(clonedElement);
+			});
+
+			self.controller.apply(self.controller, [$rootScope, scope])
 
 		}, function(data) {
 			//console.log(reason); // Error!
@@ -483,7 +491,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				self.setCollapse()
 			}
 
-			self.controller.apply(self.controller, [data.rootScope, data.scope])
+			self.controller.apply(self.controller, [$rootScope, data.scope])
 
 		}, function(reason) {
 			//console.log(reason); // Error!
@@ -503,7 +511,9 @@ var robotTW2 = window.robotTW2 = undefined;
 		var fnThis = this.addWin;
 		var self = this;
 		self.listener_layout = exports.services.$rootScope.$on(self.provider_listener, function(){
-			fnThis.apply(self, null)
+			if(scripts_loaded.some(f => f == self.url)){
+				fnThis.apply(self, null)
+			}
 		})
 	}
 
@@ -581,6 +591,8 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.host				= host;
 	exports.build				= build;
 	exports.loadScript			= loadScript;
+	exports.addScript			= addScript;
+	exports.removeScript		= removeScript;
 	exports.loadController		= loadController;
 	exports.createScopeLang 	= createScopeLang;
 	exports.requestFn 			= requestFn;
@@ -906,6 +918,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							hotkey 			: conf.HOTKEY.FARM,
 							templateName 	: "farm",
 							classes 		: "fullsize",
+							url		 		: "/controllers/FarmController.js",
 							style 			: null
 					}		
 					robotTW2.build(params)
@@ -918,6 +931,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							hotkey 			: conf.HOTKEY.ATTACK,
 							templateName 	: "attack",
 							classes 		: "fullsize",
+							url		 		: "/controllers/AttackController.js",
 							style 			: null
 					}		
 					robotTW2.build(params)
@@ -929,7 +943,8 @@ var robotTW2 = window.robotTW2 = undefined;
 							controller				: robotTW2.controllers.AttackCompletionController,
 							provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
 							scopeLang 				: robotTW2.createScopeLang("attack"),
-							templateName 			: "attackcompletion"
+							templateName 			: "attackcompletion",
+							url		 				: "/controllers/AttackCompletionController.js"
 					}	
 					robotTW2.build(params)
 					break
@@ -944,6 +959,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									hotkey 			: conf.HOTKEY.MAIN,
 									templateName 	: "main",
 									classes 		: null,
+									url		 		: "/controllers/MainController.js",
 									style 			: {
 										width : "850px"
 									}
