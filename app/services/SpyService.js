@@ -1,11 +1,13 @@
 define("robotTW2/services/SpyService", [
 	"robotTW2",
 	"helper/time",
-	"robotTW2/conf"
+	"robotTW2/conf",
+	"conf/spyTypes",
 	], function(
 			robotTW2,
 			helper,
-			conf
+			conf,
+			SPY_TYPES
 	){
 	return (function SpyService() {
 
@@ -50,7 +52,7 @@ define("robotTW2/services/SpyService", [
 					var count = 0;
 					for (i = 0; i < maxSpies; i++ ){
 						var spy = spies[i];
-						var resources = !Object.keys(selectedVillage.getResources().getComputed()).map(
+						spy.affordable = !Object.keys(selectedVillage.getResources().getComputed()).map(
 								function(elem){
 									if(elem != "food"){
 										if(selectedVillage.getResources().getComputed()[elem].currentStock > prices[i][elem]) {
@@ -63,10 +65,10 @@ define("robotTW2/services/SpyService", [
 									}
 								}
 						).filter(elem => elem != undefined).some(elem => elem == false)
-						if(spy.recruitingInProgress){
+						if(spy.type == SPY_TYPES.RECRUITING){
 							list.push(spy.timeCompleted);
 						}
-						if (spy.type == 0 && !spy.active && resources) {
+						if ((spy.type === SPY_TYPES.NO_SPY) && spy.active && spy.affordable) {
 							robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SCOUTING_RECRUIT, {
 								'village_id'	: selectedVillage.getId(),
 								'slot'			: spy.id
