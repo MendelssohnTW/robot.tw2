@@ -12,8 +12,9 @@
 				<div>
 					<table class="tbl-border-light tbl-striped" id="preset-list">
 						<colgroup>
-							<col width="50%">
-							<col width="50%">
+							<col width="*%">
+							<col width="33%">
+							<col width="33%">
 						</colgroup>
 						<tbody>
 							<tr>
@@ -51,8 +52,7 @@
 								</td>
 								<td  class="cell-top">
 									<div class="list-collapse">
-										<h5 class="twx-section collapse">{{text_underattack}}</h5>
-
+										<h5 class="twx-section collapse">{{text_friends}}</h5>
 										<table class="tbl-border-light tbl-striped" id="preset-list">
 											<colgroup>
 												<col width="*">
@@ -73,6 +73,21 @@
 										</table>
 									</div>
 								</td>
+							<td>
+							<div class="list-collapse">
+										<h5 class="twx-section collapse">{{text_underattack}}</h5>
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="*">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="under in underattack">
+													<td class="cell-right"><span>{{under}}</span></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+							</td>
 							</tr>
 						</tbody>
 					</table>
