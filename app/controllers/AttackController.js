@@ -119,8 +119,8 @@ define("robotTW2/controllers/AttackController", [
 		$scope.removeCommand = services.AttackService.removeCommandAttack;
 
 		$rootScope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
-			$scope.data_attack = data_attack.getAttack();
-			$scope.comandos = $scope.data_attack.COMMANDS;
+			$scope.data_attack = data_attack.get();
+			$scope.comandos = $scope.data_attack.commands;
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
