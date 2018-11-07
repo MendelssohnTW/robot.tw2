@@ -93,6 +93,7 @@ define("robotTW2/controllers/AlertController", [
 
 		$scope.selectAll = function(){
 			$scope.members.forEach(function(member){
+				member.isFriend = true;
 				if(!$rootScope.data_alert.friends.find(f=>f==member.name)){
 					$rootScope.data_alert.friends.push(member.name)
 				}
@@ -102,6 +103,9 @@ define("robotTW2/controllers/AlertController", [
 		}
 
 		$scope.removeAll = function(){
+			$scope.members.forEach(function(member){
+				member.isFriend = false;
+			})
 			$rootScope.data_alert.friends = [];
 			upDate()
 			if (!$rootScope.$$phase) $rootScope.$apply();

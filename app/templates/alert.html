@@ -18,53 +18,60 @@
 						<tbody>
 							<tr>
 								<td>
-									<table class="tbl-border-light tbl-striped" id="preset-list">
-										<colgroup>
-											<col width="50%">
-											<col width="50%">
-										</colgroup>
-										<tbody>
-											<tr ng-repeat="member in members">
-												<td class="cell-right"><span>{{member.name}}</span></td>
-												<td>
-													<div switch-slider="" border="true" enabled="true"
-														value="member.isFriend" ng-click="toggleValue(member)"
-														vertical="false" size="'56x28'">
-														<div ng-class="{'box-border-dark box-filter': border}"
-															class="box-border-dark box-filter">
-															<div class="switch switch-56x28 switch-horizontal"
-																ng-class="{'switch-checked': value}">
-																<span class="size-26x26 switch-thumb"> <span
-																	class="simple icon-26x26-switch-off"
-																	ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-																</span>
+									<div class="list-collapse">
+										<h5 class="twx-section collapse">{{settings_for_member}}</h5>
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="50%">
+												<col width="56px">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="member in members">
+													<td class="cell-right cell-top"><span>{{member.name}}</span></td>
+													<td>
+														<div switch-slider="" border="true" enabled="true"
+															value="member.isFriend" ng-click="toggleValue(member)"
+															vertical="false" size="'56x28'">
+															<div ng-class="{'box-border-dark box-filter': border}"
+																class="box-border-dark box-filter">
+																<div class="switch switch-56x28 switch-horizontal"
+																	ng-class="{'switch-checked': value}">
+																	<span class="size-26x26 switch-thumb"> <span
+																		class="simple icon-26x26-switch-off"
+																		ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																	</span>
+																</div>
 															</div>
 														</div>
-													</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
 								</td>
 								<td>
-									<table class="tbl-border-light tbl-striped" id="preset-list">
-										<colgroup>
-											<col width="50%">
-											<col width="50%">
-										</colgroup>
-										<tbody>
-											<tr ng-repeat="friend in data_alert.friends">
-												<td class="cell-right"><span>{{friend.name}}</span></td>
-												<td>
-													<ul class="list-btn list-center buttons">
-														<li><a class="size-34x34 btn-red icon-26x26-close"
-															ng-click="remove(friend.name)" tooltip
-															tooltip-content="{{remove}}"></a></li>
-													</ul>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+									<div class="list-collapse">
+										<h5 class="twx-section collapse">{{text_underattack}}</h5>
+
+										<table class="tbl-border-light tbl-striped" id="preset-list">
+											<colgroup>
+												<col width="50%">
+												<col width="50%">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="friend in data_alert.friends">
+													<td class="cell-right cell-top"><span>{{friend.name}}</span></td>
+													<td>
+														<ul class="list-btn list-center buttons">
+															<li><a class="size-34x34 btn-red icon-26x26-close"
+																ng-click="remove(friend.name)" tooltip
+																tooltip-content="{{remove}}"></a></li>
+														</ul>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
 								</td>
 							</tr>
 						</tbody>
@@ -89,9 +96,9 @@
 		<ul class="list-btn list-center buttons">
 			<li class="robotTW2-button-settings"><a
 				class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
-				<li class="robotTW2-button-settings"><a
+			<li class="robotTW2-button-settings"><a
 				class="btn-orange btn-border close" ng-click="selectAll()">{{select_all}}</a></li>
-				<li class="robotTW2-button-settings"><a
+			<li class="robotTW2-button-settings"><a
 				class="btn-orange btn-border close" ng-click="removeAll()">{{remove_all}}</a></li>
 		</ul>
 	</footer>
