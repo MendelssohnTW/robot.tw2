@@ -45,8 +45,7 @@ define("robotTW2/services/SpyService", [
 			return level > 0 ? Object.keys(d).length + 1 : 0;
 		}
 		, recruit_spy = function (){
-			var lista_aldeias = $rootScope.data_villages.getVillages();
-			Object.keys(lista_aldeias).forEach(function(id){
+			Object.keys($rootScope.data_villages.villages).forEach(function(id){
 				var selectedVillage = modelDataService.getSelectedCharacter().getVillage(id);
 				if(selectedVillage && selectedVillage.data.buildings) {
 					var scoutingInfo = selectedVillage.scoutingInfo;
