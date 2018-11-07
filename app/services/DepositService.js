@@ -7,7 +7,7 @@ define("robotTW2/services/DepositService", [
 			helper,
 			conf
 	){
-	return (function DepositService() {
+	return (function DepositService($rootScope) {
 
 		var isInitialized = !1 
 		, isRunning = !1
@@ -17,10 +17,9 @@ define("robotTW2/services/DepositService", [
 		, listener_job_collect = undefined
 		, listener_job_rerolled = undefined
 		, listener_job_collectible = undefined
-		, data_deposit = robotTW2.databases.data_deposit
 		, startJob = function(job) {
-//			data_deposit.setTimeCicle(job.duration)
-			data_deposit.interval = job.duration
+//			robotTW2.services.$rootScope.data_deposit.setTimeCicle(job.duration)
+			robotTW2.services.$rootScope.data_deposit.interval = job.duration
 			setList();
 			robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.RESOURCE_DEPOSIT_START_JOB, {
 				job_id: job.id
@@ -46,11 +45,11 @@ define("robotTW2/services/DepositService", [
 			robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
 			robotTW2.services.$timeout(function(){
 				var resourceDepositModel = robotTW2.services.modelDataService.getSelectedCharacter().getResourceDeposit();
-				if (isRunning && resourceDepositModel != undefined && data_deposit.activated) {
+				if (isRunning && resourceDepositModel != undefined && robotTW2.services.$rootScope.data_deposit.activated) {
 					var currentJob = resourceDepositModel.getCurrentJob();
 					if(currentJob){
-//						data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
-						data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
+//						robotTW2.services.$rootScope.data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
+						robotTW2.services.$rootScope.data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
 						robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
 						wait();
 					} else {
@@ -62,7 +61,7 @@ define("robotTW2/services/DepositService", [
 							job ? startJob(job) : null;
 						} else {
 							var reroll = robotTW2.services.modelDataService.getInventory().getItemByType("resource_deposit_reroll");
-							if (reroll && reroll.amount > 0 && data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
+							if (reroll && reroll.amount > 0 && robotTW2.services.$rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
 								robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.PREMIUM_USE_ITEM, {
 									village_id: robotTW2.services.modelDataService.getSelectedVillage().getId(),
 									item_id: reroll.id
@@ -80,14 +79,14 @@ define("robotTW2/services/DepositService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.DEPOSIT)
-//			list.push(data_deposit.getTimeCicle())
-			list.push(data_deposit.interval)
+//			list.push(robotTW2.services.$rootScope.data_deposit.getTimeCicle())
+			list.push(robotTW2.services.$rootScope.data_deposit.interval)
 			var t = Math.min.apply(null, list)
 			t < 3000 ? t = 3000 : t;
-//			data_deposit.setTimeCicle(t)
-			data_deposit.interval = t
-//			data_deposit.setTimeComplete(helper.gameTime() + t)
-			data_deposit.completed_at = helper.gameTime() + t
+//			robotTW2.services.$rootScope.data_deposit.setTimeCicle(t)
+			robotTW2.services.$rootScope.data_deposit.interval = t
+//			robotTW2.services.$rootScope.data_deposit.setTimeComplete(helper.gameTime() + t)
+			robotTW2.services.$rootScope.data_deposit.completed_at = helper.gameTime() + t
 			list = [];
 			robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
 			if(callback && typeof(callback) == "function"){callback(t)}
@@ -112,7 +111,7 @@ define("robotTW2/services/DepositService", [
 			if(isRunning){return}
 			robotTW2.ready(function(){
 
-				data_deposit.interval = conf.INTERVAL.DEPOSIT;
+				robotTW2.services.$rootScope.data_deposit.interval = conf.INTERVAL.DEPOSIT;
 //				data_deposit.set();
 				isRunning = !0
 				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
@@ -136,8 +135,6 @@ define("robotTW2/services/DepositService", [
 			robotTW2.services.$timeout.cancel(interval_deposit);
 			interval_deposit = undefined;
 		}
-
-		
 
 		return	{
 			init			: init,
