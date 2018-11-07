@@ -18,7 +18,6 @@ define("robotTW2/services/DepositService", [
 		, listener_job_rerolled = undefined
 		, listener_job_collectible = undefined
 		, startJob = function(job) {
-//			$rootScope.data_deposit.setTimeCicle(job.duration)
 			$rootScope.data_deposit.interval = job.duration
 			setList();
 			robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.RESOURCE_DEPOSIT_START_JOB, {
@@ -48,7 +47,6 @@ define("robotTW2/services/DepositService", [
 				if (isRunning && resourceDepositModel != undefined && $rootScope.data_deposit.activated) {
 					var currentJob = resourceDepositModel.getCurrentJob();
 					if(currentJob){
-//						$rootScope.data_deposit.setTimeCicle(currentJob.model.completedAt - helper.gameTime())
 						$rootScope.data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
 						$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
 						wait();
@@ -79,13 +77,10 @@ define("robotTW2/services/DepositService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.DEPOSIT)
-//			list.push($rootScope.data_deposit.getTimeCicle())
 			list.push($rootScope.data_deposit.interval)
 			var t = Math.min.apply(null, list)
 			t < 3000 ? t = 3000 : t;
-//			$rootScope.data_deposit.setTimeCicle(t)
 			$rootScope.data_deposit.interval = t
-//			$rootScope.data_deposit.setTimeComplete(helper.gameTime() + t)
 			$rootScope.data_deposit.completed_at = helper.gameTime() + t
 			list = [];
 			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
@@ -110,9 +105,7 @@ define("robotTW2/services/DepositService", [
 		, start = function (){
 			if(isRunning){return}
 			robotTW2.ready(function(){
-
 				$rootScope.data_deposit.interval = conf.INTERVAL.DEPOSIT;
-//				data_deposit.set();
 				isRunning = !0
 				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
 				!listener_job_collect ? listener_job_collect = $rootScope.$on(robotTW2.providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){robotTW2.services.$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;

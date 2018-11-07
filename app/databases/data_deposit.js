@@ -11,40 +11,15 @@ define("robotTW2/databases/data_deposit", [
 	) {
 	var data_deposit = database.get("data_deposit")
 	, db_deposit = {};
-	
-	db_deposit.set = function(db_deposit){
-		if(db_deposit){
-			database.set("data_deposit", db_deposit, true)
-		} else {
-			database.set("data_deposit", data_deposit, true)
-		}
+
+	db_deposit.set = function(){
+		database.set("data_deposit", data_deposit, true)
 	}
 
 	db_deposit.get = function(){
 		return database.get("data_deposit")
 	}
 
-//	db_deposit.getTimeCicle = function(){
-//		return database.get("data_deposit").interval
-//	}
-//
-//	db_deposit.setTimeCicle = function(timecicle){
-//		if(timecicle){
-//			var data = database.get("data_deposit")
-//			data.interval = timecicle
-//			database.set("data_deposit", data, true)
-//		}
-//	}
-//
-//	db_deposit.setTimeComplete = function(time){
-//		if(time){
-//			var data = database.get("data_deposit")
-//			data.completed_at = time
-//			database.set("data_deposit", data, true)
-//		}
-//	}
-
-	
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -68,16 +43,12 @@ define("robotTW2/databases/data_deposit", [
 		}
 		database.set("data_deposit", data_deposit, true)
 	}
-	
+
 	Object.setPrototypeOf(data_deposit, db_deposit);
-	
+
 	services.$rootScope.data_deposit = data_deposit;
-	
+
 	services.$rootScope.$watchCollection("data_deposit", function(){
-		data_deposit.set()
-	})
-	
-	services.$rootScope.$watch("data_deposit", function(){
 		data_deposit.set()
 	})
 

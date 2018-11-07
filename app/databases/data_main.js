@@ -12,13 +12,9 @@ define("robotTW2/databases/data_main", [
 
 	var data_main = database.get("data_main")
 	, db_main = {};
-	
-	db_main.set = function(db_main){
-		if(db_main){
-			database.set("data_main", db_main, true)
-		} else {
-			database.set("data_main", data_main, true)
-		}
+
+	db_main.set = function(){
+		database.set("data_main", data_main, true)
 	}
 
 	db_main.get = function(){
@@ -27,13 +23,12 @@ define("robotTW2/databases/data_main", [
 	db_main.setExtensions = function(extensions){
 		for (var extension in extensions){
 			var string = "data_" + extension.toLowerCase();
-//			var db = database.get(string)
 			var db = services.$rootScope[string]
 			if(db){
 				db.initialized = extensions[extension].initialized
 				db.auto_initialize = extensions[extension].auto_initialize
 				db.activated = extensions[extension].activated
-				database.set(string, db, true)
+//				database.set(string, db, true)
 			}
 		}
 	}
@@ -60,7 +55,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		if(database.get("data_farm")){
 			FARM = {
 					FARM : {
@@ -84,7 +79,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		if(database.get("data_deposit")){
 			DEPOSIT = {
 					DEPOSIT : {
@@ -108,7 +103,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		if(database.get("data_attack")){
 			ATTACK = {
 					ATTACK : {
@@ -132,7 +127,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		if(database.get("data_defense")){
 			DEFENSE = {
 					DEFENSE : {
@@ -156,7 +151,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		if(database.get("data_spy")){
 			SPY = {
 					SPY : {
@@ -204,7 +199,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		if(database.get("data_alert")){
 			ALERT = {
 					ALERT : {
@@ -252,7 +247,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		if(database.get("data_medic")){
 			MEDIC = {
 					MEDIC : {
@@ -276,7 +271,7 @@ define("robotTW2/databases/data_main", [
 					}
 			}
 		}
-		
+
 		var extensions = {};
 		angular.extend(extensions, HEADQUARTER);
 		angular.extend(extensions, FARM);
@@ -314,6 +309,13 @@ define("robotTW2/databases/data_main", [
 	database.set("data_main", data_main, true)
 
 	Object.setPrototypeOf(data_main, db_main);
+
+	services.$rootScope.data_main = data_main;
+
+	services.$rootScope.$watchCollection("data_main", function(){
+		data_main.set()
+	})
+
 	return data_main;
 
 })

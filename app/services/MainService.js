@@ -1,20 +1,16 @@
 define("robotTW2/services/MainService", [
 	"robotTW2",
-	"robotTW2/databases",
 	"robotTW2/conf",
 	], function(
 			robotTW2,
-			databases,
 			conf
 	){
-	return (function MainService() {
+	return (function MainService($rootScope, requestFn) {
 		var service = {};
-		var data_main = databases.data_main
 		return service.initExtensions = function(){
-
-			var extensions = data_main.getExtensions();
+			var extensions = $rootScope.data_main.getExtensions();
 			for (var extension in extensions) {
-				var arFn = robotTW2.requestFn.get(extension.toLowerCase(), true);
+				var arFn = requestFn.get(extension.toLowerCase(), true);
 				if(!arFn) {
 					extensions[extension].activated = false;
 					continue
@@ -33,9 +29,9 @@ define("robotTW2/services/MainService", [
 					}
 				}
 			}
-			data_main.setExtensions(extensions);
+			$rootScope.data_main.setExtensions(extensions);
 			return extensions
 		}
 		, service
-	})()
+	})(robotTW2.services.$rootScope, robotTW2.requestFn)
 })
