@@ -149,5 +149,5 @@ define("robotTW2/services/DepositService", [
 			version			: "1.0.0",
 			name			: "deposit",
 		}
-	})()
+	})(robotTW2.services.$rootScope)
 })
