@@ -9,15 +9,19 @@ define("robotTW2/services/SpyService", [
 			conf,
 			SPY_TYPES
 	){
-	return (function SpyService() {
+	return (function SpyService(
+			$rootScope,
+			socketService,
+			providers,
+			modelDataService,
+			$timeout
+	) {
 
 		var isInitialized = !1
 		, isRunning = !1
 		, interval_spy = null
 		, listener_spy = undefined
 		, list = []
-		, data_spy = robotTW2.databases.data_spy
-		, data_villages = robotTW2.databases.data_villages
 		, counterMeasureTypes = {
 				CAMOUFLAGE: "camouflage",
 				DUMMIES: "dummies",
@@ -41,9 +45,9 @@ define("robotTW2/services/SpyService", [
 			return level > 0 ? Object.keys(d).length + 1 : 0;
 		}
 		, recruit_spy = function (){
-			var lista_aldeias = data_villages.getVillages();
+			var lista_aldeias = $rootScope.data_villages.getVillages();
 			Object.keys(lista_aldeias).forEach(function(id){
-				var selectedVillage = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(id);
+				var selectedVillage = modelDataService.getSelectedCharacter().getVillage(id);
 				if(selectedVillage && selectedVillage.data.buildings) {
 					var scoutingInfo = selectedVillage.scoutingInfo;
 					var spies = scoutingInfo.spies;
@@ -69,37 +73,37 @@ define("robotTW2/services/SpyService", [
 							list.push(spy.timeCompleted);
 						}
 						if ((spy.type === SPY_TYPES.NO_SPY) && spy.active && spy.affordable) {
-							robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SCOUTING_RECRUIT, {
+							robotTW2.services.socketService.emit(providers.routeProvider.SCOUTING_RECRUIT, {
 								'village_id'	: selectedVillage.getId(),
 								'slot'			: spy.id
 							});
 						};
 					}
-					
+
 				}
-				
+
 			})
 			wait();
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.SPY)
-			list.push(data_spy.getTimeCicle())
+			list.push($rootScope.data_spy.interval)
 			var t = Math.min.apply(null, list)
 			t < 3000 ? t = 3000 : t;
-			data_spy.setTimeCicle(t)
-			data_spy.setTimeComplete(helper.gameTime() + t)
+			$rootScope.data_spy.setTimeCicle(t)
+			$rootScope.data_spy.completed_at = helper.gameTime() + t
 			list = [];
-			robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.INTERVAL_CHANGE_SPY)
+			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_SPY)
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
 		, wait = function(){
 			setList(function(tm){
 				if(!interval_spy){
-					interval_spy = robotTW2.services.$timeout(function(){recruit_spy()}, tm)
+					interval_spy = $timeout(function(){recruit_spy()}, tm)
 				} else {
-					robotTW2.services.$timeout.cancel(interval_spy);
+					$timeout.cancel(interval_spy);
 					interval_spy = undefined;
-					interval_spy = robotTW2.services.$timeout(function(){recruit_spy()}, tm)
+					interval_spy = $timeout(function(){recruit_spy()}, tm)
 				}
 			});
 		}
@@ -110,11 +114,10 @@ define("robotTW2/services/SpyService", [
 		, start = function (){
 			if(isRunning){return}
 			robotTW2.ready(function(){
-				data_spy.get().interval = conf.INTERVAL.SPY;
-				data_spy.set(data_spy.get());
+				$rootScope.data_spy.interval = conf.INTERVAL.SPY;
 				isRunning = !0;
-				!listener_spy ? listener_spy = robotTW2.services.$rootScope.$on(robotTW2.providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
-				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
+				!listener_spy ? listener_spy = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
+				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
 				recruit_spy();
 			}, ["all_villages_ready"])
 		}
@@ -122,8 +125,8 @@ define("robotTW2/services/SpyService", [
 			typeof(listener_spy) == "function" ? listener_spy(): null;
 			listener_spy = undefined;
 			isRunning = !1
-			robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
-			robotTW2.services.$timeout.cancel(interval_spy);
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
+			$timeout.cancel(interval_spy);
 			interval_spy = undefined;
 		}
 		return	{
@@ -140,5 +143,11 @@ define("robotTW2/services/SpyService", [
 			name			: "spy"
 		}
 
-	})()
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.services.socketService,
+			robotTW2.providers,
+			robotTW2.services.modelDataService,
+			robotTW2.services.$timeout
+	)
 })
