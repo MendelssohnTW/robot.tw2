@@ -35,16 +35,11 @@ define("robotTW2/controllers/MainController", [
 			}
 			$rootScope.data_main.setExtensions($scope.extensions);
 
-			$scope.data_main = data_main.get();
 
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
 
-		}
-
-		$scope.saveCorrection = function(){
-			data_main.set($scope.data_main);
 		}
 
 		$scope.recalibrate = function(){
