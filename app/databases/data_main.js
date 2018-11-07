@@ -28,7 +28,7 @@ define("robotTW2/databases/data_main", [
 		for (var extension in extensions){
 			var string = "data_" + extension.toLowerCase();
 //			var db = database.get(string)
-			var db = robotTW2.services.$rootScope[string]
+			var db = services.$rootScope[string]
 			if(db){
 				db.initialized = extensions[extension].initialized
 				db.auto_initialize = extensions[extension].auto_initialize
