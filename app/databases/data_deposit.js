@@ -69,7 +69,7 @@ define("robotTW2/databases/data_deposit", [
 		database.set("data_deposit", data_deposit, true)
 	}
 	
-	services.$rootScope.$watchCollection("data_deposit", db_deposit.set)
+	
 
 	Object.setPrototypeOf(data_deposit, db_deposit);
 
