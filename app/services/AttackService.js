@@ -240,7 +240,7 @@ define("robotTW2/services/AttackService", [
 					robotTW2.commandQueue.unbind(id_command, data_attack)
 					console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
 				}
-				robotTW2.services.$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_COMMANDS)
 
 			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
 
@@ -253,7 +253,7 @@ define("robotTW2/services/AttackService", [
 			var timer_delay_send = expires_send - helper.gameTime() - data_main.time_correction_command;
 			if(timer_delay_send > 0){
 				return robotTW2.services.$timeout(function(){
-					listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
+					listener[id_command] = {listener : robotTW2.services.$rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function($event, data){
 						if(params.start_village == data.origin.id){
 							console.log("Comando da aldeia " 
 									+ data.home.name + 
