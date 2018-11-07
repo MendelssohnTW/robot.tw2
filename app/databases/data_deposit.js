@@ -10,8 +10,7 @@ define("robotTW2/databases/data_deposit", [
 			notify
 	) {
 	var data_deposit = database.get("data_deposit")
-	, db_deposit = {}
-	, that = this;
+	, db_deposit = {};
 	
 	db_deposit.set = function(db_deposit){
 		if(db_deposit){
@@ -70,7 +69,7 @@ define("robotTW2/databases/data_deposit", [
 		database.set("data_deposit", data_deposit, true)
 	}
 	
-	services.$rootScope.$watchCollection("data_deposit", that.set)
+	services.$rootScope.$watchCollection("data_deposit", db_deposit.set)
 
 	Object.setPrototypeOf(data_deposit, db_deposit);
 
