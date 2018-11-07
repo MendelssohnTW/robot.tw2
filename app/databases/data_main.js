@@ -42,7 +42,6 @@ define("robotTW2/databases/data_main", [
 						activated 			: database.get("data_headquarter").activated,
 						name 				: "HEADQUARTER",
 						hotkey				: conf.HOTKEY.HEADQUARTER
-
 					}
 			}
 		} else {

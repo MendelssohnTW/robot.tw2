@@ -193,18 +193,22 @@ define("robotTW2/services/AttackService", [
 			if(opt_id){
 				id_command = params.id_command
 			}
-			robotTW2.commandQueueAttack.bind(id_command, sendAttack, data_attack)
-
+			
 			var expires = params.data_escolhida - params.duration;
 			var timer_delay = expires - helper.gameTime() - data_main.time_correction_command;
-			params["id_command"] = id_command
+			
 			params["timer_delay"] = timer_delay
+			params["id_command"] = id_command
+			robotTW2.commandQueue.bind(id_command, sendAttack, data_attack, params)
 
 			if(timer_delay > 0){
-				robotTW2.commandQueueAttack.trigger(id_command, params)
+				robotTW2.commandQueue.trigger(id_command, params)
 			} else {
-				robotTW2.commandQueueAttack.unbind(id_command, data_attack)
-				console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+				console.log("Comando da aldeia " 
+						+ robotTW2.services.modelDataService.getVillage(params.start_village).data.name 
+						+ " não enviado as " 
+						+ new Date(helper.gameTime()) 
+						+ " com tempo do servidor, devido vencimento de limite de delay");
 			}
 		}
 		, sendAttack = function(params){
@@ -232,7 +236,7 @@ define("robotTW2/services/AttackService", [
 				if (lista.length > 0 || !params.enviarFull) {
 					timeoutIdAttack[id_command] = resendAttack(params)
 				} else {
-					robotTW2.commandQueueAttack.unbind(id_command, data_attack)
+					robotTW2.commandQueue.unbind(id_command, data_attack)
 					console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
 				}
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
@@ -266,7 +270,7 @@ define("robotTW2/services/AttackService", [
 								listener[id_command].listener();
 								delete listener[id_command];
 							}
-							robotTW2.commandQueueAttack.unbind(id_command, data_attack)
+							robotTW2.commandQueue.unbind(id_command, data_attack)
 						}
 					})}
 					if (promiseReSendAttack) {
@@ -288,7 +292,7 @@ define("robotTW2/services/AttackService", [
 
 				}, timer_delay_send)
 			} else {
-				robotTW2.commandQueueAttack.unbind(id_command, data_attack)
+				robotTW2.commandQueue.unbind(id_command, data_attack)
 				console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 				return null
 			}
@@ -358,15 +362,15 @@ define("robotTW2/services/AttackService", [
 			robotTW2.ready(function(){
 				robotTW2.loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
-				interval_reload = robotTW2.services.$timeout(function (){
-					stop();
-					start();
-				}, interval)
+//				interval_reload = robotTW2.services.$timeout(function (){
+//					stop();
+//					start();
+//				}, interval)
 //				listener_change = robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
 				Object.values(data_attack.commands).forEach(function(param){
 					if(param.data_escolhida < helper.gameTime()){
-						robotTW2.commandQueueAttack.unbind(param.id_command, data_attack)
+						robotTW2.commandQueue.unbind(param.id_command, data_attack)
 					} else {
 						addAttack(param, true);
 					}
@@ -375,7 +379,7 @@ define("robotTW2/services/AttackService", [
 		}
 		, stop = function(){
 			robotTW2.removeScript("/controllers/AttackCompletionController.js");
-			robotTW2.commandQueueAttack.unbindAll(data_attack)
+			robotTW2.commandQueue.unbindAll(data_attack)
 //			typeof(listener_change) == "function" ? listener_change(): null;
 			interval_reload ? robotTW2.services.$timeout.cancel(interval_reload): null;
 //			listener_change = undefined;
@@ -390,10 +394,10 @@ define("robotTW2/services/AttackService", [
 			sendCommandAttack 	: sendCommandAttack,
 			calibrate_time		: calibrate_time,
 			removeCommandAttack	: function(id_command){
-				robotTW2.commandQueueAttack.unbind(id_command, data_attack)
+				robotTW2.commandQueue.unbind(id_command, data_attack)
 			},
 			removeAll			: function(id_command){
-				robotTW2.commandQueueAttack.unbindAll(data_attack)
+				robotTW2.commandQueue.unbindAll(data_attack)
 			},
 			isRunning			: function () {
 				return isRunning

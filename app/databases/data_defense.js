@@ -51,6 +51,8 @@ define("robotTW2/databases/data_defense", [
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
 			interval				: conf.INTERVAL.DEFENSE,
 			version					: conf.VERSION.DEFENSE,
+			time_sniper_ant			: conf.TIME_SNIPER_ANT,
+			time_sniper_post		: conf.TIME_SNIPER_POST,
 			commands				: {}
 	}
 
