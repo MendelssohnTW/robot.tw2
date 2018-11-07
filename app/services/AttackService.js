@@ -80,7 +80,7 @@ define("robotTW2/services/AttackService", [
 									}
 								}
 								list_villages = list_villages.filter(f => f != village.getId())
-								if(list_villages.length > 1){
+								if(list_villages.length > 0){
 									callbackVill(list_villages.pop());
 								} else {
 									callbackVill()
