@@ -137,17 +137,7 @@ define("robotTW2/services/DepositService", [
 			interval_deposit = undefined;
 		}
 
-		robotTW2.services.$rootScope.data_deposit = data_deposit;
 		
-		robotTW2.services.$rootScope.$watchCollection(data_deposit, function(){
-			console.log("teste $watchCollection db")
-			data_deposit.set()
-		})
-		
-		robotTW2.services.$rootScope.$watch(data_deposit, function(){
-			console.log("teste $watch db")
-			data_deposit.set()
-		})
 
 		return	{
 			init			: init,

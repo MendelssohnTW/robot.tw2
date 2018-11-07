@@ -38,8 +38,8 @@ define("robotTW2/controllers/MainController", [
 
 			$scope.data_main = data_main.get();
 
-			if (!$scope.$$phase) {
-				$scope.$apply();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
 			}
 
 		}

@@ -69,9 +69,17 @@ define("robotTW2/databases/data_deposit", [
 		database.set("data_deposit", data_deposit, true)
 	}
 	
-	
-
 	Object.setPrototypeOf(data_deposit, db_deposit);
+	
+	robotTW2.services.$rootScope.data_deposit = data_deposit;
+	
+	robotTW2.services.$rootScope.$watchCollection(data_deposit, function(){
+		data_deposit.set()
+	})
+	
+	robotTW2.services.$rootScope.$watch(data_deposit, function(){
+		data_deposit.set()
+	})
 
 	return data_deposit;
 })
