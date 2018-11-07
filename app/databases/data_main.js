@@ -33,18 +33,7 @@ define("robotTW2/databases/data_main", [
 		}
 	}
 	db_main.getExtensions = function(){
-		var dbs = [
-			"headquarter"
-			, "farm"
-			, "deposit"
-			, "attack"
-			, "defense"
-			, "spy"
-			, "aletr"
-			, "recon"
-			, "medic"
-			, "headquarter"
-			]
+		var dbs = conf.DBS
 		, extensions = {};
 
 		dbs.forEach(function(db_name){
@@ -63,7 +52,6 @@ define("robotTW2/databases/data_main", [
 				});
 			}	
 		})
-
 
 //		if(database.get("data_headquarter")){
 //			HEADQUARTER = {
