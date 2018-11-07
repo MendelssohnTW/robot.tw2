@@ -60,11 +60,11 @@
 											</colgroup>
 											<tbody>
 												<tr ng-repeat="friend in data_alert.friends">
-													<td class="cell-right cell-top"><span>{{friend.name}}</span></td>
+													<td class="cell-right cell-top"><span>{{friend}}</span></td>
 													<td>
 														<ul class="list-btn list-center buttons">
 															<li><a class="size-34x34 btn-red icon-26x26-close"
-																ng-click="remove(friend.name)" tooltip
+																ng-click="remove(friend)" tooltip
 																tooltip-content="{{remove}}"></a></li>
 														</ul>
 													</td>
