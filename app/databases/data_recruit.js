@@ -11,8 +11,10 @@ define("robotTW2/databases/data_recruit", [
 	) {
 	var db_recruit = {};
 
-	db_recruit.set = function(data_recruit){
-		if(data_recruit){
+	db_recruit.set = function(db_recruit){
+		if(db_recruit){
+			database.set("data_recruit", db_recruit, true)
+		} else {
 			database.set("data_recruit", data_recruit, true)
 		}
 	}

@@ -11,8 +11,10 @@ define("robotTW2/databases/data_headquarter", [
 	) {
 	var db_headquarter = {};
 	
-	db_headquarter.set = function(data_headquarter){
-		if(data_headquarter){
+	db_headquarter.set = function(db_headquarter){
+		if(db_headquarter){
+			database.set("data_headquarter", db_headquarter, true)
+		} else {
 			database.set("data_headquarter", data_headquarter, true)
 		}
 	}

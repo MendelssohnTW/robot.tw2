@@ -157,11 +157,10 @@ define("robotTW2/services/AttackService", [
 									return;
 								}
 								if(data.direction =="forward" && data.origin.id == vl && duration){
-//									var db_main = data_main.get();
 									var t = data.time_completed * 1000 - duration * 1000 - gTime;
 									if(!data_main.max_time_correction || (t > -data_main.max_time_correction && t < data_main.max_time_correction)) {
 										data_main.time_correction_command = t
-										data_main.set(main);
+										data_main.set();
 										robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 									}
 

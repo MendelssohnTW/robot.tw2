@@ -12,8 +12,10 @@ define("robotTW2/databases/data_defense", [
 	
 	var db_defense = {};
 	
-	db_defense.set = function(data_defense){
-		if(data_defense){
+	db_defense.set = function(db_defense){
+		if(db_defense){
+			database.set("data_defense", db_defense, true)
+		} else {
 			database.set("data_defense", data_defense, true)
 		}
 	}

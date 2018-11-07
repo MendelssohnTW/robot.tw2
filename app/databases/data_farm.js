@@ -13,8 +13,10 @@ define("robotTW2/databases/data_farm", [
 	) {
 
 	var db_farm = {};
-	db_farm.set = function(data_farm){
-		if(data_farm){
+	db_farm.set = function(db_farm){
+		if(db_farm){
+			database.set("data_farm", db_farm, true)
+		} else {
 			database.set("data_farm", data_farm, true)
 		}
 	}

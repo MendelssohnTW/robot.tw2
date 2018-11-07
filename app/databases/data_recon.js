@@ -12,8 +12,10 @@ define("robotTW2/databases/data_recon", [
 			unitTypesRenameRecon
 	) {
 	var db_recon = {};
-	db_recon.set = function(data_recon){
-		if(data_recon){
+	db_recon.set = function(db_recon){
+		if(db_recon){
+			database.set("data_recon", db_recon, true)
+		} else {
 			database.set("data_recon", data_recon, true)
 		}
 	}

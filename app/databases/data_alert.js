@@ -10,8 +10,10 @@ define("robotTW2/databases/data_alert", [
 			notify
 	) {
 	var db_alert = {};
-	db_alert.set = function(data_alert){
-		if(data_alert){
+	db_alert.set = function(db_alert){
+		if(db_alert){
+			database.set("data_alert", db_alert, true)
+		} else {
 			database.set("data_alert", data_alert, true)
 		}
 	}
@@ -69,13 +71,12 @@ define("robotTW2/databases/data_alert", [
 	} else {
 		if(!data_alert.version || data_alert.version < conf.VERSION.ALERT){
 			data_alert = dataNew
-			database.set("data_alert", data_alert, true)
 			notify("data_alert");
 		} else {
 			if(!data_alert.auto_initialize) data_alert.initialized = !1;
 			if(data_alert.auto_initialize) data_alert.initialized = !0;
-			database.set("data_alert", data_alert, true)		
 		}
+		database.set("data_alert", data_alert, true)
 	}
 
 	Object.setPrototypeOf(data_alert, db_alert);

@@ -12,8 +12,11 @@ define("robotTW2/databases/data_main", [
 
 	var data_main = database.get("data_main")
 	, db_main = {};
-	db_main.set = function(data_main){
-		if(data_main){
+	
+	db_main.set = function(db_main){
+		if(db_main){
+			database.set("data_main", db_main, true)
+		} else {
 			database.set("data_main", data_main, true)
 		}
 	}
@@ -288,9 +291,6 @@ define("robotTW2/databases/data_main", [
 
 		return extensions;
 	}
-	db_main.save = function(){
-		database.set("data_main", data_main, true)
-	};
 
 	var dataNew = {
 			max_time_correction		: conf.MAX_TIME_CORRECTION,
@@ -310,7 +310,7 @@ define("robotTW2/databases/data_main", [
 			if(data_main.auto_initialize) data_main.initialized = !0;
 		}
 	}
-	db_main.save()
+	database.set("data_main", data_main, true)
 
 	Object.setPrototypeOf(data_main, db_main);
 	return data_main;

@@ -13,8 +13,10 @@ define("robotTW2/databases/data_attack", [
 	) {
 	var db_attack = {};
 	
-	db_attack.set = function(data_attack){
-		if(data_attack){
+	db_attack.set = function(db_attack){
+		if(db_attack){
+			database.set("data_attack", db_attack, true)
+		} else {
 			database.set("data_attack", data_attack, true)
 		}
 	}

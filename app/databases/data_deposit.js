@@ -9,9 +9,13 @@ define("robotTW2/databases/data_deposit", [
 			services,
 			notify
 	) {
-	var db_deposit = {};
-	db_deposit.set = function(data_deposit){
-		if(data_deposit){
+	var data_deposit = database.get("data_deposit")
+	, db_deposit = {};
+	
+	db_deposit.set = function(db_deposit){
+		if(db_deposit){
+			database.set("data_deposit", db_deposit, true)
+		} else {
 			database.set("data_deposit", data_deposit, true)
 		}
 	}
@@ -20,27 +24,27 @@ define("robotTW2/databases/data_deposit", [
 		return database.get("data_deposit")
 	}
 
-	db_deposit.getTimeCicle = function(){
-		return database.get("data_deposit").interval
-	}
+//	db_deposit.getTimeCicle = function(){
+//		return database.get("data_deposit").interval
+//	}
+//
+//	db_deposit.setTimeCicle = function(timecicle){
+//		if(timecicle){
+//			var data = database.get("data_deposit")
+//			data.interval = timecicle
+//			database.set("data_deposit", data, true)
+//		}
+//	}
+//
+//	db_deposit.setTimeComplete = function(time){
+//		if(time){
+//			var data = database.get("data_deposit")
+//			data.completed_at = time
+//			database.set("data_deposit", data, true)
+//		}
+//	}
 
-	db_deposit.setTimeCicle = function(timecicle){
-		if(timecicle){
-			var data = database.get("data_deposit")
-			data.interval = timecicle
-			database.set("data_deposit", data, true)
-		}
-	}
-
-	db_deposit.setTimeComplete = function(time){
-		if(time){
-			var data = database.get("data_deposit")
-			data.completed_at = time
-			database.set("data_deposit", data, true)
-		}
-	}
-
-	var data_deposit = database.get("data_deposit");
+	
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -56,15 +60,13 @@ define("robotTW2/databases/data_deposit", [
 		database.set("data_deposit", data_deposit, true)
 	} else {
 		if(!data_deposit.version || data_deposit.version < conf.VERSION.DEPOSIT){
-
 			data_deposit = dataNew
-			database.set("data_deposit", data_deposit, true)
 			notify("data_deposit");
 		} else {
 			if(!data_deposit.auto_initialize) data_deposit.initialized = !1;
 			if(data_deposit.auto_initialize) data_deposit.initialized = !0;
-			database.set("data_deposit", data_deposit, true)		
 		}
+		database.set("data_deposit", data_deposit, true)
 	}
 
 	Object.setPrototypeOf(data_deposit, db_deposit);
