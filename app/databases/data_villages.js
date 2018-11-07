@@ -9,33 +9,33 @@ define("robotTW2/databases/data_villages", [
 			services,
 			providers
 	){
-	
+
 	var data_villages = database.get("data_villages") || {}
 	, db_villages = {}
-	
+
 	db_villages.set = function(){
-			database.set("data_villages", data_villages, true)
+		database.set("data_villages", data_villages, true)
 	}
 	db_villages.get = function(){
 		return database.get("data_villages")
 	}
-//	db_villages.verifyDB = function (villagesExtended){
-//		if (data_villages == undefined || data_villages.villages == undefined){
-//			return false;
-//		}
-//		updated = false;
-//		Object.keys(data_villages.villages).map(function(m){
-//			return m
-//		}).forEach(function(v){
-//			if(!Object.keys(villagesExtended).map(function(m){
-//				return m
-//			}).find(f=>f==v)){
-//				delete data_villages.villages[v]
-//				updated = true;
-//			}
-//		})
-//		return updated;
-//	}
+	db_villages.verifyDB = function (villagesExtended){
+		if (data_villages == undefined || data_villages.villages == undefined){
+			return false;
+		}
+		updated = false;
+		Object.keys(data_villages.villages).map(function(m){
+			return m
+		}).forEach(function(v){
+			if(!Object.keys(villagesExtended).map(function(m){
+				return m
+			}).find(f=>f==v)){
+				delete data_villages.villages[v]
+				updated = true;
+			}
+		})
+		return updated;
+	}
 	db_villages.verifyVillages = function (villagesExtended){
 		updated = false;
 		if (data_villages == undefined || data_villages.villages == undefined){
@@ -62,21 +62,21 @@ define("robotTW2/databases/data_villages", [
 		return updated
 	}
 //	db_villages.getVillageActivate = function(vs){
-//		return database.get("data_villages").villages[vs].farm_activate
+//	return database.get("data_villages").villages[vs].farm_activate
 //	}
 //	db_villages.setVillageActivate = function(vs, opt){
-//		data_villages.vs = opt;
-//		db_villages.save()
+//	data_villages.vs = opt;
+//	db_villages.save()
 //	}
 //	db_villages.setVillages = function(vs){
-//		data_villages.villages = vs;
-//		db_villages.save()
+//	data_villages.villages = vs;
+//	db_villages.save()
 //	}
 //	db_villages.getVillages = function(){
-//		return database.get("data_villages").villages
+//	return database.get("data_villages").villages
 //	}
 //	db_villages.save = function(){
-//		database.set("data_villages", data_villages, true)
+//	database.set("data_villages", data_villages, true)
 //	}
 	db_villages.updateVillages = function($event){
 		var villagesDB = {}
@@ -118,7 +118,7 @@ define("robotTW2/databases/data_villages", [
 	db_villages.updateVillages()
 
 	Object.setPrototypeOf(data_villages, db_villages);
-	
+
 	services.$rootScope.data_villages = data_villages;
 
 	services.$rootScope.$watchCollection("data_villages", function(){
