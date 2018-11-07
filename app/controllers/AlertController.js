@@ -56,6 +56,7 @@ define("robotTW2/controllers/AlertController", [
 				} else {
 					member.isFriend = false;
 				}
+				return member
 			})
 			$scope.underattack = $scope.members.map(function(member){
 				return member.under_attack && $rootScope.data_alert.friends.some(s => s === member.name) ? member : undefined;
