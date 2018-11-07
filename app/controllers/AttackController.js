@@ -130,10 +130,10 @@ define("robotTW2/controllers/AttackController", [
 			$scope.$apply();
 		}
 
-		services.$timeout(function(){
-			$window.setCollapse();
-			$window.recalcScrollbar();
-		}, 500)
+//		services.$timeout(function(){
+//			$window.setCollapse();
+//			$window.recalcScrollbar();
+//		}, 500)
 
 		return $scope;
 	}
