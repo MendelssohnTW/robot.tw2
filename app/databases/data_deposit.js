@@ -14,8 +14,10 @@ define("robotTW2/databases/data_deposit", [
 	
 	db_deposit.set = function(db_deposit){
 		if(db_deposit){
+			Object.setPrototypeOf(db_deposit, {});
 			database.set("data_deposit", db_deposit, true)
 		} else {
+			Object.setPrototypeOf(data_deposit, {});
 			database.set("data_deposit", data_deposit, true)
 		}
 	}
