@@ -3,15 +3,18 @@ define("robotTW2/controllers/AttackController", [
 	"robotTW2/databases",
 	"robotTW2/services",
 	"robotTW2/providers",
-	"robotTW2/conf"
+	"robotTW2/conf",
+	"helper/time",
 	], function(
 			robotTW2,
 			databases,
 			services,
 			providers,
-			conf
+			conf,
+			helper
 	){
 	return function AttackController($rootScope, $scope) {
+		var data_attack = robotTW2.databases.data_attack;
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", $rootScope.loc.ale);
 		var self = this;
@@ -43,8 +46,8 @@ define("robotTW2/controllers/AttackController", [
 
 		initTab();
 
-		$scope.data_attack = data_attack.getAttack();
-		$scope.comandos = $scope.data_attack.COMMANDS;
+		$scope.data_attack = data_attack.get();
+		$scope.comandos = $scope.data_attack.commands;
 
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
@@ -110,10 +113,10 @@ define("robotTW2/controllers/AttackController", [
 		}
 
 		$scope.clear_attack = function(){
-			attack.removeAll();
+			services.AttackService.removeAll();
 		}
 
-		$scope.removeCommand = attack.removeCommandAttack;
+		$scope.removeCommand = services.AttackService.removeCommandAttack;
 
 		$rootScope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			$scope.data_attack = data_attack.getAttack();
