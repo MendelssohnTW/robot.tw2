@@ -103,7 +103,7 @@ define("robotTW2/databases/data_villages", [
 				data_villages.version = conf.VERSION.VILLAGES
 			}
 		} 
-		db_villages.save();
+		database.set("data_villages", data_villages, true)
 	}
 	db_villages.renameVillage = function($event, data){
 		var id = data.village_id;
