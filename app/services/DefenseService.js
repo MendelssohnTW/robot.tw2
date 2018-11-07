@@ -724,8 +724,6 @@ define("robotTW2/services/DefenseService", [
 			init			: init,
 			start			: start,
 			stop 			: stop,
-			pause 			: pause,
-			resume 			: resume,
 			isRunning		: function () {
 				return isRunning
 			},
