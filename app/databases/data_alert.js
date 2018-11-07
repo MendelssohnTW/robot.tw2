@@ -9,52 +9,17 @@ define("robotTW2/databases/data_alert", [
 			services,
 			notify
 	) {
-	var db_alert = {};
-	db_alert.set = function(db_alert){
-		if(db_alert){
-			database.set("data_alert", db_alert, true)
-		} else {
+	var data_alert = database.get("data_alert")
+	, db_alert = {};
+	
+	db_alert.set = function(){
 			database.set("data_alert", data_alert, true)
-		}
 	}
 
 	db_alert.get = function(){
 		return database.get("data_alert")
 	}
 
-	db_alert.setFriends = function(friends){
-		var data_alert = database.get("data_alert")
-		if(friends){
-			data_alert.friends = friends;
-			database.set("data_alert", data_alert, true)
-		}
-	}
-
-	db_alert.getFriends = function(){
-		return database.get("data_alert").friends
-	}
-
-	db_alert.getTimeCicle = function(){
-		return database.get("data_alert").interval
-	}
-
-	db_alert.setTimeCicle = function(timecicle){
-		if(timecicle){
-			var data = database.get("data_alert")
-			data.interval = timecicle
-			database.set("data_alert", data, true)
-		}
-	}
-
-	db_alert.setTimeComplete = function(time){
-		if(time){
-			var data = database.get("data_alert")
-			data.completed_at = time
-			database.set("data_alert", data, true)
-		}
-	}
-
-	var data_alert = database.get("data_alert");
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -80,6 +45,12 @@ define("robotTW2/databases/data_alert", [
 	}
 
 	Object.setPrototypeOf(data_alert, db_alert);
+	
+	services.$rootScope.data_alert = data_alert;
+
+	services.$rootScope.$watchCollection("data_alert", function(){
+		data_alert.set()
+	})
 
 	return data_alert;
 })

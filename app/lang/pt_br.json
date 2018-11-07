@@ -78,6 +78,7 @@
 		"time_interval_alert": "Intervalo de verificação",
 		"select_all": "Selecionar todos",
 		"remove_all": "Remover todos",
+		"remove": "Remover",
 		"state": "Estado",
 		"text_underattack": "Sob ataque",
 		"init_standard": "Inicialização automática",
