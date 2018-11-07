@@ -48,6 +48,12 @@ if (!window.inject){
 if (!window.check){
 	window.check = function () {
 		if (document.getElementById("interface-bottom")) {
+			var scr = document.createElement("link");
+			scr.setAttribute("rel", "stylesheet");
+			scr.setAttribute("type", "text/css");
+			scr.setAttribute("href", "https://mendelssohntw.github.io/robot.tw2/app/css/robotTW2.css");
+			document.head.appendChild(scr);
+			
 			setTimeout(inject, 300, urlServer + "twtwotools.js", [], function(){
 
 			});
