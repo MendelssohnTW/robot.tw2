@@ -19,27 +19,6 @@ define("robotTW2/databases/data_spy", [
 	db_spy.get = function(){
 		return database.get("data_spy")
 	}
-
-//	db_spy.getTimeCicle = function(){
-//		return database.get("data_spy").interval
-//	}
-//
-//	db_spy.setTimeCicle = function(timecicle){
-//		if(timecicle){
-//			var data = database.get("data_spy")
-//			data.interval = timecicle
-//			database.set("data_spy", data, true)
-//		}
-//	}
-//
-//	db_spy.setTimeComplete = function(time){
-//		if(time){
-//			var data = database.get("data_spy")
-//			data.completed_at = time
-//			database.set("data_spy", data, true)
-//		}
-//	}
-
 	
 	var dataNew = {
 			auto_initialize			: false,

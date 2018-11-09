@@ -9,40 +9,38 @@ define("robotTW2/databases/data_medic", [
 			services,
 			notify
 	) {
-	var db_medic = {};
-	db_medic.set = function(db_medic){
-		if(db_medic){
-			database.set("data_medic", db_medic, true)
-		} else {
+	var data_medic = database.get("data_medic")
+	, db_medic = {};
+	
+	db_medic.set = function(){
 			database.set("data_medic", data_medic, true)
-		}
 	}
 
 	db_medic.get = function(){
 		return database.get("data_medic")
 	}
 
-	db_medic.getTimeCicle = function(){
-		return database.get("data_medic").interval
-	}
+//	db_medic.getTimeCicle = function(){
+//		return database.get("data_medic").interval
+//	}
+//
+//	db_medic.setTimeCicle = function(timecicle){
+//		if(timecicle){
+//			var data = database.get("data_medic")
+//			data.interval = timecicle
+//			database.set("data_medic", data, true)
+//		}
+//	}
+//
+//	db_medic.setTimeComplete = function(time){
+//		if(time){
+//			var data = database.get("data_medic")
+//			data.completed_at = time
+//			database.set("data_medic", data, true)
+//		}
+//	}
 
-	db_medic.setTimeCicle = function(timecicle){
-		if(timecicle){
-			var data = database.get("data_medic")
-			data.interval = timecicle
-			database.set("data_medic", data, true)
-		}
-	}
-
-	db_medic.setTimeComplete = function(time){
-		if(time){
-			var data = database.get("data_medic")
-			data.completed_at = time
-			database.set("data_medic", data, true)
-		}
-	}
-
-	var data_medic = database.get("data_medic");
+	
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -69,6 +67,12 @@ define("robotTW2/databases/data_medic", [
 	}
 
 	Object.setPrototypeOf(data_medic, db_medic);
+	
+	services.$rootScope.data_medic = data_medic;
+
+	services.$rootScope.$watchCollection("data_medic", function(){
+		data_medic.set()
+	})
 
 	return data_medic;
 })

@@ -55,29 +55,11 @@ define("robotTW2/databases/data_villages", [
 					farm_activate 			: true
 				})
 				data_villages.villages[v] = villagesExtended[v]
-//				updated = true;
 			}
 		})
-//		if(updated){db_villages.setVillages(data_villages.villages)}
 		return updated
 	}
-//	db_villages.getVillageActivate = function(vs){
-//	return database.get("data_villages").villages[vs].farm_activate
-//	}
-//	db_villages.setVillageActivate = function(vs, opt){
-//	data_villages.vs = opt;
-//	db_villages.save()
-//	}
-//	db_villages.setVillages = function(vs){
-//	data_villages.villages = vs;
-//	db_villages.save()
-//	}
-//	db_villages.getVillages = function(){
-//	return database.get("data_villages").villages
-//	}
-//	db_villages.save = function(){
-//	database.set("data_villages", data_villages, true)
-//	}
+
 	db_villages.updateVillages = function($event){
 		var villagesDB = {}
 		, villagesExtended = {}
@@ -108,7 +90,6 @@ define("robotTW2/databases/data_villages", [
 	db_villages.renameVillage = function($event, data){
 		var id = data.village_id;
 		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name
-//				db_villages.setVillages(data_villages.villages)
 	}
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);

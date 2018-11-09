@@ -9,41 +9,38 @@ define("robotTW2/databases/data_headquarter", [
 			services,
 			notify
 	) {
-	var db_headquarter = {};
-	
-	db_headquarter.set = function(db_headquarter){
-		if(db_headquarter){
-			database.set("data_headquarter", db_headquarter, true)
-		} else {
-			database.set("data_headquarter", data_headquarter, true)
-		}
+	var data_headquarter = database.get("data_headquarter")
+	, db_headquarter = {};
+
+	db_headquarter.set = function(){
+		database.set("data_headquarter", data_headquarter, true)
 	}
 
 	db_headquarter.get = function(){
 		return database.get("data_headquarter")
 	}
 
-	db_headquarter.getTimeCicle = function(){
-		return database.get("data_headquarter").interval
-	}
+//	db_headquarter.getTimeCicle = function(){
+//		return database.get("data_headquarter").interval
+//	}
+//
+//	db_headquarter.setTimeCicle = function(timecicle){
+//		if(timecicle){
+//			var data = database.get("data_headquarter")
+//			data.interval = timecicle
+//			database.set("data_headquarter", data, true)
+//		}
+//	}
+//
+//	db_headquarter.setTimeComplete = function(time){
+//		if(time){
+//			var data = database.get("data_headquarter")
+//			data.completed_at = time
+//			database.set("data_headquarter", data, true)
+//		}
+//	}
 
-	db_headquarter.setTimeCicle = function(timecicle){
-		if(timecicle){
-			var data = database.get("data_headquarter")
-			data.interval = timecicle
-			database.set("data_headquarter", data, true)
-		}
-	}
 
-	db_headquarter.setTimeComplete = function(time){
-		if(time){
-			var data = database.get("data_headquarter")
-			data.completed_at = time
-			database.set("data_headquarter", data, true)
-		}
-	}
-
-	var data_headquarter = database.get("data_headquarter");
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -80,6 +77,12 @@ define("robotTW2/databases/data_headquarter", [
 	}
 
 	Object.setPrototypeOf(data_headquarter, db_headquarter);
+	
+	services.$rootScope.data_headquarter = data_headquarter;
+
+	services.$rootScope.$watchCollection("data_headquarter", function(){
+		data_headquarter.set()
+	})
 
 	return data_headquarter;
 })

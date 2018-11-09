@@ -9,42 +9,39 @@ define("robotTW2/databases/data_defense", [
 			services,
 			notify
 	) {
-	
-	var db_defense = {};
-	
-	db_defense.set = function(db_defense){
-		if(db_defense){
-			database.set("data_defense", db_defense, true)
-		} else {
-			database.set("data_defense", data_defense, true)
-		}
+
+	var data_defense = database.get("data_defense")
+	, db_defense = {};
+
+	db_defense.set = function(){
+		database.set("data_defense", data_defense, true)
 	}
 
 	db_defense.get = function(){
 		return database.get("data_defense")
 	}
 
-	db_defense.getTimeCicle = function(){
-		return database.get("data_defense").interval
-	}
+//	db_defense.getTimeCicle = function(){
+//	return database.get("data_defense").interval
+//	}
 
-	db_defense.setTimeCicle = function(timecicle){
-		if(timecicle){
-			var data = database.get("data_defense")
-			data.interval = timecicle
-			database.set("data_defense", data, true)
-		}
-	}
+//	db_defense.setTimeCicle = function(timecicle){
+//	if(timecicle){
+//	var data = database.get("data_defense")
+//	data.interval = timecicle
+//	database.set("data_defense", data, true)
+//	}
+//	}
 
-	db_defense.setTimeComplete = function(time){
-		if(time){
-			var data = database.get("data_defense")
-			data.completed_at = time
-			database.set("data_defense", data, true)
-		}
-	}
+//	db_defense.setTimeComplete = function(time){
+//	if(time){
+//	var data = database.get("data_defense")
+//	data.completed_at = time
+//	database.set("data_defense", data, true)
+//	}
+//	}
 
-	var data_defense = database.get("data_defense");
+
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -75,6 +72,12 @@ define("robotTW2/databases/data_defense", [
 	}
 
 	Object.setPrototypeOf(data_defense, db_defense);
+
+	services.$rootScope.data_defense = data_defense;
+
+	services.$rootScope.$watchCollection("data_defense", function(){
+		data_defense.set()
+	})
 
 	return data_defense;
 })

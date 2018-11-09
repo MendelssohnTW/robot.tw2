@@ -11,20 +11,18 @@ define("robotTW2/databases/data_recon", [
 			notify,
 			unitTypesRenameRecon
 	) {
-	var db_recon = {};
-	db_recon.set = function(db_recon){
-		if(db_recon){
-			database.set("data_recon", db_recon, true)
-		} else {
-			database.set("data_recon", data_recon, true)
-		}
+	var data_recon = database.get("data_recon")
+	, db_recon = {};
+
+	db_recon.set = function(){
+		database.set("data_recon", data_recon, true)
 	}
 
 	db_recon.get = function(){
 		return database.get("data_recon")
 	}
 
-	var data_recon = database.get("data_recon");
+
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -51,6 +49,12 @@ define("robotTW2/databases/data_recon", [
 	}
 
 	Object.setPrototypeOf(data_recon, db_recon);
+
+	services.$rootScope.data_recon = data_recon;
+
+	services.$rootScope.$watchCollection("data_recon", function(){
+		data_recon.set()
+	})
 
 	return data_recon;
 })

@@ -11,41 +11,17 @@ define("robotTW2/databases/data_attack", [
 			notify,
 			helper
 	) {
-	var db_attack = {};
-	
-	db_attack.set = function(db_attack){
-		if(db_attack){
-			database.set("data_attack", db_attack, true)
-		} else {
-			database.set("data_attack", data_attack, true)
-		}
+	var data_attack = database.get("data_attack")
+	, db_attack = {};
+
+	db_attack.set = function(){
+		database.set("data_attack", data_attack, true)
 	}
 
 	db_attack.get = function(){
 		return database.get("data_attack")
 	}
 
-	db_attack.getTimeCicle = function(){
-		return database.get("data_attack").interval
-	}
-
-	db_attack.setTimeCicle = function(timecicle){
-		if(timecicle){
-			var data = database.get("data_attack")
-			data.interval = timecicle
-			database.set("data_attack", data, true)
-		}
-	}
-
-	db_attack.setTimeComplete = function(time){
-		if(time){
-			var data = database.get("data_attack")
-			data.completed_at = time
-			database.set("data_attack", data, true)
-		}
-	}
-
-	var data_attack = database.get("data_attack");
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -61,7 +37,6 @@ define("robotTW2/databases/data_attack", [
 		database.set("data_attack", data_attack, true)
 	} else {
 		if(!data_attack.version || data_attack.version < conf.VERSION.ATTACK){
-
 			data_attack = dataNew
 			database.set("data_attack", data_attack, true)
 			notify("data_attack");
@@ -73,6 +48,12 @@ define("robotTW2/databases/data_attack", [
 	}
 
 	Object.setPrototypeOf(data_attack, db_attack);
+
+	services.$rootScope.data_attack = data_attack;
+
+	services.$rootScope.$watchCollection("data_attack", function(){
+		data_attack.set()
+	})
 
 	return data_attack;
 })

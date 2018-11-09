@@ -9,41 +9,38 @@ define("robotTW2/databases/data_recruit", [
 			services,
 			notify
 	) {
-	var db_recruit = {};
+	var data_recruit = database.get("data_recruit")
+	, db_recruit = {};
 
-	db_recruit.set = function(db_recruit){
-		if(db_recruit){
-			database.set("data_recruit", db_recruit, true)
-		} else {
+	db_recruit.set = function(){
 			database.set("data_recruit", data_recruit, true)
-		}
 	}
 
 	db_recruit.get = function(){
 		return database.get("data_recruit")
 	}
 
-	db_recruit.getTimeCicle = function(){
-		return database.get("data_recruit").interval
-	}
+//	db_recruit.getTimeCicle = function(){
+//		return database.get("data_recruit").interval
+//	}
+//
+//	db_recruit.setTimeCicle = function(timecicle){
+//		if(timecicle){
+//			var data = database.get("data_recruit")
+//			data.interval = timecicle
+//			database.set("data_recruit", data, true)
+//		}
+//	}
+//
+//	db_recruit.setTimeComplete = function(time){
+//		if(time){
+//			var data = database.get("data_recruit")
+//			data.completed_at = time
+//			database.set("data_recruit", data, true)
+//		}
+//	}
 
-	db_recruit.setTimeCicle = function(timecicle){
-		if(timecicle){
-			var data = database.get("data_recruit")
-			data.interval = timecicle
-			database.set("data_recruit", data, true)
-		}
-	}
-
-	db_recruit.setTimeComplete = function(time){
-		if(time){
-			var data = database.get("data_recruit")
-			data.completed_at = time
-			database.set("data_recruit", data, true)
-		}
-	}
-
-	var data_recruit = database.get("data_recruit");
+	
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
@@ -79,6 +76,12 @@ define("robotTW2/databases/data_recruit", [
 	}
 
 	Object.setPrototypeOf(data_recruit, db_recruit);
+	
+	services.$rootScope.data_recruit = data_recruit;
+
+	services.$rootScope.$watchCollection("data_recruit", function(){
+		data_recruit.set()
+	})
 
 	return data_recruit;
 })
