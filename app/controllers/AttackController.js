@@ -28,7 +28,6 @@ define("robotTW2/controllers/AttackController", [
 			TABS.LOG,
 			]
 
-//		$($window.$data.rootnode).addClass("fullsize")
 
 		$scope.requestedTab = TABS.ATTACK;
 		$scope.TABS = TABS;
