@@ -9,7 +9,7 @@ define("robotTW2/services/DepositService", [
 	){
 	return (function DepositService(
 			$rootScope,
-			socketService,
+			socketEmit,
 			providers,
 			modelDataService,
 			$timeout
@@ -26,12 +26,12 @@ define("robotTW2/services/DepositService", [
 		, startJob = function(job) {
 			$rootScope.data_deposit.interval = job.duration
 			setList();
-			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_START_JOB, {
+			socketEmit(providers.routeProvider.RESOURCE_DEPOSIT_START_JOB, {
 				job_id: job.id
 			})
 		}
 		, collectJob = function(job) {
-			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_COLLECT, {
+			socketEmit(providers.routeProvider.RESOURCE_DEPOSIT_COLLECT, {
 				job_id: job.id,
 				village_id: modelDataService.getSelectedVillage().getId()
 			})
@@ -47,7 +47,7 @@ define("robotTW2/services/DepositService", [
 			return resourceDepositModel && resourceDepositModel.isAvailable() && !!resourceDepositModel.getCollectibleJobs()
 		}
 		, verify_deposit = function() {
-			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
+			socketEmit(providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
 			$timeout(function(){
 				var resourceDepositModel = modelDataService.getSelectedCharacter().getResourceDeposit();
 				if (isRunning && resourceDepositModel != undefined && $rootScope.data_deposit.activated) {
@@ -66,7 +66,7 @@ define("robotTW2/services/DepositService", [
 						} else {
 							var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
 							if (reroll && reroll.amount > 0 && $rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
-								socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
+								socketEmit(providers.routeProvider.PREMIUM_USE_ITEM, {
 									village_id: modelDataService.getSelectedVillage().getId(),
 									item_id: reroll.id
 								}, function(){
@@ -150,7 +150,7 @@ define("robotTW2/services/DepositService", [
 		}
 	})(
 			robotTW2.services.$rootScope,
-			robotTW2.services.socketService,
+			robotTW2.socketEmit,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout

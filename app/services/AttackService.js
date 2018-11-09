@@ -9,7 +9,14 @@ define("robotTW2/services/AttackService", [
 			conf,
 			notify
 	){
-	return (function AttackService() {
+	return (function AttackService(
+			$rootScope,
+			providers,
+			modelDataService,
+			$timeout,
+			commandQueue,
+			socketEmit
+	) {
 
 		var isRunning = !1
 		, isPaused = !1
@@ -18,13 +25,10 @@ define("robotTW2/services/AttackService", [
 //		, listener_change = undefined
 		, listener = []
 		, timeoutIdAttack = {}
-		, data_attack = robotTW2.databases.data_attack
-		, data_main = robotTW2.databases.data_main
-		, interval = data_attack.interval
 		, that = this
 		, promiseReSendAttack
 		, queueReSendAttack = []
-		, timetable = robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+		, timetable = modelDataService.getGameData().data.units.map(function(obj, index, array){
 			return [obj.speed * 60, obj.name]
 		}).map(m => {
 			return [m[0], m[1]];
@@ -48,7 +52,7 @@ define("robotTW2/services/AttackService", [
 			var nx = function (){
 				if(list.length){
 					function getVills(village, callbackVill){				
-						robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GETVILLAGES,{x:xT, y:yT, width: dist, height: dist}, function(data){
+						socketEmit(providers.routeProvider.MAP_GETVILLAGES,{x:xT, y:yT, width: dist, height: dist}, function(data){
 							if(!data){return}
 							if (data.villages != undefined && data.villages.length > 0){
 								var listaVil = angular.copy(data.villages);
@@ -89,7 +93,7 @@ define("robotTW2/services/AttackService", [
 					}
 
 					var v = list.shift();
-					var village = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(v);
+					var village = modelDataService.getSelectedCharacter().getVillage(v);
 					vl = village.getId();
 					var dist = 50;
 					var xT = village.getX() - dist / 2;
@@ -101,7 +105,7 @@ define("robotTW2/services/AttackService", [
 							nx(); 
 							return
 						}
-						var villageV = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(v);
+						var villageV = modelDataService.getSelectedCharacter().getVillage(v);
 						var units = {};
 						var unitInfo = village.unitInfo.getUnits();
 						if (!unitInfo) {return};
@@ -148,22 +152,22 @@ define("robotTW2/services/AttackService", [
 						var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
 						duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
 
-						robotTW2.services.$timeout(function(){
+						$timeout(function(){
 							listener_completed ? listener_completed() : listener_completed;
 							listener_completed = undefined;
-							listener_completed = robotTW2.services.$rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+							listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
 								if(!data){
 									return;
 								}
 								if(data.direction =="forward" && data.origin.id == vl && duration){
 									var t = data.time_completed * 1000 - duration * 1000 - gTime;
-									if(!data_main.max_time_correction || (t > -data_main.max_time_correction && t < data_main.max_time_correction)) {
-										data_main.time_correction_command = t
-										data_main.set();
-										robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
+									if(!$rootScope.data_main.max_time_correction || (t > -$rootScope.data_main.max_time_correction && t < $rootScope.data_main.max_time_correction)) {
+										$rootScope.data_main.time_correction_command = t
+//										data_main.set();
+										$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 									}
 
-									robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_CANCEL, {
+									socketEmit(providers.routeProvider.COMMAND_CANCEL, {
 										command_id: data.command_id
 									})
 									listener_completed();
@@ -171,7 +175,7 @@ define("robotTW2/services/AttackService", [
 								}
 							})
 							gTime = helper.gameTime();
-							robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SEND_CUSTOM_ARMY, {
+							socketEmit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 								start_village: village.getId(),
 								target_village: villageV.getId(),
 								type: "support",
@@ -194,17 +198,17 @@ define("robotTW2/services/AttackService", [
 			}
 			
 			var expires = params.data_escolhida - params.duration;
-			var timer_delay = expires - helper.gameTime() - data_main.time_correction_command;
+			var timer_delay = expires - helper.gameTime() - $rootScope.data_main.time_correction_command;
 			
 			params["timer_delay"] = timer_delay
 			params["id_command"] = id_command
-			robotTW2.commandQueue.bind(id_command, sendAttack, data_attack, params)
+			commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params)
 
 			if(timer_delay > 0){
-				robotTW2.commandQueue.trigger(id_command, params)
+				commandQueue.trigger(id_command, params)
 			} else {
 				console.log("Comando da aldeia " 
-						+ robotTW2.services.modelDataService.getVillage(params.start_village).data.name 
+						+ modelDataService.getVillage(params.start_village).data.name 
 						+ " não enviado as " 
 						+ new Date(helper.gameTime()) 
 						+ " com tempo do servidor, devido vencimento de limite de delay");
@@ -214,11 +218,11 @@ define("robotTW2/services/AttackService", [
 			var id_command = params.id_command
 			, timer_delay = params.timer_delay;
 
-			return robotTW2.services.$timeout(function () {
+			return $timeout(function () {
 				var lista = [],
 				units = {};
 				if (params.enviarFull){
-					var village = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(params.start_village);
+					var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
 					if (village.unitInfo != undefined){
 						var unitInfo = village.unitInfo.units;
 						for(obj in unitInfo){
@@ -235,10 +239,10 @@ define("robotTW2/services/AttackService", [
 				if (lista.length > 0 || !params.enviarFull) {
 					timeoutIdAttack[id_command] = resendAttack(params)
 				} else {
-					robotTW2.commandQueue.unbind(id_command, data_attack)
-					console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
+					commandQueue.unbind(id_command, $rootScope.data_attack)
+					console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
 				}
-				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_COMMANDS)
+				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
 			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
 
@@ -248,10 +252,10 @@ define("robotTW2/services/AttackService", [
 //			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
 			var expires_send = params.data_escolhida - params.duration;
-			var timer_delay_send = expires_send - helper.gameTime() - data_main.time_correction_command;
+			var timer_delay_send = expires_send - helper.gameTime() - $rootScope.data_main.time_correction_command;
 			if(timer_delay_send > 0){
-				return robotTW2.services.$timeout(function(){
-					listener[id_command] = {listener : robotTW2.services.$rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function($event, data){
+				return $timeout(function(){
+					listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
 						if(params.start_village == data.origin.id){
 							console.log("Comando da aldeia " 
 									+ data.home.name + 
@@ -269,7 +273,7 @@ define("robotTW2/services/AttackService", [
 								listener[id_command].listener();
 								delete listener[id_command];
 							}
-							robotTW2.commandQueue.unbind(id_command, data_attack)
+							commandQueue.unbind(id_command, $rootScope.data_attack)
 						}
 					})}
 					if (promiseReSendAttack) {
@@ -277,8 +281,8 @@ define("robotTW2/services/AttackService", [
 						return;
 					}
 
-					robotTW2.services.socketService.emit(
-							robotTW2.providers.routeProvider.SEND_CUSTOM_ARMY, {
+					socketEmit(
+							providers.routeProvider.SEND_CUSTOM_ARMY, {
 								start_village: params.start_village,
 								target_village: params.target_village,
 								type: params.type,
@@ -291,8 +295,8 @@ define("robotTW2/services/AttackService", [
 
 				}, timer_delay_send)
 			} else {
-				robotTW2.commandQueue.unbind(id_command, data_attack)
-				console.log("Comando da aldeia " + robotTW2.services.modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+				commandQueue.unbind(id_command, $rootScope.data_attack)
+				console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 				return null
 			}
 
@@ -361,15 +365,15 @@ define("robotTW2/services/AttackService", [
 			robotTW2.ready(function(){
 				robotTW2.loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
-//				interval_reload = robotTW2.services.$timeout(function (){
+//				interval_reload = $timeout(function (){
 //					stop();
 //					start();
-//				}, interval)
-//				listener_change = robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
+//				}, $rootScope.data_attack.interval)
+//				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
-				Object.values(data_attack.commands).forEach(function(param){
+				Object.values($rootScope.data_attack.commands).forEach(function(param){
 					if(param.data_escolhida < helper.gameTime()){
-						robotTW2.commandQueue.unbind(param.id_command, data_attack)
+						commandQueue.unbind(param.id_command, $rootScope.data_attack)
 					} else {
 						addAttack(param, true);
 					}
@@ -378,9 +382,9 @@ define("robotTW2/services/AttackService", [
 		}
 		, stop = function(){
 			robotTW2.removeScript("/controllers/AttackCompletionController.js");
-			robotTW2.commandQueue.unbindAll(data_attack)
+			commandQueue.unbindAll($rootScope.data_attack)
 //			typeof(listener_change) == "function" ? listener_change(): null;
-			interval_reload ? robotTW2.services.$timeout.cancel(interval_reload): null;
+			interval_reload ? $timeout.cancel(interval_reload): null;
 //			listener_change = undefined;
 			interval_reload = undefined;
 			isRunning = !1;
@@ -393,10 +397,10 @@ define("robotTW2/services/AttackService", [
 			sendCommandAttack 	: sendCommandAttack,
 			calibrate_time		: calibrate_time,
 			removeCommandAttack	: function(id_command){
-				robotTW2.commandQueue.unbind(id_command, data_attack)
+				commandQueue.unbind(id_command, $rootScope.data_attack)
 			},
 			removeAll			: function(id_command){
-				robotTW2.commandQueue.unbindAll(data_attack)
+				commandQueue.unbindAll($rootScope.data_attack)
 			},
 			isRunning			: function () {
 				return isRunning
@@ -407,5 +411,12 @@ define("robotTW2/services/AttackService", [
 			version				: "1.0.0",
 			name				: "attack"
 		}
-	})()
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.providers,
+			robotTW2.services.modelDataService,
+			robotTW2.services.$timeout,
+			robotTW2.commandQueue,
+			robotTW2.socketEmit
+	)
 })

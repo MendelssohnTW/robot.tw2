@@ -5,7 +5,7 @@ define("robotTW2/services/AlertService", [
 	){
 	return (function AlertService(
 			$rootScope,
-			socketService,
+			socketEmit,
 			providers,
 			modelDataService,
 			$timeout
@@ -20,7 +20,7 @@ define("robotTW2/services/AlertService", [
 		}
 		, verify_alert = function(){
 			try {
-				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
+				socketEmit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
 					$timeout(_ => {
 						var friends = $rootScope.data_alert.friends;
 						if (o.members != undefined){
@@ -79,7 +79,7 @@ define("robotTW2/services/AlertService", [
 		}
 	})(
 			robotTW2.services.$rootScope,
-			robotTW2.services.socketService,
+			robotTW2.socketEmit,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout

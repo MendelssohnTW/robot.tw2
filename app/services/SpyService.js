@@ -11,7 +11,7 @@ define("robotTW2/services/SpyService", [
 	){
 	return (function SpyService(
 			$rootScope,
-			socketService,
+			socketEmit,
 			providers,
 			modelDataService,
 			$timeout
@@ -72,7 +72,7 @@ define("robotTW2/services/SpyService", [
 							list.push(spy.timeCompleted);
 						}
 						if ((spy.type === SPY_TYPES.NO_SPY) && spy.active && spy.affordable) {
-							robotTW2.services.socketService.emit(providers.routeProvider.SCOUTING_RECRUIT, {
+							socketEmit(providers.routeProvider.SCOUTING_RECRUIT, {
 								'village_id'	: selectedVillage.getId(),
 								'slot'			: spy.id
 							});
@@ -144,7 +144,7 @@ define("robotTW2/services/SpyService", [
 
 	})(
 			robotTW2.services.$rootScope,
-			robotTW2.services.socketService,
+			robotTW2.socketEmit,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout

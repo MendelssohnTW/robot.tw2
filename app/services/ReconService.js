@@ -5,7 +5,13 @@ define("robotTW2/services/ReconService", [
 			robotTW2,
 			helper
 	){
-	return (function ReconService() {
+	return (function ReconService(
+			$rootScope,
+			providers,
+			modelDataService,
+			$timeout,
+			socketEmit
+	) {
 
 		var isInitialized = !1
 		, isRunning = !1
@@ -13,7 +19,7 @@ define("robotTW2/services/ReconService", [
 		, data_recon = robotTW2.databases.data_recon
 		, getrenameCmdAtackRecon = function (command, unitText) {
 			if(command.command_name != unitText){
-				robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_RENAME, {
+				socketEmit(providers.routeProvider.COMMAND_RENAME, {
 					command_id: command.command_id,
 					name: unitText
 				});
@@ -46,7 +52,7 @@ define("robotTW2/services/ReconService", [
 				return "Farm BB";
 			} else {
 
-				var t = robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+				var t = modelDataService.getGameData().data.units.map(function(obj, index, array){
 					return [obj.speed, obj.name]
 				}).map(m => {
 					return [m[0], m[1], Math.abs(minutes_duration - Math.round(m[0] * distancia))];
@@ -63,7 +69,7 @@ define("robotTW2/services/ReconService", [
 
 				var y = t.map(function(obj, index, array){
 					if(obj[0] == unit[0]) {
-						return robotTW2.services.$filter("i18n")(obj[1], robotTW2.services.$rootScope.loc.ale, "recon");
+						return robotTW2.services.$filter("i18n")(obj[1], $rootScope.loc.ale, "recon");
 					} else {
 						return
 					} 
@@ -75,25 +81,25 @@ define("robotTW2/services/ReconService", [
 
 				var span_unit = undefined;
 				switch (true) {
-				case unitText.includes(robotTW2.services.$filter("i18n")("snob", robotTW2.services.$rootScope.loc.ale, "recon")) :
+				case unitText.includes(robotTW2.services.$filter("i18n")("snob", $rootScope.loc.ale, "recon")) :
 					span_unit = "snob"
 						break;
-				case unitText.includes(robotTW2.services.$filter("i18n")("trebuchet", robotTW2.services.$rootScope.loc.ale, "recon")) :
+				case unitText.includes(robotTW2.services.$filter("i18n")("trebuchet", $rootScope.loc.ale, "recon")) :
 					span_unit = "trebuchet"
 						break;
-				case unitText.includes(robotTW2.services.$filter("i18n")("sword", robotTW2.services.$rootScope.loc.ale, "recon")) :
+				case unitText.includes(robotTW2.services.$filter("i18n")("sword", $rootScope.loc.ale, "recon")) :
 					span_unit = "sword"
 						break;
-				case unitText.includes(robotTW2.services.$filter("i18n")("ram", robotTW2.services.$rootScope.loc.ale, "recon")) :
+				case unitText.includes(robotTW2.services.$filter("i18n")("ram", $rootScope.loc.ale, "recon")) :
 					span_unit = "ram"
 						break;
-				case unitText.includes(robotTW2.services.$filter("i18n")("light_cavalry", robotTW2.services.$rootScope.loc.ale, "recon")) :
+				case unitText.includes(robotTW2.services.$filter("i18n")("light_cavalry", $rootScope.loc.ale, "recon")) :
 					span_unit = "light_cavalry"
 						break;
-				case unitText.includes(robotTW2.services.$filter("i18n")("heavy_cavalry", robotTW2.services.$rootScope.loc.ale, "recon")) :
+				case unitText.includes(robotTW2.services.$filter("i18n")("heavy_cavalry", $rootScope.loc.ale, "recon")) :
 					span_unit = "heavy_cavalry"
 						break;
-				case unitText.includes(robotTW2.services.$filter("i18n")("axe", robotTW2.services.$rootScope.loc.ale, "recon")) :
+				case unitText.includes(robotTW2.services.$filter("i18n")("axe", $rootScope.loc.ale, "recon")) :
 					if(cmdType == "attack"){
 						span_unit = "axe"
 					} else {
@@ -136,7 +142,7 @@ define("robotTW2/services/ReconService", [
 				OverviewController = robotTW2.loadController("OverviewController");
 
 				t++;
-				robotTW2.services.$timeout(function(){
+				$timeout(function(){
 
 					if (OverviewController){
 						var elem = undefined;
@@ -146,7 +152,7 @@ define("robotTW2/services/ReconService", [
 								var unitText = getAttackTypeAtackRecon(command, i);
 								if (unitText != undefined){
 									if(Object.keys(data_recon.rename).map(function(elem, index, array){
-										return unitText.includes(robotTW2.services.$filter("i18n")(elem, robotTW2.services.$rootScope.loc.ale, "recon"))
+										return unitText.includes(robotTW2.services.$filter("i18n")(elem, $rootScope.loc.ale, "recon"))
 									}).filter(f=>f!=undefined).length){
 										getrenameCmdAtackRecon(command, unitText);
 									}
@@ -168,13 +174,13 @@ define("robotTW2/services/ReconService", [
 
 							}
 							elem.addEventListener("mouseenter", function(a) {
-								robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
+								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
 							}),
 							elem.addEventListener("mouseleave", function() {
-								robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
+								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
 							})
 						}
-						if (!robotTW2.services.$rootScope.$$phase) robotTW2.services.$rootScope.$apply();
+						if (!$rootScope.$$phase) $rootScope.$apply();
 					}
 				}, 100 * t)
 			}
@@ -183,17 +189,17 @@ define("robotTW2/services/ReconService", [
 			if(isRunning) {return}
 			robotTW2.ready(function(){
 				isRunning = !0
-				robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
+				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 				setNewHandlersAtackRecon()
 			}, ["all_villages_ready"])
 		}
 		, pause = function (){
 			isPaused = !0
-			robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 		}
 		, stop = function (){
 			isRunning = !1
-			robotTW2.services.$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 			robotTW2.services.overviewService.formatCommand = robotTW2.services.overviewService.gameFormatCommand;
 		}
 		, init = function (){
@@ -218,5 +224,11 @@ define("robotTW2/services/ReconService", [
 			name			: "recon"
 		}
 
-	})()
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.providers,
+			robotTW2.services.modelDataService,
+			robotTW2.services.$timeout,
+			robotTW2.socketEmit
+	)
 })
