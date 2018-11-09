@@ -31,7 +31,6 @@ define("robotTW2/services/AttackService", [
 		}).sort((a, b) => {
 			return a[0] - b[0];
 		})
-		, villages = robotTW2.databases.data_villages.getVillages()
 		, calibrate_time = function(){
 			var duration = undefined
 			, sTime
@@ -40,8 +39,8 @@ define("robotTW2/services/AttackService", [
 			, listener_completed = undefined;
 
 			var list = [];
-			for (v in villages){
-				if (villages.hasOwnProperty(v)){
+			for (v in robotTW2.databases.data_villages.villages){
+				if (robotTW2.databases.data_villages.villages.hasOwnProperty(v)){
 					list.push(v)
 				}
 			};
