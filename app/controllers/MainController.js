@@ -36,10 +36,7 @@ define("robotTW2/controllers/MainController", [
 			}
 			$rootScope.data_main.setExtensions($scope.extensions);
 
-
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
+			if (!$rootScope.$$phase) $rootScope.$apply();
 
 		}
 
@@ -103,53 +100,7 @@ define("robotTW2/controllers/MainController", [
 
 		$rootScope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			update()
-			if (!$scope.$$phase) {
-				$scope.$apply();
-			}
 		})
-
-
-		/*
-		 * Deposit
-		 */
-//		$scope.data_deposit = data_deposit.getDeposit();
-//		$scope.interval_deposit = helper.readableMilliseconds(data_deposit.getTimeCicle())
-//		$scope.data_deposit.COMPLETED_AT ? $scope.deposit_completed_at = $scope.data_deposit.COMPLETED_AT : $scope.deposit_completed_at = 0;
-
-//		helper.timer.add(function(){
-//		if($scope.deposit_completed_at == 0) {return}
-//		$scope.interval_deposit =  helper.readableMilliseconds($scope.deposit_completed_at - helper.gameTime());
-//		});
-
-//		$scope.$watch("data_deposit.USE_REROLL", function(){
-//		data_deposit.setDeposit($scope.data_deposit)
-//		})
-
-//		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function() {
-//		$scope.interval_deposit = helper.readableMilliseconds(data_deposit.getTimeCicle())
-//		if (!$scope.$$phase) {
-//		$scope.$apply();
-//		}
-//		})
-
-
-		/*
-		 * Recon
-		 */
-
-//		$scope.getKey = function(k){
-//		return services.$filter("i18n")(k, $rootScope.loc.ale, "recon");
-//		}
-
-//		$scope.getClass = function(k){
-//		return "icon-20x20-unit-" + k;
-//		}
-
-//		$scope.data_recon = data_recon.getRecon();
-
-//		$scope.$watchCollection("data_recon.RENAME", function(){
-//		data_recon.setRecon($scope.data_recon)
-//		})
 
 		update()
 
