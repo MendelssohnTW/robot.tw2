@@ -61,9 +61,7 @@ define("robotTW2/controllers/AlertController", [
 			$scope.underattack = $scope.members.map(function(member){
 				return member.under_attack && $rootScope.data_alert.friends.some(s => s === member.name) ? member : undefined;
 			}).filter(f=>f!=undefined)
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
 		$scope.underattack = [];
@@ -92,14 +90,16 @@ define("robotTW2/controllers/AlertController", [
 		}
 
 		$scope.selectAll = function(){
+			var list = [];
 			$scope.members.forEach(function(member){
 				member.isFriend = true;
 				if(!$rootScope.data_alert.friends.find(f=>f==member.name)){
-					$rootScope.data_alert.friends.push(member.name)
+					list.push(member.name)
 				}
 			})
+			
+			$rootScope.data_alert.friends = $rootScope.data_alert.friends.concat(list);
 			upDate()
-			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
 		$scope.removeAll = function(){
@@ -108,7 +108,6 @@ define("robotTW2/controllers/AlertController", [
 			})
 			$rootScope.data_alert.friends = [];
 			upDate()
-			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
 		$scope.remove = function(name){
@@ -126,10 +125,6 @@ define("robotTW2/controllers/AlertController", [
 		}
 
 		$scope.interval_alert = helper.readableMilliseconds($rootScope.data_alert.interval)
-
-		if (!$rootScope.$$phase) {
-			$rootScope.$apply();
-		}
 
 		return $scope;
 	}
