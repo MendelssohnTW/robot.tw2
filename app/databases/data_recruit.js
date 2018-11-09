@@ -79,9 +79,9 @@ define("robotTW2/databases/data_recruit", [
 	
 	services.$rootScope.data_recruit = data_recruit;
 
-	services.$rootScope.$watchCollection("data_recruit", function(){
+	services.$rootScope.$watch("data_recruit", function(){
 		data_recruit.set()
-	})
+	}, true)
 
 	return data_recruit;
 })

@@ -51,9 +51,9 @@ define("robotTW2/databases/data_attack", [
 
 	services.$rootScope.data_attack = data_attack;
 
-	services.$rootScope.$watchCollection("data_attack", function(){
+	services.$rootScope.$watch("data_attack", function(){
 		data_attack.set()
-	})
+	}, true)
 
 	return data_attack;
 })

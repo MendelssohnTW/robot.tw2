@@ -102,8 +102,8 @@ define("robotTW2/databases/data_villages", [
 
 	services.$rootScope.data_villages = data_villages;
 
-	services.$rootScope.$watchCollection("data_villages", function(){
+	services.$rootScope.$watch("data_villages", function(){
 		data_villages.set()
-	})
+	}, true)
 	return data_villages;
 })

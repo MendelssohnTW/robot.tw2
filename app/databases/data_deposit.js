@@ -48,9 +48,9 @@ define("robotTW2/databases/data_deposit", [
 
 	services.$rootScope.data_deposit = data_deposit;
 
-	services.$rootScope.$watchCollection("data_deposit", function(){
+	services.$rootScope.$watch("data_deposit", function(){
 		data_deposit.set()
-	})
+	}, true)
 
 	return data_deposit;
 })

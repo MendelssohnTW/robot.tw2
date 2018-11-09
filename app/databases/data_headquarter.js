@@ -80,9 +80,9 @@ define("robotTW2/databases/data_headquarter", [
 	
 	services.$rootScope.data_headquarter = data_headquarter;
 
-	services.$rootScope.$watchCollection("data_headquarter", function(){
+	services.$rootScope.$watch("data_headquarter", function(){
 		data_headquarter.set()
-	})
+	}, true)
 
 	return data_headquarter;
 })

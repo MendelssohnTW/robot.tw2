@@ -70,9 +70,9 @@ define("robotTW2/databases/data_medic", [
 	
 	services.$rootScope.data_medic = data_medic;
 
-	services.$rootScope.$watchCollection("data_medic", function(){
+	services.$rootScope.$watch("data_medic", function(){
 		data_medic.set()
-	})
+	}, true)
 
 	return data_medic;
 })
