@@ -90,15 +90,13 @@ define("robotTW2/controllers/AlertController", [
 		}
 
 		$scope.selectAll = function(){
-			var list = [];
 			$scope.members.forEach(function(member){
 				member.isFriend = true;
 				if(!$rootScope.data_alert.friends.find(f=>f==member.name)){
-					list.push(member.name)
+					$rootScope.data_alert.friends.push(member.name)
 				}
 			})
 			
-			$rootScope.data_alert.friends = $rootScope.data_alert.friends.concat(list);
 			upDate()
 		}
 
@@ -117,7 +115,7 @@ define("robotTW2/controllers/AlertController", [
 
 		$scope.toggleValue = function(member){
 			if(member.isFriend){
-				$rootScope.data_alert.friends = $rootScope.data_alert.friends.concat(member.name)
+				$rootScope.data_alert.friends.push(member.name)
 				
 			} else {
 				$rootScope.data_alert.friends = $rootScope.data_alert.friends.filter(f => f !== member.name);
