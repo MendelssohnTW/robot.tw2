@@ -117,7 +117,8 @@ define("robotTW2/controllers/AlertController", [
 
 		$scope.toggleValue = function(member){
 			if(member.isFriend){
-				$rootScope.data_alert.friends = $rootScope.data_alert.friends.concat(member.name)
+				$rootScope.data_alert.friends.push(member.name)
+				$rootScope.$digest();
 			} else {
 				$rootScope.data_alert.friends = $rootScope.data_alert.friends.filter(f => f !== member.name);
 			}
