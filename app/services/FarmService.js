@@ -380,7 +380,11 @@ define("robotTW2/services/FarmService", [
 			}
 //			$rootScope.data_farm.addBB(listaBarbaras);
 //			d_farm = $rootScope.data_farm.getFarm()
-			if(countCommands[village_id].length < $rootScope.data_farm.max_commands_farm 
+			var comandos_length = Object.keys(comandos).map(function(key, index, array){
+				return comandos[key].village_id == village_id
+			}).filter(f => f != false).length;
+			
+			if((countCommands[village_id].length + comandos_length) < $rootScope.data_farm.max_commands_farm 
 					&& $rootScope.data_villages.villages[village_id].farm_activate
 					&& units_analyze(preset_units, aldeia_units)) {
 				var comando = {
