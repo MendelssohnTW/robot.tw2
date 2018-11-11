@@ -586,9 +586,9 @@ define("robotTW2/services/FarmService", [
 		robotTW2.$rootScope,
 		robotTW2.services.socketService,
 		robotTW2.providers,
-		robotTW2.modelDataService,
-		robotTW2.$timeout,
-		robotTW2.$filter,
+		robotTW2.services.modelDataService,
+		robotTW2.services.$timeout,
+		robotTW2.services.$filter,
 		robotTW2.conf,
 		robotTW2.requestFn,
 		robotTW2.loadScript
