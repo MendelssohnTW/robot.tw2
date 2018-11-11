@@ -352,7 +352,10 @@ define("robotTW2/services/FarmService", [
 			var comandos = []
 			var rallyPointSpeedBonusVsBarbarians = modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians();
 			function n() {
-				if(!list_assigned_villages.length) {callback(comandos)}
+				if(!list_assigned_villages.length) {
+					callback(comandos)
+					return	
+				}
 				var preset = list_assigned_villages.shift();
 				if(!preset) {
 					n();
