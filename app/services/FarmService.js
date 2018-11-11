@@ -419,14 +419,14 @@ define("robotTW2/services/FarmService", [
 								{
 									village_id 				: village,
 									preset_id 				: key,
-									units					: $rootScope.data_farm.preset[key].units,
-									min_journey_distance 	: $rootScope.data_farm.preset[key].min_journey_distance,
-									quadrants 				: $rootScope.data_farm.preset[key].quadrants,
-									min_points_farm 		: $rootScope.data_farm.preset[key].min_points_farm,
-									max_points_farm 		: $rootScope.data_farm.preset[key].max_points_farm,
-									max_commands_farm 		: $rootScope.data_farm.preset[key].max_commands_farm,
-									journey_distance 		: $rootScope.data_farm.preset[key].journey_distance,
-									journey_time 			: $rootScope.data_farm.preset[key].journey_time
+									units					: $rootScope.data_farm.presets[key].units,
+									min_journey_distance 	: $rootScope.data_farm.presets[key].min_journey_distance,
+									quadrants 				: $rootScope.data_farm.presets[key].quadrants,
+									min_points_farm 		: $rootScope.data_farm.presets[key].min_points_farm,
+									max_points_farm 		: $rootScope.data_farm.presets[key].max_points_farm,
+									max_commands_farm 		: $rootScope.data_farm.presets[key].max_commands_farm,
+									journey_distance 		: $rootScope.data_farm.presets[key].journey_distance,
+									journey_time 			: $rootScope.data_farm.presets[key].journey_time
 								}
 						);
 					});
