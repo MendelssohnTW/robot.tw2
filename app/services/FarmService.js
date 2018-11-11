@@ -443,7 +443,7 @@ define("robotTW2/services/FarmService", [
 							commands_for_send.forEach(function(comando){
 								var id_command = Object.keys(comando)[0];
 								var params = Object.values(comando)[0];
-								commandQueue.trigger(id_command, params)
+								commandQueue.trigger(id_command)
 							})
 							commandQueue.unbindAll($rootScope.data_farm)
 							return
