@@ -267,9 +267,8 @@ define("robotTW2/services/FarmService", [
 					if(preset_units[unit_preset] > 0) {
 						if(unit_preset != "snob") {
 							if (verif_units(unit_preset, aldeia_units)) {
-								aldeia_units[unit_preset].available >= preset_units[unit_preset] ? list.push(unit_preset): null;
 								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
-									return {unit_preset : preset_units[unit_preset]}
+									return {[unit_preset] : preset_units[unit_preset]}
 								} else {
 									return 0
 								}
