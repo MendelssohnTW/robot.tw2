@@ -439,7 +439,7 @@ define("robotTW2/services/FarmService", [
 					var P = function () {
 						if (!isRunning || (!comandos.length && !commands_for_send.length)) {
 							return
-						} else if (commands_for_send.length){
+						} else if (!comandos.length && commands_for_send.length){
 							commands_for_send.forEach(function(comando){
 								var id_command = Object.keys(comando)[0];
 								var params = Object.values(comando)[0];
