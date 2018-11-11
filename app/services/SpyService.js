@@ -144,7 +144,7 @@ define("robotTW2/services/SpyService", [
 
 	})(
 			robotTW2.services.$rootScope,
-			robotTW2.socketService,
+			robotTW2.services.socketService,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout

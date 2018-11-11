@@ -418,7 +418,7 @@ define("robotTW2/services/AttackService", [
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
 			robotTW2.commandQueue,
-			robotTW2.socketService,
+			robotTW2.services.socketService,
 			robotTW2.ready
 	)
 })
