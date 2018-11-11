@@ -354,6 +354,10 @@ define("robotTW2/services/FarmService", [
 			function n() {
 				if(!list_assigned_villages.length) {callback(comandos)}
 				var preset = list_assigned_villages.shift();
+				if(!preset) {
+					n();
+					return;
+				}
 				var village_id = preset.village_id;
 				var village = modelDataService.getSelectedCharacter().getVillage(village_id);
 				if(!village) {
