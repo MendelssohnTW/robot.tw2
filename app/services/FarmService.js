@@ -1,7 +1,9 @@
 define("robotTW2/services/FarmService", [
-	"robotTW2"
+	"robotTW2",
+	"robotTW2/conf",
 	], function(
-			robotTW2
+			robotTW2,
+			conf
 	){
 	return (function FarmService(
 			$rootScope,
@@ -10,7 +12,6 @@ define("robotTW2/services/FarmService", [
 			modelDataService,
 			$timeout,
 			$filter,
-			conf,
 			requestFn,
 			loadScript
 	) {
@@ -589,7 +590,6 @@ define("robotTW2/services/FarmService", [
 		robotTW2.services.modelDataService,
 		robotTW2.services.$timeout,
 		robotTW2.services.$filter,
-		robotTW2.conf,
 		robotTW2.requestFn,
 		robotTW2.loadScript
 )
