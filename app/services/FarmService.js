@@ -177,7 +177,7 @@ define("robotTW2/services/FarmService", [
 			, distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
 
 			var existLista = lt_b.find(f => f === vill.id) ? false : true;
-			var existException = $rootScope.$rootScope.data_farm.list_exceptions.find(f => f === id) ? false : true;
+			var existException = $rootScope.data_farm.list_exceptions.find(f => f === id) ? false : true;
 			var rangePoints = vill.points >= preset.min_points_farm && vill.points <= preset.max_points_farm;
 			var rangeDist = distancia >= preset.min_journey_distance && preset.quadrants.includes(quadrant); 
 			if(existException && rangePoints && rangeDist && existLista) {
