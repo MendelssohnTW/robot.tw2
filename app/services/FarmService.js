@@ -445,6 +445,7 @@ define("robotTW2/services/FarmService", [
 								var params = Object.values(comando)[0];
 								commandQueue.trigger(id_command, params)
 							})
+							return
 						}
 						var preset = comandos.shift();
 						exec(preset , function (listaGrid) {
