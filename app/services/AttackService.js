@@ -11,12 +11,14 @@ define("robotTW2/services/AttackService", [
 	){
 	return (function AttackService(
 			$rootScope,
+			databases,
 			providers,
 			modelDataService,
 			$timeout,
 			commandQueue,
 			socketService,
-			ready
+			ready,
+			loadScript
 	) {
 
 		var isRunning = !1
@@ -44,8 +46,8 @@ define("robotTW2/services/AttackService", [
 			, listener_completed = undefined;
 
 			var list = [];
-			for (v in robotTW2.databases.data_villages.villages){
-				if (robotTW2.databases.data_villages.villages.hasOwnProperty(v)){
+			for (v in databases.data_villages.villages){
+				if (databases.data_villages.villages.hasOwnProperty(v)){
 					list.push(v)
 				}
 			};
@@ -364,7 +366,7 @@ define("robotTW2/services/AttackService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
-				robotTW2.loadScript("/controllers/AttackCompletionController.js");
+				loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
 //				interval_reload = $timeout(function (){
 //					stop();
@@ -414,11 +416,13 @@ define("robotTW2/services/AttackService", [
 		}
 	})(
 			robotTW2.services.$rootScope,
+			robotTW2.databases,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
 			robotTW2.commandQueue,
 			robotTW2.services.socketService,
-			robotTW2.ready
+			robotTW2.ready,
+			robotTW2.loadScript
 	)
 })

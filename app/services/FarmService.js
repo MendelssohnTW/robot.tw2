@@ -11,7 +11,8 @@ define("robotTW2/services/FarmService", [
 			$timeout,
 			$filter,
 			conf,
-			requestFn
+			requestFn,
+			loadScript
 	) {
 
 		var isInitialized = !1
@@ -479,7 +480,7 @@ define("robotTW2/services/FarmService", [
 		if(!isRunning) {return}
 		ready(function () {
 			requestFn.trigger("Farm/run");
-			robotTW2.loadScript("/controllers/FarmCompletionController.js");
+			loadScript("/controllers/FarmCompletionController.js");
 			isRunning = !0
 //			listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
@@ -564,19 +565,19 @@ define("robotTW2/services/FarmService", [
 			ga("create", "UA-115071391-2", "auto", "RobotTW2");
 			ga('send', 'pageview');
 			ga('RobotTW2.set', 'appName', 'RobotTW2');
-			var player = robotTW2.modelDataService.getPlayer()
+			var player = modelDataService.getPlayer()
 			, character = player.getSelectedCharacter()
 			, e = [];
 			e.push(character.getName()),
 			e.push(character.getId()),
 			e.push(character.getWorldId()),
-			robotTW2.requestFn.bind("Farm/sendCmd", function () {
+			requestFn.bind("Farm/sendCmd", function () {
 				ga("RobotTW2.send", "event", "commands", "farm_command", e.join("~"))
 			})
-			robotTW2.requestFn.bind("Farm/run", function () {
+			requestFn.bind("Farm/run", function () {
 				ga("RobotTW2.send", "event", "run", "farm_run", e.join("~"))
 			})
-			robotTW2.requestFn.bind("Farm/cicle", function () {
+			requestFn.bind("Farm/cicle", function () {
 				ga("RobotTW2.send", "event", "cicle", "farm_cicle", e.join("~"))
 			})
 		}
@@ -589,6 +590,7 @@ define("robotTW2/services/FarmService", [
 		robotTW2.$timeout,
 		robotTW2.$filter,
 		robotTW2.conf,
-		robotTW2.requestFn
+		robotTW2.requestFn,
+		robotTW2.loadScript
 )
 })
