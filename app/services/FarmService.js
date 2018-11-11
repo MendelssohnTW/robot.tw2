@@ -320,7 +320,7 @@ define("robotTW2/services/FarmService", [
 				}
 				params["seq"] = req;
 
-				commandQueue.bind(id_command, sendFarm, $rootScope.data_farm, params)
+				commandQueue.bind(id_command, sendFarm, $rootScope.data_farm, [params])
 				commands_for_send.push({[id_command] : params})
 
 				var unit = 0;
