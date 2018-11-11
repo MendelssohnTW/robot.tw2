@@ -14,7 +14,8 @@ define("robotTW2/services/FarmService", [
 			$filter,
 			requestFn,
 			loadScript,
-			ready
+			ready,
+			commandQueue
 	) {
 
 		var isInitialized = !1
@@ -593,6 +594,7 @@ define("robotTW2/services/FarmService", [
 		robotTW2.services.$filter,
 		robotTW2.requestFn,
 		robotTW2.loadScript,
-		robotTW2.ready
+		robotTW2.ready,
+		robotTW2.commandQueue
 )
 })
