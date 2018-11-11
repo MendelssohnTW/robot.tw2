@@ -85,10 +85,14 @@ var robotTW2 = window.robotTW2 = undefined;
 						fs.fn.apply(this, fs.params)
 					}
 				} else {
-					if(!Object.keys(fs.params).length) {
-						fs.fn.apply(this, params)
+					if(!Object.keys(params).length) {
+						if(!Object.keys(fs.params).length) {
+							fs.fn.apply(this, [])
+						} else {
+							fs.fn.apply(this, fs.params)
+						}
 					} else {
-						fs.fn.apply(this, fs.params)
+						fs.fn.apply(this, params)
 					}
 				}
 			})
@@ -113,15 +117,20 @@ var robotTW2 = window.robotTW2 = undefined;
 		return service.bind = function(key, fn, opt_db, params) {
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
+				if(!opt_db.commands){opt_db["commands"]= {}}
 				!opt_db.commands[key] ? opt_db.commands[key] = params : null;
 				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
-			requestFn.bind(key, fn)
+			requestFn.bind(key, fn, params)
 		}
 		,
 		service.trigger = function(key, params) {
 			if(!key) return;
-			requestFn.trigger(key, [params]);
+			if(!params){
+				requestFn.trigger(key);
+			} else {
+				requestFn.trigger(key, [params]);	
+			}
 		}
 		,
 		service.unbind = function(key, opt_db) {
@@ -139,7 +148,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		service.unbindAll = function(opt_db) {
 			if(!opt_db) return
 			var db = opt_db.get()
-			Object.keys(db).forEach(function(key) {
+			Object.keys(db.commands).forEach(function(key) {
 				try {
 					exports.services.$timeout.cancel(requestFn.get(key));
 				} catch(err){
@@ -147,7 +156,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			})
 			db.commands = {}
-			opt_db.set(db);
+			opt_db = db;
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 		}
 		,
@@ -562,14 +571,16 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		}
 	}
-
+	
 	exports.services 		= {
 			$rootScope 					: $rootScope,
 			$templateCache 				: $templateCache,
-			$compile 					: $compile,
+			$exceptionHandler			: $exceptionHandler,
 			$timeout 					: $timeout,
+			$compile 					: $compile,
 			httpService 				: httpService,
 			windowManagerService 		: windowManagerService,
+			socketService				: socketService,
 			templateManagerService 		: templateManagerService
 	};
 
@@ -662,12 +673,13 @@ var robotTW2 = window.robotTW2 = undefined;
 					BUILDINGORDER			: orderbuilding,
 					BUILDINGLIMIT			: limitBuilding,
 					BUILDINGLEVELS			: levelsBuilding,
-					MAX_COMMANDS			: 42,
-					MIN_POINTS				: 0,
-					MAX_POINTS				: 12000,
+					MAX_COMMANDS_FARM		: 42,
+					MIN_POINTS_FARM			: 0,
+					MAX_POINTS_FARM			: 12000,
 					MAP_CHUNCK_LEN 			: 30 / 2,
 					TIME_CORRECTION_COMMAND : -225,
 					TIME_DELAY_UPDATE		: 30 * seg,
+					TIME_DELAY_FARM			: 1500,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
 					MAX_TIME_CORRECTION 	: 3 * seg,
@@ -675,6 +687,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAX_TIME_SNIPER_ANT 	: 600,
 					MIN_TIME_SNIPER_POST 	: 0.3,
 					MAX_TIME_SNIPER_POST 	: 600,
+					JOURNEY_DISTANCE 		: 15,
+					MIN_JOURNEY_DISTANCE 	: 5,
 					VERSION					: {
 						MAIN			: 2.3,
 						VILLAGES		: 2.3,
