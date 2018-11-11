@@ -7,7 +7,14 @@ define("robotTW2/services/HeadquarterService", [
 			helper,
 			conf
 	){
-	return (function HeadquarterService() {
+	return (function HeadquarterService(
+			$rootScope,
+			socketService,
+			providers,
+			modelDataService,
+			$timeout,
+			ready
+	) {
 
 		var o
 		, interval_builder
@@ -273,7 +280,7 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, start = function(){
 			if(isRunning){return}
-			robotTW2.ready(function(){
+			socketService.emit(function(){
 				var d = data_headquarter.get();
 				d.interval = conf.INTERVAL.HEADQUARTER;
 				data_headquarter.set(d);
@@ -319,5 +326,12 @@ define("robotTW2/services/HeadquarterService", [
 			name			: "headquarter"
 		}
 
-	})()
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.socketService,
+			robotTW2.providers,
+			robotTW2.services.modelDataService,
+			robotTW2.services.$timeout,
+			robotTW2.ready
+	)
 })

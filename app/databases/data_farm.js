@@ -1,136 +1,165 @@
 define("robotTW2/databases/data_farm", [
+	"robotTW2",
 	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
+	"robotTW2/providers",
 	"robotTW2/notify",
 	"helper/time"
 	], function(
+			robotTW2,
 			database,
 			conf,
 			services,
+			providers,
 			notify,
 			helper
 	) {
 
-	var db_farm = {};
-	db_farm.set = function(db_farm){
-		if(db_farm){
-			database.set("data_farm", db_farm, true)
-		} else {
-			database.set("data_farm", data_farm, true)
-		}
+	var data_farm = database.get("data_farm")
+	, db_farm = {};
+
+	db_farm.set = function(){
+		database.set("data_farm", data_farm, true)
 	}
 	db_farm.get = function(){
 		return database.get("data_farm");
 	}
-	db_farm.getPreset = function(id){
-		return database.get("data_farm").presets[id];
+//	db_farm.getPreset = function(id){
+//		return database.get("data_farm").presets[id];
+//	}
+//	db_farm.getPresets = function(){
+//		return database.get("data_farm").presets;
+//	}
+//	db_farm.setPresets = function(presets){
+//		if(!presets){return}
+//		data_farm.presets = presets;
+//		db_farm.save();
+//	}
+//	db_farm.getJourneyTime = function(){
+//		return database.get("data_farm").journey_time;
+//	}
+//	db_farm.setJourneyTime = function(journey_time){
+//		if(!journey_time){return}
+//		data_farm.journey_time = journey_time;
+//		db_farm.save();
+//	}
+//	db_farm.getJourneyDistance = function(){
+//		return database.get("data_farm").journey_distance;
+//	}
+//	db_farm.getMinJourneyDistance = function(){
+//		return database.get("data_farm").min_journey_distance;
+//	}
+//	db_farm.getFarmTime = function(){
+//	return database.get("data_farm").farm_time;
+//	}
+//	db_farm.setFarmTime = function(farm_time){
+//		if(!farm_time){return}
+//		data_farm.farm_time = farm_time;
+//		db_farm.save();
+//	}
+//	db_farm.getFarmTimeStop = function(){
+//	return database.get("data_farm").farm_time_stop;
+//	}
+//	db_farm.setFarmTimeStop = function(farm_time_stop){
+//		if(!farm_time_stop){return}
+//		data_farm.farm_time_stop = farm_time_stop;
+//		db_farm.save();
+//	}
+//	db_farm.getFarmTimeStart = function(){
+//		return database.get("data_farm").farm_time_start;
+//	}
+//	db_farm.setFarmTimeStart = function(farm_time_start){
+//		if(!farm_time_start){return}
+//		data_farm.farm_time_start = farm_time_start;
+//		db_farm.save();
+//	}
+//	db_farm.getMaxPointsFarm = function(){
+//		return database.get("data_farm").max_points_farm;
+//	}
+//	db_farm.getMinPointsFarm = function(){
+//		return database.get("data_farm").min_points_farm;
+//	}
+//	db_farm.getMaxCommandsFarm = function(){
+//		return database.get("data_farm").max_commands_farm;
+//	}
+//
+//	db_farm.getExceptions = function(){
+//		return database.get("data_farm").list_exceptions
+//	}
+//
+//	db_farm.setExceptions = function(exceptions){
+//		if(exceptions){
+//			angular.merge(data_farm.list_exceptions, exceptions)
+//			db_farm.save();
+//		}
+//	}
+//
+//	db_farm.getTimeComplete = function(){
+//		return database.get("data_farm").completed_at;
+//	}
+//
+//	db_farm.setTimeComplete = function(time){
+//		if(!time){return}
+//		data_farm.completed_at = time
+//		db_farm.save();
+//	}
+//
+//	db_farm.getAutoInitialize = function(){
+//		return database.get("data_farm").auto_initialize;
+//	}
+//
+//	db_farm.getInitialized = function(){
+//		return database.get("data_farm").initialized;
+//	}
+//
+//	db_farm.save = function(){
+//		database.set("data_farm", data_farm, true)
+//	}
+	var getT = function () {
+		return {
+			journey_time			: data_farm.journey_time,
+			journey_distance		: data_farm.journey_distance,
+			min_journey_distance	: data_farm.min_journey_distance,
+			max_points_farm			: data_farm.max_points_farm,
+			min_points_farm			: data_farm.min_points_farm,
+			max_commands_farm		: data_farm.max_commands_farm,
+			farm_time				: data_farm.farm_time,
+			quadrants				: [1, 2, 3, 4]
+		};
 	}
-	db_farm.getPresets = function(){
-		return database.get("data_farm").presets;
-	}
-	db_farm.setPresets = function(presets){
-		if(!presets){return}
-		data_farm.presets = presets;
-		db_farm.save();
-	}
-	db_farm.getJourneyTime = function(){
-		return database.get("data_farm").journey_time;
-	}
-	db_farm.setJourneyTime = function(journey_time){
-		if(!journey_time){return}
-		data_farm.journey_time = journey_time;
-		db_farm.save();
-	}
-	db_farm.getJourneyDistance = function(){
-		return database.get("data_farm").journey_distance;
-	}
-	db_farm.getMinJourneyDistance = function(){
-		return database.get("data_farm").min_journey_distance;
-	}
-	db_farm.getFarmTime = function(){
-		return database.get("data_farm").farm_time;
-	}
-	db_farm.setFarmTime = function(farm_time){
-		if(!farm_time){return}
-		data_farm.farm_time = farm_time;
-		db_farm.save();
-	}
-	db_farm.getFarmTimeStop = function(){
-		return database.get("data_farm").farm_time_stop;
-	}
-	db_farm.setFarmTimeStop = function(farm_time_stop){
-		if(!farm_time_stop){return}
-		data_farm.farm_time_stop = farm_time_stop;
-		db_farm.save();
-	}
-	db_farm.getFarmTimeStart = function(){
-		return database.get("data_farm").farm_time_start;
-	}
-	db_farm.setFarmTimeStart = function(farm_time_start){
-		if(!farm_time_start){return}
-		data_farm.farm_time_start = farm_time_start;
-		db_farm.save();
-	}
-	db_farm.getMaxPointsFarm = function(){
-		return database.get("data_farm").max_points_farm;
-	}
-	db_farm.getMinPointsFarm = function(){
-		return database.get("data_farm").min_points_farm;
-	}
-	db_farm.getMaxCommandsFarm = function(){
-		return database.get("data_farm").max_commands_farm;
-	}
+	, getPst = function () {
+		var presets_d = {}
+		services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function (data_result) {
+			if(!data_result) {return}
+			data_result.presets.forEach(function (p) {
+				presets_d[p.id] = angular.copy(p);
+				angular.extend(presets_d[p.id], getT())
+			});
 
-	db_farm.addException = function(exception){
-		if(exception){
-			!data_farm.list_exceptions.find(f => f == exception) ? data_farm.list_exceptions.push(exception) : null;
-			db_farm.save();
-		}
-	}
+			if(Object.keys(data_farm.presets).length == 0) {
+				angular.merge(data_farm.presets, presets_d)
+			} else {
+				Object.keys(data_farm.presets).map(function (id) {
+					if(!Object.keys(presets_d).find(f => f == id)) {
+						delete data_farm.presets[i]
+					} else {
+						data_farm.presets[i] = angular.extend({}, presets_d[i])
+					}
+				})
 
-	db_farm.removeException = function(exception){
-		if(exception){
-			data_farm.list_exceptions = data_farm.list_exceptions.filter(f => f != exception)
-			db_farm.save();
-		}
-	}
+				Object.keys(presets_d).map(function (id) {
+					if(!Object.keys(data_farm.presets).find(f => f == id)) {
+						data_farm.presets[i] = angular.extend({}, presets_d[i])
+						data_farm.presets[i] = angular.extend({}, getT())
+					}
+				})
 
-	db_farm.getExceptions = function(){
-		return database.get("data_farm").list_exceptions
-	}
+			}
+		})
 
-	db_farm.setExceptions = function(exceptions){
-		if(exceptions){
-			angular.merge(data_farm.list_exceptions, exceptions)
-			db_farm.save();
-		}
 	}
-
-	db_farm.getTimeComplete = function(){
-		return database.get("data_farm").completed_at;
-	}
-
-	db_farm.setTimeComplete = function(time){
-		if(!time){return}
-		data_farm.completed_at = time
-		db_farm.save();
-	}
-
-	db_farm.getAutoInitialize = function(){
-		return database.get("data_farm").auto_initialize;
-	}
-
-	db_farm.getInitialized = function(){
-		return database.get("data_farm").initialized;
-	}
-
-	db_farm.save = function(){
-		database.set("data_farm", data_farm, true)
-	}
-
-	var data_farm = database.get("data_farm");
-	var dataNew = {
+	, dataNew = {
 			auto_initialize			: false, 
 			initialized				: false, 
 			activated				: false,
@@ -150,7 +179,6 @@ define("robotTW2/databases/data_farm", [
 			name					: "data_farm"
 	}
 
-
 	if(!data_farm){
 		data_farm = dataNew
 		database.set("data_farm", data_farm, true)
@@ -165,8 +193,20 @@ define("robotTW2/databases/data_farm", [
 			database.set("data_farm", data_farm, true)		
 		}
 	}
+	
+	getPst()
+	
+	$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, getPst)
+	$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, getPst)
+	$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, getPst)
 
 	Object.setPrototypeOf(data_farm, db_farm);
+
+	services.$rootScope.data_farm = data_farm;
+
+	services.$rootScope.$watch("data_farm", function(){
+		data_farm.set()
+	}, true)
 
 	return data_farm;
 })

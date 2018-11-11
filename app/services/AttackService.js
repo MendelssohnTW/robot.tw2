@@ -15,7 +15,8 @@ define("robotTW2/services/AttackService", [
 			modelDataService,
 			$timeout,
 			commandQueue,
-			socketEmit
+			socketService,
+			ready
 	) {
 
 		var isRunning = !1
@@ -52,7 +53,7 @@ define("robotTW2/services/AttackService", [
 			var nx = function (){
 				if(list.length){
 					function getVills(village, callbackVill){				
-						socketEmit(providers.routeProvider.MAP_GETVILLAGES,{x:xT, y:yT, width: dist, height: dist}, function(data){
+						socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:xT, y:yT, width: dist, height: dist}, function(data){
 							if(!data){return}
 							if (data.villages != undefined && data.villages.length > 0){
 								var listaVil = angular.copy(data.villages);
@@ -167,7 +168,7 @@ define("robotTW2/services/AttackService", [
 										$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 									}
 
-									socketEmit(providers.routeProvider.COMMAND_CANCEL, {
+									socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 										command_id: data.command_id
 									})
 									listener_completed();
@@ -175,7 +176,7 @@ define("robotTW2/services/AttackService", [
 								}
 							})
 							gTime = helper.gameTime();
-							socketEmit(providers.routeProvider.SEND_CUSTOM_ARMY, {
+							socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 								start_village: village.getId(),
 								target_village: villageV.getId(),
 								type: "support",
@@ -281,7 +282,7 @@ define("robotTW2/services/AttackService", [
 						return;
 					}
 
-					socketEmit(
+					socketService.emit(
 							providers.routeProvider.SEND_CUSTOM_ARMY, {
 								start_village: params.start_village,
 								target_village: params.target_village,
@@ -362,7 +363,7 @@ define("robotTW2/services/AttackService", [
 		}
 		, start = function(){
 			if(isRunning){return}
-			robotTW2.ready(function(){
+			ready(function(){
 				robotTW2.loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
 //				interval_reload = $timeout(function (){
@@ -417,6 +418,7 @@ define("robotTW2/services/AttackService", [
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
 			robotTW2.commandQueue,
-			robotTW2.socketEmit
+			robotTW2.socketService,
+			robotTW2.ready
 	)
 })

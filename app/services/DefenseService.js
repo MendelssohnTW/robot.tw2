@@ -9,7 +9,14 @@ define("robotTW2/services/DefenseService", [
 			convert_readable_for_ms,
 			readableSeconds
 	){
-	return (function DefenseService() {
+	return (function DefenseService(
+			$rootScope,
+			providers,
+			$timeout,
+			commandQueue,
+			socketService,
+			ready
+	) {
 
 		var isRunning = !1
 		, isPaused = !1
@@ -29,7 +36,7 @@ define("robotTW2/services/DefenseService", [
 			var lista_aldeiasY = [];
 			var lista_aldeias = [];
 			var lista_barbaras = [];
-			return robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
+			return socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
 				lista_barbaras = [];
 				lista_aldeias = [];
 				lista_aldeiasY = [];
@@ -691,7 +698,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, start = function(){
 			if(isRunning){return}
-			robotTW2.ready(function(){
+			ready(function(){
 				reformatCommand();
 //				w.reload();
 				listener_lost = $rootScope.$on(eventTypeProvider.VILLAGE_LOST, updateVillages);
@@ -736,5 +743,12 @@ define("robotTW2/services/DefenseService", [
 			version			: "1.0.0",
 			name			: "defense",
 		}
-	})()
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.providers,
+			robotTW2.services.$timeout,
+			robotTW2.commandQueue,
+			robotTW2.socketEmit,
+			robotTW2.ready
+	)
 })

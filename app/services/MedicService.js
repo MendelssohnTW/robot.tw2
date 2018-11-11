@@ -3,7 +3,14 @@ define("robotTW2/services/MedicService", [
 	], function(
 			robotTW2
 	){
-	return (function MedicService() {
+	return (function MedicService(
+			$rootScope,
+			socketService,
+			providers,
+			modelDataService,
+			$timeout,
+			ready
+	) {
 
 		var init = function(){
 			
@@ -28,5 +35,12 @@ define("robotTW2/services/MedicService", [
 			name			: "medic",
 		}
 
-	})()
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.socketService,
+			robotTW2.providers,
+			robotTW2.services.modelDataService,
+			robotTW2.services.$timeout,
+			robotTW2.ready
+	)
 })

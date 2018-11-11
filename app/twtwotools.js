@@ -28,10 +28,12 @@ var robotTW2 = window.robotTW2 = undefined;
 	var host = "https://mendelssohntw.github.io/robot.tw2/app";
 	var $rootScope				= injector.get('$rootScope');
 	var $templateCache 			= injector.get('$templateCache');
+	var $exceptionHandler 		= injector.get('$exceptionHandler');
 	var $timeout	 			= injector.get('$timeout');
 	var $compile 				= injector.get('$compile');
 	var httpService 			= injector.get("httpService");
 	var windowManagerService 	= injector.get("windowManagerService");
+	var socketService		 	= injector.get("socketService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var CONTENT_CLASS		= 'win-content';
 	var BLOCKED_CLASS		= 'blocked';
@@ -77,13 +79,13 @@ var robotTW2 = window.robotTW2 = undefined;
 		service.trigger = function(key, params) {
 			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
 				if(!params) {
-					if(!fs.params) {
+					if(!Object.keys(fs.params).length) {
 						fs.fn.apply(this, [])
 					} else {
 						fs.fn.apply(this, fs.params)
 					}
 				} else {
-					if(!fs.params) {
+					if(!Object.keys(fs.params).length) {
 						fs.fn.apply(this, params)
 					} else {
 						fs.fn.apply(this, fs.params)
@@ -106,15 +108,13 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		service
 	})()
-	, commandQueueAttack = (function (){
+	, commandQueue = (function (){
 		var service = {};
-		return service.bind = function(key, fn, opt_db) {
+		return service.bind = function(key, fn, opt_db, params) {
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
-				var db = opt_db.get()
-				!db.commands[key] ? db.commands[key] = params : null;
-				opt_db.set(db);
-				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_COMMANDS)
+				!opt_db.commands[key] ? opt_db.commands[key] = params : null;
+				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
 			requestFn.bind(key, fn)
 		}
@@ -296,35 +296,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			obj_keys[key]()
 		})
 	}
-	, socketEmit = function(){
-		var loading_timeout;
-		require(["conf/conf"], function(conf){
-			loading_timeout = conf.LOADING_TIMEOUT
-		})
-
-		var timeouts = {}
-		, createTimeoutErrorCaptureFunction = function (id, route, data, emitCallback) {
-			var dt = {
-					id : id,	
-					route : route,
-					data : data
-			}
-			return emitCallback(dt)
+	, id = 0
+	, getID = function(opt){
+		id++
+		if(opt && typeof(opt) == "string" && opt != "string"){
+			return id.toString() + opt;
+		} else if(opt == "string"){
+			return id.toString();
 		}
-
-		exports.services.$rootScope.$on(exports.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, function($event, id, route, data, opt_callback, opt_callback_timeout) {
-			timeouts[id] = window.setTimeout(function(){createTimeoutErrorCaptureFunction(id, route, data, opt_callback_timeout)}, loading_timeout);
-		});
-
-		exports.services.$rootScope.$on(exports.providers.eventTypeProvider.SOCKET_RECEPT_COMMAND, function($event, id) {
-			window.clearTimeout(timeouts[id])
-			delete timeouts[id]
-		});
-
-		return function(id, route, data, opt_callback, opt_callback_timeout){
-			exports.services.$rootScope.$broadcast(exports.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, id, route, data, opt_callback, opt_callback_timeout);
-			exports.services.socketService.emit(route, data, opt_callback)
-		}
+		return id;
 	}
 	, build = function(params){
 		return new builderWindow(params)
@@ -332,6 +312,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, builderWindow = function (params){
 		this.included_controller 	= params.included_controller;
 		this.controller 			= params.controller;
+		this.get_son	 			= params.get_son;
 		this.provider_listener 		= params.provider_listener;
 		this.scopeLang 				= params.scopeLang;
 		this.url	 				= params.url;
@@ -396,9 +377,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			load(self.templateName, opt_onSucess, opt_onError)
 		})
 		.then(function(data){
-			var pai = $('[ng-controller=' + self.included_controller + ']');
-			var filho = pai.children("div").children(".box-paper").children(".scroll-wrap"); 
-
+//			var pai = $('[ng-controller=' + self.included_controller + ']');
+//			var filho = pai.children("div").children(".box-paper").children(".scroll-wrap"); 
+			var filho = self.get_son();
 			var templateHTML = angular.element(data)
 			var compiledTemplate = $compile(templateHTML);
 
@@ -516,6 +497,16 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 	}
+	, my_createTimeoutErrorCaptureFunction = socketService.createTimeoutErrorCaptureFunction; 
+	
+	socketService.createTimeoutErrorCaptureFunction = function createTimeoutErrorCaptureFunction(route, data, emitCallback) {
+		return function() {
+			my_createTimeoutErrorCaptureFunction(route, data, emitCallback)
+			$exceptionHandler(new Error('RobotTW2 timeout: ' + route.type), null, {
+				'route': route.type
+			});
+		};
+	}
 
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
@@ -596,8 +587,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.loadController		= loadController;
 	exports.createScopeLang 	= createScopeLang;
 	exports.requestFn 			= requestFn;
-	exports.commandQueueAttack 	= commandQueueAttack;
-	exports.socketEmit 			= socketEmit;
+	exports.commandQueue 		= commandQueue;
 
 	(function ($rootScope){
 		requestFile($rootScope.loc.ale);
@@ -678,7 +668,13 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAP_CHUNCK_LEN 			: 30 / 2,
 					TIME_CORRECTION_COMMAND : -225,
 					TIME_DELAY_UPDATE		: 30 * seg,
+					TIME_SNIPER_ANT 		: 30000,
+					TIME_SNIPER_POST 		: 3000,
 					MAX_TIME_CORRECTION 	: 3 * seg,
+					MIN_TIME_SNIPER_ANT 	: 5,
+					MAX_TIME_SNIPER_ANT 	: 600,
+					MIN_TIME_SNIPER_POST 	: 0.3,
+					MAX_TIME_SNIPER_POST 	: 600,
 					VERSION					: {
 						MAIN			: 2.3,
 						VILLAGES		: 2.3,
@@ -704,11 +700,24 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC		: h,
 						SPY			: 30 * min
 					},
+					DBS : [
+						"alert",
+						"attack",
+						"defense",
+						"deposit",
+						"farm",
+						"headquarter",
+						"medic",
+						"recon",
+						"recruit",
+						"spy"
+						]
+					,
 					HOTKEY					: {
-						ALERT		 	: "ctrl+alt+w",
+						ALERT		 	: "ctrl+alt+l",
 						ATTACK		 	: "ctrl+alt+a",
 						DEFENSE		 	: "ctrl+alt+d",
-						DEPOSIT		 	: "",
+						DEPOSIT		 	: "ctrl+alt+t",
 						FARM		 	: "ctrl+alt+f",
 						HEADQUARTER 	: "ctrl+alt+h",
 						MAIN 			: "ctrl+alt+p",
@@ -742,7 +751,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "modelDataService");
-			robotTW2.register("services", "socketService");
 			robotTW2.register("services", "premiumActionService");
 			robotTW2.register("services", "villageService");
 			robotTW2.register("services", "buildingService");
@@ -780,42 +788,140 @@ var robotTW2 = window.robotTW2 = undefined;
 			return robotTW2.providers;
 		}))
 
-
-
 		var $rootScope = robotTW2.services.$rootScope;
 
-		define("robotTW2/socketEmit", [
-			"conf/conf"
-			], function(
-					conf
-			){
-			var loading_timeout = conf.LOADING_TIMEOUT
+//		define("robotTW2/socketEmit", [
+//		"conf/conf"
+//		], function(
+//		conf
+//		){
+//		var loading_timeout = conf.LOADING_TIMEOUT
 
-			var timeouts = {}
-			, createTimeoutErrorCaptureFunction = function (id, route, data, emitCallback) {
-				var dt = {
-						id : id,	
-						route : route,
-						data : data
+//		var timeouts = {}
+//		, createTimeoutErrorCaptureFunction = function (id, route, data, emitCallback) {
+//		var dt = {
+//		id : id,	
+//		route : route,
+//		data : data
+//		}
+//		return emitCallback(dt)
+//		}
+
+//		$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, function($event, id, route, data, opt_callback, opt_callback_timeout) {
+//		timeouts[id] = window.setTimeout(function(){createTimeoutErrorCaptureFunction(id, route, data, opt_callback_timeout)}, loading_timeout);
+//		});
+
+//		$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_RECEPT_COMMAND, function($event, id) {
+//		window.clearTimeout(timeouts[id])
+//		delete timeouts[id]
+//		});
+
+//		return function(id, route, data, opt_callback, opt_callback_timeout){
+//		$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, id, route, data, opt_callback, opt_callback_timeout);
+//		robotTW2.services.socketService.emit(route, data, opt_callback)
+//		}
+//		})
+//		,
+		define("robotTW2/zerofill", function(){
+			return function (n, opt_len) {
+				opt_len = opt_len || 2;
+				n = n.toString();
+				while (n.length < opt_len) {
+					n = '0' + n;
 				}
-				return emitCallback(dt)
-			}
-
-			$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, function($event, id, route, data, opt_callback, opt_callback_timeout) {
-				timeouts[id] = window.setTimeout(function(){createTimeoutErrorCaptureFunction(id, route, data, opt_callback_timeout)}, loading_timeout);
-			});
-
-			$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_RECEPT_COMMAND, function($event, id) {
-				window.clearTimeout(timeouts[id])
-				delete timeouts[id]
-			});
-
-			return function(id, route, data, opt_callback, opt_callback_timeout){
-				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, id, route, data, opt_callback, opt_callback_timeout);
-				robotTW2.services.socketService.emit(route, data, opt_callback)
+				return n;
 			}
 		})
+		,
+		define("robotTW2/convert_readable_for_ms", function(){
+			return function(data){
+				var array = data.split(":");
+				var hora = array[0];
+				var minutos = array[1];
+				var segundos = array[2];
+				return (parseInt(hora) * 60 * 60 + parseInt(minutos) * 60 + parseInt(segundos)) * 1000;
+			}
+		})
+		,
+		define("robotTW2/readableSeconds", [
+			"robotTW2/zerofill"
+			], function(
+					zerofill
+			){
+			return function(seconds, opt){
+				var days, hours, minutes, m = 60, timeString, h = m * m, d = 24 * h, prefix = "";
+				seconds = Math.abs(seconds);
 
+				days = seconds / d;
+				if (days > 1 && opt) {
+					days |= 0;
+					seconds = seconds - days * d;
+				} else {
+					days = null;
+				}
+
+				hours = (seconds / h) | 0;
+				minutes = ((seconds - (hours * h)) / m) | 0;
+				seconds = (seconds % m) | 0;
+
+				if (days) {
+					prefix = days.toString(10) + ':';
+				}
+
+				return prefix + hours + ':' + zerofill(minutes) + ':' + zerofill(seconds);
+			}
+		})
+		,
+		define("robotTW2/readableMilliseconds", [
+			"robotTW2/zerofill"
+			], function(
+					zerofill
+			){
+			return function(ms, opt){
+				var days, hours, minutes, m = 60, timeString, h = m * m, d = 24 * h, prefix = "";
+				seconds = Math.abs(ms / 1000);
+
+				days = seconds / d;
+				if (days > 1 && opt) {
+					days |= 0;
+					seconds = seconds - days * d;
+				} else {
+					days = null;
+				}
+
+				hours = (seconds / h) | 0;
+				minutes = ((seconds - (hours * h)) / m) | 0;
+				seconds = (seconds % m) | 0;
+
+				if (days) {
+					prefix = days.toString(10) + ':';
+				}
+
+				return prefix + hours + ':' + zerofill(minutes) + ':' + zerofill(seconds);
+			}
+		})
+		,
+		define("robotTW2/unreadableMilliseconds", [
+			], function(
+			){
+			return function return_Miliseconds(tempo){
+				var days, hours, minutes, s = 1000, m = 60, timeString, h = m * m , d = 24 * h;
+				if (tempo != undefined && tempo != 0){
+					if (tempo.length <= 5){
+						tempo = tempo + ":00"; 
+					}
+					var ar_tempo = tempo.split(":").reverse();
+					var days = parseInt(ar_tempo[3]) || 0;
+					var hours = parseInt(ar_tempo[2]) || 0;
+					var minutes = parseInt(ar_tempo[1]) || 0;
+					var seconds = parseInt(ar_tempo[0]) || 0;
+					return ((days * d + hours * h + minutes * m  + seconds) * s);
+				} else {
+					return 0;
+				}
+			}
+		})
+		,
 		define("robotTW2/unitTypesRenameRecon", [], function() {
 			var l = {}
 			robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
@@ -825,7 +931,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			});
 			return l
 		})
-
+		,
 		define("robotTW2/notify", [
 			'helper/firework'
 			], function(
@@ -849,7 +955,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						return;
 					}
 
-					$rootScope.$broadcast(providers.eventTypeProvider.NOTIFICATION_SHOW);
+					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.NOTIFICATION_SHOW);
 
 					$scope.content			= message;
 					$scope.type				= "achievement";
@@ -904,12 +1010,85 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/AttackController.js");
 //					robotTW2.loadScript("/controllers/HeadquarterController.js");
 //					robotTW2.loadScript("/controllers/DefenseController.js");
-//					robotTW2.loadScript("/controllers/ReconController.js");
-//					robotTW2.loadScript("/controllers/AlertController.js");
-//					robotTW2.loadScript("/controllers/SpyController.js");
-//					robotTW2.loadScript("/controllers/DepositController.js");
+					robotTW2.loadScript("/controllers/ReconController.js");
+					robotTW2.loadScript("/controllers/AlertController.js");
+					robotTW2.loadScript("/controllers/SpyController.js");
+					robotTW2.loadScript("/controllers/DepositController.js");
+//					robotTW2.loadScript("/controllers/RecruitController.js");
 //					robotTW2.loadScript("/controllers/MedicController.js");
 					break
+				}
+				case robotTW2.controllers.AlertController : {
+					var params = {
+							controller		: robotTW2.controllers.AlertController,
+							scopeLang 		: robotTW2.createScopeLang("alert"),
+							hotkey 			: conf.HOTKEY.ALERT,
+							templateName 	: "alert",
+							classes 		: "",
+							url		 		: "/controllers/AlertController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
+				}
+				case robotTW2.controllers.FarmController : {
+					var params = {
+							controller		: robotTW2.controllers.FarmController,
+							scopeLang 		: robotTW2.createScopeLang("farm"),
+							hotkey 			: conf.HOTKEY.FARM,
+							templateName 	: "farm",
+							classes 		: "",
+							url		 		: "/controllers/FarmController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
+				}
+				case robotTW2.controllers.RecruitController : {
+					var params = {
+							controller		: robotTW2.controllers.RecruitController,
+							scopeLang 		: robotTW2.createScopeLang("recruit"),
+							hotkey 			: conf.HOTKEY.RECRUIT,
+							templateName 	: "recruit",
+							classes 		: "",
+							url		 		: "/controllers/RecruitController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
+				}
+				case robotTW2.controllers.HeadquarterController : {
+					var params = {
+							controller		: robotTW2.controllers.HeadquarterController,
+							scopeLang 		: robotTW2.createScopeLang("headquarter"),
+							hotkey 			: conf.HOTKEY.HEADQUARTER,
+							templateName 	: "headquarter",
+							classes 		: "",
+							url		 		: "/controllers/HeadquarterController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
+				}
+				case robotTW2.controllers.MedicController : {
+					var params = {
+							controller		: robotTW2.controllers.MedicController,
+							scopeLang 		: robotTW2.createScopeLang("medic"),
+							hotkey 			: conf.HOTKEY.MEDIC,
+							templateName 	: "medic",
+							classes 		: "",
+							url		 		: "/controllers/MedicController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
+				}
+				case robotTW2.controllers.SpyController : {
+					var params = {
+							controller		: robotTW2.controllers.SpyController,
+							scopeLang 		: robotTW2.createScopeLang("spy"),
+							hotkey 			: conf.HOTKEY.SPY,
+							templateName 	: "spy",
+							classes 		: "",
+							url		 		: "/controllers/SpyController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
 				}
 				case robotTW2.controllers.FarmController : {
 					var params = {
@@ -919,6 +1098,31 @@ var robotTW2 = window.robotTW2 = undefined;
 							templateName 	: "farm",
 							classes 		: "fullsize",
 							url		 		: "/controllers/FarmController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
+				}
+				case robotTW2.controllers.DefenseController : {
+					var params = {
+							controller		: robotTW2.controllers.DefenseController,
+							scopeLang 		: robotTW2.createScopeLang("defense"),
+							hotkey 			: conf.HOTKEY.DEFENSE,
+							templateName 	: "defense",
+							classes 		: "fullsize",
+							url		 		: "/controllers/DefenseController.js",
+							style 			: null
+					}		
+					robotTW2.build(params)
+					break
+				}
+				case robotTW2.controllers.ReconController : {
+					var params = {
+							controller		: robotTW2.controllers.ReconController,
+							scopeLang 		: robotTW2.createScopeLang("recon"),
+							hotkey 			: conf.HOTKEY.RECON,
+							templateName 	: "recon",
+							classes 		: "fullsize",
+							url		 		: "/controllers/ReconController.js",
 							style 			: null
 					}		
 					robotTW2.build(params)
@@ -938,13 +1142,39 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 				case robotTW2.controllers.AttackCompletionController : {
-					var params = {
+					var get_father = function(){
+						return $('[ng-controller=ModalCustomArmyController]');
+					}
+					, get_son = function(){
+						return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+					}
+					,params = {
 							included_controller		: "ModalCustomArmyController",
 							controller				: robotTW2.controllers.AttackCompletionController,
+							get_son					: get_son,
 							provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
 							scopeLang 				: robotTW2.createScopeLang("attack"),
 							templateName 			: "attackcompletion",
 							url		 				: "/controllers/AttackCompletionController.js"
+					}	
+					robotTW2.build(params)
+					break
+				}
+				case robotTW2.controllers.FarmCompletionController : {
+					var get_father = function(){
+						return $('[ng-controller=BattleReportController]');
+					}
+					, get_son = function(){
+						return $("section.report").find(".tbl-result")						
+					}
+					, params = {
+							included_controller		: "BattleReportController",
+							controller				: robotTW2.controllers.FarmCompletionController,
+							get_son					: get_son,
+							provider_listener		: robotTW2.providers.eventTypeProvider.REPORT_VIEW,
+							scopeLang 				: robotTW2.createScopeLang("farm"),
+							templateName 			: "farmcompletion",
+							url		 				: "/controllers/FarmCompletionController.js"
 					}	
 					robotTW2.build(params)
 					break
@@ -1012,14 +1242,14 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/databases/data_villages.js")
 					robotTW2.loadScript("/databases/data_farm.js");
 					robotTW2.loadScript("/databases/data_attack.js");
-					robotTW2.loadScript("/databases/data_defense.js");
+//					robotTW2.loadScript("/databases/data_defense.js");
 					robotTW2.loadScript("/databases/data_deposit.js");
-					robotTW2.loadScript("/databases/data_headquarter.js");
+//					robotTW2.loadScript("/databases/data_headquarter.js");
 					robotTW2.loadScript("/databases/data_recon.js");
 					robotTW2.loadScript("/databases/data_alert.js");
-					robotTW2.loadScript("/databases/data_recruit.js");
+//					robotTW2.loadScript("/databases/data_recruit.js");
 					robotTW2.loadScript("/databases/data_spy.js");
-					robotTW2.loadScript("/databases/data_medic.js");
+//					robotTW2.loadScript("/databases/data_medic.js");
 					robotTW2.loadScript("/databases/data_main.js");
 					break
 				}

@@ -5,10 +5,11 @@ define("robotTW2/services/AlertService", [
 	){
 	return (function AlertService(
 			$rootScope,
-			socketEmit,
+			socketService,
 			providers,
 			modelDataService,
-			$timeout
+			$timeout,
+			ready
 	) {
 		var isInitialized = !1
 		, isRunning = !1
@@ -20,7 +21,7 @@ define("robotTW2/services/AlertService", [
 		}
 		, verify_alert = function(){
 			try {
-				socketEmit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
+				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
 					$timeout(_ => {
 						var friends = $rootScope.data_alert.friends;
 						if (o.members != undefined){
@@ -50,7 +51,7 @@ define("robotTW2/services/AlertService", [
 		}
 		, start = function (){
 			if(isRunning){return}
-			robotTW2.ready(function(){
+			ready(function(){
 				isRunning = !0;
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ALERT"})
 				verify_alert()
@@ -79,9 +80,10 @@ define("robotTW2/services/AlertService", [
 		}
 	})(
 			robotTW2.services.$rootScope,
-			robotTW2.socketEmit,
+			robotTW2.services.socketService,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
-			robotTW2.services.$timeout
+			robotTW2.services.$timeout,
+			robotTW2.ready
 	)
 })

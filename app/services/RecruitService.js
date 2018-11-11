@@ -7,7 +7,14 @@ define("robotTW2/services/RecruitService", [
 			helper,
 			conf
 	){
-	return (function RecruitService() {
+	return (function RecruitService(
+			$rootScope,
+			socketService,
+			providers,
+			modelDataService,
+			$timeout,
+			ready
+	) {
 
 		var isInitialized = !1
 		, isRunning = !1
@@ -410,5 +417,12 @@ define("robotTW2/services/RecruitService", [
 			name			: "recruit"
 		}
 
-	})()
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.socketService,
+			robotTW2.providers,
+			robotTW2.services.modelDataService,
+			robotTW2.services.$timeout,
+			robotTW2.ready
+	)
 })

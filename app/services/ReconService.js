@@ -10,7 +10,8 @@ define("robotTW2/services/ReconService", [
 			providers,
 			modelDataService,
 			$timeout,
-			socketEmit
+			socketService,
+			ready
 	) {
 
 		var isInitialized = !1
@@ -19,7 +20,7 @@ define("robotTW2/services/ReconService", [
 		, data_recon = robotTW2.databases.data_recon
 		, getrenameCmdAtackRecon = function (command, unitText) {
 			if(command.command_name != unitText){
-				socketEmit(providers.routeProvider.COMMAND_RENAME, {
+				socketService.emit(providers.routeProvider.COMMAND_RENAME, {
 					command_id: command.command_id,
 					name: unitText
 				});
@@ -187,7 +188,7 @@ define("robotTW2/services/ReconService", [
 		}
 		, start = function (){
 			if(isRunning) {return}
-			robotTW2.ready(function(){
+			socketService.emit(function(){
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 				setNewHandlersAtackRecon()
@@ -229,6 +230,7 @@ define("robotTW2/services/ReconService", [
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
-			robotTW2.socketEmit
+			robotTW2.socketService,
+			robotTW2.ready
 	)
 })
