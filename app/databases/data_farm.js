@@ -83,6 +83,7 @@ define("robotTW2/databases/data_farm", [
 			max_points_farm			: conf.MAX_POINTS,
 			min_points_farm			: conf.MIN_POINTS,
 			max_commands_farm		: conf.MAX_COMMANDS,
+			time_delay_farm			: conf.TIME_DELAY_FARM,
 			list_exceptions			: [],
 			presets					: {},
 			commands				: {},

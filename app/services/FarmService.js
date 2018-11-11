@@ -308,7 +308,7 @@ define("robotTW2/services/FarmService", [
 							rdy = 0;
 						}
 
-					}, 1000 + (Math.random() * 1000 / 2) * params.seq);
+					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * params.seq);
 				}
 
 				var params = {}
