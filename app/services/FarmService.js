@@ -312,13 +312,13 @@ define("robotTW2/services/FarmService", [
 				}
 
 				var params = {}
-				params[data] = {
+				params["data"] = {
 						start_village: preset.village_id,
 						target_village: barbara,
 						army_preset_id: preset.preset_id,
 						type: "attack"
 				}
-				params[seq] = req;
+				params["seq"] = req;
 
 				commandQueue.bind(id_command, sendFarm, $rootScope.data_farm, params)
 				commands_for_send.push({id_command : params})
