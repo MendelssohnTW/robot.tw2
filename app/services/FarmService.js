@@ -478,7 +478,7 @@ define("robotTW2/services/FarmService", [
 		}, tempo);
 	}
 	, start = function () {
-		if(!isRunning) {return}
+		if(isRunning) {return}
 		ready(function () {
 			requestFn.trigger("Farm/run");
 			loadScript("/controllers/FarmCompletionController.js");
