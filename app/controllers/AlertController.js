@@ -1,12 +1,10 @@
 define("robotTW2/controllers/AlertController", [
 	"robotTW2",
-	"robotTW2/databases",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
 	], function(
 			robotTW2,
-			databases,
 			services,
 			providers,
 			helper

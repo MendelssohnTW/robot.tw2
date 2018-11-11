@@ -95,7 +95,7 @@
 											</colgroup>
 
 											<tbody>
-												<tr ng-repeat="village in villages">
+												<tr ng-repeat="village in data_farm.villages">
 													<td class="cell-right"><span>{{village.data.name
 															+ " - (" + village.data.x + "|" + village.data.x + ")"}}</span></td>
 													<td class="cell-space">
@@ -144,7 +144,7 @@
 									<table
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
-											<tr ng-repeat="preset in presets">
+											<tr ng-repeat="preset in data_farm.presets">
 												<td ng-class="{'selected': presetSelected == preset}"
 													ng-click="setPreset(preset)"><span>{{preset.name}}</span>
 												<canvas class="with-margin" icon-generator="preset.icon"
@@ -217,7 +217,6 @@
 				ng-click="pause_farm()"><span>{{PAUSE}}</span></a></li>
 			<li><a id="button-resume"
 				class="btn-border btn-orange btn-resume" ng-click="resume_farm()"><span>{{RESUME}}</span></a></li>
-			<li><a class="btn-orange btn-border save" ng-click="save_farm()">{{SAVE}}</a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>

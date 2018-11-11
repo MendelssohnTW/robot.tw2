@@ -1,12 +1,10 @@
 define("robotTW2/controllers/MainController", [
 	"robotTW2",
-	"robotTW2/databases",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf"
 	], function(
 			robotTW2,
-			databases,
 			services,
 			providers,
 			conf
@@ -87,7 +85,7 @@ define("robotTW2/controllers/MainController", [
 				if(!toggle){
 					update();
 				} else {
-					robotTW2.services.$timeout(function(){update()}, 3000)
+					services.$timeout(function(){update()}, 3000)
 				}
 			}
 		})
