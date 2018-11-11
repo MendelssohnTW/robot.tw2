@@ -51,16 +51,16 @@ define("robotTW2/databases/data_farm", [
 			} else {
 				Object.keys(data_farm.presets).map(function (id) {
 					if(!Object.keys(presets_d).find(f => f == id)) {
-						delete data_farm.presets[i]
+						delete data_farm.presets[id]
 					} else {
-						data_farm.presets[i] = angular.extend({}, presets_d[i])
+						data_farm.presets[id] = angular.extend({}, presets_d[id])
 					}
 				})
 
 				Object.keys(presets_d).map(function (id) {
 					if(!Object.keys(data_farm.presets).find(f => f == id)) {
-						data_farm.presets[i] = angular.extend({}, presets_d[i])
-						data_farm.presets[i] = angular.extend({}, getT())
+						data_farm.presets[id] = angular.extend({}, presets_d[id])
+						data_farm.presets[id] = angular.extend({}, getT())
 					}
 				})
 
@@ -85,6 +85,7 @@ define("robotTW2/databases/data_farm", [
 			max_commands_farm		: conf.MAX_COMMANDS,
 			list_exceptions			: [],
 			presets					: {},
+			commands				: {},
 			name					: "data_farm"
 	}
 
