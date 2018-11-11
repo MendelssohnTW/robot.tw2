@@ -287,67 +287,62 @@ define("robotTW2/services/FarmService", [
 			var preset_units = preset.preset_units;
 			lt_bb.splice($rootScope.data_farm.max_commands_farm - countCommands[preset.village_id].length);
 			var t_obj = units_analyze(preset_units, aldeia_units);
-			var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]] / Object.values(t_obj)[0]);
+			var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
 			lt_bb.splice(t_slice);
 			countCommands[preset.village_id] = countCommands[preset.village_id].concat(lt_bb)
 			lt_bb.forEach(function (barbara) {
-				if(units_analyze(preset_units, aldeia_units)) {
-					req++;
-					var id_command = req.toString() + "id" + preset.village_id;
+				req++;
+				var id_command = req.toString() + "id" + preset.village_id;
 
-					var sendFarm = function(params){
-						return $timeout(function () {
-							rdy++;
-							requestFn.trigger("Farm/sendCmd")
-							socketService.emit(providers.routeProvider.SEND_PRESET, params.data);
-							if(req == rdy) {
-								commandQueue.unbindAll($rootScope.data_farm)
-//								Object.keys(s).map(function (key) {
-//								$timeout.cancel(s[key]);
-//								});
-//								s = {};
-								req = 0;
-								rdy = 0;
-							}
+				var sendFarm = function(params){
+					return $timeout(function () {
+						rdy++;
+						requestFn.trigger("Farm/sendCmd")
+						socketService.emit(providers.routeProvider.SEND_PRESET, params.data);
+						if(req == rdy) {
+							commandQueue.unbindAll($rootScope.data_farm)
+//							Object.keys(s).map(function (key) {
+//							$timeout.cancel(s[key]);
+//							});
+//							s = {};
+							req = 0;
+							rdy = 0;
+						}
 
-						}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * params.seq);
-					}
+					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * params.seq);
+				}
 
-					var params = {}
-					params["data"] = {
-							start_village: preset.village_id,
-							target_village: barbara,
-							army_preset_id: preset.preset_id,
-							type: "attack"
-					}
-					params["seq"] = req;
+				var params = {}
+				params["data"] = {
+						start_village: preset.village_id,
+						target_village: barbara,
+						army_preset_id: preset.preset_id,
+						type: "attack"
+				}
+				params["seq"] = req;
 
-					commandQueue.bind(id_command, sendFarm, $rootScope.data_farm, [params])
-					commands_for_send.push({[id_command] : params})
+				commandQueue.bind(id_command, sendFarm, $rootScope.data_farm, [params])
+				commands_for_send.push({[id_command] : params})
 
-					var unit = 0;
-					var rest = [];
-					for (unit_preset in preset_units) {
-						if (preset_units.hasOwnProperty(unit_preset)) {
-							if(preset_units[unit_preset] > 0) {
-								if (verif_units(unit_preset, aldeia_units)) {
-									if(aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
-										unit = aldeia_units[unit_preset].available - preset_units[unit_preset];
-										rest = aldeia_units;
-										rest[unit_preset].available = unit;
-									} else {
-										rest = aldeia_units;
-										rest[unit_preset].available = 0;
-									}
+				var unit = 0;
+				var rest = [];
+				for (unit_preset in preset_units) {
+					if (preset_units.hasOwnProperty(unit_preset)) {
+						if(preset_units[unit_preset] > 0) {
+							if (verif_units(unit_preset, aldeia_units)) {
+								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
+									unit = aldeia_units[unit_preset].available - preset_units[unit_preset];
+									rest = aldeia_units;
+									rest[unit_preset].available = unit;
+								} else {
+									rest = aldeia_units;
+									rest[unit_preset].available = 0;
 								}
 							}
 						}
 					}
-					aldeia_units = rest;
-				} else {
-					callback()
-					return
 				}
+				aldeia_units = rest;
 
 			});
 
