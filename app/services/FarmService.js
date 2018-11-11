@@ -586,7 +586,7 @@ define("robotTW2/services/FarmService", [
 		}
 	}
 })(
-		robotTW2.$rootScope,
+		robotTW2.services.$rootScope,
 		robotTW2.services.socketService,
 		robotTW2.providers,
 		robotTW2.services.modelDataService,
