@@ -66,10 +66,8 @@ define("robotTW2/controllers/MainController", [
 						if(typeof(fn.start) == "function"){fn.start()}
 					}
 				} else {
-					if(fn.isRunning()){
-						$scope.extensions[ext.name].status = $scope.stopped
-						fn.stop();
-					}
+					$scope.extensions[ext.name].status = $scope.stopped
+					fn.stop();
 				}
 			}
 

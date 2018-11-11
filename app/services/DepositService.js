@@ -111,7 +111,7 @@ define("robotTW2/services/DepositService", [
 		}
 		, start = function (){
 			if(isRunning){return}
-			socketService.emit(function(){
+			ready(function(){
 				$rootScope.data_deposit.interval = conf.INTERVAL.DEPOSIT;
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
