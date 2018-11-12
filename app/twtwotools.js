@@ -325,9 +325,9 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.provider_listener 		= params.provider_listener;
 		this.scopeLang 				= params.scopeLang;
 		this.url	 				= params.url;
-//		this.style 					= params.style;
+		this.style 					= params.style;
 		this.hotkey 				= params.hotkey;
-//		this.classes 				= params.classes;
+		this.classes 				= params.classes;
 		this.templateName 			= params.templateName;
 		params.hotkey ? this.addhotkey() : null;
 		params.provider_listener ? this.addlistener() : null;
@@ -386,8 +386,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			load(self.templateName, opt_onSucess, opt_onError)
 		})
 		.then(function(data){
-//			var pai = $('[ng-controller=' + self.included_controller + ']');
-//			var filho = pai.children("div").children(".box-paper").children(".scroll-wrap"); 
 			var filho = self.get_son();
 			var templateHTML = angular.element(data)
 			var compiledTemplate = $compile(templateHTML);
@@ -1050,7 +1048,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							scopeLang 		: robotTW2.createScopeLang("farm"),
 							hotkey 			: conf.HOTKEY.FARM,
 							templateName 	: "farm",
-							classes 		: "",
+							classes 		: "fullsize",
 							url		 		: "/controllers/FarmController.js",
 							style 			: null
 					}		
@@ -1062,7 +1060,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							scopeLang 		: robotTW2.createScopeLang("recruit"),
 							hotkey 			: conf.HOTKEY.RECRUIT,
 							templateName 	: "recruit",
-							classes 		: "",
+							classes 		: "fullsize",
 							url		 		: "/controllers/RecruitController.js",
 							style 			: null
 					}		
@@ -1074,7 +1072,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							scopeLang 		: robotTW2.createScopeLang("headquarter"),
 							hotkey 			: conf.HOTKEY.HEADQUARTER,
 							templateName 	: "headquarter",
-							classes 		: "",
+							classes 		: "fullsize",
 							url		 		: "/controllers/HeadquarterController.js",
 							style 			: null
 					}		
@@ -1135,7 +1133,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							scopeLang 		: robotTW2.createScopeLang("recon"),
 							hotkey 			: conf.HOTKEY.RECON,
 							templateName 	: "recon",
-							classes 		: "fullsize",
+							classes 		: "",
 							url		 		: "/controllers/ReconController.js",
 							style 			: null
 					}		

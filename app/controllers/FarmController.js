@@ -2,10 +2,12 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2",
 	"helper/time",
 	"robotTW2/services",
+	"robotTW2/providers",
 	], function(
 			robotTW2,
 			helper,
-			services
+			services,
+			providers
 	){
 	return function FarmController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
