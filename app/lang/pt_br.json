@@ -123,6 +123,7 @@
 		"text_cmd_max": "Limite de comandos",
 		"text_min_point": "Pontuação mínima",
 		"text_max_point": "Pontuação máxima",
+		"text_check": "Adicionar aldeia na lista de excessão de farm",
 		"exceptions": "Lista de excessão",
 		"villages_selections": "Ativação / desativação"
 	},
