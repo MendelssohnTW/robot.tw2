@@ -368,11 +368,8 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	builderWindow.prototype.addWin = function() {
 		var self = this;
-		var scope = exports.loadController(self.included_controller);
-		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
 		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
 			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-
 		}): null;
 
 		new Promise(function(res, rej){
@@ -387,6 +384,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			load(self.templateName, opt_onSucess, opt_onError)
 		})
 		.then(function(data){
+			var scope = exports.loadController(self.included_controller) || $rootScope.$new();
+			self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
+
 			var filho = self.get_son();
 			var templateHTML = angular.element(data)
 			var compiledTemplate = $compile(templateHTML);
@@ -801,13 +801,13 @@ var robotTW2 = window.robotTW2 = undefined;
 			return robotTW2.providers;
 		}))
 
-		var $rootScope = robotTW2.ser
+		var $rootScope = robotTW2.services.$rootScope;
 
-		var new_reportService = robotTW2.services.reportService.getReport; 
+		var new_extendScopeWithReportData = robotTW2.services.reportService.extendScopeWithReportData; 
 
-		robotTW2.services.reportService.getReport = function (id, opt_callback) {
+		robotTW2.services.reportService.extendScopeWithReportData = function ($scope, report) {
 			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.OPEN_REPORT);
-			new_reportService(id, opt_callback)
+			new_extendScopeWithReportData($scope, report)
 		}
 
 //		define("robotTW2/socketEmit", [
@@ -1168,7 +1168,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					, get_son = function(){
 						return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
 					}
-					,params = {
+					, params = {
 							included_controller		: "ModalCustomArmyController",
 							controller				: robotTW2.controllers.AttackCompletionController,
 							get_son					: get_son,
@@ -1185,7 +1185,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						return $('[ng-controller=BattleReportController]');
 					}
 					, get_son = function(){
-						return $("section.report").find(".tbl-result")						
+						return get_father().find(".tbl-result")			
 					}
 					, params = {
 							included_controller		: "BattleReportController",
