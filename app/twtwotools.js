@@ -35,6 +35,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var windowManagerService 	= injector.get("windowManagerService");
 	var socketService		 	= injector.get("socketService");
 	var templateManagerService 	= injector.get("templateManagerService");
+	var reportService 			= injector.get("reportService");
 	var CONTENT_CLASS		= 'win-content';
 	var BLOCKED_CLASS		= 'blocked';
 	var scripts_loaded = [];
@@ -505,14 +506,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 	}
 	, my_createTimeoutErrorCaptureFunction = socketService.createTimeoutErrorCaptureFunction; 
-	
-	socketService.createTimeoutErrorCaptureFunction = function createTimeoutErrorCaptureFunction(route, data, emitCallback) {
-		return function() {
-			my_createTimeoutErrorCaptureFunction(route, data, emitCallback)
-			$exceptionHandler(new Error('RobotTW2 timeout: ' + route.type), null, {
-				'route': route.type
-			});
-		};
+
+	socketService.createTimeoutErrorCaptureFunction = function (route, data, emitCallback) {
+		my_createTimeoutErrorCaptureFunction(route, data, emitCallback)
+		$exceptionHandler(new Error('RobotTW2 timeout: ' + route.type), null, {
+			'route': route.type
+		});
 	}
 
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
@@ -569,7 +568,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		}
 	}
-	
+
 	exports.services 		= {
 			$rootScope 					: $rootScope,
 			$templateCache 				: $templateCache,
@@ -579,7 +578,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			httpService 				: httpService,
 			windowManagerService 		: windowManagerService,
 			socketService				: socketService,
-			templateManagerService 		: templateManagerService
+			templateManagerService 		: templateManagerService,
+			reportService 				: reportService
 	};
 
 	exports.providers 			= {};
@@ -795,12 +795,20 @@ var robotTW2 = window.robotTW2 = undefined;
 				"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
 				"CMD_SENT"						: "Internal/robotTW2/cmd_sent",
 				"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
-				"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command"
+				"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command",
+				"OPEN_REPORT"					: "Internal/robotTW2/open_report"
 			});
 			return robotTW2.providers;
 		}))
 
-		var $rootScope = robotTW2.services.$rootScope;
+		var $rootScope = robotTW2.ser
+
+		var new_reportService = robotTW2.services.reportService.getReport; 
+
+		robotTW2.services.reportService.getReport = function (id, opt_callback) {
+			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.OPEN_REPORT);
+			new_reportService(id, opt_callback)
+		}
 
 //		define("robotTW2/socketEmit", [
 //		"conf/conf"
@@ -1183,7 +1191,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							included_controller		: "BattleReportController",
 							controller				: robotTW2.controllers.FarmCompletionController,
 							get_son					: get_son,
-							provider_listener		: robotTW2.providers.eventTypeProvider.REPORT_VIEW,
+							provider_listener		: robotTW2.providers.eventTypeProvider.OPEN_REPORT,
 							scopeLang 				: robotTW2.createScopeLang("farm"),
 							templateName 			: "farmcompletion",
 							url		 				: "/controllers/FarmCompletionController.js"
