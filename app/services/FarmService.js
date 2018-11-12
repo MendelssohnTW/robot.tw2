@@ -270,16 +270,16 @@ define("robotTW2/services/FarmService", [
 								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
 									return {[unit_preset] : preset_units[unit_preset]}
 								} else {
-									return 0
+									return false
 								}
 							}
 						} else {
-							return 0;
+							return false
 						}
 					}
 				}
 			}
-			return 0
+			return false
 		}
 		, sendCmd = function (preset, lt_bb, callback) {
 			var village = modelDataService.getSelectedCharacter().getVillage(preset.village_id);
@@ -287,8 +287,10 @@ define("robotTW2/services/FarmService", [
 			var preset_units = preset.preset_units;
 			lt_bb.splice($rootScope.data_farm.max_commands_farm - countCommands[preset.village_id].length);
 			var t_obj = units_analyze(preset_units, aldeia_units);
-			var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
-			lt_bb.splice(t_slice);
+			if(t_obj){
+				var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
+				lt_bb.splice(t_slice);
+			}
 			countCommands[preset.village_id] = countCommands[preset.village_id].concat(lt_bb)
 			lt_bb.forEach(function (barbara) {
 				req++;
