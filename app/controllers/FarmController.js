@@ -1,19 +1,21 @@
 define("robotTW2/controllers/FarmController", [
-	"robotTW2",
 	"helper/time",
 	"robotTW2/services",
 	"robotTW2/providers",
 	], function(
-			robotTW2,
 			helper,
 			services,
 			providers
 	){
 	return function FarmController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+		$scope.START = services.$filter("i18n")("START", $rootScope.loc.ale);
+		$scope.STOP = services.$filter("i18n")("STOP", $rootScope.loc.ale);
+		$scope.PAUSE = services.$filter("i18n")("PAUSE", $rootScope.loc.ale);
+		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
 
-		
+
 		var update = function () {
 
 //			var dataAtual = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd");
@@ -29,27 +31,13 @@ define("robotTW2/controllers/FarmController", [
 				$rootScope.data_farm.farm_time_stop = helper.gameTime();
 			}
 
-			robotTW2.services.FarmService.isRunning() && robotTW2.services.FarmService.isPaused() ? $scope.status = "paused" : robotTW2.services.FarmService.isRunning() && (typeof(robotTW2.services.FarmService.isPaused) == "function" && !robotTW2.services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
+			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 
 //			$scope.data_farm = data_farm;
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
 		}
-//		$scope.extensions = data_main.getExtensions();
-//		$scope.isRunning = robotTW2.services.FarmService.isRunning();
-//		$scope.paused = robotTW2.services.FarmService.isPaused();
-//		var villages = services.modelDataService.getSelectedCharacter().getVillages()
-//		for (v in villages) {
-//		data_farm.list_ativate[v] == undefined ? data_farm.list_ativate[v] = true : null;
-//		}
-
-//		for (v in $scope.data.list_ativate) {
-//		!villages[v] ? delete $scope.data.list_ativate[v] : null
-//		}
-
-//		data_farm.setFarm($scope.data);
-
 
 		$scope.blur = function (callback) {
 			$scope.journey_time = $("#journey_time").val()
@@ -134,19 +122,19 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.start_farm = function () {
 			$scope.blur(function () {
-				robotTW2.services.FarmService.start();
-				$scope.isRunning = robotTW2.services.FarmService.isRunning();
+				services.FarmService.start();
+				$scope.isRunning = services.FarmService.isRunning();
 			});
 		}
 		$scope.stop_farm = function () {
-			robotTW2.services.FarmService.stop();
+			services.FarmService.stop();
 		}
 		$scope.pause_farm = function () {
-			robotTW2.services.FarmService.pause();
+			services.FarmService.pause();
 			$scope.paused = !0;
 		}
 		$scope.resume_farm = function () {
-			robotTW2.services.FarmService.resume();
+			services.FarmService.resume();
 			$scope.paused = !1;
 		}
 
@@ -158,24 +146,24 @@ define("robotTW2/controllers/FarmController", [
 		$scope.blurPreset = function () {
 			$scope.presetSelected.journey_time = $("#journey_time").val()
 		}
-        
-        $scope.date_ref = new Date(0);
-        
-        $scope.getFarmTime = function () {
-            var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
-            if(tm.length == 7) {
-                tm = "0" + tm;
-            }
-            return tm;
-        }
-        
-        $scope.getPresetSelectedJourneyTime = function () {
-            var tm = helper.readableMilliseconds($scope.presetSelected.journey_time);
-            if(tm.length == 7) {
-                tm = "0" + tm;
-            }
-            return tm;
-        }
+
+		$scope.date_ref = new Date(0);
+
+		$scope.getFarmTime = function () {
+			var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
+			if(tm.length == 7) {
+				tm = "0" + tm;
+			}
+			return tm;
+		}
+
+		$scope.getPresetSelectedJourneyTime = function () {
+			var tm = helper.readableMilliseconds($scope.presetSelected.journey_time);
+			if(tm.length == 7) {
+				tm = "0" + tm;
+			}
+			return tm;
+		}
 
 		$scope.presetSelected = $rootScope.data_farm.presets[Object.keys($rootScope.data_farm.presets)[0]]
 
