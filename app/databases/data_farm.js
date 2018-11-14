@@ -25,24 +25,12 @@ define("robotTW2/databases/data_farm", [
 	db_farm.get = function(){
 		return database.get("data_farm");
 	}
-	var getT = function () {
-		return {
-			journey_time			: data_farm.journey_time,
-			journey_distance		: data_farm.journey_distance,
-			min_journey_distance	: data_farm.min_journey_distance,
-			max_points_farm			: data_farm.max_points_farm,
-			min_points_farm			: data_farm.min_points_farm,
-			max_commands_farm		: data_farm.max_commands_farm,
-			farm_time				: data_farm.farm_time
-		};
-	}
-	, getPst = function () {
+	var getPst = function () {
 		var presets_d = {}
 		services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function (data_result) {
 			if(!data_result) {return}
 			data_result.presets.forEach(function (p) {
 				presets_d[p.id] = angular.copy(p);
-				angular.extend(presets_d[p.id], getT())
 			});
 
 			if(Object.keys(data_farm.presets).length == 0) {
