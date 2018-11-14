@@ -392,7 +392,7 @@ define("robotTW2/services/FarmService", [
 				}).filter(f => f != false).length;
 
 				if(
-						(countCommands[village_id].length + comandos_length) < $rootScope.data_farm.max_commands_farm 
+						(countCommands[village_id].length + comandos_length) < $rootScope.data_villages.villages[village_id].max_commands_farm 
 						&& $rootScope.data_villages.villages[village_id].farm_activate
 						&& units_analyze(preset_units, aldeia_units)
 						&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
@@ -427,25 +427,11 @@ define("robotTW2/services/FarmService", [
 				function proc() {
 					Object.keys($rootScope.data_farm.presets).forEach(function (key) {
 						$rootScope.data_farm.presets[key].assigned_villages.forEach(function (village) {
-							/*
-							 * Verificar ativação do preset
-							 */
-
-							if($rootScope.data_villages.villages[village].assigned_presets){
-
-							}
 							list_assigned_villages.push(
 									{
 										village_id 				: village,
 										preset_id 				: key,
-										units					: $rootScope.data_farm.presets[key].units,
-										min_journey_distance 	: $rootScope.data_farm.presets[key].min_journey_distance,
-										max_journey_distance 	: $rootScope.data_farm.presets[key].max_journey_distance,
-										quadrants 				: $rootScope.data_farm.presets[key].quadrants,
-										min_points_farm 		: $rootScope.data_farm.presets[key].min_points_farm,
-										max_points_farm 		: $rootScope.data_farm.presets[key].max_points_farm,
-										max_commands_farm 		: $rootScope.data_farm.presets[key].max_commands_farm,
-										max_journey_time 		: $rootScope.data_farm.presets[key].max_journey_time
+										units					: $rootScope.data_farm.presets[key].units
 									}
 							);
 						});
