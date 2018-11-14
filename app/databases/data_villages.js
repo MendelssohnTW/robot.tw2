@@ -21,9 +21,9 @@ define("robotTW2/databases/data_villages", [
 	}
 	db_villages.verifyDB = function (villagesExtended){
 		updated = false;
-		if(!data_villages){data_villages == {}}
-		if(!villagesExtended){villagesExtended == {}}
-		if(data_villages.villages == undefined){data_villages.villages == {}}
+		if(!data_villages){data_villages = {}}
+		if(!villagesExtended){villagesExtended = {}}
+		if(data_villages.villages == undefined){data_villages.villages = {}}
 		Object.keys(data_villages.villages).map(function(m){
 			return m
 		}).forEach(function(v){
@@ -38,9 +38,9 @@ define("robotTW2/databases/data_villages", [
 	}
 	db_villages.verifyVillages = function (villagesExtended){
 		updated = false;
-		if(!data_villages){data_villages == {}}
-		if(!villagesExtended){villagesExtended == {}}
-		if(data_villages.villages == undefined){data_villages.villages == {}}
+		if(!data_villages){data_villages = {}}
+		if(!villagesExtended){villagesExtended = {}}
+		if(data_villages.villages == undefined){data_villages.villages = {}}
 		Object.keys(villagesExtended).map(function(m){
 			return m
 		}).forEach(function(v){
