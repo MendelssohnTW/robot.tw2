@@ -17,6 +17,16 @@ define("robotTW2/controllers/FarmController", [
 
 		$rootScope.$broadcast(providers.eventTypeProvider.VILLAGE_UPDATE);
 
+		var getAssignedPresets = function(vid){
+			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
+			return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
+		}
+
+		Object.keys($rootScope.data_villages.villages).map(function(a){
+			
+			$rootScope.data_villages.villages[a].assigned_presets = getAssignedPresets(a);
+		})
+
 		var update = function () {
 
 //			var dataAtual = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd");
@@ -39,7 +49,7 @@ define("robotTW2/controllers/FarmController", [
 				$rootScope.$apply();
 			}
 		}
-		
+
 		$scope.blur = function (callback) {
 			$scope.min_journey_time = $("#min_journey_time").val()
 			$scope.journey_time = $("#journey_time").val()
@@ -139,7 +149,7 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.resume();
 			$scope.paused = !1;
 		}
-		
+
 		$scope.$watch("assignedSelected", function(){
 			if(!$scope.assignedSelected){return}
 			$scope.presetSelected = $rootScope.data_farm.presets[$scope.assignedSelected];
@@ -158,7 +168,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.blurJourney = function () {
 			$scope.presetSelected.journey_time = $("#journey_time").val()
 		}
-		
+
 		$scope.blurMinJourney = function () {
 			$scope.presetSelected.min_journey_time = $("#min_journey_time").val()
 		}
@@ -195,7 +205,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.remAssignedPreset = function(assigned_preset){
 			$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.filter(f => f != assigned_preset);
 		}
-		
+
 		$scope.getName = function(assigned_preset){
 			return $rootScope.data_farm.presets[assigned_preset].name;
 		}
