@@ -137,12 +137,16 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.resume();
 			$scope.paused = !1;
 		}
+		
+		$scope.$watch("assignedSelected", function(){
+			$scope.presetSelected = $rootScope.data_farm.presets[$scope.assignedSelected];
+		})
 
-		$scope.setPreset = function (preset) {
-			$scope.presetSelected = preset;
+		$scope.setAssignedPreset = function (assigned_preset) {
+			$scope.assignedSelected = assigned_preset;
 			if (!$scope.$$phase) $scope.$apply();
 		}
-		
+
 		$scope.setVillage = function (village) {
 			$scope.villageSelected = village;
 			if (!$scope.$$phase) $scope.$apply();
@@ -151,7 +155,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.blurPreset = function () {
 			$scope.presetSelected.journey_time = $("#journey_time").val()
 		}
-		
+
 		var addQuadrant = function(pos){
 			$scope.villageSelected.quadrants.push(pos)
 			$scope.villageSelected.quadrants.sort(function(a,b){return a-b})
@@ -175,6 +179,20 @@ define("robotTW2/controllers/FarmController", [
 			return $scope.villageSelected.quadrants.includes(pos)
 		}
 
+		$scope.addAssignedPreset = function(assigned_preset){
+			if(!$rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets.find(f => f == assigned_preset)){
+				$rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets.push(assigned_preset);
+			}
+		}
+
+		$scope.remAssignedPreset = function(assigned_preset){
+			$rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets = $rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets.filter(f => f != assigned_preset);
+		}
+		
+		$scope.getName = function(assigned_preset){
+			return $rootScope.data_farm.presets[assigned_preset].name;
+		}
+
 		$scope.date_ref = new Date(0);
 
 		$scope.getFarmTime = function () {
@@ -193,8 +211,8 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
-		$scope.presetSelected = $rootScope.data_farm.presets[Object.keys($rootScope.data_farm.presets)[0]]
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
+		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets)[0]]
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 

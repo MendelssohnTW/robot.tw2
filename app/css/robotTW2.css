@@ -134,7 +134,7 @@
 	transform: translate(50%, 50%);
 }
 
-.robotTW2 .quadrant div {
+.robotTW2 .quadrant-border {
 	border-style: ridge;
 	float: left;
 	width: 50px;

@@ -147,10 +147,27 @@
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
 											<tr ng-repeat="preset in data_farm.presets">
-												<td ng-class="{'selected': presetSelected == preset}"
-													ng-click="setPreset(preset)"><span>{{preset.name}}</span>
+												<td><span>{{preset.name}}</span>
 													<canvas class="with-margin" icon-generator="preset.icon"
 														icon-type="'preset'" width="26" height="26"></canvas></td>
+														<td ng-click="addAssignedPreset(assigned_preset)"><span>x</span>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</td>
+							<td class="cell-top cell-right" rowspan="3">
+								<div class="scroll-wrap">
+									<table
+										class="tbl-border-light tbl-striped tbl-content tbl-hover">
+										<tbody>
+											<tr ng-repeat="assigned_preset in data_villages.village.assigned_presets">
+												<td ng-class="{'selected': assignedSelected == assigned_preset}"
+													ng-click="setAssignedPreset(assigned_preset)"><span>{{getName(assigned_preset)}}</span>
+													<canvas class="with-margin" icon-generator="preset.icon"
+														icon-type="'preset'" width="26" height="26"></canvas></td>
+														<td ng-click="remAssignedPreset(assigned_preset)"><span>x</span>
+													</td>
 											</tr>
 										</tbody>
 									</table>
