@@ -146,12 +146,16 @@
 									<table
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
-											<tr ng-repeat="preset in data_farm.presets">
-												<td><span>{{preset.name}}</span>
+											<tr ng-repeat="preset in data_farm.presets"
+												ng-click="addAssignedPreset(assigned_preset)">
+												<td><span>{{preset.name}}</span></td>
+												<td>
 													<canvas class="with-margin" icon-generator="preset.icon"
 														icon-type="'preset'" width="26" height="26"></canvas>
-													<div class="btn-orange icon-26x26-arrow-right size-26x26"
-														ng-click="addAssignedPreset(assigned_preset)"></div></td>
+												</td>
+												<td>
+													<div class="btn-orange icon-26x26-arrow-right size-26x26"></div>
+												</td>
 
 											</tr>
 										</tbody>
@@ -164,14 +168,20 @@
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
 											<tr
-												ng-repeat="assigned_preset in data_villages.village.assigned_presets">
+												ng-repeat="assigned_preset in data_villages.village.assigned_presets"
+												ng-click="setAssignedPreset(assigned_preset)">
 												<td
-													ng-class="{'selected': assignedSelected == assigned_preset}"
-													ng-click="setAssignedPreset(assigned_preset)"><span>{{getName(assigned_preset)}}</span>
+													ng-class="{'selected': assignedSelected == assigned_preset}">
+													<span>{{getName(assigned_preset)}} </span>
+												</td>
+												<td>
 													<canvas class="with-margin" icon-generator="preset.icon"
 														icon-type="'preset'" width="26" height="26"></canvas>
+												</td>
+												<td>
 													<div class="btn-orange icon-26x26-arrow-left size-26x26"
-														ng-click="remAssignedPreset(assigned_preset)"></div></td>
+														ng-click="remAssignedPreset(assigned_preset)"></div>
+												</td>
 											</tr>
 										</tbody>
 									</table>

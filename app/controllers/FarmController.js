@@ -181,13 +181,13 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.addAssignedPreset = function(assigned_preset){
-			if(!$rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets.find(f => f == assigned_preset)){
-				$rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets.push(assigned_preset);
+			if(!$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.find(f => f == assigned_preset)){
+				$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.push(assigned_preset);
 			}
 		}
 
 		$scope.remAssignedPreset = function(assigned_preset){
-			$rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets = $rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets.filter(f => f != assigned_preset);
+			$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.filter(f => f != assigned_preset);
 		}
 		
 		$scope.getName = function(assigned_preset){
@@ -214,7 +214,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
-		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.village_id].assigned_presets)[0]]
+		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets)[0]]
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
