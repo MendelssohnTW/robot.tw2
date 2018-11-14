@@ -139,6 +139,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		
 		$scope.$watch("assignedSelected", function(){
+			if(!$scope.assignedSelected){return}
 			$scope.presetSelected = $rootScope.data_farm.presets[$scope.assignedSelected];
 		})
 
