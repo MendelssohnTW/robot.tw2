@@ -23,7 +23,7 @@ define("robotTW2/databases/data_villages", [
 		updated = false;
 		if(!data_villages){data_villages == {}}
 		if(!villagesExtended){villagesExtended == {}}
-		if(!data_villages.villages){villadata_villages.villagesgesExtended == {}}
+		if(!data_villages.villages){data_villages.villages == {}}
 		Object.keys(data_villages.villages).map(function(m){
 			return m
 		}).forEach(function(v){
@@ -40,7 +40,7 @@ define("robotTW2/databases/data_villages", [
 		updated = false;
 		if(!data_villages){data_villages == {}}
 		if(!villagesExtended){villagesExtended == {}}
-		if(!data_villages.villages){villadata_villages.villagesgesExtended == {}}
+		if(!data_villages.villages){data_villages.villages == {}}
 		Object.keys(villagesExtended).map(function(m){
 			return m
 		}).forEach(function(v){
