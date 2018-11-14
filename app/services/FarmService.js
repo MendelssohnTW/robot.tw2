@@ -181,8 +181,9 @@ define("robotTW2/services/FarmService", [
 				var existLista = !lt_b.find(f => f == vill.id);
 				var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
 				var rangePoints = (vill.points >= preset.min_points_farm && vill.points <= preset.max_points_farm);
-				var rangeDist = (distancia >= preset.min_journey_distance && preset.quadrants.includes(quadrant)); 
-				if(existException && rangePoints && rangeDist && existLista && existBarbara && isBarbara) {
+				var rangeDist = distancia >= preset.min_journey_distance; 
+				var existQuadrant = $rootScope.data_villages.villages[vill.id].quadrants.includes(quadrant);
+				if(existException && rangePoints && rangeDist && existLista && existBarbara && existQuadrant && isBarbara) {
 					return true
 				} else {
 					return false
@@ -390,9 +391,12 @@ define("robotTW2/services/FarmService", [
 					return comandos[key].village_id == village_id
 				}).filter(f => f != false).length;
 
-				if((countCommands[village_id].length + comandos_length) < $rootScope.data_farm.max_commands_farm 
+				if(
+						(countCommands[village_id].length + comandos_length) < $rootScope.data_farm.max_commands_farm 
 						&& $rootScope.data_villages.villages[village_id].farm_activate
-						&& units_analyze(preset_units, aldeia_units)) {
+						&& units_analyze(preset_units, aldeia_units)
+						&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset)
+				) {
 					var comando = {
 							village_id				: village_id,
 							bonus					: village_bonus,
@@ -402,7 +406,7 @@ define("robotTW2/services/FarmService", [
 							y						: village.data.y,
 							journey_distance		: get_dist(village_bonus, preset_units),
 							min_journey_distance 	: preset.min_journey_distance,
-							quadrants			 	: preset.quadrants,
+							quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
 							min_points_farm			: preset.min_points_farm,
 							max_points_farm		 	: preset.max_points_farm,
 							max_commands_farm	 	: preset.max_commands_farm
@@ -424,6 +428,13 @@ define("robotTW2/services/FarmService", [
 				function proc() {
 					Object.keys($rootScope.data_farm.presets).forEach(function (key) {
 						$rootScope.data_farm.presets[key].assigned_villages.forEach(function (village) {
+							/*
+							 * Verificar ativação do preset
+							 */
+
+							if($rootScope.data_villages.villages[village].assigned_presets){
+
+							}
 							list_assigned_villages.push(
 									{
 										village_id 				: village,

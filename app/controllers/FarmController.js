@@ -140,7 +140,12 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setPreset = function (preset) {
 			$scope.presetSelected = preset;
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			if (!$scope.$$phase) $scope.$apply();
+		}
+		
+		$scope.setVillage = function (villageId) {
+			$scope.VillageSelected = villageId;
+			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.blurPreset = function () {
@@ -166,6 +171,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.presetSelected = $rootScope.data_farm.presets[Object.keys($rootScope.data_farm.presets)[0]]
+		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 

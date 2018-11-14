@@ -33,8 +33,7 @@ define("robotTW2/databases/data_farm", [
 			max_points_farm			: data_farm.max_points_farm,
 			min_points_farm			: data_farm.min_points_farm,
 			max_commands_farm		: data_farm.max_commands_farm,
-			farm_time				: data_farm.farm_time,
-			quadrants				: [1, 2, 3, 4]
+			farm_time				: data_farm.farm_time
 		};
 	}
 	, getPst = function () {
