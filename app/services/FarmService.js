@@ -180,9 +180,9 @@ define("robotTW2/services/FarmService", [
 				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
 				var existLista = !lt_b.find(f => f == vill.id);
 				var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
-				var rangePoints = (vill.points >= $rootScope.data_villages.villages[vill.id].min_points_farm && vill.points <= $rootScope.data_villages.villages[vill.id].max_points_farm);
-				var rangeDist = distancia >= $rootScope.data_villages.villages[vill.id].min_journey_distance && distancia <= $rootScope.data_villages.villages[vill.id].max_journey_distance
-				var existQuadrant = $rootScope.data_villages.villages[vill.id].quadrants.includes(quadrant);
+				var rangePoints = (vill.points >= $rootScope.data_villages.villages[preset.village_id].min_points_farm && vill.points <= $rootScope.data_villages.villages[preset.village_id].max_points_farm);
+				var rangeDist = distancia >= $rootScope.data_villages.villages[preset.village_id].min_journey_distance && distancia <= $rootScope.data_villages.villages[preset.village_id].max_journey_distance
+				var existQuadrant = $rootScope.data_villages.villages[preset.village_id].quadrants.includes(quadrant);
 				if(existException && rangePoints && rangeDist && existLista && existBarbara && existQuadrant && isBarbara) {
 					return true
 				} else {
