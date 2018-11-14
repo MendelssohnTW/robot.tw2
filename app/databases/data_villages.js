@@ -79,18 +79,8 @@ define("robotTW2/databases/data_villages", [
 		angular.extend(villagesDB, services.modelDataService.getVillages())
 		angular.merge(villagesExtended, villagesDB)
 
-		if(!data_villages.villages || db_villages.verifyDB(villagesExtended) || db_villages.verifyVillages(villagesExtended)) {
-			if (data_villages == undefined || data_villages.villages == undefined){
-				data_villages = {}
-				, vb = {}
-				, ve = {}
-				angular.extend(vb, services.modelDataService.getVillages())
-				angular.merge(ve, vb)
-				data_villages.version = conf.VERSION.VILLAGES
-				data_villages.villages = {}
-				db_villages.verifyVillages(villagesExtended, ve)
-			}
-
+		if(db_villages.verifyDB(villagesExtended) || db_villages.verifyVillages(villagesExtended)) {
+			data_villages.version = conf.VERSION.VILLAGES
 		} else {
 			if(!data_villages.version || data_villages.version < conf.VERSION.VILLAGES){
 				data_villages.version = conf.VERSION.VILLAGES
