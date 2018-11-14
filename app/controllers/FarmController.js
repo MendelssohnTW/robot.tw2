@@ -40,6 +40,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blur = function (callback) {
+			$scope.min_journey_time = $("#min_journey_time").val()
 			$scope.journey_time = $("#journey_time").val()
 			$scope.farm_time = $("#farm_time").val()
 			$scope.inicio_de_farm = $("#inicio_de_farm").val()
@@ -64,12 +65,12 @@ define("robotTW2/controllers/FarmController", [
 				$scope.data_termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "yyyy-MM-dd");
 			}
 
-
 			document.getElementById("data_termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "yyyy-MM-dd");
 			document.getElementById("data_inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "yyyy-MM-dd");
 			document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
 			document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
+			$rootScope.data_farm.min_journey_time = helper.unreadableSeconds($scope.min_journey_time) * 1000
 			$rootScope.data_farm.journey_time = helper.unreadableSeconds($scope.journey_time) * 1000
 			$rootScope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
 			$rootScope.data_farm.farm_time_start = tempo_escolhido_inicio
@@ -153,8 +154,12 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
-		$scope.blurPreset = function () {
+		$scope.blurJourney = function () {
 			$scope.presetSelected.journey_time = $("#journey_time").val()
+		}
+		
+		$scope.blurMinJourney = function () {
+			$scope.presetSelected.min_journey_time = $("#min_journey_time").val()
 		}
 
 		var addQuadrant = function(pos){
@@ -207,6 +212,15 @@ define("robotTW2/controllers/FarmController", [
 		$scope.getPresetSelectedJourneyTime = function () {
 			if(!$scope.presetSelected) {return}
 			var tm = helper.readableMilliseconds($scope.presetSelected.journey_time);
+			if(tm.length == 7) {
+				tm = "0" + tm;
+			}
+			return tm;
+		}
+
+		$scope.getPresetSelectedMinJourneyTime = function () {
+			if(!$scope.presetSelected) {return}
+			var tm = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
 			}
