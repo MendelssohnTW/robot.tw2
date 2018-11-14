@@ -149,8 +149,10 @@
 											<tr ng-repeat="preset in data_farm.presets">
 												<td><span>{{preset.name}}</span>
 													<canvas class="with-margin" icon-generator="preset.icon"
-														icon-type="'preset'" width="26" height="26"></canvas></td>
-														<td ng-click="addAssignedPreset(assigned_preset)"><span>x</span>
+														icon-type="'preset'" width="26" height="26"></canvas>
+													<div class="btn-orange icon-26x26-arrow-right size-26x26"
+														ng-click="addAssignedPreset(assigned_preset)"></div></td>
+
 											</tr>
 										</tbody>
 									</table>
@@ -161,13 +163,15 @@
 									<table
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
-											<tr ng-repeat="assigned_preset in data_villages.village.assigned_presets">
-												<td ng-class="{'selected': assignedSelected == assigned_preset}"
+											<tr
+												ng-repeat="assigned_preset in data_villages.village.assigned_presets">
+												<td
+													ng-class="{'selected': assignedSelected == assigned_preset}"
 													ng-click="setAssignedPreset(assigned_preset)"><span>{{getName(assigned_preset)}}</span>
 													<canvas class="with-margin" icon-generator="preset.icon"
-														icon-type="'preset'" width="26" height="26"></canvas></td>
-														<td ng-click="remAssignedPreset(assigned_preset)"><span>x</span>
-													</td>
+														icon-type="'preset'" width="26" height="26"></canvas>
+													<div class="btn-orange icon-26x26-arrow-left size-26x26"
+														ng-click="remAssignedPreset(assigned_preset)"></div></td>
 											</tr>
 										</tbody>
 									</table>
@@ -200,25 +204,29 @@
 						<tr>
 							<td colspan="2" style="">
 								<div class="quadrant">
-									<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(1)}"
+									<div class="quadrant-border"
+										ng-class="{'quadrant-selected': getQuadrant(1)}"
 										ng-click="setQuadrant(1)">
 										<div class="quadrant-text">
 											<span style="">1</span>
 										</div>
 									</div>
-									<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(2)}"
+									<div class="quadrant-border"
+										ng-class="{'quadrant-selected': getQuadrant(2)}"
 										ng-click="setQuadrant(2)">
 										<div class="quadrant-text">
 											<span style="">1</span>
 										</div>
 									</div>
-									<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(3)}"
+									<div class="quadrant-border"
+										ng-class="{'quadrant-selected': getQuadrant(3)}"
 										ng-click="setQuadrant(3)">
 										<div class="quadrant-text">
 											<span style="">1</span>
 										</div>
 									</div>
-									<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(4)}"
+									<div class="quadrant-border"
+										ng-class="{'quadrant-selected': getQuadrant(4)}"
 										ng-click="setQuadrant(4)">
 										<div class="quadrant-text">
 											<span style="">1</span>
