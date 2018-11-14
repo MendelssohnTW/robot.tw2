@@ -165,7 +165,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setQuadrant = function (pos) {
 			if($scope.villageSelected.quadrants.includes(pos)){
-				remQuandrant(pos)
+				remQuadrant(pos)
 			} else {
 				addQuadrant(pos)
 			}
