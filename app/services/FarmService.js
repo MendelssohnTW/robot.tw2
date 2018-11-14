@@ -244,7 +244,7 @@ define("robotTW2/services/FarmService", [
 					}
 				}, request * 2000)
 			}
-			if (listaGrid.length > 0 && p < $rootScope.data_farm.max_commands_farm) {
+			if (listaGrid.length > 0 && p < $rootScope.data_villages.villages[preset.village_id].max_commands_farm) {
 				T();
 			} else {
 				request = 0;
