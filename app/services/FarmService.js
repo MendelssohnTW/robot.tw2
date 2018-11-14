@@ -108,7 +108,7 @@ define("robotTW2/services/FarmService", [
 			});
 			callback(listaGrid);
 		}
-		, get_dist = function (bonus, units) {
+		, get_dist = function (village_id, bonus, units) {
 			function return_min(tempo) {
 				if (tempo != undefined) {
 					var ar_tempo = tempo.split(":");
@@ -139,8 +139,8 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			if (list_select.length > 0) {
-				list_select.sort(function (a, b) {return a[1] - b[1]});
-				return Math.trunc(($rootScope.data_farm.max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
+				list_select.sort(function (a, b) {return a[1] - b[1]});	
+				return Math.trunc(($rootScope.data_villages.villages[village_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
 			} 
 			return 0;
 		}
@@ -180,8 +180,8 @@ define("robotTW2/services/FarmService", [
 				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
 				var existLista = !lt_b.find(f => f == vill.id);
 				var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
-				var rangePoints = (vill.points >= preset.min_points_farm && vill.points <= preset.max_points_farm);
-				var rangeDist = distancia >= preset.min_journey_distance; 
+				var rangePoints = (vill.points >= $rootScope.data_villages.villages[vill.id].min_points_farm && vill.points <= $rootScope.data_villages.villages[vill.id].max_points_farm);
+				var rangeDist = distancia >= $rootScope.data_villages.villages[vill.id].min_journey_distance &&distancia <= $rootScope.data_villages.villages[vill.id].max_journey_distance
 				var existQuadrant = $rootScope.data_villages.villages[vill.id].quadrants.includes(quadrant);
 				if(existException && rangePoints && rangeDist && existLista && existBarbara && existQuadrant && isBarbara) {
 					return true
@@ -404,12 +404,11 @@ define("robotTW2/services/FarmService", [
 							preset_units			: preset.units,
 							x						: village.data.x,
 							y						: village.data.y,
-							max_journey_distance	: get_dist(village_bonus, preset_units),
-							min_journey_distance 	: $rootScope.data_villages.villages[village_id].min_journey_distance,
-							quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
-							min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
-							max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
-							max_commands_farm	 	: $rootScope.data_villages.villages[village_id].max_commands_farm
+							max_journey_distance	: get_dist(village_id, village_bonus, preset_units)
+//							quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
+//							min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
+//							max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
+//							max_commands_farm	 	: $rootScope.data_villages.villages[village_id].max_commands_farm
 
 					};
 					if (!comandos.find(f => f === comando)) {

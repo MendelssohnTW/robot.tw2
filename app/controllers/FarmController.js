@@ -15,8 +15,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
 
-		$rootScope.$broadcast(providers.eventTypeProvider.VILLAGE_UPDATE);
-
 		var getAssignedPresets = function(vid){
 			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 			return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];

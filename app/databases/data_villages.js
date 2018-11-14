@@ -36,10 +36,6 @@ define("robotTW2/databases/data_villages", [
 		})
 		return updated;
 	}
-	db_villages.getAssignedPresets = function(vid){
-		var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
-		return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
-	}
 	db_villages.verifyVillages = function (villagesExtended){
 		updated = false;
 		if (data_villages == undefined || data_villages.villages == undefined){
@@ -57,7 +53,7 @@ define("robotTW2/databases/data_villages", [
 					buildinglimit 			: conf.BUILDINGLIMIT,
 					buildinglevels 			: conf.BUILDINGLEVELS,
 					farm_activate 			: true,
-					assigned_presets		: db_villages.getAssignedPresets(v),
+					assigned_presets		: [],
 					quadrants				: [1, 2, 3, 4],
 					max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
 					min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
@@ -109,7 +105,6 @@ define("robotTW2/databases/data_villages", [
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_UPDATE, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
 
 	db_villages.updateVillages()

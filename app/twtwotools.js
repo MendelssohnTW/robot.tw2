@@ -388,10 +388,12 @@ var robotTW2 = window.robotTW2 = undefined;
 			self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
 
 			var filho = self.get_son();
+			
 			var templateHTML = angular.element(data)
 			var compiledTemplate = $compile(templateHTML);
 
 			compiledTemplate(scope, function(clonedElement, scope) {
+				if(!filho){return}
 				filho.append(clonedElement);
 			});
 
@@ -685,8 +687,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAX_TIME_SNIPER_ANT 	: 600,
 					MIN_TIME_SNIPER_POST 	: 0.3,
 					MAX_TIME_SNIPER_POST 	: 600,
-					JOURNEY_DISTANCE 		: 15,
+					MAX_JOURNEY_DISTANCE 	: 15,
 					MIN_JOURNEY_DISTANCE 	: 5,
+					MAX_JOURNEY_TIME     	: h,
+					MIN_JOURNEY_TIME     	: 2 * min,
 					VERSION					: {
 						MAIN			: 2.3,
 						VILLAGES		: 2.3,
@@ -701,7 +705,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						DEPOSIT			: 2.3,
 						MEDIC			: 2.3
 					},
-					JOURNEY_TIME     		: h,
 					FARM_TIME		      	: h,
 					INTERVAL				: {
 						HEADQUARTER	: h,
@@ -1185,7 +1188,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						return $('[ng-controller=BattleReportController]');
 					}
 					, get_son = function(){
-						return get_father().find(".tbl-result")			
+						return get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false			
 					}
 					, params = {
 							included_controller		: "BattleReportController",
