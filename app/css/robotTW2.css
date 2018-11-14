@@ -123,13 +123,25 @@
 	height: 100px;
 }
 
+.robotTW2 .quadrant-selected {
+	background: darkred;
+	color: yellow;
+}
+
+.robotTW2 .quadrant-text {
+	width: 30px;
+	height: 20px;
+	transform: translate(50%, 50%);
+}
+
 .robotTW2 .quadrant div {
 	border-style: ridge;
 	float: left;
 	width: 50px;
 	height: 50px;
+	font-size: 20px;
 }
 
 .robotTW2 .checkbox {
-	width:64px;
+	width: 64px;
 }

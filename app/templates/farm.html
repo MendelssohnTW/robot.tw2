@@ -96,8 +96,9 @@
 
 											<tbody>
 												<tr ng-repeat="village in data_villages.villages">
-													<td ng-class="{'selected': villageSelected.data.villageId == village.data.villageId}"
-													ng-click="setVillage(village)" class="cell-right"><span>{{village.data.name
+													<td
+														ng-class="{'selected': villageSelected.data.villageId == village.data.villageId}"
+														ng-click="setVillage(village)" class="cell-right"><span>{{village.data.name
 															+ " - (" + village.data.x + "|" + village.data.x + ")"}}</span></td>
 													<td class="cell-space">
 														<div class="checkbox box-border-dark">
@@ -148,7 +149,7 @@
 											<tr ng-repeat="preset in data_farm.presets">
 												<td ng-class="{'selected': presetSelected == preset}"
 													ng-click="setPreset(preset)"><span>{{preset.name}}</span>
-												<canvas class="with-margin" icon-generator="preset.icon"
+													<canvas class="with-margin" icon-generator="preset.icon"
 														icon-type="'preset'" width="26" height="26"></canvas></td>
 											</tr>
 										</tbody>
@@ -182,10 +183,30 @@
 						<tr>
 							<td colspan="2" style="">
 								<div class="quadrant">
-									<div ng-class="{'selected': getQuadrant(1)}" ng-click="setQuadrant(1)"></div>
-									<div ng-class="{'selected': getQuadrant(2)}" ng-click="setQuadrant(2)"></div>
-									<div ng-class="{'selected': getQuadrant(3)}" ng-click="setQuadrant(3)"></div>
-									<div ng-class="{'selected': getQuadrant(4)}" ng-click="setQuadrant(4)"></div>
+									<div ng-class="{'quadrant-selected': getQuadrant(1)}"
+										ng-click="setQuadrant(1)">
+										<div class="quadrant-text">
+											<span style="">1</span>
+										</div>
+									</div>
+									<div ng-class="{'quadrant-selected': getQuadrant(2)}"
+										ng-click="setQuadrant(2)">
+										<div class="quadrant-text">
+											<span style="">1</span>
+										</div>
+									</div>
+									<div ng-class="{'quadrant-selected': getQuadrant(3)}"
+										ng-click="setQuadrant(3)">
+										<div class="quadrant-text">
+											<span style="">1</span>
+										</div>
+									</div>
+									<div ng-class="{'quadrant-selected': getQuadrant(4)}"
+										ng-click="setQuadrant(4)">
+										<div class="quadrant-text">
+											<span style="">1</span>
+										</div>
+									</div>
 								</div>
 							</td>
 						</tr>
