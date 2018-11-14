@@ -205,15 +205,15 @@ define("robotTW2/services/FarmService", [
 									var x2 = preset.x;
 									var y2 = preset.y;
 
-									listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > preset.min_journey_distance)
+									listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_villages.villages[village_id].min_journey_distance)
 									listaVil.sort(function (a, b) {
 										Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
 									});
 
 									for (j = 0; j < listaVil.length; j++) {
-										if (check_barbara(listaVil[j], preset, lt_barbaras) && p++ < preset.max_commands_farm) {
+										if (check_barbara(listaVil[j], preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].max_commands_farm) {
 											lt_barbaras.push(listaVil[j].id);
-										} else if(p >= $rootScope.data_farm.max_commands_farm) {
+										} else if(p >= $rootScope.data_villages.villages[village_id].max_commands_farm) {
 											p = 0;
 											request = 0;
 											requestReady = 0;
