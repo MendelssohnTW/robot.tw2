@@ -20,18 +20,20 @@ define("robotTW2/databases/database", [
 		var keyName = this.getKeyPrefix(key, options)
 		var newValue = {[keyName]: value}
 		//var keyValue = JSON.stringify({"data": value});
-		var tb = JSON.parse(localStorage.getItem(this.prefixStandard));
+//		var tb = JSON.parse(localStorage.getItem(this.prefixStandard));
+		var tb = JSON.parse(localStorage.getItem(keyName));
 		if(tb){
-			var clear = {};
-			localStorage.setItem(this.prefixStandard, JSON.stringify(clear));
 			angular.extend(tb.data, newValue);
-			var keyValue = JSON.stringify(tb);
-			try {
-				//localStorage.setItem(keyName, keyValue);
-				localStorage.setItem(this.prefixStandard, keyValue);
-			} catch (e) {
-				if (console) console.error(JSON.stringify(e) + " ==== database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está cheio.");
-			}
+		} else {
+			tb = {"data":newValue}
+		}
+		var keyValue = JSON.stringify(tb);
+		try {
+			//localStorage.setItem(keyName, keyValue);
+			localStorage.setItem(keyName, keyValue);
+//			localStorage.setItem(this.prefixStandard, keyValue);
+		} catch (e) {
+			if (console) console.error(JSON.stringify(e) + " ==== database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está cheio.");
 		}
 	}
 	, database.get = function get(key, missing, options) {
@@ -39,16 +41,18 @@ define("robotTW2/databases/database", [
 		value;
 		try {
 			//value = JSON.parse(localStorage.getItem(keyName));
-			var dbt = JSON.parse(localStorage.getItem(this.prefixStandard));
-			value = dbt.data[keyName];
+//			var dbt = JSON.parse(localStorage.getItem(this.prefixStandard));
+//			var dbt = JSON.parse(localStorage.getItem(keyName));
+//			value = dbt.data[keyName];
+			value = JSON.parse(localStorage.getItem(keyName));
 		} catch (e) {
 //			if(localStorage[keyName]) {
 //			value = {data: localStorage.getItem(keyName)};
 //			} else{
 //			value = null;
 //			}
-			if(localStorage[this.prefixStandard]) {
-				value = {[this.prefixStandard]: localStorage.getItem(this.prefixStandard)};
+			if(localStorage[keyName]) {
+				value = {[keyName]: localStorage.getItem(keyName)};
 			} else{
 				value = null;
 			}
