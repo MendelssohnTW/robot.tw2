@@ -38,7 +38,7 @@ define("robotTW2/controllers/FarmController", [
 				$rootScope.$apply();
 			}
 		}
-
+		
 		$scope.blur = function (callback) {
 			$scope.min_journey_time = $("#min_journey_time").val()
 			$scope.journey_time = $("#journey_time").val()
@@ -151,6 +151,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setVillage = function (village) {
 			$scope.villageSelected = village;
+			var presets = presetsByVillage[village.data.villageId]
 			if (!$scope.$$phase) $scope.$apply();
 		}
 

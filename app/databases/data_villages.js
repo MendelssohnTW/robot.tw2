@@ -36,6 +36,10 @@ define("robotTW2/databases/data_villages", [
 		})
 		return updated;
 	}
+	db_villages.getAssignedPresets = function(vid){
+		var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
+		return presetsByVillage[vid];
+	}
 	db_villages.verifyVillages = function (villagesExtended){
 		updated = false;
 		if (data_villages == undefined || data_villages.villages == undefined){
@@ -53,7 +57,7 @@ define("robotTW2/databases/data_villages", [
 					buildinglimit 			: conf.BUILDINGLIMIT,
 					buildinglevels 			: conf.BUILDINGLEVELS,
 					farm_activate 			: true,
-					assigned_presets		: [],
+					assigned_presets		: db_villages.getAssignedPresets(v),
 					quadrants				: [1, 2, 3, 4]
 				})
 				data_villages.villages[v] = villagesExtended[v]
