@@ -286,7 +286,7 @@ define("robotTW2/services/FarmService", [
 			var village = modelDataService.getSelectedCharacter().getVillage(preset.village_id);
 			var aldeia_units = angular.copy(village.unitInfo.units);
 			var preset_units = preset.preset_units;
-			lt_bb.splice($rootScope.data_farm.max_commands_farm - countCommands[preset.village_id].length);
+			lt_bb.splice($rootScope.data_villages.village[preset.village_id].max_commands_farm - countCommands[preset.village_id].length);
 			var t_obj = units_analyze(preset_units, aldeia_units);
 			if(t_obj){
 				var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
