@@ -34,7 +34,7 @@ define("robotTW2/databases/data_farm", [
 			});
 
 			if(Object.keys(data_farm.presets).length == 0) {
-				angular.merge(data_farm.presets, presets_d)
+				data_farm.presets = presets_d
 			} else {
 				Object.keys(data_farm.presets).map(function (id) {
 					if(!Object.keys(presets_d).find(f => f == id)) {
