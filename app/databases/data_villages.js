@@ -47,7 +47,7 @@ define("robotTW2/databases/data_villages", [
 			if(!Object.keys(data_villages.villages).map(function(m){
 				return m
 			}).find(f=>f==v)){
-				angular.merge(villagesExtended[v], {
+				angular.extend(villagesExtended[v], {
 					executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 					buildingorder 			: conf.BUILDINGORDER,
 					buildinglimit 			: conf.BUILDINGLIMIT,
