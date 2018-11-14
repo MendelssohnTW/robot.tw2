@@ -204,6 +204,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getPresetSelectedJourneyTime = function () {
+			if(!$scope.presetSelected) {return}
 			var tm = helper.readableMilliseconds($scope.presetSelected.journey_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
