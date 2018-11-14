@@ -15,6 +15,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
 
+		$rootScope.$broadcast(providers.eventTypeProvider.VILLAGE_UPDATE);
 
 		var update = function () {
 
@@ -151,7 +152,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setVillage = function (village) {
 			$scope.villageSelected = village;
-			var presets = presetsByVillage[village.data.villageId]
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
