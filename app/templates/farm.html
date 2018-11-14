@@ -96,7 +96,8 @@
 
 											<tbody>
 												<tr ng-repeat="village in data_villages.villages">
-													<td class="cell-right"><span>{{village.data.name
+													<td ng-class="{'selected': villageSelected == village.villageId}"
+													ng-click="setVillage(village.villageId)" class="cell-right"><span>{{village.data.name
 															+ " - (" + village.data.x + "|" + village.data.x + ")"}}</span></td>
 													<td class="cell-space">
 														<div class="checkbox box-border-dark">
@@ -106,7 +107,7 @@
 																<div ng-class="{'box-border-dark box-filter': border}"
 																	class="box-border-dark box-filter">
 																	<div class="switch switch-56x28 switch-horizontal"
-																		ng-class="{'switch-checked': value, 'switch-inactive': enabled == false, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																		ng-class="{'switch-checked': value, 'switch-inactive': !villageSelected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
 																		<span class="size-26x26 switch-thumb"> <span
 																			class="simple icon-26x26-switch-off"
 																			ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
