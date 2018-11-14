@@ -395,7 +395,7 @@ define("robotTW2/services/FarmService", [
 						(countCommands[village_id].length + comandos_length) < $rootScope.data_farm.max_commands_farm 
 						&& $rootScope.data_villages.villages[village_id].farm_activate
 						&& units_analyze(preset_units, aldeia_units)
-						&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset)
+						&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
 				) {
 					var comando = {
 							village_id				: village_id,
@@ -514,6 +514,15 @@ define("robotTW2/services/FarmService", [
 //				for (v in villages) {
 //				$rootScope.data_farm.getVillageActivate(v) && typeof($rootScope.data_farm.getVillageActivate(v)) != "boolean" ? $rootScope.data_farm.setVillageActivate(v, true) : null;
 //				}
+				
+				var getAssignedPresets = function(vid){
+					var presetsByVillage = robotTW2.services.modelDataService.getPresetList().presetsByVillage;
+					return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
+				}
+
+				Object.keys($rootScope.data_villages.villages).map(function(a){
+					$rootScope.data_villages.villages[a].assigned_presets = getAssignedPresets(a);
+				})
 
 				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
 					var tempo_delay = $rootScope.data_farm.farm_time_start - helper.gameTime();
