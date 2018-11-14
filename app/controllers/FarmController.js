@@ -143,13 +143,36 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) $scope.$apply();
 		}
 		
-		$scope.setVillage = function (villageId) {
-			$scope.VillageSelected = villageId;
+		$scope.setVillage = function (village) {
+			$scope.villageSelected = village;
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.blurPreset = function () {
 			$scope.presetSelected.journey_time = $("#journey_time").val()
+		}
+		
+		var addQuadrant = function(pos){
+			$scope.villageSelected.quadrants.push(pos)
+			$scope.villageSelected.quadrants.sort(function(a,b){return a-b})
+			if (!$scope.$$phase) $scope.$apply();
+		}
+
+		var remQuadrant = function(pos){
+			$scope.villageSelected.quadrants = $scope.villageSelected.quadrants.filter(f => f != pos);
+			if (!$scope.$$phase) $scope.$apply();
+		}
+
+		$scope.setQuadrant = function (pos) {
+			if($scope.villageSelected.quadrants.includes(pos)){
+				remQuandrant(pos)
+			} else {
+				addQuadrant(pos)
+			}
+		}
+
+		$scope.getQuadrant = function (pos) {
+			return $scope.villageSelected.quadrants.includes(pos)
 		}
 
 		$scope.date_ref = new Date(0);
