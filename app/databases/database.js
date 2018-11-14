@@ -21,18 +21,17 @@ define("robotTW2/databases/database", [
 		var newValue = {[keyName]: value}
 		//var keyValue = JSON.stringify({"data": value});
 		var tb = JSON.parse(localStorage.getItem(this.prefixStandard));
-		var data = {};
-		if(tb){data = tb.data}else{tb = {"data":{}}}
-
-		angular.extend(data, newValue);
-		tb.data = data;
-		var keyValue = JSON.stringify(tb);
-
-		try {
-			//localStorage.setItem(keyName, keyValue);
-			localStorage.setItem(this.prefixStandard, keyValue);
-		} catch (e) {
-			if (console) console.error("database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está¡ cheio.");
+		if(tb){
+			var clear = {};
+			localStorage.setItem(this.prefixStandard, JSON.stringify(clear));
+			angular.extend(tb.data, newValue);
+			var keyValue = JSON.stringify(tb);
+			try {
+				//localStorage.setItem(keyName, keyValue);
+				localStorage.setItem(this.prefixStandard, keyValue);
+			} catch (e) {
+				if (console) console.error(JSON.stringify(e) + " ==== database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está cheio.");
+			}
 		}
 	}
 	, database.get = function get(key, missing, options) {
@@ -58,5 +57,5 @@ define("robotTW2/databases/database", [
 		return null === value ? missing : "object" == typeof value && void 0 !== value ? value : missing
 	}
 	, database.name = "database"
-	, database;
+		, database;
 })
