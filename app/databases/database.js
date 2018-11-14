@@ -32,7 +32,7 @@ define("robotTW2/databases/database", [
 			//localStorage.setItem(keyName, keyValue);
 			localStorage.setItem(this.prefixStandard, keyValue);
 		} catch (e) {
-			if (console) console.warn("database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está¡ cheio.");
+			if (console) console.error("database não pode ser gravado '{"+ key +": "+ value +"}' , porque o localStorage está¡ cheio.");
 		}
 	}
 	, database.get = function get(key, missing, options) {
