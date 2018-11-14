@@ -78,6 +78,7 @@ define("robotTW2/databases/data_farm", [
 			farm_time_stop			: new Date((services.$filter("date")(new Date(helper.gameTime() + 86400000), "yyyy-MM-dd")) + " 06:00:00").getTime(),
 			time_delay_farm			: conf.TIME_DELAY_FARM,
 			list_exceptions			: [],
+			presets					: [],
 			commands				: {},
 			name					: "data_farm"
 	}
