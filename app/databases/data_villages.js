@@ -38,7 +38,7 @@ define("robotTW2/databases/data_villages", [
 	}
 	db_villages.getAssignedPresets = function(vid){
 		var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
-		return Object.keys(presetsByVillage[vid]) || [];
+		return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
 	}
 	db_villages.verifyVillages = function (villagesExtended){
 		updated = false;
