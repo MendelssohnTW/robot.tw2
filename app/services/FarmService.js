@@ -71,7 +71,7 @@ define("robotTW2/services/FarmService", [
 			};
 		}
 		, exec = function (preset , callback) {
-			var grid = loadMap(preset.x, preset.y, preset.journey_distance).grid;
+			var grid = loadMap(preset.x, preset.y, preset.max_journey_distance).grid;
 			var listaGrid = [];
 			var x = preset.x;
 			var y = preset.y;
@@ -140,7 +140,7 @@ define("robotTW2/services/FarmService", [
 			}
 			if (list_select.length > 0) {
 				list_select.sort(function (a, b) {return a[1] - b[1]});
-				return Math.trunc(($rootScope.data_farm.journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
+				return Math.trunc(($rootScope.data_farm.max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
 			} 
 			return 0;
 		}
@@ -404,12 +404,12 @@ define("robotTW2/services/FarmService", [
 							preset_units			: preset.units,
 							x						: village.data.x,
 							y						: village.data.y,
-							journey_distance		: get_dist(village_bonus, preset_units),
-							min_journey_distance 	: preset.min_journey_distance,
+							max_journey_distance	: get_dist(village_bonus, preset_units),
+							min_journey_distance 	: $rootScope.data_villages.villages[village_id].min_journey_distance,
 							quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
-							min_points_farm			: preset.min_points_farm,
-							max_points_farm		 	: preset.max_points_farm,
-							max_commands_farm	 	: preset.max_commands_farm
+							min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
+							max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
+							max_commands_farm	 	: $rootScope.data_villages.villages[village_id].max_commands_farm
 
 					};
 					if (!comandos.find(f => f === comando)) {
@@ -441,12 +441,12 @@ define("robotTW2/services/FarmService", [
 										preset_id 				: key,
 										units					: $rootScope.data_farm.presets[key].units,
 										min_journey_distance 	: $rootScope.data_farm.presets[key].min_journey_distance,
+										max_journey_distance 	: $rootScope.data_farm.presets[key].max_journey_distance,
 										quadrants 				: $rootScope.data_farm.presets[key].quadrants,
 										min_points_farm 		: $rootScope.data_farm.presets[key].min_points_farm,
 										max_points_farm 		: $rootScope.data_farm.presets[key].max_points_farm,
 										max_commands_farm 		: $rootScope.data_farm.presets[key].max_commands_farm,
-										journey_distance 		: $rootScope.data_farm.presets[key].journey_distance,
-										journey_time 			: $rootScope.data_farm.presets[key].journey_time
+										max_journey_time 		: $rootScope.data_farm.presets[key].max_journey_time
 									}
 							);
 						});

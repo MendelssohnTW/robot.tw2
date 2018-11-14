@@ -76,15 +76,8 @@ define("robotTW2/databases/data_farm", [
 			farm_time				: conf.FARM_TIME,
 			farm_time_start			: helper.gameTime(),
 			farm_time_stop			: new Date((services.$filter("date")(new Date(helper.gameTime() + 86400000), "yyyy-MM-dd")) + " 06:00:00").getTime(),
-			journey_distance		: conf.JOURNEY_DISTANCE,
-			min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
-			journey_time			: conf.JOURNEY_TIME,
-			max_points_farm			: conf.MAX_POINTS_FARM,
-			min_points_farm			: conf.MIN_POINTS_FARM,
-			max_commands_farm		: conf.MAX_COMMANDS_FARM,
 			time_delay_farm			: conf.TIME_DELAY_FARM,
 			list_exceptions			: [],
-			presets					: {},
 			commands				: {},
 			name					: "data_farm"
 	}
