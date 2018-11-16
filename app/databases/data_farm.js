@@ -47,7 +47,7 @@ define("robotTW2/databases/data_farm", [
 				Object.keys(presets_d).map(function (id) {
 					if(!Object.keys(data_farm.presets).find(f => f == id)) {
 						data_farm.presets[id] = angular.extend({}, presets_d[id])
-						data_farm.presets[id] = angular.extend({}, getT())
+						
 					}
 				})
 
