@@ -223,14 +223,14 @@
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
 											<tr ng-repeat="preset in data_farm.presets"
-												ng-click="addAssignedPreset(assigned_preset)" ng-show="verifyPreset(preset)">
+												 ng-show="verifyPreset(preset)">
 												<td><span>{{preset.name}}</span></td>
 												<td>
 													<canvas class="with-margin" icon-generator="preset.icon"
 														icon-type="'preset'" width="26" height="26"></canvas>
 												</td>
-												<td>
-													<div class="btn-orange icon-26x26-arrow-right size-26x26"></div>
+												<td >
+													<div class="btn-orange icon-26x26-arrow-right size-26x26" ng-click="addAssignedPreset(preset)"></div>
 												</td>
 
 											</tr>
