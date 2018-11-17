@@ -235,7 +235,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		
 		$scope.verifyPreset = function(preset){
-			if($scope.villageSelected.assigned_presets.find(preset.id)){return false}
+			if($scope.villageSelected.assigned_presets.find(f=>f==preset.id)){return false}
 			return true
 		}
 		
