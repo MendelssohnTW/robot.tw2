@@ -18,32 +18,6 @@
 	],
 	"manifest_version": 2,
 	"web_accessible_resources": [
-		"twtwotools.js",
-		"js/ready.js",
-		"init_main.js",
-		"js/main.js",
-		"js/headquarter.js",
-		"js/alert.js",
-		"js/farm.js",
-		"js/recon.js",
-		"js/attack.js",
-		"js/defense.js",
-		"js/recruit.js",
-		"js/spy.js",
-		"js/deposit.js",
-		"js/builderWindow.js",
-		"js/json.js",
-		"js/services.js",
-		"js/services_queue.js",
-		"js/database.js",
-		"js/utils.js",
-		"view/main.html",
-		"view/headquarter.html",
-		"view/farm.html",
-		"view/alert.html",
-		"view/recruit.html",
-		"view/attack.html",
-		"view/attackcompletion.html",
-		"view/defense.html"
+		"twtwotools.js"
 	]
 }

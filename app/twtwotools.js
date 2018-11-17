@@ -388,7 +388,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
 
 			var filho = self.get_son();
-			
+
 			var templateHTML = angular.element(data)
 			var compiledTemplate = $compile(templateHTML);
 
@@ -1262,18 +1262,21 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 				case "database" : {
-					robotTW2.loadScript("/databases/data_villages.js")
-					robotTW2.loadScript("/databases/data_farm.js");
-					robotTW2.loadScript("/databases/data_attack.js");
-//					robotTW2.loadScript("/databases/data_defense.js");
-					robotTW2.loadScript("/databases/data_deposit.js");
-//					robotTW2.loadScript("/databases/data_headquarter.js");
-					robotTW2.loadScript("/databases/data_recon.js");
-					robotTW2.loadScript("/databases/data_alert.js");
-//					robotTW2.loadScript("/databases/data_recruit.js");
-					robotTW2.loadScript("/databases/data_spy.js");
-//					robotTW2.loadScript("/databases/data_medic.js");
-					robotTW2.loadScript("/databases/data_main.js");
+					robotTW2.ready(function(){
+						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_villages.js")}, 1000)
+						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_deposit.js");}, 5000)
+//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_recon.js");}, 9000)
+						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_spy.js");}, 6000)						
+						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_alert.js");}, 7000)
+						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_attack.js");}, 8000)
+						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_farm.js");}, 2000)
+//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_defense.js");}, 5000)
+//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_headquarter.js");}, 5000)
+//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_recruit.js");}, 5000)
+//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_medic.js");}, 5000)
+						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_main.js");}, 10000)
+					},  ["all_villages_ready"])
+
 					break
 				}
 				case "data_main" : {

@@ -145,3 +145,8 @@
 .robotTW2 .checkbox {
 	width: 64px;
 }
+
+.robotTW2 .icon .text{
+	position: absolute;
+	padding-left: 30px;
+}
