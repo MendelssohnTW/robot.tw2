@@ -56,16 +56,18 @@ define("robotTW2/databases/data_farm", [
 
 	}
 	, dataNew = {
-			auto_initialize			: false, 
+			auto_initialize				: false, 
 			initialized				: false, 
 			activated				: false,
 			hotkey					: conf.HOTKEY.FARM,
 			version					: conf.VERSION.FARM,
 			farm_time				: conf.FARM_TIME,
-			farm_time_start			: helper.gameTime(),
-			farm_time_stop			: new Date((services.$filter("date")(new Date(helper.gameTime() + 86400000), "yyyy-MM-dd")) + " 06:00:00").getTime(),
-			time_delay_farm			: conf.TIME_DELAY_FARM,
-			list_exceptions			: [],
+			max_journey_time			: conf.MAX_JOURNEY_TIME,
+			min_journey_time			: conf.MIN_JOURNEY_TIME,
+			farm_time_start				: helper.gameTime(),
+			farm_time_stop				: new Date((services.$filter("date")(new Date(helper.gameTime() + 86400000), "yyyy-MM-dd")) + " 06:00:00").getTime(),
+			time_delay_farm				: conf.TIME_DELAY_FARM,
+			list_exceptions				: [],
 			presets					: [],
 			commands				: {},
 			name					: "data_farm"
