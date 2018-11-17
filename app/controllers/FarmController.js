@@ -233,7 +233,12 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
-
+		
+		$scope.verifyPreset = function(preset){
+			if($scope.villageSelected.assigned_presets.find(preset.id)){return false}
+			return true
+		}
+		
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets)[0]]
 
