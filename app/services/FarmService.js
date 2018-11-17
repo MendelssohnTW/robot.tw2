@@ -71,7 +71,7 @@ define("robotTW2/services/FarmService", [
 			};
 		}
 		, exec = function (preset , callback) {
-			var grid = loadMap(preset.x, preset.y, $rootScope.data_farm.presets[preset.id].max_journey_distance).grid;
+			var grid = loadMap(preset.x, preset.y, $rootScope.data_farm.presets[preset.preset_id].max_journey_distance).grid;
 			var listaGrid = [];
 			var x = preset.x;
 			var y = preset.y;
@@ -180,8 +180,8 @@ define("robotTW2/services/FarmService", [
 				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
 				var existLista = !lt_b.find(f => f == vill.id);
 				var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
-				var rangePoints = (vill.points >= $rootScope.data_farm.presets[preset.id].min_points_farm && vill.points <= $rootScope.data_farm.presets[preset.id].max_points_farm);
-				var rangeDist = distancia >= $rootScope.data_farm.presets[preset.id].min_journey_distance && distancia <= $rootScope.data_farm.presets[preset.id].max_journey_distance
+				var rangePoints = (vill.points >= $rootScope.data_farm.presets[preset.preset_id].min_points_farm && vill.points <= $rootScope.data_farm.presets[preset.preset_id].max_points_farm);
+				var rangeDist = distancia >= $rootScope.data_farm.presets[preset.preset_id].min_journey_distance && distancia <= $rootScope.data_farm.presets[preset.preset_id].max_journey_distance
 				var existQuadrant = $rootScope.data_villages.villages[preset.village_id].quadrants.includes(quadrant);
 				if(existException && rangePoints && rangeDist && existLista && existBarbara && existQuadrant && isBarbara) {
 					return true
@@ -205,7 +205,7 @@ define("robotTW2/services/FarmService", [
 									var x2 = preset.x;
 									var y2 = preset.y;
 
-									listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_farm.presets[preset.id].min_journey_distance)
+									listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_farm.presets[preset.preset_id].min_journey_distance)
 									listaVil.sort(function (a, b) {
 										Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
 									});
