@@ -54,15 +54,7 @@ define("robotTW2/databases/data_villages", [
 					buildinglevels 			: conf.BUILDINGLEVELS,
 					farm_activate 			: true,
 					assigned_presets		: [],
-					quadrants				: [1, 2, 3, 4],
-					max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
-					min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
-					max_journey_time		: conf.MAX_JOURNEY_TIME,
-					min_journey_time		: conf.MIN_JOURNEY_TIME,
-					max_points_farm			: conf.MAX_POINTS_FARM,
-					min_points_farm			: conf.MIN_POINTS_FARM,
-					max_commands_farm		: conf.MAX_COMMANDS_FARM,
-
+					quadrants				: [1, 2, 3, 4]
 				})
 				data_villages.villages[v] = villagesExtended[v]
 				updated = true;

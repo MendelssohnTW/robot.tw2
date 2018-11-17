@@ -31,6 +31,14 @@ define("robotTW2/databases/data_farm", [
 			if(!data_result) {return}
 			data_result.presets.forEach(function (p) {
 				presets_d[p.id] = angular.copy(p);
+				angular.extend(presets_d[p.id], {					
+					max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
+					min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
+					max_journey_time		: conf.MAX_JOURNEY_TIME,
+					min_journey_time		: conf.MIN_JOURNEY_TIME,
+					max_points_farm			: conf.MAX_POINTS_FARM,
+					min_points_farm			: conf.MIN_POINTS_FARM
+				});
 			});
 
 			if(Object.keys(data_farm.presets).length == 0) {
@@ -47,7 +55,7 @@ define("robotTW2/databases/data_farm", [
 				Object.keys(presets_d).map(function (id) {
 					if(!Object.keys(data_farm.presets).find(f => f == id)) {
 						data_farm.presets[id] = angular.extend({}, presets_d[id])
-						
+
 					}
 				})
 
@@ -56,18 +64,17 @@ define("robotTW2/databases/data_farm", [
 
 	}
 	, dataNew = {
-			auto_initialize				: false, 
+			auto_initialize			: false, 
 			initialized				: false, 
 			activated				: false,
 			hotkey					: conf.HOTKEY.FARM,
 			version					: conf.VERSION.FARM,
 			farm_time				: conf.FARM_TIME,
-			max_journey_time			: conf.MAX_JOURNEY_TIME,
-			min_journey_time			: conf.MIN_JOURNEY_TIME,
-			farm_time_start				: helper.gameTime(),
-			farm_time_stop				: new Date((services.$filter("date")(new Date(helper.gameTime() + 86400000), "yyyy-MM-dd")) + " 06:00:00").getTime(),
-			time_delay_farm				: conf.TIME_DELAY_FARM,
-			list_exceptions				: [],
+			farm_time_start			: helper.gameTime(),
+			farm_time_stop			: new Date((services.$filter("date")(new Date(helper.gameTime() + 86400000), "yyyy-MM-dd")) + " 06:00:00").getTime(),
+			time_delay_farm			: conf.TIME_DELAY_FARM,
+			max_commands_farm		: conf.MAX_COMMANDS_FARM,
+			list_exceptions			: [],
 			presets					: [],
 			commands				: {},
 			name					: "data_farm"
@@ -87,9 +94,9 @@ define("robotTW2/databases/data_farm", [
 			database.set("data_farm", data_farm, true)		
 		}
 	}
-	
+
 	getPst()
-	
+
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, getPst)
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, getPst)
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, getPst)
