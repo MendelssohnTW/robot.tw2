@@ -220,6 +220,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.getPresetSelectedJourneyTime = function () {
 			if(!$scope.presetSelected) {return}
+			if(!$scope.presetSelected.max_journey_time) {return}
 			var tm = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
@@ -229,6 +230,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.getPresetSelectedMinJourneyTime = function () {
 			if(!$scope.presetSelected) {return}
+			if(!$scope.presetSelected.min_journey_time) {return}
 			var tm = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
