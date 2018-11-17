@@ -28,21 +28,19 @@ define("robotTW2/controllers/FarmController", [
 		var update = function () {
 
 //			var dataAtual = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd");
-			var getMillisecondsJourneyTime = helper.readableMilliseconds($rootScope.data_farm.max_journey_time);
-			var getMillisecondsFarmTime = helper.readableMilliseconds($rootScope.data_farm.farm_time);
+//			var getMillisecondsJourneyTime = helper.readableMilliseconds($rootScope.data_farm.max_journey_time);
+//			var getMillisecondsFarmTime = helper.readableMilliseconds($rootScope.data_farm.farm_time);
 
 			if($rootScope.data_farm.farm_time_start < helper.gameTime()) {
 				$rootScope.data_farm.farm_time_start = helper.gameTime();
 			}
 
 			if($rootScope.data_farm.farm_time_stop < $rootScope.data_farm.farm_time_start) {
-				$rootScope.data_farm.farm_time_start
-				$rootScope.data_farm.farm_time_stop = helper.gameTime();
+				$rootScope.data_farm.farm_time_stop = $rootScope.data_farm.farm_time_start + 86400000;
 			}
 
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 
-//			$scope.data_farm = data_farm;
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
