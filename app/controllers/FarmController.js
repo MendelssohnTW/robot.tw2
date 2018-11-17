@@ -194,7 +194,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.addAssignedPreset = function(assigned_preset){
 			if(!$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.find(f => f == assigned_preset)){
-				$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.push(assigned_preset);
+				$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.push(assigned_preset.id);
 			}
 		}
 
