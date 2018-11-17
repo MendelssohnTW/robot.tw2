@@ -56,7 +56,7 @@ define("robotTW2/databases/data_villages", [
 					assigned_presets		: [],
 					quadrants				: [1, 2, 3, 4]
 				})
-				data_villages.villages[v] = villagesExtended[v]
+				angular.extend(data_villages.villages[v], villagesExtended[v])
 				updated = true;
 			}
 		})
