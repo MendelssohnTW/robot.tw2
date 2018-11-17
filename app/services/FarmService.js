@@ -211,9 +211,9 @@ define("robotTW2/services/FarmService", [
 									});
 
 									for (j = 0; j < listaVil.length; j++) {
-										if (check_barbara(listaVil[j], preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].max_commands_farm) {
+										if (check_barbara(listaVil[j], preset, lt_barbaras) && p++ < $rootScope.data_farm.max_commands_farm) {
 											lt_barbaras.push(listaVil[j].id);
-										} else if(p >= $rootScope.data_villages.villages[village_id].max_commands_farm) {
+										} else if(p >= $rootScope.data_farm.max_commands_farm) {
 											p = 0;
 											request = 0;
 											requestReady = 0;
@@ -392,7 +392,7 @@ define("robotTW2/services/FarmService", [
 				}).filter(f => f != false).length;
 
 				if(
-						(countCommands[village_id].length + comandos_length) < $rootScope.data_villages.villages[village_id].max_commands_farm 
+						(countCommands[village_id].length + comandos_length) < $rootScope.data_farm.max_commands_farm 
 						&& $rootScope.data_villages.villages[village_id].farm_activate
 						&& units_analyze(preset_units, aldeia_units)
 						&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
@@ -408,7 +408,7 @@ define("robotTW2/services/FarmService", [
 //							quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
 //							min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
 //							max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
-//							max_commands_farm	 	: $rootScope.data_villages.villages[village_id].max_commands_farm
+//							max_commands_farm	 	: $rootScope.data_farm.max_commands_farm
 
 					};
 					if (!comandos.find(f => f === comando)) {
