@@ -163,7 +163,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
-		$scope.blurJourney = function () {
+		$scope.blurMaxJourney = function () {
 			$scope.presetSelected.max_journey_time = $("#max_journey_time").val()
 		}
 
@@ -218,7 +218,7 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
-		$scope.getPresetSelectedJourneyTime = function () {
+		$scope.getPresetSelectedMaxJourneyTime = function () {
 			if(!$scope.presetSelected) {return}
 			var tm = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 			if(tm.length == 7) {
