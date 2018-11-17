@@ -49,17 +49,17 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blur = function (callback) {
-			$scope.min_journey_time = $("#min_journey_time").val()
-			$scope.max_journey_time = $("#max_journey_time").val()
+//			$scope.min_journey_time = $("#min_journey_time").val()
+//			$scope.max_journey_time = $("#max_journey_time").val()
 			$scope.farm_time = $("#farm_time").val()
 			$scope.inicio_de_farm = $("#inicio_de_farm").val()
 			$scope.termino_de_farm = $("#termino_de_farm").val()
 			$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
 			$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
 
-			if($scope.max_journey_time.length <= 5) {
-				$scope.max_journey_time = $scope.max_journey_time + ":00"
-			}
+//			if($scope.max_journey_time.length <= 5) {
+//				$scope.max_journey_time = $scope.max_journey_time + ":00"
+//			}
 
 			if($scope.farm_time.length <= 5) {
 				$scope.farm_time = $scope.farm_time + ":00"
@@ -79,8 +79,8 @@ define("robotTW2/controllers/FarmController", [
 			document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
 			document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
-			$rootScope.data_farm.min_journey_time = helper.unreadableSeconds($scope.min_journey_time) * 1000
-			$rootScope.data_farm.max_journey_time = helper.unreadableSeconds($scope.max_journey_time) * 1000
+//			$rootScope.data_farm.min_journey_time = helper.unreadableSeconds($scope.min_journey_time) * 1000
+//			$rootScope.data_farm.max_journey_time = helper.unreadableSeconds($scope.max_journey_time) * 1000
 			$rootScope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
 			$rootScope.data_farm.farm_time_start = tempo_escolhido_inicio
 			$rootScope.data_farm.farm_time_stop = tempo_escolhido_termino
@@ -220,7 +220,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.getPresetSelectedJourneyTime = function () {
 			if(!$scope.presetSelected) {return}
-			if(!$scope.presetSelected.max_journey_time) {return}
 			var tm = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
@@ -230,7 +229,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.getPresetSelectedMinJourneyTime = function () {
 			if(!$scope.presetSelected) {return}
-			if(!$scope.presetSelected.min_journey_time) {return}
 			var tm = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
