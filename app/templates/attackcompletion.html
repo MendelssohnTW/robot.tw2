@@ -27,7 +27,7 @@
 				<div id="checkboxFull" class="checkbox box-border-dark">
 					<div tooltip tooltip-content="{{text_full + ' = ' + enviarFull}}"
 						switch-slider="" border="true" enabled="true" value="enviarFull"
-						ng-click="toggleFull(this)" vertical="false" size="'56x28'">
+						vertical="false" size="'56x28'">
 						<div ng-class="{'box-border-dark box-filter': border}"
 							class="box-border-dark box-filter">
 							<div class="switch switch-56x28 switch-horizontal"
@@ -45,7 +45,7 @@
 						class="btn-orange btn-form btn-border no-padding btn-grey"
 						ng-click="sendAttack()" tooltip
 						tooltip-content="{{enviarFull ? text_prog_full : text_prog}}"
-						ng-class="{'btn-grey': (armyEmpty || targetIsNoobProtected || officerOffersVisible) && !btnActive}"><span
+						ng-class="{'btn-grey': (armyEmpty || targetIsNoobProtected || officerOffersVisible) && !enviarFull}"><span
 						class="icon"> <span
 							class="icon-26x26-domination icon-btn-fix"></span><span
 							id="span-text" class="text" >{{schedule}}</span>
