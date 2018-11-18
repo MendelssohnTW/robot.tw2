@@ -15,7 +15,11 @@ define("robotTW2/controllers/DepositController", [
 		var self = this;
 		
 		$scope.blur = function(){
-			$rootScope.data_deposit.interval = helper.unreadableSeconds($("#input-ms").val()) * 1000;
+			var t = $("#input-ms").val();
+			if(t.length <= 5) {
+				t = t + ":00"
+			}
+			$rootScope.data_deposit.interval = helper.unreadableSeconds(t) * 1000;
 		}
 		
 		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
