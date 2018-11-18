@@ -18,7 +18,7 @@ define("robotTW2/controllers/DepositController", [
 			$rootScope.data_deposit.interval = helper.unreadableSeconds($("#input-ms").val()) * 1000;
 		}
 		
-		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval);
+		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
 		
 		return $scope;
 	}
