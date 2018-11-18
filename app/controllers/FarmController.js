@@ -96,8 +96,8 @@ define("robotTW2/controllers/FarmController", [
 		})
 
 		$scope.deleteException = function (id_village) {
-			$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village) 
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village)
+			getDetailsExceptions();
 		}
 
 		$scope.getVillage = function (id) {
