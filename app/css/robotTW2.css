@@ -146,7 +146,11 @@
 	width: 64px;
 }
 
-.robotTW2 .icon .text{
+.robotTW2 .icon .text {
 	position: absolute;
 	padding-left: 30px;
+}
+
+.robotTW2 .win-main {
+	position: relative;
 }
