@@ -11,7 +11,14 @@ define("robotTW2/controllers/DepositController", [
 	){
 	return function DepositController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+		$scope.SAVE = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		var self = this;
+		
+		$scope.blur = function(){
+			$rootScope.data_deposit.interval = $("#input-ms").val();
+		}
+		
+		document.getElementById("input-ms").value = services.$filter("date")(new Date($rootScope.data_deposit.interval), "HH:mm:ss");
 		
 		return $scope;
 	}
