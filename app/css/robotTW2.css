@@ -154,3 +154,8 @@
 .robotTW2 .win-main {
 	position: relative;
 }
+
+.robotTW2 .box-border-dark {
+	width: fit-content;
+	float: right;
+}
