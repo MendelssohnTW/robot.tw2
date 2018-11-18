@@ -48,7 +48,7 @@ define("robotTW2/databases/data_alert", [
 	
 	services.$rootScope.data_alert = data_alert;
 
-	services.$rootScope.$watchCollection("data_alert", function(){
+	services.$rootScope.$watch("data_alert", function(){
 		data_alert.set()
 	}, true)
 
