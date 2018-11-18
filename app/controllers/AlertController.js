@@ -35,6 +35,9 @@ define("robotTW2/controllers/AlertController", [
 				} else {
 					!$scope.members ? $scope.members = {} : $scope.members;
 				}
+				$scope.recalcScrollbar()
+				$scope.setCollapse()
+
 				upDate()
 			}, function(reason) {
 				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Erro ao carregar dados dos membros da tribo"})
