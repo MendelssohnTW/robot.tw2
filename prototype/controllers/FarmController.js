@@ -56,7 +56,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			// reload hotkeys:
-			data.hotkeys = storageService.getItem(presetService.getStorageKey());
+			data.hotkeys = services.storageService.getItem(presetService.getStorageKey());
 		}
 		
 		$scope.updateAssignedPresets = function updateAssignedPresets() {
@@ -258,6 +258,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("assignedSelected", function(){
 			if(!$scope.assignedSelected){return}
 			$scope.presetSelected = data.presets[$scope.assignedSelected];
+			$scope.presetSelected = angular.extend({}, $rootScope.data_farm.presets[$scope.assignedSelected])
 		})
 
 		$scope.setAssignedPreset = function (assigned_preset) {
