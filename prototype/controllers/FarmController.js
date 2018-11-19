@@ -257,7 +257,7 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.$watch("assignedSelected", function(){
 			if(!$scope.assignedSelected){return}
-			$scope.presetSelected = $scope.presets[$scope.assignedSelected];
+			$scope.presetSelected = data.presets[$scope.assignedSelected];
 		})
 
 		$scope.setAssignedPreset = function (assigned_preset) {
@@ -285,11 +285,11 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getName = function(assigned_preset){
-			return $scope.presets[assigned_preset].name;
+			return data.presets[assigned_preset].name;
 		}
 
 		$scope.getIcon = function(assigned_preset){
-			return $scope.presets[assigned_preset].icon;
+			return data.presets[assigned_preset].icon;
 		}
 
 		$scope.getPresetSelectedMaxJourneyTime = function () {
