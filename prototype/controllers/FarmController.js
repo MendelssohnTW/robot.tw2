@@ -86,10 +86,13 @@ define("robotTW2/controllers/FarmController", [
 		/*
 		 * Presets
 		 */
-		$scope.data = {
-				'assignedPresetList': {},
-				'presets'			: services.presetListService.getPresets(),
-				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
+		
+		var updatePresets = function(){
+			$scope.data = {
+					'assignedPresetList': {},
+					'presets'			: services.presetListService.getPresets(),
+					'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
+			}
 		}
 
 		$scope.showPresetDeleteModal = function showPresetDeleteModal(preset) {
@@ -132,7 +135,7 @@ define("robotTW2/controllers/FarmController", [
 				'village_id': $scope.villageSelected.data.villageId,
 				'preset_ids': presetIds
 			}, function(data){
-				if (!$scope.$$phase) $scope.$apply();
+				updatePresets()
 			});
 		}
 		
@@ -228,6 +231,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch('data.presets', triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
+		updatePresets()
 
 		/*
 		 * Villages
