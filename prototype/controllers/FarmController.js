@@ -15,15 +15,64 @@ define("robotTW2/controllers/FarmController", [
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
 
-		var getAssignedPresets = function(vid){
-			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
-			return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
+		var selectedVillageModel = services.modelDataService.getSelectedVillage(),
+		presetIds = [],
+		data = {
+			'assignedPresetList': {},
+			'presets'			: services.presetListService.getPresets(),
+			'hotkeys'			: services.storageService.getItem(presetService.getStorageKey())
 		}
 
-		Object.keys($rootScope.data_villages.villages).map(function(a){
+		$scope.showPresetDeleteModal = function showPresetDeleteModal(preset) {
+			services.presetService.showPresetDeleteModal(preset).then(onDeletePreset);
+		}
+
+		$scope.showPresetEditModal = function showPresetEditModal(preset) {
+			services.presetService.showPresetEditModal(angular.copy(preset));
+		}
+
+		$scope.showPresetInfoModal = function showPresetInfoModal(preset) {
+			services.presetService.showPresetInfoModal(preset);
+		}
+
+		$scope.hasPresets = function hasPresets() {
+			return !!Object.keys(data.presets)[0];
+		}
+
+		$scope.triggerUpdate = function triggerUpdate() {
+			var presetId,
+			assignPreset = function assignPreset(villageId) {
+				data.assignedPresetList[+presetId] = (selectedVillageModel.getId() === villageId);
+			};
+
+			data.assignedPresetList = {};
+
+			for (presetId in data.presets) {
+				data.presets[presetId].assigned_villages.forEach(assignPreset);
+			}
+
+			// reload hotkeys:
+			data.hotkeys = storageService.getItem(presetService.getStorageKey());
+		}
+		
+		$scope.updateAssignedPresets = function updateAssignedPresets() {
+			var presetId;
+
+			presetIds = [];
+
+			for (presetId in data.assignedPresetList) {
+				if (data.assignedPresetList[presetId]) {
+					presetIds.push(presetId);
+				}
+			}
 			
-			$rootScope.data_villages.villages[a].assigned_presets = getAssignedPresets(a);
-		})
+			services.presetService.assignPresets(presetIds);
+		}
+		
+		$scope.$watch('data.presets', triggerUpdate);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
+
+//		$rootScope.data_villages.getAssignedPresets();
 
 		var update = function () {
 
@@ -56,7 +105,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
 
 //			if($scope.max_journey_time.length <= 5) {
-//				$scope.max_journey_time = $scope.max_journey_time + ":00"
+//			$scope.max_journey_time = $scope.max_journey_time + ":00"
 //			}
 
 			if($scope.farm_time.length <= 5) {
@@ -148,7 +197,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("assignedSelected", function(){
 			if(!$scope.assignedSelected){return}
-			$scope.presetSelected = $rootScope.data_farm.presets[$scope.assignedSelected];
+			$scope.presetSelected = $scope.presets[$scope.assignedSelected];
 		})
 
 		$scope.setAssignedPreset = function (assigned_preset) {
@@ -193,6 +242,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.addAssignedPreset = function(assigned_preset){
+
 			if(!$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.find(f => f == assigned_preset)){
 				$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.push(assigned_preset.id);
 			}
@@ -203,7 +253,11 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getName = function(assigned_preset){
-			return $rootScope.data_farm.presets[assigned_preset].name;
+			return $scope.presets[assigned_preset].name;
+		}
+
+		$scope.getIcon = function(assigned_preset){
+			return $scope.presets[assigned_preset].icon;
 		}
 
 		$scope.date_ref = new Date(0);
@@ -233,12 +287,13 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
-		
+
 		$scope.verifyPreset = function(preset){
-			if($scope.villageSelected.assigned_presets.find(f=>f==preset.id)){return false}
+			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
+			if(Object.keys(presetsByVillage[$scope.villageSelected.data.villageId]).find(f=>f==preset.id)){return false}
 			return true
 		}
-		
+
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets)[0]]
 

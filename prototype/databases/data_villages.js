@@ -80,9 +80,17 @@ define("robotTW2/databases/data_villages", [
 		} 
 		database.set("data_villages", data_villages, true)
 	}
+	
 	db_villages.renameVillage = function($event, data){
 		var id = data.village_id;
 		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name
+	}
+	
+	db_villages.getAssignedPresets = function(){
+		Object.keys(data_villages.villages).map(function(a){
+			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
+			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
+		})	
 	}
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
@@ -90,6 +98,8 @@ define("robotTW2/databases/data_villages", [
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
 
 	db_villages.updateVillages()
+
+	
 
 	Object.setPrototypeOf(data_villages, db_villages);
 

@@ -25,6 +25,7 @@ define("robotTW2/databases/data_farm", [
 	db_farm.get = function(){
 		return database.get("data_farm");
 	}
+
 	var getPst = function () {
 		var presets_d = {}
 		services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function (data_result) {
@@ -55,13 +56,20 @@ define("robotTW2/databases/data_farm", [
 				Object.keys(presets_d).map(function (id) {
 					if(!Object.keys(data_farm.presets).find(f => f == id)) {
 						data_farm.presets[id] = angular.extend({}, presets_d[id])
-
 					}
 				})
-
 			}
-		})
 
+			data_farm.presets = Object.keys(data_farm.presets).map(function(preset){
+				return Object.keys(preset.units).map(function(key){
+					return service.modelDataService.getGameData().data.units.map(function(obj, index, array){
+						return preset.units[key] > 0 && key == obj.name ? [obj.speed, preset] : undefined			
+					}).filter(f=>f!=undefined)
+				}).filter(f=>f.length>0)[0][0][1]
+			}).sort(function(a,b){return a[0]-b[0]})
+
+		})
+		database.set("data_farm", data_farm, true)
 	}
 	, dataNew = {
 			auto_initialize			: false, 
@@ -82,11 +90,11 @@ define("robotTW2/databases/data_farm", [
 
 	if(!data_farm){
 		data_farm = dataNew
-		database.set("data_farm", data_farm, true)
+		getPst()
 	} else {
 		if(!data_farm.version || data_farm.version < conf.VERSION.FARM){
 			data_farm = dataNew
-			database.set("data_farm", data_farm, true)
+			getPst()
 			notify("data_farm");
 		} else {
 			if(!data_farm.auto_initialize) data_farm.initialized = !1;
@@ -94,8 +102,6 @@ define("robotTW2/databases/data_farm", [
 			database.set("data_farm", data_farm, true)		
 		}
 	}
-
-	getPst()
 
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, getPst)
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, getPst)

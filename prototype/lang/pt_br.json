@@ -127,6 +127,8 @@
 		"text_max_point": "Pontuação máxima",
 		"text_min_dist": "Distância mínima",
 		"text_max_dist": "Distância máxima",
+		"text_preset": "Predefinições",
+		"text_selection": "Selecionadas",
 		"text_check": "Adicionar aldeia na lista de excessão de farm",
 		"exceptions": "Lista de excessão",
 		"villages_selections": "Ativação / desativação"
