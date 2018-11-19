@@ -1,0 +1,160 @@
+.robotTW2 [class^="span-icon"], [class*="span-icon"] {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+.robotTW2 [class^="with-margin"], [class*="with-margin"] {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+.robotTW2 .center {
+	display: flex;
+	justify-content: center
+}
+
+.robotTW2 .indicator {
+	margin-right: 4px;
+	float: right
+}
+
+.robotTW2 .tr-top {
+	vertical-align: top;
+}
+
+.robotTW2 .name-wrapper {
+	display: inline-block;
+	height: 36px;
+	float: left
+}
+
+.robotTW2 .name-wrapper .name {
+	margin-top: 1px;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 104px
+}
+
+.robotTW2 .name-wrapper .tribe-friend {
+	color: #ff0000;
+	margin-top: 1px;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 104px
+}
+
+.robotTW2 label {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+.robotTW2 .inpt {
+	width: 100px;
+	height: 26px;
+	line-height: 20px;
+	font-size: 12px;
+	min-width: 40px;
+}
+
+.robotTW2 .inpd {
+	width: 120px;
+	height: 26px;
+	line-height: 20px;
+	font-size: 12px;
+	min-width: 40px;
+}
+
+.robotTW2 .selected {
+	color: darkred;
+	font-weight: bold;
+}
+
+.robotTW2 .disabled {
+	color: #d8c836;
+	background: #5f482e;
+}
+
+.robotTW2 .inputcreated {
+	width: 60px;
+	min-width: 40px;
+	font-size: 12px;
+	line-height: 20px;
+	height: 26px;
+}
+
+.robotTW2 .recruit .input-list-collapse {
+	width: 100px;
+	min-width: 70px;
+	height: 26px;
+	line-height: 20px;
+}
+
+.robotTW2 .list-collapse {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.robotTW2 .list-btn a {
+	padding: 5px;
+}
+
+.robotTW2 .low {
+	font-size: 12px;
+}
+
+.robotTW2 .btn-border {
+	font-size: 14px;
+	line-height: 28px;
+	min-width: 150px;
+	height: 28px;
+}
+
+.robotTW2 .quadrant {
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100px;
+	height: 100px;
+}
+
+.robotTW2 .quadrant-selected {
+	background: darkred;
+	color: yellow;
+}
+
+.robotTW2 .quadrant-text {
+	width: 30px;
+	height: 20px;
+	transform: translate(50%, 50%);
+}
+
+.robotTW2 .quadrant-border {
+	border-style: ridge;
+	float: left;
+	width: 50px;
+	height: 50px;
+	font-size: 20px;
+}
+
+.robotTW2 .checkbox {
+	width: 64px;
+}
+
+.robotTW2 .icon .text {
+	position: absolute;
+	padding-left: 30px;
+}
+
+.robotTW2 .win-main {
+	position: relative;
+}
+
+.robotTW2 .box-border-dark {
+	width: fit-content;
+}
