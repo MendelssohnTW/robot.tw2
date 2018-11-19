@@ -327,25 +327,25 @@ define("robotTW2/services/FarmService", [
 				commandQueue.bind(id_command, sendFarm, $rootScope.data_farm, [params])
 				commands_for_send.push({[id_command] : params})
 
-				var unit = 0;
-				var rest = [];
-				for (unit_preset in preset_units) {
-					if (preset_units.hasOwnProperty(unit_preset)) {
-						if(preset_units[unit_preset] > 0) {
-							if (verif_units(unit_preset, aldeia_units)) {
-								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
-									unit = aldeia_units[unit_preset].available - preset_units[unit_preset];
-									rest = aldeia_units;
-									rest[unit_preset].available = unit;
-								} else {
-									rest = aldeia_units;
-									rest[unit_preset].available = 0;
-								}
-							}
-						}
-					}
-				}
-				aldeia_units = rest;
+//				var unit = 0;
+//				var rest = [];
+//				for (unit_preset in preset_units) {
+//					if (preset_units.hasOwnProperty(unit_preset)) {
+//						if(preset_units[unit_preset] > 0) {
+//							if (verif_units(unit_preset, aldeia_units)) {
+//								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
+//									unit = aldeia_units[unit_preset].available - preset_units[unit_preset];
+//									rest = aldeia_units;
+//									rest[unit_preset].available = unit;
+//								} else {
+//									rest = aldeia_units;
+//									rest[unit_preset].available = 0;
+//								}
+//							}
+//						}
+//					}
+//				}
+//				aldeia_units = rest;
 
 			});
 
@@ -394,7 +394,7 @@ define("robotTW2/services/FarmService", [
 				if(
 						(countCommands[village_id].length + comandos_length) < $rootScope.data_farm.max_commands_farm 
 						&& $rootScope.data_villages.villages[village_id].farm_activate
-						&& units_analyze(preset_units, aldeia_units)
+//						&& units_analyze(preset_units, aldeia_units)
 						&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
 				) {
 					var comando = {

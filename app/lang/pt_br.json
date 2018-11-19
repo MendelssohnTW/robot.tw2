@@ -90,6 +90,7 @@
 		"text_ranking": "Ranking"
 	},
 	"recon": {
+		"title": "Reconhecimento de unidades",
 		"archer": "Arqueiro",
 		"doppelsoldner": "Berserker",
 		"axe": "Viking",
