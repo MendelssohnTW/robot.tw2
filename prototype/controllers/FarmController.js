@@ -128,7 +128,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
 		}
 
-		$scope.assignPresets = function assignPresets(presetIds) {
+		$scope.assignPresets = function assignPresets() {
 			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
 				'village_id': $scope.villageSelected.data.villageId,
 				'preset_ids': presetIds
@@ -141,30 +141,18 @@ define("robotTW2/controllers/FarmController", [
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
 
-			presetIds = [];
+			presetIds.push(parseInt(presetId, 10));
 
-			for (key in presetsInVillage) {
-				presetIds.push(parseInt(key, 10));
-			}
-
-			presetIds.push(presetId);
-
-			$scope.assignPresets(presetIds);
+			$scope.assignPresets();
 		}
 
 		$scope.unassignPreset = function unassignPreset(presetId) {
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
 
-			presetIds = [];
-
-			for (key in presetsInVillage) {
-				presetIds.push(parseInt(key, 10));
-			}
-
 			presetIds.splice(presetIds.indexOf(presetId), 1);
 
-			$scope.assignPresets(presetIds);
+			$scope.assignPresets();
 		}
 
 //		$scope.updateAssignedPresets = function updateAssignedPresets() {
