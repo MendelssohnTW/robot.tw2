@@ -142,7 +142,7 @@ define("robotTW2/controllers/FarmController", [
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
 
-			presetIds.push(parseInt(presetId, 10));
+			!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
 
 			$scope.assignPresets();
 		}
