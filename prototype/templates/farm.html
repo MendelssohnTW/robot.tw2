@@ -217,14 +217,54 @@
 								step="1" min="0" max="50" ng-model="data_farm.max_commands_farm"></td>
 
 						</tr>
+
 						<tr>
 							<td class="cell-top cell-right" rowspan="3">
 								<div class="list-collapse">
 									<h5 class="twx-section collapse">{{text_preset}}</h5>
+									
+									<div class="box-text ng-hide"
+											ng-show="!hasPresets();">{{text_alert_preset}}</div>
+										<div ng-show="hasPresets();">
+											<div class="box-text">{{text_title_preset</div>
+											<table class="tbl-border-light tbl-striped" id="preset-list">
+												<colgroup>
+													<col width="*">
+													<col width="75">
+													<col width="146">
+												</colgroup>
+												<tbody>
+													<tr>
+														<th>{{text_name_preset}}</th>
+														<th>{{text_name_state}}</th>
+														<th>{{text_name_action}}</th>
+													</tr>
+													<tr ng-repeat="preset in data.presets" ng-show="data.assignedPresetList[preset.id]">
+														<td class="cell-space">
+															<canvas icon-generator="preset.icon" icon-type="'preset'"
+																class="preset-icon" width="44" height="44"></canvas> <span
+															class="preset-name">{{preset.name}}</span>
+															<div class="hotkey" tooltip="" tooltip-content="{{text_atalho}}" ng-if="data.hotkeys[preset.id]"> {{data.hotkeys[preset.id]}} </div>
+														</td>
+														<td class="cell-space">
+															<div class="btn-orange icon-26x26-arrow-right size-26x26" ng-click="addAssignedPreset(preset)"></div>
+														</td>
+														<td class="cell-space preset-actions"><a href="#"
+															class="btn-orange size-44x44 icon-34x34-unit-info"
+															ng-click="showPresetInfoModal(preset);"></a><a href="#"
+															class="btn-orange size-44x44 icon-34x34-edit"
+															ng-click="showPresetEditModal(preset);"></a><a href="#"
+															class="btn-red size-44x44 icon-34x34-trash"
+															ng-click="showPresetDeleteModal(preset);"></a></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									<!-- 
 									<table
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
-											<tr ng-repeat="preset in data_farm.presets"
+											<tr ng-repeat="preset in presets"
 												ng-show="verifyPreset(preset)">
 												<td><span>{{preset.name}}</span></td>
 												<td>
@@ -239,6 +279,7 @@
 											</tr>
 										</tbody>
 									</table>
+									-->
 								</div>
 							</td>
 							<td class="cell-top cell-right" rowspan="3">
