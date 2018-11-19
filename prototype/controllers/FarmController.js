@@ -41,9 +41,9 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.createPreset = function createPreset() {
 			services.presetService.createPreset();
-		},
+		}
 
-		$scope.triggerUpdate = function triggerUpdate() {
+		var triggerUpdate = function triggerUpdate() {
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
 				data.assignedPresetList[+presetId] = (selectedVillageModel.getId() === villageId);
