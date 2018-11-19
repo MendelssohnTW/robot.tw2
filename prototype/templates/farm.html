@@ -256,7 +256,7 @@
 															{{data.hotkeys[preset.id]}}</div>
 													</td>
 													<td class="cell-space cell-center">
-														<div class="btn-orange icon-42x42-arrow-right size-26x26"
+														<div class="btn-orange icon-42x42-arrow-right size-42x42"
 															ng-click="addAssignedPreset(preset)"></div>
 													</td>
 													<td class="cell-space cell-center preset-actions"><a href="#"
@@ -299,23 +299,31 @@
 									<table
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
-											<tr
-												ng-repeat="assigned_preset in data.presets[villageSelected.data.villageId]"
-												ng-click="setAssignedPreset(assigned_preset)">
-												<td
-													ng-class="{'selected': assignedSelected == assigned_preset}">
-													<span>{{getName(assigned_preset)}} </span>
-												</td>
-												<td>
-													<canvas class="with-margin"
-														icon-generator="getIcon(assigned_preset)"
-														icon-type="'preset'" width="26" height="26"></canvas>
-												</td>
-												<td>
-													<div class="btn-orange icon-26x26-arrow-left size-26x26"
-														ng-click="remAssignedPreset(assigned_preset)"></div>
-												</td>
-											</tr>
+										
+										<tr ng-repeat="preset in data.presets"
+													ng-show="data.assignedPresetList[preset.id]">
+													<td class="cell-space cell-left">
+														<canvas icon-generator="preset.icon" icon-type="'preset'"
+															class="preset-icon" width="44" height="44"></canvas> <span
+														class="preset-name">{{preset.name}}</span>
+														<div class="hotkey" tooltip=""
+															tooltip-content="{{text_atalho}}"
+															ng-if="data.hotkeys[preset.id]">
+															{{data.hotkeys[preset.id]}}</div>
+													</td>
+													<td class="cell-space cell-center">
+														<div class="btn-orange icon-42x42-arrow-left size-42x42"
+															ng-click="remAssignedPreset(preset)"></div>
+													</td>
+													<td class="cell-space cell-center preset-actions"><a href="#"
+														class="btn-orange size-44x44 icon-34x34-unit-info"
+														ng-click="showPresetInfoModal(preset);"></a><a href="#"
+														class="btn-orange size-44x44 icon-34x34-edit"
+														ng-click="showPresetEditModal(preset);"></a><a href="#"
+														class="btn-red size-44x44 icon-34x34-trash"
+														ng-click="showPresetDeleteModal(preset);"></a></td>
+												</tr>
+										
 										</tbody>
 									</table>
 								</div>
