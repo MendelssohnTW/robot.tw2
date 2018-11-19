@@ -25,7 +25,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	"use strict";
 
-	var host = "https://mendelssohntw.github.io/robot.tw2/app";
+	var host = "https://mendelssohntw.github.io/robot.tw2/prototype";
 	var $rootScope				= injector.get('$rootScope');
 	var $templateCache 			= injector.get('$templateCache');
 	var $exceptionHandler 		= injector.get('$exceptionHandler');

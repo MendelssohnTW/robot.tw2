@@ -1,6 +1,6 @@
 window.name = 'NG_ENABLE_DEBUG_INFO!';
 
-var urlServer = "https://mendelssohntw.github.io/robot.tw2/app/";
+var urlServer = "https://mendelssohntw.github.io/robot.tw2/prototype/";
 urlServer = "";
 
 if(!window.loadedJs){
