@@ -21,6 +21,7 @@ define("robotTW2/databases/data_farm", [
 
 	db_farm.set = function(){
 		database.set("data_farm", data_farm, true)
+		services.$rootScope.data_farm = data_farm;
 	}
 	db_farm.get = function(){
 		return database.get("data_farm");
@@ -69,7 +70,6 @@ define("robotTW2/databases/data_farm", [
 			}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
 		})
-		database.set("data_farm", data_farm, true)
 	}
 	, dataNew = {
 			auto_initialize			: false, 
