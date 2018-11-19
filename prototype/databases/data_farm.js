@@ -42,7 +42,7 @@ define("robotTW2/databases/data_farm", [
 				});
 			});
 
-			if(Object.keys(data_farm.presets).length == 0) {
+			if(data_farm.presets == undefined || Object.keys(data_farm.presets).length == 0) {
 				data_farm.presets = presets_d
 			} else {
 				Object.keys(data_farm.presets).map(function (id) {
