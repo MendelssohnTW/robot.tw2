@@ -20,7 +20,7 @@ define("robotTW2/controllers/FarmController", [
 		data = {
 			'assignedPresetList': {},
 			'presets'			: services.presetListService.getPresets(),
-			'hotkeys'			: services.storageService.getItem(presetService.getStorageKey())
+			'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
 		}
 
 		$scope.showPresetDeleteModal = function showPresetDeleteModal(preset) {
@@ -139,43 +139,56 @@ define("robotTW2/controllers/FarmController", [
 			}
 		}
 
-
+/*
+ * Villages
+ */
+		
 		$scope.$watchCollection("village.farm_activate", function () {
 			//data_villages.setListAtivate(c, true)
 		})
-
-		$scope.deleteException = function (id_village) {
-			$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village)
-			getDetailsExceptions();
-		}
 
 		$scope.getVillage = function (id) {
 			var village = services.modelDataService.getSelectedCharacter().getVillage(id);
 			if(!village) {return null}
 			return village.getName() + " - (" + village.getX() + "|" + village.getY() + ")"
 		}
-
-		var my_village_id = services.modelDataService.getSelectedVillage().getId();
-
-		function getDetailsExceptions() {
-			$scope.list_exceptions = {};
-			$rootScope.data_farm.list_exceptions.forEach(function (vid) {
-				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-					'village_id'	: vid,
-					'my_village_id'	: my_village_id,
-					'num_reports'	: 5
-				}, function (data) {
-					$scope.list_exceptions[data.village_id] = {
-							village_name : data.village_name,
-							village_x : data.village_x,
-							village_y : data.village_y
-					}
-					if (!$rootScope.$$phase) $rootScope.$apply();
-				})
-			})
+		
+		$scope.setVillage = function (village) {
+			$scope.villageSelected = village;
+			if (!$scope.$$phase) $scope.$apply();
 		}
 
-		getDetailsExceptions();
+		
+/*
+ * Exceptions
+ */
+		
+//		var my_village_id = services.modelDataService.getSelectedVillage().getId();
+//
+//		$scope.deleteException = function (id_village) {
+//			$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village)
+//			getDetailsExceptions();
+//		}
+//
+//		function getDetailsExceptions() {
+//			$scope.list_exceptions = {};
+//			$rootScope.data_farm.list_exceptions.forEach(function (vid) {
+//				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+//					'village_id'	: vid,
+//					'my_village_id'	: my_village_id,
+//					'num_reports'	: 5
+//				}, function (data) {
+//					$scope.list_exceptions[data.village_id] = {
+//							village_name : data.village_name,
+//							village_x : data.village_x,
+//							village_y : data.village_y
+//					}
+//					if (!$rootScope.$$phase) $rootScope.$apply();
+//				})
+//			})
+//		}
+//
+//		getDetailsExceptions();
 
 		$scope.start_farm = function () {
 			$scope.blur(function () {
@@ -195,29 +208,12 @@ define("robotTW2/controllers/FarmController", [
 			$scope.paused = !1;
 		}
 
-		$scope.$watch("assignedSelected", function(){
-			if(!$scope.assignedSelected){return}
-			$scope.presetSelected = $scope.presets[$scope.assignedSelected];
-		})
-
-		$scope.setAssignedPreset = function (assigned_preset) {
-			$scope.assignedSelected = assigned_preset;
-			if (!$scope.$$phase) $scope.$apply();
-		}
-
-		$scope.setVillage = function (village) {
-			$scope.villageSelected = village;
-			if (!$scope.$$phase) $scope.$apply();
-		}
-
-		$scope.blurMaxJourney = function () {
-			$scope.presetSelected.max_journey_time = $("#max_journey_time").val()
-		}
-
-		$scope.blurMinJourney = function () {
-			$scope.presetSelected.min_journey_time = $("#min_journey_time").val()
-		}
-
+		
+		
+/*
+ * Quadrants
+ */
+		
 		var addQuadrant = function(pos){
 			$scope.villageSelected.quadrants.push(pos)
 			$scope.villageSelected.quadrants.sort(function(a,b){return a-b})
@@ -240,6 +236,38 @@ define("robotTW2/controllers/FarmController", [
 		$scope.getQuadrant = function (pos) {
 			return $scope.villageSelected.quadrants.includes(pos)
 		}
+		
+		$scope.date_ref = new Date(0);
+
+		$scope.getFarmTime = function () {
+			var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
+			if(tm.length == 7) {
+				tm = "0" + tm;
+			}
+			return tm;
+		}
+
+/*
+ * Presets
+ */
+		
+		$scope.$watch("assignedSelected", function(){
+			if(!$scope.assignedSelected){return}
+			$scope.presetSelected = $scope.presets[$scope.assignedSelected];
+		})
+
+		$scope.setAssignedPreset = function (assigned_preset) {
+			$scope.assignedSelected = assigned_preset;
+			if (!$scope.$$phase) $scope.$apply();
+		}
+
+		$scope.blurMaxJourney = function () {
+			$scope.presetSelected.max_journey_time = $("#max_journey_time").val()
+		}
+
+		$scope.blurMinJourney = function () {
+			$scope.presetSelected.min_journey_time = $("#min_journey_time").val()
+		}
 
 		$scope.addAssignedPreset = function(assigned_preset){
 
@@ -258,16 +286,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.getIcon = function(assigned_preset){
 			return $scope.presets[assigned_preset].icon;
-		}
-
-		$scope.date_ref = new Date(0);
-
-		$scope.getFarmTime = function () {
-			var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
-			if(tm.length == 7) {
-				tm = "0" + tm;
-			}
-			return tm;
 		}
 
 		$scope.getPresetSelectedMaxJourneyTime = function () {
