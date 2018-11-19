@@ -223,19 +223,15 @@ define("robotTW2/controllers/FarmController", [
 		 * Villages
 		 */
 
-		$scope.$watchCollection("village.farm_activate", function () {
-			//data_villages.setListAtivate(c, true)
-		})
-
 		$scope.getVillage = function (id) {
 			var village = services.modelDataService.getSelectedCharacter().getVillage(id);
 			if(!village) {return null}
-			return village.getName() + " - (" + village.getX() + "|" + village.getY() + ")"
+			return village.getName() + " / (" + village.getX() + "|" + village.getY() + ")"
 		}
 
 		$scope.setVillage = function (village) {
 			$scope.villageSelected = village;
-			if (!$scope.$$phase) $scope.$apply();
+			triggerUpdate()
 		}
 
 
