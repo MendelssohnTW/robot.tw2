@@ -139,6 +139,8 @@ define("robotTW2/controllers/FarmController", [
 		$scope.assignPreset = function assignPreset(presetId) {
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
+			
+			presetIds = [];
 
 			for (key in presetsInVillage) {
 				presetIds.push(parseInt(key, 10));
@@ -152,6 +154,8 @@ define("robotTW2/controllers/FarmController", [
 		$scope.unassignPreset = function unassignPreset(presetId) {
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
+			
+			presetIds = [];
 
 			for (key in presetsInVillage) {
 				presetIds.push(parseInt(key, 10));
@@ -162,30 +166,25 @@ define("robotTW2/controllers/FarmController", [
 			$scope.assignPresets(presetIds);
 		}
 
-		$scope.updateAssignedPresets = function updateAssignedPresets() {
-			var presetId;
-
-			presetIds = [];
-
-			for (presetId in $scope.data.assignedPresetList) {
-				if ($scope.data.assignedPresetList[presetId]) {
-					presetIds.push(presetId);
-				}
-			}
-
-			services.presetService.assignPresets(presetIds);
-		}
-
-		$scope.$watch("assignedSelected", function(){
-			if(!$scope.assignedSelected){return}
-			$scope.presetSelected = $scope.data.presets[$scope.assignedSelected];
-			$scope.presetSelected = angular.extend({}, $rootScope.data_farm.presets[$scope.assignedSelected])
-		})
-
-//		$scope.setAssignedSelected = function (assigned_preset) {
-//			$scope.assignedSelected = assigned_preset;
-//			if (!$scope.$$phase) $scope.$apply();
+//		$scope.updateAssignedPresets = function updateAssignedPresets() {
+//			var presetId;
+//
+//			presetIds = [];
+//
+//			for (presetId in $scope.data.assignedPresetList) {
+//				if ($scope.data.assignedPresetList[presetId]) {
+//					presetIds.push(presetId);
+//				}
+//			}
+//
+//			services.presetService.assignPresets(presetIds);
 //		}
+
+
+		$scope.setAssignedSelected = function (assigned_preset) {
+			$scope.assignedSelected = assigned_preset;
+			if (!$scope.$$phase) $scope.$apply();
+		}
 
 		$scope.blurMaxJourney = function () {
 			$scope.presetSelected.max_journey_time = $("#max_journey_time").val()
@@ -221,6 +220,11 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
+		$scope.$watch("assignedSelected", function(){
+			if(!$scope.assignedSelected){return}
+			$scope.presetSelected = $scope.data.presets[$scope.assignedSelected];
+			$scope.presetSelected = angular.extend({}, $rootScope.data_farm.presets[$scope.assignedSelected])
+		})
 		$scope.$watch('data.presets', triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
