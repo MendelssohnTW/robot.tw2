@@ -65,8 +65,8 @@ define("robotTW2/databases/data_farm", [
 					return services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 						return data_farm.presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, data_farm.presets[preset]] : undefined			
 					}).filter(f=>f!=undefined)
-				}).filter(f=>f.length>0)[0][0][1]
-			}).sort(function(a,b){return a[0]-b[0]})
+				}).filter(f=>f.length>0)[0][0]
+			}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
 		})
 		database.set("data_farm", data_farm, true)
