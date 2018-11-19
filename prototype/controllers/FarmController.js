@@ -16,8 +16,9 @@ define("robotTW2/controllers/FarmController", [
 		var self = this;
 
 		var selectedVillageModel = services.modelDataService.getSelectedVillage(),
-		presetIds = [],
-		data = {
+		presetIds = [];
+		
+		$scope.data = {
 			'assignedPresetList': {},
 			'presets'			: services.presetListService.getPresets(),
 			'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
@@ -36,7 +37,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.hasPresets = function hasPresets() {
-			return !!Object.keys(data.presets)[0];
+			return !!Object.keys($scope.data.presets)[0];
 		}
 		
 		$scope.createPreset = function createPreset() {
@@ -46,17 +47,17 @@ define("robotTW2/controllers/FarmController", [
 		var triggerUpdate = function triggerUpdate() {
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
-				data.assignedPresetList[+presetId] = (selectedVillageModel.getId() === villageId);
+				$scope.data.assignedPresetList[+presetId] = (selectedVillageModel.getId() === villageId);
 			};
 
-			data.assignedPresetList = {};
+			$scope.data.assignedPresetList = {};
 
-			for (presetId in data.presets) {
-				data.presets[presetId].assigned_villages.forEach(assignPreset);
+			for (presetId in $scope.data.presets) {
+				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
 			}
 
 			// reload hotkeys:
-			data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
+			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
 		}
 		
 		$scope.updateAssignedPresets = function updateAssignedPresets() {
@@ -64,8 +65,8 @@ define("robotTW2/controllers/FarmController", [
 
 			presetIds = [];
 
-			for (presetId in data.assignedPresetList) {
-				if (data.assignedPresetList[presetId]) {
+			for (presetId in $scope.data.assignedPresetList) {
+				if ($scope.data.assignedPresetList[presetId]) {
 					presetIds.push(presetId);
 				}
 			}
@@ -257,7 +258,7 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.$watch("assignedSelected", function(){
 			if(!$scope.assignedSelected){return}
-			$scope.presetSelected = data.presets[$scope.assignedSelected];
+			$scope.presetSelected = $scope.data.presets[$scope.assignedSelected];
 			$scope.presetSelected = angular.extend({}, $rootScope.data_farm.presets[$scope.assignedSelected])
 		})
 
@@ -286,11 +287,11 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getName = function(assigned_preset){
-			return data.presets[assigned_preset].name;
+			return $scope.data.presets[assigned_preset].name;
 		}
 
 		$scope.getIcon = function(assigned_preset){
-			return data.presets[assigned_preset].icon;
+			return $scope.data.presets[assigned_preset].icon;
 		}
 
 		$scope.getPresetSelectedMaxJourneyTime = function () {
