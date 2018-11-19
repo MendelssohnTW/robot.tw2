@@ -38,6 +38,10 @@ define("robotTW2/controllers/FarmController", [
 		$scope.hasPresets = function hasPresets() {
 			return !!Object.keys(data.presets)[0];
 		}
+		
+		$scope.createPreset = function createPreset() {
+			services.presetService.createPreset();
+		},
 
 		$scope.triggerUpdate = function triggerUpdate() {
 			var presetId,
