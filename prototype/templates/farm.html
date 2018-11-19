@@ -138,7 +138,7 @@
 						<col width="100px">
 						<col width="150px">
 						<col width="200px">
-						<col width="100px">
+						<col width="200px">
 						<col width="*">
 					</colgroup>
 					<tbody>
@@ -219,7 +219,7 @@
 						</tr>
 
 						<tr>
-							<td class="cell-top cell-right" rowspan="3" colspan="4">
+							<td class="cell-top cell-right" rowspan="3" colspan="3">
 								<div class="list-collapse">
 									<h5 class="twx-section collapse">{{text_preset}}</h5>
 
@@ -249,15 +249,15 @@
 													<td class="cell-space cell-left">
 														<canvas icon-generator="preset.icon" icon-type="'preset'"
 															class="preset-icon" width="44" height="44"></canvas> <span
-														class="preset-name">{{preset.name}}</span>
+														 class="preset-name">{{preset.name}}</span>
 														<div class="hotkey" tooltip=""
 															tooltip-content="{{text_atalho}}"
 															ng-if="data.hotkeys[preset.id]">
 															{{data.hotkeys[preset.id]}}</div>
 													</td>
 													<td class="cell-space cell-center">
-														<div class="btn-orange icon-42x42-arrow-right size-42x42"
-															ng-click="addAssignedPreset(preset)"></div>
+														<div class="btn-orange icon-26x26-arrow-right size-42x42"
+															ng-click="assignPreset(preset.id)"></div>
 													</td>
 													<td class="cell-space cell-center preset-actions"><a href="#"
 														class="btn-orange size-44x44 icon-34x34-unit-info"
@@ -270,30 +270,10 @@
 											</tbody>
 										</table>
 									</div>
-									<!-- 
-									<table
-										class="tbl-border-light tbl-striped tbl-content tbl-hover">
-										<tbody>
-											<tr ng-repeat="preset in presets"
-												ng-show="verifyPreset(preset)">
-												<td><span>{{preset.name}}</span></td>
-												<td>
-													<canvas class="with-margin" icon-generator="preset.icon"
-														icon-type="'preset'" width="26" height="26"></canvas>
-												</td>
-												<td>
-													<div class="btn-orange icon-26x26-arrow-right size-26x26"
-														ng-click="addAssignedPreset(preset)"></div>
-												</td>
-
-											</tr>
-										</tbody>
-									</table>
-									-->
 								</div>
 							</td>
 							
-							<td class="cell-top cell-right" rowspan="3">
+							<td class="cell-top cell-right" rowspan="3" colspan="2">
 								<div class="list-collapse">
 									<h5 class="twx-section collapse">{{text_selection}}</h5>
 									<table
@@ -305,15 +285,15 @@
 													<td class="cell-space cell-left">
 														<canvas icon-generator="preset.icon" icon-type="'preset'"
 															class="preset-icon" width="44" height="44"></canvas> <span
-														class="preset-name">{{preset.name}}</span>
+														ng-click="setAssignedSelected(preset.id)" class="preset-name">{{preset.name}}</span>
 														<div class="hotkey" tooltip=""
 															tooltip-content="{{text_atalho}}"
 															ng-if="data.hotkeys[preset.id]">
 															{{data.hotkeys[preset.id]}}</div>
 													</td>
 													<td class="cell-space cell-center">
-														<div class="btn-orange icon-42x42-arrow-left size-42x42"
-															ng-click="remAssignedPreset(preset)"></div>
+														<div class="btn-orange icon-26x26-arrow-left size-42x42"
+															ng-click="unassignPreset(preset.id)"></div>
 													</td>
 													<td class="cell-space cell-center preset-actions"><a href="#"
 														class="btn-orange size-44x44 icon-34x34-unit-info"
