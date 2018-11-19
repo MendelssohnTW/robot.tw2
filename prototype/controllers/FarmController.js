@@ -56,7 +56,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			// reload hotkeys:
-			data.hotkeys = services.storageService.getItem(presetService.getStorageKey());
+			data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
 		}
 		
 		$scope.updateAssignedPresets = function updateAssignedPresets() {
