@@ -61,9 +61,9 @@ define("robotTW2/databases/data_farm", [
 			}
 
 			data_farm.presets = Object.keys(data_farm.presets).map(function(preset){
-				return Object.keys(preset.units).map(function(key){
-					return service.modelDataService.getGameData().data.units.map(function(obj, index, array){
-						return preset.units[key] > 0 && key == obj.name ? [obj.speed, preset] : undefined			
+				return Object.keys(data_farm.presets[preset].units).map(function(key){
+					return services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+						return data_farm.presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, data_farm.presets[preset]] : undefined			
 					}).filter(f=>f!=undefined)
 				}).filter(f=>f.length>0)[0][0][1]
 			}).sort(function(a,b){return a[0]-b[0]})
