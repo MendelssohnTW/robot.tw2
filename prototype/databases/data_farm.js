@@ -21,7 +21,6 @@ define("robotTW2/databases/data_farm", [
 
 	db_farm.set = function(){
 		database.set("data_farm", data_farm, true)
-		services.$rootScope.data_farm = data_farm;
 	}
 	db_farm.get = function(){
 		return database.get("data_farm");
@@ -109,7 +108,8 @@ define("robotTW2/databases/data_farm", [
 
 	Object.setPrototypeOf(data_farm, db_farm);
 
-	services.$rootScope.data_farm = data_farm;
+//	services.$rootScope.data_farm = data_farm;
+	angular.extend(services.$rootScope.data_farm, data_farm);
 
 	services.$rootScope.$watch("data_farm", function(){
 		data_farm.set()
