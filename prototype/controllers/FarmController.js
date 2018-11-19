@@ -126,6 +126,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
+			angular.extend($rootScope.data_farm.presets, $scope.data.presets)
 		}
 
 		$scope.assignPresets = function assignPresets() {
