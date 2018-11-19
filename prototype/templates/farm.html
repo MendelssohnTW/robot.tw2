@@ -219,7 +219,7 @@
 						</tr>
 
 						<tr>
-							<td class="cell-top cell-right" rowspan="3">
+							<td class="cell-top cell-right" rowspan="3" colspan="4">
 								<div class="list-collapse">
 									<h5 class="twx-section collapse">{{text_preset}}</h5>
 
@@ -232,22 +232,21 @@
 										</ul>
 									</div>
 									<div ng-show="hasPresets();">
-										<div class="box-text">{{text_title_preset}}</div>
 										<table class="tbl-border-light tbl-striped" id="preset-list">
 											<colgroup>
 												<col width="*">
-												<col width="75">
+												<col width="46">
 												<col width="146">
 											</colgroup>
 											<tbody>
 												<tr>
-													<th>{{text_name_preset}}</th>
-													<th>{{text_name_state}}</th>
-													<th>{{text_name_action}}</th>
+													<th class="cell-center">{{text_name_preset}}</th>
+													<th class="cell-center">{{text_name_state}}</th>
+													<th class="cell-center">{{text_name_action}}</th>
 												</tr>
 												<tr ng-repeat="preset in data.presets"
 													ng-show="!data.assignedPresetList[preset.id]">
-													<td class="cell-space">
+													<td class="cell-space cell-left">
 														<canvas icon-generator="preset.icon" icon-type="'preset'"
 															class="preset-icon" width="44" height="44"></canvas> <span
 														class="preset-name">{{preset.name}}</span>
@@ -256,11 +255,11 @@
 															ng-if="data.hotkeys[preset.id]">
 															{{data.hotkeys[preset.id]}}</div>
 													</td>
-													<td class="cell-space">
-														<div class="btn-orange icon-26x26-arrow-right size-26x26"
+													<td class="cell-space cell-center">
+														<div class="btn-orange icon-42x42-arrow-right size-26x26"
 															ng-click="addAssignedPreset(preset)"></div>
 													</td>
-													<td class="cell-space preset-actions"><a href="#"
+													<td class="cell-space cell-center preset-actions"><a href="#"
 														class="btn-orange size-44x44 icon-34x34-unit-info"
 														ng-click="showPresetInfoModal(preset);"></a><a href="#"
 														class="btn-orange size-44x44 icon-34x34-edit"
@@ -293,6 +292,7 @@
 									-->
 								</div>
 							</td>
+							
 							<td class="cell-top cell-right" rowspan="3">
 								<div class="list-collapse">
 									<h5 class="twx-section collapse">{{text_selection}}</h5>
@@ -300,7 +300,7 @@
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
 											<tr
-												ng-repeat="assigned_preset in villageSelected.assigned_presets"
+												ng-repeat="assigned_preset in data.presets[villageSelected.data.villageId]"
 												ng-click="setAssignedPreset(assigned_preset)">
 												<td
 													ng-class="{'selected': assignedSelected == assigned_preset}">

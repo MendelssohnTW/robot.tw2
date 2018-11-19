@@ -47,7 +47,7 @@ define("robotTW2/controllers/FarmController", [
 		var triggerUpdate = function triggerUpdate() {
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
-				$scope.data.assignedPresetList[+presetId] = (selectedVillageModel.getId() === villageId);
+				$scope.data.assignedPresetList[+presetId] = ($scope.villageSelected.data.villageId === villageId);
 			};
 
 			$scope.data.assignedPresetList = {};
@@ -276,7 +276,6 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.addAssignedPreset = function(assigned_preset){
-
 			if(!$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.find(f => f == assigned_preset)){
 				$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.push(assigned_preset.id);
 			}
@@ -312,11 +311,11 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
-		$scope.verifyPreset = function(preset){
-			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
-			if(Object.keys(presetsByVillage[$scope.villageSelected.data.villageId]).find(f=>f==preset.id)){return false}
-			return true
-		}
+//		$scope.verifyPreset = function(preset){
+//			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
+//			if(Object.keys(presetsByVillage[$scope.villageSelected.data.villageId]).find(f=>f==preset.id)){return false}
+//			return true
+//		}
 
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets)[0]]
@@ -330,6 +329,9 @@ define("robotTW2/controllers/FarmController", [
 //		d.setAttribute("style", "min-width:80px")
 //		})
 		update()
+		
+		$scope.recalcScrollbar();
+		$scope.setCollapse();
 
 		return $scope;
 	}
