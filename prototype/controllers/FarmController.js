@@ -86,13 +86,11 @@ define("robotTW2/controllers/FarmController", [
 		/*
 		 * Presets
 		 */
-		
-		var updatePresets = function(){
-			$scope.data = {
-					'assignedPresetList': {},
-					'presets'			: services.presetListService.getPresets(),
-					'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
-			}
+
+		$scope.data = {
+				'assignedPresetList': {},
+				'presets'			: services.presetListService.getPresets(),
+				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
 		}
 
 		$scope.showPresetDeleteModal = function showPresetDeleteModal(preset) {
@@ -135,14 +133,14 @@ define("robotTW2/controllers/FarmController", [
 				'village_id': $scope.villageSelected.data.villageId,
 				'preset_ids': presetIds
 			}, function(data){
-				updatePresets()
+				triggerUpdate()
 			});
 		}
-		
+
 		$scope.assignPreset = function assignPreset(presetId) {
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
-			
+
 			presetIds = [];
 
 			for (key in presetsInVillage) {
@@ -157,7 +155,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.unassignPreset = function unassignPreset(presetId) {
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
-			
+
 			presetIds = [];
 
 			for (key in presetsInVillage) {
@@ -170,17 +168,17 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 //		$scope.updateAssignedPresets = function updateAssignedPresets() {
-//			var presetId;
-//
-//			presetIds = [];
-//
-//			for (presetId in $scope.data.assignedPresetList) {
-//				if ($scope.data.assignedPresetList[presetId]) {
-//					presetIds.push(presetId);
-//				}
-//			}
-//
-//			services.presetService.assignPresets(presetIds);
+//		var presetId;
+
+//		presetIds = [];
+
+//		for (presetId in $scope.data.assignedPresetList) {
+//		if ($scope.data.assignedPresetList[presetId]) {
+//		presetIds.push(presetId);
+//		}
+//		}
+
+//		services.presetService.assignPresets(presetIds);
 //		}
 
 
@@ -231,7 +229,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch('data.presets', triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
-		updatePresets()
 
 		/*
 		 * Villages
