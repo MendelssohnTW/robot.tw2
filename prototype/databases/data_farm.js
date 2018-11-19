@@ -60,7 +60,7 @@ define("robotTW2/databases/data_farm", [
 				})
 			}
 
-			data_farm.presets = Object.keys(data_farm.presets).map(function(preset){
+			return Object.keys(data_farm.presets).map(function(preset){
 				return Object.keys(data_farm.presets[preset].units).map(function(key){
 					return services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 						return data_farm.presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, data_farm.presets[preset]] : undefined			
@@ -82,18 +82,16 @@ define("robotTW2/databases/data_farm", [
 			time_delay_farm			: conf.TIME_DELAY_FARM,
 			max_commands_farm		: conf.MAX_COMMANDS_FARM,
 			list_exceptions			: [],
-			presets					: [],
+			presets					: getPst(),
 			commands				: {},
 			name					: "data_farm"
 	}
 
 	if(!data_farm){
 		data_farm = dataNew
-		getPst()
 	} else {
 		if(!data_farm.version || data_farm.version < conf.VERSION.FARM){
 			data_farm = dataNew
-			getPst()
 			notify("data_farm");
 		} else {
 			if(!data_farm.auto_initialize) data_farm.initialized = !1;
