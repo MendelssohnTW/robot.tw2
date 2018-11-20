@@ -30,8 +30,8 @@ define("robotTW2/databases/data_villages", [
 //			min_points_farm			: conf.MIN_POINTS_FARM,
 //			quadrants				: [1, 2, 3, 4]
 //			});
-			if(!data_villages.villages[v].presets[pst.id].load){
-				angular.extend(pst, {
+			if(!data_villages.villages[v].presets[pst].load){
+				angular.extend(presets_d[pst], {
 					load					: true,
 					max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
 					min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
@@ -47,14 +47,14 @@ define("robotTW2/databases/data_villages", [
 				if(!Object.keys(presets_d).find(f => f == id)) {
 					delete data_villages.villages[v].presets[id]
 				} else {
-					angular.merge(data_villages.villages[v].presets[id], pst)
+					angular.merge(data_villages.villages[v].presets[id], presets_d[pst])
 				}
 			})
 
 			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst.id)) {
-				data_villages.villages[v].presets[id] = angular.extend({}, pst)
+				data_villages.villages[v].presets[id] = angular.extend({}, presets_d[pst])
 			} else {
-				angular.merge(data_villages.villages[v].presets[id], pst)
+				angular.merge(data_villages.villages[v].presets[id], presets_d[pst])
 			}
 
 
