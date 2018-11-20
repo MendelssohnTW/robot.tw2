@@ -51,10 +51,10 @@ define("robotTW2/databases/data_villages", [
 				}
 			})
 
-			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst.id)) {
-				data_villages.villages[v].presets[id] = angular.extend({}, presets_d[pst])
+			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst)) {
+				data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
 			} else {
-				angular.merge(data_villages.villages[v].presets[id], presets_d[pst])
+				angular.merge(data_villages.villages[v].presets[pst], presets_d[pst])
 			}
 
 
