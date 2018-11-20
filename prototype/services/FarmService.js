@@ -354,12 +354,26 @@ define("robotTW2/services/FarmService", [
 		, execute_assigned = function (presets, callback) {
 			var commands_for_presets = []
 			var rallyPointSpeedBonusVsBarbarians = modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians();
+
+			if(!presets.length) {
+				callback(commands_for_presets)
+				return	
+			}
+
+			var presets_order = Object.keys(presets).map(function(preset){
+				return Object.keys(presets[preset].units).map(function(key){
+					return modelDataService.getGameData().data.units.map(function(obj, index, array){
+						return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
+					}).filter(f=>f!=undefined)
+				}).filter(f=>f.length>0)[0][0]
+			}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
+
 			function n() {
 				if(!presets.length) {
 					callback(commands_for_presets)
 					return	
 				}
-				var preset = presets.shift();
+				var preset = presets_order.shift();
 				if(!preset) {
 					n();
 					return;
@@ -478,14 +492,14 @@ define("robotTW2/services/FarmService", [
 //				}
 
 //				var getAssignedPresets = function(vid){
-//					var presetsByVillage = robotTW2.services.modelDataService.getPresetList().presetsByVillage;
-//					return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
+//				var presetsByVillage = robotTW2.services.modelDataService.getPresetList().presetsByVillage;
+//				return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
 //				}
-//
+
 //				Object.keys($rootScope.data_villages.villages).map(function(a){
-//					$rootScope.data_villages.villages[a].assigned_presets = getAssignedPresets(a);
+//				$rootScope.data_villages.villages[a].assigned_presets = getAssignedPresets(a);
 //				})
-				
+
 				$rootScope.data_villages.getAssignedPresets();
 
 				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
