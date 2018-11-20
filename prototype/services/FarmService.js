@@ -579,8 +579,11 @@ define("robotTW2/services/FarmService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 			$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_FARM, {name:"FARM"})
 		}
-		, updatePst = function(data){
+		, updatePst = function($event, data, a, b){
+			console.log($event)
 			console.log(data)
+			console.log(a)
+			console.log(b)
 		}
 
 		$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, updatePst)
