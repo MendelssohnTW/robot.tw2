@@ -11,12 +11,27 @@ define("robotTW2/databases/data_villages", [
 	){
 
 	var getPst = function (v) {
-		var presets_d = {}
-		services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function (data_result) {
-			if(!data_result) {return}
-			data_result.presets.forEach(function (p) {
-				presets_d[p.id] = angular.copy(p);
-				angular.extend(presets_d[p.id], {					
+
+		var presets_d = services.presetListService.getPresetsForVillageId(v)
+
+		if(!Object.keys(presets_d).length) {return}
+
+		if(data_villages.villages[v].presets == undefined){data_villages.villages[v].presets = {}}
+
+		Object.keys(presets_d).forEach(function (pst) {
+//			presets_d[pst.id] = angular.copy(pst);
+//			angular.extend(presets_d[pst.id], {					
+//			max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
+//			min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
+//			max_journey_time		: conf.MAX_JOURNEY_TIME,
+//			min_journey_time		: conf.MIN_JOURNEY_TIME,
+//			max_points_farm			: conf.MAX_POINTS_FARM,
+//			min_points_farm			: conf.MIN_POINTS_FARM,
+//			quadrants				: [1, 2, 3, 4]
+//			});
+			if(!data_villages.villages[v].presets[pst.id].load){
+				angular.extend(pst, {
+					load					: true,
 					max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
 					min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
 					max_journey_time		: conf.MAX_JOURNEY_TIME,
@@ -25,34 +40,50 @@ define("robotTW2/databases/data_villages", [
 					min_points_farm			: conf.MIN_POINTS_FARM,
 					quadrants				: [1, 2, 3, 4]
 				});
-			});
-
-			if(data_villages.villages[v].presets == undefined || Object.keys(data_villages.villages[v].presets).length == 0) {
-				data_villages.villages[v].presets = presets_d
-			} else {
-				Object.keys(data_villages.villages[v].presets).map(function (id) {
-					if(!Object.keys(presets_d).find(f => f == id)) {
-						delete data_villages.villages[v].presets[id]
-					} else {
-						data_villages.villages[v].presets[id] = angular.extend({}, presets_d[id])
-					}
-				})
-
-				Object.keys(presets_d).map(function (id) {
-					if(!Object.keys(data_villages.villages[v].presets).find(f => f == id)) {
-						data_villages.villages[v].presets[id] = angular.extend({}, presets_d[id])
-					}
-				})
 			}
-			
-			return data_villages.villages[v].presets;
 
-		})
+			Object.keys(data_villages.villages[v].presets).map(function (id) {
+				if(!Object.keys(presets_d).find(f => f == id)) {
+					delete data_villages.villages[v].presets[id]
+				} else {
+					angular.merge(data_villages.villages[v].presets[id], pst)
+				}
+			})
+
+			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst.id)) {
+				data_villages.villages[v].presets[id] = angular.extend({}, pst)
+			} else {
+				angular.merge(data_villages.villages[v].presets[id], pst)
+			}
+
+
+		});
+
+		if(data_villages.villages[v].presets == undefined || Object.keys(data_villages.villages[v].presets).length == 0) {
+			data_villages.villages[v].presets = presets_d
+		} else {
+			Object.keys(data_villages.villages[v].presets).map(function (id) {
+				if(!Object.keys(presets_d).find(f => f == id)) {
+					delete data_villages.villages[v].presets[id]
+				} else {
+					data_villages.villages[v].presets[id] = angular.extend({}, presets_d[id])
+				}
+			})
+
+			Object.keys(presets_d).map(function (id) {
+				if(!Object.keys(data_villages.villages[v].presets).find(f => f == id)) {
+					data_villages.villages[v].presets[id] = angular.extend({}, presets_d[id])
+				}
+			})
+		}
+
+		return data_villages.villages[v].presets;
+
 	}
 	, data_villages = database.get("data_villages") || {}
 	, db_villages = {}
-	
-	
+
+
 	db_villages.set = function(){
 		database.set("data_villages", data_villages, true)
 	}
@@ -119,23 +150,23 @@ define("robotTW2/databases/data_villages", [
 		} 
 		database.set("data_villages", data_villages, true)
 	}
-	
+
 	db_villages.renameVillage = function($event, data){
 		var id = data.village_id;
 		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name
 	}
-	
+
 	db_villages.getAssignedPresets = function(){
 		Object.keys(data_villages.villages).map(function(a){
 			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
 		})	
 	}
-	
+
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
-	
+
 	db_villages.updateVillages()
 
 	Object.setPrototypeOf(data_villages, db_villages);
