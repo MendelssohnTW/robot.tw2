@@ -388,8 +388,6 @@ define("robotTW2/services/FarmService", [
 					}).filter(f=>f.length>0)[0][0]
 				}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
-
-
 				function n() {
 					if(!presets_order.length) {
 						callback(commands_for_presets)
@@ -441,6 +439,7 @@ define("robotTW2/services/FarmService", [
 							commands_for_presets.push(comando);
 						};
 					};
+					n();
 				};
 				n()	
 			})
