@@ -227,6 +227,7 @@ define("robotTW2/services/FarmService", [
 											lt_barbaras.push(listaVil[j].id);
 										} else{
 											T();
+											return
 										}
 									}
 								} 
@@ -245,13 +246,7 @@ define("robotTW2/services/FarmService", [
 					}
 				}, request * 2000)
 			}
-			if (listaGrid.length > 0 && p < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
-				T();
-			} else {
-				request = 0;
-				requestReady = 0;
-				callback([]);
-			}
+			T();
 		}
 		, verif_units = function (obj_search, lista) {
 			for(obj in lista) {
