@@ -391,21 +391,21 @@ define("robotTW2/services/FarmService", [
 					, aldeia_commands = village.getCommandListModel().data
 					, aldeia_units = angular.copy(village.unitInfo.units);
 
-					if(!countCommands[village_id]) {countCommands[village_id] = []}
-
-					if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
-						aldeia_commands.forEach(function (aldeia) {
-							countCommands[village_id].push(aldeia.targetVillageId);
-						})
-					}
-					var comandos_length = Object.keys(commands_for_presets).map(function(key, index, array){
-						return commands_for_presets[key].village_id == village_id
-					}).filter(f => f != false).length;
-
-					var total_commands = countCommands[village_id].length + comandos_length;
+//					if(!countCommands[village_id]) {countCommands[village_id] = []}
+//
+//					if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
+//						aldeia_commands.forEach(function (aldeia) {
+//							countCommands[village_id].push(aldeia.targetVillageId);
+//						})
+//					}
+//					var comandos_length = Object.keys(commands_for_presets).map(function(key, index, array){
+//						return commands_for_presets[key].village_id == village_id
+//					}).filter(f => f != false).length;
+//
+//					var total_commands = countCommands[village_id].length + comandos_length;
 
 					if(
-							(total_commands) < $rootScope.data_farm.max_commands_farm 
+							aldeia_commands.length < $rootScope.data_farm.max_commands_farm 
 							&& $rootScope.data_villages.villages[village_id].farm_activate
 							&& units_analyze(preset_units, aldeia_units)
 //							&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
