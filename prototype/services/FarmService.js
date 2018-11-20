@@ -574,9 +574,9 @@ define("robotTW2/services/FarmService", [
 			console.log(data)
 		}
 
-		services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, updatePst)
-		services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, updatePst)
-		services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, updatePst)
+		$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, updatePst)
+		$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, updatePst)
+		$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, updatePst)
 
 		return	{
 			init			: init,
