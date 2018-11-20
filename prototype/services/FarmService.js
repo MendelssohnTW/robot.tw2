@@ -391,13 +391,13 @@ define("robotTW2/services/FarmService", [
 					, aldeia_commands = village.getCommandListModel().data
 					, aldeia_units = angular.copy(village.unitInfo.units);
 
-//					if(!countCommands[village_id]) {countCommands[village_id] = []}
-//
-//					if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
-//						aldeia_commands.forEach(function (aldeia) {
-//							countCommands[village_id].push(aldeia.targetVillageId);
-//						})
-//					}
+					if(!countCommands[village_id]) {countCommands[village_id] = []}
+
+					if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
+						aldeia_commands.forEach(function (aldeia) {
+							countCommands[village_id].push(aldeia.targetVillageId);
+						})
+					}
 //					var comandos_length = Object.keys(commands_for_presets).map(function(key, index, array){
 //						return commands_for_presets[key].village_id == village_id
 //					}).filter(f => f != false).length;
@@ -449,7 +449,8 @@ define("robotTW2/services/FarmService", [
 								commandQueue.unbindAll($rootScope.data_farm)
 								return
 							}
-							exec(commands_for_presets.shift() , function (listaGrid) {
+							var cmd_preset = commands_for_presets.shift();
+							exec(cmd_preset , function (listaGrid) {
 								loadVillages(cmd_preset, listaGrid, function (lst_bb) {
 									if (lst_bb.length > 0) {
 										sendCmd(cmd_preset, lst_bb, function () {
