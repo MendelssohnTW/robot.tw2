@@ -55,9 +55,6 @@ define("robotTW2/databases/data_farm", [
 		}
 	}
 
-	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, getPst)
-	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, getPst)
-	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, getPst)
 
 	Object.setPrototypeOf(data_farm, db_farm);
 

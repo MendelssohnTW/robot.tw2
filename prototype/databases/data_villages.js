@@ -132,11 +132,10 @@ define("robotTW2/databases/data_villages", [
 		})	
 	}
 	
-	
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
-
+	
 	db_villages.updateVillages()
 
 	Object.setPrototypeOf(data_villages, db_villages);
