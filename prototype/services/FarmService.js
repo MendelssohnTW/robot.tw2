@@ -225,9 +225,6 @@ define("robotTW2/services/FarmService", [
 									for (j = 0; j < listaVil.length; j++) {
 										if (check_barbara(listaVil[j], cmd_preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
 											lt_barbaras.push(listaVil[j].id);
-										} else{
-											T();
-											return
 										}
 									}
 								} 
