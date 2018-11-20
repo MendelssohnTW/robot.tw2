@@ -108,7 +108,7 @@ define("robotTW2/services/FarmService", [
 			});
 			callback(listaGrid);
 		}
-		, get_dist = function (village_id, bonus, units) {
+		, get_dist = function (preset_id, bonus, units) {
 			function return_min(tempo) {
 				if (tempo != undefined) {
 					var ar_tempo = tempo.split(":");
@@ -140,7 +140,7 @@ define("robotTW2/services/FarmService", [
 			}
 			if (list_select.length > 0) {
 				list_select.sort(function (a, b) {return a[1] - b[1]});	
-				return Math.trunc(($rootScope.data_farm.max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
+				return Math.trunc(($rootScope.data_farm.presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
 			} 
 			return 0;
 		}
@@ -415,7 +415,7 @@ define("robotTW2/services/FarmService", [
 								preset_units			: preset.units,
 								x						: village.data.x,
 								y						: village.data.y,
-								max_journey_distance	: get_dist(village_id, village_bonus, preset_units)
+								max_journey_distance	: get_dist(preset.id, village_bonus, preset_units)
 //								quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
 //								min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
 //								max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
