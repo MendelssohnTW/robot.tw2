@@ -204,9 +204,9 @@ define("robotTW2/services/FarmService", [
 			, T = function () {
 				return $timeout(function () {
 					var reg;
-					if (listaGrid.length > 0) {
+					p = countCommands[village_id].length  + lt_barbaras.length
+					if (listaGrid.length > 0 && p < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
 						reg = listaGrid.shift();
-						p = countCommands[village_id].length  + lt_barbaras.length
 						if (reg.dist > 0) {
 							request++;
 							socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
@@ -225,34 +225,23 @@ define("robotTW2/services/FarmService", [
 									for (j = 0; j < listaVil.length; j++) {
 										if (check_barbara(listaVil[j], cmd_preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
 											lt_barbaras.push(listaVil[j].id);
-										} else if(p >= $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
-											p = 0;
-											request = 0;
-											requestReady = 0;
-											callback(lt_barbaras);
-											return
-
+										} else{
+											T();
 										}
 									}
 								} 
 								if (request == requestReady) {
-									if (listaGrid.length > 0 && p < 50) {
-										T();
-									} else {
-										p = 0;
-										request = 0;
-										requestReady = 0;
-										callback(lt_barbaras);
-										return
-									}
+									T();
 								};
 							});
-
 						} else {
-							callback([]);
+							T();
 						}
 					} else {
-						callback([]);
+						p = 0;
+						request = 0;
+						requestReady = 0;
+						callback(lt_barbaras);
 					}
 				}, request * 2000)
 			}
@@ -557,7 +546,7 @@ define("robotTW2/services/FarmService", [
 //			typeof(listener_change) == "function" ? listener_change(): null;
 //			listener_change = undefined;
 //			$rootScope.data_farm.clearBB();
-			
+
 			commands_for_send = []
 			timeoutIdFarm = {}
 			listener_resume = undefined
