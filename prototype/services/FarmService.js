@@ -355,7 +355,7 @@ define("robotTW2/services/FarmService", [
 			var commands_for_presets = []
 			var rallyPointSpeedBonusVsBarbarians = modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians();
 
-			if(!presets.length) {
+			if(!Object.keys(presets).length) {
 				callback(commands_for_presets)
 				return	
 			}
@@ -369,7 +369,7 @@ define("robotTW2/services/FarmService", [
 			}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
 			function n() {
-				if(!presets.length) {
+				if(!presets_order.length) {
 					callback(commands_for_presets)
 					return	
 				}
