@@ -406,7 +406,7 @@ define("robotTW2/services/FarmService", [
 							(total_commands) < $rootScope.data_farm.max_commands_farm 
 							&& $rootScope.data_villages.villages[village_id].farm_activate
 							&& units_analyze(preset_units, aldeia_units)
-							&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
+//							&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
 					) {
 						var comando = {
 								village_id				: village_id,
