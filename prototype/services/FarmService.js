@@ -184,7 +184,8 @@ define("robotTW2/services/FarmService", [
 				var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
 				var rangePoints = (vill.points >= $rootScope.data_farm.presets[cmd_preset.preset_id].min_points_farm && vill.points <= $rootScope.data_farm.presets[cmd_preset.preset_id].max_points_farm);
 				var rangeDist = distancia >= $rootScope.data_farm.presets[cmd_preset.preset_id].min_journey_distance && distancia <= $rootScope.data_farm.presets[cmd_preset.preset_id].max_journey_distance
-				var existQuadrant = $rootScope.data_villages.villages[cmd_preset.village_id].quadrants.includes(quadrant);
+//				var existQuadrant = $rootScope.data_villages.villages[cmd_preset.village_id].quadrants.includes(quadrant);
+				var existQuadrant = $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].quadrants.includes(quadrant);
 				if(existException && rangePoints && rangeDist && existLista && existBarbara && existQuadrant && isBarbara) {
 					return true
 				} else {

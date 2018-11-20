@@ -54,6 +54,7 @@ define("robotTW2/databases/data_villages", [
 					buildinglevels 			: conf.BUILDINGLEVELS,
 					farm_activate 			: true,
 					assigned_presets		: [],
+					presets					: [],
 					quadrants				: [1, 2, 3, 4]
 				})
 				data_villages.villages[v] = angular.extend({}, villagesExtended[v])

@@ -177,8 +177,8 @@ define("robotTW2/controllers/FarmController", [
 //		}
 
 
-		$scope.setAssignedSelected = function (assigned_preset) {
-			$scope.assignedSelected = assigned_preset;
+		$scope.setAssignedSelected = function (preset_id) {
+			$scope.assignedSelected = preset_id;
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
@@ -330,7 +330,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
-		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets)[0]]
+		$scope.assignedSelected = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId)[0];
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
