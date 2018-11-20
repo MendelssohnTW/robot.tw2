@@ -46,8 +46,8 @@ define("robotTW2/databases/data_villages", [
 			Object.keys(data_villages.villages[v].presets).map(function (id) {
 				if(!Object.keys(presets_d).find(f => f == id)) {
 					delete data_villages.villages[v].presets[id]
-				} else {
-					angular.merge(data_villages.villages[v].presets[id], presets_d[pst])
+//				} else {
+//					angular.merge(data_villages.villages[v].presets[id], presets_d[id])
 				}
 			})
 
