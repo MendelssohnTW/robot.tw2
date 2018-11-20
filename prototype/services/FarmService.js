@@ -550,13 +550,23 @@ define("robotTW2/services/FarmService", [
 				$timeout.cancel(timeoutIdFarm[key]);
 			});
 
+
 			robotTW2.removeScript("/controllers/FarmCompletionController.js");
 			commandQueue.unbindAll($rootScope.data_farm)
 
 //			typeof(listener_change) == "function" ? listener_change(): null;
 //			listener_change = undefined;
 //			$rootScope.data_farm.clearBB();
-			timeoutIdFarm = {};
+			
+			commands_for_send = []
+			timeoutIdFarm = {}
+			listener_resume = undefined
+			countCommands = {}
+			commands_for_send = []
+			req = 0
+			rdy = 0
+			s = {}
+
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}
