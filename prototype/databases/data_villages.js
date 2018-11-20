@@ -12,6 +12,7 @@ define("robotTW2/databases/data_villages", [
 
 	var getPst = function (v) {
 
+
 		var presets_d = services.presetListService.getPresetsForVillageId(v)
 
 		if(!Object.keys(presets_d).length) {return}
@@ -59,23 +60,6 @@ define("robotTW2/databases/data_villages", [
 
 		});
 
-		if(data_villages.villages[v].presets == undefined || Object.keys(data_villages.villages[v].presets).length == 0) {
-			data_villages.villages[v].presets = presets_d
-		} else {
-			Object.keys(data_villages.villages[v].presets).map(function (id) {
-				if(!Object.keys(presets_d).find(f => f == id)) {
-					delete data_villages.villages[v].presets[id]
-				} else {
-					data_villages.villages[v].presets[id] = angular.extend({}, presets_d[id])
-				}
-			})
-
-			Object.keys(presets_d).map(function (id) {
-				if(!Object.keys(data_villages.villages[v].presets).find(f => f == id)) {
-					data_villages.villages[v].presets[id] = angular.extend({}, presets_d[id])
-				}
-			})
-		}
 
 		return data_villages.villages[v].presets;
 
@@ -108,29 +92,37 @@ define("robotTW2/databases/data_villages", [
 		return updated;
 	}
 	db_villages.verifyVillages = function (villagesExtended){
-		updated = false;
-		if(!data_villages){data_villages = {}}
-		if(!villagesExtended){villagesExtended = {}}
-		if(data_villages.villages == undefined){data_villages.villages = {}}
-		Object.keys(villagesExtended).map(function(m){
-			return m
-		}).forEach(function(v){
-			if(!Object.keys(data_villages.villages).map(function(m){
+
+		if(services.modelDataService.getPresetList().isLoadedValue){
+			updated = false;
+			if(!data_villages){data_villages = {}}
+			if(!villagesExtended){villagesExtended = {}}
+			if(data_villages.villages == undefined){data_villages.villages = {}}
+			Object.keys(villagesExtended).map(function(m){
 				return m
-			}).find(f=>f==v)){
-				angular.extend(villagesExtended[v], {
-					executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-					buildingorder 			: conf.BUILDINGORDER,
-					buildinglimit 			: conf.BUILDINGLIMIT,
-					buildinglevels 			: conf.BUILDINGLEVELS,
-					farm_activate 			: true,
-					presets					: getPst(v)
-				})
-				data_villages.villages[v] = angular.extend({}, villagesExtended[v])
-				updated = true;
-			}
-		})
-		return updated
+			}).forEach(function(v){
+				if(!Object.keys(data_villages.villages).map(function(m){
+					return m
+				}).find(f=>f==v)){
+					angular.extend(villagesExtended[v], {
+						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
+						buildingorder 			: conf.BUILDINGORDER,
+						buildinglimit 			: conf.BUILDINGLIMIT,
+						buildinglevels 			: conf.BUILDINGLEVELS,
+						farm_activate 			: true,
+						presets					: getPst(v)
+					})
+					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
+					updated = true;
+				}
+			})
+			return updated
+		} else {
+			services.socketService.emit(providers.routeProvider.GET_PRESETS, {});
+			return services.$timeout(function(){
+				return db_villages.verifyVillages(villagesExtended)
+			}, 5000)
+		}
 	}
 
 	db_villages.updateVillages = function($event){
