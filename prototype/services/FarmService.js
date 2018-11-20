@@ -366,10 +366,10 @@ define("robotTW2/services/FarmService", [
 
 			var villages = modelDataService.getSelectedCharacter().getVillageList();
 
-
 			villages.forEach(function(village){
 
-				var presets = $rootScope.data_villages.villages[village.data.villageId].presets;
+				var village_id = village.data.villageId;
+				var presets = $rootScope.data_villages.villages[village_id].presets;
 
 				if(!Object.keys(presets).length) {
 					return	
