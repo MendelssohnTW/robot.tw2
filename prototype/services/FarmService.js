@@ -71,11 +71,13 @@ define("robotTW2/services/FarmService", [
 			};
 		}
 		, exec = function (cmd_preset , callback) {
-//			var grid = loadMap(cmd_preset.x, cmd_preset.y, $rootScope.data_farm.presets[cmd_preset.preset_id].max_journey_distance).grid;
-			var grid = loadMap(cmd_preset.x, cmd_preset.y, $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance).grid;
+			var x = cmd_preset.x
+			, y = cmd_preset.y
+			, preset_id = cmd_preset.preset_id
+			, village_id = cmd_preset.village_id
+
+			var grid = loadMap(x, y, $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance).grid;
 			var listaGrid = [];
-			var x = cmd_preset.x;
-			var y = cmd_preset.y;
 			var l = Object.keys(grid).length;
 			for(tx = 0; tx < l; tx++) {
 				for(ty = 0; ty < l; ty++) {
@@ -151,11 +153,12 @@ define("robotTW2/services/FarmService", [
 		, loadVillages = function (cmd_preset, listaGrid, callback) {
 			var request = 0
 			, village_id = cmd_preset.village_id
+			, preset_id = cmd_preset.preset_id
 			, requestReady = 0
 			, lt_barbaras = []
 			, p = 0
 			, check_barbara = function (vill, cmd_preset, lt_b) {
-				var village = modelDataService.getVillage(cmd_preset.village_id) 
+				var village = modelDataService.getVillage(village_id) 
 				, x1 = vill.x
 				, y1 = vill.y 
 				, x2 = village.data.x 
@@ -184,11 +187,11 @@ define("robotTW2/services/FarmService", [
 				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
 				var existLista = !lt_b.find(f => f == vill.id);
 				var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
-				var rangePoints = (vill.points >= $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm && vill.points <= $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm);
-				var rangeDist = distancia >= $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance && distancia <= $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance
+				var rangePoints = (vill.points >= $rootScope.data_villages.villages[village_id].presets[preset_id].min_points_farm && vill.points <= $rootScope.data_villages.villages[village_id].presets[preset_id].max_points_farm);
+				var rangeDist = distancia >= $rootScope.data_villages.villages[village_id].presets[preset_id].min_journey_distance && distancia <= $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance
 				var existQuadrant = false;
-				if($rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].quadrants){
-					existQuadrant = $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].quadrants.includes(quadrant);
+				if($rootScope.data_villages.villages[village_id].presets[preset_id].quadrants){
+					existQuadrant = $rootScope.data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
 				} else {
 					existQuadrant = [1, 2, 3, 4].includes(quadrant);
 				}
@@ -214,15 +217,15 @@ define("robotTW2/services/FarmService", [
 									var x2 = cmd_preset.x;
 									var y2 = cmd_preset.y;
 
-									listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_villages.villages[village_id].presets[cmd_preset.preset_id].min_journey_distance)
+									listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_villages.villages[village_id].presets[preset_id].min_journey_distance)
 									listaVil.sort(function (a, b) {
 										Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
 									});
 
 									for (j = 0; j < listaVil.length; j++) {
-										if (check_barbara(listaVil[j], cmd_preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].max_commands_farm) {
+										if (check_barbara(listaVil[j], cmd_preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
 											lt_barbaras.push(listaVil[j].id);
-										} else if(p >= $rootScope.data_villages.villages[village_id].max_commands_farm) {
+										} else if(p >= $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
 											p = 0;
 											request = 0;
 											requestReady = 0;
@@ -253,7 +256,7 @@ define("robotTW2/services/FarmService", [
 					}
 				}, request * 2000)
 			}
-			if (listaGrid.length > 0 && p < $rootScope.data_villages.villages[village_id].max_commands_farm) {
+			if (listaGrid.length > 0 && p < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
 				T();
 			} else {
 				request = 0;
@@ -292,19 +295,21 @@ define("robotTW2/services/FarmService", [
 			return false
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
-			var village = modelDataService.getSelectedCharacter().getVillage(cmd_preset.village_id);
-			var aldeia_units = angular.copy(village.unitInfo.units);
-			var preset_units = cmd_preset.preset_units;
-			lt_bb.splice($rootScope.data_villages.villages[cmd_preset.village_id].max_commands_farm - countCommands[cmd_preset.village_id].length);
+			var village_id = cmd_preset.village_id
+			, preset_id = cmd_preset.preset_id
+			, village = modelDataService.getSelectedCharacter().getVillage(village_id)
+			, aldeia_units = angular.copy(village.unitInfo.units)
+			, preset_units = cmd_preset.preset_units
+			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - countCommands[village_id].length);
 			var t_obj = units_analyze(preset_units, aldeia_units);
 			if(t_obj){
 				var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
 				lt_bb.splice(t_slice);
 			}
-			countCommands[cmd_preset.village_id] = countCommands[cmd_preset.village_id].concat(lt_bb)
+			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
 			lt_bb.forEach(function (barbara) {
 				req++;
-				var id_command = req.toString() + "id" + cmd_preset.village_id;
+				var id_command = req.toString() + "id" + village_id;
 
 				var sendFarm = function(params){
 					return $timeout(function () {
@@ -326,9 +331,9 @@ define("robotTW2/services/FarmService", [
 
 				var params = {}
 				params["data"] = {
-						start_village: cmd_preset.village_id,
+						start_village: village_id,
 						target_village: barbara,
-						army_preset_id: cmd_preset.preset_id,
+						army_preset_id: preset_id,
 						type: "attack"
 				}
 				params["seq"] = req;
@@ -418,10 +423,9 @@ define("robotTW2/services/FarmService", [
 //					var total_commands = countCommands[village_id].length + comandos_length;
 
 					if(
-							aldeia_commands.length < $rootScope.data_villages.villages[village_id].max_commands_farm 
+							aldeia_commands.length < $rootScope.data_villages.villages[village_id].presets[preset.id].max_commands_farm 
 							&& $rootScope.data_villages.villages[village_id].farm_activate
 							&& units_analyze(preset_units, aldeia_units)
-//							&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
 					) {
 						var comando = {
 								village_id				: village_id,
@@ -431,10 +435,6 @@ define("robotTW2/services/FarmService", [
 								x						: village.data.x,
 								y						: village.data.y,
 								max_journey_distance	: get_dist(village_id, preset.id, village_bonus, preset_units)
-//								quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
-//								min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
-//								max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
-//								max_commands_farm	 	: $rootScope.data_farm.max_commands_farm
 
 						};
 						if (!commands_for_presets.find(f => f === comando)) {
