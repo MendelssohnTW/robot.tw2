@@ -378,57 +378,56 @@ define("robotTW2/services/FarmService", [
 					n();
 					return;
 				}
-				var village_id = preset.village_id;
-				var village = modelDataService.getSelectedCharacter().getVillage(village_id);
-				if(!village) {
-					n();
-					return;
-				}
-				var aldeia_units = angular.copy(village.unitInfo.units)
-				, preset_units = preset.units
-				, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-				, aldeia_commands = village.getCommandListModel().data
-				, aldeia_units = angular.copy(village.unitInfo.units);
 
-				if(!countCommands[village_id]) {countCommands[village_id] = []}
+				preset.assigned_villages.forEach(function(village_id){
 
-				if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
-					aldeia_commands.forEach(function (aldeia) {
-						countCommands[village_id].push(aldeia.targetVillageId);
-					})
-				}
-				var comandos_length = Object.keys(commands_for_presets).map(function(key, index, array){
-					return commands_for_presets[key].village_id == village_id
-				}).filter(f => f != false).length;
+					var village = modelDataService.getSelectedCharacter().getVillage(village_id);
 
-				var total_commands = countCommands[village_id].length + comandos_length;
+					var aldeia_units = angular.copy(village.unitInfo.units)
+					, preset_units = preset.units
+					, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
+					, aldeia_commands = village.getCommandListModel().data
+					, aldeia_units = angular.copy(village.unitInfo.units);
 
-				if(
-						(total_commands) < $rootScope.data_farm.max_commands_farm 
-						&& $rootScope.data_villages.villages[village_id].farm_activate
-						&& units_analyze(preset_units, aldeia_units)
-						&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
-				) {
-					var comando = {
-							village_id				: village_id,
-							bonus					: village_bonus,
-							preset_id				: preset.preset_id,
-							preset_units			: preset.units,
-							x						: village.data.x,
-							y						: village.data.y,
-							max_journey_distance	: get_dist(village_id, village_bonus, preset_units)
-//							quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
-//							min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
-//							max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
-//							max_commands_farm	 	: $rootScope.data_farm.max_commands_farm
+					if(!countCommands[village_id]) {countCommands[village_id] = []}
 
+					if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
+						aldeia_commands.forEach(function (aldeia) {
+							countCommands[village_id].push(aldeia.targetVillageId);
+						})
+					}
+					var comandos_length = Object.keys(commands_for_presets).map(function(key, index, array){
+						return commands_for_presets[key].village_id == village_id
+					}).filter(f => f != false).length;
+
+					var total_commands = countCommands[village_id].length + comandos_length;
+
+					if(
+							(total_commands) < $rootScope.data_farm.max_commands_farm 
+							&& $rootScope.data_villages.villages[village_id].farm_activate
+							&& units_analyze(preset_units, aldeia_units)
+							&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)
+					) {
+						var comando = {
+								village_id				: village_id,
+								bonus					: village_bonus,
+								preset_id				: preset.preset_id,
+								preset_units			: preset.units,
+								x						: village.data.x,
+								y						: village.data.y,
+								max_journey_distance	: get_dist(village_id, village_bonus, preset_units)
+//								quadrants			 	: $rootScope.data_villages.villages[village_id].quadrants,
+//								min_points_farm			: $rootScope.data_villages.villages[village_id].min_points_farm,
+//								max_points_farm		 	: $rootScope.data_villages.villages[village_id].max_points_farm,
+//								max_commands_farm	 	: $rootScope.data_farm.max_commands_farm
+
+						};
+						if (!commands_for_presets.find(f => f === comando)) {
+							commands_for_presets.push(comando);
+						};
 					};
-					if (!commands_for_presets.find(f => f === comando)) {
-						commands_for_presets.push(comando);
-					};
-				};
+				})
 				n()
-				return;
 			};
 			n()
 		}
