@@ -30,7 +30,7 @@ define("robotTW2/databases/data_villages", [
 //			min_points_farm			: conf.MIN_POINTS_FARM,
 //			quadrants				: [1, 2, 3, 4]
 //			});
-			if(!data_villages.villages[v].presets[pst].load){
+			if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
 				angular.extend(presets_d[pst], {
 					load					: true,
 					max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
