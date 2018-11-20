@@ -17,7 +17,7 @@ define("robotTW2/databases/data_villages", [
 
 		if(!Object.keys(presets_d).length) {return}
 
-		if(data_villages.villages[v].presets == undefined){data_villages.villages[v].presets = {}}
+		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 
 		Object.keys(presets_d).forEach(function (pst) {
 //			presets_d[pst.id] = angular.copy(pst);
