@@ -119,7 +119,7 @@ define("robotTW2/controllers/FarmController", [
 					'presets'			: services.presetListService.getPresets(),
 					'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
 			}
-			
+
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
 				$scope.data.assignedPresetList[+presetId] = ($scope.villageSelected.data.villageId === villageId);
@@ -218,8 +218,14 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("assignedSelected", function(){
 			if(!$scope.assignedSelected){return}
+//			$scope.presetSelected = $scope.data.presets[$scope.assignedSelected];
+			angular.extend($scope.data.presets[$scope.assignedSelected], $rootScope.data_villages.villages[$scope.villageSelected].presets[$scope.assignedSelected])
+//			$scope.presetSelected = angular.extend({}, $rootScope.data_farm.presets[$scope.assignedSelected])
+//			$scope.presetSelected = angular.extend({}, $rootScope.data_villages.villages[$scope.villageSelected].presets[$scope.assignedSelected])
 			$scope.presetSelected = $scope.data.presets[$scope.assignedSelected];
-			$scope.presetSelected = angular.extend({}, $rootScope.data_farm.presets[$scope.assignedSelected])
+			if(!$scope.villageSelected.presets[$scope.presetSelected].quadrants) {
+				$scope.villageSelected.presets[$scope.presetSelected].quadrants = [1, 2, 3, 4]
+			}
 		})
 		$scope.$watch('data.presets', triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
@@ -297,18 +303,18 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		var addQuadrant = function(pos){
-			$scope.villageSelected.quadrants.push(pos)
-			$scope.villageSelected.quadrants.sort(function(a,b){return a-b})
+			$scope.villageSelected.presets[$scope.presetSelected].quadrants.push(pos)
+			$scope.villageSelected.presets[$scope.presetSelected].quadrants.sort(function(a,b){return a-b})
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		var remQuadrant = function(pos){
-			$scope.villageSelected.quadrants = $scope.villageSelected.quadrants.filter(f => f != pos);
+			$scope.villageSelected.presets[$scope.presetSelected].quadrants = $scope.villageSelected.presets[$scope.presetSelected].quadrants.filter(f => f != pos);
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.setQuadrant = function (pos) {
-			if($scope.villageSelected.quadrants.includes(pos)){
+			if($scope.villageSelected.presets[$scope.presetSelected].quadrants.includes(pos)){
 				remQuadrant(pos)
 			} else {
 				addQuadrant(pos)
@@ -316,7 +322,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getQuadrant = function (pos) {
-			return $scope.villageSelected.quadrants.includes(pos)
+			return $scope.villageSelected.presets[$scope.presetSelected].quadrants.includes(pos)
 		}
 
 		$scope.date_ref = new Date(0);
