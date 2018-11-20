@@ -156,7 +156,6 @@ define("robotTW2/services/FarmService", [
 			, preset_id = cmd_preset.preset_id
 			, requestReady = 0
 			, lt_barbaras = []
-			, p = 0
 			, check_barbara = function (vill, cmd_preset, lt_b) {
 				var village = modelDataService.getVillage(village_id) 
 				, x1 = vill.x
@@ -204,39 +203,33 @@ define("robotTW2/services/FarmService", [
 			, T = function () {
 				return $timeout(function () {
 					var reg;
-					p = countCommands[village_id].length  + lt_barbaras.length
-					if (listaGrid.length > 0 && p < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
+					if (listaGrid.length > 0) {
 						reg = listaGrid.shift();
-						if (reg.dist > 0) {
-							request++;
-							socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
-								requestReady++;
-								if (data != undefined && data.villages != undefined && data.villages.length > 0) {
-									var i = Math.round(Math.random() * 10);
-									var listaVil = angular.copy(data.villages);
-									var x2 = cmd_preset.x;
-									var y2 = cmd_preset.y;
+						request++;
+						socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+							requestReady++;
+							if (data != undefined && data.villages != undefined && data.villages.length > 0) {
+								var i = Math.round(Math.random() * 10);
+								var listaVil = angular.copy(data.villages);
+								var x2 = cmd_preset.x;
+								var y2 = cmd_preset.y;
 
-									listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_villages.villages[village_id].presets[preset_id].min_journey_distance)
-									listaVil.sort(function (a, b) {
-										Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
-									});
+								listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_villages.villages[village_id].presets[preset_id].min_journey_distance)
+								listaVil.sort(function (a, b) {
+									Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
+								});
 
-									for (j = 0; j < listaVil.length; j++) {
-										if (check_barbara(listaVil[j], cmd_preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm) {
-											lt_barbaras.push(listaVil[j].id);
-										}
+								for (j = 0; j < listaVil.length; j++) {
+									if (check_barbara(listaVil[j], cmd_preset, lt_barbaras)) {
+										lt_barbaras.push(listaVil[j].id);
 									}
-								} 
-								if (request == requestReady) {
-									T();
-								};
-							});
-						} else {
-							T();
-						}
+								}
+							} 
+							if (request == requestReady) {
+								T();
+							};
+						});
 					} else {
-						p = 0;
 						request = 0;
 						requestReady = 0;
 						callback(lt_barbaras);
