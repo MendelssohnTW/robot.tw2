@@ -220,9 +220,9 @@ define("robotTW2/services/FarmService", [
 									});
 
 									for (j = 0; j < listaVil.length; j++) {
-										if (check_barbara(listaVil[j], cmd_preset, lt_barbaras) && p++ < $rootScope.data_farm.max_commands_farm) {
+										if (check_barbara(listaVil[j], cmd_preset, lt_barbaras) && p++ < $rootScope.data_villages.villages[village_id].max_commands_farm) {
 											lt_barbaras.push(listaVil[j].id);
-										} else if(p >= $rootScope.data_farm.max_commands_farm) {
+										} else if(p >= $rootScope.data_villages.villages[village_id].max_commands_farm) {
 											p = 0;
 											request = 0;
 											requestReady = 0;
@@ -253,7 +253,7 @@ define("robotTW2/services/FarmService", [
 					}
 				}, request * 2000)
 			}
-			if (listaGrid.length > 0 && p < $rootScope.data_farm.max_commands_farm) {
+			if (listaGrid.length > 0 && p < $rootScope.data_villages.villages[village_id].max_commands_farm) {
 				T();
 			} else {
 				request = 0;
@@ -295,7 +295,7 @@ define("robotTW2/services/FarmService", [
 			var village = modelDataService.getSelectedCharacter().getVillage(cmd_preset.village_id);
 			var aldeia_units = angular.copy(village.unitInfo.units);
 			var preset_units = cmd_preset.preset_units;
-			lt_bb.splice($rootScope.data_farm.max_commands_farm - countCommands[cmd_preset.village_id].length);
+			lt_bb.splice($rootScope.data_villages.villages[cmd_preset.village_id].max_commands_farm - countCommands[cmd_preset.village_id].length);
 			var t_obj = units_analyze(preset_units, aldeia_units);
 			if(t_obj){
 				var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
@@ -418,7 +418,7 @@ define("robotTW2/services/FarmService", [
 //					var total_commands = countCommands[village_id].length + comandos_length;
 
 					if(
-							aldeia_commands.length < $rootScope.data_farm.max_commands_farm 
+							aldeia_commands.length < $rootScope.data_villages.villages[village_id].max_commands_farm 
 							&& $rootScope.data_villages.villages[village_id].farm_activate
 							&& units_analyze(preset_units, aldeia_units)
 //							&& $rootScope.data_villages.villages[village_id].assigned_presets.includes(preset.preset_id)

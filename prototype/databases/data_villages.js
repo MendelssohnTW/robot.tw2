@@ -11,25 +11,10 @@ define("robotTW2/databases/data_villages", [
 	){
 
 	var getPst = function (v) {
-
-
 		var presets_d = services.presetListService.getPresetsForVillageId(v)
-
 		if(!Object.keys(presets_d).length) {return}
-
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
-
 		Object.keys(presets_d).forEach(function (pst) {
-//			presets_d[pst.id] = angular.copy(pst);
-//			angular.extend(presets_d[pst.id], {					
-//			max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
-//			min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
-//			max_journey_time		: conf.MAX_JOURNEY_TIME,
-//			min_journey_time		: conf.MIN_JOURNEY_TIME,
-//			max_points_farm			: conf.MAX_POINTS_FARM,
-//			min_points_farm			: conf.MIN_POINTS_FARM,
-//			quadrants				: [1, 2, 3, 4]
-//			});
 			if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
 				angular.extend(presets_d[pst], {
 					load					: true,
@@ -39,35 +24,25 @@ define("robotTW2/databases/data_villages", [
 					min_journey_time		: conf.MIN_JOURNEY_TIME,
 					max_points_farm			: conf.MAX_POINTS_FARM,
 					min_points_farm			: conf.MIN_POINTS_FARM,
-					quadrants				: [1, 2, 3, 4]
+					quadrants				: [1, 2, 3, 4],
+					max_commands_farm		: conf.MAX_COMMANDS_FARM
 				});
 			}
-
 			Object.keys(data_villages.villages[v].presets).map(function (id) {
 				if(!Object.keys(presets_d).find(f => f == id)) {
 					delete data_villages.villages[v].presets[id]
-//				} else {
-//					angular.merge(data_villages.villages[v].presets[id], presets_d[id])
 				}
 			})
-
 			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst)) {
 				data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
 			} else {
 				angular.merge(data_villages.villages[v].presets[pst], presets_d[pst])
 			}
-
-
 		});
-
-
 		return data_villages.villages[v].presets;
-
 	}
 	, data_villages = database.get("data_villages") || {}
 	, db_villages = {}
-
-
 	db_villages.set = function(){
 		database.set("data_villages", data_villages, true)
 	}
@@ -129,7 +104,6 @@ define("robotTW2/databases/data_villages", [
 		var villagesDB = {}
 		, villagesExtended = {}
 		, updated = false;
-
 		angular.extend(villagesDB, services.modelDataService.getVillages())
 		angular.merge(villagesExtended, villagesDB)
 
