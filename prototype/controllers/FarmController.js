@@ -126,7 +126,10 @@ define("robotTW2/controllers/FarmController", [
 				angular.extend($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
 			}
 			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
-			$scope.presetSelected = $scope.data.presets[$scope.data.assignedPresetList[0]]
+			$scope.presetSelected = Object.keys($scope.data.assignedPresetList).map(
+					function(elem){
+						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+					}).filter(f=>f!=undefined)[0]
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
@@ -211,8 +214,8 @@ define("robotTW2/controllers/FarmController", [
 			if(!$scope.villageSelected){return}
 			triggerUpdate();
 		})
-		
-		
+
+
 		$scope.$watch('data.presets', triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
@@ -229,7 +232,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setVillage = function (village) {
 			$scope.villageSelected = village;
-			triggerUpdate()
 		}
 
 
