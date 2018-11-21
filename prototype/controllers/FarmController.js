@@ -119,20 +119,18 @@ define("robotTW2/controllers/FarmController", [
 					'presets'			: services.presetListService.getPresets(),
 					'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
 			}
-
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
 				$scope.data.assignedPresetList[+presetId] = ($scope.villageSelected.data.villageId === villageId);
 			};
-
 			$scope.data.assignedPresetList = {};
-
 			for (presetId in $scope.data.presets) {
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
+				angular.extend($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected].presets[presetId])
 			}
-
 			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
 			angular.merge($rootScope.data_farm.presets, $scope.data.presets)
+			
 		}
 
 		$scope.assignPresets = function assignPresets() {
@@ -147,18 +145,14 @@ define("robotTW2/controllers/FarmController", [
 		$scope.assignPreset = function assignPreset(presetId) {
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
-
 			!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
-
 			$scope.assignPresets();
 		}
 
 		$scope.unassignPreset = function unassignPreset(presetId) {
 			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
 			key;
-
 			presetIds.splice(presetIds.indexOf(presetId), 1);
-
 			$scope.assignPresets();
 		}
 
@@ -177,9 +171,9 @@ define("robotTW2/controllers/FarmController", [
 //		}
 
 
-		$scope.setAssignedSelected = function (preset_id) {
-			$scope.assignedSelected = preset_id;
-			if (!$scope.$$phase) $scope.$apply();
+		$scope.setPresetSelected = function (preset_id) {
+			var presetsByVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId)
+			$scope.presetSelected = presetsByVillage[Object.keys(presetsByVillage)[0]]
 		}
 
 		$scope.blurMaxJourney = function () {
@@ -216,17 +210,19 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
+		$scope.$watch("villageSelected", function(){
+			if(!$scope.villageSelected){return}
+			var presetsByVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId)
+			$scope.presetSelected = presetsByVillage[Object.keys(presetsByVillage)[0]]
+		})
+		
 		$scope.$watch("assignedSelected", function(){
 			if(!$scope.assignedSelected){return}
-//			$scope.presetSelected = $scope.data.presets[$scope.assignedSelected];
 			angular.extend($scope.data.presets[$scope.assignedSelected], $rootScope.data_villages.villages[$scope.villageSelected].presets[$scope.assignedSelected])
-//			$scope.presetSelected = angular.extend({}, $rootScope.data_farm.presets[$scope.assignedSelected])
-//			$scope.presetSelected = angular.extend({}, $rootScope.data_villages.villages[$scope.villageSelected].presets[$scope.assignedSelected])
 			$scope.presetSelected = $scope.data.presets[$scope.assignedSelected];
-			if(!$scope.villageSelected.presets[$scope.presetSelected].quadrants) {
-				$scope.villageSelected.presets[$scope.presetSelected].quadrants = [1, 2, 3, 4]
-			}
 		})
+		
+		
 		$scope.$watch('data.presets', triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
@@ -336,7 +332,6 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
-		$scope.assignedSelected = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId)[0];
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
