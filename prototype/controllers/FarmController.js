@@ -126,7 +126,7 @@ define("robotTW2/controllers/FarmController", [
 				angular.extend($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
 			}
 			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
-			
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
 		$scope.assignPresets = function assignPresets() {
@@ -169,6 +169,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setPresetSelected = function (preset_id) {
 			$scope.presetSelected =	$scope.data.presets[preset_id]
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
 		$scope.blurMaxJourney = function () {
@@ -208,6 +209,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
 			$scope.presetSelected = $scope.data.presets[$scope.data.assignedPresetList[0]]
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		})
 		
 		
