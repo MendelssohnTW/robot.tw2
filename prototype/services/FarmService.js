@@ -265,7 +265,7 @@ define("robotTW2/services/FarmService", [
 				return false
 			}
 		}
-		, loadVillages = function(cmd_preset, listaGrid){
+		, loadVillages = function(cmd_preset, listaGrid, res, rej){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
 					grid_queue.push(reg, cmd_preset)
@@ -275,15 +275,15 @@ define("robotTW2/services/FarmService", [
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
-						exec_promise_grid(reg, cmd_preset)
+						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
-						exec_promise_grid(reg, cmd_preset)
+						exec_promise_grid(reg, cmd_preset, res, rej)
 					}
 				}
 			})
 
 		}
-		, exec_promise_grid = function(reg, cmd_preset){
+		, exec_promise_grid = function(reg, cmd_preset, res, rej){
 			promise_grid = new Promise(function(resolve, reject){
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 					var lt_barbaras = []
@@ -321,7 +321,7 @@ define("robotTW2/services/FarmService", [
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
-						exec_promise_grid(reg, cmd_preset)
+						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
 						res()
 					}
@@ -334,7 +334,7 @@ define("robotTW2/services/FarmService", [
 			promise = new Promise(function(res, rej){
 				var listaGrid = exec(cmd_preset)
 				if(!listaGrid.length){return}
-				loadVillages(cmd_preset, listaGrid);
+				loadVillages(cmd_preset, listaGrid, res, rej);
 			})
 			.then(function(data){
 				promise = undefined
