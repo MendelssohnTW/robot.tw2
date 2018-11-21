@@ -172,8 +172,7 @@ define("robotTW2/controllers/FarmController", [
 
 
 		$scope.setPresetSelected = function (preset_id) {
-			var presetsByVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId)
-			$scope.presetSelected = presetsByVillage[Object.keys(presetsByVillage)[0]]
+			$scope.presetSelected =	$scope.data.presets[preset_id]
 		}
 
 		$scope.blurMaxJourney = function () {
@@ -212,8 +211,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
-			var presetsByVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId)
-			$scope.presetSelected = presetsByVillage[Object.keys(presetsByVillage)[0]]
+			$scope.presetSelected = $scope.data.presets[Object.keys($scope.data.presets)[0]]
 		})
 		
 		
