@@ -202,7 +202,7 @@ define("robotTW2/services/FarmService", [
 			var g = 0;
 			lt_bb.forEach(function (barbara) {
 				g++;
-				timeoutCommandFarm[g] = function(){
+				timeoutCommandFarm[g] = (function(){
 					return $timeout(function () {
 						var params =  {
 								start_village: village_id,
@@ -214,7 +214,7 @@ define("robotTW2/services/FarmService", [
 						socketService.emit(providers.routeProvider.SEND_PRESET, params);
 
 					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * params.seq);
-				}
+				})()
 			});
 
 			callback();
