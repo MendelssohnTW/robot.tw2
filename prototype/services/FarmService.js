@@ -314,14 +314,15 @@ define("robotTW2/services/FarmService", [
 
 				});
 			})
-			.then(function(lst_bb, cmd_preset){
-				sendCmd(cmd_preset, lst_bb, function () {
+			.then(function(lst_bb, c_preset){
+				var t = cmd_preset;
+				sendCmd(c_preset, lst_bb, function () {
 					promise_grid = undefined
 					if(grid_queue.length){
 						var t = grid_queue.shift();
 						reg = t[0];
-						cmd_preset = t[1];
-						exec_promise_grid(reg, cmd_preset)
+						c_preset = t[1];
+						exec_promise_grid(reg, c_preset)
 					} else {
 						res()
 					}
