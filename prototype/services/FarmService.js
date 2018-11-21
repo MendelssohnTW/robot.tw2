@@ -213,7 +213,7 @@ define("robotTW2/services/FarmService", [
 						requestFn.trigger("Farm/sendCmd")
 						socketService.emit(providers.routeProvider.SEND_PRESET, params);
 
-					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * params.seq);
+					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * g);
 				})()
 			});
 
