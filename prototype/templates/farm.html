@@ -189,8 +189,8 @@
 							<td class="cell-right"><label for="min_dist"
 								class="with-margin">{{text_min_dist}}</label><input
 								class="input-border inputcreated" type="number" id="min_dist"
-								step="1" min="1" max="180" ng-model="presetSelected.min_journey_distance"
-								disabled></td>
+								step="1" min="1" max="180"
+								ng-model="presetSelected.min_journey_distance" disabled></td>
 
 						</tr>
 						<tr>
@@ -209,8 +209,8 @@
 							<td class="cell-right"><label for="max_dist"
 								class="with-margin">{{text_max_dist}}</label><input
 								class="input-border inputcreated" type="number" id="max_dist"
-								step="1" min="5" max="200" ng-model="presetSelected.max_journey_distance"
-								disabled></td>
+								step="1" min="5" max="200"
+								ng-model="presetSelected.max_journey_distance" disabled></td>
 							<td class="cell-right"><label for="cmd_max"
 								class="with-margin">{{text_cmd_max}}</label><input
 								class="input-border inputcreated" type="number" id="cmd_max"
@@ -249,7 +249,7 @@
 													<td class="cell-space cell-left">
 														<canvas icon-generator="preset.icon" icon-type="'preset'"
 															class="preset-icon" width="44" height="44"></canvas> <span
-														 class="preset-name">{{preset.name}}</span>
+														class="preset-name">{{preset.name}}</span>
 														<div class="hotkey" tooltip=""
 															tooltip-content="{{text_atalho}}"
 															ng-if="data.hotkeys[preset.id]">
@@ -259,7 +259,8 @@
 														<div class="btn-orange icon-26x26-arrow-right size-42x42"
 															ng-click="assignPreset(preset.id)"></div>
 													</td>
-													<td class="cell-space cell-center preset-actions"><a href="#"
+													<td class="cell-space cell-center preset-actions"><a
+														href="#"
 														class="btn-orange size-44x44 icon-34x34-unit-info"
 														ng-click="showPresetInfoModal(preset);"></a><a href="#"
 														class="btn-orange size-44x44 icon-34x34-edit"
@@ -272,38 +273,39 @@
 									</div>
 								</div>
 							</td>
-							
+
 							<td class="cell-top cell-right" rowspan="3" colspan="2">
 								<div class="list-collapse">
 									<h5 class="twx-section collapse">{{text_selection}}</h5>
 									<table
 										class="tbl-border-light tbl-striped tbl-content tbl-hover">
 										<tbody>
-										
-										<tr ng-repeat="preset in data.presets"
-													ng-show="data.assignedPresetList[preset.id]">
-													<td class="cell-space cell-left">
-														<canvas icon-generator="preset.icon" icon-type="'preset'"
-															class="preset-icon" width="44" height="44"></canvas> <span
-														ng-click="setPresetSelected(preset.id)" class="preset-name">{{preset.name}}</span>
-														<div class="hotkey" tooltip=""
-															tooltip-content="{{text_atalho}}"
-															ng-if="data.hotkeys[preset.id]">
-															{{data.hotkeys[preset.id]}}</div>
-													</td>
-													<td class="cell-space cell-center">
-														<div class="btn-orange icon-26x26-arrow-left size-42x42"
-															ng-click="unassignPreset(preset.id)"></div>
-													</td>
-													<td class="cell-space cell-center preset-actions"><a href="#"
-														class="btn-orange size-44x44 icon-34x34-unit-info"
-														ng-click="showPresetInfoModal(preset);"></a><a href="#"
-														class="btn-orange size-44x44 icon-34x34-edit"
-														ng-click="showPresetEditModal(preset);"></a><a href="#"
-														class="btn-red size-44x44 icon-34x34-trash"
-														ng-click="showPresetDeleteModal(preset);"></a></td>
-												</tr>
-										
+
+											<tr ng-repeat="preset in data.presets"
+												ng-class="{'selected': preset.id == presetSelected.id}"
+												ng-show="data.assignedPresetList[preset.id]">
+												<td class="cell-space cell-left">
+													<canvas icon-generator="preset.icon" icon-type="'preset'"
+														class="preset-icon" width="44" height="44"></canvas> <span
+													ng-click="setPresetSelected(preset.id)" class="preset-name">{{preset.name}}</span>
+													<div class="hotkey" tooltip=""
+														tooltip-content="{{text_atalho}}"
+														ng-if="data.hotkeys[preset.id]">
+														{{data.hotkeys[preset.id]}}</div>
+												</td>
+												<td class="cell-space cell-center">
+													<div class="btn-orange icon-26x26-arrow-left size-42x42"
+														ng-click="unassignPreset(preset.id)"></div>
+												</td>
+												<td class="cell-space cell-center preset-actions"><a
+													href="#" class="btn-orange size-44x44 icon-34x34-unit-info"
+													ng-click="showPresetInfoModal(preset);"></a><a href="#"
+													class="btn-orange size-44x44 icon-34x34-edit"
+													ng-click="showPresetEditModal(preset);"></a><a href="#"
+													class="btn-red size-44x44 icon-34x34-trash"
+													ng-click="showPresetDeleteModal(preset);"></a></td>
+											</tr>
+
 										</tbody>
 									</table>
 								</div>
