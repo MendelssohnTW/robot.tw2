@@ -304,7 +304,7 @@ define("robotTW2/services/FarmService", [
 							}
 						}
 						if (lt_barbaras.length > 0) {
-							resolve(lt_barbaras, cmd_preset)
+							resolve(lt_barbaras)
 						} else {
 							reject();
 						}
@@ -314,15 +314,14 @@ define("robotTW2/services/FarmService", [
 
 				});
 			})
-			.then(function(lst_bb, c_preset){
-				var t = cmd_preset;
-				sendCmd(c_preset, lst_bb, function () {
+			.then(function(lst_bb){
+				sendCmd(cmd_preset, lst_bb, function () {
 					promise_grid = undefined
 					if(grid_queue.length){
 						var t = grid_queue.shift();
 						reg = t[0];
-						c_preset = t[1];
-						exec_promise_grid(reg, c_preset)
+						cmd_preset = t[1];
+						exec_promise_grid(reg, cmd_preset)
 					} else {
 						res()
 					}
