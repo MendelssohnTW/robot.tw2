@@ -291,19 +291,18 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		var addQuadrant = function(pos){
+			if(!$scope.villageSelected || !$scope.presetSelected) {return}
 			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.push(pos)
 			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.sort(function(a,b){return a-b})
-			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		var remQuadrant = function(pos){
-			if(!$scope.villageSelected) {return}
+			if(!$scope.villageSelected || !$scope.presetSelected) {return}
 			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants = $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.filter(f => f != pos);
-			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.setQuadrant = function (pos) {
-			if(!$scope.villageSelected) {return}
+			if(!$scope.villageSelected || !$scope.presetSelected) {return}
 			if($scope.villageSelected.presets[$scope.presetSelected.id].quadrants.includes(pos)){
 				remQuadrant(pos)
 			} else {
@@ -312,7 +311,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getQuadrant = function (pos) {
-			if(!$scope.villageSelected) {return}
+			if(!$scope.villageSelected || !$scope.presetSelected) {return}
 			return $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.includes(pos)
 		}
 
