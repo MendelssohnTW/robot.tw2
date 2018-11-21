@@ -211,7 +211,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
-			$scope.presetSelected = $scope.data.presets[Object.keys($scope.data.presets)[0]]
+			$scope.presetSelected = $scope.data.presets[$scope.data.assignedPresetList[0]]
 		})
 		
 		
