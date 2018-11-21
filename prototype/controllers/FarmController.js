@@ -34,9 +34,6 @@ define("robotTW2/controllers/FarmController", [
 
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
 		}
 
 		$scope.blur = function (callback) {
