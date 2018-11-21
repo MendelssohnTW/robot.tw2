@@ -299,7 +299,7 @@ define("robotTW2/services/FarmService", [
 						});
 
 						for (j = 0; j < listaVil.length; j++) {
-							if (check_barbara(listaVil[j], cmd_preset, lt_barbaras)) {
+							if (check_village(listaVil[j], cmd_preset, lt_barbaras)) {
 								lt_barbaras.push(listaVil[j].id);
 							}
 						}
