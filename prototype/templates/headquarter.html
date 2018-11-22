@@ -73,16 +73,16 @@
 										<tr
 											ng-repeat="buildingOrder in data_headquarter.BUILDINGORDER"
 											style="height: 56px">
-											<td ng-class="{'resource-text' : compare(buildingOrder)}"
+											<td ng-class="{'resource-text' : selected_buildingOrder == buildingOrder}"
 												class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
 												class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
 											<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
 											<td class="cell-right"><span
 												class="size-12x12 btn-orange icon-26x26-rte-building"
-												ng-click="selectbuildingOrder(buildingOrder)" tooltip
+												ng-click="selected_buildingOrder = buildingOrder" tooltip
 												tooltip-content="{{tooltip_button}}"></span></td>
 											<td class="cell-right"><div
-													ng-show="compare(buildingOrder)">
+													ng-show="selected_buildingOrder == buildingOrder">
 													<span
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 														ng-click="up(data_headquarter, buildingOrder)"></span> <span
@@ -133,7 +133,7 @@
 							<col width="*">
 						</colgroup>
 						<tbody>
-							<tr ng-repeat="vill in villages">
+							<tr ng-repeat="vill in data_villages.villages">
 								<td class="cell-top"><span>{{vill.data.name}}
 										({{vill.data.x}}|{{vill.data.y}})</span></td>
 								<td class="cell-top">
@@ -181,7 +181,7 @@
 															<tr ng-repeat="buildingOrder in vill.BUILDINGORDER"
 																style="height: 56px">
 																<td
-																	ng-class="{'resource-text' : comparevillagebuildingOrder(vill.data.villageId, buildingOrder)}"
+																	ng-class="{'resource-text' : selected_village_buildingOrder[vill.data.villageId] == buildingOrder}"
 																	class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
 																	class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
 																<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
@@ -189,7 +189,7 @@
 																	class="size-12x12 btn-orange icon-26x26-rte-building"
 																	ng-click="selectvillagebuildingOrder(vill.data.villageId, buildingOrder)"></span></td>
 																<td class="cell-right"><div
-																		ng-show="comparevillagebuildingOrder(vill.data.villageId, buildingOrder)">
+																		ng-show="buildingOrder selected_village_buildingOrder[vill.data.villageId] = buildingOrder">
 																		<span
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																			ng-click="up(vill, buildingOrder)"></span> <span
@@ -258,8 +258,6 @@
 				ng-click="pause_headquarter()"><span>{{pause}}</span></a></li>
 			<li><a class="btn-border btn-orange btn-resume"
 				ng-click="resume_headquarter()"><span>{{resume}}</span></a></li>
-			<li><a class="btn-orange btn-border save"
-				ng-click="save_headquarter()">{{save}}</a></li>
 			<li><a class="btn-orange btn-border restore"
 				ng-click="restore_headquarter()">{{restore}}</a></li>
 			<li><a class="btn-orange btn-border close"

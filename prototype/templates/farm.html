@@ -110,7 +110,7 @@
 																<tr ng-repeat="village in data_villages.villages">
 																	<td
 																		ng-class="{'selected': villageSelected.data.villageId == village.data.villageId}"
-																		ng-click="setVillage(village)" class="cell-right"><span>{{village.data.name
+																		ng-click="villageSelected = village" class="cell-right"><span>{{village.data.name
 																			+ " - (" + village.data.x + "|" + village.data.x +
 																			")"}}</span></td>
 																	<td class="cell-space">
@@ -310,7 +310,7 @@
 																</tr>
 																<tr ng-repeat="preset in data.presets"
 																	ng-show="data.assignedPresetList[preset.id]">
-																	<td class="cell-space cell-left" ng-click="setPresetSelected(preset.id)"
+																	<td class="cell-space cell-left" ng-click="presetSelected = preset"
 																		ng-class="{'selected': preset.id == presetSelected.id}">
 																		<canvas icon-generator="preset.icon"
 																			icon-type="'preset'" class="preset-icon" width="44"

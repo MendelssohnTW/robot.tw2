@@ -343,7 +343,6 @@ define("robotTW2/services/RecruitService", [
 				var village = villages[village_id]
 				var tam = village.getRecruitingQueue("barracks").length || 0;
 				list.push(getFinishedForFree(village));
-				respD++
 				setList();
 				if (tam < $rootScope.data_recruit.reserva.slots || tam < 1){
 					list_recruit.push(village_id);

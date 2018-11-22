@@ -33,7 +33,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
-
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
 		$scope.blur = function (callback) {
@@ -132,7 +132,7 @@ define("robotTW2/controllers/FarmController", [
 					function(elem){
 						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
 					}).filter(f=>f!=undefined)[0]]
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
 		$scope.assignPresets = function assignPresets() {
@@ -173,10 +173,10 @@ define("robotTW2/controllers/FarmController", [
 //		}
 
 
-		$scope.setPresetSelected = function (preset_id) {
-			$scope.presetSelected =	$scope.data.presets[preset_id]
-			if (!$rootScope.$$phase) $rootScope.$apply();
-		}
+//		$scope.setPresetSelected = function (preset_id) {
+//			$scope.presetSelected =	$scope.data.presets[preset_id]
+//			if (!$rootScope.$$phase) $rootScope.$apply();
+//		}
 
 		$scope.blurMaxJourney = function () {
 			$scope.presetSelected.max_journey_time = $("#max_journey_time").val()
@@ -232,9 +232,9 @@ define("robotTW2/controllers/FarmController", [
 			return village.getName() + " / (" + village.getX() + "|" + village.getY() + ")"
 		}
 
-		$scope.setVillage = function (village) {
-			$scope.villageSelected = village;
-		}
+//		$scope.setVillage = function (village) {
+//			$scope.villageSelected = village;
+//		}
 
 
 		/*
