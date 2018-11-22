@@ -188,7 +188,7 @@ define("robotTW2/services/ReconService", [
 		}
 		, start = function (){
 			if(isRunning) {return}
-			socketService.emit(function(){
+			ready(function(){
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECON"})
 				setNewHandlersAtackRecon()
