@@ -123,7 +123,9 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data.assignedPresetList = {};
 			for (presetId in $scope.data.presets) {
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
-				angular.extend($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
+				if($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId]){
+					angular.extend($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
+				}
 			}
 			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
 			$scope.presetSelected = $scope.data.presets[Object.keys($scope.data.assignedPresetList).map(
