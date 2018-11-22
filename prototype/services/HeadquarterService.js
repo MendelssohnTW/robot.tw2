@@ -280,7 +280,7 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, start = function(){
 			if(isRunning){return}
-			socketService.emit(function(){
+			ready(function(){
 				var d = data_headquarter.get();
 				d.interval = conf.INTERVAL.HEADQUARTER;
 				data_headquarter.set(d);

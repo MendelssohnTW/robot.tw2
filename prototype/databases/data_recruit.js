@@ -48,6 +48,7 @@ define("robotTW2/databases/data_recruit", [
 			hotkey					: conf.HOTKEY.RECRUIT,
 			version					: conf.VERSION.RECRUIT,
 			interval				: conf.INTERVAL.RECRUIT,
+			time_complete			: 0,
 			reserva 				: {
 				food			: conf.RESERVA.RECRUIT.FOOD,
 				wood			: conf.RESERVA.RECRUIT.WOOD,
@@ -56,7 +57,10 @@ define("robotTW2/databases/data_recruit", [
 				slots			: conf.RESERVA.RECRUIT.SLOTS
 			},
 			troops_not				: conf.TROOPS_NOT,
-			groups					: {}
+			Groups					: services.groupService.getGroups(),
+			GroupsKeys				: Object.keys(services.groupService.getGroups()),
+			GroupsName				: Object.keys(services.groupService.getGroups()).map(m => services.groupService.getGroups()[m].name),
+			GroupsCount				: Object.keys(services.groupService.getGroups()).length
 	}
 
 	if(!data_recruit){
