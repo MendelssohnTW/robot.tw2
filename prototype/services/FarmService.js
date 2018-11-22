@@ -378,7 +378,7 @@ define("robotTW2/services/FarmService", [
 							, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
 							, aldeia_commands = village.getCommandListModel().data
 
-							if(!Object.keys(presets).length) {
+							if(!presets) {
 								return	
 							}
 
