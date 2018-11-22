@@ -58,7 +58,7 @@ define("robotTW2/services/ReconService", [
 					if(obj.name != "knight"){
 						return [obj.speed, obj.name]
 					}
-				}).filter(f=>f=!undefined).map(m => {
+				}).filter(f=>f!=undefined).map(m => {
 					return [m[0], m[1], Math.abs(minutes_duration - Math.round(m[0] * distancia))];
 				}).sort((a, b) => {
 					return a[2] - b[2];
