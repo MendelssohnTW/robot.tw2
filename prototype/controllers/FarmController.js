@@ -299,12 +299,12 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		var remQuadrant = function(pos){
-			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets) {return}
+			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
 			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants = $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.filter(f => f != pos);
 		}
 
 		$scope.setQuadrant = function (pos) {
-			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets) {return}
+			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
 			if($scope.villageSelected.presets[$scope.presetSelected.id].quadrants.includes(pos)){
 				remQuadrant(pos)
 			} else {
@@ -313,7 +313,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getQuadrant = function (pos) {
-			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets) {return}
+			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
 			return $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.includes(pos)
 		}
 
