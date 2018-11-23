@@ -206,8 +206,8 @@ define("robotTW2/controllers/FarmController", [
 		
 
 		$scope.$watch("presetSelected", function(){
-			if(!$scope.presetSelected){return}
-			console.log("teste")
+			if(!$scope.presetSelected || !$scope.villageSelected || !$scope.villageSelected[$scope.presetSelected.id]){return}
+			$rootScope.data_villages[$scope.villageSelected].presets[$scope.presetSelected.id] = $scope.presetSelected;
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		}, true)
 
