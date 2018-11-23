@@ -211,7 +211,7 @@ define("robotTW2/services/HeadquarterService", [
 						var build = g.shift();
 						var buildLevel = Object.keys(build)[0]
 						buildingService.compute(village)
-						if(!(buildAmounts !== buildUnlockedSlots && buildAmounts < data_headquarter.reserva.slots)) {
+						if(!(buildAmounts !== buildUnlockedSlots && buildAmounts < $rootScope.data_headquarter.reserva.slots)) {
 							next()
 						} else {
 							isUpgradeable(village, buildLevel, function(success, data) {
