@@ -339,7 +339,7 @@ define("robotTW2/services/RecruitService", [
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
 		, recruit = function(){
-			var villages = modelDataService.getSelectedCharacter().getVillageList()
+			var villages = modelDataService.getSelectedCharacter().getVillages()
 			, list_recruit = [];
 
 			Object.keys(villages).map(function(village_id){
@@ -348,7 +348,7 @@ define("robotTW2/services/RecruitService", [
 				list.push(getFinishedForFree(village));
 				setList();
 				if (tam < $rootScope.data_recruit.reserva.slots || tam < 1){
-					list_recruit.push(villages[village_id]);
+					list_recruit.push(villages[village_id].data.villageId);
 				}
 			})
 
