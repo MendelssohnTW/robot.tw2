@@ -1,11 +1,9 @@
 define("robotTW2/controllers/AttackController", [
-	"robotTW2",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"helper/time",
 	], function(
-			robotTW2,
 			services,
 			providers,
 			conf,
@@ -16,7 +14,7 @@ define("robotTW2/controllers/AttackController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", $rootScope.loc.ale);
 		var self = this;
-		
+
 		var TABS = {
 				ATTACK 	: services.$filter("i18n")("attack", $rootScope.loc.ale, "attack"),
 				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "attack")
@@ -116,19 +114,13 @@ define("robotTW2/controllers/AttackController", [
 
 		$rootScope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			$scope.comandos = $rootScope.data_attack.commands;
-			if (!$scope.$$phase) {
-				$scope.$apply();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
 			}
 		})
 
-		if (!$scope.$$phase) {
-			$scope.$apply();
-		}
-
-//		services.$timeout(function(){
-//			$window.setCollapse();
-//			$window.recalcScrollbar();
-//		}, 500)
+		$scope.setCollapse();
+		$scope.recalcScrollbar();
 
 		return $scope;
 	}

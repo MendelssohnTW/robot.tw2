@@ -1,10 +1,8 @@
 define("robotTW2/controllers/AlertController", [
-	"robotTW2",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
 	], function(
-			robotTW2,
 			services,
 			providers,
 			helper
@@ -125,6 +123,9 @@ define("robotTW2/controllers/AlertController", [
 		}
 
 		$scope.interval_alert = helper.readableMilliseconds($rootScope.data_alert.interval)
+		
+		$scope.setCollapse();
+		$scope.recalcScrollbar();
 
 		return $scope;
 	}

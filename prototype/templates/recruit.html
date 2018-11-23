@@ -63,12 +63,12 @@
 														<colgroup>
 															<col width="*">
 														</colgroup>
-														<tr ng-repeat="gr in data_recruit.GROUPS">
-															<td ng-class="{'selected': grupo == gr}"
-																ng-click="onchangeGroup(gr)">
-																<canvas icon-generator="gr.icon" icon-type="'group'"
+														<tr ng-repeat="grupo in data_recruit.GROUPS">
+															<td ng-class="{'selected': grupoSelected == grupo}"
+																ng-click="setGroup(grupo)">
+																<canvas icon-generator="grupo.icon" icon-type="'group'"
 																	width="26" height="26"></canvas> <span
-																class="group-name overflow-ellipsis ng-binding">{{gr.name}}</span>
+																class="group-name overflow-ellipsis ng-binding">{{grupo.name}}</span>
 															</td>
 														</tr>
 													</table>
@@ -124,8 +124,6 @@
 				ng-click="pause_recruit()"><span>{{pause}}</span></a></li>
 			<li><a class="btn-border btn-orange btn-resume"
 				ng-click="resume_recruit()"><span>{{resume}}</span></a></li>
-			<li><a class="btn-orange btn-border save"
-				ng-click="save_recruit()">{{save}}</a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>

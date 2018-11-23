@@ -310,12 +310,12 @@
 																</tr>
 																<tr ng-repeat="preset in data.presets"
 																	ng-show="data.assignedPresetList[preset.id]">
-																	<td class="cell-space cell-left" ng-click="presetSelected = preset"
+																	<td class="cell-space cell-left"
+																		ng-click="setPresetSelected(preset.id)"
 																		ng-class="{'selected': preset.id == presetSelected.id}">
 																		<canvas icon-generator="preset.icon"
 																			icon-type="'preset'" class="preset-icon" width="44"
-																			height="44"></canvas> <span
-																		class="preset-name">{{preset.name}}</span>
+																			height="44"></canvas> <span class="preset-name">{{preset.name}}</span>
 																		<div class="hotkey" tooltip=""
 																			tooltip-content="{{text_atalho}}"
 																			ng-if="data.hotkeys[preset.id]">

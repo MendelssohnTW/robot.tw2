@@ -105,15 +105,22 @@ define("robotTW2/controllers/HeadquarterController", [
 			})
 			data_villages.setVillages(villagesExtended);
 			if (!$scope.$$phase) $scope.$apply();
-
+		}
+		
+		$scope.selectvillagebuildingOrder = function(villageId, buildingOrder){
+			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
+		}
+		
+		$scope.set_selected_buildingOrder = function(selected_buildingOrder){
+			$scope.selected_buildingOrder = selected_buildingOrder
 		}
 
 		$scope.selected_buildingOrder = {};
 		$scope.selected_village_buildingOrder = [];
 
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function() {
-			if (!$scope.$$phase) {
-				$scope.$apply();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
 			}
 		})
 

@@ -1,24 +1,24 @@
 define("robotTW2/controllers/AttackCompletionController", [
-	"robotTW2",
+	"robotTW2.services",
 	"helper/time",
 	], function(
-			robotTW2,
+			services,
 			helper
 	){
 	return function AttackCompletionController($rootScope, $scope) {
-		$scope.CLOSE = robotTW2.services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.SCHEDULE = robotTW2.services.$filter("i18n")("SCHEDULE", $rootScope.loc.ale);
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+		$scope.SCHEDULE = services.$filter("i18n")("SCHEDULE", $rootScope.loc.ale);
 		
 		var self = this;
 
-		$scope.date_init = robotTW2.services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd")
-		$scope.hour_init = robotTW2.services.$filter("date")(new Date(helper.gameTime()), "HH:mm:ss")
+		$scope.date_init = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd")
+		$scope.hour_init = services.$filter("date")(new Date(helper.gameTime()), "HH:mm:ss")
 		$scope.ms_init = 0;
 		$scope.enviarFull = false;
 //		$scope.btnActive = false;
 
 		$scope.sendAttack = function(){
-			robotTW2.services.AttackService.sendCommandAttack($scope)
+			services.AttackService.sendCommandAttack($scope)
 		}
 
 //		$scope.toggleFull = function(elem){

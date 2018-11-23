@@ -1,8 +1,10 @@
 define("robotTW2/controllers/FarmController", [
+	"robotTW2/farm",
 	"helper/time",
 	"robotTW2/services",
 	"robotTW2/providers",
 	], function(
+			farm,
 			helper,
 			services,
 			providers
@@ -20,10 +22,6 @@ define("robotTW2/controllers/FarmController", [
 
 		var update = function () {
 
-//			var dataAtual = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd");
-//			var getMillisecondsJourneyTime = helper.readableMilliseconds($rootScope.data_farm.max_journey_time);
-//			var getMillisecondsFarmTime = helper.readableMilliseconds($rootScope.data_farm.farm_time);
-
 			if($rootScope.data_farm.farm_time_start < helper.gameTime()) {
 				$rootScope.data_farm.farm_time_start = helper.gameTime();
 			}
@@ -37,17 +35,11 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blur = function (callback) {
-//			$scope.min_journey_time = $("#min_journey_time").val()
-//			$scope.max_journey_time = $("#max_journey_time").val()
 			$scope.farm_time = $("#farm_time").val()
 			$scope.inicio_de_farm = $("#inicio_de_farm").val()
 			$scope.termino_de_farm = $("#termino_de_farm").val()
 			$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
 			$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
-
-//			if($scope.max_journey_time.length <= 5) {
-//			$scope.max_journey_time = $scope.max_journey_time + ":00"
-//			}
 
 			if($scope.farm_time.length <= 5) {
 				$scope.farm_time = $scope.farm_time + ":00"
@@ -67,8 +59,6 @@ define("robotTW2/controllers/FarmController", [
 			document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
 			document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
-//			$rootScope.data_farm.min_journey_time = helper.unreadableSeconds($scope.min_journey_time) * 1000
-//			$rootScope.data_farm.max_journey_time = helper.unreadableSeconds($scope.max_journey_time) * 1000
 			$rootScope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
 			$rootScope.data_farm.farm_time_start = tempo_escolhido_inicio
 			$rootScope.data_farm.farm_time_stop = tempo_escolhido_termino
@@ -158,25 +148,10 @@ define("robotTW2/controllers/FarmController", [
 			$scope.assignPresets();
 		}
 
-//		$scope.updateAssignedPresets = function updateAssignedPresets() {
-//		var presetId;
-
-//		presetIds = [];
-
-//		for (presetId in $scope.data.assignedPresetList) {
-//		if ($scope.data.assignedPresetList[presetId]) {
-//		presetIds.push(presetId);
-//		}
-//		}
-
-//		services.presetService.assignPresets(presetIds);
-//		}
-
-
-//		$scope.setPresetSelected = function (preset_id) {
-//			$scope.presetSelected =	$scope.data.presets[preset_id]
-//			if (!$rootScope.$$phase) $rootScope.$apply();
-//		}
+		$scope.setPresetSelected = function (preset_id) {
+			$scope.presetSelected =	$scope.data.presets[preset_id]
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		}
 
 		$scope.blurMaxJourney = function () {
 			$scope.presetSelected.max_journey_time = $("#max_journey_time").val()
@@ -210,6 +185,25 @@ define("robotTW2/controllers/FarmController", [
 				tm = "0" + tm;
 			}
 			return tm;
+		}
+		
+		$scope.start_farm = function(){
+			farm.start();
+			$scope.isRunning = recruit.isRunning();
+		}
+
+		$scope.stop_farm = function(){
+			farm.stop();
+			$scope.isRunning = recruit.isRunning();
+		}
+
+		$scope.pause_farm = function(){
+			farm.pause();
+			$scope.paused = !0;
+		}
+		$scope.resume_farm = function(){
+			farm.resume();
+			$scope.paused = !1;
 		}
 
 		$scope.$watch("villageSelected", function(){
@@ -327,16 +321,15 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
-		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
-
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
 			update();
 		})
+		
+		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 
-//		$(".win-foot .btn-orange").forEach(function (d) {
-//		d.setAttribute("style", "min-width:80px")
-//		})
+		$scope.isRunning = recruit.isRunning();
+		$scope.isPaused = recruit.isPaused();
 		update()
 
 		$scope.recalcScrollbar();

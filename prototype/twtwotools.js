@@ -774,6 +774,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "armyService");
 			robotTW2.register("services", "overviewService");
 			robotTW2.register("services", "$filter");
+			robotTW2.register("services", "storageService");
+			robotTW2.register("services", "presetListService");
+			robotTW2.register("services", "presetService");
+			robotTW2.register("services", "groupService");
 
 			return robotTW2.services;
 		}))
@@ -815,38 +819,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			new_extendScopeWithReportData($scope, report)
 		}
 
-//		define("robotTW2/socketEmit", [
-//		"conf/conf"
-//		], function(
-//		conf
-//		){
-//		var loading_timeout = conf.LOADING_TIMEOUT
-
-//		var timeouts = {}
-//		, createTimeoutErrorCaptureFunction = function (id, route, data, emitCallback) {
-//		var dt = {
-//		id : id,	
-//		route : route,
-//		data : data
-//		}
-//		return emitCallback(dt)
-//		}
-
-//		$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, function($event, id, route, data, opt_callback, opt_callback_timeout) {
-//		timeouts[id] = window.setTimeout(function(){createTimeoutErrorCaptureFunction(id, route, data, opt_callback_timeout)}, loading_timeout);
-//		});
-
-//		$rootScope.$on(robotTW2.providers.eventTypeProvider.SOCKET_RECEPT_COMMAND, function($event, id) {
-//		window.clearTimeout(timeouts[id])
-//		delete timeouts[id]
-//		});
-
-//		return function(id, route, data, opt_callback, opt_callback_timeout){
-//		$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SOCKET_EMIT_COMMAND, id, route, data, opt_callback, opt_callback_timeout);
-//		robotTW2.services.socketService.emit(route, data, opt_callback)
-//		}
-//		})
-//		,
 		define("robotTW2/zerofill", function(){
 			return function (n, opt_len) {
 				opt_len = opt_len || 2;
@@ -1033,13 +1005,13 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.MainController : {
 					robotTW2.loadScript("/controllers/FarmController.js");
 					robotTW2.loadScript("/controllers/AttackController.js");
-//					robotTW2.loadScript("/controllers/HeadquarterController.js");
-//					robotTW2.loadScript("/controllers/DefenseController.js");
+					robotTW2.loadScript("/controllers/HeadquarterController.js");
+					robotTW2.loadScript("/controllers/DefenseController.js");
 					robotTW2.loadScript("/controllers/ReconController.js");
 					robotTW2.loadScript("/controllers/AlertController.js");
 					robotTW2.loadScript("/controllers/SpyController.js");
 					robotTW2.loadScript("/controllers/DepositController.js");
-//					robotTW2.loadScript("/controllers/RecruitController.js");
+					robotTW2.loadScript("/controllers/RecruitController.js");
 //					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
@@ -1051,18 +1023,6 @@ var robotTW2 = window.robotTW2 = undefined;
 							templateName 	: "alert",
 							classes 		: "",
 							url		 		: "/controllers/AlertController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
-				}
-				case robotTW2.controllers.FarmController : {
-					var params = {
-							controller		: robotTW2.controllers.FarmController,
-							scopeLang 		: robotTW2.createScopeLang("farm"),
-							hotkey 			: conf.HOTKEY.FARM,
-							templateName 	: "farm",
-							classes 		: "fullsize",
-							url		 		: "/controllers/FarmController.js",
 							style 			: null
 					}		
 					robotTW2.build(params)
@@ -1278,21 +1238,28 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "database" : {
 					robotTW2.ready(function(){
-						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_villages.js")}, 1000)
-						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_farm.js");}, 3000)
 						robotTW2.services.$timeout(function(){
-							robotTW2.loadScript("/databases/data_deposit.js");
-							robotTW2.loadScript("/databases/data_spy.js");
-							robotTW2.loadScript("/databases/data_alert.js");
-							robotTW2.loadScript("/databases/data_attack.js");
-							robotTW2.loadScript("/databases/data_recon.js");
-						}, 5000)
+							robotTW2.loadScript("/databases/data_villages.js")
+							robotTW2.services.$timeout(function(){
+								robotTW2.loadScript("/databases/data_farm.js");
+								robotTW2.loadScript("/databases/data_deposit.js");
+								robotTW2.loadScript("/databases/data_spy.js");
+								robotTW2.loadScript("/databases/data_alert.js");
+								robotTW2.loadScript("/databases/data_attack.js");
+								robotTW2.loadScript("/databases/data_recon.js");
+								robotTW2.loadScript("/databases/data_defense.js");
+								robotTW2.loadScript("/databases/data_headquarter.js");
+								robotTW2.loadScript("/databases/data_recruit.js");
+//								robotTW2.loadScript("/databases/data_medic.js");
 
-//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_defense.js");}, 5000)
-//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_headquarter.js");}, 5000)
-//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_recruit.js");}, 5000)
-//						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_medic.js");}, 5000)
-						robotTW2.services.$timeout(function(){robotTW2.loadScript("/databases/data_main.js");}, 8000)
+								robotTW2.services.$timeout(function(){
+									robotTW2.loadScript("/databases/data_main.js");
+								}, 3000)
+							}, 3000)
+						}, 1000)
+
+
+
 					},  ["all_villages_ready"])
 
 					break
