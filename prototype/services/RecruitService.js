@@ -259,6 +259,9 @@ define("robotTW2/services/RecruitService", [
 								if(!data){
 									rej()
 								}
+								if(data.error_code){
+									rej(data)
+								}
 								var villageUnits = {};
 								for (unit in data.available_units) {
 									villageUnits[unit] = data.available_units[unit].total;
@@ -286,7 +289,8 @@ define("robotTW2/services/RecruitService", [
 								sec_promise(village_id)
 							}
 
-						}, function(){
+						}, function(data){
+							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: data.message})
 							continue
 						})
 					} else {
@@ -345,7 +349,7 @@ define("robotTW2/services/RecruitService", [
 				list.push(getFinishedForFree(village));
 				setList();
 				if (tam < $rootScope.data_recruit.reserva.slots || tam < 1){
-					list_recruit.push(village_id);
+					list_recruit.push(villages[village_id]);
 				}
 			})
 
