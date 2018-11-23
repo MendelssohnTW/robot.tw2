@@ -1,0 +1,70 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="win-main" scrollbar="">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap" style="margin-bottom: 80px">
+				<div>
+					<table class="tbl-border-light tbl-striped">
+						<colgroup>
+							<col width="*">
+							<col width="100px">
+
+						</colgroup>
+						<tr>
+							<td>{{use_reroll_deposit}}</td>
+							<td>
+								<div id="switch" switch-slider="" border="true" enabled="true"
+									value="data_deposit.use_reroll" vertical="false" size="'56x28'">
+									<div ng-class="{'box-border-dark box-filter': border}"
+										class="box-border-dark box-filter">
+										<div class="switch switch-56x28 switch-horizontal"
+											ng-class="{'switch-checked': value}">
+											<span class="size-26x26 switch-thumb"> <span
+												class="simple icon-26x26-switch-off"
+												ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+											</span>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>{{text_interval_deposit}}</td>
+							<td><input id="input-ms" class="input-border inpt" type="time"
+								step="1" min="00:00:00" max="23:59:59"
+								value="{{data_deposit.interval | date : 'HH:mm:ss'}}"
+								ng-blur="blur()"></td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
+				<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="blur()">{{SAVE}}</a></li>
+		</ul>
+	</footer>
+</div>
+
