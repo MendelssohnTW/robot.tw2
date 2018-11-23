@@ -290,8 +290,7 @@ define("robotTW2/services/RecruitService", [
 							}
 
 						}, function(data){
-							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: data.message})
-							continue
+							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: data.message});
 						})
 					} else {
 						queue_UnitsAndResources.push(village_id);
