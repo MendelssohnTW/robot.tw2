@@ -348,7 +348,7 @@ define("robotTW2/services/RecruitService", [
 				list.push(getFinishedForFree(village));
 				setList();
 				if (tam < $rootScope.data_recruit.reserva.slots || tam < 1){
-					list_recruit.push(villages[village_id].data.villageId);
+					list_recruit.push(village_id);
 				}
 			})
 
