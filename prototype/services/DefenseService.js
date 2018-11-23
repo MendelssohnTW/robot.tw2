@@ -391,9 +391,9 @@ define("robotTW2/services/DefenseService", [
 					list_snob.length || list_trebuchet.length || list_others.length ? troops_analyze(list_snob, list_trebuchet, list_others, comandos, gt) : gt();
 				} else {
 					upDateTbodySupport();
-					$rootScope.$broadcast(eventTypeProvider.DEPOSIT_READY)
-					$rootScope.$broadcast(eventTypeProvider.RECON_READY)
-					$rootScope.$broadcast(eventTypeProvider.HEADQUARTER_READY)
+					$rootScope.$broadcast(providers.eventTypeProvider.DEPOSIT_READY)
+					$rootScope.$broadcast(providers.eventTypeProvider.RECON_READY)
+					$rootScope.$broadcast(providers.eventTypeProvider.HEADQUARTER_READY)
 				}
 			}
 			gt()
@@ -452,11 +452,11 @@ define("robotTW2/services/DefenseService", [
 					delete c[data.command_id];
 				}
 				delete timeoutIdCancel[data.command_id];
-				d[data.command_id] = $rootScope.$on(eventTypeProvider.COMMAND_RETURNED, command_returned);
+				d[data.command_id] = $rootScope.$on(providers.eventTypeProvider.COMMAND_RETURNED, command_returned);
 			}
 			, command_sent = function($event, data){
 				if(params.start_village == data.origin.id){
-					b[data.command_id] = $rootScope.$on(eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
+					b[data.command_id] = $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
 					var dados = database.get("dados_support")
 					if(a[id_command] && typeof(a[id_command].listener) == "function") {
 //						dados.TIME_CORRECTION_COMMAND += (data.time_start * 1000 - a[id_command].time);
@@ -552,7 +552,7 @@ define("robotTW2/services/DefenseService", [
 					$timeout(function () {
 						a[id_command] = {
 								time 		: params.data_escolhida - params.TIME_SNIPER_ANT,
-								listener 	: $rootScope.$on(eventTypeProvider.COMMAND_SENT, command_sent)
+								listener 	: $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_sent)
 						} 
 						socketService.emit(
 								routeProvider.SEND_CUSTOM_ARMY, {
@@ -701,9 +701,9 @@ define("robotTW2/services/DefenseService", [
 			ready(function(){
 				reformatCommand();
 //				w.reload();
-				listener_lost = $rootScope.$on(eventTypeProvider.VILLAGE_LOST, updateVillages);
-				listener_conquered = $rootScope.$on(eventTypeProvider.VILLAGE_CONQUERED, updateVillages);
-//				listener_window_support = $rootScope.$on(eventTypeProvider.OPEN_SUPPORT, addWindowDefense);
+				listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, updateVillages);
+				listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, updateVillages);
+//				listener_window_support = $rootScope.$on(providers.eventTypeProvider.OPEN_SUPPORT, addWindowDefense);
 				isRunning = !0;
 //				database.get("comandos_support") ? database.get("comandos_support").forEach(function(e){
 //					if(e.params.data_escolhida < gameTime() || e.params.no_target == false){
