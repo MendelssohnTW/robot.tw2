@@ -2,10 +2,14 @@ define("robotTW2/services/HeadquarterService", [
 	"robotTW2",
 	"helper/time",
 	"robotTW2/conf",
+	"conf/upgradeabilityStates",
+	"conf/locationTypes",
 	], function(
 			robotTW2,
 			helper,
-			conf
+			conf,
+			upgradeabilityStates,
+			locationTypes
 	){
 	return (function HeadquarterService(
 			$rootScope,
