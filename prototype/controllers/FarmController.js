@@ -184,7 +184,13 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
-		
+
+		$scope.blurPreset = function(){
+			if(!$scope.presetSelected || !$scope.villageSelected || !$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets){return}
+			$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		}
+
 		$scope.start_farm = function(){
 			services.FarmService.start();
 			$scope.isRunning = services.FarmService.isRunning();
@@ -203,13 +209,8 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.resume();
 			$scope.paused = !1;
 		}
-		
 
-		$scope.$watch("presetSelected", function(){
-			if(!$scope.presetSelected || !$scope.villageSelected || !$rootScope.data_villages[$scope.villageSelected.data.villageId].presets){return}
-			$rootScope.data_villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
-			if (!$rootScope.$$phase) $rootScope.$apply();
-		}, true)
+
 
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
@@ -330,7 +331,7 @@ define("robotTW2/controllers/FarmController", [
 			if(!data) {return} 
 			update();
 		})
-		
+
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 
 		$scope.isRunning = services.FarmService.isRunning();

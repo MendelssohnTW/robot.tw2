@@ -193,7 +193,8 @@
 													class="with-margin">{{text_min_point}}</label><input
 													class="input-border inputcreated" type="number"
 													id="min_point" step="1" min="0" max="12000"
-													ng-model="presetSelected.min_points_farm"></td>
+													ng-model="presetSelected.min_points_farm"
+													ng-blur="blurPreset()"></td>
 												<td class="cell-right"><label for="min_journey_time"
 													class="with-margin">{{time_min}}</label><input
 													class="input-border inpt" type="time" id="min_journey_time"
@@ -204,7 +205,8 @@
 													class="with-margin">{{text_min_dist}}</label><input
 													class="input-border inputcreated" type="number"
 													id="min_dist" step="1" min="1" max="180"
-													ng-model="presetSelected.min_journey_distance" disabled></td>
+													ng-model="presetSelected.min_journey_distance"
+													ng-blur="blurPreset()" disabled></td>
 
 											</tr>
 											<tr>
@@ -213,7 +215,7 @@
 													class="with-margin">{{text_max_point}}</label><input
 													class="input-border inputcreated" type="number"
 													id="max_point" step="1" min="00" max="12000"
-													ng-model="presetSelected.max_points_farm"></td>
+													ng-model="presetSelected.max_points_farm" ng-blur="blurPreset()"></td>
 												<td class="cell-right"><label for="max_journey_time"
 													class="with-margin">{{time_max}}</label><input
 													class="input-border inpt" type="time" id="max_journey_time"
@@ -224,12 +226,12 @@
 													class="with-margin">{{text_max_dist}}</label><input
 													class="input-border inputcreated" type="number"
 													id="max_dist" step="1" min="5" max="200"
-													ng-model="presetSelected.max_journey_distance" disabled></td>
+													ng-model="presetSelected.max_journey_distance" ng-blur="blurPreset()" disabled></td>
 												<td class="cell-right"><label for="cmd_max"
 													class="with-margin">{{text_cmd_max}}</label><input
 													class="input-border inputcreated" type="number"
 													id="cmd_max" step="1" min="0" max="50"
-													ng-model="data_farm.max_commands_farm"></td>
+													ng-model="presetSelected.max_commands_farm" ng-blur="blurPreset()"></td>
 
 											</tr>
 
