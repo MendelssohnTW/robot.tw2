@@ -1,10 +1,8 @@
 define("robotTW2/controllers/FarmController", [
-	"robotTW2/farm",
 	"helper/time",
 	"robotTW2/services",
 	"robotTW2/providers",
 	], function(
-			farm,
 			helper,
 			services,
 			providers
@@ -188,21 +186,21 @@ define("robotTW2/controllers/FarmController", [
 		}
 		
 		$scope.start_farm = function(){
-			farm.start();
+			services.FarmService.start();
 			$scope.isRunning = recruit.isRunning();
 		}
 
 		$scope.stop_farm = function(){
-			farm.stop();
+			services.FarmService.stop();
 			$scope.isRunning = recruit.isRunning();
 		}
 
 		$scope.pause_farm = function(){
-			farm.pause();
+			services.FarmService.pause();
 			$scope.paused = !0;
 		}
 		$scope.resume_farm = function(){
-			farm.resume();
+			services.FarmService.resume();
 			$scope.paused = !1;
 		}
 

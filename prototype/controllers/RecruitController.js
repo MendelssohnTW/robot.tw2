@@ -1,12 +1,10 @@
 define("robotTW2/controllers/RecruitController", [
-	"robotTW2/recruit",
 	"helper/time",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"conf/unitTypes"
 	], function(
-			recruit,
 			helper,
 			services,
 			providers,
@@ -51,21 +49,21 @@ define("robotTW2/controllers/RecruitController", [
 		}
 
 		$scope.start_recruit = function(){
-			recruit.start();
+			services.RecruitService.start();
 			$scope.isRunning = recruit.isRunning();
 		}
 
 		$scope.stop_recruit = function(){
-			recruit.stop();
-			$scope.isRunning = recruit.isRunning();
+			services.RecruitService.stop();
+			$scope.isRunning = services.RecruitService.isRunning();
 		}
 
 		$scope.pause_recruit = function(){
-			recruit.pause();
+			services.RecruitService.pause();
 			$scope.paused = !0;
 		}
 		$scope.resume_recruit = function(){
-			recruit.resume();
+			services.RecruitService.resume();
 			$scope.paused = !1;
 		}
 		
@@ -82,8 +80,8 @@ define("robotTW2/controllers/RecruitController", [
 			}
 		})
 		
-		$scope.isRunning = recruit.isRunning();
-		$scope.isPaused = recruit.isPaused();
+		$scope.isRunning = services.RecruitService.isRunning();
+		$scope.isPaused = services.RecruitService.isPaused();
 		$scope.grupoSelected = $rootScope.data_recruit.groups[Object.keys($rootScope.data_recruit.groups)[0]]
 
 //		$scope.setGroup($scope.grupo)
