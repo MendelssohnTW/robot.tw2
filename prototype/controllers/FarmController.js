@@ -232,9 +232,9 @@ define("robotTW2/controllers/FarmController", [
 			return village.getName() + " / (" + village.getX() + "|" + village.getY() + ")"
 		}
 
-//		$scope.setVillage = function (village) {
-//			$scope.villageSelected = village;
-//		}
+		$scope.setVillage = function (village) {
+			$scope.villageSelected = village;
+		}
 
 
 		/*

@@ -110,7 +110,7 @@
 																<tr ng-repeat="village in data_villages.villages">
 																	<td
 																		ng-class="{'selected': villageSelected.data.villageId == village.data.villageId}"
-																		ng-click="villageSelected = village" class="cell-right"><span>{{village.data.name
+																		ng-click="setVillage(village)" class="cell-right"><span>{{village.data.name
 																			+ " - (" + village.data.x + "|" + village.data.x +
 																			")"}}</span></td>
 																	<td class="cell-space">
