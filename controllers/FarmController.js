@@ -184,6 +184,25 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
+		
+		$scope.start_farm = function(){
+			services.FarmService.start();
+			$scope.isRunning = services.FarmService.isRunning();
+		}
+
+		$scope.stop_farm = function(){
+			services.FarmService.stop();
+			$scope.isRunning = services.FarmService.isRunning();
+		}
+
+		$scope.pause_farm = function(){
+			services.FarmService.pause();
+			$scope.paused = !0;
+		}
+		$scope.resume_farm = function(){
+			services.FarmService.resume();
+			$scope.paused = !1;
+		}
 
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
@@ -300,13 +319,15 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
-		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
-
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
 			update();
 		})
+		
+		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 
+		$scope.isRunning = services.FarmService.isRunning();
+		$scope.isPaused = services.FarmService.isPaused();
 		update()
 
 		$scope.recalcScrollbar();
