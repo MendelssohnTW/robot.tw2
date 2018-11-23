@@ -203,6 +203,13 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.resume();
 			$scope.paused = !1;
 		}
+		
+
+		$scope.$watch("presetSelected", function(){
+			if(!$scope.presetSelected || !$scope.villageSelected || !$scope.villageSelected[$scope.presetSelected.id]){return}
+			$rootScope.data_villages[$scope.villageSelected].presets[$scope.presetSelected.id] = $scope.presetSelected;
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		}, true)
 
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
