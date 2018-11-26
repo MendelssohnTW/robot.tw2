@@ -57,7 +57,7 @@ define("robotTW2/services/SpyService", [
 						var spy = spies[i];
 						spy.affordable = !Object.keys(selectedVillage.getResources().getComputed()).map(
 								function(elem){
-									if(elem != "food"){
+									if(["wood", "clay", "iron"].some(f=> f== elem)){
 										if(selectedVillage.getResources().getComputed()[elem].currentStock > prices[i][elem]) {
 											return true
 										} else {
@@ -71,7 +71,7 @@ define("robotTW2/services/SpyService", [
 						if(spy.type == SPY_TYPES.RECRUITING){
 							list.push(spy.timeCompleted);
 						}
-						if ((spy.type === SPY_TYPES.NO_SPY) && spy.active && spy.affordable) {
+						if ((spy.type === SPY_TYPES.NO_SPY) && spy.affordable) {
 							socketService.emit(providers.routeProvider.SCOUTING_RECRUIT, {
 								'village_id'	: selectedVillage.getId(),
 								'slot'			: spy.id
