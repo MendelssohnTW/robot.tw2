@@ -23,7 +23,7 @@ define("robotTW2/controllers/RecruitController", [
 		var return_units = function (){
 			var units = {};
 			Object.keys(unitTypes).map(function(key){
-				if(data_recruit.getRecruit().TROOPS_NOT.some(elem => elem == unitTypes[key])){
+				if($rootScope.data_recruit.troops_not.some(elem => elem == unitTypes[key])){
 					delete units[unitTypes[key]]
 				} else {
 					units[unitTypes[key]] = 0
