@@ -82,7 +82,7 @@ define("robotTW2/controllers/RecruitController", [
 		
 		$scope.isRunning = services.RecruitService.isRunning();
 		$scope.isPaused = services.RecruitService.isPaused();
-		$scope.grupoSelected = $rootScope.data_recruit.groups[Object.keys($rootScope.data_recruit.groups)[0]]
+		$scope.grupoSelected = $rootScope.data_recruit.Groups[Object.keys($rootScope.data_recruit.Groups)[0]]
 
 //		$scope.setGroup($scope.grupo)
 		$scope.setCollapse();
