@@ -143,9 +143,11 @@ define("robotTW2/services/RecruitService", [
 					, copia_listGroups = angular.extend({}, listGroups)
 					, copia_res = angular.extend({}, resp.data.resources)
 					, villageUnits = resp.data.villageUnits
+					, keys_listGroups = Object.keys(copia_listGroups)
 
 					var groupLoop = function (){
-						var group = copia_listGroups.shift()
+						var key = keys_listGroups.shift()
+						, group = copia_listGroups[key]
 						, gr = $rootScope.data_recruit.groups[group.id]
 						if (gr && gr.units){
 							var units = gr.units;
@@ -246,7 +248,7 @@ define("robotTW2/services/RecruitService", [
 							return;
 						};
 					};
-					if (Object.keys(copia_listGroups).length){
+					if (keys_listGroups.length){
 						groupLoop();
 					}
 
