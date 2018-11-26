@@ -146,111 +146,112 @@ define("robotTW2/services/RecruitService", [
 					, keys_listGroups = Object.keys(copia_listGroups)
 
 					var groupLoop = function (){
-						var key = keys_listGroups.shift()
-						, group = copia_listGroups[key]
-						, gr = $rootScope.data_recruit.Groups[group.id]
-						if (gr && gr.units){
-							var units = gr.units;
-							var copia_res_sorted = sort_max(copia_res);
-							var max = copia_res_sorted[Object.keys(copia_res_sorted)[0]];
-							var mid = copia_res_sorted[Object.keys(copia_res_sorted)[1]];
-							var min = copia_res_sorted[Object.keys(copia_res_sorted)[2]];
-							var max_name = Object.keys(copia_res_sorted)[0];
-							var taxa = mid / (max - min);
-							var units_sorted = [];
-							if (taxa > 1) {
-								units_sorted = sort_units_unstabled(units, max_name);
-							} else {
-								units_sorted = sort_units_stabled(units, villageUnits);
-							};
-							var unitName
-							, remaing
-							, fully = false
-							, unitsLoop = function (){
-								if (units_sorted.length){
-									var unit = units_sorted.shift();
-									unitName = Object.keys(unit)[0];
-									var RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes();
-									var ltz = [];
-									Object.keys(RESOURCE_TYPES).forEach(
-											function(name){
-												if (copia_res[RESOURCE_TYPES[name]] < $rootScope.data_recruit.reserva[name.toLowerCase()]){
-													ltz.push(true);
-												} else {
-													ltz.push(false);
-												}
-											});
+						if(keys_listGroups.length){
+							var key = keys_listGroups.shift()
+							, group = copia_listGroups[key]
+							, gr = $rootScope.data_recruit.Groups[group.id]
 
-									if (ltz.every(f => f == true)) {
-										unitsLoop(units_sorted);
-										return;
-									};
-									amount = Math.floor(
-											Math.min(
-													(copia_res.wood - data_recruit.reserva.wood) / prices[unitName][0], 
-													(copia_res.clay - data_recruit.reserva.clay) / prices[unitName][1], 
-													(copia_res.iron - data_recruit.reserva.iron) / prices[unitName][2], 
-													(copia_res.food - data_recruit.reserva.food) / prices[unitName][3]
-											)
-									)
+							if (gr && gr.units){
+								var units = gr.units;
+								var copia_res_sorted = sort_max(copia_res);
+								var max = copia_res_sorted[Object.keys(copia_res_sorted)[0]];
+								var mid = copia_res_sorted[Object.keys(copia_res_sorted)[1]];
+								var min = copia_res_sorted[Object.keys(copia_res_sorted)[2]];
+								var max_name = Object.keys(copia_res_sorted)[0];
+								var taxa = mid / (max - min);
+								var units_sorted = [];
+								if (taxa > 1) {
+									units_sorted = sort_units_unstabled(units, max_name);
+								} else {
+									units_sorted = sort_units_stabled(units, villageUnits);
+								};
+								var unitName
+								, remaing
+								, fully = false
+								, unitsLoop = function (){
+									if (units_sorted.length){
+										var unit = units_sorted.shift();
+										unitName = Object.keys(unit)[0];
+										var RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes();
+										var ltz = [];
+										Object.keys(RESOURCE_TYPES).forEach(
+												function(name){
+													if (copia_res[RESOURCE_TYPES[name]] < $rootScope.data_recruit.reserva[name.toLowerCase()]){
+														ltz.push(true);
+													} else {
+														ltz.push(false);
+													}
+												});
 
-									remaing = units[unitName] - villageUnits[unitName];
-									if (remaing <= 0) {
-										unitsLoop();
-										return;
-									};
-									if (amount > remaing) {
-										amount = remaing;
-									} else {
-										if (amount < 1) {
+										if (ltz.every(f => f == true)) {
+											unitsLoop(units_sorted);
+											return;
+										};
+										amount = Math.floor(
+												Math.min(
+														(copia_res.wood - data_recruit.reserva.wood) / prices[unitName][0], 
+														(copia_res.clay - data_recruit.reserva.clay) / prices[unitName][1], 
+														(copia_res.iron - data_recruit.reserva.iron) / prices[unitName][2], 
+														(copia_res.food - data_recruit.reserva.food) / prices[unitName][3]
+												)
+										)
+
+										remaing = units[unitName] - villageUnits[unitName];
+										if (remaing <= 0) {
 											unitsLoop();
 											return;
 										};
-									};
-
-									var data_recruit = {
-											"village_id": village_id,
-											"unit_type": unitName,
-											"amount": amount
-									}
-
-									var recruit_promise = function(data_recruit){
-										if(!promise_recruitRequest){
-											promise_recruitRequest = new Promise(function(res, rej){
-												if (village_id && unit_type){
-													socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_recruit, function(){
-														res()
-													});
-												};
-											}). then(function(data){
-												groupLoop()
-												promise_recruitRequest = undefined
-												if(queue_recruitRequest.length){
-													data_recruit = queue_recruitRequest.shift()
-													recruit_promise(data_recruit)
-												}
-											})
+										if (amount > remaing) {
+											amount = remaing;
 										} else {
-											queue_recruitRequest.push(data_recruit);
+											if (amount < 1) {
+												unitsLoop();
+												return;
+											};
+										};
+
+										var data_recruit = {
+												"village_id": village_id,
+												"unit_type": unitName,
+												"amount": amount
 										}
-									}
 
-									recruit_promise(data_recruit)
+										var recruit_promise = function(data_recruit){
+											if(!promise_recruitRequest){
+												promise_recruitRequest = new Promise(function(res, rej){
+													if (village_id && unit_type){
+														socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_recruit, function(){
+															res()
+														});
+													};
+												}). then(function(data){
+													groupLoop()
+													promise_recruitRequest = undefined
+													if(queue_recruitRequest.length){
+														data_recruit = queue_recruitRequest.shift()
+														recruit_promise(data_recruit)
+													}
+												})
+											} else {
+												queue_recruitRequest.push(data_recruit);
+											}
+										}
 
-								} else {
-									groupLoop();
-									return;
+										recruit_promise(data_recruit)
+
+									} else {
+										groupLoop();
+										return;
+									};
 								};
+								unitsLoop();
+							} else {
+								groupLoop();
+								return;
 							};
-							unitsLoop();
-						} else {
-							groupLoop();
-							return;
-						};
+						}
 					};
-					if (keys_listGroups.length){
-						groupLoop();
-					}
+					groupLoop();
 
 				}
 				, sec_promise = function (village_id){
