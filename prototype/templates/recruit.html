@@ -86,12 +86,12 @@
 											<colgroup>
 												<col width="*">
 											</colgroup>
-											<tr ng-repeat="(key, value) in grupo.units">
+											<tr ng-repeat="(key, value) in grupoSelected.units">
 												<td class="cell-right"><label for=key>{{getText(key)}}</label><span
 													class="span-icon" ng-class="getClass(key)"></span><input
 													id={{key}} class="input-border input-list-collapse"
-													type="number" value="grupo.units[key]"
-													ng-model="grupo.units[key]"></td>
+													type="number" value="grupoSelected.units[key]"
+													ng-model="grupoSelected.units[key]"></td>
 											</tr>
 										</table>
 									</div>
