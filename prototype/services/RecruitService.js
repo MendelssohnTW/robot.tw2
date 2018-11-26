@@ -246,7 +246,7 @@ define("robotTW2/services/RecruitService", [
 							return;
 						};
 					};
-					if (copia_listGroups.length){
+					if (Object.keys(copia_listGroups).length){
 						groupLoop();
 					}
 
