@@ -27,26 +27,26 @@
 								type=text value="{{getTimeRest()}}" disabled></td>
 							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
 								id="reserva_food" class="input-border inputcreated"
-								type="number" value="{{data_recruit.RESERVA.FOOD}}"
-								ng-model="data_recruit.RESERVA.FOOD"></td>
+								type="number" value="{{data_recruit.reserva.food}}"
+								ng-model="data_recruit.reserva.food"></td>
 							<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
 								id="reserva_slots" class="input-border inputcreated"
-								type="number" value="{{data_recruit.RESERVA.SLOTS}}"
-								ng-model="data_recruit.RESERVA.SLOTS"></td>
+								type="number" value="{{data_recruit.reserva.slots}}"
+								ng-model="data_recruit.reserva.slots"></td>
 						</tr>
 						<tr>
 							<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
 								id="reserva_wood" class="input-border inputcreated"
-								type="number" value="{{data_recruit.RESERVA.WOOD}}"
-								ng-model="data_recruit.RESERVA.WOOD"></td>
+								type="number" value="{{data_recruit.reserva.wood}}"
+								ng-model="data_recruit.reserva.wood"></td>
 							<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
 								id="reserva_clay" class="input-border inputcreated"
-								type="number" value="{{data_recruit.RESERVA.CLAY}}"
-								ng-model="data_recruit.RESERVA.CLAY"></td>
+								type="number" value="{{data_recruit.reserva.clay}}"
+								ng-model="data_recruit.reserva.clay"></td>
 							<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
 								id="reserva_iron" class="input-border inputcreated"
-								type="number" value="{{data_recruit.RESERVA.IRON}}"
-								ng-model="data_recruit.RESERVA.IRON"></td>
+								type="number" value="{{data_recruit.reserva.iron}}"
+								ng-model="data_recruit.reserva.iron"></td>
 						</tr>
 						<tr>
 							<td class="cell-top">
@@ -63,7 +63,7 @@
 														<colgroup>
 															<col width="*">
 														</colgroup>
-														<tr ng-repeat="grupo in data_recruit.GROUPS">
+														<tr ng-repeat="grupo in data_recruit.Groups">
 															<td ng-class="{'selected': grupoSelected == grupo}"
 																ng-click="setGroup(grupo)">
 																<canvas icon-generator="grupo.icon" icon-type="'group'"

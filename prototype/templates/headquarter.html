@@ -61,63 +61,67 @@
 						<tr>
 							<td class="cell-space"></td>
 							<td class="cell-space">
-								<h5 class="twx-section">{{priority}}</h5>
-								<table class="tbl-border-light tbl-striped" id="preset-list">
-									<colgroup>
-										<col width="*">
-										<col width="20">
-										<col width="20">
-										<col width="26">
-									</colgroup>
-									<tbody>
-										<tr
-											ng-repeat="buildingOrder in data_headquarter.buildingorder"
-											style="height: 56px">
-											<td ng-class="{'resource-text' : selected_buildingOrder == buildingOrder}"
-												class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
-												class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
-											<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
-											<td class="cell-right"><span
-												class="size-12x12 btn-orange icon-26x26-rte-building"
-												ng-click="set_selected_buildingOrder(buildingOrder)" tooltip
-												tooltip-content="{{tooltip_button}}"></span></td>
-											<td class="cell-right"><div
-													ng-show="selected_buildingOrder == buildingOrder">
-													<span
-														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-														ng-click="up(data_headquarter, buildingOrder)"></span> <span
-														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-														ng-click="down(data_headquarter, buildingOrder)"></span>
-												</div></td>
-										</tr>
-									</tbody>
-								</table>
+								<h5 class="twx-section collapse">{{priority}}</h5>
+								<div>
+									<table class="tbl-border-light tbl-striped" id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr
+												ng-repeat="buildingOrder in data_headquarter.buildingorder"
+												style="height: 56px">
+												<td
+													ng-class="{'resource-text' : selected_buildingOrder == buildingOrder}"
+													class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
+													class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
+												<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
+												<td class="cell-right"><span
+													class="size-12x12 btn-orange icon-26x26-rte-building"
+													ng-click="set_selected_buildingOrder(buildingOrder)"
+													tooltip tooltip-content="{{tooltip_button}}"></span></td>
+												<td class="cell-right"><div
+														ng-show="selected_buildingOrder == buildingOrder">
+														<span
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+															ng-click="up(data_headquarter, buildingOrder)"></span> <span
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+															ng-click="down(data_headquarter, buildingOrder)"></span>
+													</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							</td>
 							<td class="cell-right"></td>
 							<td class="cell-right">
-								<h5 class="twx-section">{{levels}}</h5>
-								<table class="tbl-border-light tbl-striped" id="preset-list">
-
-									<colgroup>
-										<col width="*">
-										<col width="20">
-										<col width="26">
-									</colgroup>
-									<tbody>
-										<tr
-											ng-repeat="buildingLimit in data_headquarter.buildinglimit">
-											<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
-												class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
-											<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
-											<td class="cell-right"><span
-												class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-												ng-click="levelup(buildingLimit)"></span> <span
-												class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-												ng-click="leveldown(buildingLimit)"></span></td>
-											<td class="cell-right"></td>
-										</tr>
-									</tbody>
-								</table>
+								<h5 class="twx-section collapse">{{levels}}</h5>
+								<div>
+									<table class="tbl-border-light tbl-striped" id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr
+												ng-repeat="buildingLimit in data_headquarter.buildinglimit">
+												<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
+													class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
+												<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
+												<td class="cell-right"><span
+													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+													ng-click="levelup(buildingLimit)"></span> <span
+													class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+													ng-click="leveldown(buildingLimit)"></span></td>
+												<td class="cell-right"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							</td>
 							<td class="cell-right"></td>
 						</tr>
