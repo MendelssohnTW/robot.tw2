@@ -148,7 +148,7 @@ define("robotTW2/services/RecruitService", [
 					var groupLoop = function (){
 						var key = keys_listGroups.shift()
 						, group = copia_listGroups[key]
-						, gr = $rootScope.data_recruit.groups[group.id]
+						, gr = $rootScope.data_recruit.Groups[group.id]
 						if (gr && gr.units){
 							var units = gr.units;
 							var copia_res_sorted = sort_max(copia_res);
