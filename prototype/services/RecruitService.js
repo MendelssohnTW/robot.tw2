@@ -136,7 +136,7 @@ define("robotTW2/services/RecruitService", [
 					return lis;
 				}
 				, sec_groups = function (data){
-					var listGroups = modelDataService.getGroupList().getVillageGroups(data.village_id)
+					var listGroups = modelDataService.getGroupList().getVillageGroups(data.data.village_id)
 					, amount
 					, requests = 0
 					, requestsReadys = 0
