@@ -135,14 +135,14 @@ define("robotTW2/services/RecruitService", [
 					}
 					return lis;
 				}
-				, sec_groups = function (data){
-					var listGroups = modelDataService.getGroupList().getVillageGroups(data.data.village_id)
+				, sec_groups = function (resp){
+					var listGroups = modelDataService.getGroupList().getVillageGroups(resp.data.village_id)
 					, amount
 					, requests = 0
 					, requestsReadys = 0
 					, copia_listGroups = angular.extend({}, listGroups)
-					, copia_res = angular.extend({}, data.resources)
-					, villageUnits = data.villageUnits
+					, copia_res = angular.extend({}, resp.data.resources)
+					, villageUnits = resp.data.villageUnits
 
 					var groupLoop = function (){
 						var group = copia_listGroups.shift()
