@@ -75,8 +75,8 @@ define("robotTW2/controllers/RecruitController", [
 		})
 		
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function() {
-			if (!$root$cope.$$phase) {
-				$root$cope.$apply();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
 			}
 		})
 		
