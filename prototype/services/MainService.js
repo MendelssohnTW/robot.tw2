@@ -24,8 +24,6 @@ define("robotTW2/services/MainService", [
 							return !1;	
 						if(typeof(fn.init) == "function"){
 							if(ext.name != "FARM" || ext.name != "RECRUIT"){
-								fn.init(true)
-							} else {
 								fn.init()
 							}
 						}

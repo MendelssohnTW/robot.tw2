@@ -357,9 +357,8 @@ define("robotTW2/services/RecruitService", [
 
 			recruitSteps(list_recruit)
 		}
-		, init = function (bool) {
+		, init = function () {
 			isInitialized = !0
-			if(bool){return}
 			start();
 		}
 		, start = function (){

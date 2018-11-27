@@ -62,8 +62,6 @@ define("robotTW2/controllers/MainController", [
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
 							if(ext.name != "FARM" || ext.name != "RECRUIT"){
-								fn.init(true)
-							} else {
 								fn.init()
 							}
 						}
