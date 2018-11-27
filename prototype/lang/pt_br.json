@@ -42,7 +42,7 @@
 		"settings_for_villages": "Configurações por aldeia",
 		"init_standard": "Inicialização automática",
 		"headquarter": "Edificio principal",
-		"text_interval_headquarter": "Tempo do ciclo",
+		"text_interval_headquarter": "Próximo ciclo em ",
 		"text_reserva_food": "Reserva de provisões",
 		"text_reserva_slots": "Quantidade de slots",
 		"text_reserva_wood": "Reserva de madeira",
@@ -144,7 +144,7 @@
 		"title": "Recrutamento de tropas",
 		"settings": "Configurações para recrutamento de tropas",
 		"recruit_running": "Estado atual do recrutamento",
-		"text_interval_recruit": "Tempo do ciclo",
+		"text_interval_recruit": "Próximo ciclo em ",
 		"text_reserva_food": "Reserva de provisões",
 		"text_reserva_slots": "Quantidade de slots",
 		"text_reserva_wood": "Reserva de madeira",
@@ -166,11 +166,13 @@
 		"title": "Coleta de depósito",
 		"settings": "Configurações para coleta do depósito",
 		"text_interval_deposit": "Intervalo de verificação",
+		"text_interval": "Próximo ciclo em ",
 		"use_reroll_deposit": "Sortear novamente automático"
 	},
 	"spy": {
 		"title": "Recrutamento de espiões",
 		"settings": "Configurações",
+		"text_interval": "Próximo ciclo em ",
 		"text_interval_deposit": "Intervalo de verificação"
 	},
 	"notify": {

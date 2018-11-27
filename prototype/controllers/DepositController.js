@@ -19,6 +19,10 @@ define("robotTW2/controllers/DepositController", [
 			$rootScope.data_deposit.interval = helper.unreadableSeconds(t) * 1000;
 		}
 		
+		$scope.getTimeRest = function(){
+			return $rootScope.data_deposit.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_deposit.time_complete - helper.gameTime()) : 0;
+		}
+		
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function() {
 			document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
 			if (!$rootScope.$$phase) {

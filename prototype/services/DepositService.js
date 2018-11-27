@@ -88,7 +88,7 @@ define("robotTW2/services/DepositService", [
 			var t = Math.min.apply(null, list)
 			t < 3000 ? t = 3000 : t;
 			$rootScope.data_deposit.interval = t
-			$rootScope.data_deposit.completed_at = helper.gameTime() + t
+			$rootScope.data_deposit.complete = helper.gameTime() + t
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
 			if(callback && typeof(callback) == "function"){callback(t)}

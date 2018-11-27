@@ -20,7 +20,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		var self = this;
 		
 		$scope.getTimeRest = function(){
-			return helper.readableMilliseconds($rootScope.data_headquarter.time_complete - helper.gameTime()); 
+			return $rootScope.data_headquarter.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_headquarter.time_complete - helper.gameTime()) : 0;
 		}
 
 		$scope.getKey = function(buildingOrder){

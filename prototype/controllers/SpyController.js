@@ -19,6 +19,11 @@ define("robotTW2/controllers/SpyController", [
 			$rootScope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
 		}
 		
+		$scope.getTimeRest = function(){
+			return $rootScope.data_spy.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_spy.time_complete - helper.gameTime()) : 0;
+		}
+
+		
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function() {
 			document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_spy.interval) : helper.readableMilliseconds($rootScope.data_spy.interval);
 			if (!$rootScope.$$phase) {
