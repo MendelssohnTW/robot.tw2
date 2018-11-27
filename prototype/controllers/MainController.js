@@ -61,8 +61,10 @@ define("robotTW2/controllers/MainController", [
 					$scope.extensions[ext.name].status = $scope.running;
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
-							if(ext.name != "FARM" || ext.name != "RECRUIT"){
-								fn.init()
+							if(["FARM", "RECRUIT"].includes(ext.name)){
+								fn.init(true)
+							} else {
+								init()
 							}
 						}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}

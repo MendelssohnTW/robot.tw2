@@ -23,8 +23,10 @@ define("robotTW2/services/MainService", [
 						if(fn.isInitialized())
 							return !1;	
 						if(typeof(fn.init) == "function"){
-							if(ext.name != "FARM" || ext.name != "RECRUIT"){
-								fn.init()
+							if(["FARM", "RECRUIT"].includes(ext.name)){
+								fn.init(true)
+							} else {
+								init()
 							}
 						}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
