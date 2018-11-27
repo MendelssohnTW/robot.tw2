@@ -90,7 +90,7 @@ define("robotTW2/services/SpyService", [
 			var t = Math.min.apply(null, list)
 			t < 3000 ? t = 3000 : t;
 			$rootScope.data_spy.interval = t
-			$rootScope.data_spy.complete = helper.gameTime() + t
+			$rootScope.data_spy.completed = helper.gameTime() + t
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_SPY)
 			if(callback && typeof(callback) == "function"){callback(t)}
