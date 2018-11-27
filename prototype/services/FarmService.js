@@ -427,21 +427,6 @@ define("robotTW2/services/FarmService", [
 				requestFn.trigger("Farm/run");
 				loadScript("/controllers/FarmCompletionController.js");
 				isRunning = !0
-//				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
-
-//				var villages = modelDataService.getSelectedCharacter().getVillages()
-//				for (v in villages) {
-//				$rootScope.data_farm.getVillageActivate(v) && typeof($rootScope.data_farm.getVillageActivate(v)) != "boolean" ? $rootScope.data_farm.setVillageActivate(v, true) : null;
-//				}
-
-//				var getAssignedPresets = function(vid){
-//				var presetsByVillage = robotTW2.services.modelDataService.getPresetList().presetsByVillage;
-//				return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
-//				}
-
-//				Object.keys($rootScope.data_villages.villages).map(function(a){
-//				$rootScope.data_villages.villages[a].assigned_presets = getAssignedPresets(a);
-//				})
 
 				$rootScope.data_villages.getAssignedPresets();
 

@@ -37,7 +37,7 @@ define("robotTW2/controllers/RecruitController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return helper.readableMilliseconds(helper.gameTime() - $rootScope.data_recruit.interval); 
+			return $rootScope.data_recruit.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_recruit.time_complete - helper.gameTime()) : 0; 
 		}
 
 		$scope.getText = function(key){
