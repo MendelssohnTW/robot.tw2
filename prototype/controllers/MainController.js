@@ -69,7 +69,11 @@ define("robotTW2/controllers/MainController", [
 						}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
-						if(typeof(fn.start) == "function"){fn.start()}
+						if(typeof(fn.start) == "function"){
+							if(!["FARM", "RECRUIT"].includes(ext.name)){
+								fn.start()
+							}
+						}
 					}
 				} else {
 					$scope.extensions[ext.name].status = $scope.stopped
