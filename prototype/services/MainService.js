@@ -22,7 +22,13 @@ define("robotTW2/services/MainService", [
 						extensions[extension].initialized = true;
 						if(fn.isInitialized())
 							return !1;	
-						if(typeof(fn.init) == "function" && extensions[extension].name != "FARM"){fn.init()}
+						if(typeof(fn.init) == "function"){
+							if(ext.name != "FARM" || ext.name != "RECRUIT"){
+								fn.init(true)
+							} else {
+								fn.init()
+							}
+						}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
 						extensions[extension].auto_initialize = false

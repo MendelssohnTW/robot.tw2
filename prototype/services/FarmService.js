@@ -453,8 +453,9 @@ define("robotTW2/services/FarmService", [
 				}
 			}, ["all_villages_ready"])
 		}
-		, init = function () {
+		, init = function (bool) {
 			isInitialized = !0
+			if(bool){return}
 			start();
 		}
 		, stop = function () {
