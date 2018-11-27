@@ -97,7 +97,7 @@ define("robotTW2/services/RecruitService", [
 					if (villageUnits != undefined){
 						for (key in villageUnits){
 							if (villageUnits.hasOwnProperty(key)) {
-								if (villageUnits[key] == 0 || data_recruit.troops_not.some(elem => elem == key)){
+								if (villageUnits[key] == 0 || $rootScope.data_recruit.troops_not.some(elem => elem == key)){
 									delete villageUnits[key];
 								}
 							}
@@ -189,10 +189,10 @@ define("robotTW2/services/RecruitService", [
 										};
 										amount = Math.floor(
 												Math.min(
-														(copia_res.wood - data_recruit.reserva.wood) / prices[unitName][0], 
-														(copia_res.clay - data_recruit.reserva.clay) / prices[unitName][1], 
-														(copia_res.iron - data_recruit.reserva.iron) / prices[unitName][2], 
-														(copia_res.food - data_recruit.reserva.food) / prices[unitName][3]
+														(copia_res.wood - $rootScope.data_recruit.reserva.wood) / prices[unitName][0], 
+														(copia_res.clay - $rootScope.data_recruit.reserva.clay) / prices[unitName][1], 
+														(copia_res.iron - $rootScope.data_recruit.reserva.iron) / prices[unitName][2], 
+														(copia_res.food - $rootScope.data_recruit.reserva.food) / prices[unitName][3]
 												)
 										)
 
@@ -210,17 +210,17 @@ define("robotTW2/services/RecruitService", [
 											};
 										};
 
-										var data_recruit = {
+										var data_rec = {
 												"village_id": village_id,
 												"unit_type": unitName,
 												"amount": amount
 										}
 
-										var recruit_promise = function(data_recruit){
+										var recruit_promise = function(data_rec){
 											if(!promise_recruitRequest){
 												promise_recruitRequest = new Promise(function(res, rej){
 													if (village_id && unit_type){
-														socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_recruit, function(){
+														socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
 															res()
 														});
 													};
@@ -228,16 +228,16 @@ define("robotTW2/services/RecruitService", [
 													groupLoop()
 													promise_recruitRequest = undefined
 													if(queue_recruitRequest.length){
-														data_recruit = queue_recruitRequest.shift()
-														recruit_promise(data_recruit)
+														data_rec = queue_recruitRequest.shift()
+														recruit_promise(data_rec)
 													}
 												})
 											} else {
-												queue_recruitRequest.push(data_recruit);
+												queue_recruitRequest.push(data_rec);
 											}
 										}
 
-										recruit_promise(data_recruit)
+										recruit_promise(data_rec)
 
 									} else {
 										groupLoop();
