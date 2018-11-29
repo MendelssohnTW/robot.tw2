@@ -24,7 +24,7 @@ define("robotTW2/controllers/DepositController", [
 		}
 		
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function() {
-			if(document.getElementById("input-ms"){
+			if(document.getElementById("input-ms")){
 			document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
