@@ -50,7 +50,7 @@ define("robotTW2/controllers/RecruitController", [
 
 		$scope.start_recruit = function(){
 			services.RecruitService.start();
-			$scope.isRunning = recruit.isRunning();
+			$scope.isRunning = services.RecruitService.isRunning();
 		}
 
 		$scope.stop_recruit = function(){
