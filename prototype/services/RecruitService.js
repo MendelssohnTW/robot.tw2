@@ -333,7 +333,7 @@ define("robotTW2/services/RecruitService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.RECRUIT)
-			list.push($rootScope.data_recruit.interval)
+			$rootScope.data_recruit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_recruit.interval)
 			var t = Math.min.apply(null, list);
 			$rootScope.data_recruit.interval = t
 			$rootScope.data_recruit.time_complete = helper.gameTime() + t
