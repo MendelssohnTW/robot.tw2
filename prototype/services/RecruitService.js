@@ -193,7 +193,7 @@ define("robotTW2/services/RecruitService", [
 														(copia_res.clay - $rootScope.data_recruit.reserva.clay) / prices[unit_type][1], 
 														(copia_res.iron - $rootScope.data_recruit.reserva.iron) / prices[unit_type][2], 
 														(copia_res.food - $rootScope.data_recruit.reserva.food) / prices[unit_type][3]
-												)
+												) * 0.9
 										)
 
 										remaing = units[unit_type] - villageUnits[unit_type];
