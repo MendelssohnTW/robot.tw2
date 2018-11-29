@@ -47,7 +47,7 @@ define("robotTW2/controllers/FarmController", [
 			var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
 
 			if(tempo_escolhido_inicio > tempo_escolhido_termino) {
-				tempo_escolhido_termino = new Date(tempo_escolhido_termino + 86400000)
+				tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
 				$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
 				$scope.data_termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "yyyy-MM-dd");
 			}
