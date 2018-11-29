@@ -321,7 +321,7 @@ define("robotTW2/services/RecruitService", [
 				var timer = job.data.time_completed * 1000;
 				var dif = timer - helper.gameTime(); 
 				if (dif < $rootScope.data_recruit.interval){
-					dif < 0 ? dif = 0 : dif;
+					dif < conf.MIN_INTERVAL ? dif = conf.MIN_INTERVAL : dif;
 					lt.push(dif);
 				}
 			}
