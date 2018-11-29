@@ -230,13 +230,13 @@ define("robotTW2/services/FarmService", [
 
 			var quadrant = 0;
 			if(x2 > x1 && y2 < y1) {
-				quadrant = 2
-			} else if (x2 > x1 && y2 > y1) {
 				quadrant = 3
+			} else if (x2 > x1 && y2 > y1) {
+				quadrant = 2
 			} else if (x2 < x1 && y2 < y1) {
-				quadrant = 1
-			} else if (x2 < x1 && y2 > y1) {
 				quadrant = 4
+			} else if (x2 < x1 && y2 > y1) {
+				quadrant = 1
 			}
 
 			if (y1 % 2) //se y é impar
