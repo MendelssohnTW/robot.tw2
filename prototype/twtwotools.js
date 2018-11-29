@@ -404,7 +404,11 @@ var robotTW2 = window.robotTW2 = undefined;
 		if(self.templateName != "main"){
 			var arFn = exports.requestFn.get(self.templateName.toLowerCase(), true);
 			if(!arFn){return}
+			if(["farm", "recruit"].includes(self.templateName)){
+				if(!arFn.fn.isInitialized()){return}
+			} else{
 			if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
+		}
 		}
 		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
 		!self.listener ? self.listener = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
