@@ -712,6 +712,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC			: 2.3
 					},
 					FARM_TIME		      	: h,
+				MIN_INTERVAL		      	: 3 * min,
 					INTERVAL				: {
 						HEADQUARTER	: h,
 						RECRUIT		: h,
