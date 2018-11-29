@@ -84,7 +84,7 @@ define("robotTW2/services/DepositService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.DEPOSIT)
-			list.push($rootScope.data_deposit.interval)
+			$rootScope.data_deposit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_deposit.interval)
 			var t = Math.min.apply(null, list)
 			t < 3000 ? t = 3000 : t;
 			$rootScope.data_deposit.interval = t
