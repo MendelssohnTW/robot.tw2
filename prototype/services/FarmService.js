@@ -229,13 +229,13 @@ define("robotTW2/services/FarmService", [
 			, y2 = village.data.y
 
 			var quadrant = 0;
-			if(x1 < x2 && y2 < y1) {
+			if(x1 < x2 && y1 < y2) {
 				quadrant = 1
-			} else if (x1 < x2 && y2 > y1) {
+			} else if (x1 < x2 && y1 > y2) {
 				quadrant = 4
-			} else if (x1 > x2 && y2 < y1) {
+			} else if (x1 > x2 && y1 < y2) {
 				quadrant = 2
-			} else if (x1 > x2 && y2 > y1) {
+			} else if (x1 > x2 && y1 > y2) {
 				quadrant = 3
 			}
 
