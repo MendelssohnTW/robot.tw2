@@ -32,7 +32,7 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-		
+
 		, get_dist = function (max_journey_time) {
 			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId);
 			var bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
@@ -53,35 +53,26 @@ define("robotTW2/controllers/FarmController", [
 			})
 			var units = $scope.presetSelected.units;
 			for (un in units) {
-					if (units.hasOwnProperty(un)) {
-						if(units[un] > 0) {
-							for(ch in timetable) {
-								if (timetable.hasOwnProperty(ch)) {
-									if (timetable[ch][0] == un) {
-										list_select.push(timetable[ch]);
-									}
+				if (units.hasOwnProperty(un)) {
+					if(units[un] > 0) {
+						for(ch in timetable) {
+							if (timetable.hasOwnProperty(ch)) {
+								if (timetable[ch][0] == un) {
+									list_select.push(timetable[ch]);
 								}
 							}
 						}
 					}
 				}
-			
+			}
+
 			if (list_select.length > 0) {
 				list_select.sort(function (a, b) {return a[1] - b[1]});
 				return Math.trunc(((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75));
 			}
 			return 0;
 		}
-		
-		$scope.get_max_journey_distance = function(){
-			if(!$scope.presetSelected){return}
-			return get_dist($scope.presetSelected.max_journey_time);
-		}
-		
-		$scope.get_min_journey_distance = function(){
-			if(!$scope.presetSelected){return}
-			return get_dist($scope.presetSelected.min_journey_time);
-		}
+
 
 		$scope.blur = function (callback) {
 			$scope.farm_time = $("#farm_time").val()
@@ -158,9 +149,9 @@ define("robotTW2/controllers/FarmController", [
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
 				if($scope.villageSelected.data.villageId === villageId){
-				$scope.data.assignedPresetList[+presetId] = true
+					$scope.data.assignedPresetList[+presetId] = true
 				}
-				
+
 			};
 			$scope.data.assignedPresetList = {};
 			for (presetId in $scope.data.presets) {
@@ -174,9 +165,7 @@ define("robotTW2/controllers/FarmController", [
 					function(elem){
 						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
 					}).filter(f=>f!=undefined)[0]]
-			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
-			$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
-			
+			updatePreset()
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
@@ -203,11 +192,32 @@ define("robotTW2/controllers/FarmController", [
 			$scope.assignPresets();
 		}
 
+		var updatePreset = function(){
+			$scope.presetSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.presetSelected.presets[$scope.presetSelected.id].max_journey_time)
+			$scope.presetSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.presetSelected.presets[$scope.presetSelected.id].min_journey_time)
+
+			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time)) {
+				var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
+				if(tmMax.length == 7) {
+					tmMax = "0" + tmMax;
+				}
+				document.getElementById("max_journey_time").value = tmMax;	
+			}
+
+			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time)) {
+				var tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
+				if(tmMin.length == 7) {
+					tmMin = "0" + tmMin;
+				}
+				document.getElementById("min_journey_time").value = tmMin;
+			}
+
+			$scope.data.presets[$scope.presetSelected.id] = $scope.presetSelected;
+			if (!$rootScope.$$phase) $rootScope.$apply();
+		}
+
 		$scope.setPresetSelected = function (preset_id) {
 			$scope.presetSelected =	$scope.data.presets[preset_id]
-			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
-			$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
-			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
 		$scope.blurMaxJourney = function () {
@@ -237,10 +247,15 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blurPreset = function(){
-			if(!$scope.presetSelected || !$scope.villageSelected || !$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets){return}
-			$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			updatePreset();
 		}
+
+
+		$scope.$watch("presetSelected", function(){
+			if(!$scope.presetSelected){return}
+			presetSelected();
+		})
+
 
 		$scope.start_farm = function(){
 			services.FarmService.start();
@@ -261,13 +276,10 @@ define("robotTW2/controllers/FarmController", [
 			$scope.paused = !1;
 		}
 
-
-
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
 			triggerUpdate();
 		})
-
 
 		$scope.$watch('data.presets', triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
@@ -373,20 +385,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.tmMin = "0";
 
 		$scope.getFarmTime = function () {
-			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time)) {
-				$scope.tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
-				if($scope.tmMax.length == 7) {
-					$scope.tmMax = "0" + $scope.tmMax;
-				}
-			}
-			
-			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time)) {
-				$scope.tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
-				if($scope.tmMin.length == 7) {
-					$scope.tmMin = "0" + $scope.tmMin;
-				}
-			}
-			
+
 			var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
@@ -404,7 +403,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
 		update()
-		
+
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
