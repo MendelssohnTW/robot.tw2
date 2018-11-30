@@ -149,7 +149,7 @@ define("robotTW2/databases/data_villages", [
 
 	db_villages.updateVillages = function($event){
 		var updated = false;
-		var villagesExtended = angular.extend({}, services.modelDataService.getVillages())
+		var villagesExtended = angular.merge({}, services.modelDataService.getVillages())
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){
 				updated ? res() : rej()
