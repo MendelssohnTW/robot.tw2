@@ -59,8 +59,8 @@ define("robotTW2/databases/data_villages", [
 				
 				angular.extend(presets_d[pst], {
 					load					: true,
-					max_journey_distance	: getDist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
-					min_journey_distance	: getDist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
+					max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
+					min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
 					max_journey_time		: conf.MAX_JOURNEY_TIME,
 					min_journey_time		: conf.MIN_JOURNEY_TIME,
 					max_points_farm			: conf.MAX_POINTS_FARM,

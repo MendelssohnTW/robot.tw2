@@ -74,11 +74,11 @@ define("robotTW2/controllers/FarmController", [
 		}
 		
 		$scope.get_max_journey_distance = function(){
-			return getDist(presetSelected.max_journey_time);
+			return get_dist(presetSelected.max_journey_time);
 		}
 		
 		$scope.get_min_journey_distance = function(){
-			return getDist(presetSelected.min_journey_time);
+			return get_dist(presetSelected.min_journey_time);
 		}
 
 		$scope.blur = function (callback) {
@@ -172,8 +172,8 @@ define("robotTW2/controllers/FarmController", [
 					function(elem){
 						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
 					}).filter(f=>f!=undefined)[0]]
-			$scope.presetSelected.max_journey_distance = getDist(presetSelected.max_journey_time)
-			$scope.presetSelected.min_journey_distance = getDist(presetSelected.min_journey_time)
+			$scope.presetSelected.max_journey_distance = get_dist(presetSelected.max_journey_time)
+			$scope.presetSelected.min_journey_distance = get_dist(presetSelected.min_journey_time)
 			
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
