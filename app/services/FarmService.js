@@ -429,6 +429,8 @@ define("robotTW2/services/FarmService", [
 				isRunning = !0
 
 				$rootScope.data_villages.getAssignedPresets();
+				
+				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
 				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
 					var tempo_delay = $rootScope.data_farm.farm_time_start - helper.gameTime();

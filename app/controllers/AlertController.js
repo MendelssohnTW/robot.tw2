@@ -121,6 +121,13 @@ define("robotTW2/controllers/AlertController", [
 			}
 			upDate()
 		}
+		
+		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+			$scope.isRunning = services.AlertService.isRunning();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		})
 
 		$scope.interval_alert = helper.readableMilliseconds($rootScope.data_alert.interval)
 		
