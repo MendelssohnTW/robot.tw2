@@ -362,6 +362,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	builderWindow.prototype.addWin = function() {
 		var self = this;
 		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
+			if(!templateName){return}
 			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
 		}): null;
 
