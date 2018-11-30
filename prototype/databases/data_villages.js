@@ -56,7 +56,6 @@ define("robotTW2/databases/data_villages", [
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 		Object.keys(presets_d).forEach(function (pst) {
 			if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
-				
 				angular.extend(presets_d[pst], {
 					load					: true,
 					max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
@@ -132,6 +131,7 @@ define("robotTW2/databases/data_villages", [
 					return;
 				} else {
 					angular.merge(villagesExtended[v], {
+						farm_activate 			: true,
 						presets					: getPst(v)
 					})
 					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
