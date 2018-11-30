@@ -16,7 +16,7 @@ define("robotTW2/controllers/ReconController", [
 		}
 		
 		$scope.getClass = function(unit_name){
-			return "icon-34x34-unit-" + unit_name];
+			return "icon-34x34-unit-" + unit_name;
 		}
 
 		$scope.recalcScrollbar();
