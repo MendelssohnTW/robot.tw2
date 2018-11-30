@@ -129,7 +129,6 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			var list_select = []
-			, lista_atualizada = []
 			, timetable = modelDataService.getGameData().data.units.map(function (obj) {
 				return [obj.name, obj.speed]
 			})
