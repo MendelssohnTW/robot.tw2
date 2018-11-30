@@ -253,7 +253,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("presetSelected", function(){
 			if(!$scope.presetSelected){return}
-			presetSelected();
+			updatePreset();
 		})
 
 
