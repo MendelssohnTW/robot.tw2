@@ -9,8 +9,48 @@ define("robotTW2/databases/data_villages", [
 			services,
 			providers
 	){
-
-	var getPst = function (v) {
+	var rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
+	, get_dist = function (v, max_journey_time, units) {
+		var village = services.modelDataService.getVillage(v);
+		var bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
+		function return_min(tempo) {
+			if (tempo != undefined) {
+				var ar_tempo = tempo.split(":");
+				var hr = parseInt(ar_tempo[0]) || 0;
+				var min = parseInt(ar_tempo[1]) || 0;
+				var seg = parseInt(ar_tempo[2]) || 0;
+				return (hr * 60 + min +  seg / 60);
+			} else {
+				return 0;
+			}
+		}
+		var list_select = []
+		, timetable = services.modelDataService.getGameData().data.units.map(function (obj) {
+			return [obj.name, obj.speed]
+		})
+		
+		for (un in units) {
+				if (units.hasOwnProperty(un)) {
+					if(units[un] > 0) {
+						for(ch in timetable) {
+							if (timetable.hasOwnProperty(ch)) {
+								if (timetable[ch][0] == un) {
+									list_select.push(timetable[ch]);
+								}
+							}
+						}
+					}
+				}
+			}
+		
+		if (list_select.length > 0) {
+			list_select.sort(function (a, b) {return a[1] - b[1]});
+			return Math.trunc(((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75)/2);
+		}
+		return 0;
+		
+	}
+	, getPst = function (v) {
 		var presets_d = services.presetListService.getPresetsForVillageId(v)
 		if(!Object.keys(presets_d).length) {return}
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
@@ -18,8 +58,8 @@ define("robotTW2/databases/data_villages", [
 			if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
 				angular.extend(presets_d[pst], {
 					load					: true,
-					max_journey_distance	: conf.MAX_JOURNEY_DISTANCE,
-					min_journey_distance	: conf.MIN_JOURNEY_DISTANCE,
+					max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
+					min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
 					max_journey_time		: conf.MAX_JOURNEY_TIME,
 					min_journey_time		: conf.MIN_JOURNEY_TIME,
 					max_points_farm			: conf.MAX_POINTS_FARM,
@@ -91,6 +131,7 @@ define("robotTW2/databases/data_villages", [
 					return;
 				} else {
 					angular.merge(villagesExtended[v], {
+						farm_activate 			: true,
 						presets					: getPst(v)
 					})
 					data_villages.villages[v] = angular.extend({}, villagesExtended[v])

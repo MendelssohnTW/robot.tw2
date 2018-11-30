@@ -129,7 +129,6 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			var list_select = []
-			, lista_atualizada = []
 			, timetable = modelDataService.getGameData().data.units.map(function (obj) {
 				return [obj.name, obj.speed]
 			})
@@ -149,7 +148,7 @@ define("robotTW2/services/FarmService", [
 			if (list_select.length > 0) {
 				list_select.sort(function (a, b) {return a[1] - b[1]});
 //				var m = Math.trunc(($rootScope.data_farm.presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
-				var m = Math.trunc(($rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
+				var m = Math.trunc((($rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75)/2);
 				var n = $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance;
 				return Math.min.apply(null, [m, n])
 			} 
