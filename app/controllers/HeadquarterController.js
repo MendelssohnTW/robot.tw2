@@ -19,8 +19,10 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		var self = this;
 		
+		$scope.isRunning = services.HeadquarterService.isRunning();
+		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_headquarter.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_headquarter.time_complete - helper.gameTime()) : 0;
+			return $rootScope.data_headquarter.complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - helper.gameTime()) : 0;
 		}
 
 		$scope.getKey = function(buildingOrder){
@@ -67,43 +69,35 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.start_headquarter = function(){
-			headquarter.start();
-			$scope.isRunning = headquarter.isRunning();
+			services.HeadquarterService.start();
+			$scope.isRunning = services.HeadquarterService.isRunning();
 		}
 
 		$scope.stop_headquarter = function(){
-			headquarter.stop();
-			$scope.isRunning = headquarter.isRunning();
+			services.HeadquarterService.stop();
+			$scope.isRunning = services.HeadquarterService.isRunning();
 		}
 
 		$scope.pause_headquarter = function(){
-			headquarter.pause();
+			services.HeadquarterService.pause();
 			$scope.paused = !0;
 		}
 
 		$scope.resume_headquarter = function(){
-			headquarter.resume();
+			services.HeadquarterService.resume();
 			$scope.paused = !1;
 		}
 
 		$scope.restore_headquarter = function(){
-			data_headquarter.interval = conf.INTERVAL.HEADQUARTER
-
-			var villages = {}
-			, villagesExtended = {}
-
-			angular.extend(villages, services.modelDataService.getVillages())
-			angular.merge(villagesExtended, villages)
-
-			Object.values(villagesExtended).forEach(function(village){
+			$rootScope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
+			Object.values($rootScope.data_villages.villages).forEach(function(village){
 				angular.merge(village, {
-					executebuildingorder 	: conf.executebuildingorder,
+					executebuildingorder 		: conf.executebuildingorder,
 					buildingorder 			: $rootScope.data_headquarter.buildingorder,
 					buildinglimit 			: $rootScope.data_headquarter.buildinglimit,
 					buildinglevels 			: $rootScope.data_headquarter.buildinglevels
 				})
 			})
-			data_villages.setVillages(villagesExtended);
 			if (!$scope.$$phase) $scope.$apply();
 		}
 		

@@ -9,18 +9,19 @@
 	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap" style="margin-bottom: 80px">
+				<h5 class="twx-section collapse">{{settings}}</h5>
 				<div>
 					<table class="tbl-border-light tbl-striped">
 						<colgroup>
 							<col width="*">
-							<col width="100px">
+							<col width="56px">
 
 						</colgroup>
-						<tr ng-repeat="unit in data_recon.rename">
-							<td>{{unit}}</td>
+						<tr ng-repeat="(key, value) in data_recon.rename">
+							<td class="cell-right"><span>{{getKey(key)}}</span><span class="span-icon" ng-class="getClass(key)"></span></td>
 							<td>
 								<div id="switch" switch-slider="" border="true" enabled="true"
-									value="unit" vertical="false" size="'56x28'">
+									value="value" vertical="false" size="'56x28'">
 									<div ng-class="{'box-border-dark box-filter': border}"
 										class="box-border-dark box-filter">
 										<div class="switch switch-56x28 switch-horizontal"

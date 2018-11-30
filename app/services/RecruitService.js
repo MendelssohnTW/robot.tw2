@@ -319,13 +319,12 @@ define("robotTW2/services/RecruitService", [
 			var job = village.getRecruitingQueue("barracks").jobs[0];
 			if(job){
 				var timer = job.data.time_completed * 1000;
-				var dif = timer - helper.gameTime(); 
-				if (dif < $rootScope.data_recruit.interval){
-					dif < conf.MIN_INTERVAL ? dif = conf.MIN_INTERVAL : dif;
-					lt.push(dif);
-				}
+				var dif = timer - helper.gameTime();
+				dif < conf.MIN_INTERVAL ? dif = conf.MIN_INTERVAL : dif;
+				lt.push(dif);
+				lt.push($rootScope.data_recruit.interval);
 			}
-			var t = 3000;
+			var t = $rootScope.data_recruit.interval;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
