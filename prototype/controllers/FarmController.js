@@ -193,8 +193,8 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		var updatePreset = function(){
-			$scope.presetSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.presetSelected.presets[$scope.presetSelected.id].max_journey_time)
-			$scope.presetSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.presetSelected.presets[$scope.presetSelected.id].min_journey_time)
+			$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].max_journey_time)
+			$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].min_journey_time)
 
 			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time)) {
 				var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
