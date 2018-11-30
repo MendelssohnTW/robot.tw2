@@ -55,28 +55,29 @@ define("robotTW2/databases/data_villages", [
 		if(!Object.keys(presets_d).length) {return}
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 		Object.keys(presets_d).forEach(function (pst) {
-			if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
-				angular.extend(presets_d[pst], {
-					load					: true,
-					max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
-					min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
-					max_journey_time		: conf.MAX_JOURNEY_TIME,
-					min_journey_time		: conf.MIN_JOURNEY_TIME,
-					max_points_farm			: conf.MAX_POINTS_FARM,
-					min_points_farm			: conf.MIN_POINTS_FARM,
-					quadrants				: [1, 2, 3, 4],
-					max_commands_farm		: conf.MAX_COMMANDS_FARM
-				});
-			}
+			
 			Object.keys(data_villages.villages[v].presets).map(function (id) {
 				if(!Object.keys(presets_d).find(f => f == id)) {
 					delete data_villages.villages[v].presets[id]
 				}
 			})
 			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst)) {
+				if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
+					angular.extend(presets_d[pst], {
+						load					: true,
+						max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
+						min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
+						max_journey_time		: conf.MAX_JOURNEY_TIME,
+						min_journey_time		: conf.MIN_JOURNEY_TIME,
+						max_points_farm			: conf.MAX_POINTS_FARM,
+						min_points_farm			: conf.MIN_POINTS_FARM,
+						quadrants				: [1, 2, 3, 4],
+						max_commands_farm		: conf.MAX_COMMANDS_FARM
+					});
+				}	
 				data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
 			} else {
-				angular.extend(data_villages.villages[v].presets[pst], presets_d[pst])
+				angular.merge(data_villages.villages[v].presets[pst], presets_d[pst])
 			}
 		});
 		return data_villages.villages[v].presets;
