@@ -28,27 +28,27 @@ define("robotTW2/databases/data_villages", [
 		, timetable = services.modelDataService.getGameData().data.units.map(function (obj) {
 			return [obj.name, obj.speed]
 		})
-		
+
 		for (un in units) {
-				if (units.hasOwnProperty(un)) {
-					if(units[un] > 0) {
-						for(ch in timetable) {
-							if (timetable.hasOwnProperty(ch)) {
-								if (timetable[ch][0] == un) {
-									list_select.push(timetable[ch]);
-								}
+			if (units.hasOwnProperty(un)) {
+				if(units[un] > 0) {
+					for(ch in timetable) {
+						if (timetable.hasOwnProperty(ch)) {
+							if (timetable[ch][0] == un) {
+								list_select.push(timetable[ch]);
 							}
 						}
 					}
 				}
 			}
-		
+		}
+
 		if (list_select.length > 0) {
 			list_select.sort(function (a, b) {return a[1] - b[1]});
 			return Math.trunc(((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75));
 		}
 		return 0;
-		
+
 	}
 	, getPst = function (v) {
 		var presets_d = services.presetListService.getPresetsForVillageId(v)
@@ -113,11 +113,9 @@ define("robotTW2/databases/data_villages", [
 			if(!villagesExtended){villagesExtended = {}}
 			if(data_villages.villages == undefined){data_villages.villages = {}}
 			Object.keys(villagesExtended).map(function(m){
-				return m
-			}).forEach(function(v){
-				if(!Object.keys(data_villages.villages).map(function(m){
-					return m
-				}).find(f=>f==v)){
+				if(!Object.keys(data_villages.villages).map(function(v){
+					return v
+				}).find(f=>f==m)){
 					angular.extend(villagesExtended[v], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
@@ -128,7 +126,7 @@ define("robotTW2/databases/data_villages", [
 					})
 					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
 					callback(true)
-					return;
+					return m;
 				} else {
 					angular.merge(villagesExtended[v], {
 						farm_activate 			: true,
@@ -136,7 +134,7 @@ define("robotTW2/databases/data_villages", [
 					})
 					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
 					callback(true)
-					return;
+					return m;
 				}
 			})
 			callback(false)
