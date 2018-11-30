@@ -383,7 +383,7 @@ define("robotTW2/controllers/FarmController", [
 			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time)) {
 				$scope.tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
 				if($scope.tmMin.length == 7) {
-					$scope.tmMin = "0" + $scope.tmtmMin;
+					$scope.tmMin = "0" + $scope.tmMin;
 				}
 			}
 			
