@@ -412,11 +412,11 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		}
 		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
-		!self.listener ? self.listener = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-			self.recalcScrollbar()
-			self.setCollapse()
-		}): null;
+//		!self.listener ? self.listener = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
+//			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
+//			self.recalcScrollbar()
+//			self.setCollapse()
+//		}): null;
 		new Promise(function(res, rej){
 			var opt_loadCallback = function(data){
 				res(data)
