@@ -66,10 +66,9 @@ define("robotTW2/databases/data_villages", [
 		})
 		return updated;
 	}
-	db_villages.verifyVillages = function (villagesExtended){
+	db_villages.verifyVillages = function (villagesExtended, callback){
 
 		if(services.modelDataService.getPresetList().isLoadedValue){
-			updated = false;
 			if(!data_villages){data_villages = {}}
 			if(!villagesExtended){villagesExtended = {}}
 			if(data_villages.villages == undefined){data_villages.villages = {}}
@@ -88,33 +87,40 @@ define("robotTW2/databases/data_villages", [
 						presets					: getPst(v)
 					})
 					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
-					updated = true;
+					callback(true)
+					return;
 				}
 			})
-			return updated
+			callback(false)
+			return;
 		} else {
 			services.socketService.emit(providers.routeProvider.GET_PRESETS, {});
 			return services.$timeout(function(){
-				return db_villages.verifyVillages(villagesExtended)
+				return db_villages.verifyVillages(villagesExtended, callback)
 			}, 5000)
 		}
 	}
 
 	db_villages.updateVillages = function($event){
-		var villagesDB = {}
-		, villagesExtended = {}
-		, updated = false;
-		angular.extend(villagesDB, services.modelDataService.getVillages())
-		angular.merge(villagesExtended, villagesDB)
-
-		if(db_villages.verifyDB(villagesExtended) || db_villages.verifyVillages(villagesExtended)) {
-			data_villages.version = conf.VERSION.VILLAGES
-		} else {
-			if(!data_villages.version || data_villages.version < conf.VERSION.VILLAGES){
+		var updated = false;
+		var villagesExtended = angular.extend({}, services.modelDataService.getVillages())
+		var promise = new Promise(function(res, rej){
+			db_villages.verifyVillages(villagesExtended, function(updated){
+				updated ? res() : rej()
+			})
+		})
+		.then(function(){
+			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
-			}
-		} 
-		database.set("data_villages", data_villages, true)
+			} else {
+				if(!data_villages.version || data_villages.version < conf.VERSION.VILLAGES){
+					data_villages.version = conf.VERSION.VILLAGES
+				}
+			} 
+			database.set("data_villages", data_villages, true)	
+		}, function(){
+			database.set("data_villages", data_villages, true)
+		})
 	}
 
 	db_villages.renameVillage = function($event, data){
