@@ -258,7 +258,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("presetSelected", function(){
 			if(!$scope.presetSelected){return}
 			updatePreset();
-		})
+		}, true)
 
 
 		$scope.start_farm = function(){
@@ -283,9 +283,9 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
 			triggerUpdate();
-		})
+		}, true)
 
-		$scope.$watch('data.presets', triggerUpdate);
+		$scope.$watch('data.presets', triggerUpdate, true);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
 
