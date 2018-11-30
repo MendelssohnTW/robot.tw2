@@ -51,8 +51,8 @@ define("robotTW2/controllers/FarmController", [
 			, timetable = services.modelDataService.getGameData().data.units.map(function (obj) {
 				return [obj.name, obj.speed]
 			})
-			
-			for (un in $scope.presetSelected.units) {
+			var units = $scope.presetSelected.units;
+			for (un in units) {
 					if (units.hasOwnProperty(un)) {
 						if(units[un] > 0) {
 							for(ch in timetable) {
