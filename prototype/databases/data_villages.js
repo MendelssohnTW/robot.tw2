@@ -109,8 +109,8 @@ define("robotTW2/databases/data_villages", [
 				updated ? res() : rej()
 			})
 		})
-		.then(function(res_data){
-			if(db_villages.verifyDB(villagesExtended) || res_data) {
+		.then(function(){
+			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
 			} else {
 				if(!data_villages.version || data_villages.version < conf.VERSION.VILLAGES){
@@ -118,7 +118,7 @@ define("robotTW2/databases/data_villages", [
 				}
 			} 
 			database.set("data_villages", data_villages, true)	
-		}, function(rej_data){
+		}, function(){
 			database.set("data_villages", data_villages, true)
 		})
 	}
