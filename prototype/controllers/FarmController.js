@@ -225,7 +225,11 @@ define("robotTW2/controllers/FarmController", [
 			if(r.length <= 5) {
 				r = r + ":00"
 			}
+			
+			$rootScope.data_farm.farm_time
+			
 			$scope.presetSelected.max_journey_time = helper.unreadableSeconds(r) * 1000
+			$scope.presetSelected.max_journey_time > $rootScope.data_farm.farm_time ? $scope.presetSelected.max_journey_time =  $rootScope.data_farm.farm_time : $scope.presetSelected.max_journey_time; 
 			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
 		}
 
