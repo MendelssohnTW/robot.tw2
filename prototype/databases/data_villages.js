@@ -9,8 +9,8 @@ define("robotTW2/databases/data_villages", [
 			services,
 			providers
 	){
-
-	var get_dist = function (v, max_journey_time, units) {
+	var rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
+	, get_dist = function (v, max_journey_time, units) {
 		var village = services.modelDataService.getVillage(v);
 		var bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
 		function return_min(tempo) {
