@@ -193,7 +193,7 @@ define("robotTW2/services/RecruitService", [
 														(copia_res.clay - $rootScope.data_recruit.reserva.clay) / prices[unit_type][1], 
 														(copia_res.iron - $rootScope.data_recruit.reserva.iron) / prices[unit_type][2], 
 														(copia_res.food - $rootScope.data_recruit.reserva.food) / prices[unit_type][3]
-												) * 0.9
+												)
 										)
 
 										remaing = units[unit_type] - villageUnits[unit_type];
@@ -321,7 +321,7 @@ define("robotTW2/services/RecruitService", [
 				var timer = job.data.time_completed * 1000;
 				var dif = timer - helper.gameTime(); 
 				if (dif < $rootScope.data_recruit.interval){
-					dif < conf.MIN_INTERVAL ? dif = conf.MIN_INTERVAL : dif;
+					dif < 0 ? dif = 0 : dif;
 					lt.push(dif);
 				}
 			}
@@ -333,7 +333,7 @@ define("robotTW2/services/RecruitService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.RECRUIT)
-			$rootScope.data_recruit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_recruit.interval)
+			list.push($rootScope.data_recruit.interval)
 			var t = Math.min.apply(null, list);
 			$rootScope.data_recruit.interval = t
 			$rootScope.data_recruit.time_complete = helper.gameTime() + t
@@ -357,9 +357,8 @@ define("robotTW2/services/RecruitService", [
 
 			recruitSteps(list_recruit)
 		}
-		, init = function (bool) {
+		, init = function (){
 			isInitialized = !0
-			if(bool){return}
 			start();
 		}
 		, start = function (){

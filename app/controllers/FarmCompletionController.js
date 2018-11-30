@@ -1,12 +1,12 @@
 define("robotTW2/controllers/FarmCompletionController", [
-	"robotTW2",
+	"robotTW2.services",
 	"helper/time",
 	], function(
-			robotTW2,
+			services,
 			helper
 	){
 	return function FarmCompletionController($rootScope, $scope) {
-		$scope.CLOSE = robotTW2.services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		
 		var self = this
 		, addExcept = function (id) {

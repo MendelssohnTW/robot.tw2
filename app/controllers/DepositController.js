@@ -1,17 +1,14 @@
 define("robotTW2/controllers/DepositController", [
-	"robotTW2",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
 	], function(
-			robotTW2,
 			services,
 			providers,
 			helper
 	){
 	return function DepositController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.SAVE = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
 		var self = this;
 		
 		$scope.blur = function(){
@@ -21,6 +18,19 @@ define("robotTW2/controllers/DepositController", [
 			}
 			$rootScope.data_deposit.interval = helper.unreadableSeconds(t) * 1000;
 		}
+		
+		$scope.getTimeRest = function(){
+			return $rootScope.data_deposit.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_deposit.time_complete - helper.gameTime()) : 0;
+		}
+		
+		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function() {
+			if(document.getElementById("input-ms")){
+			document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}
+		})
 		
 		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
 		

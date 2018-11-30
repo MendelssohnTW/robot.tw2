@@ -15,21 +15,10 @@ define("robotTW2/controllers/FarmController", [
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
 
-		var getAssignedPresets = function(vid){
-			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
-			return presetsByVillage[vid] ? Object.keys(presetsByVillage[vid]) : [];
-		}
-
-		Object.keys($rootScope.data_villages.villages).map(function(a){
-			
-			$rootScope.data_villages.villages[a].assigned_presets = getAssignedPresets(a);
-		})
+		var presetListModel	= services.modelDataService.getPresetList(),
+		presetIds = [];
 
 		var update = function () {
-
-//			var dataAtual = services.$filter("date")(new Date(helper.gameTime()), "yyyy-MM-dd");
-//			var getMillisecondsJourneyTime = helper.readableMilliseconds($rootScope.data_farm.max_journey_time);
-//			var getMillisecondsFarmTime = helper.readableMilliseconds($rootScope.data_farm.farm_time);
 
 			if($rootScope.data_farm.farm_time_start < helper.gameTime()) {
 				$rootScope.data_farm.farm_time_start = helper.gameTime();
@@ -40,24 +29,15 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
-
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
 		$scope.blur = function (callback) {
-//			$scope.min_journey_time = $("#min_journey_time").val()
-//			$scope.max_journey_time = $("#max_journey_time").val()
 			$scope.farm_time = $("#farm_time").val()
 			$scope.inicio_de_farm = $("#inicio_de_farm").val()
 			$scope.termino_de_farm = $("#termino_de_farm").val()
 			$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
 			$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
-
-//			if($scope.max_journey_time.length <= 5) {
-//				$scope.max_journey_time = $scope.max_journey_time + ":00"
-//			}
 
 			if($scope.farm_time.length <= 5) {
 				$scope.farm_time = $scope.farm_time + ":00"
@@ -67,7 +47,7 @@ define("robotTW2/controllers/FarmController", [
 			var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
 
 			if(tempo_escolhido_inicio > tempo_escolhido_termino) {
-				tempo_escolhido_termino = new Date(tempo_escolhido_termino + 86400000)
+				tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
 				$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
 				$scope.data_termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "yyyy-MM-dd");
 			}
@@ -77,8 +57,6 @@ define("robotTW2/controllers/FarmController", [
 			document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
 			document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
-//			$rootScope.data_farm.min_journey_time = helper.unreadableSeconds($scope.min_journey_time) * 1000
-//			$rootScope.data_farm.max_journey_time = helper.unreadableSeconds($scope.max_journey_time) * 1000
 			$rootScope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
 			$rootScope.data_farm.farm_time_start = tempo_escolhido_inicio
 			$rootScope.data_farm.farm_time_stop = tempo_escolhido_termino
@@ -90,75 +68,90 @@ define("robotTW2/controllers/FarmController", [
 			}
 		}
 
+		/*
+		 * Presets
+		 */
 
-		$scope.$watchCollection("village.farm_activate", function () {
-			//data_villages.setListAtivate(c, true)
-		})
-
-		$scope.deleteException = function (id_village) {
-			$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village)
-			getDetailsExceptions();
+		$scope.data = {
+				'assignedPresetList': {},
+				'presets'			: services.presetListService.getPresets(),
+				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
 		}
 
-		$scope.getVillage = function (id) {
-			var village = services.modelDataService.getSelectedCharacter().getVillage(id);
-			if(!village) {return null}
-			return village.getName() + " - (" + village.getX() + "|" + village.getY() + ")"
+		$scope.showPresetDeleteModal = function showPresetDeleteModal(preset) {
+			services.presetService.showPresetDeleteModal(preset).then(onDeletePreset);
 		}
 
-		var my_village_id = services.modelDataService.getSelectedVillage().getId();
-
-		function getDetailsExceptions() {
-			$scope.list_exceptions = {};
-			$rootScope.data_farm.list_exceptions.forEach(function (vid) {
-				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-					'village_id'	: vid,
-					'my_village_id'	: my_village_id,
-					'num_reports'	: 5
-				}, function (data) {
-					$scope.list_exceptions[data.village_id] = {
-							village_name : data.village_name,
-							village_x : data.village_x,
-							village_y : data.village_y
-					}
-					if (!$rootScope.$$phase) $rootScope.$apply();
-				})
-			})
+		$scope.showPresetEditModal = function showPresetEditModal(preset) {
+			services.presetService.showPresetEditModal(angular.copy(preset));
 		}
 
-		getDetailsExceptions();
+		$scope.showPresetInfoModal = function showPresetInfoModal(preset) {
+			services.presetService.showPresetInfoModal(preset);
+		}
 
-		$scope.start_farm = function () {
-			$scope.blur(function () {
-				services.FarmService.start();
-				$scope.isRunning = services.FarmService.isRunning();
+		$scope.hasPresets = function hasPresets() {
+			return !!Object.keys($scope.data.presets)[0];
+		}
+
+		$scope.createPreset = function createPreset() {
+			services.presetService.createPreset();
+		}
+
+		var triggerUpdate = function triggerUpdate() {
+			$scope.data = {
+					'assignedPresetList': {},
+					'presets'			: services.presetListService.getPresets(),
+					'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
+			}
+			var presetId,
+			assignPreset = function assignPreset(villageId) {
+				if($scope.villageSelected.data.villageId === villageId){
+				$scope.data.assignedPresetList[+presetId] = true
+				}
+				
+			};
+			$scope.data.assignedPresetList = {};
+			for (presetId in $scope.data.presets) {
+				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
+				if($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets && $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId]){
+					angular.merge($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
+				}
+			}
+			$scope.data.hotkeys = services.storageService.getItem(services.presetService.getStorageKey());
+			$scope.presetSelected = $scope.data.presets[Object.keys($scope.data.assignedPresetList).map(
+					function(elem){
+						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+					}).filter(f=>f!=undefined)[0]]
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+		$scope.assignPresets = function assignPresets() {
+			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+				'village_id': $scope.villageSelected.data.villageId,
+				'preset_ids': presetIds
+			}, function(data){
+				triggerUpdate()
 			});
 		}
-		$scope.stop_farm = function () {
-			services.FarmService.stop();
-		}
-		$scope.pause_farm = function () {
-			services.FarmService.pause();
-			$scope.paused = !0;
-		}
-		$scope.resume_farm = function () {
-			services.FarmService.resume();
-			$scope.paused = !1;
+
+		$scope.assignPreset = function assignPreset(presetId) {
+			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
+			key;
+			!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
+			$scope.assignPresets();
 		}
 
-		$scope.$watch("assignedSelected", function(){
-			if(!$scope.assignedSelected){return}
-			$scope.presetSelected = $rootScope.data_farm.presets[$scope.assignedSelected];
-		})
-
-		$scope.setAssignedPreset = function (assigned_preset) {
-			$scope.assignedSelected = assigned_preset;
-			if (!$scope.$$phase) $scope.$apply();
+		$scope.unassignPreset = function unassignPreset(presetId) {
+			var presetsInVillage = presetListModel.getPresetsByVillageId($scope.villageSelected.data.villageId),
+			key;
+			presetIds.splice(presetIds.indexOf(presetId), 1);
+			$scope.assignPresets();
 		}
 
-		$scope.setVillage = function (village) {
-			$scope.villageSelected = village;
-			if (!$scope.$$phase) $scope.$apply();
+		$scope.setPresetSelected = function (preset_id) {
+			$scope.presetSelected =	$scope.data.presets[preset_id]
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
 		$scope.blurMaxJourney = function () {
@@ -169,51 +162,12 @@ define("robotTW2/controllers/FarmController", [
 			$scope.presetSelected.min_journey_time = $("#min_journey_time").val()
 		}
 
-		var addQuadrant = function(pos){
-			$scope.villageSelected.quadrants.push(pos)
-			$scope.villageSelected.quadrants.sort(function(a,b){return a-b})
-			if (!$scope.$$phase) $scope.$apply();
-		}
-
-		var remQuadrant = function(pos){
-			$scope.villageSelected.quadrants = $scope.villageSelected.quadrants.filter(f => f != pos);
-			if (!$scope.$$phase) $scope.$apply();
-		}
-
-		$scope.setQuadrant = function (pos) {
-			if($scope.villageSelected.quadrants.includes(pos)){
-				remQuadrant(pos)
-			} else {
-				addQuadrant(pos)
-			}
-		}
-
-		$scope.getQuadrant = function (pos) {
-			return $scope.villageSelected.quadrants.includes(pos)
-		}
-
-		$scope.addAssignedPreset = function(assigned_preset){
-			if(!$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.find(f => f == assigned_preset)){
-				$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.push(assigned_preset.id);
-			}
-		}
-
-		$scope.remAssignedPreset = function(assigned_preset){
-			$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets.filter(f => f != assigned_preset);
-		}
-
 		$scope.getName = function(assigned_preset){
-			return $rootScope.data_farm.presets[assigned_preset].name;
+			return $scope.data.presets[assigned_preset].name;
 		}
 
-		$scope.date_ref = new Date(0);
-
-		$scope.getFarmTime = function () {
-			var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
-			if(tm.length == 7) {
-				tm = "0" + tm;
-			}
-			return tm;
+		$scope.getIcon = function(assigned_preset){
+			return $scope.data.presets[assigned_preset].icon;
 		}
 
 		$scope.getPresetSelectedMaxJourneyTime = function () {
@@ -233,24 +187,162 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
-		
-		$scope.verifyPreset = function(preset){
-			if($scope.villageSelected.assigned_presets.find(f=>f==preset.id)){return false}
-			return true
+
+		$scope.blurPreset = function(){
+			if(!$scope.presetSelected || !$scope.villageSelected || !$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets){return}
+			$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
+			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
-		
-		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
-		$scope.assignedSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets[Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].assigned_presets)[0]]
+
+		$scope.start_farm = function(){
+			services.FarmService.start();
+			$scope.isRunning = services.FarmService.isRunning();
+		}
+
+		$scope.stop_farm = function(){
+			services.FarmService.stop();
+			$scope.isRunning = services.FarmService.isRunning();
+		}
+
+		$scope.pause_farm = function(){
+			services.FarmService.pause();
+			$scope.paused = !0;
+		}
+		$scope.resume_farm = function(){
+			services.FarmService.resume();
+			$scope.paused = !1;
+		}
+
+
+
+		$scope.$watch("villageSelected", function(){
+			if(!$scope.villageSelected){return}
+			triggerUpdate();
+		})
+
+
+		$scope.$watch('data.presets', triggerUpdate);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
+
+
+		/*
+		 * Villages
+		 */
+
+		$scope.getVillage = function (id) {
+			var village = services.modelDataService.getSelectedCharacter().getVillage(id);
+			if(!village) {return null}
+			return village.getName() + " / (" + village.getX() + "|" + village.getY() + ")"
+		}
+
+		$scope.setVillage = function (village) {
+			$scope.villageSelected = village;
+		}
+
+
+		/*
+		 * Exceptions
+		 */
+
+//		var my_village_id = services.modelDataService.getSelectedVillage().getId();
+
+//		$scope.deleteException = function (id_village) {
+//		$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village)
+//		getDetailsExceptions();
+//		}
+
+//		function getDetailsExceptions() {
+//		$scope.list_exceptions = {};
+//		$rootScope.data_farm.list_exceptions.forEach(function (vid) {
+//		services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+//		'village_id'	: vid,
+//		'my_village_id'	: my_village_id,
+//		'num_reports'	: 5
+//		}, function (data) {
+//		$scope.list_exceptions[data.village_id] = {
+//		village_name : data.village_name,
+//		village_x : data.village_x,
+//		village_y : data.village_y
+//		}
+//		if (!$rootScope.$$phase) $rootScope.$apply();
+//		})
+//		})
+//		}
+
+//		getDetailsExceptions();
+
+		$scope.start_farm = function () {
+			$scope.blur(function () {
+				services.FarmService.start();
+				$scope.isRunning = services.FarmService.isRunning();
+			});
+		}
+		$scope.stop_farm = function () {
+			services.FarmService.stop();
+		}
+		$scope.pause_farm = function () {
+			services.FarmService.pause();
+			$scope.paused = !0;
+		}
+		$scope.resume_farm = function () {
+			services.FarmService.resume();
+			$scope.paused = !1;
+		}
+
+
+
+		/*
+		 * Quadrants
+		 */
+
+		var addQuadrant = function(pos){
+			if(!$scope.villageSelected || !$scope.presetSelected) {return}
+			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.push(pos)
+			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.sort(function(a,b){return a-b})
+		}
+
+		var remQuadrant = function(pos){
+			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
+			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants = $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.filter(f => f != pos);
+		}
+
+		$scope.setQuadrant = function (pos) {
+			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
+			if($scope.villageSelected.presets[$scope.presetSelected.id].quadrants.includes(pos)){
+				remQuadrant(pos)
+			} else {
+				addQuadrant(pos)
+			}
+		}
+
+		$scope.getQuadrant = function (pos) {
+			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
+			return $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.includes(pos)
+		}
+
+		$scope.date_ref = new Date(0);
+
+		$scope.getFarmTime = function () {
+			var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
+			if(tm.length == 7) {
+				tm = "0" + tm;
+			}
+			return tm;
+		}
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
 			update();
 		})
 
-//		$(".win-foot .btn-orange").forEach(function (d) {
-//		d.setAttribute("style", "min-width:80px")
-//		})
+		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
+
+		$scope.isRunning = services.FarmService.isRunning();
+		$scope.isPaused = services.FarmService.isPaused();
 		update()
+
+		$scope.recalcScrollbar();
+		$scope.setCollapse();
 
 		return $scope;
 	}

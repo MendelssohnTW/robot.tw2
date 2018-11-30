@@ -24,6 +24,7 @@ define("robotTW2/databases/data_spy", [
 			auto_initialize			: false,
 			initialized 			: false,
 			activated 				: false,
+			complete				: 0,
 			hotkey					: conf.HOTKEY.SPY,
 			version					: conf.VERSION.SPY,
 			interval				: conf.INTERVAL.SPY,

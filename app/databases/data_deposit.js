@@ -26,6 +26,7 @@ define("robotTW2/databases/data_deposit", [
 			activated 				: false,
 			hotkey					: conf.HOTKEY.DEPOSIT,
 			use_reroll				: false,
+			complete				: 0,
 			version					: conf.VERSION.DEPOSIT,
 			interval				: conf.INTERVAL.DEPOSIT
 	}

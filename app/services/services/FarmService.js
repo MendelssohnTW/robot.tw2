@@ -229,14 +229,14 @@ define("robotTW2/services/FarmService", [
 			, y2 = village.data.y
 
 			var quadrant = 0;
-			if(x1 < x2 && y1 < y2) {
-				quadrant = 1
-			} else if (x1 < x2 && y1 > y2) {
-				quadrant = 4
-			} else if (x1 > x2 && y1 < y2) {
+			if(x2 > x1 && y2 < y1) {
 				quadrant = 2
-			} else if (x1 > x2 && y1 > y2) {
+			} else if (x2 > x1 && y2 > y1) {
 				quadrant = 3
+			} else if (x2 < x1 && y2 < y1) {
+				quadrant = 1
+			} else if (x2 < x1 && y2 > y1) {
+				quadrant = 4
 			}
 
 			if (y1 % 2) //se y é impar
@@ -453,9 +453,8 @@ define("robotTW2/services/FarmService", [
 				}
 			}, ["all_villages_ready"])
 		}
-		, init = function (bool) {
+		, init = function () {
 			isInitialized = !0
-			if(bool){return}
 			start();
 		}
 		, stop = function () {

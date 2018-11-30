@@ -132,7 +132,7 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.HEADQUARTER)
-			$rootScope.data_headquarter.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_headquarter.interval)
+			list.push($rootScope.data_headquarter.interval)
 			var t = Math.min.apply(null, list);
 			$rootScope.data_headquarter.interval = t
 			$rootScope.data_headquarter.time_complete = helper.gameTime() + t

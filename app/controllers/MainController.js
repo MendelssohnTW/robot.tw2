@@ -39,7 +39,7 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.recalibrate = function(){
-			robotTW2.service.AttackService.calibrate_time();
+			service.AttackService.calibrate_time();
 		}
 
 		$scope.toggleValueState = function(ext) {
@@ -60,10 +60,20 @@ define("robotTW2/controllers/MainController", [
 				if(ext.initialized){
 					$scope.extensions[ext.name].status = $scope.running;
 					if(!fn.isInitialized()){
-						if(typeof(fn.init) == "function"){fn.init()}
+						if(typeof(fn.init) == "function"){
+							if(["FARM", "RECRUIT"].includes(ext.name)){
+								fn.init(true)
+							} else {
+								fn.init()
+							}
+						}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
-						if(typeof(fn.start) == "function"){fn.start()}
+						if(typeof(fn.start) == "function"){
+							if(!["FARM", "RECRUIT"].includes(ext.name)){
+								fn.start()
+							}
+						}
 					}
 				} else {
 					$scope.extensions[ext.name].status = $scope.stopped

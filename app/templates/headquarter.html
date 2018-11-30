@@ -27,26 +27,26 @@
 								type=text value="{{getTimeRest()}}" disabled></td>
 							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
 								id="reserva_food" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.RESERVA.FOOD}}"
-								ng-model="data_headquarter.RESERVA.FOOD"></td>
+								type="number" value="{{data_headquarter.reserva.food}}"
+								ng-model="data_headquarter.reserva.food"></td>
 							<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
 								id="reserva_slots" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.RESERVA.SLOTS}}"
-								ng-model="data_headquarter.RESERVA.SLOTS"></td>
+								type="number" value="{{data_headquarter.reserva.slots}}"
+								ng-model="data_headquarter.reserva.slots"></td>
 						</tr>
 						<tr>
 							<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
 								id="reserva_wood" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.RESERVA.WOOD}}"
-								ng-model="data_headquarter.RESERVA.WOOD"></td>
+								type="number" value="{{data_headquarter.reserva.wood}}"
+								ng-model="data_headquarter.reserva.wood"></td>
 							<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
 								id="reserva_clay" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.RESERVA.CLAY}}"
-								ng-model="data_headquarter.RESERVA.CLAY"></td>
+								type="number" value="{{data_headquarter.reserva.clay}}"
+								ng-model="data_headquarter.reserva.clay"></td>
 							<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
 								id="reserva_iron" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.RESERVA.IRON}}"
-								ng-model="data_headquarter.RESERVA.IRON"></td>
+								type="number" value="{{data_headquarter.reserva.iron}}"
+								ng-model="data_headquarter.reserva.iron"></td>
 						</tr>
 					</table>
 
@@ -61,63 +61,67 @@
 						<tr>
 							<td class="cell-space"></td>
 							<td class="cell-space">
-								<h5 class="twx-section">{{priority}}</h5>
-								<table class="tbl-border-light tbl-striped" id="preset-list">
-									<colgroup>
-										<col width="*">
-										<col width="20">
-										<col width="20">
-										<col width="26">
-									</colgroup>
-									<tbody>
-										<tr
-											ng-repeat="buildingOrder in data_headquarter.BUILDINGORDER"
-											style="height: 56px">
-											<td ng-class="{'resource-text' : compare(buildingOrder)}"
-												class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
-												class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
-											<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
-											<td class="cell-right"><span
-												class="size-12x12 btn-orange icon-26x26-rte-building"
-												ng-click="selectbuildingOrder(buildingOrder)" tooltip
-												tooltip-content="{{tooltip_button}}"></span></td>
-											<td class="cell-right"><div
-													ng-show="compare(buildingOrder)">
-													<span
-														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-														ng-click="up(data_headquarter, buildingOrder)"></span> <span
-														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-														ng-click="down(data_headquarter, buildingOrder)"></span>
-												</div></td>
-										</tr>
-									</tbody>
-								</table>
+								<h5 class="twx-section collapse">{{priority}}</h5>
+								<div>
+									<table class="tbl-border-light tbl-striped" id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr
+												ng-repeat="buildingOrder in data_headquarter.buildingorder"
+												style="height: 56px">
+												<td
+													ng-class="{'resource-text' : selected_buildingOrder == buildingOrder}"
+													class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
+													class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
+												<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
+												<td class="cell-right"><span
+													class="size-12x12 btn-orange icon-26x26-rte-building"
+													ng-click="set_selected_buildingOrder(buildingOrder)"
+													tooltip tooltip-content="{{tooltip_button}}"></span></td>
+												<td class="cell-right"><div
+														ng-show="selected_buildingOrder == buildingOrder">
+														<span
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+															ng-click="up(data_headquarter, buildingOrder)"></span> <span
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+															ng-click="down(data_headquarter, buildingOrder)"></span>
+													</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							</td>
 							<td class="cell-right"></td>
 							<td class="cell-right">
-								<h5 class="twx-section">{{levels}}</h5>
-								<table class="tbl-border-light tbl-striped" id="preset-list">
-
-									<colgroup>
-										<col width="*">
-										<col width="20">
-										<col width="26">
-									</colgroup>
-									<tbody>
-										<tr
-											ng-repeat="buildingLimit in data_headquarter.BUILDINGLIMIT">
-											<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
-												class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
-											<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
-											<td class="cell-right"><span
-												class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-												ng-click="levelup(buildingLimit)"></span> <span
-												class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-												ng-click="leveldown(buildingLimit)"></span></td>
-											<td class="cell-right"></td>
-										</tr>
-									</tbody>
-								</table>
+								<h5 class="twx-section collapse">{{levels}}</h5>
+								<div>
+									<table class="tbl-border-light tbl-striped" id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr
+												ng-repeat="buildingLimit in data_headquarter.buildinglimit">
+												<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
+													class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
+												<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
+												<td class="cell-right"><span
+													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+													ng-click="levelup(buildingLimit)"></span> <span
+													class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+													ng-click="leveldown(buildingLimit)"></span></td>
+												<td class="cell-right"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							</td>
 							<td class="cell-right"></td>
 						</tr>
@@ -133,14 +137,14 @@
 							<col width="*">
 						</colgroup>
 						<tbody>
-							<tr ng-repeat="vill in villages">
+							<tr ng-repeat="vill in data_villages.villages">
 								<td class="cell-top"><span>{{vill.data.name}}
 										({{vill.data.x}}|{{vill.data.y}})</span></td>
 								<td class="cell-top">
 									<div class="checkbox box-border-dark">
 										<div switch-slider="" border="true" enabled="true"
-											value="vill.EXECUTEBUILDINGORDER" vertical="false"
-											size="'56x28'" ng-model="vill.EXECUTEBUILDINGORDER">
+											value="vill.executebuildingorder" vertical="false"
+											size="'56x28'" ng-model="vill.executebuildingorder">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -178,10 +182,10 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingOrder in vill.BUILDINGORDER"
+															<tr ng-repeat="buildingOrder in vill.buildingorder"
 																style="height: 56px">
 																<td
-																	ng-class="{'resource-text' : comparevillagebuildingOrder(vill.data.villageId, buildingOrder)}"
+																	ng-class="{'resource-text' : selected_village_buildingOrder[vill.data.villageId] == buildingOrder}"
 																	class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
 																	class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
 																<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
@@ -189,7 +193,7 @@
 																	class="size-12x12 btn-orange icon-26x26-rte-building"
 																	ng-click="selectvillagebuildingOrder(vill.data.villageId, buildingOrder)"></span></td>
 																<td class="cell-right"><div
-																		ng-show="comparevillagebuildingOrder(vill.data.villageId, buildingOrder)">
+																		ng-show="selected_village_buildingOrder[vill.data.villageId] = buildingOrder">
 																		<span
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																			ng-click="up(vill, buildingOrder)"></span> <span
@@ -211,7 +215,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingLimit in vill.BUILDINGLIMIT">
+															<tr ng-repeat="buildingLimit in vill.buildinglimit">
 																<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
 																	class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
 																<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
@@ -258,8 +262,6 @@
 				ng-click="pause_headquarter()"><span>{{pause}}</span></a></li>
 			<li><a class="btn-border btn-orange btn-resume"
 				ng-click="resume_headquarter()"><span>{{resume}}</span></a></li>
-			<li><a class="btn-orange btn-border save"
-				ng-click="save_headquarter()">{{save}}</a></li>
 			<li><a class="btn-orange btn-border restore"
 				ng-click="restore_headquarter()">{{restore}}</a></li>
 			<li><a class="btn-orange btn-border close"

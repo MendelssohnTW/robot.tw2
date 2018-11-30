@@ -47,6 +47,7 @@ define("robotTW2/databases/data_headquarter", [
 			activated 				: false,
 			hotkey					: conf.HOTKEY.HEADQUARTER,
 			interval				: conf.INTERVAL.HEADQUARTER,
+			time_complete			: 0,
 			version					: conf.VERSION.HEADQUARTER,
 			reserva 				: {
 				food			: conf.RESERVA.HEADQUARTER.FOOD,

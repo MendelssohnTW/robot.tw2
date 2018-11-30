@@ -1,7 +1,6 @@
 window.name = 'NG_ENABLE_DEBUG_INFO!';
 
 var urlServer = "https://mendelssohntw.github.io/robot.tw2/app/";
-urlServer = "";
 
 if(!window.loadedJs){
 	window.loadedJs = []
