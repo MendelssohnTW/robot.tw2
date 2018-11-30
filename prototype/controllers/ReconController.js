@@ -10,6 +10,10 @@ define("robotTW2/controllers/ReconController", [
 	return function ReconController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
+		
+		$scope.getKey = function(unit_name){
+			return services.$filter("i18n")(unit_name, $rootScope.loc.ale, "recon");
+		}
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();
