@@ -14,6 +14,10 @@ define("robotTW2/controllers/ReconController", [
 		$scope.getKey = function(unit_name){
 			return services.$filter("i18n")(unit_name, $rootScope.loc.ale, "recon");
 		}
+		
+		$scope.getClass = function(unit_name){
+			return "icon-34x34-unit-" + unit_name];
+		}
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();
