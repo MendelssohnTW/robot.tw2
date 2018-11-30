@@ -210,7 +210,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.blurMaxJourney = function () {
 			var r = $("#max_journey_time").val() 
-			if(r <= 5) {
+			if(r.length <= 5) {
 				r = r + ":00"
 			}
 			$scope.presetSelected.max_journey_time = helper.unreadableSeconds(r) * 1000
@@ -219,7 +219,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.blurMinJourney = function () {
 			var r = $("#min_journey_time").val() 
-			if(r <= 5) {
+			if(r.length <= 5) {
 				r = r + ":00"
 			}
 			$scope.presetSelected.min_journey_time = helper.unreadableSeconds(r) * 1000
