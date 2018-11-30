@@ -170,7 +170,7 @@
 		"title": "Recrutamento de espiões",
 		"settings": "Configurações",
 		"text_interval": "Próximo ciclo em ",
-		"text_interval_deposit": "Intervalo de verificação"
+		"text_interval_spy": "Intervalo de verificação"
 	},
 	"notify": {
 		"title": "Notícias",
