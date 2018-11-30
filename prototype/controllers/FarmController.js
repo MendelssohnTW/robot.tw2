@@ -205,6 +205,8 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setPresetSelected = function (preset_id) {
 			$scope.presetSelected =	$scope.data.presets[preset_id]
+			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
+			$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
