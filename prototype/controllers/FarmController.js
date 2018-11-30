@@ -236,24 +236,6 @@ define("robotTW2/controllers/FarmController", [
 			return $scope.data.presets[assigned_preset].icon;
 		}
 
-		$scope.getPresetSelectedMaxJourneyTime = function () {
-			if(!$scope.presetSelected || !$scope.presetSelected.max_journey_time) {return}
-			var tm = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
-			if(tm.length == 7) {
-				tm = "0" + tm;
-			}
-			return tm;
-		}
-
-		$scope.getPresetSelectedMinJourneyTime = function () {
-			if(!$scope.presetSelected || !$scope.presetSelected.min_journey_time) {return}
-			var tm = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
-			if(tm.length == 7) {
-				tm = "0" + tm;
-			}
-			return tm;
-		}
-
 		$scope.blurPreset = function(){
 			if(!$scope.presetSelected || !$scope.villageSelected || !$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets){return}
 			$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
@@ -387,8 +369,24 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.date_ref = new Date(0);
+		$scope.tmMax = "0";
+		$scope.tmMin = "0";
 
 		$scope.getFarmTime = function () {
+			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time)) {
+				$scope.tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
+				if($scope.tmMax.length == 7) {
+					$scope.tmMax = "0" + $scope.tmMax;
+				}
+			}
+			
+			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time)) {
+				$scope.tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
+				if($scope.tmMin.length == 7) {
+					$scope.tmMin = "0" + $scope.tmtmMin;
+				}
+			}
+			
 			var tm = helper.readableMilliseconds($rootScope.data_farm.farm_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;

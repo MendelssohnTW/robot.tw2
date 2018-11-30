@@ -199,7 +199,7 @@
 													class="with-margin">{{time_min}}</label><input
 													class="input-border inpt" type="time" id="min_journey_time"
 													step="1" min="00:00:00" max="23:59:59"
-													value="{{getPresetSelectedMinJourneyTime()}}"
+													ng-model="{{tmMin}}"
 													ng-blur="blurMinJourney()"></td>
 												<td class="cell-right"><label for="min_dist"
 													class="with-margin">{{text_min_dist}}</label><input
@@ -219,7 +219,7 @@
 													class="with-margin">{{time_max}}</label><input
 													class="input-border inpt" type="time" id="max_journey_time"
 													step="1" min="00:00:00" max="23:59:59"
-													value="{{getPresetSelectedMaxJourneyTime()}}"
+													ng-model="{{tmMax}}"
 													ng-blur="blurMaxJourney()"></td>
 												<td class="cell-right"><label for="max_dist"
 													class="with-margin">{{text_max_dist}}</label><input
