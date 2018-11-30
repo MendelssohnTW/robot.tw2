@@ -76,7 +76,7 @@ define("robotTW2/services/HeadquarterService", [
 			} else {
 				getResources(village.data.villageId, function(resources){
 
-					if(!resouces){
+					if(!resources){
 						not_enough_resources = true
 					} else {
 						Object.keys(resources).forEach(function(resource_type){
