@@ -89,6 +89,13 @@ define("robotTW2/databases/data_villages", [
 					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
 					callback(true)
 					return;
+				} else {
+					angular.merge(villagesExtended[v], {
+						presets					: getPst(v)
+					})
+					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
+					callback(true)
+					return;
 				}
 			})
 			callback(false)
