@@ -74,10 +74,12 @@ define("robotTW2/controllers/FarmController", [
 		}
 		
 		$scope.get_max_journey_distance = function(){
+			if(!$scope.presetSelected){return}
 			return get_dist($scope.presetSelected.max_journey_time);
 		}
 		
 		$scope.get_min_journey_distance = function(){
+			if(!$scope.presetSelected){return}
 			return get_dist($scope.presetSelected.min_journey_time);
 		}
 
