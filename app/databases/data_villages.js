@@ -116,23 +116,23 @@ define("robotTW2/databases/data_villages", [
 				if(!Object.keys(data_villages.villages).map(function(v){
 					return v
 				}).find(f=>f==m)){
-					angular.extend(villagesExtended[v], {
+					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
 						buildinglimit 			: conf.BUILDINGLIMIT,
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
-						presets					: getPst(v)
+						presets					: getPst(m)
 					})
-					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
+					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
 					return m;
 				} else {
-					angular.merge(villagesExtended[v], {
+					angular.merge(villagesExtended[m], {
 						farm_activate 			: true,
-						presets					: getPst(v)
+						presets					: getPst(m)
 					})
-					data_villages.villages[v] = angular.extend({}, villagesExtended[v])
+					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
 					return m;
 				}
