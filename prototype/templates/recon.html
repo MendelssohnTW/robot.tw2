@@ -18,7 +18,7 @@
 
 						</colgroup>
 						<tr ng-repeat="(key, value) in data_recon.rename">
-							<td class="cell-right">{{getKey(key)}}</td>
+							<td class="cell-right"><span>{{getKey(key)}}</span><span class="span-icon" ng-class="getClass(key)"></span></td>
 							<td>
 								<div id="switch" switch-slider="" border="true" enabled="true"
 									value="value" vertical="false" size="'56x28'">
