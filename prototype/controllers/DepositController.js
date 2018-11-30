@@ -20,7 +20,7 @@ define("robotTW2/controllers/DepositController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_deposit.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_deposit.time_complete - helper.gameTime()) : 0;
+			return $rootScope.data_deposit.complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_deposit.complete - helper.gameTime()) : 0;
 		}
 		
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function() {
