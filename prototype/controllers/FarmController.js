@@ -210,10 +210,12 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.blurMaxJourney = function () {
 			$scope.presetSelected.max_journey_time = helper.unreadableSeconds($("#max_journey_time").val()) * 1000
+			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
 		}
 
 		$scope.blurMinJourney = function () {
 			$scope.presetSelected.min_journey_time = helper.unreadableSeconds($("#min_journey_time").val()) * 1000
+			$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
 		}
 
 		$scope.getName = function(assigned_preset){
