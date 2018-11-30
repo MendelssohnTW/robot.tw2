@@ -11,6 +11,8 @@ define("robotTW2/controllers/SpyController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
 		
+		$scope.isRunning = services.SpyService.isRunning();
+		
 		$scope.blur = function(){
 			var t = $("#input-ms").val();
 			if(t.length <= 5) {
@@ -24,8 +26,15 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		
-		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function() {
+		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
 			document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_spy.interval) : helper.readableMilliseconds($rootScope.data_spy.interval);
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		})
+		
+		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+			$scope.isRunning = services.SpyService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}

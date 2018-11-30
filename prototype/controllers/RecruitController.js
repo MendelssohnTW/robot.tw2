@@ -20,6 +20,8 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 		var self = this;
 		
+		$scope.isRunning = services.RecruitService.isRunning();
+		
 		var return_units = function (){
 			var units = {};
 			Object.keys(unitTypes).map(function(key){
@@ -74,7 +76,14 @@ define("robotTW2/controllers/RecruitController", [
 			}
 		})
 		
-		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function() {
+		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function($event, data) {
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		})
+		
+		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+			$scope.isRunning = services.RecruitService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}

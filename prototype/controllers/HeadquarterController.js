@@ -112,7 +112,14 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.selected_buildingOrder = {};
 		$scope.selected_village_buildingOrder = [];
 
-		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function() {
+		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		})
+		
+		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+			$scope.isRunning = services.HeadquarterService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
