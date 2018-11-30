@@ -19,6 +19,13 @@ define("robotTW2/databases/data_recruit", [
 	db_recruit.get = function(){
 		return database.get("data_recruit")
 	}
+	
+	db_recruit.update = function($event){
+		db_recruit.Groups = services.groupService.getGroups()
+		db_recruit.GroupsKeys = Object.keys(services.groupService.getGroups())
+		db_recruit.GroupsName = Object.keys(services.groupService.getGroups()).map(m => services.groupService.getGroups()[m].name)
+		db_recruit.GroupsCount = Object.keys(services.groupService.getGroups()).length
+	}
 
 //	db_recruit.getTimeCicle = function(){
 //		return database.get("data_recruit").interval
@@ -78,6 +85,9 @@ define("robotTW2/databases/data_recruit", [
 			database.set("data_recruit", data_recruit, true)		
 		}
 	}
+	
+	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, db_recruit.update);
+	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, db_recruit.update);
 
 	Object.setPrototypeOf(data_recruit, db_recruit);
 	
