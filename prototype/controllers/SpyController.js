@@ -20,7 +20,7 @@ define("robotTW2/controllers/SpyController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_spy.time_complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_spy.time_complete - helper.gameTime()) : 0;
+			return $rootScope.data_spy.complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_spy.complete - helper.gameTime()) : 0;
 		}
 
 		
