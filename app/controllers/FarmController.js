@@ -213,7 +213,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			$scope.data.presets[$scope.presetSelected.id] = $scope.presetSelected;
-			$scope.data_villages.village[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
+			$scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
