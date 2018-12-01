@@ -264,7 +264,7 @@ define("robotTW2/services/FarmService", [
 		, loadVillages = function(cmd_preset, listaGrid, res, rej){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push(reg, cmd_preset, res, rej)
+					grid_queue.push([reg, cmd_preset, res, rej])
 				} else {
 					if(grid_queue.length){
 						var t = grid_queue.shift();
