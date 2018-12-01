@@ -264,13 +264,14 @@ define("robotTW2/services/FarmService", [
 		, loadVillages = function(cmd_preset, listaGrid, res, rej){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push(reg, cmd_preset)
+					grid_queue.push([reg, cmd_preset, res, rej])
 				} else {
 					if(grid_queue.length){
-						grid_queue.push(reg);
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
+						res = t[2];
+						rej = t[3];
 						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
 						exec_promise_grid(reg, cmd_preset, res, rej)
@@ -302,10 +303,10 @@ define("robotTW2/services/FarmService", [
 						if (lt_barbaras.length > 0) {
 							resolve(lt_barbaras)
 						} else {
-							reject();
+							resolve([]);
 						}
 					} else {
-						reject();
+						resolve([]);
 					}
 
 				});
@@ -317,6 +318,8 @@ define("robotTW2/services/FarmService", [
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
+						res = t[2];
+						rej = t[3];
 						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
 						res()
@@ -471,16 +474,20 @@ define("robotTW2/services/FarmService", [
 //			listener_change = undefined;
 //			$rootScope.data_farm.clearBB();
 
-			commands_for_send = []
+			interval_init = null
 			timeoutIdFarm = {}
 			timeoutCommandFarm = {}
+	//		listener_change = undefined
 			listener_resume = undefined
 			countCommands = {}
 			commands_for_send = []
 			req = 0
 			rdy = 0
 			s = {}
-
+			promise = undefined
+			promise_grid = undefined
+			farm_queue = []
+			grid_queue = []
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}

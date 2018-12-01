@@ -213,6 +213,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			$scope.data.presets[$scope.presetSelected.id] = $scope.presetSelected;
+			$scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
@@ -258,7 +259,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("presetSelected", function(){
 			if(!$scope.presetSelected){return}
 			updatePreset();
-		})
+		}, true)
 
 
 		$scope.start_farm = function(){
@@ -283,9 +284,9 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("villageSelected", function(){
 			if(!$scope.villageSelected){return}
 			triggerUpdate();
-		})
+		}, true)
 
-		$scope.$watch('data.presets', triggerUpdate);
+		$scope.$watch('data.presets', triggerUpdate, true);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
 
