@@ -471,18 +471,20 @@ define("robotTW2/services/FarmService", [
 //			listener_change = undefined;
 //			$rootScope.data_farm.clearBB();
 
-			commands_for_send = []
-			
+			interval_init = null
 			timeoutIdFarm = {}
-			
 			timeoutCommandFarm = {}
+	//		listener_change = undefined
 			listener_resume = undefined
 			countCommands = {}
 			commands_for_send = []
 			req = 0
 			rdy = 0
 			s = {}
-
+			promise = undefined
+			promise_grid = undefined
+			farm_queue = []
+			grid_queue = []
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}
