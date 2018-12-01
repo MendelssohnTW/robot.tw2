@@ -3,7 +3,7 @@ define("robotTW2/services/FarmService", [
 	"helper/time",
 	"robotTW2/conf",
 	], function(
-			robotTW2,
+		timeoutCommandFarm	robotTW2,
 			helper,
 			conf
 	){
@@ -302,10 +302,10 @@ define("robotTW2/services/FarmService", [
 						if (lt_barbaras.length > 0) {
 							resolve(lt_barbaras)
 						} else {
-							reject();
+							resolve([]);
 						}
 					} else {
-						reject();
+						resolve([]);
 					}
 
 				});
@@ -472,7 +472,9 @@ define("robotTW2/services/FarmService", [
 //			$rootScope.data_farm.clearBB();
 
 			commands_for_send = []
+			
 			timeoutIdFarm = {}
+			
 			timeoutCommandFarm = {}
 			listener_resume = undefined
 			countCommands = {}
