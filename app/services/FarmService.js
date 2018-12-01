@@ -3,7 +3,7 @@ define("robotTW2/services/FarmService", [
 	"helper/time",
 	"robotTW2/conf",
 	], function(
-		timeoutCommandFarm	robotTW2,
+			robotTW2,
 			helper,
 			conf
 	){
