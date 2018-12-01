@@ -264,13 +264,14 @@ define("robotTW2/services/FarmService", [
 		, loadVillages = function(cmd_preset, listaGrid, res, rej){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push(reg, cmd_preset)
+					grid_queue.push(reg, cmd_preset, res, rej)
 				} else {
 					if(grid_queue.length){
-						grid_queue.push(reg);
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
+						res = t[2];
+						rej = t[3];
 						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
 						exec_promise_grid(reg, cmd_preset, res, rej)
@@ -317,6 +318,8 @@ define("robotTW2/services/FarmService", [
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
+						res = t[2];
+						rej = t[3];
 						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
 						res()
