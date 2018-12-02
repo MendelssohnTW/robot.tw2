@@ -261,28 +261,27 @@ define("robotTW2/services/FarmService", [
 				return false
 			}
 		}
-		, loadVillages = function(cmd_preset, listaGrid, res, rej){
+		, loadVillages = function(cmd_preset, listaGrid, res){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push([reg, cmd_preset, res, rej])
+					grid_queue.push([reg, cmd_preset, res])
 				} else {
-					if(grid_queue.length){
-						grid_queue.push([reg, cmd_preset, res, rej])
-						var t = grid_queue.shift();
-						reg = t[0];
-						cmd_preset = t[1];
-						res = t[2];
-						rej = t[3];
-						exec_promise_grid(reg, cmd_preset, res, rej)
-					} else {
-						exec_promise_grid(reg, cmd_preset, res, rej)
-					}
+//					if(grid_queue.length){
+//						grid_queue.push([reg, cmd_preset, res])
+//						var t = grid_queue.shift();
+//						reg = t[0];
+//						cmd_preset = t[1];
+//						res = t[2];
+//						exec_promise_grid(reg, cmd_preset, res)
+//					} else {
+						exec_promise_grid(reg, cmd_preset, res)
+//					}
 				}
 			})
 
 		}
-		, exec_promise_grid = function(reg, cmd_preset, res, rej){
-			promise_grid = new Promise(function(resolve, reject){
+		, exec_promise_grid = function(reg, cmd_preset, res){
+			promise_grid = new Promise(function(resolve){
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 					var lt_barbaras = []
 					if (data != undefined && data.villages != undefined && data.villages.length > 0) {
@@ -301,15 +300,8 @@ define("robotTW2/services/FarmService", [
 								lt_barbaras.push(listaVil[j].id);
 							}
 						}
-						if (lt_barbaras.length > 0) {
-							resolve(lt_barbaras)
-						} else {
-							resolve([]);
-						}
-					} else {
-						resolve([]);
 					}
-
+					resolve(lt_barbaras)
 				});
 			})
 			.then(function(lst_bb){
@@ -320,21 +312,18 @@ define("robotTW2/services/FarmService", [
 						reg = t[0];
 						cmd_preset = t[1];
 						res = t[2];
-						rej = t[3];
-						exec_promise_grid(reg, cmd_preset, res, rej)
+						exec_promise_grid(reg, cmd_preset, res)
 					} else {
 						res()
 					}
 				});
-			}, function(){
-				rej()
 			})
 		}
 		, exec_promise = function(cmd_preset){
-			promise = new Promise(function(res, rej){
+			promise = new Promise(function(res){
 				var listaGrid = exec(cmd_preset)
 				if(!listaGrid.length){return}
-				loadVillages(cmd_preset, listaGrid, res, rej);
+				loadVillages(cmd_preset, listaGrid, res);
 			})
 			.then(function(data){
 				promise = undefined
@@ -342,12 +331,6 @@ define("robotTW2/services/FarmService", [
 					cmd_preset = farm_queue.shift();
 					exec_promise(cmd_preset)
 				}
-			}, function(){
-				if(farm_queue.length){
-					cmd_preset = farm_queue.shift();
-					exec_promise(cmd_preset)
-				}
-
 			})
 		}
 		, execute_commands = function(commands_for_presets){
@@ -356,13 +339,13 @@ define("robotTW2/services/FarmService", [
 				if(promise){
 					farm_queue.push(cmd_preset)
 				} else {
-					if(farm_queue.length){
-						farm_queue.push(cmd_preset);
-						cmd_preset = farm_queue.shift();
+//					if(farm_queue.length){
+//						farm_queue.push(cmd_preset);
+//						cmd_preset = farm_queue.shift();
+//						exec_promise(cmd_preset)
+//					} else {
 						exec_promise(cmd_preset)
-					} else {
-						exec_promise(cmd_preset)
-					}
+//					}
 				}
 			})
 		}

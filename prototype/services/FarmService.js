@@ -129,7 +129,6 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			var list_select = []
-			, lista_atualizada = []
 			, timetable = modelDataService.getGameData().data.units.map(function (obj) {
 				return [obj.name, obj.speed]
 			})
@@ -148,10 +147,7 @@ define("robotTW2/services/FarmService", [
 			}
 			if (list_select.length > 0) {
 				list_select.sort(function (a, b) {return a[1] - b[1]});
-//				var m = Math.trunc(($rootScope.data_farm.presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
-				var m = Math.trunc(($rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
-				var n = $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance;
-				return Math.min.apply(null, [m, n])
+				return Math.trunc(($rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
 			} 
 			return 0;
 		}
@@ -229,14 +225,14 @@ define("robotTW2/services/FarmService", [
 			, y2 = village.data.y
 
 			var quadrant = 0;
-			if(x2 > x1 && y2 < y1) {
-				quadrant = 2
-			} else if (x2 > x1 && y2 > y1) {
-				quadrant = 3
-			} else if (x2 < x1 && y2 < y1) {
+			if(x1 < x2 && y1 < y2) {
 				quadrant = 1
-			} else if (x2 < x1 && y2 > y1) {
+			} else if (x1 < x2 && y1 > y2) {
 				quadrant = 4
+			} else if (x1 > x2 && y1 < y2) {
+				quadrant = 2
+			} else if (x1 > x2 && y1 > y2) {
+				quadrant = 3
 			}
 
 			if (y1 % 2) //se y é impar
@@ -265,26 +261,27 @@ define("robotTW2/services/FarmService", [
 				return false
 			}
 		}
-		, loadVillages = function(cmd_preset, listaGrid, res, rej){
+		, loadVillages = function(cmd_preset, listaGrid, res){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push(reg, cmd_preset)
+					grid_queue.push([reg, cmd_preset, res])
 				} else {
-					if(grid_queue.length){
-						grid_queue.push(reg);
-						var t = grid_queue.shift();
-						reg = t[0];
-						cmd_preset = t[1];
-						exec_promise_grid(reg, cmd_preset, res, rej)
-					} else {
-						exec_promise_grid(reg, cmd_preset, res, rej)
-					}
+//					if(grid_queue.length){
+//						grid_queue.push([reg, cmd_preset, res])
+//						var t = grid_queue.shift();
+//						reg = t[0];
+//						cmd_preset = t[1];
+//						res = t[2];
+//						exec_promise_grid(reg, cmd_preset, res)
+//					} else {
+						exec_promise_grid(reg, cmd_preset, res)
+//					}
 				}
 			})
 
 		}
-		, exec_promise_grid = function(reg, cmd_preset, res, rej){
-			promise_grid = new Promise(function(resolve, reject){
+		, exec_promise_grid = function(reg, cmd_preset, res){
+			promise_grid = new Promise(function(resolve){
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 					var lt_barbaras = []
 					if (data != undefined && data.villages != undefined && data.villages.length > 0) {
@@ -303,15 +300,8 @@ define("robotTW2/services/FarmService", [
 								lt_barbaras.push(listaVil[j].id);
 							}
 						}
-						if (lt_barbaras.length > 0) {
-							resolve(lt_barbaras)
-						} else {
-							reject();
-						}
-					} else {
-						reject();
 					}
-
+					resolve(lt_barbaras)
 				});
 			})
 			.then(function(lst_bb){
@@ -321,20 +311,19 @@ define("robotTW2/services/FarmService", [
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
-						exec_promise_grid(reg, cmd_preset, res, rej)
+						res = t[2];
+						exec_promise_grid(reg, cmd_preset, res)
 					} else {
 						res()
 					}
 				});
-			}, function(){
-				rej()
 			})
 		}
 		, exec_promise = function(cmd_preset){
-			promise = new Promise(function(res, rej){
+			promise = new Promise(function(res){
 				var listaGrid = exec(cmd_preset)
 				if(!listaGrid.length){return}
-				loadVillages(cmd_preset, listaGrid, res, rej);
+				loadVillages(cmd_preset, listaGrid, res);
 			})
 			.then(function(data){
 				promise = undefined
@@ -342,12 +331,6 @@ define("robotTW2/services/FarmService", [
 					cmd_preset = farm_queue.shift();
 					exec_promise(cmd_preset)
 				}
-			}, function(){
-				if(farm_queue.length){
-					cmd_preset = farm_queue.shift();
-					exec_promise(cmd_preset)
-				}
-
 			})
 		}
 		, execute_commands = function(commands_for_presets){
@@ -356,13 +339,13 @@ define("robotTW2/services/FarmService", [
 				if(promise){
 					farm_queue.push(cmd_preset)
 				} else {
-					if(farm_queue.length){
-						farm_queue.push(cmd_preset);
-						cmd_preset = farm_queue.shift();
+//					if(farm_queue.length){
+//						farm_queue.push(cmd_preset);
+//						cmd_preset = farm_queue.shift();
+//						exec_promise(cmd_preset)
+//					} else {
 						exec_promise(cmd_preset)
-					} else {
-						exec_promise(cmd_preset)
-					}
+//					}
 				}
 			})
 		}
@@ -429,6 +412,8 @@ define("robotTW2/services/FarmService", [
 				isRunning = !0
 
 				$rootScope.data_villages.getAssignedPresets();
+				
+				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
 				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
 					var tempo_delay = $rootScope.data_farm.farm_time_start - helper.gameTime();
@@ -453,8 +438,9 @@ define("robotTW2/services/FarmService", [
 				}
 			}, ["all_villages_ready"])
 		}
-		, init = function () {
+		, init = function (bool) {
 			isInitialized = !0
+			if(bool){return}
 			start();
 		}
 		, stop = function () {
@@ -472,16 +458,20 @@ define("robotTW2/services/FarmService", [
 //			listener_change = undefined;
 //			$rootScope.data_farm.clearBB();
 
-			commands_for_send = []
+			interval_init = null
 			timeoutIdFarm = {}
 			timeoutCommandFarm = {}
+	//		listener_change = undefined
 			listener_resume = undefined
 			countCommands = {}
 			commands_for_send = []
 			req = 0
 			rdy = 0
 			s = {}
-
+			promise = undefined
+			promise_grid = undefined
+			farm_queue = []
+			grid_queue = []
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}
