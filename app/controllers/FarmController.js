@@ -68,7 +68,7 @@ define("robotTW2/controllers/FarmController", [
 
 			if (list_select.length > 0) {
 				list_select.sort(function (a, b) {return a[1] - b[1]});
-				return Math.trunc(((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75));
+				return Math.trunc((((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75)) / 2);
 			}
 			return 0;
 		}
