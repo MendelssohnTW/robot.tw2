@@ -55,7 +55,7 @@ define("robotTW2/databases/data_villages", [
 		if(!Object.keys(presets_d).length) {return}
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 		Object.keys(presets_d).forEach(function (pst) {
-			
+			if(!data_villages.villages[v].presets){data_villages.villages[v].presets = {}}
 			Object.keys(data_villages.villages[v].presets).map(function (id) {
 				if(!Object.keys(presets_d).find(f => f == id)) {
 					delete data_villages.villages[v].presets[id]
