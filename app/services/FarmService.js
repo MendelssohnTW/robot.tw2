@@ -356,11 +356,11 @@ define("robotTW2/services/FarmService", [
 		, clear = function(){
 			$rootScope.data_farm.clearBB();
 
-			interval_init = null
-			timeoutIdFarm = {}
-			timeoutCommandFarm = {}
-	//		listener_change = undefined
-			listener_resume = undefined
+			
+			
+		
+	//		
+			
 			countCommands = {}
 			commands_for_send = []
 			req = 0
