@@ -267,6 +267,7 @@ define("robotTW2/services/FarmService", [
 					grid_queue.push([reg, cmd_preset, res, rej])
 				} else {
 					if(grid_queue.length){
+						grid_queue.push([reg, cmd_preset, res, rej])
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
