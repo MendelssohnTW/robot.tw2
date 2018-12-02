@@ -32,6 +32,7 @@ define("robotTW2/services/FarmService", [
 		, req = 0
 		, rdy = 0
 		, s = {}
+		, g = 0
 		, promise = undefined
 		, promise_grid = undefined
 		, farm_queue = []
@@ -195,7 +196,6 @@ define("robotTW2/services/FarmService", [
 				lt_bb.splice(t_slice);
 			}
 			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
-			var g = 0;
 			lt_bb.forEach(function (barbara) {
 				g++;
 				timeoutCommandFarm[g] = (function(){
@@ -212,7 +212,6 @@ define("robotTW2/services/FarmService", [
 					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * g);
 				})()
 			});
-
 			callback();
 		}
 		, check_village = function (vill, cmd_preset, lt_b) {
@@ -473,6 +472,7 @@ define("robotTW2/services/FarmService", [
 			req = 0
 			rdy = 0
 			s = {}
+			g = 0
 			promise = undefined
 			promise_grid = undefined
 			farm_queue = []
