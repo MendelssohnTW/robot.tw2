@@ -129,6 +129,7 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			var list_select = []
+			, lista_atualizada = []
 			, timetable = modelDataService.getGameData().data.units.map(function (obj) {
 				return [obj.name, obj.speed]
 			})
@@ -147,7 +148,10 @@ define("robotTW2/services/FarmService", [
 			}
 			if (list_select.length > 0) {
 				list_select.sort(function (a, b) {return a[1] - b[1]});
-				return Math.trunc(($rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
+//				var m = Math.trunc(($rootScope.data_farm.presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
+				var m = Math.trunc(($rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75);
+				var n = $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance;
+				return Math.min.apply(null, [m, n])
 			} 
 			return 0;
 		}
@@ -225,14 +229,14 @@ define("robotTW2/services/FarmService", [
 			, y2 = village.data.y
 
 			var quadrant = 0;
-			if(x1 < x2 && y1 < y2) {
-				quadrant = 1
-			} else if (x1 < x2 && y1 > y2) {
-				quadrant = 4
-			} else if (x1 > x2 && y1 < y2) {
+			if(x2 > x1 && y2 < y1) {
 				quadrant = 2
-			} else if (x1 > x2 && y1 > y2) {
+			} else if (x2 > x1 && y2 > y1) {
 				quadrant = 3
+			} else if (x2 < x1 && y2 < y1) {
+				quadrant = 1
+			} else if (x2 < x1 && y2 > y1) {
+				quadrant = 4
 			}
 
 			if (y1 % 2) //se y é impar
@@ -264,14 +268,13 @@ define("robotTW2/services/FarmService", [
 		, loadVillages = function(cmd_preset, listaGrid, res, rej){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push([reg, cmd_preset, res, rej])
+					grid_queue.push(reg, cmd_preset)
 				} else {
 					if(grid_queue.length){
+						grid_queue.push(reg);
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
-						res = t[2];
-						rej = t[3];
 						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
 						exec_promise_grid(reg, cmd_preset, res, rej)
@@ -303,10 +306,10 @@ define("robotTW2/services/FarmService", [
 						if (lt_barbaras.length > 0) {
 							resolve(lt_barbaras)
 						} else {
-							resolve([]);
+							reject();
 						}
 					} else {
-						resolve([]);
+						reject();
 					}
 
 				});
@@ -318,8 +321,6 @@ define("robotTW2/services/FarmService", [
 						var t = grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
-						res = t[2];
-						rej = t[3];
 						exec_promise_grid(reg, cmd_preset, res, rej)
 					} else {
 						res()
@@ -428,8 +429,6 @@ define("robotTW2/services/FarmService", [
 				isRunning = !0
 
 				$rootScope.data_villages.getAssignedPresets();
-				
-				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
 				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
 					var tempo_delay = $rootScope.data_farm.farm_time_start - helper.gameTime();
@@ -454,9 +453,8 @@ define("robotTW2/services/FarmService", [
 				}
 			}, ["all_villages_ready"])
 		}
-		, init = function (bool) {
+		, init = function () {
 			isInitialized = !0
-			if(bool){return}
 			start();
 		}
 		, stop = function () {
@@ -474,20 +472,16 @@ define("robotTW2/services/FarmService", [
 //			listener_change = undefined;
 //			$rootScope.data_farm.clearBB();
 
-			interval_init = null
+			commands_for_send = []
 			timeoutIdFarm = {}
 			timeoutCommandFarm = {}
-	//		listener_change = undefined
 			listener_resume = undefined
 			countCommands = {}
 			commands_for_send = []
 			req = 0
 			rdy = 0
 			s = {}
-			promise = undefined
-			promise_grid = undefined
-			farm_queue = []
-			grid_queue = []
+
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}
