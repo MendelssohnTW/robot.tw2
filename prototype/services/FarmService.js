@@ -243,19 +243,17 @@ define("robotTW2/services/FarmService", [
 			, dx = x1 - x2
 			, distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
 
-			var isBarbara = vill.affiliation == "barbarian";
+//			var isBarbara = vill.affiliation == "barbarian";
 			var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
-			var existLista = !lt_b.find(f => f == vill.id);
-			var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
-			var rangePoints = (vill.points >= $rootScope.data_villages.villages[village_id].presets[preset_id].min_points_farm && vill.points <= $rootScope.data_villages.villages[village_id].presets[preset_id].max_points_farm);
-			var rangeDist = distancia >= $rootScope.data_villages.villages[village_id].presets[preset_id].min_journey_distance && distancia <= $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance
+//			var existLista = !lt_b.find(f => f == vill.id);
+//			var existException = !$rootScope.data_farm.list_exceptions.find(f => f == vill.id);
 			var existQuadrant = false;
 			if($rootScope.data_villages.villages[village_id].presets[preset_id].quadrants){
 				existQuadrant = $rootScope.data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
 			} else {
 				existQuadrant = [1, 2, 3, 4].includes(quadrant);
 			}
-			if(existException && rangePoints && rangeDist && existLista && existBarbara && existQuadrant && isBarbara) {
+			if(existBarbara && existQuadrant) {
 				return true
 			} else {
 				return false
@@ -290,7 +288,14 @@ define("robotTW2/services/FarmService", [
 						var x2 = cmd_preset.x;
 						var y2 = cmd_preset.y;
 
+						listaVil = listaVil.filter(f=>f.affiliation == "barbarian")
 						listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
+						listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
+						listaVil = listaVil.filter(f=>f.points < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
+						listaVil = listaVil.filter(f=>f.points > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
+						listaVil = listaVil.filter(f=>!lt_barbaras.find(g=>g==f.id))
+						listaVil = listaVil.filter(f=>!$rootScope.data_farm.list_exceptions.find(g=>g==f.id))
+						
 						listaVil.sort(function (a, b) {
 							Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
 						});
