@@ -353,9 +353,31 @@ define("robotTW2/services/FarmService", [
 				}
 			})
 		}
+		, clear = function(){
+			$rootScope.data_farm.clearBB();
+
+			interval_init = null
+			timeoutIdFarm = {}
+			timeoutCommandFarm = {}
+	//		listener_change = undefined
+			listener_resume = undefined
+			countCommands = {}
+			commands_for_send = []
+			req = 0
+			rdy = 0
+			s = {}
+			g = 0
+			promise = undefined
+			promise_grid = undefined
+			farm_queue = []
+			grid_queue = []
+
+}
+
 		, execute_preset = function(tempo){
 			return $timeout(
 					function(){
+						clear()
 						var commands_for_presets = []
 						var villages = modelDataService.getSelectedCharacter().getVillageList();
 						villages.forEach(function(village){
