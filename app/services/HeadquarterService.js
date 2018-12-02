@@ -129,7 +129,7 @@ define("robotTW2/services/HeadquarterService", [
 					lt.push(timer);
 				}
 			}
-			var t = 3000;
+			var t = $rootScope.data_headquarter.interval;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
