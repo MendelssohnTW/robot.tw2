@@ -75,11 +75,16 @@ define("robotTW2/services/HeadquarterService", [
 				callback(!1, "instant")
 			} else {
 				getResources(village.data.villageId, function(resources){
-					Object.keys(resources).forEach(function(resource_type){
-						if(resources[resource_type] + $rootScope.data_headquarter.reserva[resource_type.toLowerCase()] < nextLevelCosts[resource_type]){
-							not_enough_resources = true;
-						}
-					})
+
+					if(!resources){
+						not_enough_resources = true
+					} else {
+						Object.keys(resources).forEach(function(resource_type){
+							if(resources[resource_type] + $rootScope.data_headquarter.reserva[resource_type.toLowerCase()] < nextLevelCosts[resource_type]){
+								not_enough_resources = true;
+							}
+						})
+					}
 
 					if(not_enough_resources){
 						callback(!1, {[village.data.name] : "not_enough_resources"})
@@ -132,8 +137,8 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.HEADQUARTER)
-			list.push($rootScope.data_headquarter.interval)
-			var t = Math.min.apply(null, list);
+			$rootScope.data_headquarter.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_headquarter.interval)
+					var t = Math.min.apply(null, list);
 			$rootScope.data_headquarter.interval = t
 			$rootScope.data_headquarter.time_complete = helper.gameTime() + t
 			list = [];
