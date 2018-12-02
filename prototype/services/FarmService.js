@@ -291,8 +291,8 @@ define("robotTW2/services/FarmService", [
 						listaVil = listaVil.filter(f=>f.affiliation == "barbarian")
 						listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
 						listaVil = listaVil.filter(f=>Math.abs(Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75))) < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
-						listaVil = listaVil.filter(f=>f.points < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
-						listaVil = listaVil.filter(f=>f.points > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
+						listaVil = listaVil.filter(f=>f.points > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
+						listaVil = listaVil.filter(f=>f.points < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 						listaVil = listaVil.filter(f=>!lt_barbaras.find(g=>g==f.id))
 						listaVil = listaVil.filter(f=>!$rootScope.data_farm.list_exceptions.find(g=>g==f.id))
 						
