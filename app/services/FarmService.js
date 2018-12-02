@@ -354,7 +354,7 @@ define("robotTW2/services/FarmService", [
 			})
 		}
 		, clear = function(){
-			$rootScope.data_farm.clearBB();
+			
 
 			
 			
