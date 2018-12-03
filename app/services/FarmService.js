@@ -29,6 +29,7 @@ define("robotTW2/services/FarmService", [
 		, listener_resume = undefined
 		, countCommands = {}
 		, commands_for_send = []
+		, cicle = 0
 		, req = 0
 		, rdy = 0
 		, s = {}
@@ -264,14 +265,14 @@ define("robotTW2/services/FarmService", [
 					grid_queue.push([reg, cmd_preset, res])
 				} else {
 //					if(grid_queue.length){
-//						grid_queue.push([reg, cmd_preset, res])
-//						var t = grid_queue.shift();
-//						reg = t[0];
-//						cmd_preset = t[1];
-//						res = t[2];
-//						exec_promise_grid(reg, cmd_preset, res)
+//					grid_queue.push([reg, cmd_preset, res])
+//					var t = grid_queue.shift();
+//					reg = t[0];
+//					cmd_preset = t[1];
+//					res = t[2];
+//					exec_promise_grid(reg, cmd_preset, res)
 //					} else {
-						exec_promise_grid(reg, cmd_preset, res)
+					exec_promise_grid(reg, cmd_preset, res)
 //					}
 				}
 			})
@@ -294,7 +295,7 @@ define("robotTW2/services/FarmService", [
 						listaVil = listaVil.filter(f=>f.points < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 						listaVil = listaVil.filter(f=>!lt_barbaras.find(g=>g==f.id))
 						listaVil = listaVil.filter(f=>!$rootScope.data_farm.list_exceptions.find(g=>g==f.id))
-						
+
 						listaVil.sort(function (a, b) {
 							Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
 						});
@@ -344,23 +345,17 @@ define("robotTW2/services/FarmService", [
 					farm_queue.push(cmd_preset)
 				} else {
 //					if(farm_queue.length){
-//						farm_queue.push(cmd_preset);
-//						cmd_preset = farm_queue.shift();
-//						exec_promise(cmd_preset)
+//					farm_queue.push(cmd_preset);
+//					cmd_preset = farm_queue.shift();
+//					exec_promise(cmd_preset)
 //					} else {
-						exec_promise(cmd_preset)
+					exec_promise(cmd_preset)
 //					}
 				}
 			})
 		}
 		, clear = function(){
-			
 
-			
-			
-		
-	//		
-			
 			countCommands = {}
 			commands_for_send = []
 			req = 0
@@ -372,11 +367,12 @@ define("robotTW2/services/FarmService", [
 			farm_queue = []
 			grid_queue = []
 
-}
-
+		}
 		, execute_preset = function(tempo){
 			return $timeout(
 					function(){
+						console.log("ciclo " + cicle++);
+						console.log("data/hora " + new Date());
 						clear()
 						var commands_for_presets = []
 						var villages = modelDataService.getSelectedCharacter().getVillageList();
@@ -438,7 +434,7 @@ define("robotTW2/services/FarmService", [
 				isRunning = !0
 
 				$rootScope.data_villages.getAssignedPresets();
-				
+
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
 				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
@@ -487,7 +483,7 @@ define("robotTW2/services/FarmService", [
 			interval_init = null
 			timeoutIdFarm = {}
 			timeoutCommandFarm = {}
-	//		listener_change = undefined
+			//		listener_change = undefined
 			listener_resume = undefined
 			countCommands = {}
 			commands_for_send = []
