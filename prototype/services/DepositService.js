@@ -26,6 +26,7 @@ define("robotTW2/services/DepositService", [
 		, listener_job_collect = undefined
 		, listener_job_rerolled = undefined
 		, listener_job_collectible = undefined
+		, listener_job_started = undefined
 		, startJob = function(job) {
 			$rootScope.data_deposit.interval = job.duration
 			setList();
@@ -60,7 +61,6 @@ define("robotTW2/services/DepositService", [
 							if(currentJob){
 								$rootScope.data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
 								$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
-								wait();
 								res();
 							} else {
 								if (collectibleJobs()) {
@@ -82,27 +82,27 @@ define("robotTW2/services/DepositService", [
 											return
 										})
 									}
-									wait();
-									return
 								}
 							}
-						}	
+						}
+						wait()
 					}, 5000)
 				})
 				.then(function(){
 					promise = undefined
+					wait();
 				})
 			}
 
 		}
 		, setList = function(callback){
 			$rootScope.data_deposit.interval < conf.MIN_INTERVAL ? $rootScope.data_deposit.interval = conf.MIN_INTERVAL : $rootScope.data_deposit.interval
-			list.push($rootScope.data_deposit.interval)
-			list.push(conf.INTERVAL.DEPOSIT)
-			var t = Math.min.apply(null, list)
-			$rootScope.data_deposit.interval = t
-			$rootScope.data_deposit.complete = helper.gameTime() + t
-			list = [];
+					list.push($rootScope.data_deposit.interval)
+					list.push(conf.INTERVAL.DEPOSIT)
+					var t = Math.min.apply(null, list)
+					$rootScope.data_deposit.interval = t
+					$rootScope.data_deposit.complete = helper.gameTime() + t
+					list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
@@ -131,6 +131,9 @@ define("robotTW2/services/DepositService", [
 				!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;
 				!listener_job_rerolled ? listener_job_rerolled = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOBS_REROLLED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_rerolled;
 				!listener_job_collectible ? listener_job_collectible = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTIBLE, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collectible;
+				!listener_job_started ? listener_job_started = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_STARTED, function($event, data){
+					console.log(data)
+				}) : listener_job_started;
 				verify_deposit()
 
 
@@ -140,9 +143,11 @@ define("robotTW2/services/DepositService", [
 			typeof(listener_job_collect) == "function" ? listener_job_collect(): null;
 			typeof(listener_job_rerolled) == "function" ? listener_job_rerolled(): null;
 			typeof(listener_job_collectible) == "function" ? listener_job_collectible(): null;
+			typeof(listener_job_started) == "function" ? listener_job_started(): null;
 			listener_job_collect = undefined;
 			listener_job_rerolled = undefined;
 			listener_job_collectible = undefined;
+			listener_job_started = undefined;
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
 			$timeout.cancel(interval_deposit);
