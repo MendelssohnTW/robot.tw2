@@ -139,7 +139,7 @@ define("robotTW2/databases/data_villages", [
 			callback(false)
 			return;
 		} else {
-			services.socketService.emit(providers.routeProvider.GET_PRESETS, {});
+			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){console.log("teste")});
 			return services.$timeout(function(){
 				return db_villages.verifyVillages(villagesExtended, callback)
 			}, 5000)
