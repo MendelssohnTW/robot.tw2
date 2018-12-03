@@ -141,7 +141,7 @@ define("robotTW2/databases/data_villages", [
 					callback(true)
 					return m;
 				} else {
-					if(!data_villages.villages[v].buildingorder){
+					if(!data_villages.villages[m].buildingorder){
 						angular.extend(villagesExtended[m], {
 							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 							buildingorder 			: conf.BUILDINGORDER,
