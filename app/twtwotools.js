@@ -408,14 +408,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(["farm", "recruit"].includes(self.templateName)){
 				if(!arFn.fn.isInitialized()){return}
 			} else{
-			if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
-		}
+				if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
+			}
 		}
 		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
 //		!self.listener ? self.listener = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-//			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-//			self.recalcScrollbar()
-//			self.setCollapse()
+//		screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
+//		self.recalcScrollbar()
+//		self.setCollapse()
 //		}): null;
 		new Promise(function(res, rej){
 			var opt_loadCallback = function(data){
@@ -713,7 +713,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC			: 2.3
 					},
 					FARM_TIME		      	: h,
-				MIN_INTERVAL		      	: 3 * min,
+					MIN_INTERVAL	     	: 5 * min,
 					INTERVAL				: {
 						HEADQUARTER	: h,
 						RECRUIT		: h,

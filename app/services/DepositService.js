@@ -109,8 +109,9 @@ define("robotTW2/services/DepositService", [
 		}
 		, setList = function(callback){
 			console.log("setando intevalo")
-			list.push(conf.MIN_INTERVAL)
+			$rootScope.data_deposit.interval < conf.MIN_INTERVAL ? $rootScope.data_deposit.interval = conf.MIN_INTERVAL : $rootScope.data_deposit.interval
 			list.push($rootScope.data_deposit.interval)
+			list.push(conf.INTERVAL.DEPOSIT)
 			var t = Math.min.apply(null, list)
 			$rootScope.data_deposit.interval = t
 			$rootScope.data_deposit.complete = helper.gameTime() + t
