@@ -19,6 +19,8 @@ define("robotTW2/services/DepositService", [
 		var isInitialized = !1 
 		, isRunning = !1
 		, list = []
+		, promise = undefined
+		, deposit_queue = []
 		, interval_deposit = null
 		, interval_deposit_collect = null
 		, listener_job_collect = undefined
@@ -32,12 +34,12 @@ define("robotTW2/services/DepositService", [
 				job_id: job.id
 			})
 		}
-		, collectJob = function(job) {
+		, collectJob = function(job, callback) {
 			console.log("coletando job")
 			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_COLLECT, {
 				job_id: job.id,
 				village_id: modelDataService.getSelectedVillage().getId()
-			})
+			}, function(){callback})
 		}
 		, readyJobs = function (resourceDepositModel) {
 			console.log("verificando job disponivel para iniciar")
@@ -52,47 +54,58 @@ define("robotTW2/services/DepositService", [
 			return resourceDepositModel && resourceDepositModel.isAvailable() && !!resourceDepositModel.getCollectibleJobs()
 		}
 		, verify_deposit = function() {
-			console.log("verificando deposito")
-			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
-			$timeout(function(){
-				var resourceDepositModel = modelDataService.getSelectedCharacter().getResourceDeposit();
-				if (isRunning && resourceDepositModel != undefined && $rootScope.data_deposit.activated) {
-					console.log("verificando jobs")
-					var currentJob = resourceDepositModel.getCurrentJob();
-					if(currentJob){
-						console.log("existe job corrente")
-						$rootScope.data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
-						console.log("intervalo setado " + $rootScope.data_deposit.interval)
-						$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
-						wait();
-					} else {
-						console.log("não existe job corrente")
-						if (collectibleJobs()) {
-							console.log("existe job para coletar")
-							var job = resourceDepositModel.getCollectibleJobs().shift();
-							job ? collectJob(job) : null;
-						} else if (readyJobs()) {
-							console.log("não existe job para coletar, mas existe job pra iniciar")
-							var job = resourceDepositModel.getReadyJobs().shift();
-							job ? startJob(job) : null;
-						} else {
-							console.log("não existe job para coletar e nem job para iniciar")
-							var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
-							if (reroll && reroll.amount > 0 && $rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
-								socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
-									village_id: modelDataService.getSelectedVillage().getId(),
-									item_id: reroll.id
-								}, function(){
-									verify_deposit()
+			if(!promise){
+				promise = new Promise(function(res){
+					console.log("verificando deposito")
+					socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
+					$timeout(function(){
+						var resourceDepositModel = modelDataService.getSelectedCharacter().getResourceDeposit();
+						if (isRunning && resourceDepositModel != undefined && $rootScope.data_deposit.activated) {
+							console.log("verificando jobs")
+							var currentJob = resourceDepositModel.getCurrentJob();
+							if(currentJob){
+								console.log("existe job corrente")
+								$rootScope.data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
+								console.log("intervalo setado " + $rootScope.data_deposit.interval)
+								$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
+								wait();
+								res();
+							} else {
+								console.log("não existe job corrente")
+								if (collectibleJobs()) {
+									console.log("existe job para coletar")
+									var job = resourceDepositModel.getCollectibleJobs().shift();
+									job ? collectJob(job, function(){res()}) : null;
+								} else if (readyJobs()) {
+									console.log("não existe job para coletar, mas existe job pra iniciar")
+									var job = resourceDepositModel.getReadyJobs().shift();
+									job ? startJob(job) : null;
+									res();
+								} else {
+									console.log("não existe job para coletar e nem job para iniciar")
+									var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
+									if (reroll && reroll.amount > 0 && $rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
+										socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
+											village_id: modelDataService.getSelectedVillage().getId(),
+											item_id: reroll.id
+										}, function(){
+											res();
+											verify_deposit()
+											return
+										})
+									}
+									wait();
 									return
-								})
+								}
 							}
-							wait();
-							return
-						}
-					}
-				}	
-			}, 5000)
+						}	
+					}, 5000)
+				})
+				.then(function(){
+					promise = undefined
+				})
+			}
+
 		}
 		, setList = function(callback){
 			console.log("setando intevalo")
