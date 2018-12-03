@@ -1010,7 +1010,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				robotTW2.loadScript("/controllers/MainController.js");
 				return robotTW2.controllers;
 			}))	
-		}, "all_villages_ready")
+		}, ["all_villages_ready"])
 
 		$rootScope.$on("ready", function($event, type){
 			require(["robotTW2/conf"], function(conf){
