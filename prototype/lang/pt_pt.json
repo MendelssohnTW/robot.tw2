@@ -95,6 +95,7 @@
 	},
 	"recon": {
 		"title": "Reconhecimento de unidades",
+		"text_active": "Ativar renomeação",
 		"archer": "Arqueiro",
 		"doppelsoldner": "Berserker",
 		"axe": "Viking",
