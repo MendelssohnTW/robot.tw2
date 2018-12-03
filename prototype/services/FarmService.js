@@ -196,19 +196,17 @@ define("robotTW2/services/FarmService", [
 			console.log("unidade preset " + Object.keys(t_obj)[0] + " : " + Object.values(t_obj)[0])
 			!t_slice[village_id] ? t_slice[village_id] = 0 : t_slice[village_id];
 			console.log("tamanho da lista BB " + lt_bb.length)
-			console.log("cortando em " + $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght)
+			console.log("cortando em " + ($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght))
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			console.log("tamanho da lista BB " + lt_bb.length)
 			if(t_obj){
 				var e = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) - t_slice[village_id];
 //				 - t_slice[village_id]
 				console.log("comandos possiveis para unidade da preset " + e)
-				var f = lt_bb.length + aldeia_commands_lenght;
-				console.log("comandos total atual para a aldeia " + f)
-				var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - f;
+				var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 				console.log("comandos disponíveis para a aldeia " + d)
 				if(d > 0){
-					console.log("cortando em " + e - d)
+					console.log("cortando em " + (e - d))
 					t_slice[village_id] = e - d;
 					lt_bb.splice(d);
 					console.log("tamanho da lista BB " + lt_bb.length)
