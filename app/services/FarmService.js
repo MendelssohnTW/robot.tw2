@@ -370,8 +370,6 @@ define("robotTW2/services/FarmService", [
 		, execute_preset = function(tempo){
 			return $timeout(
 					function(){
-						console.log("ciclo " + cicle++);
-						console.log("data/hora " + new Date());
 						clear()
 						var commands_for_presets = []
 						var villages = modelDataService.getSelectedCharacter().getVillageList();
