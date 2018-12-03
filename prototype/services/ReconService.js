@@ -157,7 +157,7 @@ define("robotTW2/services/ReconService", [
 								if (unitText != undefined){
 									if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
 										return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
-									}).filter(f=>f!=undefined).length){
+									}).filter(f=>f!=undefined).length  && $rootScope.data_recon.active_rename){
 										getrenameCmdAtackRecon(command, unitText);
 									}
 								}

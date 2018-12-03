@@ -221,8 +221,7 @@ define("robotTW2/services/FarmService", [
 						console.log(params)
 						console.log("count command " + g + h++)
 						socketService.emit(providers.routeProvider.SEND_PRESET, params);
-
-					}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())) * g)
+					}, ($rootScope.data_farm.time_delay_farm * (g - 1)) + Math.round($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random()))
 					
 				})()
 			});

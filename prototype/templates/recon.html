@@ -20,7 +20,7 @@
 						<tr ng-repeat="(key, value) in data_recon.rename">
 							<td class="cell-right"><span>{{getKey(key)}}</span><span class="span-icon" ng-class="getClass(key)"></span></td>
 							<td>
-								<div id="switch" switch-slider="" border="true" enabled="true"
+								<div id="switch" switch-slider="" border="true" enabled="data_recon.active_rename"
 									value="value" vertical="false" size="'56x28'">
 									<div ng-class="{'box-border-dark box-filter': border}"
 										class="box-border-dark box-filter">
