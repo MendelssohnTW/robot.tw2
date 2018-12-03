@@ -29,7 +29,7 @@ define("robotTW2/services/FarmService", [
 		, listener_resume = undefined
 		, countCommands = {}
 		, commands_for_send = []
-		, t_slice = []
+		, t_slice = {}
 		, cicle = 0
 		, req = 0
 		, rdy = 0
@@ -374,7 +374,7 @@ define("robotTW2/services/FarmService", [
 			promise_grid = undefined
 			farm_queue = []
 			grid_queue = []
-			t_slice = []
+			t_slice = {}
 
 		}
 		, execute_preset = function(tempo){
@@ -508,7 +508,7 @@ define("robotTW2/services/FarmService", [
 			promise_grid = undefined
 			farm_queue = []
 			grid_queue = []
-			t_slice = []
+			t_slice = {}
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}
