@@ -201,7 +201,7 @@ define("robotTW2/services/FarmService", [
 			console.log("tamanho da lista BB " + lt_bb.length)
 			if(t_obj){
 				var e = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) - t_slice[village_id];
-//				 - t_slice[village_id]
+//				- t_slice[village_id]
 				console.log("comandos possiveis para unidade da preset " + e)
 				var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 				console.log("comandos disponíveis para a aldeia " + d)
@@ -227,7 +227,9 @@ define("robotTW2/services/FarmService", [
 								type: "attack"
 						}
 						requestFn.trigger("Farm/sendCmd")
-						socketService.emit(providers.routeProvider.SEND_PRESET, params);
+						socketService.emit(providers.routeProvider.SEND_PRESET, params, function(data){
+							console.log(data)
+						});
 
 					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * g);
 				})()
@@ -388,7 +390,7 @@ define("robotTW2/services/FarmService", [
 
 		}
 		, execute_preset = function(tempo){
-			
+
 			return $timeout(
 					function(){
 						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
