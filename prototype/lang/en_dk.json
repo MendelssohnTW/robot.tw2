@@ -41,6 +41,8 @@
 		"settings": "Global settings",
 		"settings_for_villages": "Settings per village",
 		"init_standard": "Automatic startup",
+		"seq_int": "Integral sequence",
+		"seq_flex": "Flexible Sequence",
 		"headquarter": "Main building",
 		"text_interval_headquarter": "Next cycle in",
 		"text_executebuildingorder": "Enable / Disable barrack automation",

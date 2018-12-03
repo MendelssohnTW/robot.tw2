@@ -41,6 +41,8 @@
 		"settings": "Configuração global",
 		"settings_for_villages": "Configurações por aldeia",
 		"init_standard": "Inicialização automática",
+		"seq_int": "Sequência íntegra",
+		"seq_flex": "Sequência flexível",
 		"headquarter": "Edificio principal",
 		"text_interval_headquarter": "Próximo ciclo em ",
 		"text_executebuildingorder": "Ativar/Desativar automatização do quartel",
