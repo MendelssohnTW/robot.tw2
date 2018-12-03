@@ -60,7 +60,7 @@
 						</colgroup>
 						<tr>
 							<td class="cell-space"></td>
-							<td class="cell-space">
+							<td class="cell-space cell-top">
 								<h5 class="twx-section collapse">{{priority}}</h5>
 								<div>
 									<table class="tbl-border-light tbl-striped" id="preset-list">
@@ -97,7 +97,7 @@
 								</div>
 							</td>
 							<td class="cell-right"></td>
-							<td class="cell-right">
+							<td class="cell-right  cell-top">
 								<h5 class="twx-section collapse">{{levels}}</h5>
 								<div>
 									<table class="tbl-border-light tbl-striped" id="preset-list">
@@ -142,9 +142,10 @@
 										({{vill.data.x}}|{{vill.data.y}})</span></td>
 								<td class="cell-top">
 									<div class="checkbox box-border-dark">
-										<div switch-slider="" border="true" enabled="true"
+										<div tooltip tooltip-content="{{text_executebuildingorder}}"
+											switch-slider="" border="true" enabled="true"
 											value="vill.executebuildingorder" vertical="false"
-											size="'56x28'" ng-model="vill.executebuildingorder">
+											size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"

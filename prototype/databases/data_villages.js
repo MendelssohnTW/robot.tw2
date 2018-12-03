@@ -55,14 +55,14 @@ define("robotTW2/databases/data_villages", [
 		if(!Object.keys(presets_d).length) {return}
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 		Object.keys(presets_d).forEach(function (pst) {
-			
+			if(!data_villages.villages[v].presets){data_villages.villages[v].presets = {}}
 			Object.keys(data_villages.villages[v].presets).map(function (id) {
 				if(!Object.keys(presets_d).find(f => f == id)) {
 					delete data_villages.villages[v].presets[id]
 				}
 			})
 			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst)) {
-				if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
+				if(!data_villages.villages[v].presets[pst]){
 					angular.extend(presets_d[pst], {
 						load					: true,
 						max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
@@ -74,11 +74,24 @@ define("robotTW2/databases/data_villages", [
 						quadrants				: [1, 2, 3, 4],
 						max_commands_farm		: conf.MAX_COMMANDS_FARM
 					});
-				}	
-				data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
+				} 
 			} else {
-				angular.merge(data_villages.villages[v].presets[pst], presets_d[pst])
+				if(!data_villages.villages[v].presets[pst].load){
+					angular.extend(presets_d[pst], {
+						load					: true,
+						max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
+						min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
+						max_journey_time		: conf.MAX_JOURNEY_TIME,
+						min_journey_time		: conf.MIN_JOURNEY_TIME,
+						max_points_farm			: conf.MAX_POINTS_FARM,
+						min_points_farm			: conf.MIN_POINTS_FARM,
+						quadrants				: [1, 2, 3, 4],
+						max_commands_farm		: conf.MAX_COMMANDS_FARM
+					});
+				}
 			}
+//			data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
+			angular.extend(data_villages.villages[v].presets[pst], presets_d[pst])
 		});
 		return data_villages.villages[v].presets;
 	}
@@ -129,11 +142,23 @@ define("robotTW2/databases/data_villages", [
 					callback(true)
 					return m;
 				} else {
-					angular.merge(villagesExtended[m], {
-						farm_activate 			: true,
-						presets					: getPst(m)
-					})
-					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
+					if(!data_villages.villages[m].buildingorder){
+						angular.extend(villagesExtended[m], {
+							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
+							buildingorder 			: conf.BUILDINGORDER,
+							buildinglimit 			: conf.BUILDINGLIMIT,
+							buildinglevels 			: conf.BUILDINGLEVELS,
+							farm_activate 			: true,
+							presets					: getPst(m)
+						})
+						data_villages.villages[m] = angular.extend({}, villagesExtended[m])
+					} else {
+						angular.merge(villagesExtended[m], {
+							farm_activate 			: true,
+							presets					: getPst(m)
+						})
+						angular.extend(data_villages.villages[m], villagesExtended[m])
+					}
 					callback(true)
 					return m;
 				}
@@ -141,10 +166,10 @@ define("robotTW2/databases/data_villages", [
 			callback(false)
 			return;
 		} else {
-			services.socketService.emit(providers.routeProvider.GET_PRESETS, {});
-			return services.$timeout(function(){
-				return db_villages.verifyVillages(villagesExtended, callback)
-			}, 5000)
+			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){return db_villages.verifyVillages(villagesExtended, callback)});
+//			return services.$timeout(function(){
+//			return db_villages.verifyVillages(villagesExtended, callback)
+//			}, 5000)
 		}
 	}
 

@@ -21,27 +21,6 @@ define("robotTW2/databases/data_defense", [
 		return database.get("data_defense")
 	}
 
-//	db_defense.getTimeCicle = function(){
-//	return database.get("data_defense").interval
-//	}
-
-//	db_defense.setTimeCicle = function(timecicle){
-//	if(timecicle){
-//	var data = database.get("data_defense")
-//	data.interval = timecicle
-//	database.set("data_defense", data, true)
-//	}
-//	}
-
-//	db_defense.setTimeComplete = function(time){
-//	if(time){
-//	var data = database.get("data_defense")
-//	data.completed_at = time
-//	database.set("data_defense", data, true)
-//	}
-//	}
-
-
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,

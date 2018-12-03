@@ -19,6 +19,8 @@ define("robotTW2/services/DepositService", [
 		var isInitialized = !1 
 		, isRunning = !1
 		, list = []
+		, promise = undefined
+		, deposit_queue = []
 		, interval_deposit = null
 		, interval_deposit_collect = null
 		, listener_job_collect = undefined
@@ -31,11 +33,11 @@ define("robotTW2/services/DepositService", [
 				job_id: job.id
 			})
 		}
-		, collectJob = function(job) {
+		, collectJob = function(job, callback) {
 			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_COLLECT, {
 				job_id: job.id,
 				village_id: modelDataService.getSelectedVillage().getId()
-			})
+			}, function(){callback})
 		}
 		, readyJobs = function (resourceDepositModel) {
 			var resourceDepositModel = modelDataService.getSelectedCharacter().getResourceDeposit();
@@ -48,45 +50,56 @@ define("robotTW2/services/DepositService", [
 			return resourceDepositModel && resourceDepositModel.isAvailable() && !!resourceDepositModel.getCollectibleJobs()
 		}
 		, verify_deposit = function() {
-			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
-			$timeout(function(){
-				var resourceDepositModel = modelDataService.getSelectedCharacter().getResourceDeposit();
-				if (isRunning && resourceDepositModel != undefined && $rootScope.data_deposit.activated) {
-					var currentJob = resourceDepositModel.getCurrentJob();
-					if(currentJob){
-						$rootScope.data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
-						$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
-						wait();
-					} else {
-						if (collectibleJobs()) {
-							var job = resourceDepositModel.getCollectibleJobs().shift();
-							job ? collectJob(job) : null;
-						} else if (readyJobs()) {
-							var job = resourceDepositModel.getReadyJobs().shift();
-							job ? startJob(job) : null;
-						} else {
-							var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
-							if (reroll && reroll.amount > 0 && $rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
-								socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
-									village_id: modelDataService.getSelectedVillage().getId(),
-									item_id: reroll.id
-								}, function(){
-									verify_deposit()
+			if(!promise){
+				promise = new Promise(function(res){
+					socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_OPEN);
+					$timeout(function(){
+						var resourceDepositModel = modelDataService.getSelectedCharacter().getResourceDeposit();
+						if (isRunning && resourceDepositModel != undefined && $rootScope.data_deposit.activated) {
+							var currentJob = resourceDepositModel.getCurrentJob();
+							if(currentJob){
+								$rootScope.data_deposit.interval = currentJob.model.completedAt - helper.gameTime()
+								$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT)
+								wait();
+								res();
+							} else {
+								if (collectibleJobs()) {
+									var job = resourceDepositModel.getCollectibleJobs().shift();
+									job ? collectJob(job, function(){res()}) : null;
+								} else if (readyJobs()) {
+									var job = resourceDepositModel.getReadyJobs().shift();
+									job ? startJob(job) : null;
+									res();
+								} else {
+									var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
+									if (reroll && reroll.amount > 0 && $rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
+										socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
+											village_id: modelDataService.getSelectedVillage().getId(),
+											item_id: reroll.id
+										}, function(){
+											res();
+											verify_deposit()
+											return
+										})
+									}
+									wait();
 									return
-								})
+								}
 							}
-							wait();
-							return
-						}
-					}
-				}	
-			}, 5000)
+						}	
+					}, 5000)
+				})
+				.then(function(){
+					promise = undefined
+				})
+			}
+
 		}
 		, setList = function(callback){
+			$rootScope.data_deposit.interval < conf.MIN_INTERVAL ? $rootScope.data_deposit.interval = conf.MIN_INTERVAL : $rootScope.data_deposit.interval
+			list.push($rootScope.data_deposit.interval)
 			list.push(conf.INTERVAL.DEPOSIT)
-			$rootScope.data_deposit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_deposit.interval)
 			var t = Math.min.apply(null, list)
-			t < 3000 ? t = 3000 : t;
 			$rootScope.data_deposit.interval = t
 			$rootScope.data_deposit.complete = helper.gameTime() + t
 			list = [];

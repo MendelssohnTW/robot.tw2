@@ -43,6 +43,7 @@
 		"init_standard": "Automatic startup",
 		"headquarter": "Main building",
 		"text_interval_headquarter": "Next cycle in",
+		"text_executebuildingorder": "Enable / Disable barrack automation",
 		"text_reserva_food": "Reserve of provisions",
 		"text_reserva_slots": "Number of slots",
 		"text_reserva_wood": "Reserve of wood",

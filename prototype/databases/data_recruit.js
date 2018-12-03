@@ -29,27 +29,6 @@ define("robotTW2/databases/data_recruit", [
 		db_recruit.GroupsCount = Object.keys(services.groupService.getGroups()).length
 	}
 
-//	db_recruit.getTimeCicle = function(){
-//		return database.get("data_recruit").interval
-//	}
-//
-//	db_recruit.setTimeCicle = function(timecicle){
-//		if(timecicle){
-//			var data = database.get("data_recruit")
-//			data.interval = timecicle
-//			database.set("data_recruit", data, true)
-//		}
-//	}
-//
-//	db_recruit.setTimeComplete = function(time){
-//		if(time){
-//			var data = database.get("data_recruit")
-//			data.completed_at = time
-//			database.set("data_recruit", data, true)
-//		}
-//	}
-
-	
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,

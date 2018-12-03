@@ -20,27 +20,6 @@ define("robotTW2/databases/data_medic", [
 		return database.get("data_medic")
 	}
 
-//	db_medic.getTimeCicle = function(){
-//		return database.get("data_medic").interval
-//	}
-//
-//	db_medic.setTimeCicle = function(timecicle){
-//		if(timecicle){
-//			var data = database.get("data_medic")
-//			data.interval = timecicle
-//			database.set("data_medic", data, true)
-//		}
-//	}
-//
-//	db_medic.setTimeComplete = function(time){
-//		if(time){
-//			var data = database.get("data_medic")
-//			data.completed_at = time
-//			database.set("data_medic", data, true)
-//		}
-//	}
-
-	
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,

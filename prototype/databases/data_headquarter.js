@@ -20,27 +20,6 @@ define("robotTW2/databases/data_headquarter", [
 		return database.get("data_headquarter")
 	}
 
-//	db_headquarter.getTimeCicle = function(){
-//		return database.get("data_headquarter").interval
-//	}
-//
-//	db_headquarter.setTimeCicle = function(timecicle){
-//		if(timecicle){
-//			var data = database.get("data_headquarter")
-//			data.interval = timecicle
-//			database.set("data_headquarter", data, true)
-//		}
-//	}
-//
-//	db_headquarter.setTimeComplete = function(time){
-//		if(time){
-//			var data = database.get("data_headquarter")
-//			data.completed_at = time
-//			database.set("data_headquarter", data, true)
-//		}
-//	}
-
-
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,
