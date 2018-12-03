@@ -25,8 +25,6 @@ define("robotTW2/controllers/DepositController", [
 			if($rootScope.data_deposit.complete > helper.gameTime()){
 				return helper.readableMilliseconds($rootScope.data_deposit.complete - helper.gameTime())
 			} else {
-				services.DepositService.stop();
-				services.DepositService.start();
 				return helper.readableMilliseconds(conf.MIN_INTERVAL)
 			}
 		}
