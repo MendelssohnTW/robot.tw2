@@ -72,11 +72,11 @@ define("robotTW2/services/DepositService", [
 							var job = resourceDepositModel.getCollectibleJobs().shift();
 							job ? collectJob(job) : null;
 						} else if (readyJobs()) {
-							console.log("não existe existe job para coletar, mas existe job pra iniciar")
+							console.log("não existe job para coletar, mas existe job pra iniciar")
 							var job = resourceDepositModel.getReadyJobs().shift();
 							job ? startJob(job) : null;
 						} else {
-							console.log("existe job para coletar e nem job para iniciar")
+							console.log("não existe job para coletar e nem job para iniciar")
 							var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
 							if (reroll && reroll.amount > 0 && $rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
 								socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
@@ -95,9 +95,9 @@ define("robotTW2/services/DepositService", [
 			}, 5000)
 		}
 		, setList = function(callback){
-			console.log("stando intevalo")
-			list.push(conf.INTERVAL.DEPOSIT)
-			$rootScope.data_deposit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_deposit.interval)
+			console.log("setando intevalo")
+			list.push(conf.MIN_INTERVAL)
+			list.push($rootScope.data_deposit.interval)
 			var t = Math.min.apply(null, list)
 			$rootScope.data_deposit.interval = t
 			$rootScope.data_deposit.complete = helper.gameTime() + t
