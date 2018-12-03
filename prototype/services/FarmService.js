@@ -209,6 +209,7 @@ define("robotTW2/services/FarmService", [
 			lt_bb.forEach(function (barbara) {
 				g++;
 				timeoutCommandFarm[g] = (function(){
+					var h = 0;
 					return $timeout(function () {
 						var params =  {
 								start_village: village_id,
@@ -218,7 +219,7 @@ define("robotTW2/services/FarmService", [
 						}
 						requestFn.trigger("Farm/sendCmd")
 						console.log(params)
-						console.log("count command " + g)
+						console.log("count command " + g + h++)
 						socketService.emit(providers.routeProvider.SEND_PRESET, params);
 
 					}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())) * g)
