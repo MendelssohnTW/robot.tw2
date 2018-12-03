@@ -156,7 +156,7 @@ define("robotTW2/databases/data_villages", [
 							farm_activate 			: true,
 							presets					: getPst(m)
 						})
-						data_villages.villages[m] = angular.merge({}, villagesExtended[m])
+						angular.extend(data_villages.villages[m], villagesExtended[m])
 					}
 					callback(true)
 					return m;
