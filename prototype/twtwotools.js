@@ -958,7 +958,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			], function(
 					firework
 			) {
-			return function(message){
+			return function(message, opt){
 				var $scope = robotTW2.loadController("NotificationController")
 				, promise
 				, that = this
@@ -1011,7 +1011,12 @@ var robotTW2 = window.robotTW2 = undefined;
 					});
 				}
 
-				return display(robotTW2.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));
+				if(opt){
+					return display(message);
+				} else {
+					return display(robotTW2.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));	
+				}
+				
 			}
 		})
 
@@ -1248,7 +1253,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									}
 							)
 							require(["robotTW2/notify"], function(notify){
-								notify("init_ready")
+								notify("RobotTW2", true)
 							})
 						}, 3000)
 					})
