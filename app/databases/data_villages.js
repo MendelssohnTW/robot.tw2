@@ -90,7 +90,8 @@ define("robotTW2/databases/data_villages", [
 					});
 				}
 			}
-			data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
+//			data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
+			angular.extend(data_villages.villages[v].presets[pst], presets_d[pst])
 		});
 		return data_villages.villages[v].presets;
 	}
