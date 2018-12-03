@@ -224,7 +224,7 @@ define("robotTW2/services/HeadquarterService", [
 							next()
 						} else {
 							isUpgradeable(village, buildLevel, function(success, data) {
-								if(data_headquarter.seq){return};
+								if($rootScope.data_headquarter.seq){return};
 								if (success) {
 									++buildAmounts;
 								} else if(data == "instant"){
