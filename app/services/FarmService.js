@@ -283,7 +283,6 @@ define("robotTW2/services/FarmService", [
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 					var lt_barbaras = []
 					if (data != undefined && data.villages != undefined && data.villages.length > 0) {
-						var i = Math.round(Math.random() * 10);
 						var listaVil = angular.copy(data.villages);
 						var x2 = cmd_preset.x;
 						var y2 = cmd_preset.y;
@@ -446,7 +445,7 @@ define("robotTW2/services/FarmService", [
 						if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
 							for (i = 0; i < qtd_ciclo; i++) {
 								var t = $rootScope.data_farm.farm_time * i;
-								var tempo = Math.round(t + ((t / 2) * Math.random()));
+								var tempo = Math.round((t / 2) + (t * Math.random()));
 								timeoutIdFarm[i] = execute_preset(tempo)
 							}
 						}
