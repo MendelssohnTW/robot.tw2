@@ -216,9 +216,7 @@ define("robotTW2/services/FarmService", [
 								type: "attack"
 						}
 						requestFn.trigger("Farm/sendCmd")
-						socketService.emit(providers.routeProvider.SEND_PRESET, params, function(data){
-							console.log(data)
-						});
+						socketService.emit(providers.routeProvider.SEND_PRESET, params);
 
 					}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())) * g)
 					
