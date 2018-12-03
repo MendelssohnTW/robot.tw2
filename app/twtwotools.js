@@ -1000,14 +1000,17 @@ var robotTW2 = window.robotTW2 = undefined;
 				return display(robotTW2.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));
 			}
 		})
-		require(["robotTW2/services"]);
-		require(["robotTW2/databases"]);
-		require(["robotTW2/controllers"]);
 
-		angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
-			robotTW2.loadScript("/controllers/MainController.js");
-			return robotTW2.controllers;
-		}))
+		robotTW2.ready(function(){
+			require(["robotTW2/services"]);
+			require(["robotTW2/databases"]);
+			require(["robotTW2/controllers"]);
+
+			angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
+				robotTW2.loadScript("/controllers/MainController.js");
+				return robotTW2.controllers;
+			}))	
+		}, "all_villages_ready")
 
 		$rootScope.$on("ready", function($event, type){
 			require(["robotTW2/conf"], function(conf){
@@ -1082,7 +1085,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 				}
 				case robotTW2.controllers.SpyController : {
-					robotTW2.createScopeLang("spy", function(){
+					robotTW2.createScopeLang("spy", function(scopeLang){
 						var params = {
 								controller		: robotTW2.controllers.SpyController,
 								scopeLang 		: scopeLang,
