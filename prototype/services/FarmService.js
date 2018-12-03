@@ -205,10 +205,11 @@ define("robotTW2/services/FarmService", [
 				console.log("comandos possiveis para unidade da preset " + e)
 				var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 				console.log("comandos disponíveis para a aldeia " + d)
-				if(d > 0){
-					console.log("cortando em " + (e - d))
-					t_slice[village_id] = e - d;
-					lt_bb.splice(d);
+				var s = Math.min(d, e)
+				if(s > 0){
+					console.log("cortando em " + s)
+					t_slice[village_id] = e - s;
+					lt_bb.splice(s);
 					console.log("tamanho da lista BB " + lt_bb.length)
 				} else {
 					t_slice[village_id] = 0;
