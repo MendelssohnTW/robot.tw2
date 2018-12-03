@@ -194,7 +194,7 @@ define("robotTW2/services/FarmService", [
 			, t_obj = units_analyze(preset_units, aldeia_units);
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(t_obj){
-				!t_slice[village_id] ? t_slice[village_id] = Math.trunc((aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) - 1) : t_slice[village_id];
+				!t_slice[village_id] ? t_slice[village_id] = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) : t_slice[village_id];
 				var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 				var s = Math.min(d, t_slice[village_id])
 				if(s > 0){
@@ -205,9 +205,11 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
+			console.log("count command village" + village.data.name + " id " + village_id + " length " + lt_bb.length)
 			lt_bb.forEach(function (barbara) {
 				g++;
 				timeoutCommandFarm[g] = (function(){
+					var h = 0;
 					return $timeout(function () {
 						var params =  {
 								start_village: village_id,
@@ -216,9 +218,10 @@ define("robotTW2/services/FarmService", [
 								type: "attack"
 						}
 						requestFn.trigger("Farm/sendCmd")
+						console.log(params)
+						console.log("count command " + g + h++)
 						socketService.emit(providers.routeProvider.SEND_PRESET, params);
-
-					}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())) * g)
+					}, ($rootScope.data_farm.time_delay_farm * (g - 1)) + Math.round($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random()))
 					
 				})()
 			});

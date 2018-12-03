@@ -29,7 +29,8 @@ define("robotTW2/databases/data_recon", [
 			activated 				: false,
 			hotkey					: conf.HOTKEY.RECON,
 			version					: conf.VERSION.RECON,
-			rename		 			: unitTypesRenameRecon
+			rename		 			: unitTypesRenameRecon,
+			active_rename			: false
 	}
 
 	if(!data_recon){

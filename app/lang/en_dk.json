@@ -41,6 +41,9 @@
 		"settings": "Global settings",
 		"settings_for_villages": "Settings per village",
 		"init_standard": "Automatic startup",
+		"seq_int": "Integral sequence",
+		"seq_flex": "Flexible Sequence",
+		"text_seq": "Flexible sequence is defined sequence to raise buildings according to the availability of resources. Integral sequence is the sequence that raises buildings as levels move to the next building only when it reaches the set maximum level",
 		"headquarter": "Main building",
 		"text_interval_headquarter": "Next cycle in",
 		"text_executebuildingorder": "Enable / Disable barrack automation",
@@ -92,6 +95,7 @@
 	},
 	"recon": {
 		"title": "Unit recognition",
+		"text_active": "Enable renaming",
 		"archer": "archer",
 		"doppelsoldner": "Berserker",
 		"ax": "Viking",
