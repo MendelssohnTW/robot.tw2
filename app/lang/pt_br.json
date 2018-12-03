@@ -43,6 +43,7 @@
 		"init_standard": "Inicialização automática",
 		"headquarter": "Edificio principal",
 		"text_interval_headquarter": "Próximo ciclo em ",
+		"text_executebuildingorder": "Ativar/Desativar automatização do quartel",
 		"text_reserva_food": "Reserva de provisões",
 		"text_reserva_slots": "Quantidade de slots",
 		"text_reserva_wood": "Reserva de madeira",

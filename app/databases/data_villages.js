@@ -141,10 +141,21 @@ define("robotTW2/databases/data_villages", [
 					callback(true)
 					return m;
 				} else {
-					angular.merge(villagesExtended[m], {
-						farm_activate 			: true,
-						presets					: getPst(m)
-					})
+					if(!data_villages.villages[v].buildingorder){
+						angular.extend(villagesExtended[m], {
+							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
+							buildingorder 			: conf.BUILDINGORDER,
+							buildinglimit 			: conf.BUILDINGLIMIT,
+							buildinglevels 			: conf.BUILDINGLEVELS,
+							farm_activate 			: true,
+							presets					: getPst(m)
+						})
+					} else {
+						angular.merge(villagesExtended[m], {
+							farm_activate 			: true,
+							presets					: getPst(m)
+						})
+					}
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
 					return m;
@@ -155,7 +166,7 @@ define("robotTW2/databases/data_villages", [
 		} else {
 			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){return db_villages.verifyVillages(villagesExtended, callback)});
 //			return services.$timeout(function(){
-//				return db_villages.verifyVillages(villagesExtended, callback)
+//			return db_villages.verifyVillages(villagesExtended, callback)
 //			}, 5000)
 		}
 	}
