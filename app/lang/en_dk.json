@@ -110,7 +110,7 @@
 	"farm": {
 		"title": "Collection of resources",
 		"wait_init": "Waiting for the start of the Farm cycle",
-		"farm_init": "Farm Cycle started",
+		"farm_init": "New Farm Cycle started",
 		"farm_no_init": "Farm cycle not started. Farm termination less than minimum cycle time",
 		"farm_running": "Current farm processing state",
 		"time_max": "Maximum time",
@@ -175,6 +175,7 @@
 	},
 	"notify": {
 		"title": "News",
+		"init_ready": "Robot TW2 - Loaded",
 		"data_main": "Robot TW2 - Database (MAIN) updated",
 		"data_alert": "Robot TW2 - Database (ALERT) updated",
 		"data_recon": "Robot TW2 - Database (RECON) updated, reactivate the RECON module",
