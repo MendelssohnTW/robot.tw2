@@ -75,10 +75,8 @@ define("robotTW2/databases/data_villages", [
 						max_commands_farm		: conf.MAX_COMMANDS_FARM
 					});
 				}	
-				data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
-			} else {
-				angular.merge(data_villages.villages[v].presets[pst], presets_d[pst])
 			}
+			data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
 		});
 		return data_villages.villages[v].presets;
 	}
@@ -181,7 +179,7 @@ define("robotTW2/databases/data_villages", [
 			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
 		})	
 	}
-
+	
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
