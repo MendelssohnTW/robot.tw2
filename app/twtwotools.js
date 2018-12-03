@@ -175,7 +175,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, createScopeLang = function(module, callback){
 		var scope = {};
 		var jsont = window.getTextObject(module);
-		if(!jsont) calback(scope);
+		if(!jsont) callback(scope);
 		Object.keys(jsont).map(function(elem, index, array){
 			if(typeof(jsont[elem]) == "string") {
 				Object.keys(jsont).map(function(e, i, a){
@@ -183,7 +183,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				})
 			}
 		})
-		calback(scope)
+		callback(scope)
 	}
 	, register = function(type, name, value){
 		switch (type){
