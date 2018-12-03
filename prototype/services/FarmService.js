@@ -29,6 +29,7 @@ define("robotTW2/services/FarmService", [
 		, listener_resume = undefined
 		, countCommands = {}
 		, commands_for_send = []
+		, t_slice = []
 		, cicle = 0
 		, req = 0
 		, rdy = 0
@@ -191,10 +192,18 @@ define("robotTW2/services/FarmService", [
 			, preset_units = cmd_preset.preset_units
 			, aldeia_commands_lenght = countCommands[village_id].length
 			, t_obj = units_analyze(preset_units, aldeia_units);
+			!t_slice[village_id] ? t_slice[village_id] = 0 : t_slice[village_id];
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(t_obj){
-				var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
-				lt_bb.splice(t_slice);
+				var e = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
+				var f = t_bb.length + e - t_slice[village_id];
+				var d = f - $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm;
+				if(d > 0){
+					t_slice[village_id] = d;
+					lt_bb.splice(e);
+				} else {
+					t_slice[village_id] = 0;
+				}
 			}
 			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
 			lt_bb.forEach(function (barbara) {
@@ -365,6 +374,7 @@ define("robotTW2/services/FarmService", [
 			promise_grid = undefined
 			farm_queue = []
 			grid_queue = []
+			t_slice = []
 
 		}
 		, execute_preset = function(tempo){
@@ -498,6 +508,7 @@ define("robotTW2/services/FarmService", [
 			promise_grid = undefined
 			farm_queue = []
 			grid_queue = []
+			t_slice = []
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}
