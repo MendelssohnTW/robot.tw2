@@ -62,7 +62,7 @@ define("robotTW2/databases/data_villages", [
 				}
 			})
 			if(!Object.keys(data_villages.villages[v].presets).find(f => f == pst)) {
-				if(!data_villages.villages[v].presets[pst] || data_villages.villages[v].presets[pst].load){
+				if(!data_villages.villages[v].presets[pst]){
 					angular.extend(presets_d[pst], {
 						load					: true,
 						max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
@@ -74,20 +74,20 @@ define("robotTW2/databases/data_villages", [
 						quadrants				: [1, 2, 3, 4],
 						max_commands_farm		: conf.MAX_COMMANDS_FARM
 					});
-				} else {
-					if(!data_villages.villages[v].presets[pst].load){
-						angular.extend(presets_d[pst], {
-							load					: true,
-							max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
-							min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
-							max_journey_time		: conf.MAX_JOURNEY_TIME,
-							min_journey_time		: conf.MIN_JOURNEY_TIME,
-							max_points_farm			: conf.MAX_POINTS_FARM,
-							min_points_farm			: conf.MIN_POINTS_FARM,
-							quadrants				: [1, 2, 3, 4],
-							max_commands_farm		: conf.MAX_COMMANDS_FARM
-						});
-					}
+				} 
+			} else {
+				if(!data_villages.villages[v].presets[pst].load){
+					angular.extend(presets_d[pst], {
+						load					: true,
+						max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
+						min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
+						max_journey_time		: conf.MAX_JOURNEY_TIME,
+						min_journey_time		: conf.MIN_JOURNEY_TIME,
+						max_points_farm			: conf.MAX_POINTS_FARM,
+						min_points_farm			: conf.MIN_POINTS_FARM,
+						quadrants				: [1, 2, 3, 4],
+						max_commands_farm		: conf.MAX_COMMANDS_FARM
+					});
 				}
 			}
 			data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
@@ -153,10 +153,10 @@ define("robotTW2/databases/data_villages", [
 			callback(false)
 			return;
 		} else {
-			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){console.log("teste")});
-			return services.$timeout(function(){
-				return db_villages.verifyVillages(villagesExtended, callback)
-			}, 5000)
+			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){return db_villages.verifyVillages(villagesExtended, callback)});
+//			return services.$timeout(function(){
+//				return db_villages.verifyVillages(villagesExtended, callback)
+//			}, 5000)
 		}
 	}
 
