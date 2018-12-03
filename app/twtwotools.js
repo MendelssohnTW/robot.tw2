@@ -172,10 +172,10 @@ var robotTW2 = window.robotTW2 = undefined;
 	, loadController = function(controller){
 		return window[controller] || getScope($('[ng-controller=' + controller + ']'));
 	}
-	, createScopeLang = function(module){
+	, createScopeLang = function(module, callback){
 		var scope = {};
 		var jsont = window.getTextObject(module);
-		if(!jsont) return scope;
+		if(!jsont) calback(scope);
 		Object.keys(jsont).map(function(elem, index, array){
 			if(typeof(jsont[elem]) == "string") {
 				Object.keys(jsont).map(function(e, i, a){
@@ -183,7 +183,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				})
 			}
 		})
-		return scope
+		calback(scope)
 	}
 	, register = function(type, name, value){
 		switch (type){
@@ -1022,184 +1022,210 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 				case robotTW2.controllers.AlertController : {
-					var params = {
-							controller		: robotTW2.controllers.AlertController,
-							scopeLang 		: robotTW2.createScopeLang("alert"),
-							hotkey 			: conf.HOTKEY.ALERT,
-							templateName 	: "alert",
-							classes 		: "",
-							url		 		: "/controllers/AlertController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("alert", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.AlertController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.ALERT,
+								templateName 	: "alert",
+								classes 		: "",
+								url		 		: "/controllers/AlertController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 				}
 				case robotTW2.controllers.RecruitController : {
-					var params = {
-							controller		: robotTW2.controllers.RecruitController,
-							scopeLang 		: robotTW2.createScopeLang("recruit"),
-							hotkey 			: conf.HOTKEY.RECRUIT,
-							templateName 	: "recruit",
-							classes 		: "fullsize",
-							url		 		: "/controllers/RecruitController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("recruit", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.RecruitController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.RECRUIT,
+								templateName 	: "recruit",
+								classes 		: "fullsize",
+								url		 		: "/controllers/RecruitController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 				}
 				case robotTW2.controllers.HeadquarterController : {
-					var params = {
-							controller		: robotTW2.controllers.HeadquarterController,
-							scopeLang 		: robotTW2.createScopeLang("headquarter"),
-							hotkey 			: conf.HOTKEY.HEADQUARTER,
-							templateName 	: "headquarter",
-							classes 		: "fullsize",
-							url		 		: "/controllers/HeadquarterController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("headquarter", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.HeadquarterController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.HEADQUARTER,
+								templateName 	: "headquarter",
+								classes 		: "fullsize",
+								url		 		: "/controllers/HeadquarterController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 				}
 				case robotTW2.controllers.MedicController : {
-					var params = {
-							controller		: robotTW2.controllers.MedicController,
-							scopeLang 		: robotTW2.createScopeLang("medic"),
-							hotkey 			: conf.HOTKEY.MEDIC,
-							templateName 	: "medic",
-							classes 		: "",
-							url		 		: "/controllers/MedicController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("medic", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.MedicController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.MEDIC,
+								templateName 	: "medic",
+								classes 		: "",
+								url		 		: "/controllers/MedicController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 				}
 				case robotTW2.controllers.SpyController : {
-					var params = {
-							controller		: robotTW2.controllers.SpyController,
-							scopeLang 		: robotTW2.createScopeLang("spy"),
-							hotkey 			: conf.HOTKEY.SPY,
-							templateName 	: "spy",
-							classes 		: "",
-							url		 		: "/controllers/SpyController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("spy", function(){
+						var params = {
+								controller		: robotTW2.controllers.SpyController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.SPY,
+								templateName 	: "spy",
+								classes 		: "",
+								url		 		: "/controllers/SpyController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 				}
 				case robotTW2.controllers.FarmController : {
-					var params = {
-							controller		: robotTW2.controllers.FarmController,
-							scopeLang 		: robotTW2.createScopeLang("farm"),
-							hotkey 			: conf.HOTKEY.FARM,
-							templateName 	: "farm",
-							classes 		: "fullsize",
-							url		 		: "/controllers/FarmController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("farm", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.FarmController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.FARM,
+								templateName 	: "farm",
+								classes 		: "fullsize",
+								url		 		: "/controllers/FarmController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 				}
 				case robotTW2.controllers.DefenseController : {
-					var params = {
-							controller		: robotTW2.controllers.DefenseController,
-							scopeLang 		: robotTW2.createScopeLang("defense"),
-							hotkey 			: conf.HOTKEY.DEFENSE,
-							templateName 	: "defense",
-							classes 		: "fullsize",
-							url		 		: "/controllers/DefenseController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("defense", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.DefenseController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.DEFENSE,
+								templateName 	: "defense",
+								classes 		: "fullsize",
+								url		 		: "/controllers/DefenseController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 					break
 				}
 				case robotTW2.controllers.ReconController : {
-					var params = {
-							controller		: robotTW2.controllers.ReconController,
-							scopeLang 		: robotTW2.createScopeLang("recon"),
-							hotkey 			: conf.HOTKEY.RECON,
-							templateName 	: "recon",
-							classes 		: "",
-							url		 		: "/controllers/ReconController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("recon", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.ReconController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.RECON,
+								templateName 	: "recon",
+								classes 		: "",
+								url		 		: "/controllers/ReconController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 					break
 				}
 				case robotTW2.controllers.AttackController : {
-					var params = {
-							controller		: robotTW2.controllers.AttackController,
-							scopeLang 		: robotTW2.createScopeLang("attack"),
-							hotkey 			: conf.HOTKEY.ATTACK,
-							templateName 	: "attack",
-							classes 		: "fullsize",
-							url		 		: "/controllers/AttackController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("attack", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.AttackController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.ATTACK,
+								templateName 	: "attack",
+								classes 		: "fullsize",
+								url		 		: "/controllers/AttackController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 					break
 				}
 				case robotTW2.controllers.DepositController : {
-					var params = {
-							controller		: robotTW2.controllers.DepositController,
-							scopeLang 		: robotTW2.createScopeLang("deposit"),
-							hotkey 			: conf.HOTKEY.DEPOSIT,
-							templateName 	: "deposit",
-							classes 		: "",
-							url		 		: "/controllers/DepositController.js",
-							style 			: null
-					}		
-					robotTW2.build(params)
+					robotTW2.createScopeLang("deposit", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.DepositController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.DEPOSIT,
+								templateName 	: "deposit",
+								classes 		: "",
+								url		 		: "/controllers/DepositController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
 					break
 				}
 				case robotTW2.controllers.AttackCompletionController : {
-					var get_father = function(){
-						return $('[ng-controller=ModalCustomArmyController]');
-					}
-					, get_son = function(){
-						return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
-					}
-					, params = {
-							included_controller		: "ModalCustomArmyController",
-							controller				: robotTW2.controllers.AttackCompletionController,
-							get_son					: get_son,
-							provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
-							scopeLang 				: robotTW2.createScopeLang("attack"),
-							templateName 			: "attackcompletion",
-							url		 				: "/controllers/AttackCompletionController.js"
-					}	
-					robotTW2.build(params)
+					robotTW2.createScopeLang("attack", function(scopeLang){
+						var get_father = function(){
+							return $('[ng-controller=ModalCustomArmyController]');
+						}
+						, get_son = function(){
+							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+						}
+						, params = {
+								included_controller		: "ModalCustomArmyController",
+								controller				: robotTW2.controllers.AttackCompletionController,
+								get_son					: get_son,
+								provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
+								scopeLang 				: scopeLang,
+								templateName 			: "attackcompletion",
+								url		 				: "/controllers/AttackCompletionController.js"
+						}	
+						robotTW2.build(params)
+					})
 					break
 				}
 				case robotTW2.controllers.FarmCompletionController : {
-					var get_father = function(){
-						return $('[ng-controller=BattleReportController]');
-					}
-					, get_son = function(){
-						return get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false			
-					}
-					, params = {
-							included_controller		: "BattleReportController",
-							controller				: robotTW2.controllers.FarmCompletionController,
-							get_son					: get_son,
-							provider_listener		: robotTW2.providers.eventTypeProvider.OPEN_REPORT,
-							scopeLang 				: robotTW2.createScopeLang("farm"),
-							templateName 			: "farmcompletion",
-							url		 				: "/controllers/FarmCompletionController.js"
-					}	
-					robotTW2.build(params)
+					robotTW2.createScopeLang("farm", function(scopeLang){
+						var get_father = function(){
+							return $('[ng-controller=BattleReportController]');
+						}
+						, get_son = function(){
+							return get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false			
+						}
+						, params = {
+								included_controller		: "BattleReportController",
+								controller				: robotTW2.controllers.FarmCompletionController,
+								get_son					: get_son,
+								provider_listener		: robotTW2.providers.eventTypeProvider.OPEN_REPORT,
+								scopeLang 				: scopeLang,
+								templateName 			: "farmcompletion",
+								url		 				: "/controllers/FarmCompletionController.js"
+						}	
+						robotTW2.build(params)
+					})
 					break
 				}
 				case robotTW2.services.MainService : {
-					robotTW2.services.$timeout(function(){
-						robotTW2.services.MainService && typeof(robotTW2.services.MainService.initExtensions) == "function" ? robotTW2.services.MainService.initExtensions() : null;
-						robotTW2.build(
-								{
-									controller		: robotTW2.controllers.MainController,
-									scopeLang 		: robotTW2.createScopeLang("main"),
-									hotkey 			: conf.HOTKEY.MAIN,
-									templateName 	: "main",
-									classes 		: null,
-									url		 		: "/controllers/MainController.js",
-									style 			: {
-										width : "850px"
+					robotTW2.createScopeLang("main", function(scopeLang){
+						robotTW2.services.$timeout(function(){
+							robotTW2.services.MainService && typeof(robotTW2.services.MainService.initExtensions) == "function" ? robotTW2.services.MainService.initExtensions() : null;
+							robotTW2.build(
+									{
+										controller		: robotTW2.controllers.MainController,
+										scopeLang 		: scopeLang,
+										hotkey 			: conf.HOTKEY.MAIN,
+										templateName 	: "main",
+										classes 		: null,
+										url		 		: "/controllers/MainController.js",
+										style 			: {
+											width : "850px"
+										}
 									}
-								}
-						)		
-					}, 3000)
+							)		
+						}, 3000)
+					})
 					break
 				}
 				case robotTW2.services.FarmService : {
