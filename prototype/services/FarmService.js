@@ -200,7 +200,7 @@ define("robotTW2/services/FarmService", [
 				var d = f - $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm;
 				if(d > 0){
 					t_slice[village_id] = d;
-					lt_bb.splice(e - d);
+					lt_bb.splice(e);
 				} else {
 					t_slice[village_id] = 0;
 				}
