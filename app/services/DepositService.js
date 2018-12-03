@@ -131,11 +131,8 @@ define("robotTW2/services/DepositService", [
 				!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;
 				!listener_job_rerolled ? listener_job_rerolled = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOBS_REROLLED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_rerolled;
 				!listener_job_collectible ? listener_job_collectible = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTIBLE, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collectible;
-				!listener_job_started ? listener_job_started = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_STARTED, function($event, data){
-					console.log(data)
-				}) : listener_job_started;
+				!listener_job_started ? listener_job_started = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_STARTED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collectible;
 				verify_deposit()
-
 
 			}, ["all_villages_ready"])
 		}
