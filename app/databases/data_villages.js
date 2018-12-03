@@ -74,7 +74,21 @@ define("robotTW2/databases/data_villages", [
 						quadrants				: [1, 2, 3, 4],
 						max_commands_farm		: conf.MAX_COMMANDS_FARM
 					});
-				}	
+				} else {
+					if(!data_villages.villages[v].presets[pst].load){
+						angular.extend(presets_d[pst], {
+							load					: true,
+							max_journey_distance	: get_dist(v, conf.MAX_JOURNEY_TIME, presets_d[pst].units),
+							min_journey_distance	: get_dist(v, conf.MIN_JOURNEY_TIME, presets_d[pst].units),
+							max_journey_time		: conf.MAX_JOURNEY_TIME,
+							min_journey_time		: conf.MIN_JOURNEY_TIME,
+							max_points_farm			: conf.MAX_POINTS_FARM,
+							min_points_farm			: conf.MIN_POINTS_FARM,
+							quadrants				: [1, 2, 3, 4],
+							max_commands_farm		: conf.MAX_COMMANDS_FARM
+						});
+					}
+				}
 			}
 			data_villages.villages[v].presets[pst] = angular.extend({}, presets_d[pst])
 		});
@@ -179,7 +193,7 @@ define("robotTW2/databases/data_villages", [
 			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
 		})	
 	}
-	
+
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
