@@ -1246,7 +1246,10 @@ var robotTW2 = window.robotTW2 = undefined;
 											width : "850px"
 										}
 									}
-							)		
+							)
+							require(["robotTW2/notify"], function(notify){
+								notify("init_ready")
+							})
 						}, 3000)
 					})
 					break

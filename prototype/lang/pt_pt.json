@@ -175,6 +175,7 @@
 	},
 	"notify": {
 		"title": "Notícias",
+		"init_ready": "Robot TW2 - Carregado",
 		"data_main": "Robot TW2 - Banco de dados (MAIN) atualizado",
 		"data_alert": "Robot TW2 - Banco de dados (ALERT) atualizado",
 		"data_recon": "Robot TW2 - Banco de dados (RECON) atualizado, reative o módulo RECON",
