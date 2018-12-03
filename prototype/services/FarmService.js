@@ -220,7 +220,8 @@ define("robotTW2/services/FarmService", [
 							console.log(data)
 						});
 
-					}, ($rootScope.data_farm.time_delay_farm + (Math.random() * $rootScope.data_farm.time_delay_farm / 2)) * g);
+					}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())) * g)
+					
 				})()
 			});
 			callback();
