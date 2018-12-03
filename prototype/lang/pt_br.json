@@ -43,6 +43,7 @@
 		"init_standard": "Inicialização automática",
 		"seq_int": "Sequência íntegra",
 		"seq_flex": "Sequência flexível",
+		"text_seq": "Sequência flexível é sequência definida para elevar os edifícios conforme a disponibilidade de recursos. Sequência íntegra é a sequência que eleva os edifícios conforme os níveis passando ao próximo edifício somente quando atingir o nível máximo setado",
 		"headquarter": "Edificio principal",
 		"text_interval_headquarter": "Próximo ciclo em ",
 		"text_executebuildingorder": "Ativar/Desativar automatização do quartel",

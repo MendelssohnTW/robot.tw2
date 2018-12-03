@@ -50,12 +50,9 @@
 						</tr>
 						<tr>
 							<td>
-								<span></span>
-								<div tooltip
-									tooltip-content="{{ext.activated ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
-									switch-slider="" border="true" enabled="ext.activated"
-									value="ext.initialized" ng-click="toggleValueState(ext)"
-									vertical="false" size="'56x28'">
+								<span>{{seq_int}}</span>
+								<div switch-slider="" border="true" enabled="ext.activated"
+									value="data_headquarter.seq" vertical="false" size="'56x28'">
 									<div ng-class="{'box-border-dark box-filter': border}"
 										class="box-border-dark box-filter">
 										<div class="switch switch-56x28 switch-horizontal"
@@ -67,7 +64,10 @@
 										</div>
 									</div>
 								</div>
-								<span></span>
+								<span>{{seq_flex}}</span>
+							</td>
+							<td colspan="2">
+							{{}}
 							</td>
 						</tr>
 					</table>

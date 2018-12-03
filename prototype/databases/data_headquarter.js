@@ -28,6 +28,7 @@ define("robotTW2/databases/data_headquarter", [
 			interval				: conf.INTERVAL.HEADQUARTER,
 			time_complete			: 0,
 			version					: conf.VERSION.HEADQUARTER,
+			seq						: false,
 			reserva 				: {
 				food			: conf.RESERVA.HEADQUARTER.FOOD,
 				wood			: conf.RESERVA.HEADQUARTER.WOOD,
