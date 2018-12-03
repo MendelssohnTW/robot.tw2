@@ -193,7 +193,7 @@ define("robotTW2/services/FarmService", [
 			, t_obj = units_analyze(preset_units, aldeia_units);
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(t_obj){
-				var t_slice = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
+				var t_slice = Math.abs(Math.trunc((aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) - aldeia_commands_lenght));
 				lt_bb.splice(t_slice);
 			}
 			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
@@ -368,8 +368,10 @@ define("robotTW2/services/FarmService", [
 
 		}
 		, execute_preset = function(tempo){
+			
 			return $timeout(
 					function(){
+						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 						clear()
 						var commands_for_presets = []
 						var villages = modelDataService.getSelectedCharacter().getVillageList();
@@ -436,9 +438,13 @@ define("robotTW2/services/FarmService", [
 
 				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
 					var tempo_delay = $rootScope.data_farm.farm_time_start - helper.gameTime();
-					tempo_delay < 0 ? tempo_delay = 0 : tempo_delay;
-					interval_init = $timeout(function () {
+					if(tempo_delay < 0) {
+						tempo_delay = 0
+					} else {
 						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
+					};
+					interval_init = $timeout(function () {
+
 						var qtd_ciclo = Math.trunc(($rootScope.data_farm.farm_time_stop - $rootScope.data_farm.farm_time_start) / $rootScope.data_farm.farm_time);
 						if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
 							for (i = 0; i < qtd_ciclo; i++) {
@@ -504,7 +510,7 @@ define("robotTW2/services/FarmService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 			$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_FARM, {name:"FARM"})
 		}
-		
+
 
 		return	{
 			init			: init,

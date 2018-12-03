@@ -110,7 +110,7 @@
 	"farm": {
 		"title": "Collection of resources",
 		"wait_init": "Waiting for the start of the Farm cycle",
-		"farm_init": "Farm Cycle started",
+		"farm_init": "New Farm Cycle started",
 		"farm_no_init": "Farm cycle not started. Farm termination less than minimum cycle time",
 		"farm_running": "Current farm processing state",
 		"time_max": "Maximum time",
