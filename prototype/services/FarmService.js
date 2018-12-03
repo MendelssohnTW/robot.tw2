@@ -205,7 +205,7 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
-			console.log("count command village" + village.data.name + " id " + village_id + " length " + lt_bb.length)
+//			console.log("count command village" + village.data.name + " id " + village_id + " length " + lt_bb.length)
 			lt_bb.forEach(function (barbara) {
 				g++;
 				timeoutCommandFarm[g] = (function(){
@@ -218,8 +218,8 @@ define("robotTW2/services/FarmService", [
 								type: "attack"
 						}
 						requestFn.trigger("Farm/sendCmd")
-						console.log(params)
-						console.log("count command " + g + h++)
+//						console.log(params)
+//						console.log("count command " + g + h++)
 						socketService.emit(providers.routeProvider.SEND_PRESET, params);
 					}, ($rootScope.data_farm.time_delay_farm * (g - 1)) + Math.round($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random()))
 					
