@@ -33,6 +33,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var $compile 				= injector.get('$compile');
 	var httpService 			= injector.get("httpService");
 	var windowManagerService 	= injector.get("windowManagerService");
+	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var reportService 			= injector.get("reportService");
@@ -587,6 +588,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			$compile 					: $compile,
 			httpService 				: httpService,
 			windowManagerService 		: windowManagerService,
+			modelDataService			: modelDataService,
 			socketService				: socketService,
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService
@@ -777,7 +779,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
-			robotTW2.register("services", "modelDataService");
 			robotTW2.register("services", "premiumActionService");
 			robotTW2.register("services", "villageService");
 			robotTW2.register("services", "buildingService");
