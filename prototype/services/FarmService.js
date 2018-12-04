@@ -346,26 +346,27 @@ define("robotTW2/services/FarmService", [
 				return
 			}
 			commands_for_presets.forEach(function(cmd_preset){
-				if(!promise){
-					promise = new Promise(function(res){
-						var listaGrid = exec(cmd_preset)
-						if(!listaGrid.length){return}
-						loadVillages(cmd_preset, listaGrid, res);
-					})
-					.then(function(data){
-						promise = undefined
-						if(farm_queue.length){
-							var cmd_pr = farm_queue.shift();
-							cmd_preset = cmd_pr[0]
-							resolve = cmd_pr[1]
-							exec_promise(cmd_preset, resolve)
-						} else {
-							resolve()
-						}
-					})
-				} else {
-					farm_queue.push([cmd_preset, resolve])
+				var t = function(cmd_preset){
+					if(!promise){
+						promise = new Promise(function(res){
+							var listaGrid = exec(cmd_preset)
+							if(!listaGrid.length){return}
+							loadVillages(cmd_preset, listaGrid, res);
+						})
+						.then(function(data){
+							promise = undefined
+							if(farm_queue.length){
+								cmd_preset = farm_queue.shift();
+								t(cmd_preset)
+							} else {
+								resolve()
+							}
+						})
+					} else {
+						farm_queue.push(cmd_preset)
+					}
 				}
+				t(cmd_preset)
 			})
 		}
 		, clear = function(){
