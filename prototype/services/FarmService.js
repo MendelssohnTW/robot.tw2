@@ -463,7 +463,6 @@ define("robotTW2/services/FarmService", [
 						var qtd_ciclo = Math.trunc(($rootScope.data_farm.farm_time_stop - $rootScope.data_farm.farm_time_start) / $rootScope.data_farm.farm_time);
 						if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
 							for (i = 0; i < qtd_ciclo; i++) {
-
 								var f = function(i){
 									if(!promise_farm){
 										promise_farm = new Promise(function(resolve){
@@ -478,15 +477,10 @@ define("robotTW2/services/FarmService", [
 											}
 										})
 									} else {
-										preset_queue.push(barbara)
+										preset_queue.push(i)
 									}
 								}
-
 								f(i)
-
-
-
-
 							}
 						}
 
