@@ -199,26 +199,29 @@ define("robotTW2/services/FarmService", [
 			, t_obj = units_analyze(preset_units, aldeia_units);
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(lt_bb.length != 0){
+				if(t_slice[village_id] == undefined){
+					t_slice[village_id] = {};
+				}
 				if(t_obj){
-					if(t_slice[village_id] == undefined){
-						t_slice[village_id] = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0])
+					if(t_slice[village_id][preset_id] == undefined){
+						t_slice[village_id] = {[preset_id] : Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0])}
 					}
-					if(t_slice[village_id] > 0){
+					if(t_slice[village_id][preset_id] > 0){
 						var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
-						var s = Math.min(d, t_slice[village_id])
+						var s = Math.min(d, t_slice[village_id][preset_id])
 						if(s > 0){
 							var m = Math.min(lt_bb.length, s)
-							t_slice[village_id] = t_slice[village_id] - m;
+							angular.merge(t_slice[village_id], {[preset_id]: t_slice[village_id][preset_id] - m})
 							lt_bb.splice(m);
 						} else {
-							t_slice[village_id] = 0;
+							t_slice[village_id] = {[preset_id] : 0}
 						}
 					} else {
 						lt_bb.splice(0);
 					}
 				}
 			} else {
-				t_slice[village_id] = 0;
+				t_slice[village_id] = {[preset_id] : 0}
 			}
 			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
 //			console.log("count command village" + village.data.name + " id " + village_id + " length " + lt_bb.length)
