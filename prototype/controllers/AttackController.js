@@ -41,7 +41,7 @@ define("robotTW2/controllers/AttackController", [
 			$scope.comandos = Object.keys($rootScope.data_attack.commands).map(function(elem, index, array){
 				return $rootScope.data_attack.commands[elem]
 			});
-			$scope.comandos.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
+			$scope.comandos.sort(function(a,b){return (a.data_escolhida - a.duration) - (b.data_escolhida - b.duration)})
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
