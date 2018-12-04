@@ -383,61 +383,61 @@ define("robotTW2/services/FarmService", [
 			send_queue = []
 			t_slice = {}
 		}
-		, execute_preset = function(tempo, resolve){
-			return $timeout(
-					function(){
-						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
-						clear()
-						var commands_for_presets = []
-						var villages = modelDataService.getSelectedCharacter().getVillageList();
-						villages.forEach(function(village){
-							var village_id = village.data.villageId
-							, presets = $rootScope.data_villages.villages[village_id].presets
-							, aldeia_units = angular.copy(village.unitInfo.units)
-							, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-							, aldeia_commands = village.getCommandListModel().data
+		, execute_preset = function(resolve){
+//			return $timeout(
+//			function(){
+			$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
+			clear()
+			var commands_for_presets = []
+			var villages = modelDataService.getSelectedCharacter().getVillageList();
+			villages.forEach(function(village){
+				var village_id = village.data.villageId
+				, presets = $rootScope.data_villages.villages[village_id].presets
+				, aldeia_units = angular.copy(village.unitInfo.units)
+				, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
+				, aldeia_commands = village.getCommandListModel().data
 
-							if(!presets) {
-								return	
-							}
+				if(!presets) {
+					return	
+				}
 
-							var presets_order = Object.keys(presets).map(function(preset){
-								return Object.keys(presets[preset].units).map(function(key){
-									return modelDataService.getGameData().data.units.map(function(obj, index, array){
-										return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
-									}).filter(f=>f!=undefined)
-								}).filter(f=>f.length>0)[0][0]
-							}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
+				var presets_order = Object.keys(presets).map(function(preset){
+					return Object.keys(presets[preset].units).map(function(key){
+						return modelDataService.getGameData().data.units.map(function(obj, index, array){
+							return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
+						}).filter(f=>f!=undefined)
+					}).filter(f=>f.length>0)[0][0]
+				}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
-							if(!countCommands[village_id]) {countCommands[village_id] = []}
-							if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
-								aldeia_commands.forEach(function (aldeia) {
-									countCommands[village_id].push(aldeia.targetVillageId);
-								})
-							}
-							presets_order.forEach(function(preset){
-								if(
-										$rootScope.data_villages.villages[village_id].farm_activate
-										&& units_analyze(preset.units, aldeia_units)
-								) {
-									var comando = {
-											village_id				: village_id,
-											bonus					: village_bonus,
-											preset_id				: preset.id,
-											preset_units			: preset.units,
-											x						: village.data.x,
-											y						: village.data.y,
-											max_journey_distance	: get_dist(village_id, preset.id, village_bonus, preset.units)
+				if(!countCommands[village_id]) {countCommands[village_id] = []}
+				if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
+					aldeia_commands.forEach(function (aldeia) {
+						countCommands[village_id].push(aldeia.targetVillageId);
+					})
+				}
+				presets_order.forEach(function(preset){
+					if(
+							$rootScope.data_villages.villages[village_id].farm_activate
+							&& units_analyze(preset.units, aldeia_units)
+					) {
+						var comando = {
+								village_id				: village_id,
+								bonus					: village_bonus,
+								preset_id				: preset.id,
+								preset_units			: preset.units,
+								x						: village.data.x,
+								y						: village.data.y,
+								max_journey_distance	: get_dist(village_id, preset.id, village_bonus, preset.units)
 
-									};
-									if (!commands_for_presets.find(f => f === comando)) {
-										commands_for_presets.push(comando);
-									};
-								};
-							})
-						})
-						exec_promise(commands_for_presets, resolve)
-					}, tempo)
+						};
+						if (!commands_for_presets.find(f => f === comando)) {
+							commands_for_presets.push(comando);
+						};
+					};
+				})
+			})
+			exec_promise(commands_for_presets, resolve)
+//			}, tempo)
 		}
 		, start = function () {
 			if(isRunning) {return}
@@ -466,8 +466,8 @@ define("robotTW2/services/FarmService", [
 								var f = function(i){
 									if(!promise_farm){
 										promise_farm = new Promise(function(resolve){
-											var tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
-											execute_preset(tempo, resolve)
+//											var tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
+											execute_preset(resolve)
 										})
 										. then(function(){
 											promise_farm = undefined;
