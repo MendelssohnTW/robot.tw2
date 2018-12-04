@@ -24,7 +24,6 @@ define("robotTW2/services/FarmService", [
 		, isPaused = !1
 		, interval_init = null
 		, timeoutIdFarm = {}
-		, timeoutCommandFarm = {}
 //		, listener_change = undefined
 		, listener_resume = undefined
 		, countCommands = {}
@@ -37,8 +36,11 @@ define("robotTW2/services/FarmService", [
 		, g = 0
 		, promise = undefined
 		, promise_grid = undefined
+		, promise_farm = undefined
+		, preset_queue = []
 		, farm_queue = []
 		, grid_queue = []
+		, send_queue = []
 		, rallyPointSpeedBonusVsBarbarians = modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, setupGrid = function (len) {
 			var i, t = 0,
@@ -186,7 +188,6 @@ define("robotTW2/services/FarmService", [
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
 			var promise_send = undefined
-			, send_queue = []
 			, village_id = cmd_preset.village_id
 			, preset_id = cmd_preset.preset_id
 			, village = modelDataService.getSelectedCharacter().getVillage(village_id)
@@ -213,22 +214,19 @@ define("robotTW2/services/FarmService", [
 				var f = function(barbara){
 					if(!promise_send){
 						promise_send = new Promise(function(resolve){
-//							timeoutCommandFarm[g] = (function(){
-								//return 
-								$timeout(function () {
-									var params =  {
-											start_village: village_id,
-											target_village: barbara,
-											army_preset_id: preset_id,
-											type: "attack"
-									}
-									requestFn.trigger("Farm/sendCmd")
-//									console.log(params)
-//									console.log("count command " + g + h++)
-									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-									resolve()
-								}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
-//							})()
+							$timeout(function () {
+								var params =  {
+										start_village: village_id,
+										target_village: barbara,
+										army_preset_id: preset_id,
+										type: "attack"
+								}
+								requestFn.trigger("Farm/sendCmd")
+//								console.log(params)
+//								console.log("count command " + g + h++)
+								socketService.emit(providers.routeProvider.SEND_PRESET, params);
+								resolve()
+							}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
 						})
 						.then(function(){
 							promise_send = undefined;
@@ -243,7 +241,7 @@ define("robotTW2/services/FarmService", [
 				}
 
 				f(barbara)
-				
+
 			});
 			callback();
 		}
@@ -342,32 +340,35 @@ define("robotTW2/services/FarmService", [
 				});
 			})
 		}
-		, exec_promise = function(cmd_preset){
-			promise = new Promise(function(res){
-				var listaGrid = exec(cmd_preset)
-				if(!listaGrid.length){return}
-				loadVillages(cmd_preset, listaGrid, res);
-			})
-			.then(function(data){
-				promise = undefined
-				if(farm_queue.length){
-					cmd_preset = farm_queue.shift();
-					exec_promise(cmd_preset)
-				}
-			})
-		}
-		, execute_commands = function(commands_for_presets){
-			if(!isRunning || !commands_for_presets.length){return}
+		, exec_promise = function(commands_for_presets, resolve){
+			if(!isRunning || !commands_for_presets.length){
+				resolve()
+				return
+			}
 			commands_for_presets.forEach(function(cmd_preset){
-				if(promise){
-					farm_queue.push(cmd_preset)
+				if(!promise){
+					promise = new Promise(function(res){
+						var listaGrid = exec(cmd_preset)
+						if(!listaGrid.length){return}
+						loadVillages(cmd_preset, listaGrid, res);
+					})
+					.then(function(data){
+						promise = undefined
+						if(farm_queue.length){
+							var cmd_pr = farm_queue.shift();
+							cmd_preset = cmd_pr[0]
+							resolve = cmd_pr[1]
+							exec_promise(cmd_preset, resolve)
+						} else {
+							resolve()
+						}
+					})
 				} else {
-					exec_promise(cmd_preset)
+					farm_queue.push([cmd_preset, resolve])
 				}
 			})
 		}
 		, clear = function(){
-
 			countCommands = {}
 			commands_for_send = []
 			req = 0
@@ -375,13 +376,14 @@ define("robotTW2/services/FarmService", [
 			s = {}
 			promise = undefined
 			promise_grid = undefined
+			promise_farm = undefined
+			preset_queue = []
 			farm_queue = []
 			grid_queue = []
+			send_queue = []
 			t_slice = {}
-
 		}
-		, execute_preset = function(tempo){
-
+		, execute_preset = function(tempo, resolve){
 			return $timeout(
 					function(){
 						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
@@ -434,7 +436,7 @@ define("robotTW2/services/FarmService", [
 								};
 							})
 						})
-						execute_commands(commands_for_presets)
+						exec_promise(commands_for_presets, resolve)
 					}, tempo)
 		}
 		, start = function () {
@@ -461,9 +463,30 @@ define("robotTW2/services/FarmService", [
 						var qtd_ciclo = Math.trunc(($rootScope.data_farm.farm_time_stop - $rootScope.data_farm.farm_time_start) / $rootScope.data_farm.farm_time);
 						if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
 							for (i = 0; i < qtd_ciclo; i++) {
-								var t = $rootScope.data_farm.farm_time * i;
-								var tempo = Math.round((t / 2) + (t * Math.random()));
-								timeoutIdFarm[i] = execute_preset(tempo)
+
+								var f = function(i){
+									if(!promise_farm){
+										promise_farm = new Promise(function(resolve){
+											var tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
+											execute_preset(tempo, resolve)
+										})
+										. then(function(){
+											promise_farm = undefined;
+											if(preset_queue.length){
+												i = preset_queue.shift()
+												f(i)
+											}
+										})
+									} else {
+										preset_queue.push(barbara)
+									}
+								}
+
+								f(i)
+
+
+
+
 							}
 						}
 
@@ -486,10 +509,6 @@ define("robotTW2/services/FarmService", [
 				$timeout.cancel(timeoutIdFarm[key]);
 			});
 
-			Object.keys(timeoutCommandFarm).map(function (key) {
-				$timeout.cancel(timeoutCommandFarm[key]);
-			});
-
 			robotTW2.removeScript("/controllers/FarmCompletionController.js");
 
 //			typeof(listener_change) == "function" ? listener_change(): null;
@@ -498,7 +517,6 @@ define("robotTW2/services/FarmService", [
 
 			interval_init = null
 			timeoutIdFarm = {}
-			timeoutCommandFarm = {}
 			//		listener_change = undefined
 			listener_resume = undefined
 			countCommands = {}
@@ -508,8 +526,11 @@ define("robotTW2/services/FarmService", [
 			s = {}
 			promise = undefined
 			promise_grid = undefined
+			promise_farm = undefined
+			preset_queue = []
 			farm_queue = []
 			grid_queue = []
+			send_queue = []
 			t_slice = {}
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
