@@ -29,8 +29,6 @@ define("robotTW2/services/RecruitService", [
 		, listener_group_updated = undefined
 		, listener_group_created = undefined
 		, listener_group_destroyed = undefined
-		, listener_window_recruit = undefined
-		, listener_resume = undefined
 		, list = []
 		, prices = (function (){
 			var unitData = modelDataService.getGameData().getUnits();
@@ -391,7 +389,9 @@ define("robotTW2/services/RecruitService", [
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 			$timeout.cancel(listener_recruit);
-			$timeout.cancel(listener_window_recruit);
+			interval_recruit = null
+			list = []
+
 		}
 		, pause = function (){
 			isPaused = !0
