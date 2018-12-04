@@ -383,7 +383,7 @@ define("robotTW2/services/FarmService", [
 			send_queue = []
 			t_slice = {}
 		}
-		, execute_preset = function(resolve){
+		, execute_preset = function(tempo, resolve){
 			return $timeout(
 					function(){
 						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
