@@ -167,24 +167,26 @@ define("robotTW2/services/FarmService", [
 			return false;
 		}
 		, units_analyze = function (preset_units, aldeia_units) {
+			var f = []
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
 					if(preset_units[unit_preset] > 0) {
 						if(unit_preset != "snob") {
 							if (verif_units(unit_preset, aldeia_units)) {
 								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
-									return {[unit_preset] : preset_units[unit_preset]}
-								} else {
-									return false
+									f.push({[unit_preset] : preset_units[unit_preset]})
 								}
 							}
-						} else {
-							return false
 						}
 					}
 				}
 			}
-			return false
+			if(f.length){
+				f.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+				return true
+			} else {
+				return false
+			}
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
 			var promise_send = undefined
