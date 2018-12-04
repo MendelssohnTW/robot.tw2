@@ -239,8 +239,6 @@ define("robotTW2/services/FarmService", [
 							if(send_queue.length){
 								barbara = send_queue.shift()
 								f(barbara)
-							} else {
-								callback();
 							}
 						})
 					} else {
@@ -249,6 +247,7 @@ define("robotTW2/services/FarmService", [
 				}
 				f(barbara)
 			});
+			callback();
 		}
 		, check_village = function (vill, cmd_preset, lt_b) {
 			var village_id = cmd_preset.village_id
