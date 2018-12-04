@@ -174,7 +174,7 @@ define("robotTW2/services/FarmService", [
 						if(unit_preset != "snob") {
 							if (verif_units(unit_preset, aldeia_units)) {
 								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
-									f.push({[unit_preset] : preset_units[unit_preset]})
+									f.push([{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available])
 								}
 							}
 						}
@@ -182,8 +182,8 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			if(f.length){
-				f.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
-				return f.shift()
+				f.sort(function(a,b){return a[1] - b[1]})
+				return f.shift()[0]
 			} else {
 				return false
 			}
