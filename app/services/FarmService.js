@@ -200,15 +200,21 @@ define("robotTW2/services/FarmService", [
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(lt_bb.length != 0){
 				if(t_obj){
-					!t_slice[village_id] ? t_slice[village_id] = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) : t_slice[village_id];
-					var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
-					var s = Math.min(d, t_slice[village_id])
-					if(s > 0){
-						var m = Math.min(lt_bb.length, s)
-						t_slice[village_id] = t_slice[village_id] - m;
-						lt_bb.splice(m);
+					if(t_slice[village_id] == undefined){
+						t_slice[village_id] = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0])
+					}
+					if(t_slice[village_id] > 0){
+						var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
+						var s = Math.min(d, t_slice[village_id])
+						if(s > 0){
+							var m = Math.min(lt_bb.length, s)
+							t_slice[village_id] = t_slice[village_id] - m;
+							lt_bb.splice(m);
+						} else {
+							t_slice[village_id] = 0;
+						}
 					} else {
-						t_slice[village_id] = 0;
+						lt_bb.splice(0);
 					}
 				}
 			} else {

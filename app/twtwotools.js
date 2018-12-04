@@ -141,9 +141,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
 				exports.services.$timeout.cancel(requestFn.get(key));
-				var db = opt_db.get()
-				delete db.commands[key];
-				opt_db.set(db);
+				delete opt_db.commands[key];
 				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
 			requestFn.unbind(key);
@@ -151,16 +149,14 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		service.unbindAll = function(opt_db) {
 			if(!opt_db) return
-			var db = opt_db.get()
-			Object.keys(db.commands).forEach(function(key) {
+			Object.keys(opt_db.commands).forEach(function(key) {
 				try {
 					exports.services.$timeout.cancel(requestFn.get(key));
 				} catch(err){
 
 				}
 			})
-			db.commands = {}
-			opt_db = db;
+			opt_db.commands = {}
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 		}
 		,
@@ -958,7 +954,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			], function(
 					firework
 			) {
-			return function(message){
+			return function(message, opt){
 				var $scope = robotTW2.loadController("NotificationController")
 				, promise
 				, that = this
@@ -1011,7 +1007,12 @@ var robotTW2 = window.robotTW2 = undefined;
 					});
 				}
 
-				return display(robotTW2.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));
+				if(opt){
+					return display(message);
+				} else {
+					return display(robotTW2.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));	
+				}
+				
 			}
 		})
 
@@ -1246,7 +1247,10 @@ var robotTW2 = window.robotTW2 = undefined;
 											width : "850px"
 										}
 									}
-							)		
+							)
+							require(["robotTW2/notify"], function(notify){
+								notify("RobotTW2", true)
+							})
 						}, 3000)
 					})
 					break
