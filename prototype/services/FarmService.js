@@ -183,7 +183,7 @@ define("robotTW2/services/FarmService", [
 			}
 			if(f.length){
 				f.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
-				return true
+				return f.shift()
 			} else {
 				return false
 			}
