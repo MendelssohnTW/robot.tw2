@@ -375,7 +375,7 @@ define("robotTW2/services/AttackService", [
 //				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
 				Object.values($rootScope.data_attack.commands).forEach(function(param){
-					if(param.data_escolhida < helper.gameTime()){
+					if((param.data_escolhida - param.duration) < helper.gameTime()){
 						commandQueue.unbind(param.id_command, $rootScope.data_attack)
 					} else {
 						addAttack(param, true);

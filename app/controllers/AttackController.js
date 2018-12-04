@@ -24,7 +24,6 @@ define("robotTW2/controllers/AttackController", [
 			TABS.LOG,
 			]
 
-
 		$scope.requestedTab = TABS.ATTACK;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
@@ -38,10 +37,18 @@ define("robotTW2/controllers/AttackController", [
 				setActiveTab($scope.requestedTab);
 			}
 		}
+		, update = function(){
+			$scope.comandos = Object.keys($rootScope.data_attack.commands).map(function(elem, index, array){
+				return $rootScope.data_attack.commands[elem]
+			});
+			$scope.comandos.sort(function(a,b){return (a.data_escolhida - helper.gameTime() - a.duration) - (b.data_escolhida - helper.gameTime() - b.duration)})
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}
 
 		initTab();
-
-		$scope.comandos = $rootScope.data_attack.commands;
+		update();
 
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
@@ -113,10 +120,8 @@ define("robotTW2/controllers/AttackController", [
 		$scope.removeCommand = services.AttackService.removeCommandAttack;
 
 		$rootScope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
-			$scope.comandos = $rootScope.data_attack.commands;
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
+			update();
+			
 		})
 
 		$scope.setCollapse();
