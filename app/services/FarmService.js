@@ -391,7 +391,7 @@ define("robotTW2/services/FarmService", [
 			promise = undefined
 			promise_grid = undefined
 			promise_farm = undefined
-			preset_queue = []
+			
 			farm_queue = []
 			grid_queue = []
 			send_queue = []
@@ -473,7 +473,7 @@ define("robotTW2/services/FarmService", [
 						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
 					};
 					interval_init = $timeout(function () {
-
+						preset_queue = []
 						var qtd_ciclo = Math.trunc(($rootScope.data_farm.farm_time_stop - $rootScope.data_farm.farm_time_start) / $rootScope.data_farm.farm_time);
 						if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
 							for (i = 0; i < qtd_ciclo; i++) {
