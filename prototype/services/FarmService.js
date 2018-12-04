@@ -467,6 +467,7 @@ define("robotTW2/services/FarmService", [
 									if(!promise_farm){
 										promise_farm = new Promise(function(resolve){
 											var tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
+											i = 0 ? tempo = 0: tempo;
 											execute_preset(tempo, resolve)
 										})
 										. then(function(){
