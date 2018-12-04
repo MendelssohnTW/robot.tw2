@@ -198,21 +198,25 @@ define("robotTW2/services/FarmService", [
 			, aldeia_commands_lenght = countCommands[village_id].length
 			, t_obj = units_analyze(preset_units, aldeia_units);
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
-			if(t_obj){
-				!t_slice[village_id] ? t_slice[village_id] = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) : t_slice[village_id];
-				var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
-				var s = Math.min(d, t_slice[village_id])
-				if(s > 0){
-					t_slice[village_id] = t_slice[village_id] - s;
-					lt_bb.splice(s);
-				} else {
-					t_slice[village_id] = 0;
+			if(lt_bb.length != 0){
+				if(t_obj){
+					!t_slice[village_id] ? t_slice[village_id] = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]) : t_slice[village_id];
+					var d = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
+					var s = Math.min(d, t_slice[village_id])
+					if(s > 0){
+						var m = Math.min(lt_bb.length, s)
+						t_slice[village_id] = t_slice[village_id] - m;
+						lt_bb.splice(m);
+					} else {
+						t_slice[village_id] = 0;
+					}
 				}
+			} else {
+				t_slice[village_id] = 0;
 			}
 			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
 //			console.log("count command village" + village.data.name + " id " + village_id + " length " + lt_bb.length)
 			lt_bb.forEach(function (barbara) {
-
 				var f = function(barbara){
 					if(!promise_send){
 						promise_send = new Promise(function(resolve){
@@ -235,17 +239,16 @@ define("robotTW2/services/FarmService", [
 							if(send_queue.length){
 								barbara = send_queue.shift()
 								f(barbara)
+							} else {
+								callback();
 							}
 						})
 					} else {
 						send_queue.push(barbara)
 					}
 				}
-
 				f(barbara)
-
 			});
-			callback();
 		}
 		, check_village = function (vill, cmd_preset, lt_b) {
 			var village_id = cmd_preset.village_id
