@@ -145,10 +145,14 @@ define("robotTW2/services/DepositService", [
 			listener_job_rerolled = undefined;
 			listener_job_collectible = undefined;
 			listener_job_started = undefined;
+			list = []
+			$timeout.cancel(interval_deposit);
+			promise = undefined
+			deposit_queue = []
+			interval_deposit = null
+			interval_deposit_collect = null
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
-			$timeout.cancel(interval_deposit);
-			interval_deposit = undefined;
 		}
 
 		return	{
