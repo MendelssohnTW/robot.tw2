@@ -199,6 +199,9 @@ define("robotTW2/services/FarmService", [
 			, t_obj = units_analyze(preset_units, aldeia_units);
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(lt_bb.length != 0){
+				if(t_slice[village_id] == undefined){
+					t_slice[village_id] = {};
+				}
 				if(t_obj){
 					if(t_slice[village_id][preset_id] == undefined){
 						t_slice[village_id] = {[preset_id] : Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0])}
