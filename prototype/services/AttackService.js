@@ -330,7 +330,7 @@ define("robotTW2/services/AttackService", [
 				}
 				if (get_data != undefined && get_time != undefined){
 					scope.milisegundos_duracao = durationInSeconds * 1000;
-					scope.tempo_escolhido = helper.convertDateToUTC(new Date(get_data + " " + get_time + "." + get_ms).getTime());
+					scope.tempo_escolhido = helper.convertDateToUTC(new Date(get_data + " " + get_time + "." + get_ms)).getTime();
 					if (scope.tempo_escolhido > (helper.gameTime() + scope.milisegundos_duracao)){
 						addScopeAttack(scope);
 						scope.closeWindow();
