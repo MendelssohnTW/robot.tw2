@@ -21,6 +21,8 @@ define("robotTW2/services/SecondVillageService", [
 
 		var isInitialized = !1
 		, isRunning = !1
+		, listener_job_collect = undefined
+		, listener_job_started = undefined
 		, readyJobs = function(jobs) {
 			var actual_date = Date.now();
 			for (var key in jobs)
