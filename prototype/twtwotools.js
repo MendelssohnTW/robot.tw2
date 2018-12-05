@@ -725,18 +725,19 @@ var robotTW2 = window.robotTW2 = undefined;
 						FARM			: 2.3,
 						RECRUIT			: 2.3,
 						DEPOSIT			: 2.3,
-						MEDIC			: 2.3
+						MEDIC			: 2.3,
+						SECONDVILLAGE	: 2.3
 					},
 					FARM_TIME		      	: h,
 					MIN_INTERVAL	     	: 5 * min,
 					INTERVAL				: {
 						HEADQUARTER	: h,
 						RECRUIT		: h,
-						DEPOSIT		: 15 * min,
+//						DEPOSIT		: 15 * min,
 						ALERT		: 5 * min,
 						ATTACK		: h,
 						MEDIC		: h,
-						SPY			: 30 * min
+						SPY			: 30 * min,
 					},
 					DBS : [
 						"alert",
@@ -748,7 +749,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						"medic",
 						"recon",
 						"recruit",
-						"spy"
+						"spy",
+						"secondvillage"
 						]
 					,
 					HOTKEY					: {
@@ -762,7 +764,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC		 	: "ctrl+alt+m",
 						RECON		 	: "ctrl+alt+r",
 						RECRUIT		 	: "ctrl+alt+e",
-						SPY			 	: "ctrl+alt+s"
+						SPY			 	: "ctrl+alt+s",
+						SECONDVILLAGE	: "ctrl+alt+w"
 					},
 					RESERVA				: {
 						RECRUIT : {
