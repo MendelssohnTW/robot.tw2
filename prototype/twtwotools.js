@@ -789,6 +789,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "premiumActionService");
+			robotTW2.register("services", "secondVillageService");
 			robotTW2.register("services", "villageService");
 			robotTW2.register("services", "buildingService");
 			robotTW2.register("services", "armyService");
