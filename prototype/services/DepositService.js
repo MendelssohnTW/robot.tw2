@@ -72,6 +72,8 @@ define("robotTW2/services/DepositService", [
 			var time_rest = 1e3 * job.time_next_reset - Date.now() + 1e3;
 			$timeout.cancel(interval_deposit),
 			interval_deposit = $timeout(getInfo, time_rest)
+			$rootScope.data_deposit.interval = time_rest
+			$rootScope.data_deposit.complete = helper.gameTime() + time_rest
 		}
 		, init = function (){
 			isInitialized = !0
