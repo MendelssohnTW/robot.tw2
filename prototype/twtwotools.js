@@ -362,10 +362,10 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	builderWindow.prototype.addWin = function() {
 		var self = this;
-		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-			if(!templateName){return}
-			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-		}): null;
+//		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
+//			if(!templateName){return}
+//			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
+//		}): null;
 
 		new Promise(function(res, rej){
 			var opt_onSucess = function(data, status, headers, config){
@@ -480,10 +480,10 @@ var robotTW2 = window.robotTW2 = undefined;
 //				}
 			}
 
-			if(self.openned){
-				data.scope.recalcScrollbar()
-				data.scope.setCollapse()
-			}
+//			if(self.openned){
+//				data.scope.recalcScrollbar()
+//				data.scope.setCollapse()
+//			}
 
 			angular.extend(data.scope, self)
 
