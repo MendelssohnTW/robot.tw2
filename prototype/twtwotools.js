@@ -341,6 +341,9 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.hotkey 				= params.hotkey;
 		this.classes 				= params.classes;
 		this.templateName 			= params.templateName;
+		
+		this.listener_layout 			= undefined:
+		
 		params.hotkey ? this.addhotkey() : null;
 		params.provider_listener ? this.addlistener() : null;
 		return this
@@ -523,7 +526,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, builderWindow.prototype.addlistener = function() {
 		var fnThis = this.addWin;
 		var self = this;
-		self.listener_layout = exports.services.$rootScope.$on(self.provider_listener, function(){
+		this.listener_layout = exports.services.$rootScope.$on(thie.provider_listener, function(){
 			if(scripts_loaded.some(f => f == self.url)){
 				fnThis.apply(self, null)
 			}
