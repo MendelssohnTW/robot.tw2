@@ -1,11 +1,13 @@
 define("robotTW2/services/SecondVillageService", [
 	"robotTW2",
 	"helper/time",
-	"models/SecondVillageModel"
+	"models/SecondVillageModel",
+	"robotTW2/conf"
 	], function(
 			robotTW2,
 			helper,
-			SecondVillageModel
+			SecondVillageModel,
+			conf
 	){
 	return (function SecondVillageService(
 			$rootScope,
