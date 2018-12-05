@@ -254,6 +254,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			})
 			.then(function(){
+				promise = undefined
 				if(script_queue.length){
 					url = script_queue.shift()
 					loadScript(url)
