@@ -957,7 +957,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			return function(){
 				var date = new Date(helper.gameTime())
 				date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
-				return date.getTime();
+				return date.getTime() + helper.getGameTimeOffset();
 			}
 		})
 		,
