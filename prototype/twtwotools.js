@@ -341,9 +341,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.hotkey 				= params.hotkey;
 		this.classes 				= params.classes;
 		this.templateName 			= params.templateName;
-		
-		this.listener_layout 			= undefined:
-		
+		this.listener_layout 			= undefined;
 		params.hotkey ? this.addhotkey() : null;
 		params.provider_listener ? this.addlistener() : null;
 		return this
