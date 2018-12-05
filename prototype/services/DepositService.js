@@ -66,7 +66,7 @@ define("robotTW2/services/DepositService", [
 			}
 		}
 		, getInfo = function(){
-			socketService.emit(providers.eventTypeProvider.RESOURCE_DEPOSIT_GET_INFO, {})
+			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_GET_INFO, {})
 		}
 		, wait = function(job){
 			var time_rest = 1e3 * job.time_next_reset - Date.now() + 1e3;
