@@ -1046,6 +1046,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/SpyController.js");
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
+					robotTW2.loadScript("/controllers/SecondVillageController.js");
 //					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
@@ -1193,6 +1194,21 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+				case robotTW2.controllers.SecondVillageController : {
+					robotTW2.createScopeLang("secondvillage", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.SecondVillageController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.SECONDVILAGE,
+								templateName 	: "secondvillage",
+								classes 		: "",
+								url		 		: "/controllers/SecondVillageController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
@@ -1299,6 +1315,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.MedicService && typeof(robotTW2.services.MedicService.init) == "function" ? robotTW2.requestFn.bind("medic", robotTW2.services.MedicService) : null;	
 					break
 				}
+				case robotTW2.services.SecondVillageService : {
+					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
+					break
+				}
 				case "database" : {
 					robotTW2.ready(function(){
 						robotTW2.services.$timeout(function(){
@@ -1314,6 +1334,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
+								robotTW2.loadScript("/databases/data_secondvillage.js");
 
 								robotTW2.services.$timeout(function(){
 									robotTW2.loadScript("/databases/data_main.js");
@@ -1369,6 +1390,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_medic" : {
 					robotTW2.loadScript("/services/MedicService.js");
+					break
+				}
+				case "data_secondvillage" : {
+					robotTW2.loadScript("/services/SecondVillageService.js");
 					break
 				}
 				}
