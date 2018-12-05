@@ -270,8 +270,10 @@ var robotTW2 = window.robotTW2 = undefined;
 		scripts_removed = scripts_removed.filter(f => f != script)
 	}
 	, removeScript = function(script){
-		scripts_loaded = scripts_loaded.filter(f => f != script)
-		scripts_removed.push(script);
+		if(scripts_loaded.some(f => f == script)){
+			scripts_loaded = scripts_loaded.filter(f => f != script)
+			scripts_removed.push(script);
+		}
 	}
 	, ready = function(opt_callback, array_keys){
 		array_keys = array_keys || ["map"];
