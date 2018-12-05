@@ -2,30 +2,24 @@ define("robotTW2/controllers/DepositController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"helper/time",
+	"robotTW2/time",
+	"helper/time"
 	], function(
 			services,
 			providers,
 			conf,
+			convertedTime,
 			helper
 	){
 	return function DepositController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
 
-		$scope.blur = function(){
-			var t = $("#input-ms").val();
-			if(t.length <= 5) {
-				t = t + ":00"
-			}
-			$rootScope.data_deposit.interval = helper.unreadableSeconds(t) * 1000;
-		}
-
 		$scope.getTimeRest = function(){
-			if($rootScope.data_deposit.complete > helper.gameTime()){
-				return helper.readableMilliseconds($rootScope.data_deposit.complete - helper.gameTime())
+			if($rootScope.data_deposit.complete > convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_deposit.complete - convertedTime())
 			} else {
-				return helper.readableMilliseconds(conf.MIN_INTERVAL)
+				return 0;
 			}
 		}
 

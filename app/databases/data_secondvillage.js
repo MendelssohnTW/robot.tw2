@@ -1,0 +1,57 @@
+define("robotTW2/databases/data_secondvillage", [
+	"robotTW2/databases/database",
+	"robotTW2/conf",
+	"robotTW2/services",
+	"robotTW2/notify"
+	], function(
+			database,
+			conf,
+			services,
+			notify
+	) {
+	var data_secondvillage = database.get("data_secondvillage")
+	, db_deposit = {};
+
+	db_deposit.set = function(){
+		database.set("data_secondvillage", data_secondvillage, true)
+	}
+
+	db_deposit.get = function(){
+		return database.get("data_secondvillage")
+	}
+
+	var dataNew = {
+			auto_initialize			: false,
+			initialized 			: false,
+			activated 				: false,
+			hotkey					: conf.HOTKEY.SECONDVILLAGE,
+			use_reroll				: false,
+			complete				: 0,
+			version					: conf.VERSION.SECONDVILLAGE,
+			interval				: 0
+	}
+
+	if(!data_secondvillage){
+		data_secondvillage = dataNew
+		database.set("data_secondvillage", data_secondvillage, true)
+	} else {
+		if(!data_secondvillage.version || data_secondvillage.version < conf.VERSION.SECONDVILLAGE){
+			data_secondvillage = dataNew
+			notify("data_secondvillage");
+		} else {
+			if(!data_secondvillage.auto_initialize) data_secondvillage.initialized = !1;
+			if(data_secondvillage.auto_initialize) data_secondvillage.initialized = !0;
+		}
+		database.set("data_secondvillage", data_secondvillage, true)
+	}
+
+	Object.setPrototypeOf(data_secondvillage, db_deposit);
+
+	services.$rootScope.data_secondvillage = data_secondvillage;
+
+	services.$rootScope.$watch("data_secondvillage", function(){
+		data_secondvillage.set()
+	}, true)
+
+	return data_secondvillage;
+})

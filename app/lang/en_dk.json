@@ -171,6 +171,12 @@
 		"text_interval": "Next cycle in",
 		"use_reroll_deposit": "Automatic Sorting Again"
 	},
+	"secondvillage": {
+		"title": "Missions of the second village",
+		"settings": "Settings for collecting the second village",
+		"text_interval_village": "Check Interval",
+		"text_interval": "Next cycle in "
+	},
 	"spy": {
 		"title": "Recruitment of spies",
 		"settings": "Settings",

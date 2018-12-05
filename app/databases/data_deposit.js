@@ -28,7 +28,7 @@ define("robotTW2/databases/data_deposit", [
 			use_reroll				: false,
 			complete				: 0,
 			version					: conf.VERSION.DEPOSIT,
-			interval				: conf.INTERVAL.DEPOSIT
+			interval				: 0
 	}
 
 	if(!data_deposit){

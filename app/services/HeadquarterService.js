@@ -1,12 +1,12 @@
 define("robotTW2/services/HeadquarterService", [
 	"robotTW2",
-	"helper/time",
+	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/upgradeabilityStates",
 	"conf/locationTypes",
 	], function(
 			robotTW2,
-			helper,
+			convertedTime,
 			conf,
 			upgradeabilityStates,
 			locationTypes
@@ -140,7 +140,7 @@ define("robotTW2/services/HeadquarterService", [
 			$rootScope.data_headquarter.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_headquarter.interval)
 					var t = Math.min.apply(null, list);
 			$rootScope.data_headquarter.interval = t
-			$rootScope.data_headquarter.complete = helper.gameTime() + t
+			$rootScope.data_headquarter.complete = convertedTime() + t
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 			if(callback && typeof(callback) == "function"){callback(t)}
