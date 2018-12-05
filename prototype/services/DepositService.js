@@ -82,7 +82,6 @@ define("robotTW2/services/DepositService", [
 		, start = function (){
 			if(isRunning){return}
 			ready(function(){
-				$rootScope.data_deposit.interval = conf.INTERVAL.DEPOSIT;
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
 				!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;
@@ -100,6 +99,7 @@ define("robotTW2/services/DepositService", [
 					verify_deposit()
 					wait(job)
 				}) : listener_job_info;
+				getInfo()
 			}, ["all_villages_ready"])
 		}
 		, stop = function (){
