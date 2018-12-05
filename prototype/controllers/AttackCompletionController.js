@@ -1,10 +1,8 @@
 define("robotTW2/controllers/AttackCompletionController", [
 	"robotTW2/services",
-	"helper/time",
 	"robotTW2/time"
 	], function(
 			services,
-			helper,
 			convertedTime
 	){
 	return function AttackCompletionController($rootScope, $scope) {
