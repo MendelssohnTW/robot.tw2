@@ -13,17 +13,9 @@ define("robotTW2/controllers/SecondVillageController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
 
-		$scope.blur = function(){
-			var t = $("#input-ms").val();
-			if(t.length <= 5) {
-				t = t + ":00"
-			}
-			$rootScope.data_deposit.interval = helper.unreadableSeconds(t) * 1000;
-		}
-
 		$scope.getTimeRest = function(){
-			if($rootScope.data_deposit.complete > helper.gameTime()){
-				return helper.readableMilliseconds($rootScope.data_deposit.complete - helper.gameTime())
+			if($rootScope.data_secondvillage.complete > helper.gameTime()){
+				return helper.readableMilliseconds($rootScope.data_secondvillage.complete - helper.gameTime())
 			} else {
 				return helper.readableMilliseconds(conf.MIN_INTERVAL)
 			}
@@ -31,7 +23,7 @@ define("robotTW2/controllers/SecondVillageController", [
 
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function($event, data) {
 			if(document.getElementById("input-ms")){
-				document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
+				document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_secondvillage.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_secondvillage.interval) : helper.readableMilliseconds($rootScope.data_secondvillage.interval);
 				if (!$rootScope.$$phase) {
 					$rootScope.$apply();
 				}
@@ -45,7 +37,7 @@ define("robotTW2/controllers/SecondVillageController", [
 			}
 		})
 
-		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
+		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_secondvillage.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_secondvillage.interval) : helper.readableMilliseconds($rootScope.data_secondvillage.interval);
 
 		return $scope;
 	}

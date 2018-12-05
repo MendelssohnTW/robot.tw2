@@ -16,8 +16,8 @@ define("robotTW2/controllers/DepositController", [
 		var self = this;
 
 		$scope.getTimeRest = function(){
-			if($rootScope.data_secondvillage.complete > convertedTime()){
-				return helper.readableMilliseconds($rootScope.data_secondvillage.complete - convertedTime())
+			if($rootScope.data_deposit.complete > convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_deposit.complete - convertedTime())
 			} else {
 				return 0;
 			}
@@ -25,7 +25,7 @@ define("robotTW2/controllers/DepositController", [
 
 		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function($event, data) {
 			if(document.getElementById("input-ms")){
-				document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_secondvillage.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_secondvillage.interval) : helper.readableMilliseconds($rootScope.data_secondvillage.interval);
+				document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
 				if (!$rootScope.$$phase) {
 					$rootScope.$apply();
 				}
@@ -39,7 +39,7 @@ define("robotTW2/controllers/DepositController", [
 			}
 		})
 
-		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_secondvillage.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_secondvillage.interval) : helper.readableMilliseconds($rootScope.data_secondvillage.interval);
+		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_deposit.interval) : helper.readableMilliseconds($rootScope.data_deposit.interval);
 
 		return $scope;
 	}
