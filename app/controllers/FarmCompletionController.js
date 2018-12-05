@@ -1,5 +1,5 @@
 define("robotTW2/controllers/FarmCompletionController", [
-	"robotTW2.services",
+	"robotTW2/services",
 	"helper/time",
 	], function(
 			services,

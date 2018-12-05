@@ -270,8 +270,10 @@ var robotTW2 = window.robotTW2 = undefined;
 		scripts_removed = scripts_removed.filter(f => f != script)
 	}
 	, removeScript = function(script){
-		scripts_loaded = scripts_loaded.filter(f => f != script)
-		scripts_removed.push(script);
+		if(scripts_loaded.some(f => f == script)){
+			scripts_loaded = scripts_loaded.filter(f => f != script)
+			scripts_removed.push(script);
+		}
 	}
 	, ready = function(opt_callback, array_keys){
 		array_keys = array_keys || ["map"];
@@ -341,6 +343,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.hotkey 				= params.hotkey;
 		this.classes 				= params.classes;
 		this.templateName 			= params.templateName;
+		this.listener_layout 			= undefined;
 		params.hotkey ? this.addhotkey() : null;
 		params.provider_listener ? this.addlistener() : null;
 		return this
@@ -523,7 +526,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, builderWindow.prototype.addlistener = function() {
 		var fnThis = this.addWin;
 		var self = this;
-		self.listener_layout = exports.services.$rootScope.$on(self.provider_listener, function(){
+		this.listener_layout = exports.services.$rootScope.$on(this.provider_listener, function(){
 			if(scripts_loaded.some(f => f == self.url)){
 				fnThis.apply(self, null)
 			}
