@@ -171,6 +171,12 @@
 		"text_interval": "Próximo ciclo em ",
 		"use_reroll_deposit": "Sortear novamente automático"
 	},
+	"secondvillage": {
+		"title": "Missões da segunda aldeia",
+		"settings": "Configurações para coleta da segunda aldeia",
+		"text_interval_village": "Intervalo de verificação",
+		"text_interval": "Próximo ciclo em "
+	},
 	"spy": {
 		"title": "Recrutamento de espiões",
 		"settings": "Configurações",
