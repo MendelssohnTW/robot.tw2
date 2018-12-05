@@ -5,7 +5,7 @@ define("robotTW2/controllers/AttackCompletionController", [
 	], function(
 			services,
 			helper,
-			converted
+			convertedTime
 	){
 	return function AttackCompletionController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -13,8 +13,8 @@ define("robotTW2/controllers/AttackCompletionController", [
 		
 		var self = this;
 
-		$scope.date_init = services.$filter("date")(new Date(converted.gameTime()), "yyyy-MM-dd")
-		$scope.hour_init = services.$filter("date")(new Date(converted.gameTime()), "HH:mm:ss")
+		$scope.date_init = services.$filter("date")(new Date(convertedTime()), "yyyy-MM-dd")
+		$scope.hour_init = services.$filter("date")(new Date(convertedTime()), "HH:mm:ss")
 		$scope.ms_init = 0;
 		$scope.enviarFull = false;
 //		$scope.btnActive = false;
