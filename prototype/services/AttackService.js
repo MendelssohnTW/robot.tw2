@@ -3,11 +3,13 @@ define("robotTW2/services/AttackService", [
 	"helper/time",
 	"robotTW2/conf",
 	"robotTW2/notify",
+	"robotTW2/time"
 	], function(
 			robotTW2,
 			helper,
 			conf,
-			notify
+			notify,
+			converted
 	){
 	return (function AttackService(
 			$rootScope,
@@ -177,7 +179,7 @@ define("robotTW2/services/AttackService", [
 									listener_completed = undefined;
 								}
 							})
-							gTime = helper.gameTime();
+							gTime = converted.gameTime();
 							socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 								start_village: village.getId(),
 								target_village: villageV.getId(),
@@ -195,13 +197,13 @@ define("robotTW2/services/AttackService", [
 		}
 		, addAttack = function(params, opt_id){
 			if(!params){return}
-			var id_command = (Math.round(helper.gameTime() / 1e9)).toString() + params.data_escolhida.toString();
+			var id_command = (Math.round(converted.gameTime() / 1e9)).toString() + params.data_escolhida.toString();
 			if(opt_id){
 				id_command = params.id_command
 			}
 			
 			var expires = params.data_escolhida - params.duration;
-			var timer_delay = expires - helper.gameTime() - $rootScope.data_main.time_correction_command;
+			var timer_delay = expires - converted.gameTime() - $rootScope.data_main.time_correction_command;
 			
 			params["timer_delay"] = timer_delay
 			params["id_command"] = id_command
@@ -213,7 +215,7 @@ define("robotTW2/services/AttackService", [
 				console.log("Comando da aldeia " 
 						+ modelDataService.getVillage(params.start_village).data.name 
 						+ " não enviado as " 
-						+ new Date(helper.gameTime()) 
+						+ new Date(converted.gameTime()) 
 						+ " com tempo do servidor, devido vencimento de limite de delay");
 			}
 		}
@@ -243,7 +245,7 @@ define("robotTW2/services/AttackService", [
 					timeoutIdAttack[id_command] = resendAttack(params)
 				} else {
 					commandQueue.unbind(id_command, $rootScope.data_attack)
-					console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, pois não, possui tropas");
+					console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(converted.gameTime()) + " com tempo do servidor, pois não, possui tropas");
 				}
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
@@ -255,7 +257,7 @@ define("robotTW2/services/AttackService", [
 //			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
 			var expires_send = params.data_escolhida - params.duration;
-			var timer_delay_send = expires_send - helper.gameTime() - $rootScope.data_main.time_correction_command;
+			var timer_delay_send = expires_send - converted.gameTime() - $rootScope.data_main.time_correction_command;
 			if(timer_delay_send > 0){
 				return $timeout(function(){
 					listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
@@ -263,7 +265,7 @@ define("robotTW2/services/AttackService", [
 							console.log("Comando da aldeia " 
 									+ data.home.name + 
 									" enviado as " 
-									+ new Date(helper.gameTime()) + 
+									+ new Date(converted.gameTime()) + 
 									" solicitado para sair as " 
 									+ new Date(data.time_start * 1000) + 
 									" solicitado para chegar as " 
@@ -299,7 +301,7 @@ define("robotTW2/services/AttackService", [
 				}, timer_delay_send)
 			} else {
 				commandQueue.unbind(id_command, $rootScope.data_attack)
-				console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(helper.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+				console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(converted.gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 				return null
 			}
 
@@ -330,8 +332,8 @@ define("robotTW2/services/AttackService", [
 				}
 				if (get_data != undefined && get_time != undefined){
 					scope.milisegundos_duracao = durationInSeconds * 1000;
-					scope.tempo_escolhido = helper.convertDateToUTC(new Date(get_data + " " + get_time + "." + get_ms)).getTime();
-					if (scope.tempo_escolhido > (helper.gameTime() + scope.milisegundos_duracao)){
+					scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+					if (scope.tempo_escolhido > helper.convertDateToUTC(new Date(converted.gameTime() + scope.milisegundos_duracao)).getTime()){
 						addScopeAttack(scope);
 						scope.closeWindow();
 					} else {
@@ -375,7 +377,7 @@ define("robotTW2/services/AttackService", [
 //				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
 				Object.values($rootScope.data_attack.commands).forEach(function(param){
-					if((param.data_escolhida - param.duration) < helper.gameTime()){
+					if((param.data_escolhida - param.duration) < converted.gameTime()){
 						commandQueue.unbind(param.id_command, $rootScope.data_attack)
 					} else {
 						addAttack(param, true);

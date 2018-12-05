@@ -953,6 +953,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			return l
 		})
 		,
+		define("robotTW2/time", ["helper/time"], function(helper) {
+			return function(){
+				var date = new Date(helper.gameTime())
+				date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
+				return date.getTime();
+			}
+		})
+		,
 		define("robotTW2/notify", [
 			'helper/firework'
 			], function(
