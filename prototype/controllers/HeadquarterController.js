@@ -1,10 +1,12 @@
 define("robotTW2/controllers/HeadquarterController", [
 	"helper/time",
+	"robotTW2/time",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
 	], function(
 			helper,
+			convertedTime,
 			services,
 			providers,
 			conf
@@ -22,7 +24,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.isRunning = services.HeadquarterService.isRunning();
 		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_headquarter.complete > helper.gameTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - helper.gameTime()) : 0;
+			return $rootScope.data_headquarter.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - convertedTime()) : 0;
 		}
 
 		$scope.getKey = function(buildingOrder){

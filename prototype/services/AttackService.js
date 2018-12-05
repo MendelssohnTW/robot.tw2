@@ -211,12 +211,6 @@ define("robotTW2/services/AttackService", [
 
 			if(timer_delay > 0){
 				commandQueue.trigger(id_command, params)
-			} else {
-				console.log("Comando da aldeia " 
-						+ modelDataService.getVillage(params.start_village).data.name 
-						+ " não enviado as " 
-						+ new Date(convertedTime()) 
-						+ " com tempo do servidor, devido vencimento de limite de delay");
 			}
 		}
 		, sendAttack = function(params){
@@ -245,7 +239,6 @@ define("robotTW2/services/AttackService", [
 					timeoutIdAttack[id_command] = resendAttack(params)
 				} else {
 					commandQueue.unbind(id_command, $rootScope.data_attack)
-					console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(convertedTime()) + " com tempo do servidor, pois não, possui tropas");
 				}
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
@@ -262,17 +255,6 @@ define("robotTW2/services/AttackService", [
 				return $timeout(function(){
 					listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
 						if(params.start_village == data.origin.id){
-							console.log("Comando da aldeia " 
-									+ data.home.name + 
-									" enviado as " 
-									+ new Date(convertedTime()) + 
-									" solicitado para sair as " 
-									+ new Date(data.time_start * 1000) + 
-									" solicitado para chegar as " 
-									+ new Date(params.data_escolhida) +
-									" com as seguintes unidades " 
-									+ JSON.stringify(data.units)
-							);
 							var id_command = params.id_command;
 							if(listener[id_command] && typeof(listener[id_command].listener) == "function") {
 								listener[id_command].listener();
@@ -301,7 +283,6 @@ define("robotTW2/services/AttackService", [
 				}, timer_delay_send)
 			} else {
 				commandQueue.unbind(id_command, $rootScope.data_attack)
-				console.log("Comando da aldeia " + modelDataService.getVillage(params.start_village).data.name + " não enviado as " + new Date(convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 				return null
 			}
 

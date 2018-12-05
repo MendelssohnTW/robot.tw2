@@ -2,12 +2,14 @@ define("robotTW2/controllers/AttackController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"robotTW2/time"
+	"robotTW2/time",
+	"helper/time"
 	], function(
 			services,
 			providers,
 			conf,
-			convertedTime
+			convertedTime,
+			helper
 	){
 	return function AttackController($rootScope, $scope) {
 		var data_attack = $rootScope.data_attack;

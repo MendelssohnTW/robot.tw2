@@ -1,10 +1,10 @@
 define("robotTW2/services/FarmService", [
 	"robotTW2",
-	"helper/time",
+	"robotTW2/time",
 	"robotTW2/conf",
 	], function(
 			robotTW2,
-			helper,
+			convertedTime,
 			conf
 	){
 	return (function FarmService(
@@ -465,8 +465,8 @@ define("robotTW2/services/FarmService", [
 
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
-				if (($rootScope.data_farm.farm_time_stop - helper.gameTime()) - $rootScope.data_farm.farm_time > 0) {
-					var tempo_delay = $rootScope.data_farm.farm_time_start - helper.gameTime();
+				if (($rootScope.data_farm.farm_time_stop - convertedTime()) - $rootScope.data_farm.farm_time > 0) {
+					var tempo_delay = $rootScope.data_farm.farm_time_start - convertedTime();
 					if(tempo_delay < 0) {
 						tempo_delay = 0
 					} else {

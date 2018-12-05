@@ -2,11 +2,13 @@ define("robotTW2/controllers/DepositController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"helper/time",
+	"robotTW2/time",
+	"helper/time"
 	], function(
 			services,
 			providers,
 			conf,
+			convertedTime,
 			helper
 	){
 	return function DepositController($rootScope, $scope) {
@@ -14,8 +16,8 @@ define("robotTW2/controllers/DepositController", [
 		var self = this;
 
 		$scope.getTimeRest = function(){
-			if($rootScope.data_secondvillage.complete > helper.gameTime()){
-				return helper.readableMilliseconds($rootScope.data_secondvillage.complete - helper.gameTime())
+			if($rootScope.data_secondvillage.complete > convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_secondvillage.complete - convertedTime())
 			} else {
 				return 0;
 			}

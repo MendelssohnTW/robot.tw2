@@ -1,11 +1,11 @@
 define("robotTW2/services/SpyService", [
 	"robotTW2",
-	"helper/time",
+	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/spyTypes",
 	], function(
 			robotTW2,
-			helper,
+			convertedTime,
 			conf,
 			SPY_TYPES
 	){
@@ -90,7 +90,7 @@ define("robotTW2/services/SpyService", [
 			var t = Math.min.apply(null, list)
 			t < 3000 ? t = 3000 : t;
 			$rootScope.data_spy.interval = t
-			$rootScope.data_spy.complete = helper.gameTime() + t
+			$rootScope.data_spy.complete = convertedTime() + t
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_SPY)
 			if(callback && typeof(callback) == "function"){callback(t)}
