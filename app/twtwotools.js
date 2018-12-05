@@ -210,42 +210,58 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		}
 	}
+	, script_queue = []
+	, promise = undefined
 	, loadScript = function(url){
-		var a = Math.round(Math.random() * 1e10)
-		var b = document.createElement("script");
-		b.type = "text/javascript";
-		b.onload = function(data){
-			var c = data.target.src.split(host)[1];
-			c = c.substr(1);
-			var d = c.split("/");
-			var e = "robotTW2";
-			d = d.reverse();
-			var f = d[1];
-			var g = d[0].split(".")[0];
-			var h = [];
-			h.push(e);
-			h.push(f);
-			h.push(g);	
-			var i = h.join("/")
-			require([i], function(type){
-				addScript(url)
-				exports[f][g] = type
-				if(f == "databases"){
-					$rootScope.$broadcast("ready", g);
-				} else {
-					$rootScope.$broadcast("ready", type);
+		if(!promise){
+			promise = new Promise(function(res){
+				var a = Math.round(Math.random() * 1e10)
+				var b = document.createElement("script");
+				b.type = "text/javascript";
+				b.onload = function(data){
+					var c = data.target.src.split(host)[1];
+					c = c.substr(1);
+					var d = c.split("/");
+					var e = "robotTW2";
+					d = d.reverse();
+					var f = d[1];
+					var g = d[0].split(".")[0];
+					var h = [];
+					h.push(e);
+					h.push(f);
+					h.push(g);	
+					var i = h.join("/")
+					require([i], function(type){
+						addScript(url)
+						exports[f][g] = type
+						if(f == "databases"){
+							$rootScope.$broadcast("ready", g);
+						} else {
+							$rootScope.$broadcast("ready", type);
+						}
+					})
+					res()
+				};
+//				b.src = host + url + '?' + a;
+				b.src = host + url;
+
+				if(!scripts_loaded.some(f => f == url)){
+					if(!scripts_removed.some(f => f == url)){
+						document.head.appendChild(b);	
+					} else {
+						addScript(url);
+					}
 				}
 			})
-		};
-//		b.src = host + url + '?' + a;
-		b.src = host + url;
-
-		if(!scripts_loaded.some(f => f == url)){
-			if(!scripts_removed.some(f => f == url)){
-				document.head.appendChild(b);	
-			} else {
-				addScript(url);
-			}
+			.then(function(){
+				if(script_queue.length){
+					url = script_queue.shift()
+					loadScript(url)
+					return !1;
+				}
+			})
+		} else {
+			script_queue.push(url)
 		}
 	}
 	, addScript = function(script){
@@ -363,8 +379,8 @@ var robotTW2 = window.robotTW2 = undefined;
 	builderWindow.prototype.addWin = function() {
 		var self = this;
 //		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-//			if(!templateName){return}
-//			screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
+//		if(!templateName){return}
+//		screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
 //		}): null;
 
 		new Promise(function(res, rej){
@@ -481,8 +497,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 
 //			if(self.openned){
-//				data.scope.recalcScrollbar()
-//				data.scope.setCollapse()
+//			data.scope.recalcScrollbar()
+//			data.scope.setCollapse()
 //			}
 
 			angular.extend(data.scope, self)
@@ -1024,7 +1040,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				} else {
 					return display(robotTW2.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));	
 				}
-				
+
 			}
 		})
 
