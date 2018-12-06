@@ -5,7 +5,9 @@ define("robotTW2/controllers/MapController", [
 	"robotTW2/time",
 	"helper/time",
 	"cdn",
-	"conf/conf"
+	"conf/conf",
+	"helper/mapconvert",
+	"struct/MapData"
 	], function(
 			services,
 			providers,
@@ -13,7 +15,9 @@ define("robotTW2/controllers/MapController", [
 			convertedTime,
 			helper,
 			cdn,
-			conf_conf
+			conf_conf,
+			mapconvert,
+			MapData
 	){
 	return function MapController($rootScope, $scope) {
 		var data_attack = $rootScope.data_attack;
@@ -85,7 +89,7 @@ define("robotTW2/controllers/MapController", [
 				for (y = new DataView(f),
 						b = 1; b < 999; b++)
 					for (c = 1; c < 999; c++)
-						a = l.toTile(y, b, c),
+						a = mapconvert.toTile(y, b, c),
 						a.key.b && (a.key.c ? (r.fillStyle = "rgba(255,255,255,0.8)", r.fillRect(b * d + e - 1, c * d + e - 1, 3, 1), r.fillRect(b * d + e, c * d + e - 2, 1, 3)) 
 								: (r.fillStyle = "rgba(255,255,255,1)", r.fillRect(b * d + e, c * d + e - 1, 1, 1)))
 			})
