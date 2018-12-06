@@ -785,7 +785,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						RECON		 	: "ctrl+alt+r",
 						RECRUIT		 	: "ctrl+alt+e",
 						SPY			 	: "ctrl+alt+s",
-						SECONDVILLAGE	: "ctrl+alt+w"
+						SECONDVILLAGE	: "ctrl+alt+q"
 					},
 					RESERVA				: {
 						RECRUIT : {
@@ -1143,7 +1143,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "spy",
 								classes 		: "",
 								url		 		: "/controllers/SpyController.js",
-								style 			: null
+								style 			: ["width:350px;"]
 						}		
 						robotTW2.build(params)
 					})
@@ -1157,7 +1157,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "farm",
 								classes 		: "",
 								url		 		: "/controllers/FarmController.js",
-								style 			: null
+								style 			: ["width:950px;"]
 						}		
 						robotTW2.build(params)
 					})
@@ -1186,7 +1186,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "recon",
 								classes 		: "",
 								url		 		: "/controllers/ReconController.js",
-								style 			: null
+								style 			: ["width:350px;"]
 						}		
 						robotTW2.build(params)
 					})
@@ -1216,7 +1216,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "deposit",
 								classes 		: "",
 								url		 		: "/controllers/DepositController.js",
-								style 			: null
+								style 			: ["width:350px;"]
 						}		
 						robotTW2.build(params)
 					})
@@ -1227,11 +1227,11 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller		: robotTW2.controllers.SecondVillageController,
 								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.SECONDVILAGE,
+								hotkey 			: conf.HOTKEY.SECONDVILLAGE,
 								templateName 	: "secondvillage",
 								classes 		: "",
 								url		 		: "/controllers/SecondVillageController.js",
-								style 			: null
+								style 			: ["width:350px;"]
 						}		
 						robotTW2.build(params)
 					})
