@@ -466,6 +466,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				var cls = self.classes.join(" ");
 				$(rootnode).addClass(cls);
 			}
+			require(["construct/Engine2d"], function(engine2d){
+				engine2d.resize();	
+			})
 
 			self.$window = rootnode;
 			$(".win-main").removeClass("jssb-focus")
