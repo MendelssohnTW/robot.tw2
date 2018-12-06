@@ -92,8 +92,8 @@ define("robotTW2/controllers/MapController", [
 						a = mapconvert.toTile(y, b, c),
 						a.key.b && 
 						(a.key.c 
-								? (canvas.fillStyle = "rgba(255,255,255,0.8)", canvas.fillRect(b * d + e - 1, c * d + e - 1, 3, 1), canvas.fillRect(b * d + e, c * d + e - 2, 1, 3)) 
-								: (canvas.fillStyle = "rgba(255,255,255,1)", canvas.fillRect(b * d + e, c * d + e - 1, 1, 1))
+								? (context.fillStyle = "rgba(255,255,255,0.8)", context.fillRect(b * d + e - 1, c * d + e - 1, 3, 1), context.fillRect(b * d + e, c * d + e - 2, 1, 3)) 
+								: (context.fillStyle = "rgba(255,255,255,1)", context.fillRect(b * d + e, c * d + e - 1, 1, 1))
 								)
 			})
 		}
