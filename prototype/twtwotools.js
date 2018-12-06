@@ -798,7 +798,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						RECRUIT		 	: "ctrl+alt+e",
 						SPY			 	: "ctrl+alt+s",
 						SECONDVILLAGE	: "ctrl+alt+q",
-						MAP			 	: "ctrl+alt+m",
+						MAP			 	: "ctrl+alt+m"
 					},
 					RESERVA				: {
 						RECRUIT : {
@@ -1266,7 +1266,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller		: robotTW2.controllers.MapController,
 								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.SECONDVILLAGE,
+								hotkey 			: conf.HOTKEY.MAP,
 								templateName 	: "map",
 								classes 		: "",
 								url		 		: "/controllers/MapController.js",
