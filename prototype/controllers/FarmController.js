@@ -223,7 +223,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].max_journey_time)
 			$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].min_journey_time)
 
-			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time)) {
+			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time) && $scope.activeTab == TABS.PRESET) {
 				var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 				if(tmMax.length == 7) {
 					tmMax = "0" + tmMax;
@@ -231,7 +231,7 @@ define("robotTW2/controllers/FarmController", [
 				document.getElementById("max_journey_time").value = tmMax;	
 			}
 
-			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time)) {
+			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time) && $scope.activeTab == TABS.PRESET) {
 				var tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
 				if(tmMin.length == 7) {
 					tmMin = "0" + tmMin;
