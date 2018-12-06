@@ -3,13 +3,17 @@ define("robotTW2/controllers/MapController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"robotTW2/time",
-	"helper/time"
+	"helper/time",
+	"cdn",
+	"conf/conf"
 	], function(
 			services,
 			providers,
 			conf,
 			convertedTime,
-			helper
+			helper,
+			cdn,
+			conf_conf
 	){
 	return function MapController($rootScope, $scope) {
 		var data_attack = $rootScope.data_attack;
