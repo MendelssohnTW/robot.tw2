@@ -469,6 +469,11 @@ var robotTW2 = window.robotTW2 = undefined;
 				$(rootnode).addClass(cls);
 			}
 			
+			data.scope.$on('$destroy', function() {
+				$("#map")[0].setAttribute("style", "left:0px;")
+				window.dispatchEvent(new Event('resize'));
+			});
+			
 			self.$window = rootnode;
 			$(".win-main").removeClass("jssb-focus")
 			$(".win-main").removeClass("jssb-applied")
