@@ -1143,7 +1143,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "spy",
 								classes 		: "",
 								url		 		: "/controllers/SpyController.js",
-								style 			: ["width:350px;"]
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1157,7 +1159,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "farm",
 								classes 		: "",
 								url		 		: "/controllers/FarmController.js",
-								style 			: ["width:950px;"]
+								style 			: {
+									width:"950px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1186,7 +1190,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "recon",
 								classes 		: "",
 								url		 		: "/controllers/ReconController.js",
-								style 			: ["width:350px;"]
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1216,7 +1222,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "deposit",
 								classes 		: "",
 								url		 		: "/controllers/DepositController.js",
-								style 			: ["width:350px;"]
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1231,7 +1239,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "secondvillage",
 								classes 		: "",
 								url		 		: "/controllers/SecondVillageController.js",
-								style 			: ["width:350px;"]
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})
