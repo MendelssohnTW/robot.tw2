@@ -69,17 +69,17 @@ define("robotTW2/services/SecondVillageService", [
 			if (!isRunning || !second_village || !second_village.isAvailable())
 				return !1;
 			var job = readyJobs(second_village.data.jobs);
-			if (readyJobs) {
+			if (job) {
 				var time_job = helper.server2ClientTime(job.time_completed)
 				, time_rest = time_job - Date.now() + 1e3;
 				return setTimeout(verify_second, time_rest),
 				!1
 			}
-			var job_for_collect = collectibleJobs(a.data.jobs);
+			var job_for_collect = collectibleJobs(second_village.data.jobs);
 			if (job_for_collect)
 				return collectJob(job_for_collect);
-			var currentJobs = secondVillageService.getCurrentDayJobs(a.data.jobs, a.data.day)
-			, collectedJobs = secondVillageService.getCollectedJobs(a.data.jobs)
+			var currentJobs = secondVillageService.getCurrentDayJobs(second_village.data.jobs, second_village.data.day)
+			, collectedJobs = secondVillageService.getCollectedJobs(second_village.data.jobs)
 			, resources = modelDataService.getSelectedVillage().getResources().getResources()
 			, availableJobs = secondVillageService.getAvailableJobs(currentJobs, collectedJobs, resources, []);
 			if (availableJobs) {
@@ -103,7 +103,7 @@ define("robotTW2/services/SecondVillageService", [
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
 				!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.SECOND_VILLAGE_JOB_COLLECTED, function(){$timeout(function(){verify_second()}, 3000)}) : listener_job_collect;
-				!listener_job_started ? listener_job_started = $rootScope.$on(providers.eventTypeProvider.SECOND_VILLAGE_VILLAGE_CREATED, function(){$timeout(function(){verify_second()}, 3000)}) : listener_job_collectible;
+				!listener_job_started ? listener_job_started = $rootScope.$on(providers.eventTypeProvider.SECOND_VILLAGE_VILLAGE_CREATED, function(){$timeout(function(){verify_second()}, 3000)}) : listener_job_started;
 				verify_second()
 			}, ["all_villages_ready"])
 	
