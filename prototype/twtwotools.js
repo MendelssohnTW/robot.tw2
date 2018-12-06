@@ -455,7 +455,9 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			if(self.style){
 				Object.keys(self.style).forEach(function(key){
-					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");	
+					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
+					$("#map")[0].setAttribute("style", "left:"+ self.style[key] + ";")
+					window.dispatchEvent(new Event('resize'));
 				})
 			}
 
@@ -466,6 +468,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				var cls = self.classes.join(" ");
 				$(rootnode).addClass(cls);
 			}
+			
 			require(["construct/Engine2d"], function(engine2d){
 				engine2d.resize();	
 			})
