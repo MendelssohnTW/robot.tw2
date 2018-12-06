@@ -15,6 +15,22 @@
 	"RESUME": "Retomar",
 	"YES": "Sim",
 	"NO": "Não",
+	"map": {
+		"title": "Mini mapa",
+		"minimap": "Mini mapa",
+		"highlights": "Destaques",
+		"settings": "Configurações",
+		"text_entry": "Aldeia/jogador/tribo",
+		"color": "Cor (Hex)",
+		"add": "Adicionar marcação",
+		"misc": "Diversos",
+		"colors": "Cores",
+		"right" : "Clique botão direito na aldeia",
+		"highlight_village": "Destaque de aldeia",
+		"highlight_player": "Destaque de jogador",
+		"highlight_tribe": "Destaque de tribo",
+		"floating_minimap" : "Mostrar mini mapa flutuante"
+	},
 	"main": {
 		"title": "Configurações principais",
 		"introducing": "Ativação e desativação dos módulos",

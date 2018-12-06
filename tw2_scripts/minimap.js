@@ -18,11 +18,30 @@ define("two/minimap", [
 			k, 
 			l, 
 			m) {
-	var n, o, p, q, r, s, t, u, v, w, x, y, z = 5, A = 1, B = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, C = {
+	var n
+	, o
+	, p
+	, q
+	, r
+	, s
+	, t
+	, u
+	, v
+	, w
+	, x
+	, y
+	, z = 5
+	, A = 1
+	, B = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, C = {
 			village: {},
 			character: {},
 			tribe: {}
-	}, D = {}, E = null, F = {}, G = {}, H = !0, I = function(a) {
+	}, D = {}
+	, E = null
+	, F = {}
+	, G = {}
+	, H = !0
+	, I = function(a) {
 		var b = ca.getVillageBlock()
 		, c = ca.getVillageAxisOffset()
 		, d = Math.ceil(F.x + a.offsetX)
@@ -474,8 +493,45 @@ require(["two/ready", "two/minimap", "two/minimap/data", "two/minimap/ui"], func
 		b.run()
 	})
 }),
-define("two/minimap/ui", ["two/minimap", "two/locale", "two/ui", "two/ui/autoComplete", "two/FrontButton", "two/utils", "two/eventQueue", "ejs", "struct/MapData", "cdn"], function(a, b, d, e, j, k, l, m, n, o) {
-	var p, q, r, s, t, u, v, w, x, y, z, A, B, C, D = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, E = {}, F = function(a, b) {
+define("two/minimap/ui", [
+	"two/minimap"
+	, "two/locale"
+	, "two/ui"
+	, "two/ui/autoComplete"
+	, "two/FrontButton"
+	, "two/utils"
+	, "two/eventQueue"
+	, "ejs"
+	, "struct/MapData"
+	, "cdn"
+	], function(
+			a
+			, b
+			, d
+			, e
+			, j
+			, k
+			, l
+			, m
+			, n
+			, o) {
+	var p
+	, q
+	, r
+	, s
+	, t
+	, u
+	, v
+	, w
+	, x
+	, y
+	, z
+	, A
+	, B
+	, C
+	, D = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
+		, E = {}
+	, F = function(a, b) {
 		f.emit(g.TRIBE_GET_PROFILE, {
 			tribe_id: a
 		}, b)
