@@ -112,6 +112,9 @@
 		"settings": "Selecione o tipo pra renomear"
 	},
 	"farm": {
+		"farm": "Configurações da coleta",
+		"preset": "Predefinições",
+		"log": "Log",
 		"title": "Coleta de recursos",
 		"wait_init": "Aguardando início do ciclo de Farm",
 		"farm_init": "Novo ciclo de Farm iniciado",
@@ -135,7 +138,7 @@
 		"text_name_action": "Ação",
 		"text_atalho": "Atalho definido",
 		"text_create": "Criar nova predefinição",
-		"text_title_preset":"Selecione as predefinições para sua aldeia atual.",
+		"text_title_preset": "Selecione as predefinições para sua aldeia atual.",
 		"text_alert_preset": "Não há predefinições globais no momento. Para criar uma nova predefinição, clique no botão 'Criar nova predefinição' abaixo.",
 		"text_selection": "Selecionadas",
 		"text_check": "Adicionar aldeia na lista de excessão de farm",
