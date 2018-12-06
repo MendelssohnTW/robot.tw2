@@ -78,7 +78,7 @@ define("robotTW2/services/SecondVillageService", [
 			var job_for_collect = collectibleJobs(second_village.data.jobs);
 			if (job_for_collect)
 				return collectJob(job_for_collect);
-			var currentJobs = secondVillageService.getCurrentDayJobs(second_village.data.jobs, a.data.day)
+			var currentJobs = secondVillageService.getCurrentDayJobs(second_village.data.jobs, second_village.data.day)
 			, collectedJobs = secondVillageService.getCollectedJobs(second_village.data.jobs)
 			, resources = modelDataService.getSelectedVillage().getResources().getResources()
 			, availableJobs = secondVillageService.getAvailableJobs(currentJobs, collectedJobs, resources, []);
