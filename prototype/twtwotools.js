@@ -1088,7 +1088,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
-					robotTW2.loadScript("/controllers/MapController.js");
+//					robotTW2.loadScript("/controllers/MapController.js");
 //					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
@@ -1406,7 +1406,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-								robotTW2.loadScript("/databases/data_map.js");
+//								robotTW2.loadScript("/databases/data_map.js");
 
 								robotTW2.services.$timeout(function(){
 									robotTW2.loadScript("/databases/data_main.js");
