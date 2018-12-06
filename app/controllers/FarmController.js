@@ -16,11 +16,34 @@ define("robotTW2/controllers/FarmController", [
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", $rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
+		
+		var TABS = {
+				FARM 	: services.$filter("i18n")("farm", $rootScope.loc.ale, "farm"),
+				PRESET 	: services.$filter("i18n")("preset", $rootScope.loc.ale, "farm"),
+				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "farm")
+		}
+		, TAB_ORDER = [
+			TABS.FARM,
+			TABS.PRESET,
+			TABS.LOG,
+			]
 
-		var presetListModel	= services.modelDataService.getPresetList(),
-		presetIds = [];
+		$scope.requestedTab = TABS.FARM;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
 
-		var rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
+		var setActiveTab = function setActiveTab(tab) {
+			$scope.activeTab								= tab;
+			$scope.requestedTab								= null;
+		}
+		, initTab = function initTab() {
+			if (!$scope.activeTab) {
+				setActiveTab($scope.requestedTab);
+			}
+		}
+		, presetListModel	= services.modelDataService.getPresetList()
+		, presetIds = []
+		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, update = function () {
 
 			if($rootScope.data_farm.farm_time_start < convertedTime()) {
@@ -34,7 +57,6 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-
 		, get_dist = function (max_journey_time) {
 			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId);
 			var bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
@@ -75,6 +97,11 @@ define("robotTW2/controllers/FarmController", [
 			return 0;
 		}
 
+		initTab();
+		
+		$scope.userSetActiveTab = function(tab){
+			setActiveTab(tab);
+		}
 
 		$scope.blur = function (callback) {
 			$scope.farm_time = $("#farm_time").val()
@@ -196,7 +223,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].max_journey_time)
 			$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].min_journey_time)
 
-			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time)) {
+			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time) && $scope.activeTab == TABS.PRESET) {
 				var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 				if(tmMax.length == 7) {
 					tmMax = "0" + tmMax;
@@ -204,7 +231,7 @@ define("robotTW2/controllers/FarmController", [
 				document.getElementById("max_journey_time").value = tmMax;	
 			}
 
-			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time)) {
+			if(!(!$scope.presetSelected || !$scope.presetSelected.min_journey_time) && $scope.activeTab == TABS.PRESET) {
 				var tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
 				if(tmMin.length == 7) {
 					tmMin = "0" + tmMin;

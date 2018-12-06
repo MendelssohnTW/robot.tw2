@@ -455,7 +455,9 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			if(self.style){
 				Object.keys(self.style).forEach(function(key){
-					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");	
+					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
+					$("#map")[0].setAttribute("style", "left:"+ self.style[key] + ";")
+					window.dispatchEvent(new Event('resize'));
 				})
 			}
 
@@ -466,7 +468,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				var cls = self.classes.join(" ");
 				$(rootnode).addClass(cls);
 			}
-
+			
 			self.$window = rootnode;
 			$(".win-main").removeClass("jssb-focus")
 			$(".win-main").removeClass("jssb-applied")
@@ -785,7 +787,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						RECON		 	: "ctrl+alt+r",
 						RECRUIT		 	: "ctrl+alt+e",
 						SPY			 	: "ctrl+alt+s",
-						SECONDVILLAGE	: "ctrl+alt+w"
+						SECONDVILLAGE	: "ctrl+alt+q"
 					},
 					RESERVA				: {
 						RECRUIT : {
@@ -1143,7 +1145,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "spy",
 								classes 		: "",
 								url		 		: "/controllers/SpyController.js",
-								style 			: null
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1155,9 +1159,11 @@ var robotTW2 = window.robotTW2 = undefined;
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.FARM,
 								templateName 	: "farm",
-								classes 		: "fullsize",
+								classes 		: "",
 								url		 		: "/controllers/FarmController.js",
-								style 			: null
+								style 			: {
+									width:"950px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1186,7 +1192,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "recon",
 								classes 		: "",
 								url		 		: "/controllers/ReconController.js",
-								style 			: null
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1216,7 +1224,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "deposit",
 								classes 		: "",
 								url		 		: "/controllers/DepositController.js",
-								style 			: null
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -1227,11 +1237,13 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller		: robotTW2.controllers.SecondVillageController,
 								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.SECONDVILAGE,
+								hotkey 			: conf.HOTKEY.SECONDVILLAGE,
 								templateName 	: "secondvillage",
 								classes 		: "",
 								url		 		: "/controllers/SecondVillageController.js",
-								style 			: null
+								style 			: {
+									width:"350px"
+								}
 						}		
 						robotTW2.build(params)
 					})

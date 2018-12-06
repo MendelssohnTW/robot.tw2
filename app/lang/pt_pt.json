@@ -112,6 +112,9 @@
 		"settings": "Selecione o tipo pra renomear"
 	},
 	"farm": {
+		"farm": "Configurações da coleta",
+		"preset": "Predefinições",
+		"log": "Log",
 		"title": "Coleta de recursos",
 		"wait_init": "Aguardando início do ciclo de Farm",
 		"farm_init": "Ciclo de Farm iniciado",

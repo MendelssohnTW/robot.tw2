@@ -6,351 +6,345 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
+	<div class="tabs tabs-bg">
+		<div class="tabs-two-col">
+			<div ng-repeat="tabName in TAB_ORDER" class="tab"
+				ng-click="userSetActiveTab(tabName)"
+				ng-class="{'tab-active': activeTab === tabName}">
+				<div class="tab-inner">
+					<div
+						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
+						<a href="#"
+							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="win-main" scrollbar=""
 		style="position: relative; float: left;">
-		<div class="box-paper content-settings">
-			<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-				<colgroup>
-					<col width="35%">
-					<col width="*">
-				</colgroup>
+		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
+			<div class="scroll-wrap farm" style="margin-bottom: 80px">
+				<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+					<colgroup>
+						<col width="50%">
+						<col width="*">
+					</colgroup>
 
-				<tbody>
-					<tr>
-						<td class="cell-top">
-							<div class="scroll-wrap farm" style="margin-bottom: 80px">
-								<table
-									class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-									<colgroup>
-										<col width="50%">
-										<col width="*">
-									</colgroup>
+					<tbody>
+						<tr>
+							<td class="cell-right"><label for="inicio_de_farm"
+								style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
+								class="input-border inpt" type="time" id="inicio_de_farm"
+								step="1" min="00:00:00" max="23:59:59"
+								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
+								ng-blur="blur()"></td>
+							<td class="cell-right"><label for="data_inicio_de_farm"
+								style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
+								class="input-border inpd" type="date" id="data_inicio_de_farm"
+								value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
+								ng-blur="blur()"></td>
+						</tr>
+						<tr>
+							<td class="cell-right"><label for="termino_de_farm"
+								style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
+								class="input-border inpt" type="time" id="termino_de_farm"
+								step="1" min="00:00:00" max="23:59:59"
+								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
+								ng-blur="blur()"></td>
+							<td class="cell-right"><label for="data_termino_de_farm"
+								style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
+								class="input-border inpd" type="date" id="data_termino_de_farm"
+								value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
+								ng-blur="blur()"></td>
 
-									<tbody>
-										<tr>
-											<td class="cell-right"><label for="inicio_de_farm"
-												style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
-												class="input-border inpt" type="time" id="inicio_de_farm"
-												step="1" min="00:00:00" max="23:59:59"
-												value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
-												ng-blur="blur()"></td>
-											<td class="cell-right"><label for="data_inicio_de_farm"
-												style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
-												class="input-border inpd" type="date"
-												id="data_inicio_de_farm"
-												value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
-												ng-blur="blur()"></td>
-										</tr>
-										<tr>
-											<td class="cell-right"><label for="termino_de_farm"
-												style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
-												class="input-border inpt" type="time" id="termino_de_farm"
-												step="1" min="00:00:00" max="23:59:59"
-												value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
-												ng-blur="blur()"></td>
-											<td class="cell-right"><label for="data_termino_de_farm"
-												style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
-												class="input-border inpd" type="date"
-												id="data_termino_de_farm"
-												value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
-												ng-blur="blur()"></td>
-
-										</tr>
-										<tr>
-											<td class="cell-right"><label for="farm_time"
-												style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
-												class="input-border inpt" type="time" id="farm_time"
-												step="1" min="00:00:00" max="23:59:59"
-												value="{{getFarmTime()}}" ng-blur="blur()"></td>
-											<td>
-												<div>
-													<span
-														ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span>{{farm_running}}
-												</div>
-											</td>
-
-										</tr>
-										<tr>
-											<td class="cell-top">
-												<div class="list-collapse">
-													<h5 class="twx-section collapse">{{exceptions}}</h5>
-													<div>
-														<table
-															class="tbl-border-light tbl-striped tbl-content tbl-hover">
-															<colgroup>
-																<col width="*">
-																<col width="34">
-															</colgroup>
-
-															<tbody>
-																<tr ng-repeat="(key, value) in list_exceptions">
-																	<td class="cell-right"><span>{{value.village_name}}
-																			- ({{value.village_x}}|{{value.village_y}})</span></td>
-																	<td class="cell-space"><a href="#"
-																		class="size-34x34 btn-red icon-26x26-close"
-																		ng-click="deleteException(key)"></a></td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-												</div>
-											</td>
-											<td class="cell-top" colspan=2>
-												<div class="list-collapse">
-													<h5 class="twx-section collapse">{{villages_selections}}</h5>
-													<div>
-														<table
-															class="tbl-border-light tbl-striped tbl-content tbl-hover">
-															<colgroup>
-																<col width="*">
-																<col width="56">
-															</colgroup>
-
-															<tbody>
-																<tr ng-repeat="village in data_villages.villages">
-																	<td
-																		ng-class="{'selected': villageSelected.data.villageId == village.data.villageId}"
-																		ng-click="setVillage(village)" class="cell-right"><span>{{village.data.name
-																			+ " - (" + village.data.x + "|" + village.data.x +
-																			")"}}</span></td>
-																	<td class="cell-space">
-																		<div class="checkbox box-border-dark">
-																			<div switch-slider="" border="true" enabled="true"
-																				value="village.farm_activate" vertical="false"
-																				size="'56x28'" ng-model="village.farm_activate">
-																				<div
-																					ng-class="{'box-border-dark box-filter': border}"
-																					class="box-border-dark box-filter">
-																					<div class="switch switch-56x28 switch-horizontal"
-																						ng-class="{'switch-checked': value, 'switch-inactive': !villageSelected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
-																						<span class="size-26x26 switch-thumb"> <span
-																							class="simple icon-26x26-switch-off"
-																							ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
-																						</span>
-																					</div>
-																				</div>
-																			</div>
-																		</div>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</td>
-						<td>
-							<div class="scroll-wrap farm">
-								<div class="list-collapse">
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<colgroup>
-											<col width="100px">
-											<col width="22%px">
-											<col width="26%px">
-											<col width="26%px">
-											<col width="26%px">
-										</colgroup>
-										<tbody>
-											<tr>
-												<td rowspan="2">
-													<div class="quadrant">
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(1)}"
-															ng-click="setQuadrant(1)">
-															<div class="quadrant-text">
-																<span style="">1</span>
-															</div>
-														</div>
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(2)}"
-															ng-click="setQuadrant(2)">
-															<div class="quadrant-text">
-																<span style="">2</span>
-															</div>
-														</div>
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(4)}"
-															ng-click="setQuadrant(4)">
-															<div class="quadrant-text">
-																<span style="">4</span>
-															</div>
-														</div>
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(3)}"
-															ng-click="setQuadrant(3)">
-															<div class="quadrant-text">
-																<span style="">3</span>
-															</div>
-														</div>
-													</div>
-												</td>
-												<td class="cell-right"><label for="min_point"
-													class="with-margin">{{text_min_point}}</label><input
-													class="input-border inputcreated" type="number"
-													id="min_point" step="1" min="0" max="12000"
-													ng-model="presetSelected.min_points_farm"
-													ng-blur="blurPreset()"></td>
-												<td class="cell-right"><label for="min_journey_time"
-													class="with-margin">{{time_min}}</label><input
-													class="input-border inpt" type="time" id="min_journey_time"
-													step="1" min="00:00:00" max="23:59:59"
-													ng-blur="blurMinJourney()"></td>
-												<td class="cell-right"><label for="min_dist"
-													class="with-margin">{{text_min_dist}}</label><input
-													class="input-border inputcreated" type="number"
-													id="min_dist" step="1" min="1" max="180"
-													ng-model="presetSelected.min_journey_distance" disabled></td>
-											</tr>
-											<tr>
-
-												<td class="cell-right"><label for="max_point"
-													class="with-margin">{{text_max_point}}</label><input
-													class="input-border inputcreated" type="number"
-													id="max_point" step="1" min="00" max="12000"
-													ng-model="presetSelected.max_points_farm"
-													ng-blur="blurPreset()"></td>
-												<td class="cell-right"><label for="max_journey_time"
-													class="with-margin">{{time_max}}</label><input
-													class="input-border inpt" type="time" id="max_journey_time"
-													step="1" min="00:00:00" max="23:59:59"
-													ng-blur="blurMaxJourney()"></td>
-												<td class="cell-right"><label for="max_dist"
-													class="with-margin">{{text_max_dist}}</label><input
-													class="input-border inputcreated" type="number"
-													id="max_dist" step="1" min="5" max="200"
-													ng-model="presetSelected.max_journey_distance" disabled></td>
-												<td class="cell-right"><label for="cmd_max"
-													class="with-margin">{{text_cmd_max}}</label><input
-													class="input-border inputcreated" type="number"
-													id="cmd_max" step="1" min="0" max="50"
-													ng-model="presetSelected.max_commands_farm"
-													ng-blur="blurPreset()"></td>
-
-											</tr>
-
-											<tr>
-												<td class="cell-top cell-right" rowspan="3" colspan="3">
-													<div class="list-collapse">
-														<h5 class="twx-section collapse">{{text_preset}}</h5>
-
-														<div class="box-text ng-hide" ng-show="!hasPresets();">
-															{{text_alert_preset}}
-															<ul class="list-btn list-center">
-																<li><a id="button-start"
-																	class="btn-border btn-orange btn-init"
-																	ng-click="createPreset()"><span>{{text_create}}</span></a></li>
-															</ul>
-														</div>
-														<div ng-show="hasPresets();">
-															<table class="tbl-border-light tbl-striped"
-																id="preset-list">
-																<colgroup>
-																	<col width="*">
-																	<col width="46">
-																	<col width="146">
-																</colgroup>
-																<tbody>
-																	<tr>
-																		<th class="cell-center">{{text_name_preset}}</th>
-																		<th class="cell-center">{{text_name_state}}</th>
-																		<th class="cell-center">{{text_name_action}}</th>
-																	</tr>
-																	<tr ng-repeat="preset in data.presets"
-																		ng-show="!data.assignedPresetList[preset.id]">
-																		<td class="cell-space cell-left">
-																			<canvas icon-generator="preset.icon"
-																				icon-type="'preset'" class="preset-icon" width="44"
-																				height="44" style="height: 26px;""></canvas> <span
-																			class="preset-name">{{preset.name}}</span>
-																			<div class="hotkey" tooltip=""
-																				tooltip-content="{{text_atalho}}"
-																				ng-if="data.hotkeys[preset.id]">
-																				{{data.hotkeys[preset.id]}}</div>
-																		</td>
-																		<td class="cell-space cell-center">
-																			<div
-																				class="btn-orange icon-26x26-arrow-right size-34x34"
-																				ng-click="assignPreset(preset.id)"></div>
-																		</td>
-																		<td class="cell-space cell-center preset-actions"><a
-																			href="#"
-																			class="btn-orange size-34x34 icon-34x34-unit-info"
-																			ng-click="showPresetInfoModal(preset);"></a><a
-																			href="#"
-																			class="btn-orange size-34x34 icon-34x34-edit"
-																			ng-click="showPresetEditModal(preset);"></a><a
-																			href="#" class="btn-red size-34x34 icon-34x34-trash"
-																			ng-click="showPresetDeleteModal(preset);"></a></td>
-																	</tr>
-																</tbody>
-															</table>
-														</div>
-													</div>
-												</td>
-
-												<td class="cell-top cell-right" rowspan="3" colspan="2">
-													<div class="list-collapse">
-														<h5 class="twx-section collapse">{{text_selection}}</h5>
-														<table
-															class="tbl-border-light tbl-striped tbl-content tbl-hover">
-															<colgroup>
-																<col width="*">
-																<col width="46">
-																<col width="146">
-															</colgroup>
-															<tbody>
-																<tr>
-																	<th class="cell-center">{{text_name_preset}}</th>
-																	<th class="cell-center">{{text_name_state}}</th>
-																	<th class="cell-center">{{text_name_action}}</th>
-																</tr>
-																<tr ng-repeat="preset in data.presets"
-																	ng-show="data.assignedPresetList[preset.id]">
-																	<td class="cell-space cell-left"
-																		ng-click="setPresetSelected(preset.id)"
-																		ng-class="{'selected': preset.id == presetSelected.id}">
-																		<canvas icon-generator="preset.icon"
-																			icon-type="'preset'" class="preset-icon" width="44"
-																			height="44" style="height: 26px;"></canvas> <span
-																		class="preset-name">{{preset.name}}</span>
-																		<div class="hotkey" tooltip=""
-																			tooltip-content="{{text_atalho}}"
-																			ng-if="data.hotkeys[preset.id]">
-																			{{data.hotkeys[preset.id]}}</div>
-																	</td>
-																	<td class="cell-space cell-center">
-																		<div
-																			class="btn-orange icon-26x26-arrow-left size-34x34"
-																			ng-click="unassignPreset(preset.id)"></div>
-																	</td>
-																	<td class="cell-space cell-center preset-actions"><a
-																		href="#"
-																		class="btn-orange size-34x34 icon-34x34-unit-info"
-																		ng-click="showPresetInfoModal(preset);"></a><a
-																		href="#" class="btn-orange size-34x34 icon-34x34-edit"
-																		ng-click="showPresetEditModal(preset);"></a><a
-																		href="#" class="btn-red size-34x34 icon-34x34-trash"
-																		ng-click="showPresetDeleteModal(preset);"></a></td>
-																</tr>
-
-															</tbody>
-														</table>
-													</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+						</tr>
+						<tr>
+							<td class="cell-right"><label for="farm_time"
+								style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
+								class="input-border inpt" type="time" id="farm_time" step="1"
+								min="00:00:00" max="23:59:59" value="{{getFarmTime()}}"
+								ng-blur="blur()"></td>
+							<td>
+								<div>
+									<span
+										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span>{{farm_running}}
 								</div>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+							</td>
+
+						</tr>
+						<tr>
+							<td class="cell-top">
+								<div class="list-collapse">
+									<h5 class="twx-section collapse">{{exceptions}}</h5>
+									<div>
+										<table
+											class="tbl-border-light tbl-striped tbl-content tbl-hover">
+											<colgroup>
+												<col width="*">
+												<col width="34">
+											</colgroup>
+
+											<tbody>
+												<tr ng-repeat="(key, value) in list_exceptions">
+													<td class="cell-right"><span>{{value.village_name}}
+															- ({{value.village_x}}|{{value.village_y}})</span></td>
+													<td class="cell-space"><a href="#"
+														class="size-34x34 btn-red icon-26x26-close"
+														ng-click="deleteException(key)"></a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</td>
+							<td class="cell-top" colspan=2>
+								<div class="list-collapse">
+									<h5 class="twx-section collapse">{{villages_selections}}</h5>
+									<div>
+										<table
+											class="tbl-border-light tbl-striped tbl-content tbl-hover">
+											<colgroup>
+												<col width="*">
+												<col width="56">
+											</colgroup>
+
+											<tbody>
+												<tr ng-repeat="village in data_villages.villages">
+													<td
+														ng-class="{'selected': villageSelected.data.villageId == village.data.villageId}"
+														ng-click="setVillage(village)" class="cell-right"><span>{{village.data.name
+															+ " - (" + village.data.x + "|" + village.data.x + ")"}}</span></td>
+													<td class="cell-space">
+														<div class="checkbox box-border-dark">
+															<div switch-slider="" border="true" enabled="true"
+																value="village.farm_activate" vertical="false"
+																size="'56x28'" ng-model="village.farm_activate">
+																<div ng-class="{'box-border-dark box-filter': border}"
+																	class="box-border-dark box-filter">
+																	<div class="switch switch-56x28 switch-horizontal"
+																		ng-class="{'switch-checked': value, 'switch-inactive': !villageSelected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																		<span class="size-26x26 switch-thumb"> <span
+																			class="simple icon-26x26-switch-off"
+																			ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="box-paper content-settings"
+			ng-if="activeTab == TABS.PRESET">
+			<div class="scroll-wrap farm">
+				<div class="list-collapse">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+						<colgroup>
+							<col width="100px">
+							<col width="22%px">
+							<col width="26%px">
+							<col width="26%px">
+							<col width="26%px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<td rowspan="2">
+									<div class="quadrant">
+										<div class="quadrant-border"
+											ng-class="{'quadrant-selected': getQuadrant(1)}"
+											ng-click="setQuadrant(1)">
+											<div class="quadrant-text">
+												<span style="">1</span>
+											</div>
+										</div>
+										<div class="quadrant-border"
+											ng-class="{'quadrant-selected': getQuadrant(2)}"
+											ng-click="setQuadrant(2)">
+											<div class="quadrant-text">
+												<span style="">2</span>
+											</div>
+										</div>
+										<div class="quadrant-border"
+											ng-class="{'quadrant-selected': getQuadrant(4)}"
+											ng-click="setQuadrant(4)">
+											<div class="quadrant-text">
+												<span style="">4</span>
+											</div>
+										</div>
+										<div class="quadrant-border"
+											ng-class="{'quadrant-selected': getQuadrant(3)}"
+											ng-click="setQuadrant(3)">
+											<div class="quadrant-text">
+												<span style="">3</span>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td class="cell-right"><label for="min_point"
+									class="with-margin">{{text_min_point}}</label><input
+									class="input-border inputcreated" type="number" id="min_point"
+									step="1" min="0" max="12000"
+									ng-model="presetSelected.min_points_farm"
+									ng-blur="blurPreset()"></td>
+								<td class="cell-right"><label for="min_journey_time"
+									class="with-margin">{{time_min}}</label><input
+									class="input-border inpt" type="time" id="min_journey_time"
+									step="1" min="00:00:00" max="23:59:59"
+									ng-blur="blurMinJourney()"></td>
+								<td class="cell-right"><label for="min_dist"
+									class="with-margin">{{text_min_dist}}</label><input
+									class="input-border inputcreated" type="number" id="min_dist"
+									step="1" min="1" max="180"
+									ng-model="presetSelected.min_journey_distance" disabled></td>
+							</tr>
+							<tr>
+
+								<td class="cell-right"><label for="max_point"
+									class="with-margin">{{text_max_point}}</label><input
+									class="input-border inputcreated" type="number" id="max_point"
+									step="1" min="00" max="12000"
+									ng-model="presetSelected.max_points_farm"
+									ng-blur="blurPreset()"></td>
+								<td class="cell-right"><label for="max_journey_time"
+									class="with-margin">{{time_max}}</label><input
+									class="input-border inpt" type="time" id="max_journey_time"
+									step="1" min="00:00:00" max="23:59:59"
+									ng-blur="blurMaxJourney()"></td>
+								<td class="cell-right"><label for="max_dist"
+									class="with-margin">{{text_max_dist}}</label><input
+									class="input-border inputcreated" type="number" id="max_dist"
+									step="1" min="5" max="200"
+									ng-model="presetSelected.max_journey_distance" disabled></td>
+								<td class="cell-right"><label for="cmd_max"
+									class="with-margin">{{text_cmd_max}}</label><input
+									class="input-border inputcreated" type="number" id="cmd_max"
+									step="1" min="0" max="50"
+									ng-model="presetSelected.max_commands_farm"
+									ng-blur="blurPreset()"></td>
+
+							</tr>
+
+							<tr>
+								<td class="cell-top cell-right" rowspan="3" colspan="3">
+									<div class="list-collapse">
+										<h5 class="twx-section collapse">{{text_preset}}</h5>
+
+										<div class="box-text ng-hide" ng-show="!hasPresets();">
+											{{text_alert_preset}}
+											<ul class="list-btn list-center">
+												<li><a id="button-start"
+													class="btn-border btn-orange btn-init"
+													ng-click="createPreset()"><span>{{text_create}}</span></a></li>
+											</ul>
+										</div>
+										<div ng-show="hasPresets();">
+											<table class="tbl-border-light tbl-striped" id="preset-list">
+												<colgroup>
+													<col width="*">
+													<col width="46">
+													<col width="146">
+												</colgroup>
+												<tbody>
+													<tr>
+														<th class="cell-center">{{text_name_preset}}</th>
+														<th class="cell-center">{{text_name_state}}</th>
+														<th class="cell-center">{{text_name_action}}</th>
+													</tr>
+													<tr ng-repeat="preset in data.presets"
+														ng-show="!data.assignedPresetList[preset.id]">
+														<td class="cell-space cell-left">
+															<canvas icon-generator="preset.icon" icon-type="'preset'"
+																class="preset-icon" width="44" height="44"
+																style="height: 26px;""></canvas> <span
+															class="preset-name">{{preset.name}}</span>
+															<div class="hotkey" tooltip=""
+																tooltip-content="{{text_atalho}}"
+																ng-if="data.hotkeys[preset.id]">
+																{{data.hotkeys[preset.id]}}</div>
+														</td>
+														<td class="cell-space cell-center">
+															<div class="btn-orange icon-26x26-arrow-right size-34x34"
+																ng-click="assignPreset(preset.id)"></div>
+														</td>
+														<td class="cell-space cell-center preset-actions"><a
+															href="#"
+															class="btn-orange size-34x34 icon-34x34-unit-info"
+															ng-click="showPresetInfoModal(preset);"></a><a href="#"
+															class="btn-orange size-34x34 icon-34x34-edit"
+															ng-click="showPresetEditModal(preset);"></a><a href="#"
+															class="btn-red size-34x34 icon-34x34-trash"
+															ng-click="showPresetDeleteModal(preset);"></a></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</td>
+
+								<td class="cell-top cell-right" rowspan="3" colspan="2">
+									<div class="list-collapse">
+										<h5 class="twx-section collapse">{{text_selection}}</h5>
+										<table
+											class="tbl-border-light tbl-striped tbl-content tbl-hover">
+											<colgroup>
+												<col width="*">
+												<col width="46">
+												<col width="146">
+											</colgroup>
+											<tbody>
+												<tr>
+													<th class="cell-center">{{text_name_preset}}</th>
+													<th class="cell-center">{{text_name_state}}</th>
+													<th class="cell-center">{{text_name_action}}</th>
+												</tr>
+												<tr ng-repeat="preset in data.presets"
+													ng-show="data.assignedPresetList[preset.id]">
+													<td class="cell-space cell-left"
+														ng-click="setPresetSelected(preset.id)"
+														ng-class="{'selected': preset.id == presetSelected.id}">
+														<canvas icon-generator="preset.icon" icon-type="'preset'"
+															class="preset-icon" width="44" height="44"
+															style="height: 26px;"></canvas> <span class="preset-name">{{preset.name}}</span>
+														<div class="hotkey" tooltip=""
+															tooltip-content="{{text_atalho}}"
+															ng-if="data.hotkeys[preset.id]">
+															{{data.hotkeys[preset.id]}}</div>
+													</td>
+													<td class="cell-space cell-center">
+														<div class="btn-orange icon-26x26-arrow-left size-34x34"
+															ng-click="unassignPreset(preset.id)"></div>
+													</td>
+													<td class="cell-space cell-center preset-actions"><a
+														href="#"
+														class="btn-orange size-34x34 icon-34x34-unit-info"
+														ng-click="showPresetInfoModal(preset);"></a><a href="#"
+														class="btn-orange size-34x34 icon-34x34-edit"
+														ng-click="showPresetEditModal(preset);"></a><a href="#"
+														class="btn-red size-34x34 icon-34x34-trash"
+														ng-click="showPresetDeleteModal(preset);"></a></td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="box-paper content-settings" ng-if="activeTab == TABS.LOG">
 		</div>
 		<div class="jssb-y">
 			<div class="jssb-y-track">
