@@ -101,7 +101,7 @@ define("robotTW2/controllers/MapController", [
 		
 		//u//
 		, main = document.getElementById("main-canvas")
-		, charModel = modelDataService.getSelectedCharacter()
+		, charModel = services.modelDataService.getSelectedCharacter()
 		, tribeRelationsModel = charModel.getTribeRelations()
 		, D = $rootScope.data_map.cacheVillages;
 		
