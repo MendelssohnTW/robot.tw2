@@ -75,11 +75,11 @@ define("robotTW2/services/SecondVillageService", [
 				return setTimeout(verify_second, time_rest),
 				!1
 			}
-			var job_for_collect = collectibleJobs(a.data.jobs);
+			var job_for_collect = collectibleJobs(second_village.data.jobs);
 			if (job_for_collect)
 				return collectJob(job_for_collect);
-			var currentJobs = secondVillageService.getCurrentDayJobs(a.data.jobs, a.data.day)
-			, collectedJobs = secondVillageService.getCollectedJobs(a.data.jobs)
+			var currentJobs = secondVillageService.getCurrentDayJobs(second_village.data.jobs, a.data.day)
+			, collectedJobs = secondVillageService.getCollectedJobs(second_village.data.jobs)
 			, resources = modelDataService.getSelectedVillage().getResources().getResources()
 			, availableJobs = secondVillageService.getAvailableJobs(currentJobs, collectedJobs, resources, []);
 			if (availableJobs) {
