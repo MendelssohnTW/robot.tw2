@@ -16,7 +16,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", $rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
-		
+
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", $rootScope.loc.ale, "farm"),
 				PRESET 	: services.$filter("i18n")("preset", $rootScope.loc.ale, "farm"),
@@ -98,41 +98,43 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		initTab();
-		
+
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
 
 		$scope.blur = function (callback) {
-			$scope.farm_time = $("#farm_time").val()
-			$scope.inicio_de_farm = $("#inicio_de_farm").val()
-			$scope.termino_de_farm = $("#termino_de_farm").val()
-			$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
-			$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
+			if($scope.activeTab == TABS.FARM){
+				$scope.farm_time = $("#farm_time").val()
+				$scope.inicio_de_farm = $("#inicio_de_farm").val()
+				$scope.termino_de_farm = $("#termino_de_farm").val()
+				$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
+				$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
 
-			if($scope.farm_time.length <= 5) {
-				$scope.farm_time = $scope.farm_time + ":00"
+				if($scope.farm_time.length <= 5) {
+					$scope.farm_time = $scope.farm_time + ":00"
+				}
+
+				var tempo_escolhido_inicio = new Date($scope.data_inicio_de_farm + " " + $scope.inicio_de_farm).getTime();
+				var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
+
+				if(tempo_escolhido_inicio > tempo_escolhido_termino) {
+					tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
+					$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
+					$scope.data_termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "yyyy-MM-dd");
+				}
+
+				document.getElementById("data_termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "yyyy-MM-dd");
+				document.getElementById("data_inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "yyyy-MM-dd");
+				document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
+				document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
+
+				$rootScope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
+				$rootScope.data_farm.farm_time_start = tempo_escolhido_inicio
+				$rootScope.data_farm.farm_time_stop = tempo_escolhido_termino
+
+				update()
 			}
-
-			var tempo_escolhido_inicio = new Date($scope.data_inicio_de_farm + " " + $scope.inicio_de_farm).getTime();
-			var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
-
-			if(tempo_escolhido_inicio > tempo_escolhido_termino) {
-				tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
-				$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
-				$scope.data_termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "yyyy-MM-dd");
-			}
-
-			document.getElementById("data_termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "yyyy-MM-dd");
-			document.getElementById("data_inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "yyyy-MM-dd");
-			document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
-			document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
-
-			$rootScope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
-			$rootScope.data_farm.farm_time_start = tempo_escolhido_inicio
-			$rootScope.data_farm.farm_time_stop = tempo_escolhido_termino
-
-			update()
 
 			if(callback != undefined && typeof(callback) == "function") {
 				callback()
@@ -249,25 +251,29 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blurMaxJourney = function () {
-			var r = $("#max_journey_time").val() 
-			if(r.length <= 5) {
-				r = r + ":00"
+			if($scope.activeTab == TABS.PRESET){
+				var r = $("#max_journey_time").val() 
+				if(r.length <= 5) {
+					r = r + ":00"
+				}
+
+				$rootScope.data_farm.farm_time
+
+				$scope.presetSelected.max_journey_time = helper.unreadableSeconds(r) * 1000
+//				$scope.presetSelected.max_journey_time > $rootScope.data_farm.farm_time ? $scope.presetSelected.max_journey_time =  $rootScope.data_farm.farm_time : $scope.presetSelected.max_journey_time; 
+				$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
 			}
-			
-			$rootScope.data_farm.farm_time
-			
-			$scope.presetSelected.max_journey_time = helper.unreadableSeconds(r) * 1000
-//			$scope.presetSelected.max_journey_time > $rootScope.data_farm.farm_time ? $scope.presetSelected.max_journey_time =  $rootScope.data_farm.farm_time : $scope.presetSelected.max_journey_time; 
-			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
 		}
 
 		$scope.blurMinJourney = function () {
-			var r = $("#min_journey_time").val() 
-			if(r.length <= 5) {
-				r = r + ":00"
+			if($scope.activeTab == TABS.PRESET){
+				var r = $("#min_journey_time").val() 
+				if(r.length <= 5) {
+					r = r + ":00"
+				}
+				$scope.presetSelected.min_journey_time = helper.unreadableSeconds(r) * 1000
+				$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
 			}
-			$scope.presetSelected.min_journey_time = helper.unreadableSeconds(r) * 1000
-			$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
 		}
 
 		$scope.getName = function(assigned_preset){
@@ -288,8 +294,8 @@ define("robotTW2/controllers/FarmController", [
 		}, true)
 
 //		$scope.$watch("villageSelected", function(){
-//			if(!$scope.villageSelected){return}
-//			triggerUpdate();
+//		if(!$scope.villageSelected){return}
+//		triggerUpdate();
 //		}, true)
 
 		$scope.$watch('data.presets', triggerUpdate, true);
@@ -411,9 +417,9 @@ define("robotTW2/controllers/FarmController", [
 		})
 
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
-		
+
 		triggerUpdate();
-		
+
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
 		update()
