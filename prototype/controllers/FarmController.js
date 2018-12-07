@@ -19,6 +19,10 @@ define("robotTW2/controllers/FarmController", [
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
 
+		var pmise = undefined;
+		var i = 0;
+		var timeout_preset = undefined;
+
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", $rootScope.loc.ale, "farm"),
 				PRESET 	: services.$filter("i18n")("preset", $rootScope.loc.ale, "farm"),
@@ -202,19 +206,36 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.assignPresets = function assignPresets() {
 			
-			var timeout_preset = $timeout(function(){
-				triggerUpdate()
-				timeout_preset = undefined
-			}, conf_conf.LOADING_TIMEOUT)
-			
-			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-				'village_id': $scope.villageSelected.data.villageId,
-				'preset_ids': presetIds
-			}, function(data){
-				$timeout.cancel(timeout_preset)
-				timeout_preset = undefined
-				triggerUpdate()
-			});
+			function f(){
+				if(!pmise){
+					pmise = new Promise(function(res){
+						timeout_preset = $timeout(function(){
+							res()
+						}, conf_conf.LOADING_TIMEOUT)
+
+						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+							'village_id': $scope.villageSelected.data.villageId,
+							'preset_ids': presetIds
+						}, function(data){
+							res()
+						});
+					}).then(function(){
+						$timeout.cancel(timeout_preset)
+						timeout_preset = undefined
+						triggerUpdate()
+						i = 0
+						pmise = undefined
+						if(pmise_queue.length){
+							pmise_queue.shift()
+							f()
+						}
+					})
+				} else {
+					pmise.push(i++)
+				}
+			}
+			f(i++)
+
 		}
 
 		$scope.assignPreset = function assignPreset(presetId) {
@@ -238,7 +259,7 @@ define("robotTW2/controllers/FarmController", [
 				$scope.data.presets[$scope.presetSelected.id] = $scope.presetSelected;
 				$scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
 			}		
-			
+
 			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time) && $scope.activeTab == TABS.PRESET) {
 				var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 				if(tmMax.length == 7) {
