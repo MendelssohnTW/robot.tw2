@@ -104,7 +104,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 			if($scope.activeTab == TABS.PRESET){
-				blurPreset();
+				services.$timeout(blurPreset, 15000)
 			}
 		}
 
