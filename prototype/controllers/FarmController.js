@@ -257,13 +257,13 @@ define("robotTW2/controllers/FarmController", [
 
 		var blurPreset = function(){
 			if($scope.activeTab != TABS.PRESET){return}
-			$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
+			angular.extend($scope.villageSelected.presets[$scope.presetSelected.id], {[max_journey_distance]:get_dist($scope.presetSelected.max_journey_time)})
 			var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 			if(tmMax.length == 7) {
 				tmMax = "0" + tmMax;
 			}
 			document.getElementById("max_journey_time").value = tmMax;	
-			$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
+			angular.extend($scope.villageSelected.presets[$scope.presetSelected.id], {[min_journey_distance]:get_dist($scope.presetSelected.min_journey_time)})
 			var tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
 			if(tmMin.length == 7) {
 				tmMin = "0" + tmMin;
