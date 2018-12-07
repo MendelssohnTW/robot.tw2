@@ -263,7 +263,7 @@ define("robotTW2/controllers/FarmController", [
 			if($scope.activeTab != TABS.PRESET){return}
 			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
 			$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
-			angular.extend($scope.villageSelected.presets, $scope.presetSelected)
+			angular.extend($scope.villageSelected.presets, {[$scope.presetSelected.id]: $scope.presetSelected})
 			var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 			if(tmMax.length == 7) {
 				tmMax = "0" + tmMax;
