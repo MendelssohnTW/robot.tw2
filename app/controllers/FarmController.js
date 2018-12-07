@@ -104,7 +104,11 @@ define("robotTW2/controllers/FarmController", [
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 			if($scope.activeTab == TABS.PRESET){
-				updatePreset();
+				$scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
+						function(elem){
+							if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+						}).filter(f=>f!=undefined)[0]];
+				services.$timeout(blurPreset, 15000)
 			}
 		}
 
@@ -189,7 +193,6 @@ define("robotTW2/controllers/FarmController", [
 			for (presetId in $scope.data.presets) {
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
 			}
-			updatePreset()
 		}
 
 		$scope.assignPresets = function assignPresets() {
@@ -219,31 +222,6 @@ define("robotTW2/controllers/FarmController", [
 			$scope.assignPresets();
 		}
 
-		var updatePreset = function(){
-			if(!$scope.villageSelected || !Object.keys($scope.data.assignedPresetList).length || !$scope.activeTab == TABS.PRESET){return}
-			!$scope.presetSelected ? $scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
-					function(elem){
-						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-					}).filter(f=>f!=undefined)[0]] : $scope.presetSelected;
-			if(document.getElementById("max_journey_time")) {
-				$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
-				var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
-				if(tmMax.length == 7) {
-					tmMax = "0" + tmMax;
-				}
-				document.getElementById("max_journey_time").value = tmMax;	
-			}
-			if(document.getElementById("min_journey_time")) {
-				$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
-				var tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
-				if(tmMin.length == 7) {
-					tmMin = "0" + tmMin;
-				}
-				document.getElementById("min_journey_time").value = tmMin;
-			}
-			if (!$scope.$$phase) {$scope.$apply();}
-		}
-		
 		$scope.setPresetSelected = function (preset_id) {
 			$scope.presetSelected =	$scope.data.presets[preset_id]
 		}
@@ -281,11 +259,39 @@ define("robotTW2/controllers/FarmController", [
 			return $scope.data.presets[assigned_preset].icon;
 		}
 
-		$scope.blurPreset = updatePreset;
+		var blurPreset = function(){
+			if($scope.activeTab != TABS.PRESET){return}
+			$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
+			$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
+			angular.extend($scope.villageSelected.presets, $scope.presetSelected)
+			var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
+			if(tmMax.length == 7) {
+				tmMax = "0" + tmMax;
+			}
+			document.getElementById("max_journey_time").value = tmMax;	
+			var tmMin = helper.readableMilliseconds($scope.presetSelected.min_journey_time);
+			if(tmMin.length == 7) {
+				tmMin = "0" + tmMin;
+			}
+			document.getElementById("min_journey_time").value = tmMin;
+
+			if (!$scope.$$phase) {$scope.$apply();}
+
+		};
+
+		$scope.blurPreset = blurPreset;
 
 		$scope.$watch("presetSelected", function(){
-			if(!$scope.presetSelected){return}
-			updatePreset();
+			if(!$scope.presetSelected || !blurPreset){return}
+			blurPreset();
+		}, true)
+
+		$scope.$watch("villageSelected", function(){
+			if(!$scope.villageSelected || !Object.keys($scope.data.assignedPresetList).length){return}
+			!$scope.presetSelected ? $scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
+					function(elem){
+						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+					}).filter(f=>f!=undefined)[0]] : $scope.presetSelected;
 		}, true)
 
 

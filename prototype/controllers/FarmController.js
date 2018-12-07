@@ -282,7 +282,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.blurPreset = blurPreset;
 
 		$scope.$watch("presetSelected", function(){
-			if(!$scope.presetSelected){return}
+			if(!$scope.presetSelected || !blurPreset){return}
 			blurPreset();
 		}, true)
 
