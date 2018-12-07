@@ -103,6 +103,9 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
+			if($scope.activeTab == TABS.PRESET){
+				updatePreset();
+			}
 		}
 
 		$scope.blur = function (callback) {
@@ -190,7 +193,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 			updatePreset()
 		}
-		
+
 		var triggerEvent = function($event, data){
 			console.log($event)
 			console.log(data)
