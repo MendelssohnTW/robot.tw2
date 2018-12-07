@@ -7,7 +7,7 @@
 		</ul>
 	</header>
 	<div class="tabs tabs-bg">
-		<div class="tabs-two-col">
+		<div class="tabs-three-col">
 			<div ng-repeat="tabName in TAB_ORDER" class="tab"
 				ng-click="userSetActiveTab(tabName)"
 				ng-class="{'tab-active': activeTab === tabName}">
@@ -265,7 +265,7 @@
 														<td class="cell-space cell-left">
 															<canvas icon-generator="preset.icon" icon-type="'preset'"
 																class="preset-icon" width="44" height="44"
-																style="height: 26px;""></canvas> <span
+																style="height: 26px;"></canvas> <span
 															class="preset-name">{{preset.name}}</span>
 															<div class="hotkey" tooltip=""
 																tooltip-content="{{text_atalho}}"

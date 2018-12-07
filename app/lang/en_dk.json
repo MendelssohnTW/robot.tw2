@@ -15,6 +15,22 @@
 	"RESUME": "Resume",
 	"YES": "Yes",
 	"NO": "No",
+	"map": {
+		"title": "Mini map",
+		"minimap": "Mini map",
+		"highlights": "Highlights",
+		"settings": "Settings",
+		"text_entry": "Village/player/tribe",
+		"color": "Color (Hex)",
+		"add": "Adicionar marcação",
+		"misc": "Miscellaneous",
+		"colors": "Colors",
+		"right" : "Villages right click action",
+		"highlight_village": "Village highlight",
+		"highlight_player": "Player highlight",
+		"highlight_tribe": "Tribe highlight",
+		"floating_minimap" : "Show floating mini map"
+	},
 	"main": {
 		"title": "Core Settings",
 		"introducing": "Activating and deactivating modules",
