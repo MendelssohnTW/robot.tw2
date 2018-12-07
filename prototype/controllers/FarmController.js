@@ -191,6 +191,11 @@ define("robotTW2/controllers/FarmController", [
 			}
 			updatePreset()
 		}
+		
+		var triggerEvent = function($event, data){
+			console.log($event)
+			console.log(data)
+		}
 
 		$scope.assignPresets = function assignPresets() {
 
@@ -304,9 +309,9 @@ define("robotTW2/controllers/FarmController", [
 //		}, true)
 
 //		$scope.$watch('data.presets', triggerUpdate, true);
-		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
-		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, triggerUpdate);
-		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, triggerUpdate);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerEvent);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, triggerEvent);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, triggerEvent);
 
 
 		/*
