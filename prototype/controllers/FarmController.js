@@ -104,7 +104,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 			if($scope.activeTab == TABS.PRESET){
-				updatePreset();
+				blurPreset();
 			}
 		}
 
@@ -189,7 +189,6 @@ define("robotTW2/controllers/FarmController", [
 			for (presetId in $scope.data.presets) {
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
 			}
-			updatePreset()
 		}
 
 		$scope.assignPresets = function assignPresets() {
@@ -217,14 +216,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.unassignPreset = function unassignPreset(presetId) {
 			presetIds.splice(presetIds.indexOf(presetId), 1);
 			$scope.assignPresets();
-		}
-
-		var updatePreset = function(){
-			if(!$scope.villageSelected || !Object.keys($scope.data.assignedPresetList).length || $scope.activeTab != TABS.PRESET){return}
-			!$scope.presetSelected ? $scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
-					function(elem){
-						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-					}).filter(f=>f!=undefined)[0]] : $scope.presetSelected;
 		}
 
 		$scope.setPresetSelected = function (preset_id) {
