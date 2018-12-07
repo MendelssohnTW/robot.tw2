@@ -382,10 +382,6 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	builderWindow.prototype.addWin = function() {
 		var self = this;
-//		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-//		if(!templateName){return}
-//		screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-//		}): null;
 
 		new Promise(function(res, rej){
 			var opt_onSucess = function(data, status, headers, config){
@@ -433,12 +429,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		}
 		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
-//		!self.listener ? self.listener = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-//		screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-//		self.recalcScrollbar()
-//		self.setCollapse()
-//		}): null;
-		new Promise(function(res, rej){
+		new Promise(function(res){
 			var opt_loadCallback = function(data){
 				res(data)
 			};
@@ -456,7 +447,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(self.style){
 				Object.keys(self.style).forEach(function(key){
 					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
-//					$("#map")[0].setAttribute("style", "left:"+ self.style[key] + ";")
 					window.dispatchEvent(new Event('resize'));
 				})
 			}
@@ -503,33 +493,16 @@ var robotTW2 = window.robotTW2 = undefined;
 										self.recalcScrollbar()
 					})
 				})
-//				if(a.templateName == "farm"){
-//				$(".win-foot .btn-orange").forEach(function(d){
-//				d.setAttribute("style", "min-width:80px")
-//				})
-//				}
 			}
-
-//			if(self.openned){
-//			data.scope.recalcScrollbar()
-//			data.scope.setCollapse()
-//			}
-
 			angular.extend(data.scope, self)
-
 			self.controller.apply(self.controller, [$rootScope, data.scope])
-
-		}, function(reason) {
-			//console.log(reason); // Error!
 		});
-
 	}
 	,
 	builderWindow.prototype.addhotkey = function() {
 		var fnThis = this.buildWin;
 		var self = this;
 		exports.services.hotkeys.add(this.hotkey, function(){
-			//fnThis.call(getTemp())
 			fnThis.apply(self, null)
 		}, ["INPUT", "SELECT", "TEXTAREA"])
 	}

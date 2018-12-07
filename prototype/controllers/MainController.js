@@ -13,9 +13,8 @@ define("robotTW2/controllers/MainController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
 		var toggle = false;
-
+		
 		var update = function(){
-
 			$scope.extensions = $rootScope.data_main.getExtensions();
 			for (var extension in $scope.extensions) {
 				$scope.extensions[extension.toUpperCase()].hotkey = conf.HOTKEY[extension.toUpperCase()].toUpperCase();
@@ -25,6 +24,7 @@ define("robotTW2/controllers/MainController", [
 					continue
 				} else {
 					var fn = arFn.fn;
+					
 					if(typeof(fn.isPaused) == "function"){
 						fn.isRunning() && fn.isPaused() ? $scope.extensions[extension].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[extension].status = $scope.running : $scope.extensions[extension].status = $scope.stopped;						
 					} else {
@@ -84,7 +84,10 @@ define("robotTW2/controllers/MainController", [
 			toggle = false;
 
 			$rootScope.data_main.setExtensions($scope.extensions);
-			update()
+			
+			services.$timeout(function(){
+				update()	
+			}, 3000)
 		};
 
 		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {

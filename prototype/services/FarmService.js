@@ -458,7 +458,7 @@ define("robotTW2/services/FarmService", [
 			stop()
 			ready(function () {
 				requestFn.trigger("Farm/run");
-				loadScript("/controllers/FarmCompletionController.js");
+				
 				isRunning = !0
 
 				$rootScope.data_villages.getAssignedPresets();
@@ -510,6 +510,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, init = function (bool) {
 			isInitialized = !0
+			loadScript("/controllers/FarmCompletionController.js");
 			if(bool){return}
 			start();
 		}
