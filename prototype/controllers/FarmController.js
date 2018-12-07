@@ -3,11 +3,13 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/time",
 	"robotTW2/services",
 	"robotTW2/providers",
+	"conf/conf"
 	], function(
 			helper,
 			convertedTime,
 			services,
-			providers
+			providers,
+			conf_conf
 	){
 	return function FarmController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -199,10 +201,18 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.assignPresets = function assignPresets() {
+			
+			var timeout_preset = $timeout(function(){
+				triggerUpdate()
+				timeout_preset = undefined
+			}, conf_conf.LOADING_TIMEOUT)
+			
 			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
 				'village_id': $scope.villageSelected.data.villageId,
 				'preset_ids': presetIds
 			}, function(data){
+				$timeout.cancel(timeout_preset)
+				timeout_preset = undefined
 				triggerUpdate()
 			});
 		}
