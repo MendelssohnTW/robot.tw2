@@ -447,8 +447,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.assignPresets()
 
-		triggerUpdate();
-
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
 		update()
