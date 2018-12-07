@@ -52,7 +52,7 @@ define("robotTW2/databases/data_villages", [
 	}
 	, getPst = function (v) {
 		var presets_d = services.presetListService.getPresetsForVillageId(v)
-		if(!Object.keys(presets_d).length) {return}
+		if(!Object.keys(presets_d).length) {return {}}
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 		Object.keys(presets_d).forEach(function (pst) {
 			if(!data_villages.villages[v].presets){data_villages.villages[v].presets = {}}

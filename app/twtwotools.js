@@ -382,10 +382,6 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	builderWindow.prototype.addWin = function() {
 		var self = this;
-//		!self.listener_include ? self.listener_include = $rootScope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-//		if(!templateName){return}
-//		screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-//		}): null;
 
 		new Promise(function(res, rej){
 			var opt_onSucess = function(data, status, headers, config){
@@ -433,12 +429,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		}
 		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
-//		!self.listener ? self.listener = scope.$on("$includeContentLoaded", function(event, screenTemplateName, data){
-//		screenTemplateName.indexOf(templateName) ? self.openned = !0 : self.openned = !1;
-//		self.recalcScrollbar()
-//		self.setCollapse()
-//		}): null;
-		new Promise(function(res, rej){
+		new Promise(function(res){
 			var opt_loadCallback = function(data){
 				res(data)
 			};
@@ -456,7 +447,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(self.style){
 				Object.keys(self.style).forEach(function(key){
 					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
-//					$("#map")[0].setAttribute("style", "left:"+ self.style[key] + ";")
 					window.dispatchEvent(new Event('resize'));
 				})
 			}
@@ -481,6 +471,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			self.recalcScrollbar = function() {
 				self.$scrollbar.recalc()
 			};
+			self.disableScrollbar = function() {
+				self.$scrollbar.disable()
+			};
 			self.setCollapse = function() {
 				self.$window.querySelectorAll(".twx-section.collapse").forEach(function(b) {
 					var c = !b.classList.contains("hidden-content")
@@ -500,33 +493,16 @@ var robotTW2 = window.robotTW2 = undefined;
 										self.recalcScrollbar()
 					})
 				})
-//				if(a.templateName == "farm"){
-//				$(".win-foot .btn-orange").forEach(function(d){
-//				d.setAttribute("style", "min-width:80px")
-//				})
-//				}
 			}
-
-//			if(self.openned){
-//			data.scope.recalcScrollbar()
-//			data.scope.setCollapse()
-//			}
-
 			angular.extend(data.scope, self)
-
 			self.controller.apply(self.controller, [$rootScope, data.scope])
-
-		}, function(reason) {
-			//console.log(reason); // Error!
 		});
-
 	}
 	,
 	builderWindow.prototype.addhotkey = function() {
 		var fnThis = this.buildWin;
 		var self = this;
 		exports.services.hotkeys.add(this.hotkey, function(){
-			//fnThis.call(getTemp())
 			fnThis.apply(self, null)
 		}, ["INPUT", "SELECT", "TEXTAREA"])
 	}
@@ -753,7 +729,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						RECRUIT			: 2.3,
 						DEPOSIT			: 2.3,
 						MEDIC			: 2.3,
-						SECONDVILLAGE	: 2.3
+						SECONDVILLAGE	: 2.3,
+						MAP				: 2.3
 					},
 					FARM_TIME		      	: h,
 					MIN_INTERVAL	     	: 5 * min,
@@ -777,7 +754,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						"recon",
 						"recruit",
 						"spy",
-						"secondvillage"
+						"secondvillage",
+						"map"
 						]
 					,
 					HOTKEY					: {
@@ -788,11 +766,12 @@ var robotTW2 = window.robotTW2 = undefined;
 						FARM		 	: "ctrl+alt+f",
 						HEADQUARTER 	: "ctrl+alt+h",
 						MAIN 			: "ctrl+alt+p",
-						MEDIC		 	: "ctrl+alt+m",
+						MEDIC		 	: "ctrl+alt+i",
 						RECON		 	: "ctrl+alt+r",
 						RECRUIT		 	: "ctrl+alt+e",
 						SPY			 	: "ctrl+alt+s",
-						SECONDVILLAGE	: "ctrl+alt+q"
+						SECONDVILLAGE	: "ctrl+alt+q",
+						MAP			 	: "ctrl+alt+m"
 					},
 					RESERVA				: {
 						RECRUIT : {
@@ -1082,6 +1061,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
+//					robotTW2.loadScript("/controllers/MapController.js");
 //					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
@@ -1254,6 +1234,21 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+				case robotTW2.controllers.MapController : {
+					robotTW2.createScopeLang("map", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.MapController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.MAP,
+								templateName 	: "map",
+								classes 		: "",
+								url		 		: "/controllers/MapController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
@@ -1364,6 +1359,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
 				}
+				case robotTW2.services.MapService : {
+					robotTW2.services.MapService && typeof(robotTW2.services.MapService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.MapService) : null;	
+					break
+				}
 				case "database" : {
 					robotTW2.ready(function(){
 						robotTW2.services.$timeout(function(){
@@ -1380,6 +1379,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
+//								robotTW2.loadScript("/databases/data_map.js");
 
 								robotTW2.services.$timeout(function(){
 									robotTW2.loadScript("/databases/data_main.js");
@@ -1439,6 +1439,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_secondvillage" : {
 					robotTW2.loadScript("/services/SecondVillageService.js");
+					break
+				}
+				case "data_map" : {
+					robotTW2.loadScript("/services/MapService.js");
 					break
 				}
 				}
