@@ -179,23 +179,18 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		var triggerUpdate = function triggerUpdate() {
-			$scope.data = {
-					'assignedPresetList': {},
-					'presets'			: services.presetListService.getPresets(),
-					'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
-			}
+			
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
 				if($scope.villageSelected.data.villageId === villageId){
 					$scope.data.assignedPresetList[+presetId] = true
+					angular.extend($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId], $scope.data.presets[presetId])
 				}
 
 			};
 			for (presetId in $scope.data.presets) {
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
-				if($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets && $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId]){
-					angular.merge($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
-				}
+				
 			}
 			!$scope.presetSelected ? $scope.presetSelected = $scope.data.presets[Object.keys($scope.data.assignedPresetList).map(
 					function(elem){
