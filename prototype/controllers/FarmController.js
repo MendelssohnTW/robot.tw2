@@ -19,11 +19,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
 
-		var pmise = undefined;
-		var i = 0;
-		var timeout_preset = undefined;
-		var pmise_queue = [];
-
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", $rootScope.loc.ale, "farm"),
 				PRESET 	: services.$filter("i18n")("preset", $rootScope.loc.ale, "farm"),
@@ -199,35 +194,18 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.assignPresets = function assignPresets() {
 
-			function f(){
-				if(!pmise){
-					pmise = new Promise(function(res){
-						timeout_preset = services.$timeout(function(){
-							res()
-						}, conf_conf.LOADING_TIMEOUT)
+			var timeout_preset = services.$timeout(function(){
+				triggerUpdate()
+			}, conf_conf.LOADING_TIMEOUT)
 
-						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-							'village_id': $scope.villageSelected.data.villageId,
-							'preset_ids': presetIds
-						}, function(data){
-							res()
-						});
-					}).then(function(){
-						services.$timeout.cancel(timeout_preset)
-						timeout_preset = undefined
-						triggerUpdate()
-						i = 0
-						pmise = undefined
-						if(pmise_queue.length){
-							pmise_queue.shift()
-							f()
-						}
-					})
-				} else {
-					pmise.push(i++)
-				}
-			}
-			f(i++)
+			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+				'village_id': $scope.villageSelected.data.villageId,
+				'preset_ids': presetIds
+			}, function(data){
+				services.$timeout.cancel(timeout_preset)
+				timeout_preset = undefined
+				triggerUpdate()
+			});
 
 		}
 
@@ -325,7 +303,7 @@ define("robotTW2/controllers/FarmController", [
 //		triggerUpdate();
 //		}, true)
 
-		$scope.$watch('data.presets', triggerUpdate, true);
+//		$scope.$watch('data.presets', triggerUpdate, true);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, triggerUpdate);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, triggerUpdate);
