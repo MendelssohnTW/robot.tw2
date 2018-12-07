@@ -22,6 +22,7 @@ define("robotTW2/controllers/FarmController", [
 		var pmise = undefined;
 		var i = 0;
 		var timeout_preset = undefined;
+		var pmise_queue = [];
 
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", $rootScope.loc.ale, "farm"),
