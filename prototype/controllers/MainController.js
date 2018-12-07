@@ -58,12 +58,13 @@ define("robotTW2/controllers/MainController", [
 				var fn = arFn.fn;
 				$scope.extensions[ext.name].activated = true;
 				if(ext.initialized){
-					$scope.extensions[ext.name].status = $scope.running;
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
 							if(["FARM", "RECRUIT"].includes(ext.name)){
+								$scope.extensions[ext.name].status = $scope.stopped;
 								fn.init(true)
 							} else {
+								$scope.extensions[ext.name].status = $scope.running;
 								fn.init()
 							}
 						}
@@ -71,7 +72,10 @@ define("robotTW2/controllers/MainController", [
 					} else {
 						if(typeof(fn.start) == "function"){
 							if(!["FARM", "RECRUIT"].includes(ext.name)){
+								$scope.extensions[ext.name].status = $scope.running;
 								fn.start()
+							} else {
+								$scope.extensions[ext.name].status = $scope.stopped;
 							}
 						}
 					}
