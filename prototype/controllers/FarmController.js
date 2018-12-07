@@ -341,6 +341,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setVillage = function (village) {
 			$scope.data.assignedPresetList = {};
+			presetIds = [];
 			$scope.villageSelected = village;
 			triggerUpdate();
 		}
