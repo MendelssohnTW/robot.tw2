@@ -220,7 +220,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		var updatePreset = function(){
-			if(!$scope.villageSelected || !Object.keys($scope.data.assignedPresetList).length || !$scope.activeTab == TABS.PRESET){return}
+			if((!$scope.villageSelected || !Object.keys($scope.data.assignedPresetList).length) && $scope.activeTab != TABS.PRESET){return}
 			!$scope.presetSelected ? $scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
 					function(elem){
 						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
