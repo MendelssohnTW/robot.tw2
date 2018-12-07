@@ -189,7 +189,6 @@ define("robotTW2/controllers/FarmController", [
 			};
 			for (presetId in $scope.data.presets) {
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
-
 			}
 			updatePreset()
 		}
@@ -200,7 +199,6 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.assignPresets = function assignPresets() {
-
 			var timeout_preset = services.$timeout(function(){
 				triggerUpdate()
 			}, conf_conf.LOADING_TIMEOUT)
@@ -211,6 +209,7 @@ define("robotTW2/controllers/FarmController", [
 			}, function(data){
 				services.$timeout.cancel(timeout_preset)
 				timeout_preset = undefined
+				$scope.presetSelected = undefined;
 				triggerUpdate()
 			});
 
