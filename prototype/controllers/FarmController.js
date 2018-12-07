@@ -255,6 +255,7 @@ define("robotTW2/controllers/FarmController", [
 
 		var updatePreset = function(){
 			if($scope.presetSelected && $scope.presetSelected.max_journey_time && $scope.activeTab == TABS.PRESET) {
+				$scope.villageSelected.presets = {[$scope.presetSelected.id] : $scope.presetSelected}
 				$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
 				$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
 				$scope.data.presets[$scope.presetSelected.id] = $scope.presetSelected;
