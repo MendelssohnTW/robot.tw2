@@ -210,7 +210,7 @@ define("robotTW2/controllers/FarmController", [
 			function f(){
 				if(!pmise){
 					pmise = new Promise(function(res){
-						timeout_preset = $timeout(function(){
+						timeout_preset = services.$timeout(function(){
 							res()
 						}, conf_conf.LOADING_TIMEOUT)
 
@@ -221,7 +221,7 @@ define("robotTW2/controllers/FarmController", [
 							res()
 						});
 					}).then(function(){
-						$timeout.cancel(timeout_preset)
+						services.$timeout.cancel(timeout_preset)
 						timeout_preset = undefined
 						triggerUpdate()
 						i = 0
