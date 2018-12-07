@@ -3,11 +3,13 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/time",
 	"robotTW2/services",
 	"robotTW2/providers",
+	"conf/conf"
 	], function(
 			helper,
 			convertedTime,
 			services,
-			providers
+			providers,
+			conf_conf
 	){
 	return function FarmController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -16,6 +18,11 @@ define("robotTW2/controllers/FarmController", [
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", $rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		var self = this;
+
+		var pmise = undefined;
+		var i = 0;
+		var timeout_preset = undefined;
+		var pmise_queue = [];
 
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", $rootScope.loc.ale, "farm"),
@@ -199,12 +206,37 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.assignPresets = function assignPresets() {
-			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-				'village_id': $scope.villageSelected.data.villageId,
-				'preset_ids': presetIds
-			}, function(data){
-				triggerUpdate()
-			});
+			
+			function f(){
+				if(!pmise){
+					pmise = new Promise(function(res){
+						timeout_preset = services.$timeout(function(){
+							res()
+						}, conf_conf.LOADING_TIMEOUT)
+
+						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+							'village_id': $scope.villageSelected.data.villageId,
+							'preset_ids': presetIds
+						}, function(data){
+							res()
+						});
+					}).then(function(){
+						services.$timeout.cancel(timeout_preset)
+						timeout_preset = undefined
+						triggerUpdate()
+						i = 0
+						pmise = undefined
+						if(pmise_queue.length){
+							pmise_queue.shift()
+							f()
+						}
+					})
+				} else {
+					pmise.push(i++)
+				}
+			}
+			f(i++)
+
 		}
 
 		$scope.assignPreset = function assignPreset(presetId) {
@@ -222,8 +254,13 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		var updatePreset = function(){
-			$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].max_journey_time)
-			$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.villageSelected.presets[$scope.presetSelected.id].min_journey_time)
+			if($scope.presetSelected && $scope.presetSelected.max_journey_time && $scope.activeTab == TABS.PRESET) {
+				angular.extend($scope.villageSelected.presets, {[$scope.presetSelected.id] : $scope.presetSelected})
+				$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
+				$scope.villageSelected.presets[$scope.presetSelected.id].min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
+				$scope.data.presets[$scope.presetSelected.id] = $scope.presetSelected;
+				$scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
+			}		
 
 			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time) && $scope.activeTab == TABS.PRESET) {
 				var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
@@ -240,9 +277,6 @@ define("robotTW2/controllers/FarmController", [
 				}
 				document.getElementById("min_journey_time").value = tmMin;
 			}
-
-			$scope.data.presets[$scope.presetSelected.id] = $scope.presetSelected;
-			$scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.presetSelected.id] = $scope.presetSelected;
 			if (!$rootScope.$$phase) $rootScope.$apply();
 		}
 
