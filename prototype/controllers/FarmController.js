@@ -431,7 +431,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.villageSelected = $rootScope.data_villages.villages[Object.keys($rootScope.data_villages.villages)[0]]
 
-//		$scope.assignPresets()
+		triggerUpdate()
 
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
