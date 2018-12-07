@@ -179,7 +179,7 @@ define("robotTW2/controllers/FarmController", [
 			assignPreset = function assignPreset(villageId) {
 				if($scope.villageSelected.data.villageId === villageId){
 					$scope.data.assignedPresetList[+presetId] = true
-					presetIds.push(villageId)
+					!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
 //					angular.extend($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId], $scope.data.presets[presetId])
 				} else {
 					$scope.data.assignedPresetList[+presetId] = false
