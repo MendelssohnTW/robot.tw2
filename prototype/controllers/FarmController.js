@@ -185,7 +185,9 @@ define("robotTW2/controllers/FarmController", [
 				if($scope.villageSelected.data.villageId === villageId){
 					$scope.data.assignedPresetList[+presetId] = true
 					presetIds.push(villageId)
-					angular.extend($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId], $scope.data.presets[presetId])
+//					angular.extend($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId], $scope.data.presets[presetId])
+				} else {
+					$scope.data.assignedPresetList[+presetId] = false
 				}
 			};
 			for (presetId in $scope.data.presets) {
@@ -250,7 +252,7 @@ define("robotTW2/controllers/FarmController", [
 						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
 					}).filter(f=>f!=undefined)[0]] : $scope.presetSelected;
 
-			angular.extend($scope.villageSelected.presets, {[$scope.presetSelected.id] : $scope.presetSelected})
+//			angular.extend($scope.villageSelected.presets, {[$scope.presetSelected.id] : $scope.presetSelected})
 
 			if(!(!$scope.presetSelected || !$scope.presetSelected.max_journey_time) && $scope.activeTab == TABS.PRESET) {
 				$scope.villageSelected.presets[$scope.presetSelected.id].max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
@@ -270,7 +272,7 @@ define("robotTW2/controllers/FarmController", [
 				document.getElementById("min_journey_time").value = tmMin;
 			}
 
-			$scope.data_villages.villages[$scope.villageSelected.data.villageId].presets = $scope.villageSelected.presets;
+//			$scope.data_villages.villages[$scope.villageSelected.data.villageId].presets = $scope.villageSelected.presets;
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
@@ -341,7 +343,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setVillage = function (village) {
 			$scope.data.assignedPresetList = {};
-			presetIds = [];
 			$scope.villageSelected = village;
 			triggerUpdate();
 		}
