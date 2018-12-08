@@ -172,7 +172,7 @@ define("robotTW2/services/FarmService", [
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
 					if(preset_units[unit_preset] > 0) {
-						if(unit_preset != "snob") {
+						if(!$rootScope.data_farm.troops_not.some(elem => elem == unit_preset)) {
 							if (verif_units(unit_preset, aldeia_units)) {
 								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
 									f.push([{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available])
