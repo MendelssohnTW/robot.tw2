@@ -41,6 +41,7 @@ define("robotTW2/services/FarmService", [
 		, farm_queue = []
 		, grid_queue = []
 		, send_queue = []
+		, completion_loaded = !1
 		, rallyPointSpeedBonusVsBarbarians = modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, setupGrid = function (len) {
 			var i, t = 0,
@@ -461,6 +462,11 @@ define("robotTW2/services/FarmService", [
 				
 				isRunning = !0
 
+				if(!completion_loaded){
+					completion_loaded = !0;
+					loadScript("/controllers/FarmCompletionController.js");
+				}
+				
 				$rootScope.data_villages.getAssignedPresets();
 
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
@@ -510,6 +516,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, init = function (bool) {
 			isInitialized = !0
+			completion_loaded = !0
 			loadScript("/controllers/FarmCompletionController.js");
 			if(bool){return}
 			start();
@@ -519,7 +526,9 @@ define("robotTW2/services/FarmService", [
 				$timeout.cancel(timeoutIdFarm[key]);
 			});
 
-			robotTW2.removeScript("/controllers/FarmCompletionController.js");
+			if(completion_loaded){
+				robotTW2.removeScript("/controllers/FarmCompletionController.js");
+			}
 
 //			typeof(listener_change) == "function" ? listener_change(): null;
 //			listener_change = undefined;
