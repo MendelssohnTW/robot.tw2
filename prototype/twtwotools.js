@@ -9,22 +9,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			"helper/i18n",
 			"queues/EventQueue"
 			] , factory);
-		root.robotTW2_version = define("robotTW2/version", function(){
-			return {
-				main:"1.0.0",
-				villages:"1.0.0",
-				headquarter:"1.0.0",
-				recon:"1.0.0",
-				spy:"1.0.0",
-				attack:"1.0.0",
-				defense:"1.0.0",
-				farm:"1.0.0",
-				recruit:"1.0.0",
-				medic:"1.0.0",
-				secondvillage:"1.0.0",
-				map:"1.0.0"
-			}
-		});
 	} else {
 		return
 	}
@@ -648,6 +632,23 @@ var robotTW2 = window.robotTW2 = undefined;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
+		
+		 define("robotTW2/version", function(){
+				return {
+					main:"1.0.0",
+					villages:"1.0.0",
+					headquarter:"1.0.0",
+					recon:"1.0.0",
+					spy:"1.0.0",
+					attack:"1.0.0",
+					defense:"1.0.0",
+					farm:"1.0.0",
+					recruit:"1.0.0",
+					medic:"1.0.0",
+					secondvillage:"1.0.0",
+					map:"1.0.0"
+				}
+			});
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
