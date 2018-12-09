@@ -31,7 +31,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var $exceptionHandler 		= injector.get('$exceptionHandler');
 	var $timeout	 			= injector.get('$timeout');
 	var $compile 				= injector.get('$compile');
-	var httpService 			= injector.get("httpService");
 	var windowManagerService 	= injector.get("windowManagerService");
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
@@ -725,7 +724,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						SPY				: 2.3,
 						ATTACK			: 2.3,
 						DEFENSE			: 2.3,
-						FARM			: 2.3,
+						FARM			: 2.4,
 						RECRUIT			: 2.3,
 						DEPOSIT			: 2.3,
 						MEDIC			: 2.3,
