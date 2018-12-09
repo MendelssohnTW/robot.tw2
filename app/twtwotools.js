@@ -725,7 +725,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						SPY				: 2.3,
 						ATTACK			: 2.3,
 						DEFENSE			: 2.3,
-						FARM			: 2.3,
+						FARM			: 2.4,
 						RECRUIT			: 2.3,
 						DEPOSIT			: 2.3,
 						MEDIC			: 2.3,
