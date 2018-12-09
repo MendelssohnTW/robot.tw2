@@ -1,6 +1,6 @@
 define("robotTW2/services/AttackService", [
 	"robotTW2",
-	"robotTW2/version"
+	"robotTW2/version",
 	"helper/time",
 	"robotTW2/conf",
 	"robotTW2/notify",
