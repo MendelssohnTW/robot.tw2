@@ -1,10 +1,12 @@
 define("robotTW2/services/SpyService", [
 	"robotTW2",
+	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/spyTypes",
 	], function(
 			robotTW2,
+			version,
 			convertedTime,
 			conf,
 			SPY_TYPES
@@ -138,7 +140,7 @@ define("robotTW2/services/SpyService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: "1.0.0",
+			version			: version.spy,
 			name			: "spy"
 		}
 

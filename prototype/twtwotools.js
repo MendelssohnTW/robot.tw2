@@ -9,6 +9,22 @@ var robotTW2 = window.robotTW2 = undefined;
 			"helper/i18n",
 			"queues/EventQueue"
 			] , factory);
+		root.robotTW2_version = define("robotTW2/version", function(){
+			return {
+				main:"1.0.0",
+				villages:"1.0.0",
+				headquarter:"1.0.0",
+				recon:"1.0.0",
+				spy:"1.0.0",
+				attack:"1.0.0",
+				defense:"1.0.0",
+				farm:"1.0.0",
+				recruit:"1.0.0",
+				medic:"1.0.0",
+				secondvillage:"1.0.0",
+				map:"1.0.0"
+			}
+		});
 	} else {
 		return
 	}
@@ -457,12 +473,12 @@ var robotTW2 = window.robotTW2 = undefined;
 				var cls = self.classes.join(" ");
 				$(rootnode).addClass(cls);
 			}
-			
+
 			data.scope.$on('$destroy', function() {
 				$("#map")[0].setAttribute("style", "left:0px;")
 				window.dispatchEvent(new Event('resize'));
 			});
-			
+
 			self.$window = rootnode;
 			$(".win-main").removeClass("jssb-focus")
 			$(".win-main").removeClass("jssb-applied")
@@ -634,9 +650,11 @@ var robotTW2 = window.robotTW2 = undefined;
 	require(["robotTW2"], function(robotTW2){
 
 		define("robotTW2/conf", [
-			"conf/buildingTypes"
+			"conf/buildingTypes",
+			"robotTW2/version"
 			], function(
-					buildingTypes
+					buildingTypes,
+					version
 			) {
 
 			var levelsBuilding = [];
@@ -716,20 +734,20 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAX_JOURNEY_TIME     	: h,
 					MIN_JOURNEY_TIME     	: 2 * min,
 					VERSION					: {
-						MAIN			: 2.3,
-						VILLAGES		: 2.3,
-						HEADQUARTER		: 2.3,
-						ALERT			: 2.3,
-						RECON			: 2.3,
-						SPY				: 2.3,
-						ATTACK			: 2.3,
-						DEFENSE			: 2.3,
-						FARM			: 2.4,
-						RECRUIT			: 2.3,
-						DEPOSIT			: 2.3,
-						MEDIC			: 2.3,
-						SECONDVILLAGE	: 2.3,
-						MAP				: 2.3
+						MAIN			: version.main,
+						VILLAGES		: version.villages,
+						HEADQUARTER		: version.headquarter,
+						ALERT			: version.alert,
+						RECON			: version.recon,
+						SPY				: version.spy,
+						ATTACK			: version.attack,
+						DEFENSE			: version.defense,
+						FARM			: version.farm,
+						RECRUIT			: version.recruit,
+						DEPOSIT			: version.deposit,
+						MEDIC			: version.medic,
+						SECONDVILLAGE	: version.secondvillage,
+						MAP				: version.map
 					},
 					FARM_TIME		      	: h,
 					MIN_INTERVAL	     	: 5 * min,

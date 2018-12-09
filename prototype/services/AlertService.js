@@ -1,7 +1,9 @@
 define("robotTW2/services/AlertService", [
-	"robotTW2"
+	"robotTW2",
+	"robotTW2/version"
 	], function(
-			robotTW2
+			robotTW2,
+			version
 	){
 	return (function AlertService(
 			$rootScope,
@@ -75,7 +77,7 @@ define("robotTW2/services/AlertService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: "1.0.0",
+			version			: version.alert,
 			name			: "alert"
 		}
 	})(

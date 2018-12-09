@@ -1,9 +1,11 @@
 define("robotTW2/services/DepositService", [
 	"robotTW2",
+	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf"
 	], function(
 			robotTW2,
+			version,
 			convertedTime,
 			conf
 	){
@@ -128,7 +130,7 @@ define("robotTW2/services/DepositService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: "1.0.0",
+			version			: version.deposit,
 			name			: "deposit",
 		}
 	})(
