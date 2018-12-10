@@ -461,7 +461,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, start = function () {
 			if(isRunning) {return}
-			stop()
+			clear()
 			ready(function () {
 				requestFn.trigger("Farm/run");
 
@@ -526,12 +526,34 @@ define("robotTW2/services/FarmService", [
 			if(bool){return}
 			start();
 		}
+		, clear = function(){
+			Object.keys(timeoutIdFarm).map(function (key) {
+				$timeout.cancel(timeoutIdFarm[key]);
+			});
+			interval_init = null
+			timeoutIdFarm = {}
+			listener_resume = undefined
+			countCommands = {}
+			commands_for_send = []
+			req = 0
+			rdy = 0
+			s = {}
+			promise = undefined
+			promise_grid = undefined
+			promise_farm = undefined
+			preset_queue = []
+			farm_queue = []
+			grid_queue = []
+			send_queue = []
+			t_slice = {}
+		}
 		, stop = function () {
 			Object.keys(timeoutIdFarm).map(function (key) {
 				$timeout.cancel(timeoutIdFarm[key]);
 			});
 
 			if(completion_loaded){
+				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
 			}
 
