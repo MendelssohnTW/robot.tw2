@@ -1,5 +1,6 @@
 define("robotTW2/services/DefenseService", [
 	"robotTW2",
+	"robotTW2/version",
 	"robotTW2/conf",
 	"robotTW2/convert_readable_for_ms",
 	"robotTW2/readableSeconds",
@@ -740,7 +741,7 @@ define("robotTW2/services/DefenseService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: "1.0.0",
+			version			: version.defense,
 			name			: "defense",
 		}
 	})(

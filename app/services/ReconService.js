@@ -1,8 +1,10 @@
 define("robotTW2/services/ReconService", [
 	"robotTW2",
+	"robotTW2/version",
 	"helper/time"
 	], function(
 			robotTW2,
+			version,
 			helper
 	){
 	return (function ReconService(
@@ -224,7 +226,7 @@ define("robotTW2/services/ReconService", [
 			isPaused		: function(){
 				return isPaused
 			},
-			version			: "1.0.0",
+			version			: version.recon,
 			name			: "recon"
 		}
 

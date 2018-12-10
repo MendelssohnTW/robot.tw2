@@ -1,7 +1,9 @@
 define("robotTW2/services/MedicService", [
-	"robotTW2"
+	"robotTW2",
+	"robotTW2/version"
 	], function(
-			robotTW2
+			robotTW2,
+			version
 	){
 	return (function MedicService(
 			$rootScope,
@@ -31,7 +33,7 @@ define("robotTW2/services/MedicService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: "1.0.0",
+			version			: version.medic,
 			name			: "medic",
 		}
 

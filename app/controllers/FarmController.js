@@ -156,7 +156,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.data = {
 				'assignedPresetList': {},
-				'presets'			: services.presetListService.getPresets(),
+				'presets'			: angular.copy(services.presetListService.getPresets()),
 				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
 		}
 

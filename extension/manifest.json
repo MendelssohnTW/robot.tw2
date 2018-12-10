@@ -1,0 +1,28 @@
+{
+    "author": "Mendelssohn Sergio",
+    "content_scripts": [
+        {
+            "js": [
+                "injectTwTwoTools.js"
+            ],
+            "matches": [
+                "https://*.tribalwars2.com/game.php*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "description": "Tribal Support Tools.",
+    "manifest_version": 2,
+    "name": "RobotTwTwoTools",
+    "permissions": [
+        "https://*.tribalwars2.com/*"
+    ],
+    "version": "0.1.4",
+    "web_accessible_resources": [
+        "twtwotools.js"
+    ],
+    "-ms-preload": {
+        "backgroundScript": "backgroundScriptsAPIBridge.js",
+        "contentScript": "contentScriptsAPIBridge.js"
+    }
+}

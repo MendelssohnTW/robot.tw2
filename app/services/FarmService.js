@@ -1,9 +1,11 @@
 define("robotTW2/services/FarmService", [
 	"robotTW2",
+	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	], function(
 			robotTW2,
+			version,
 			convertedTime,
 			conf
 	){
@@ -172,12 +174,15 @@ define("robotTW2/services/FarmService", [
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
 					if(preset_units[unit_preset] > 0) {
-						if(unit_preset != "snob") {
+						if($rootScope.data_farm.troops_not.some(elem => elem == unit_preset)) {
+							return !1;
+						} else {
 							if (verif_units(unit_preset, aldeia_units)) {
 								if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
 									f.push([{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available])
 								}
 							}
+
 						}
 					}
 				}
@@ -186,7 +191,7 @@ define("robotTW2/services/FarmService", [
 				f.sort(function(a,b){return a[1] - b[1]})
 				return f.shift()[0]
 			} else {
-				return false
+				return !1;
 			}
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
@@ -392,7 +397,7 @@ define("robotTW2/services/FarmService", [
 			promise = undefined
 			promise_grid = undefined
 			promise_farm = undefined
-			
+
 			farm_queue = []
 			grid_queue = []
 			send_queue = []
@@ -459,14 +464,14 @@ define("robotTW2/services/FarmService", [
 			stop()
 			ready(function () {
 				requestFn.trigger("Farm/run");
-				
+
 				isRunning = !0
 
 				if(!completion_loaded){
 					completion_loaded = !0;
 					loadScript("/controllers/FarmCompletionController.js");
 				}
-				
+
 				$rootScope.data_villages.getAssignedPresets();
 
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
@@ -580,7 +585,7 @@ define("robotTW2/services/FarmService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: "1.0.0",
+			version			: version.farm,
 			name			: "farm",
 			analytics 		: function () {
 				ga("create", "UA-115071391-2", "auto", "RobotTW2");

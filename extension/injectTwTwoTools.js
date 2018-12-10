@@ -1,6 +1,6 @@
 window.name = 'NG_ENABLE_DEBUG_INFO!';
 
-var urlServer = "https://mendelssohntw.github.io/robot.tw2/prototype/";
+var urlServer = "https://mendelssohntw.github.io/robot.tw2/app/";
 
 if(!window.loadedJs){
 	window.loadedJs = []
@@ -16,7 +16,7 @@ if (!window.inject){
 					if (!loadedJs.some(f => f.toLowerCase() === dependencies[d].toLowerCase())) {
 						dependencies_loaded = false;
 						if (i <= 60) {
-							setTimeout(inject, 1000, dependencies[d], [], callback);
+							setTimeout(function(){inject(dependencies[d], [], callback)}, 1000);
 						} else {
 							return;
 						}
@@ -39,7 +39,7 @@ if (!window.inject){
 				callback()
 			}
 		} catch (error) {
-			setTimeout(inject, 1000, url, dependencies, callback);
+			setTimeout(function(){inject(url, dependencies, callback)}, 1000);
 		}
 	};
 }
@@ -50,12 +50,10 @@ if (!window.check){
 			var scr = document.createElement("link");
 			scr.setAttribute("rel", "stylesheet");
 			scr.setAttribute("type", "text/css");
-			scr.setAttribute("href", "https://mendelssohntw.github.io/robot.tw2/app/css/robotTW2.css");
+			scr.setAttribute("href", urlServer + "css/robotTW2.css");
 			document.head.appendChild(scr);
 			
-			setTimeout(inject, 300, urlServer + "twtwotools.js", [], function(){
-
-			});
+			inject(urlServer + "twtwotools.js", [], function(){});
 
 		} else {
 			setTimeout(check, 1000);

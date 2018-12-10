@@ -1,11 +1,13 @@
 define("robotTW2/services/MapService", [
 	"robotTW2",
+	"robotTW2/version",
 	"cdn",
 	"conf/conf",
 	"helper/mapconvert",
 	"struct/MapData"
 	], function(
 			robotTW2,
+			version,
 			cdn,
 			conf_conf,
 			mapconvert,
@@ -425,7 +427,7 @@ define("robotTW2/services/MapService", [
 			isInitialized			: function(){
 				return isInitialized
 			},
-			version					: "1.0.0",
+			version					: version.map,
 			name					: "map",
 			defaultColors			: defaultColors,
 			colorPalette			: colorPalette,
