@@ -11,6 +11,7 @@ define("robotTW2/services/AlertService", [
 			providers,
 			modelDataService,
 			$timeout,
+			$filter,
 			ready
 	) {
 		var isInitialized = !1
@@ -19,7 +20,7 @@ define("robotTW2/services/AlertService", [
 		, listener_alert_ready = undefined
 		, listener_tab_alert = undefined
 		, notifyAttacks = function() {
-			$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: "Jogadores sob ataque!"})
+			$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("text_underattack", $rootScope.loc.ale, "alert")})
 		}
 		, verify_alert = function(){
 			try {
@@ -86,6 +87,7 @@ define("robotTW2/services/AlertService", [
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
+			robotTW2.services.$filter,
 			robotTW2.ready
 	)
 })

@@ -60,7 +60,7 @@ define("robotTW2/controllers/MainController", [
 				if(ext.initialized){
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
-							if(["FARM", "RECRUIT"].includes(ext.name)){
+							if(["FARM", "RECRUIT", "DATA"].includes(ext.name)){
 								$scope.extensions[ext.name].status = $scope.stopped;
 								fn.init(true)
 							} else {
@@ -71,7 +71,7 @@ define("robotTW2/controllers/MainController", [
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
 						if(typeof(fn.start) == "function"){
-							if(!["FARM", "RECRUIT"].includes(ext.name)){
+							if(!["FARM", "RECRUIT", "DATA"].includes(ext.name)){
 								$scope.extensions[ext.name].status = $scope.running;
 								fn.start()
 							} else {
