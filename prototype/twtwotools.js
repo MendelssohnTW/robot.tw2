@@ -638,6 +638,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				return {
 					main:"1.0.0",
 					villages:"1.0.0",
+					alert:"1.0.0",
+					deposit:"1.0.0",
 					headquarter:"1.0.0",
 					recon:"1.0.0",
 					spy:"1.0.0",
