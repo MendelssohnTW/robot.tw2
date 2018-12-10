@@ -918,7 +918,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 
-		define("robotTW2/socket", ["base"], function(base) {
+		define("robotTW2/socket", ["robotTW2/base"], function(base) {
 			var service = {},
 			id = 0,
 			callbacks = {},
