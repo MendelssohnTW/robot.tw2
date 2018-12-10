@@ -108,7 +108,7 @@ define("robotTW2/controllers/FarmController", [
 						function(elem){
 							if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
 						}).filter(f=>f!=undefined)[0]];
-				services.$timeout(blurPreset, 15000)
+				services.$timeout(blurPreset, 1500)
 			}
 		}
 
@@ -287,13 +287,13 @@ define("robotTW2/controllers/FarmController", [
 			blurPreset();
 		}, true)
 
-		$scope.$watch("villageSelected", function(){
-			if(!$scope.villageSelected || !Object.keys($scope.data.assignedPresetList).length){return}
-			!$scope.presetSelected ? $scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
-					function(elem){
-						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-					}).filter(f=>f!=undefined)[0]] : $scope.presetSelected;
-		}, true)
+//		$scope.$watch("villageSelected", function(){
+//			if(!$scope.villageSelected || !Object.keys($scope.data.assignedPresetList).length){return}
+//			!$scope.presetSelected ? $scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
+//					function(elem){
+//						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+//					}).filter(f=>f!=undefined)[0]] : $scope.presetSelected;
+//		}, true)
 
 
 		/*
@@ -309,6 +309,10 @@ define("robotTW2/controllers/FarmController", [
 		$scope.setVillage = function (village) {
 			$scope.data.assignedPresetList = {};
 			$scope.villageSelected = village;
+			$scope.presetSelected = $scope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
+					function(elem){
+						if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+					}).filter(f=>f!=undefined)[0]];
 			triggerUpdate();
 		}
 
