@@ -24,10 +24,10 @@ define("robotTW2/databases/data_data", [
 			auto_initialize			: false,
 			initialized 			: false,
 			activated 				: false,
-			hotkey					: conf.HOTKEY.data,
+			hotkey					: conf.HOTKEY.DATA,
 			complete				: 0,
-			interval	 			: conf.INTERVAL.data,
-			version					: conf.VERSION.data,
+			interval	 			: conf.INTERVAL.DATA,
+			version					: conf.VERSION.DATA,
 			last_update				: new Date().getTime()
 	}
 

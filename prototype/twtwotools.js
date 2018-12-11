@@ -760,12 +760,12 @@ var robotTW2 = window.robotTW2 = undefined;
 					INTERVAL				: {
 						HEADQUARTER	: h,
 						RECRUIT		: h,
-//						DEPOSIT		: 15 * min,
+						DEPOSIT		: 15 * min,
 						ALERT		: 5 * min,
 						ATTACK		: h,
 						MEDIC		: h,
 						DATA		: 6 * h,
-						SPY			: 30 * min,
+						SPY			: 30 * min
 					},
 					DBS : [
 						"alert",
