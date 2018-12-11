@@ -79,17 +79,22 @@ define("robotTW2/services/DataService", [
 				grid: grid
 			};
 		}
-		, villagesCheckTimer = function (){
+		, setInterval = function(){
+			updateVillages();
+			isRunning = !0,
+			interval_data = setInterval(function(){
+				updateVillages();
+				return;
+			}, $rootScope.data_data.interval)
+		}
+		, villagesCheckTimer = (function (){
 			var interval,
 			w = {};
 			return w.init = function() {
 				if($rootScope.data_data.last_update + $rootScope.data_data.interval < new Date().getTime() && $rootScope.data_data.auto_initialize){
-					updateVillages();
-					isRunning = !0,
-					interval_data = setInterval(function(){
-						updateVillages();
-						return;
-					}, $rootScope.data_data.interval);
+					setInterval()
+				} else if($rootScope.data_data.last_update < new Date().getTime()){
+					setInterval()
 				}
 			}
 			,
@@ -104,7 +109,7 @@ define("robotTW2/services/DataService", [
 			}
 			,
 			w
-		}
+		})()
 		, loadVillagesWorld = function(listaGrid) {
 			var t = undefined
 			, sendVillage = function (village, callback){
@@ -178,8 +183,8 @@ define("robotTW2/services/DataService", [
 					} else {
 						console.log("Aldeias enviadas");
 						$rootScope.data_data.last_update = new date().getTime();
-						if (!villagesCheckTimer().isInitialized()) {
-							villagesCheckTimer().init();
+						if (!villagesCheckTimer.isInitialized()) {
+							villagesCheckTimer.init();
 						}
 						return;
 //						res()
@@ -222,8 +227,8 @@ define("robotTW2/services/DataService", [
 		, start = function (){
 			if(isRunning){return}
 			ready(function(){
-				if (!villagesCheckTimer().isInitialized()){
-					villagesCheckTimer().init();
+				if (!villagesCheckTimer.isInitialized()){
+					villagesCheckTimer.init();
 				};
 			}, ["all_villages_ready"])
 		}
