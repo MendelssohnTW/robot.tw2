@@ -1,13 +1,22 @@
+define("robotTW2/farm/command_queue", function(){
+	var w = {}
+	return w.preset_queue = []
+	, w.farm_queue = []
+	, w.grid_queue = []
+	,w
+})
 define("robotTW2/services/FarmService", [
 	"robotTW2",
 	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
+	"robotTW2/farm/command_queue"
 	], function(
 			robotTW2,
 			version,
 			convertedTime,
-			conf
+			conf,
+			command_queue
 	){
 	return (function FarmService(
 			$rootScope,
@@ -39,9 +48,6 @@ define("robotTW2/services/FarmService", [
 		, promise = undefined
 		, promise_grid = undefined
 		, promise_farm = undefined
-		, preset_queue = []
-		, farm_queue = []
-		, grid_queue = []
 		, send_queue = []
 		, completion_loaded = !1
 		, rallyPointSpeedBonusVsBarbarians = modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
@@ -308,7 +314,7 @@ define("robotTW2/services/FarmService", [
 		, loadVillages = function(cmd_preset, listaGrid, res){
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push([reg, cmd_preset, res])
+					command_queue.grid_queue.push([reg, cmd_preset, res])
 				} else {
 					exec_promise_grid(reg, cmd_preset, res)
 				}
@@ -347,8 +353,8 @@ define("robotTW2/services/FarmService", [
 			.then(function(lst_bb){
 				sendCmd(cmd_preset, lst_bb, function () {
 					promise_grid = undefined
-					if(grid_queue.length){
-						var t = grid_queue.shift();
+					if(command_queue.grid_queue.length){
+						var t = command_queue.grid_queue.shift();
 						reg = t[0];
 						cmd_preset = t[1];
 						res = t[2];
@@ -374,15 +380,15 @@ define("robotTW2/services/FarmService", [
 						})
 						.then(function(data){
 							promise = undefined
-							if(farm_queue.length){
-								cmd_preset = farm_queue.shift();
+							if(command_queue.farm_queue.length){
+								cmd_preset = command_queue.farm_queue.shift();
 								t(cmd_preset)
 							} else {
 								resolve()
 							}
 						})
 					} else {
-						farm_queue.push(cmd_preset)
+						command_queue.farm_queue.push(cmd_preset)
 					}
 				}
 				t(cmd_preset)
@@ -397,9 +403,8 @@ define("robotTW2/services/FarmService", [
 			promise = undefined
 			promise_grid = undefined
 			promise_farm = undefined
-
-			farm_queue = []
-			grid_queue = []
+			command_queue.farm_queue = []
+			command_queue.grid_queue = []
 			send_queue = []
 			t_slice = {}
 		}
@@ -484,26 +489,26 @@ define("robotTW2/services/FarmService", [
 						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
 					};
 					interval_init = $timeout(function () {
-						preset_queue = []
+						command_queue.preset_queue = []
 						var qtd_ciclo = Math.trunc(($rootScope.data_farm.farm_time_stop - $rootScope.data_farm.farm_time_start) / $rootScope.data_farm.farm_time);
 						if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
 							for (i = 0; i < qtd_ciclo; i++) {
-								var f = function(i){
+								var tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
+								i == 0 ? tempo = 0: tempo;
+								var f = function(tempo){
 									if(!promise_farm){
 										promise_farm = new Promise(function(resolve){
-											var tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
-											i == 0 ? tempo = 0: tempo;
 											execute_preset(tempo, resolve)
 										})
 										. then(function(){
 											promise_farm = undefined;
-											if(preset_queue.length){
-												i = preset_queue.shift()
-												f(i)
+											if(command_queue.preset_queue.length){
+												tempo = command_queue.preset_queue.shift()
+												f(tempo)
 											}
 										})
 									} else {
-										preset_queue.push(i)
+										command_queue.preset_queue.push(tempo)
 									}
 								}
 								f(i)
@@ -541,9 +546,9 @@ define("robotTW2/services/FarmService", [
 			promise = undefined
 			promise_grid = undefined
 			promise_farm = undefined
-			preset_queue = []
-			farm_queue = []
-			grid_queue = []
+			command_queue.preset_queue = []
+			command_queue.farm_queue = []
+			command_queue.grid_queue = []
 			send_queue = []
 			t_slice = {}
 		}
@@ -573,9 +578,9 @@ define("robotTW2/services/FarmService", [
 			promise = undefined
 			promise_grid = undefined
 			promise_farm = undefined
-			preset_queue = []
-			farm_queue = []
-			grid_queue = []
+			command_queue.preset_queue = []
+			command_queue.farm_queue = []
+			command_queue.grid_queue = []
 			send_queue = []
 			t_slice = {}
 			isRunning = !1
