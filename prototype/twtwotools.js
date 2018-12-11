@@ -778,7 +778,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						"recruit",
 						"spy",
 						"secondvillage",
-						"map"
+						"map",
+						"data"
 						]
 					,
 					HOTKEY					: {
@@ -1575,8 +1576,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								}, 3000)
 							}, 3000)
 						}, 1000)
-
-
 
 					},  ["all_villages_ready"])
 
