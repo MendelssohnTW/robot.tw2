@@ -212,6 +212,7 @@
 		"data_recruit": "Robot TW2 - Banco de dados (RECRUIT) atualizado, reative o módulo RECRUIT",
 		"data_spy": "Robot TW2 - Banco de dados (SPY) atualizado, reative o módulo SPY",
 		"data_farm": "Robot TW2 - Banco de dados (FARM) atualizado, reative o módulo FARM",
+		"data_data": "Robot TW2 - Banco de dados (DATA) atualizado, reative o módulo DATA",
 		"unity_select": "Selecione as unidades.",
 		"date_error": "Data inferior ao tempo necessário de percurso"
 	},
@@ -230,5 +231,10 @@
 		"ident_cmd": "Identificação do comando",
 		"exclude_button": "Excluir comando",
 		"schedule": "Programar"
+	},
+	"data": {
+		"title": "Atualização de dados",
+		"text_interval_deposit": "Intervalo de nova atualização",
+		"text_interval": "Próximo ciclo em ",
 	}
 }
