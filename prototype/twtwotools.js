@@ -649,7 +649,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				recruit:"1.0.0",
 				medic:"1.0.0",
 				secondvillage:"1.0.0",
-				map:"1.0.0"
+				map:"1.0.0",
+				data:"1.0.0"
 			}
 		});
 
