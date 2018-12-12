@@ -46,7 +46,8 @@ define("robotTW2/databases/data_main", [
 						auto_initialize 	: db.auto_initialize,
 						activated 			: db.activated,
 						name 				: db_name.toUpperCase(),
-						hotkey				: conf.HOTKEY[db_name.toUpperCase()]
+						hotkey				: conf.HOTKEY[db_name.toUpperCase()],
+						pages_excludes		: ["farm", "recruit", "data"]
 
 					}		
 				});
