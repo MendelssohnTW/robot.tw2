@@ -1,12 +1,12 @@
 define("robotTW2/services/DataService", [
 	"robotTW2",
 	"robotTW2/version",
-	"conf/conf",
+	"roboTW2/conf",
 	"robotTW2/socketSend"
 	], function(
 			robotTW2,
 			version,
-			conf_conf,
+			conf,
 			socketSend
 	){
 	return (function DataService(
@@ -49,8 +49,8 @@ define("robotTW2/services/DataService", [
 			var ciclos_x = 0;
 			var ciclos_y = 0;
 
-			Math.trunc(dist_x / conf_conf.MAP_CHUNCK_LEN) / (dist_x / conf_conf.MAP_CHUNCK_LEN) < 1 ? ciclos_x = Math.trunc(dist_x / conf_conf.MAP_CHUNCK_LEN) + 1 : ciclos_x = Math.trunc(dist_x / conf_conf.MAP_CHUNCK_LEN);
-			Math.trunc(dist_y / conf_conf.MAP_CHUNCK_LEN) / (dist_y / conf_conf.MAP_CHUNCK_LEN) < 1 ? ciclos_y = Math.trunc(dist_y / conf_conf.MAP_CHUNCK_LEN) + 1 : ciclos_y = Math.trunc(dist_y / conf_conf.MAP_CHUNCK_LEN);
+			Math.trunc(dist_x / conf.MAP_CHUNCK_LEN) / (dist_x / conf.MAP_CHUNCK_LEN) < 1 ? ciclos_x = Math.trunc(dist_x / conf.MAP_CHUNCK_LEN) + 1 : ciclos_x = Math.trunc(dist_x / conf.MAP_CHUNCK_LEN);
+			Math.trunc(dist_y / conf.MAP_CHUNCK_LEN) / (dist_y / conf.MAP_CHUNCK_LEN) < 1 ? ciclos_y = Math.trunc(dist_y / conf.MAP_CHUNCK_LEN) + 1 : ciclos_y = Math.trunc(dist_y / conf.MAP_CHUNCK_LEN);
 
 			var t_ciclo_x = 0;
 			if (ciclos_x % 2 < 1) {
@@ -129,7 +129,7 @@ define("robotTW2/services/DataService", [
 
 				t = $timeout(function(){
 					callbackSocket();
-				}, conf_conf.LOADING_TIMEOUT);
+				}, conf.LOADING_TIMEOUT);
 
 				socketService.emit(routeProvider.MAP_GETVILLAGES,{x:reg.x, y:reg.y, width: reg.dist_x, height: reg.dist_y}, function(data){
 					var lista_barbaras = [];
