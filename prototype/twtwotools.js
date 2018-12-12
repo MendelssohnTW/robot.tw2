@@ -726,7 +726,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAP_CHUNCK_LEN 			: 30 / 2,
 					TIME_CORRECTION_COMMAND : -225,
 					TIME_DELAY_UPDATE		: 30 * seg,
-					TIME_DELAY_FARM			: 1500,
+					TIME_DELAY_FARM			: 3000,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
 					MAX_TIME_CORRECTION 	: 3 * seg,
