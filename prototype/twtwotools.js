@@ -935,8 +935,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onclose = function onclose(){
 			},
-			onerror = function onerror(err){
-				console.log(err);
+			onerror = function onerror($event, data){
+				console.log(data);
 				console.log("Socket error ... \n");
 			},
 			connect = function connect(callback){
