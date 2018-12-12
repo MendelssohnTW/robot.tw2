@@ -34,7 +34,7 @@ define("robotTW2/services/DataService", [
 			}
 
 			for (i = 0; i < t_ciclo_y; i++) {
-				arr_x[i] = null
+				arr_y[i] = null
 			}
 
 			return arr_x.concat().map(function (elem) {
