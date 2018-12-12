@@ -13,7 +13,7 @@ define("robotTW2/controllers/MainController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		var self = this;
 		var toggle = false;
-		
+
 		var update = function(){
 			$scope.extensions = $rootScope.data_main.getExtensions();
 			for (var extension in $scope.extensions) {
@@ -24,7 +24,7 @@ define("robotTW2/controllers/MainController", [
 					continue
 				} else {
 					var fn = arFn.fn;
-					
+
 					if(typeof(fn.isPaused) == "function"){
 						fn.isRunning() && fn.isPaused() ? $scope.extensions[extension].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[extension].status = $scope.running : $scope.extensions[extension].status = $scope.stopped;						
 					} else {
@@ -56,7 +56,15 @@ define("robotTW2/controllers/MainController", [
 				$scope.extensions[ext.name].status = $scope.disabled;
 			} else {
 				var fn = arFn.fn;
-				$scope.extensions[ext.name].activated = true;
+				if(ext.name == "data"){
+					if($rootScope.data_data.possible){
+						$scope.extensions[ext.name].activated = true;
+					} else {
+						$scope.extensions[ext.name].activated = false;
+					}
+				} else {
+					$scope.extensions[ext.name].activated = true;
+				}
 				if(ext.initialized){
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
@@ -88,7 +96,7 @@ define("robotTW2/controllers/MainController", [
 			toggle = false;
 
 			$rootScope.data_main.setExtensions($scope.extensions);
-			
+
 			services.$timeout(function(){
 				update()	
 			}, 3000)

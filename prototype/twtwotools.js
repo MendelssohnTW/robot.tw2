@@ -935,16 +935,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onclose = function onclose(){
 			},
-			onerror = function onerror($event, data){
-				$rootScope.data_data.activated = false;
-				$rootScope.data_data.initialized = false;
-				$rootScope.data_data.auto_initialize = false;
-				console.log(data);
+			onerror = function onerror($event){
+				$rootScope.data_data.possible = false;
 				console.log("Socket error ... \n");
 			},
 			connect = function connect(callback){
 				switch (service.readyState){
 				case 1 :{ //Aberta
+					$rootScope.data_data.possible = true;
 					if (typeof callback === "function") {
 						callback(true);
 					};

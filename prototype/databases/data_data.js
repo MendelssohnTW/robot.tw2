@@ -28,6 +28,7 @@ define("robotTW2/databases/data_data", [
 			complete				: 0,
 			interval	 			: conf.INTERVAL.DATA,
 			version					: conf.VERSION.DATA,
+			possible				: true,
 			last_update				: new Date().getTime()
 	}
 
