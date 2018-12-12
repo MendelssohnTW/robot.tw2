@@ -936,6 +936,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			onclose = function onclose(){
 			},
 			onerror = function onerror($event, data){
+				$rootScope.data_data.activated = false;
+				$rootScope.data_data.initialized = false;
+				$rootScope.data_data.auto_initialize = false;
 				console.log(data);
 				console.log("Socket error ... \n");
 			},
