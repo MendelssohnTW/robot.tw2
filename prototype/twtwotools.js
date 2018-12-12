@@ -916,7 +916,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/base", function () {
 			return{
 				URL_BASE			: "http://www.ipatapp.com.br/chaosdinasty/",
-				URL_SOCKET			: "ws://www.ipatapp.com.br/chaosdinasty/chaos_dinasty_server"
+				URL_SOCKET			: "wss://www.ipatapp.com.br/chaosdinasty/chaos_dinasty_server"
 			}
 		})
 
