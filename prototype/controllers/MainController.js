@@ -56,7 +56,7 @@ define("robotTW2/controllers/MainController", [
 				$scope.extensions[ext.name].status = $scope.disabled;
 			} else {
 				var fn = arFn.fn;
-				if(ext.name == "data"){
+				if(ext.name == "DATA"){
 					if($rootScope.data_data.possible){
 						$scope.extensions[ext.name].activated = true;
 					} else {
@@ -68,7 +68,7 @@ define("robotTW2/controllers/MainController", [
 				if(ext.initialized){
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
-							if($rootScope.data_main.pages_excludes.includes(ext.name)){
+							if($rootScope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
 								$scope.extensions[ext.name].status = $scope.stopped;
 								fn.init(true)
 							} else {
@@ -79,7 +79,7 @@ define("robotTW2/controllers/MainController", [
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
 						if(typeof(fn.start) == "function"){
-							if(!$rootScope.data_main.pages_excludes.includes(ext.name)){
+							if(!$rootScope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
 								$scope.extensions[ext.name].status = $scope.running;
 								fn.start()
 							} else {
