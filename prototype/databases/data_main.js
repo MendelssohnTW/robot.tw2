@@ -46,8 +46,7 @@ define("robotTW2/databases/data_main", [
 						auto_initialize 	: db.auto_initialize,
 						activated 			: db.activated,
 						name 				: db_name.toUpperCase(),
-						hotkey				: conf.HOTKEY[db_name.toUpperCase()],
-						pages_excludes		: ["farm", "recruit", "data"]
+						hotkey				: conf.HOTKEY[db_name.toUpperCase()]
 
 					}		
 				});
@@ -61,6 +60,7 @@ define("robotTW2/databases/data_main", [
 			max_time_correction		: conf.MAX_TIME_CORRECTION,
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
 			version					: conf.VERSION.MAIN,
+			pages_excludes			: ["farm", "recruit", "data"],
 			name					: "data_main"
 	}
 
