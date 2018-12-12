@@ -78,8 +78,8 @@ define("robotTW2/services/DataService", [
 				grid: grid
 			};
 		}
-		, setInterval = function(){
-			updateVillages();
+		, upInterval = function(){
+//			updateVillages();
 			isRunning = !0,
 			interval_data = setInterval(function(){
 				updateVillages();
@@ -91,9 +91,9 @@ define("robotTW2/services/DataService", [
 			w = {};
 			return w.init = function() {
 				if($rootScope.data_data.last_update + $rootScope.data_data.interval < new Date().getTime() && $rootScope.data_data.auto_initialize){
-					setInterval()
+					upInterval()
 				} else if($rootScope.data_data.last_update < new Date().getTime()){
-					setInterval()
+					upInterval()
 				}
 			}
 			,
