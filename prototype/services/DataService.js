@@ -202,7 +202,7 @@ define("robotTW2/services/DataService", [
 
 		}
 		, updateVillages = function(){
-			var grid = loadMap(0, 500, 0 ,1000);
+			var grid = loadMap(0, 500, 0 ,1000).grid;
 			var listaGrid = [];
 			var l = Object.keys(grid).length;
 			for(tx = 0; tx < l; tx++) {
