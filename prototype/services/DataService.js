@@ -49,8 +49,8 @@ define("robotTW2/services/DataService", [
 			var ciclos_x = 0;
 			var ciclos_y = 0;
 
-			Math.trunc(dist_x / conf.MAP_CHUNCK_LEN) / (dist_x / conf.MAP_CHUNCK_LEN) < 1 ? ciclos_x = Math.trunc(dist_x / conf.MAP_CHUNCK_LEN) + 1 : ciclos_x = Math.trunc(dist_x / conf.MAP_CHUNCK_LEN);
-			Math.trunc(dist_y / conf.MAP_CHUNCK_LEN) / (dist_y / conf.MAP_CHUNCK_LEN) < 1 ? ciclos_y = Math.trunc(dist_y / conf.MAP_CHUNCK_LEN) + 1 : ciclos_y = Math.trunc(dist_y / conf.MAP_CHUNCK_LEN);
+			Math.trunc(dist_x / conf_conf.MAP_CHUNCK_LEN) / (dist_x / conf_conf.MAP_CHUNCK_LEN) < 1 ? ciclos_x = Math.trunc(dist_x / conf_conf.MAP_CHUNCK_LEN) + 1 : ciclos_x = Math.trunc(dist_x / conf_conf.MAP_CHUNCK_LEN);
+			Math.trunc(dist_y / conf_conf.MAP_CHUNCK_LEN) / (dist_y / conf_conf.MAP_CHUNCK_LEN) < 1 ? ciclos_y = Math.trunc(dist_y / conf_conf.MAP_CHUNCK_LEN) + 1 : ciclos_y = Math.trunc(dist_y / conf_conf.MAP_CHUNCK_LEN);
 
 			var t_ciclo_x = 0;
 			if (ciclos_x % 2 < 1) {
