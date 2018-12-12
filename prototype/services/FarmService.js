@@ -320,9 +320,16 @@ define("robotTW2/services/FarmService", [
 				}
 			})
 		}
+		, t = undefined
 		, exec_promise_grid = function(reg, cmd_preset, res){
 			promise_grid = new Promise(function(resolve){
+				t = $timeout(function(){
+					resolve();
+				}, conf_conf.LOADING_TIMEOUT);
+				
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+					$timeout.cancel(t);
+					t = undefined;
 					var lt_barbaras = []
 					if (data != undefined && data.villages != undefined && data.villages.length > 0) {
 						var listaVil = angular.copy(data.villages);
