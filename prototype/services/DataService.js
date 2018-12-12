@@ -79,7 +79,7 @@ define("robotTW2/services/DataService", [
 			};
 		}
 		, upInterval = function(){
-//			updateVillages();
+			updateVillages();
 			isRunning = !0,
 			interval_data = setInterval(function(){
 				updateVillages();
