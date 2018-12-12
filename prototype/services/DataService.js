@@ -1,7 +1,7 @@
 define("robotTW2/services/DataService", [
 	"robotTW2",
 	"robotTW2/version",
-	"roboTW2/conf",
+	"robotTW2/conf",
 	"robotTW2/socketSend"
 	], function(
 			robotTW2,
