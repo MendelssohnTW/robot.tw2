@@ -130,7 +130,7 @@ define("robotTW2/services/DataService", [
 					callbackSocket();
 				}, conf.LOADING_TIMEOUT);
 
-				socketService.emit(routeProvider.MAP_GETVILLAGES,{x:reg.x, y:reg.y, width: reg.dist_x, height: reg.dist_y}, function(data){
+				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:reg.x, y:reg.y, width: reg.dist_x, height: reg.dist_y}, function(data){
 					var lista_barbaras = [];
 					if (data.error_code == "INTERNAL_ERROR"){
 						console.log("Error internal x " + x + " / y " + y);
