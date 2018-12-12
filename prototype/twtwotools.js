@@ -915,7 +915,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/base", function () {
 			return{
-				URL_BASE			: "http://www.ipatapp.com.br/chaosdinasty/",
+				URL_BASE			: "https://www.ipatapp.com.br/chaosdinasty/",
 				URL_SOCKET			: "wss://www.ipatapp.com.br/chaosdinasty/chaos_dinasty_server"
 			}
 		})
@@ -935,7 +935,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onclose = function onclose(){
 			},
-			onerror = function onerror(){
+			onerror = function onerror(err){
+				console.log(err);
 				console.log("Socket error ... \n");
 			},
 			connect = function connect(callback){
