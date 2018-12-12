@@ -45,7 +45,6 @@ define("robotTW2/services/DataService", [
 			countVillages = 0;
 			var dist_x = Math.abs(x_max - x_min);
 			var dist_y = Math.abs(y_max - y_min);
-//			var grid = setupGrid(dist_x, dist_y);
 			var ciclos_x = 0;
 			var ciclos_y = 0;
 
@@ -71,7 +70,7 @@ define("robotTW2/services/DataService", [
 			var grid = setupGrid(t_ciclo_x, t_ciclo_y);
 			for (var i = 0; i < t_ciclo_x; i++) {
 				for (var j = 0; j < t_ciclo_y; j++) {
-					grid[i][j] = {"x":coordX + (map_chunk_size_x * i), "y":coordY + (map_chunk_size_y * j), "dist_x": map_chunk_size_x, "dist_y": map_chunk_size_y};
+					grid[i][j] = {"x":map_chunk_size_x * i, "y":map_chunk_size_y * j, "dist_x": map_chunk_size_x, "dist_y": map_chunk_size_y};
 					grid[i][j].villages = [];
 				};
 			};
@@ -203,7 +202,7 @@ define("robotTW2/services/DataService", [
 
 		}
 		, updateVillages = function(){
-			var grid = loadMap(0, 1000, 0 ,1000);
+			var grid = loadMap(0, 500, 0 ,1000);
 			var listaGrid = [];
 			var l = Object.keys(grid).length;
 			for(tx = 0; tx < l; tx++) {
