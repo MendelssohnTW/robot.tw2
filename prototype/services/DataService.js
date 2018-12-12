@@ -64,8 +64,8 @@ define("robotTW2/services/DataService", [
 				t_ciclo_y = ciclos_y;
 			}
 
-			var map_chunk_size_x = Math.round(dist_x * 2 / t_ciclo_x);
-			var map_chunk_size_y = Math.round(dist_y * 2 / t_ciclo_y);
+			var map_chunk_size_x = Math.round(dist_x / t_ciclo_x);
+			var map_chunk_size_y = Math.round(dist_y / t_ciclo_y);
 
 			var grid = setupGrid(t_ciclo_x, t_ciclo_y);
 			for (var i = 0; i < t_ciclo_x; i++) {
