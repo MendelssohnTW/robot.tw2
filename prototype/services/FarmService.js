@@ -10,12 +10,14 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
+	"conf/conf",
 	"robotTW2/farm/command_queue"
 	], function(
 			robotTW2,
 			version,
 			convertedTime,
 			conf,
+			conf_conf,
 			command_queue
 	){
 	return (function FarmService(
