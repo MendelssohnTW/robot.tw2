@@ -37,7 +37,7 @@ define("robotTW2/services/DataService", [
 				arr_x[i] = null
 			}
 
-			arr_x.concat().map(function (elem) {
+			return arr_x.concat().map(function (elem) {
 				return arr_y.concat()
 			});
 		}
@@ -45,7 +45,7 @@ define("robotTW2/services/DataService", [
 			countVillages = 0;
 			var dist_x = Math.abs(x_max - x_min);
 			var dist_y = Math.abs(y_max - y_min);
-			var grid = setupGrid(dist_x, dist_y);
+//			var grid = setupGrid(dist_x, dist_y);
 			var ciclos_x = 0;
 			var ciclos_y = 0;
 
