@@ -50,6 +50,13 @@ define("robotTW2/controllers/DataController", [
 				$rootScope.$apply();
 			}
 		})
+		
+		$rootScope.$watch("data_data.logs", function(){
+			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
 
 		$scope.interval_data = helper.readableMilliseconds($rootScope.data_data.interval)
 
