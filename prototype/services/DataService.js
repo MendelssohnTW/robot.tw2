@@ -90,6 +90,7 @@ define("robotTW2/services/DataService", [
 			var interval,
 			w = {};
 			return w.init = function() {
+				$rootScope.data_data.complete = new Date().getTime() + $rootScope.data_data.interval ;
 				if($rootScope.data_data.last_update + $rootScope.data_data.interval < new Date().getTime() && $rootScope.data_data.auto_initialize){
 					upInterval()
 				} else if($rootScope.data_data.last_update < new Date().getTime()){
