@@ -1580,7 +1580,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-								robotTW2.loadScript("/databases/data_data.js");
+//								robotTW2.loadScript("/databases/data_data.js");
 //								robotTW2.loadScript("/databases/data_map.js");
 
 								robotTW2.services.$timeout(function(){
