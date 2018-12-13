@@ -470,9 +470,11 @@ var robotTW2 = window.robotTW2 = undefined;
 //			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
 			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(["scrollbar"])) : null;
 			self.recalcScrollbar = function() {
+				if(!self.$scrollbar) return;
 				self.$scrollbar.recalc()
 			};
 			self.disableScrollbar = function() {
+				if(!self.$scrollbar) return;
 				self.$scrollbar.disable()
 			};
 			self.setCollapse = function() {
