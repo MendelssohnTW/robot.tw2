@@ -129,6 +129,7 @@ define("robotTW2/services/DataService", [
 				console.log("Buscando " + reg.x + "/" + reg.y);
 
 				t = $timeout(function(){
+					console.log("Timeout x " + reg.x + " / y " + reg.y);
 					callbackSocket();
 				}, conf.LOADING_TIMEOUT);
 
