@@ -287,9 +287,11 @@ define("robotTW2/services/FarmService", [
 						})
 						.then(function(){
 							promise_send = undefined;
-							if(send_queue.length){
+							if(send_queue.length && permit_send){
 								barbara = send_queue.shift()
 								f(barbara)
+							} else {
+								send_queue = [];
 							}
 						})
 					} else {
