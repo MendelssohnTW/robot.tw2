@@ -194,7 +194,7 @@ define("robotTW2/services/DataService", [
 
 			listaGrid.forEach(function(reg){
 				if(promise_grid){
-					grid_queue.push([reg])
+					grid_queue.push(reg)
 				} else {
 					exec_promise_grid(reg)
 				}
