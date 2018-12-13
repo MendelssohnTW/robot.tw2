@@ -111,6 +111,8 @@ define("robotTW2/services/DataService", [
 		})()
 		, loadVillagesWorld = function(listaGrid) {
 			var t = undefined
+			, promise_send = undefined
+			, send_queue = []
 			, sendVillage = function (village, callback){
 				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(resp){
 					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
