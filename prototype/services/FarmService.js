@@ -377,7 +377,7 @@ define("robotTW2/services/FarmService", [
 		, exec_promise = function(commands_for_presets, resolve){
 			if(!isRunning || !commands_for_presets.length){
 				resolve()
-				return
+				return !1;
 			}
 			commands_for_presets.forEach(function(cmd_preset){
 				var t = function(cmd_preset){
@@ -431,8 +431,8 @@ define("robotTW2/services/FarmService", [
 							, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
 							, aldeia_commands = village.getCommandListModel().data
 
-							if(!presets) {
-								return	
+							if(!presets || !aldeia_units) {
+								return !0;
 							}
 
 							var presets_order = Object.keys(presets).map(function(preset){
