@@ -28,6 +28,21 @@
 							<td><input id="input-ms" class="input-border inpt disabled" type=text value="{{getTimeRest()}}" disabled></td>
 						</tr>
 					</table>
+					
+					<table class="tbl-border-light tbl-striped">
+						<colgroup>
+							<col width="50%">
+							<col width="50%">
+						</colgroup>
+						<tr ng-repeat="log in data_data.logs">
+							<td class="cell-right">{{log.text}}</td>
+							<td class="cell-right">{{log.date}}</td>
+						</tr>
+						<tr>
+							<td class="cell-right">{{text_interval}}</td>
+							<td><input id="input-ms" class="input-border inpt disabled" type=text value="{{getTimeRest()}}" disabled></td>
+						</tr>
+					</table>
 
 				</div>
 			</div>

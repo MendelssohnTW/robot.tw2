@@ -236,6 +236,10 @@
 	"data": {
 		"title": "Data update",
 		"text_interval_data": "Check interval",
-		"text_interval": "Next cycle in"
+		"text_interval": "Next cycle in",
+		"text_search": "Searching ",
+		"text_timeout": "Timeout ",
+		"text_err": "Internal error ",
+		"text_completed": "Sent villages "
 	}
 }
