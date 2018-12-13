@@ -108,6 +108,9 @@ define("robotTW2/services/DataService", [
 				isRunning = !1;
 				clearInterval(interval_data);
 				interval_data = undefined;
+				grid_queue = [];
+				countVillages = 0;
+				promise_grid = undefined;
 			}
 			,
 			w.isInitialized = function() {
