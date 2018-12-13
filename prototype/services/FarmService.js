@@ -275,10 +275,12 @@ define("robotTW2/services/FarmService", [
 									requestFn.trigger("Farm/sendCmd")
 //									console.log(params)
 //									console.log("count command " + g + h++)
-									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									result_units = units_subtract(preset_units, aldeia_units)
 									aldeia_units = result_units[1];
 									permit_send = result_units[0];
+									if(permit_send){
+										socketService.emit(providers.routeProvider.SEND_PRESET, params);
+									}
 									resolve()
 								}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
 							} else {
