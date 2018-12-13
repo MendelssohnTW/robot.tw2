@@ -131,10 +131,10 @@ define("robotTW2/services/DataService", [
 			}
 			, socketGetVillages = function (reg, callbackSocket){
 				console.log("Buscando " + reg.x + "/" + reg.y);
-				$rootScope.data_data.logs.push({"text":services.$filter("i18n")("text_search", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+				$rootScope.data_data.logs.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
 				if(!$rootScope.data_data.logs) $rootScope.data_data.logs = [];
 				t = $timeout(function(){
-					$rootScope.data_data.logs.push({"text":services.$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
 					callbackSocket();
 				}, conf.LOADING_TIMEOUT);
 
@@ -142,7 +142,7 @@ define("robotTW2/services/DataService", [
 					var lista_barbaras = [];
 					if (data.error_code == "INTERNAL_ERROR"){
 						console.log("Error internal x " + x + " / y " + y);
-						$rootScope.data_data.logs.push({"text":services.$filter("i18n")("text_err", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
 						callbackSocket();
 					} else {
 						if (data != undefined && data.villages != undefined && data.villages.length > 0){
@@ -189,7 +189,7 @@ define("robotTW2/services/DataService", [
 						var reg = grid_queue.shift();
 						exec_promise_grid(reg)
 					} else {
-						$rootScope.data_data.logs.push({"text":services.$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
 						$rootScope.data_data.last_update = new date().getTime();
 						if (!villagesCheckTimer.isInitialized()) {
 							villagesCheckTimer.init();
