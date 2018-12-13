@@ -471,10 +471,12 @@ var robotTW2 = window.robotTW2 = undefined;
 			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(["scrollbar"])) : null;
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
+				if(!self.$scrollbar.recalc) return;
 				self.$scrollbar.recalc()
 			};
 			self.disableScrollbar = function() {
 				if(!self.$scrollbar) return;
+				if(!self.$scrollbar.disable) return;
 				self.$scrollbar.disable()
 			};
 			self.setCollapse = function() {
