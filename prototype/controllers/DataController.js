@@ -58,8 +58,6 @@ define("robotTW2/controllers/DataController", [
 			}
 		}, true)
 
-		$scope.interval_data = helper.readableMilliseconds($rootScope.data_data.interval)
-
 		$scope.setCollapse();
 		$scope.recalcScrollbar();
 
