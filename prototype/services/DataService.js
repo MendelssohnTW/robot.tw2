@@ -75,7 +75,7 @@ define("robotTW2/services/DataService", [
 			var grid = setupGrid(t_ciclo_x, t_ciclo_y);
 			for (var i = 0; i < t_ciclo_x; i++) {
 				for (var j = 0; j < t_ciclo_y; j++) {
-					grid[i][j] = {"x":map_chunk_size_x * i, "y":map_chunk_size_y * j, "dist_x": map_chunk_size_x, "dist_y": map_chunk_size_y};
+					grid[i][j] = {"x":x_min + map_chunk_size_x * i, "y":y_min + map_chunk_size_y * j, "dist_x": map_chunk_size_x, "dist_y": map_chunk_size_y};
 					grid[i][j].villages = [];
 				};
 			};
