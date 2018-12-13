@@ -1002,7 +1002,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		})
 
-		define("robotTW2/socketSend", ["robotTW2/socket"], function(WorldService, socket) {
+		define("robotTW2/socketSend", ["robotTW2/socket"], function(socket) {
 
 			var service = {},
 			count = 0;
