@@ -205,8 +205,8 @@
 	"notify": {
 		"title": "News",
 		"init_ready": "Robot TW2 - Loaded",
-		"data_main": "Robot TW2 - Database (MAIN) updated",
-		"data_alert": "Robot TW2 - Database (ALERT) updated",
+		"data_main": "Robot TW2 - Database (MAIN) updated ",
+		"data_alert": "Robot TW2 - Database (ALERT) updated, reactivate the ALERT module",
 		"data_recon": "Robot TW2 - Database (RECON) updated, reactivate the RECON module",
 		"data_headquarter": "Robot TW2 - Database (HEADQUARTER) updated, reactivate the module HEADQUARTER",
 		"data_deposit": "Robot TW2 - Database (DEPOSIT) updated, re-enable the DEPOSIT module",
