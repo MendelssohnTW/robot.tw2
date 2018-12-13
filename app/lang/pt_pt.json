@@ -101,7 +101,7 @@
 		"remove": "Remover",
 		"state": "Estado",
 		"text_friends": "Selecionados",
-		"text_underattack": "Sob ataque",
+		"text_underattack": "Jogadores sob ataque",
 		"init_standard": "Inicialização automática",
 		"settings_for_member": "Membros da tribo",
 		"text_member": "Membro",
@@ -204,14 +204,15 @@
 	},
 	"notify": {
 		"title": "Notícias",
-		"data_main": "Robot TW2 - Banco de dados (MAIN) atualizado",
-		"data_alert": "Robot TW2 - Banco de dados (ALERT) atualizado",
+		"data_main": "Robot TW2 - Updated (MAIN) database - reactivate the modules and configure required parameters",
+		"data_alert": "Robot TW2 - Banco de dados (ALERT) atualizado, reative o módulo ALERT",
 		"data_recon": "Robot TW2 - Banco de dados (RECON) atualizado, reative o módulo RECON",
 		"data_headquarter": "Robot TW2 - Banco de dados (HEADQUARTER) atualizado, reative o módulo HEADQUARTER",
 		"data_deposit": "Robot TW2 - Banco de dados (DEPOSIT) atualizado, reative o módulo DEPOSIT",
 		"data_recruit": "Robot TW2 - Banco de dados (RECRUIT) atualizado, reative o módulo RECRUIT",
 		"data_spy": "Robot TW2 - Banco de dados (SPY) atualizado, reative o módulo SPY",
 		"data_farm": "Robot TW2 - Banco de dados (FARM) atualizado, reative o módulo FARM",
+		"data_data": "Robot TW2 - Banco de dados (DATA) atualizado, reative o módulo DATA",
 		"unity_select": "Selecione as unidades.",
 		"date_error": "Data inferior ao tempo necessário de percurso"
 	},
@@ -230,5 +231,14 @@
 		"ident_cmd": "Identificação do comando",
 		"exclude_button": "Excluir comando",
 		"schedule": "Programar"
+	},
+	"data": {
+		"title": "Atualização de dados",
+		"text_interval_deposit": "Intervalo de nova atualização",
+		"text_interval": "Próximo ciclo em ",
+		"text_search": "Buscando ",
+		"text_timeout": "Tempo esgotado ",
+		"text_err": "Erro interno ",
+		"text_completed": "Aldeias enviadas"
 	}
 }

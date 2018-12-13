@@ -101,7 +101,7 @@
 		"remove": "Remove",
 		"state": "State",
 		"text_friends": "Selected",
-		"text_underattack": "Under attack",
+		"text_underattack": "Players under attack",
 		"init_standard": "Automatic startup",
 		"settings_for_member": "Tribe members",
 		"text_member": "Member",
@@ -205,14 +205,15 @@
 	"notify": {
 		"title": "News",
 		"init_ready": "Robot TW2 - Loaded",
-		"data_main": "Robot TW2 - Database (MAIN) updated",
-		"data_alert": "Robot TW2 - Database (ALERT) updated",
+		"data_main": "Robot TW2 - Database (MAIN) updated ",
+		"data_alert": "Robot TW2 - Database (ALERT) updated, reactivate the ALERT module",
 		"data_recon": "Robot TW2 - Database (RECON) updated, reactivate the RECON module",
 		"data_headquarter": "Robot TW2 - Database (HEADQUARTER) updated, reactivate the module HEADQUARTER",
 		"data_deposit": "Robot TW2 - Database (DEPOSIT) updated, re-enable the DEPOSIT module",
 		"data_recruit": "Robot TW2 - Database (RECRUIT) updated, reactivate module RECRUIT",
 		"data_spy": "Robot TW2 - Database (SPY) updated, reactivate SPY module",
 		"data_farm": "Robot TW2 - Database (FARM) updated, reactivate FARM module",
+		"data_data": "Robot TW2 - Database (DATA) updated, reactivate DATA module",
 		"unity_select": "Select the units.",
 		"date_error": "Date below the required travel time"
 	},
@@ -231,5 +232,14 @@
 		"ident_cmd": "Command identification",
 		"exclude_button": "Delete command",
 		"schedule": "Schedule"
+	},
+	"data": {
+		"title": "Data update",
+		"text_interval_data": "Check interval",
+		"text_interval": "Next cycle in",
+		"text_search": "Searching ",
+		"text_timeout": "Timeout ",
+		"text_err": "Internal error ",
+		"text_completed": "Sent villages "
 	}
 }

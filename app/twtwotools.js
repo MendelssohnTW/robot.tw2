@@ -422,7 +422,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		if(self.templateName != "main"){
 			var arFn = exports.requestFn.get(self.templateName.toLowerCase(), true);
 			if(!arFn){return}
-			if(["farm", "recruit"].includes(self.templateName)){
+			if($rootScope.data_main.pages_excludes.includes(self.templateName)){
 				if(!arFn.fn.isInitialized()){return}
 			} else{
 				if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
@@ -467,11 +467,16 @@ var robotTW2 = window.robotTW2 = undefined;
 			self.$window = rootnode;
 			$(".win-main").removeClass("jssb-focus")
 			$(".win-main").removeClass("jssb-applied")
-			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
+//			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
+			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(["scrollbar"])) : null;
 			self.recalcScrollbar = function() {
+				if(!self.$scrollbar) return;
+				if(!self.$scrollbar.recalc) return;
 				self.$scrollbar.recalc()
 			};
 			self.disableScrollbar = function() {
+				if(!self.$scrollbar) return;
+				if(!self.$scrollbar.disable) return;
 				self.$scrollbar.disable()
 			};
 			self.setCollapse = function() {
@@ -633,23 +638,26 @@ var robotTW2 = window.robotTW2 = undefined;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
-		
-		 define("robotTW2/version", function(){
-				return {
-					main:"1.0.0",
-					villages:"1.0.0",
-					headquarter:"1.0.0",
-					recon:"1.0.0",
-					spy:"1.0.0",
-					attack:"1.0.0",
-					defense:"1.0.0",
-					farm:"1.0.0",
-					recruit:"1.0.0",
-					medic:"1.0.0",
-					secondvillage:"1.0.0",
-					map:"1.0.0"
-				}
-			});
+
+		define("robotTW2/version", function(){
+			return {
+				main:			"3.0.0",
+				villages:		"3.0.0",
+				alert:			"3.0.0",
+				deposit:		"3.0.0",
+				headquarter:	"3.0.0",
+				recon:			"3.0.0",
+				spy:			"3.0.0",
+				attack:			"3.0.0",
+				defense:		"3.0.0",
+				farm:			"3.0.0",
+				recruit:		"3.0.0",
+				medic:			"3.0.0",
+				secondvillage:	"3.0.0",
+				map:			"3.0.0",
+				data:			"3.0.0"
+			}
+		});
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
@@ -723,7 +731,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAP_CHUNCK_LEN 			: 30 / 2,
 					TIME_CORRECTION_COMMAND : -225,
 					TIME_DELAY_UPDATE		: 30 * seg,
-					TIME_DELAY_FARM			: 1500,
+					TIME_DELAY_FARM			: 3000,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
 					MAX_TIME_CORRECTION 	: 3 * seg,
@@ -749,18 +757,20 @@ var robotTW2 = window.robotTW2 = undefined;
 						DEPOSIT			: version.deposit,
 						MEDIC			: version.medic,
 						SECONDVILLAGE	: version.secondvillage,
-						MAP				: version.map
+						MAP				: version.map,
+						DATA			: version.data
 					},
 					FARM_TIME		      	: h,
 					MIN_INTERVAL	     	: 5 * min,
 					INTERVAL				: {
 						HEADQUARTER	: h,
 						RECRUIT		: h,
-//						DEPOSIT		: 15 * min,
+						DEPOSIT		: 15 * min,
 						ALERT		: 5 * min,
 						ATTACK		: h,
 						MEDIC		: h,
-						SPY			: 30 * min,
+						DATA		: 6 * h,
+						SPY			: 30 * min
 					},
 					DBS : [
 						"alert",
@@ -774,7 +784,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						"recruit",
 						"spy",
 						"secondvillage",
-						"map"
+						"map",
+						"data"
 						]
 					,
 					HOTKEY					: {
@@ -790,7 +801,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						RECRUIT		 	: "ctrl+alt+e",
 						SPY			 	: "ctrl+alt+s",
 						SECONDVILLAGE	: "ctrl+alt+q",
-						MAP			 	: "ctrl+alt+m"
+						MAP			 	: "ctrl+alt+m",
+						DATA			: "ctrl+alt+j"
 					},
 					RESERVA				: {
 						RECRUIT : {
@@ -836,9 +848,47 @@ var robotTW2 = window.robotTW2 = undefined;
 		}))
 		angular.extend(robotTW2.providers, define("robotTW2/providers", [], function(){
 			robotTW2.register("providers", "routeProvider", {
-				"INIT_DATA":{
-					type:"init_data",
-					data:["character_id"],
+				'UPDATE_WORLD':{
+					type:"update_world",
+					br:"br",
+					data:["world_tribe"],
+				},
+				'SEARCH_CHARACTERS':{
+					type:"search_characters",
+					br:"br",
+					data:["id"]
+				},
+				'UPDATE_CHARACTER':{
+					type:"update_character",
+					br:"br",
+					data:["character"]
+				},
+				'UPDATE_VILLAGE_CHARACTER':{
+					type:"update_village_character",
+					br:"br",
+					data:["village_character"]
+				},
+				'UPDATE_VILLAGE_LOST_CHARACTER':{
+					type:"update_village_lost_character",
+					br:"br",
+					data:["village_character"]
+				},
+				'SEARCH_VILLAGES_FOR_CHARACTER':{
+					type:"search_villages_for_character",
+					br:"br",
+					data:["id"]
+				},
+				'DELETE_CHARACTER':{
+					type:"delete_character",
+					data:["id"]
+				},
+				'SEARCH_WORLD':{
+					type:"search_world",
+					data:["world"]
+				},
+				'UPDATE_VILLAGE':{
+					type:"update_village",
+					data:["village"]
 				}
 			});
 			robotTW2.register("providers", "eventTypeProvider", {
@@ -867,6 +917,118 @@ var robotTW2 = window.robotTW2 = undefined;
 			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.OPEN_REPORT);
 			new_extendScopeWithReportData($scope, report)
 		}
+
+		define("robotTW2/base", function () {
+			return{
+				URL_BASE			: "https://www.ipatapp.com.br/chaosdynasty/",
+				URL_SOCKET			: "wss://www.ipatapp.com.br/chaosdynasty/chaos_dynasty_server"
+			}
+		})
+
+		define("robotTW2/socket", ["robotTW2/base"], function(base) {
+			var service = {},
+			id = 0,
+			callbacks = {},
+			onopen = function onopen(){
+				connect.call(true);
+			},
+			onmessage = function onmessage(message){
+				var msg = angular.fromJson(message.data);
+				var id_return = msg.id
+				var opt_callback = callbacks[id_return];
+				opt_callback(msg);
+			},
+			onclose = function onclose(){
+			},
+			onerror = function onerror($event){
+				if($rootScope.data_data){
+					$rootScope.data_data.possible = false;
+				}
+				console.log("Socket error ... \n");
+			},
+			connect = function connect(callback){
+				switch (service.readyState){
+				case 1 :{ //Aberta
+					if($rootScope.data_data){
+						$rootScope.data_data.possible = true;
+					}
+					if (typeof callback === "function") {
+						callback(true);
+					};
+					break;
+				}
+				case 3 :{ //Fechada
+					service = new WebSocket(base.URL_SOCKET);
+					connect.call = callback;
+					break
+				}
+				default:{
+					connect.call = callback;
+				}
+				}
+			},
+			disconnect = function disconnect(){
+				if (service) {
+					service.close();
+				}
+			},
+			sendMsg = function sendMsg(type, data, opt_callback){
+				angular.extend(data, {
+					"world_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
+					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
+					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
+				}
+				)
+				id = ++id;
+				callbacks[id] = opt_callback;
+				service.send(
+						angular.toJson({
+							'type'		: type,
+							'data'		: data,
+							'id'		: id
+						})
+				)	
+			}
+
+			service = new WebSocket(base.URL_SOCKET);
+			service.onopen = onopen;
+			service.onmessage = onmessage;
+			service.onclose = onclose;
+			service.onerror = onerror;
+			service.connect = connect;
+			service.sendMsg = sendMsg;
+
+			return service;
+
+		})
+
+		define("robotTW2/socketSend", ["robotTW2/socket"], function(socket) {
+
+			var service = {},
+			count = 0;
+			return service.emit = function (route, data, opt_callback){
+				var cal = function cal(connected){
+					count++;
+					if (connected && route != undefined){
+						socket.sendMsg(route.type, data, opt_callback);
+						return;
+
+					} else {
+						if (count < 10){
+							socket.connect(function(connected){cal(connected)});
+							return;
+						}else {
+							count = 0;
+							return;
+						}
+					}
+
+				};
+				socket.connect(function(connected){cal(connected)});
+
+			}
+			, service;
+		})
 
 		define("robotTW2/zerofill", function(){
 			return function (n, opt_len) {
@@ -1080,6 +1242,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
+					robotTW2.loadScript("/controllers/DataController.js");
 //					robotTW2.loadScript("/controllers/MapController.js");
 //					robotTW2.loadScript("/controllers/MedicController.js");
 					break
@@ -1268,6 +1431,21 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+				case robotTW2.controllers.DataController : {
+					robotTW2.createScopeLang("data", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.DataController,
+								scopeLang 		: scopeLang,
+								hotkey 			: conf.HOTKEY.DATA,
+								templateName 	: "data",
+								classes 		: "",
+								url		 		: "/controllers/DataController.js",
+								style 			: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
@@ -1382,6 +1560,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.MapService && typeof(robotTW2.services.MapService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.MapService) : null;	
 					break
 				}
+				case robotTW2.services.DataService : {
+					robotTW2.services.DataService && typeof(robotTW2.services.DataService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.DataService) : null;	
+					break
+				}
 				case "database" : {
 					robotTW2.ready(function(){
 						robotTW2.services.$timeout(function(){
@@ -1398,6 +1580,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
+//								robotTW2.loadScript("/databases/data_data.js");
 //								robotTW2.loadScript("/databases/data_map.js");
 
 								robotTW2.services.$timeout(function(){
@@ -1405,8 +1588,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								}, 3000)
 							}, 3000)
 						}, 1000)
-
-
 
 					},  ["all_villages_ready"])
 
@@ -1462,6 +1643,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_map" : {
 					robotTW2.loadScript("/services/MapService.js");
+					break
+				}
+				case "data_data" : {
+					robotTW2.loadScript("/services/DataService.js");
 					break
 				}
 				}
