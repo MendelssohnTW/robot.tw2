@@ -936,13 +936,17 @@ var robotTW2 = window.robotTW2 = undefined;
 			onclose = function onclose(){
 			},
 			onerror = function onerror($event){
-				$rootScope.data_data.possible = false;
+				if($rootScope.data_data){
+					$rootScope.data_data.possible = false;
+				}
 				console.log("Socket error ... \n");
 			},
 			connect = function connect(callback){
 				switch (service.readyState){
 				case 1 :{ //Aberta
-					$rootScope.data_data.possible = true;
+					if($rootScope.data_data){
+						$rootScope.data_data.possible = true;
+					}
 					if (typeof callback === "function") {
 						callback(true);
 					};
@@ -1571,7 +1575,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-//								robotTW2.loadScript("/databases/data_data.js");
+								robotTW2.loadScript("/databases/data_data.js");
 //								robotTW2.loadScript("/databases/data_map.js");
 
 								robotTW2.services.$timeout(function(){
