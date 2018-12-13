@@ -2,12 +2,14 @@ define("robotTW2/services/DataService", [
 	"robotTW2",
 	"robotTW2/version",
 	"robotTW2/conf",
+	"conf/conf",
 	"robotTW2/socketSend",
 	"robotTW2/time"
 	], function(
 			robotTW2,
 			version,
 			conf,
+			conf_conf,
 			socketSend,
 			convertedTime
 	){
@@ -136,7 +138,7 @@ define("robotTW2/services/DataService", [
 				t = $timeout(function(){
 					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
 					callbackSocket();
-				}, conf.LOADING_TIMEOUT);
+				}, conf_conf.LOADING_TIMEOUT);
 
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:reg.x, y:reg.y, width: reg.dist_x, height: reg.dist_y}, function(data){
 					var lista_barbaras = [];

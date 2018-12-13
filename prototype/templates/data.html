@@ -6,7 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main" scrollbar="">
+	<div class="win-main">
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap" style="margin-bottom: 80px">
 				<div>
@@ -18,27 +18,28 @@
 						</colgroup>
 						<tr>
 							<td class="cell-right">{{text_interval_data}}</td>
-							<td><input id="input-ms" class="input-border inpt" type="time"
-								step="1" min="00:00:00" max="23:59:59"
-								value="{{data_data.interval | date : 'HH:mm:ss'}}"
-								disabled></td>
+							<td><input id="input-ms" class="input-border inpt"
+								type="time" step="1" min="00:00:00" max="23:59:59"
+								value="{{data_data.interval | date : 'HH:mm:ss'}}" disabled></td>
 						</tr>
 						<tr>
 							<td class="cell-right">{{text_interval}}</td>
-							<td><input id="input-ms" class="input-border inpt disabled" type=text value="{{getTimeRest()}}" disabled></td>
+							<td><input id="input-ms" class="input-border inpt disabled"
+								type=text value="{{getTimeRest()}}" disabled></td>
 						</tr>
 					</table>
-					
-					<table class="tbl-border-light tbl-striped">
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tr ng-repeat="log in data_data.logs">
-							<td class="cell-right">{{log.text}}</td>
-							<td class="cell-right">{{log.date}}</td>
-						</tr>
-					</table>
+					<div class="jssb-applied jssb-scrolly jssb-focus" scrollbar="">
+						<table class="tbl-border-light tbl-striped">
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tr ng-repeat="log in data_data.logs">
+								<td class="cell-right">{{log.text}}</td>
+								<td class="cell-right">{{log.date}}</td>
+							</tr>
+						</table>
+					</div>
 
 				</div>
 			</div>
