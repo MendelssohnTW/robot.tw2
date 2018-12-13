@@ -3,11 +3,13 @@ define("robotTW2/controllers/DataController", [
 	"robotTW2/providers",
 	"helper/time",
 	"robotTW2/conf",
+	"robotTW2/time",
 	], function(
 			services,
 			providers,
 			helper,
-			conf
+			conf,
+			convertedTime
 	){
 	return function DataController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
