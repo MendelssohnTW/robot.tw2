@@ -121,6 +121,7 @@ define("robotTW2/services/DataService", [
 			, promise_send = undefined
 			, send_queue = []
 			, sendVillage = function (village, callback){
+				if(!isRunning()) return
 				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(resp){
 					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
 						console.log("aldeia " + countVillages + " enviada");
@@ -133,6 +134,7 @@ define("robotTW2/services/DataService", [
 				return;
 			}
 			, socketGetVillages = function (reg, callbackSocket){
+				if(!isRunning()) return
 				console.log("Buscando " + reg.x + "/" + reg.y);
 				$rootScope.data_data.logs.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
 				if(!$rootScope.data_data.logs) $rootScope.data_data.logs = [];
