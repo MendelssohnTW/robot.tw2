@@ -269,7 +269,8 @@ define("robotTW2/services/FarmService", [
 
 			if(lt_bb.length == 0){
 				console.log("no villages bb");
-				callback();
+				callback(true);
+				return !1;
 			}
 			
 			console.log("lt_bb lenght " + lt_bb.length);
