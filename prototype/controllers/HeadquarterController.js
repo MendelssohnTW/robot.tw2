@@ -22,16 +22,15 @@ define("robotTW2/controllers/HeadquarterController", [
 		var self = this
 		, selectedFilter = $rootScope.data_headquarter.selects[0];
 
-
 		function ret(){
 			return $rootScope.data_headquarter.selects.map(function(elem){
 				return {'name': services.$filter('i18n')(elem, $rootScope.loc.ale, "headquarter"), 'value': elem}
 			});
 		}
 
-		$scope.shared = {};
+		var shared = {};
 		Object.keys($rootScope.data_villages.villages).map(function(elem){
-			$scope.shared[elem] = {
+			shared[elem] = {
 					'viewList': ret(),
 					'selectedAction': {
 						"name": services.$filter('i18n')($rootScope.data_villages.villages[elem].selected, $rootScope.loc.ale, "headquarter"),
@@ -39,6 +38,16 @@ define("robotTW2/controllers/HeadquarterController", [
 					}
 			};	
 		})
+		
+		$scope.getList = function(vill){
+			if(!shared[vill]) return
+			return shared[vill].viewList
+		}
+		
+		$scope.getSelectedAction = function(vill){
+			if(!shared[vill]) return
+			return shared[vill].selectedAction
+		}
 
 
 		$scope.isRunning = services.HeadquarterService.isRunning();
