@@ -30,7 +30,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.shared = {
-				'viewList': ret,
+				'viewList': ret(),
 				'selectedAction': selectedFilter
 		};
 
