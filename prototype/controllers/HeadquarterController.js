@@ -40,13 +40,13 @@ define("robotTW2/controllers/HeadquarterController", [
 		})
 		
 		$scope.getList = function(vill){
-			if(!shared[vill]) return
-			return shared[vill].viewList
+			if(!shared[vill.data.villageId]) return
+			return shared[vill.data.villageId].viewList
 		}
 		
 		$scope.getSelectedAction = function(vill){
-			if(!shared[vill]) return
-			return shared[vill].selectedAction
+			if(!shared[vill.data.villageId]) return
+			return shared[vill.data.villageId].selectedAction
 		}
 
 
