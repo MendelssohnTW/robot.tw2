@@ -265,6 +265,10 @@ define("robotTW2/services/FarmService", [
 			console.log("countCommands village - length " + countCommands[village_id].length);
 
 			var lt_bb_sent = [];
+			
+			if(lt_bb.length == 0){
+				callback();
+			}
 
 			lt_bb.forEach(function (barbara) {
 				var f = function(barbara){
