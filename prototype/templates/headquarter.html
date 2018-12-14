@@ -115,18 +115,20 @@
 									</div>
 								</td>
 								<td class="cell-top">
-								<div class="component-interface size-fill-x"
-									select list="getList(vill)" selected="getSelectedAction(vill)"
-									drop-down="true">
-									<span class="select-wrapper box-border-dark"
-										ng-click="toggleSelect($event)"> <a href="#"
-										class="select-button btn-orange enable-in-tutorial icon-26x26-arrow-down"
-										ng-class="{'icon-26x26-arrow-down':!expanded, 'icon-26x26-arrow-up':expanded }"></a>
-										<a href="#" class="select-handler" ng-if="selected.length" ng-repeat="item in selected"> <span ng-if="!selected.length"> <span>{{text_select}}</span>
+									<div class="component-interface size-fill-x" select
+										list="getList(vill)" selected="getSelectedAction(vill)"
+										drop-down="true">
+										<span class="select-wrapper box-border-dark"
+											ng-click="toggleSelect($event)"> <a href="#"
+											class="select-button btn-orange enable-in-tutorial icon-26x26-arrow-down"
+											ng-class="{'icon-26x26-arrow-down':!expanded, 'icon-26x26-arrow-up':expanded }"></a>
+											<a href="#" class="select-handler"> <span
+												ng-if="!selected.length"> <span>{{text_select}}</span>
+											</span>
+										</a>
 										</span>
-									</a>
-									</span>
-								</div>
+									</div>
+
 								</td>
 								<td class="cell-space">
 									<h5 class="twx-section collapse">{{vill.data.name}}</h5>
