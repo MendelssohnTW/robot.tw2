@@ -115,7 +115,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, blurPreset = function(){
 			if($scope.activeTab != TABS.PRESET){return}
-			if(update_all_presets){
+			if($scope.update_all_presets){
 				Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets).map(function(elem){
 					$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].max_journey_distance = get_dist($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].max_journey_time)
 					$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].min_journey_distance = get_dist($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].min_journey_time)
