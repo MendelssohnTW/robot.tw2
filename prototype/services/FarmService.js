@@ -262,14 +262,11 @@ define("robotTW2/services/FarmService", [
 			} else {
 				t_slice[village_id] = {[preset_id] : 0}
 			}
-			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
+//			countCommands[village_id] = countCommands[village_id].concat(lt_bb)
 //			console.log("count command village" + village.data.name + " id " + village_id + " length " + lt_bb.length)
 
-			console.log("countCommands length " + Object.keys(countCommands).length);
 			console.log("countCommands village - length " + countCommands[village_id].length);
 
-			var lt_bb_sent = [];
-			
 			console.log("lt_bb lenght" + lt_bb.length);
 			
 			if(lt_bb.length == 0){
@@ -295,16 +292,14 @@ define("robotTW2/services/FarmService", [
 									result_units = units_subtract(preset_units, aldeia_units)
 									aldeia_units = result_units[1];
 									permit_send = result_units[0];
+									countCommands[village_id].push(village_id);
+									console.log("countCommands length " + countCommands[village_id].length)
 									console.log("enviando " + barbara + " para village " + village.data.name);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									console.log(params);
-									lt_bb_sent.push(barbara);
 									resolve()
 								}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
 							} else {
-								console.log("countCommands length " + countCommands[village_id].length)
-								countCommands[village_id] = countCommands[village_id].filter(f=>f!=barbara);
-								console.log("countCommands length " + countCommands[village_id].length)								
 								resolve();
 							}
 						})
@@ -315,16 +310,8 @@ define("robotTW2/services/FarmService", [
 								console.log("new barbara - lenght " + send_queue.length);
 								f(barbara)
 							} else {
-								console.log(permit_send);
 								console.log("clear send_queue - lenght " + send_queue.length);
 								send_queue = [];
-								lt_bb_sent.forEach(function (bb_sent) {
-									lt_bb.splice(lt_bb.indexOf(bb_sent), 1);	
-								})
-								
-								lt_bb.forEach(function (bb) {
-									countCommands[village_id].splice(countCommands[village_id].indexOf(bb), 1);	
-								})
 								callback();
 							}
 						})
