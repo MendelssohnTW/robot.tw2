@@ -198,11 +198,11 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("activeTab", function(){
 			if($scope.activeTab == TABS.PRESET){
 				triggerUpdate(function(){
-					$scope.presetSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
+					$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
 							function(elem){
 								if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-							}).filter(f=>f!=undefined)[0]];
-
+							}).filter(f=>f!=undefined)[0]
+					)
 				});
 				services.$timeout(blurPreset, 1500)
 			}
