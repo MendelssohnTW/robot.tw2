@@ -45,6 +45,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			selectedFilter = itemTypes;
 //			updateInventory();
 		}
+		
+		initFilter();
 
 		$scope.isRunning = services.HeadquarterService.isRunning();
 
