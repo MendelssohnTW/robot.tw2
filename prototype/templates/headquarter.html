@@ -76,7 +76,18 @@
 									</tr>
 								</table>
 							</td>
-							<td colspan="2" class="cell-center" style="color: #ffff55;">{{text_seq}}</td>
+							<td><span class="select-wrapper box-border-dark"
+								ng-click="toggleSelect($event)"> <a href="#"
+									class="select-button btn-orange enable-in-tutorial icon-26x26-arrow-down"
+									ng-class="{'icon-26x26-arrow-down':!expanded, 'icon-26x26-arrow-up':expanded }"></a>
+									<a href="#" class="select-handler"> 
+										<span class="select-icon" ng-if="selected.length"
+										ng-repeat="item in data_headquarter.selected">
+											<span>{{text_select}}</span>
+									</span>
+								</a>
+							</span></td>
+							<td class="cell-center" style="color: #ffff55;">{{text_seq}}</td>
 						</tr>
 					</table>
 

@@ -23,6 +23,10 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.isRunning = services.HeadquarterService.isRunning();
 		
+		$scope.toggleSelect = function($event){
+			
+		}
+		
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - convertedTime()) : 0;
 		}
