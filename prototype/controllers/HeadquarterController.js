@@ -25,7 +25,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		function ret(){
 			return $rootScope.data_headquarter.selects.map(function(elem){
-				return {'name': $filter('i18n')(elem, $rootScope.loc.ale, "headquarter"), 'value': elem}
+				return {'name': services.$filter('i18n')(elem, $rootScope.loc.ale, "headquarter"), 'value': elem}
 			});
 		}
 
