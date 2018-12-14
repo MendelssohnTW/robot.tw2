@@ -76,86 +76,10 @@
 									</tr>
 								</table>
 							</td>
-							<td colspan="2" class="cell-center" style="color: #ffff55;">{{text_seq}}</td>
+							<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
 						</tr>
 					</table>
 
-					<table class="tbl-border-light tbl-striped">
-						<colgroup>
-							<col width="*">
-							<col width="40%">
-							<col width="50">
-							<col width="40%">
-							<col width="*">
-						</colgroup>
-						<tr>
-							<td class="cell-space"></td>
-							<td class="cell-space cell-top">
-								<h5 class="twx-section collapse">{{priority}}</h5>
-								<div>
-									<table class="tbl-border-light tbl-striped" id="preset-list">
-										<colgroup>
-											<col width="*">
-											<col width="20">
-											<col width="20">
-											<col width="26">
-										</colgroup>
-										<tbody>
-											<tr
-												ng-repeat="buildingOrder in data_headquarter.buildingorder"
-												style="height: 56px">
-												<td
-													ng-class="{'resource-text' : selected_buildingOrder == buildingOrder}"
-													class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
-													class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
-												<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
-												<td class="cell-right"><span
-													class="size-12x12 btn-orange icon-26x26-rte-building"
-													ng-click="set_selected_buildingOrder(buildingOrder)"
-													tooltip tooltip-content="{{tooltip_button}}"></span></td>
-												<td class="cell-right"><div
-														ng-show="selected_buildingOrder == buildingOrder">
-														<span
-															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-															ng-click="up(data_headquarter, buildingOrder)"></span> <span
-															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-															ng-click="down(data_headquarter, buildingOrder)"></span>
-													</div></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</td>
-							<td class="cell-right"></td>
-							<td class="cell-right  cell-top">
-								<h5 class="twx-section collapse">{{levels}}</h5>
-								<div>
-									<table class="tbl-border-light tbl-striped" id="preset-list">
-										<colgroup>
-											<col width="*">
-											<col width="20">
-											<col width="26">
-										</colgroup>
-										<tbody>
-											<tr
-												ng-repeat="buildingLimit in data_headquarter.buildinglimit">
-												<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
-													class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
-												<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
-												<td class="cell-right"><span
-													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-													ng-click="levelup(buildingLimit)"></span> <span
-													class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-													ng-click="leveldown(buildingLimit)"></span></td>
-												<td class="cell-right"></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</td>
-							<td class="cell-right"></td>
-						</tr>
-					</table>
 				</div>
 
 				<h5 class="twx-section collapse">{{settings_for_villages}}</h5>
@@ -163,7 +87,8 @@
 					<table class="tbl-border-light tbl-striped" id="preset-list">
 						<colgroup>
 							<col width="20%">
-							<col width="20">
+							<col width="150px">
+							<col width="62px">
 							<col width="*">
 						</colgroup>
 						<tbody>
@@ -189,6 +114,24 @@
 										</div>
 									</div>
 								</td>
+								<!-- 
+								<td class="cell-top">
+									<div class="component-interface size-fill-x" select=""
+										list="getList(vill)" selected="getSelectedAction(vill)"
+										drop-down="true">
+										<span class="select-wrapper box-border-dark"
+											ng-click="toggleSelect($event)"> <a href="#"
+											class="select-button btn-orange enable-in-tutorial icon-26x26-arrow-down"
+											ng-class="{'icon-26x26-arrow-down':!expanded, 'icon-26x26-arrow-up':expanded }"></a>
+											<a href="#" class="select-handler"> <span
+												ng-if="!selected.length"> <span>{{text_select}}</span>
+											</span>
+										</a>
+										</span>
+									</div>
+
+								</td>
+								 -->
 								<td class="cell-space">
 									<h5 class="twx-section collapse">{{vill.data.name}}</h5>
 									<table class="tbl-border-light tbl-striped" id="preset-list">

@@ -20,9 +20,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 
 		var self = this;
-		
-		$scope.isRunning = services.HeadquarterService.isRunning();
-		
+
+
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - convertedTime()) : 0;
 		}
@@ -102,11 +101,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			})
 			if (!$scope.$$phase) $scope.$apply();
 		}
-		
+
 		$scope.selectvillagebuildingOrder = function(villageId, buildingOrder){
 			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
 		}
-		
+
 		$scope.set_selected_buildingOrder = function(selected_buildingOrder){
 			$scope.selected_buildingOrder = selected_buildingOrder
 		}
@@ -114,18 +113,20 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.selected_buildingOrder = {};
 		$scope.selected_village_buildingOrder = [];
 
-		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
 		})
-		
-		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.HeadquarterService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
 		})
+
+//		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();

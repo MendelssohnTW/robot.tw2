@@ -258,6 +258,7 @@ define("robotTW2/services/FarmService", [
 					console.log("lt_bb lenght " + lt_bb.length);
 					console.log("no t_obj - no units village");
 					callback(false);
+					return !1;
 				}
 			} else {
 				t_slice[village_id] = {[preset_id] : 0}
@@ -314,6 +315,7 @@ define("robotTW2/services/FarmService", [
 								console.log("clear send_queue - lenght " + send_queue.length);
 								send_queue = [];
 								callback(true);
+								return !0
 							}
 						})
 					} else {
