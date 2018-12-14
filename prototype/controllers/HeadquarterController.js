@@ -19,14 +19,39 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 
-		var self = this;
-		
-		$scope.isRunning = services.HeadquarterService.isRunning();
-		
-		$scope.toggleSelect = function($event){
-			
+		var self = this
+		, selectedFilter = $rootScope.data_headquarter.selects[0];
+
+
+		function ret(){
+			return $rootScope.data_headquarter.selects.map(function(elem){
+				return {'name': $filter('i18n')(elem, $rootScope.loc.ale, "headquarter"), 'value': elem}
+			});
 		}
-		
+
+		$scope.shared = {
+				'viewList': ret,
+				'selectedAction': selectedFilter
+		};
+
+		var initFilter = function initFilter() {
+			$scope.shared.selectedAction = {
+					"name": $filter('i18n')($rootScope.data_headquarter.selects[0], $rootScope.loc.ale, "headquarter"),
+					"valeu": $rootScope.data_headquarter.selects[0]
+			}
+			setFilters(null, filter);
+		}
+		, setFilters = function setFilters(_$event, itemTypes) {
+			selectedFilter = itemTypes;
+//			updateInventory();
+		}
+
+		$scope.isRunning = services.HeadquarterService.isRunning();
+
+		$scope.toggleSelect = function($event){
+
+		}
+
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - convertedTime()) : 0;
 		}
@@ -106,11 +131,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			})
 			if (!$scope.$$phase) $scope.$apply();
 		}
-		
+
 		$scope.selectvillagebuildingOrder = function(villageId, buildingOrder){
 			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
 		}
-		
+
 		$scope.set_selected_buildingOrder = function(selected_buildingOrder){
 			$scope.selected_buildingOrder = selected_buildingOrder
 		}
@@ -118,18 +143,20 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.selected_buildingOrder = {};
 		$scope.selected_village_buildingOrder = [];
 
-		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
 		})
-		
-		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.HeadquarterService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
 		})
+
+		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();
