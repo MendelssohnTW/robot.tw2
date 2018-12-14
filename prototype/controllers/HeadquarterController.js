@@ -36,10 +36,10 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		var initFilter = function initFilter() {
 			$scope.shared.selectedAction = {
-					"name": $filter('i18n')($rootScope.data_headquarter.selects[0], $rootScope.loc.ale, "headquarter"),
+					"name": services.$filter('i18n')($rootScope.data_headquarter.selects[0], $rootScope.loc.ale, "headquarter"),
 					"valeu": $rootScope.data_headquarter.selects[0]
 			}
-			setFilters(null, filter);
+			setFilters(null, $scope.shared.selectedAction);
 		}
 		, setFilters = function setFilters(_$event, itemTypes) {
 			selectedFilter = itemTypes;
