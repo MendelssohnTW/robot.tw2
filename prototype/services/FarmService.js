@@ -298,14 +298,6 @@ define("robotTW2/services/FarmService", [
 							}
 						})
 						.then(function(){
-							lt_bb_sent.forEach(function (bb_sent) {
-								lt_bb.splice(lt_bb.indexOf(bb_sent), 1);	
-							})
-							
-							lt_bb.forEach(function (bb) {
-								countCommands[village_id].splice(countCommands[village_id].indexOf(bb), 1);	
-							})
-							
 							promise_send = undefined;
 							if(send_queue.length && permit_send){
 								barbara = send_queue.shift()
@@ -315,6 +307,13 @@ define("robotTW2/services/FarmService", [
 								console.log(permit_send);
 								console.log("clear send_queue - lenght " + send_queue.length);
 								send_queue = [];
+								lt_bb_sent.forEach(function (bb_sent) {
+									lt_bb.splice(lt_bb.indexOf(bb_sent), 1);	
+								})
+								
+								lt_bb.forEach(function (bb) {
+									countCommands[village_id].splice(countCommands[village_id].indexOf(bb), 1);	
+								})
 								callback();
 							}
 						})
