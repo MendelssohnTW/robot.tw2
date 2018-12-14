@@ -264,6 +264,8 @@ define("robotTW2/services/FarmService", [
 			console.log("countCommands length " + Object.keys(countCommands).length);
 			console.log("countCommands village - length " + countCommands[village_id].length);
 
+			var lt_bb_sent = [];
+
 			lt_bb.forEach(function (barbara) {
 				var f = function(barbara){
 					if(!promise_send){
@@ -285,6 +287,7 @@ define("robotTW2/services/FarmService", [
 									console.log("enviando " + barbara + " para village " + village.data.name);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									console.log(params);
+									lt_bb_sent.push(barbara);
 									resolve()
 								}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
 							} else {
@@ -313,6 +316,15 @@ define("robotTW2/services/FarmService", [
 				}
 				f(barbara)
 			});
+
+			lt_bb_sent.forEach(function (bb_sent) {
+				lt_bb.splice(test.indexOf(bb_sent), 1);	
+			})
+			
+			lt_bb.forEach(function (bb) {
+				countCommands[village_id].splice(countCommands[village_id].indexOf(bb), 1);	
+			})
+
 			callback();
 		}
 		, check_village = function (vill, cmd_preset, lt_b) {
