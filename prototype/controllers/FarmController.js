@@ -317,13 +317,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.setVillage = function (village) {
 			$scope.data.assignedPresetList = {};
 			$scope.villageSelected = village;
-			triggerUpdate(function(){
-				$scope.presetSelected = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[Object.keys($scope.data.assignedPresetList).map(
-						function(elem){
-							if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-						}).filter(f=>f!=undefined)[0]];
-
-			});
 		}
 
 
