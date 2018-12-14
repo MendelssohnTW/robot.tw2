@@ -55,7 +55,7 @@ define("robotTW2/databases/data_recruit", [
 		data_recruit = dataNew
 		database.set("data_recruit", data_recruit, true)
 	} else {
-		if(!data_recruit.version || data_recruit.version < conf.VERSION.RECRUIT){
+		if(!data_recruit.version || (typeof(data_recruit.version) == "number" ? data_recruit.version.toString() : data_recruit.version) < conf.VERSION.RECRUIT){
 
 			data_recruit = dataNew
 			database.set("data_recruit", data_recruit, true)

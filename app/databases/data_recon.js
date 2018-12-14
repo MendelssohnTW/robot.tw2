@@ -37,7 +37,7 @@ define("robotTW2/databases/data_recon", [
 		data_recon = dataNew
 		database.set("data_recon", data_recon, true)
 	} else {
-		if(!data_recon.version || data_recon.version < conf.VERSION.RECON){
+		if(!data_recon || data_recon < conf.VERSION.RECON){
 
 			data_recon = dataNew
 			database.set("data_recon", data_recon, true)

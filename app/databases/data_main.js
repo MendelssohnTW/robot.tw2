@@ -67,7 +67,7 @@ define("robotTW2/databases/data_main", [
 	if(!data_main){
 		data_main = dataNew
 	} else {
-		if(!data_main.version || data_main.version < conf.VERSION.MAIN){
+		if(!data_main.version || (typeof(data_main.version) == "number" ? data_main.version.toString() : data_main.version) < conf.VERSION.MAIN){
 			data_main = dataNew
 			notify("data_main");
 		} else {

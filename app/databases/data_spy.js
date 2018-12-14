@@ -35,7 +35,7 @@ define("robotTW2/databases/data_spy", [
 		data_spy = dataNew
 		database.set("data_spy", data_spy, true)
 	} else {
-		if(!data_spy.version || data_spy.version < conf.VERSION.SPY){
+		if(!data_spy.version || (typeof(data_spy.version) == "number" ? data_spy.version.toString() : data_spy.version) < conf.VERSION.SPY){
 
 			data_spy = dataNew
 			database.set("data_spy", data_spy, true)

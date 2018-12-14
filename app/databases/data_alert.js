@@ -34,7 +34,7 @@ define("robotTW2/databases/data_alert", [
 		data_alert = dataNew
 		database.set("data_alert", data_alert, true)
 	} else {
-		if(!data_alert.version || data_alert.version < conf.VERSION.ALERT){
+		if(!data_alert.version || (typeof(data_alert.version) == "number" ? data_alert.version.toString() : data_alert.version) < conf.VERSION.ALERT){
 			data_alert = dataNew
 			notify("data_alert");
 		} else {

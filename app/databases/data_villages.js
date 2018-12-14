@@ -136,11 +136,12 @@ define("robotTW2/databases/data_villages", [
 				}).find(f=>f==m)){
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-						buildingorder 			: conf.BUILDINGORDER,
-						buildinglimit 			: conf.BUILDINGLIMIT,
+						buildingorder 			: conf.BUILDINGORDER.academy,
+						buildinglimit 			: conf.BUILDINGLIMIT.academy,
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
-						presets					: getPst(m)
+						presets					: getPst(m),
+						selected				: "academy"
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
@@ -149,17 +150,19 @@ define("robotTW2/databases/data_villages", [
 					if(!data_villages.villages[m].buildingorder){
 						angular.extend(villagesExtended[m], {
 							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-							buildingorder 			: conf.BUILDINGORDER,
-							buildinglimit 			: conf.BUILDINGLIMIT,
+							buildingorder 			: conf.BUILDINGORDER.academy,
+							buildinglimit 			: conf.BUILDINGLIMIT.academy,
 							buildinglevels 			: conf.BUILDINGLEVELS,
 							farm_activate 			: true,
-							presets					: getPst(m)
+							presets					: getPst(m),
+							selected				: "academy"
 						})
 						data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					} else {
 						angular.merge(villagesExtended[m], {
 							farm_activate 			: true,
-							presets					: getPst(m)
+							presets					: getPst(m),
+							selected				: "academy"
 						})
 						angular.extend(data_villages.villages[m], villagesExtended[m])
 					}
@@ -189,7 +192,7 @@ define("robotTW2/databases/data_villages", [
 			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
 			} else {
-				if(!data_villages.version || data_villages.version < conf.VERSION.VILLAGES){
+				if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
 					data_villages.version = conf.VERSION.VILLAGES
 				}
 			} 
