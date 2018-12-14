@@ -299,7 +299,7 @@ define("robotTW2/services/FarmService", [
 						})
 						.then(function(){
 							lt_bb_sent.forEach(function (bb_sent) {
-								lt_bb.splice(test.indexOf(bb_sent), 1);	
+								lt_bb.splice(lt_bb.indexOf(bb_sent), 1);	
 							})
 							
 							lt_bb.forEach(function (bb) {
