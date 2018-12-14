@@ -29,24 +29,17 @@ define("robotTW2/controllers/HeadquarterController", [
 			});
 		}
 
-		$scope.shared = {
-				'viewList': ret(),
-				'selectedAction': selectedFilter
-		};
+		$scope.shared = {};
+		Object.keys($rootScope.data_villages.villages).map(function(elem){
+			$scope.shared[elem] = {
+					'viewList': ret(),
+					'selectedAction': {
+						"name": services.$filter('i18n')($rootScope.data_villages.villages[elem].selected, $rootScope.loc.ale, "headquarter"),
+						"valeu": $rootScope.data_villages.villages[elem].selected
+					}
+			};	
+		})
 
-		var initFilter = function initFilter() {
-			$scope.shared.selectedAction = {
-					"name": services.$filter('i18n')($rootScope.data_headquarter.selects[0], $rootScope.loc.ale, "headquarter"),
-					"valeu": $rootScope.data_headquarter.selects[0]
-			}
-			setFilters(null, $scope.shared.value);
-		}
-		, setFilters = function setFilters(_$event, itemTypes) {
-			selectedFilter = itemTypes;
-//			updateInventory();
-		}
-		
-		initFilter();
 
 		$scope.isRunning = services.HeadquarterService.isRunning();
 

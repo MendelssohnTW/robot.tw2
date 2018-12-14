@@ -140,7 +140,8 @@ define("robotTW2/databases/data_villages", [
 						buildinglimit 			: conf.BUILDINGLIMIT,
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
-						presets					: getPst(m)
+						presets					: getPst(m),
+						selected				: "academy"
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
