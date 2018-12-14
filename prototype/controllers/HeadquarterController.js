@@ -19,42 +19,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 
-		var self = this
-		, selectedFilter = $rootScope.data_headquarter.selects[0];
+		var self = this;
 
-		function ret(){
-			return $rootScope.data_headquarter.selects.map(function(elem){
-				return {'name': services.$filter('i18n')(elem, $rootScope.loc.ale, "headquarter"), 'value': elem}
-			});
-		}
-
-		var shared = {};
-		Object.keys($rootScope.data_villages.villages).map(function(elem){
-			shared[elem] = {
-					'viewList': ret(),
-					'selectedAction': {
-						"name": services.$filter('i18n')($rootScope.data_villages.villages[elem].selected, $rootScope.loc.ale, "headquarter"),
-						"valeu": $rootScope.data_villages.villages[elem].selected
-					}
-			};	
-		})
-		
-		$scope.getList = function(vill){
-			if(!shared[vill.data.villageId]) return
-			return shared[vill.data.villageId].viewList
-		}
-		
-		$scope.getSelectedAction = function(vill){
-			if(!shared[vill.data.villageId]) return
-			return shared[vill.data.villageId].selectedAction
-		}
-
-
-		$scope.isRunning = services.HeadquarterService.isRunning();
-
-		$scope.toggleSelect = function($event){
-
-		}
 
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - convertedTime()) : 0;
