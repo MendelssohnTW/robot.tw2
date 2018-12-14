@@ -33,7 +33,7 @@ define("robotTW2/databases/data_medic", [
 		data_medic = dataNew
 		database.set("data_medic", data_medic, true)
 	} else {
-		if(!data_medic.version || data_medic.version < conf.VERSION.MEDIC){
+		if(!data_medic.version || (typeof(data_medic.version) == "number" ? data_medic.version.toString() : data_medic.version) < conf.VERSION.MEDIC){
 
 			data_medic = dataNew
 			database.set("data_medic", data_medic, true)

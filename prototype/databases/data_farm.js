@@ -45,7 +45,7 @@ define("robotTW2/databases/data_farm", [
 	if(!data_farm){
 		data_farm = dataNew
 	} else {
-		if(!data_farm.version || data_farm.version < conf.VERSION.FARM){
+		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
 			data_farm = dataNew
 			notify("data_farm");
 		} else {

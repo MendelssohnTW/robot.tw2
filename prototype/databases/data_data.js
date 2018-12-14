@@ -37,7 +37,7 @@ define("robotTW2/databases/data_data", [
 		data_data = dataNew
 		database.set("data_data", data_data, true)
 	} else {
-		if(!data_data.version || data_data.version < conf.VERSION.data){
+		if(!data_data.version || (typeof(data_data.version) == "number" ? data_data.version.toString() : data_data.version) < conf.VERSION.data){
 			data_data = dataNew
 			notify("data_data");
 		} else {

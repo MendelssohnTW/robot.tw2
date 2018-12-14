@@ -35,7 +35,7 @@ define("robotTW2/databases/data_deposit", [
 		data_deposit = dataNew
 		database.set("data_deposit", data_deposit, true)
 	} else {
-		if(!data_deposit.version || data_deposit.version < conf.VERSION.DEPOSIT){
+		if(!data_deposit.version || (typeof(data_deposit.version) == "number" ? data_deposit.version.toString() : data_deposit.version) < conf.VERSION.DEPOSIT){
 			data_deposit = dataNew
 			notify("data_deposit");
 		} else {

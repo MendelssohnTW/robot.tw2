@@ -267,7 +267,7 @@ define("robotTW2/services/FarmService", [
 
 			console.log("countCommands village - length " + countCommands[village_id].length);
 
-			if(lt_bb.length == 0 || countCommands[village_id].length >= $rootScope.data_villages[village_id].presets[preset_id].max_commands_farm){
+			if(lt_bb.length == 0 || countCommands[village_id].length >= $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm){
 				console.log("no villages bb or commands limit");
 				callback(true);
 				return !1;

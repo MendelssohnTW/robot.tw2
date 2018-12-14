@@ -189,7 +189,7 @@ define("robotTW2/databases/data_villages", [
 			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
 			} else {
-				if(!data_villages.version || data_villages.version < conf.VERSION.VILLAGES){
+				if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
 					data_villages.version = conf.VERSION.VILLAGES
 				}
 			} 

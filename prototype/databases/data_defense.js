@@ -38,7 +38,7 @@ define("robotTW2/databases/data_defense", [
 		data_defense = dataNew
 		database.set("data_defense", data_defense, true)
 	} else {
-		if(!data_defense.version || data_defense.version < conf.VERSION.DEFENSE){
+		if(!data_defense.version || (typeof(data_defense.version) == "number" ? data_defense.version.toString() : data_defense.version) < conf.VERSION.DEFENSE){
 
 			data_defense = dataNew
 			database.set("data_defense", data_defense, true)

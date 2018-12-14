@@ -45,7 +45,7 @@ define("robotTW2/databases/data_headquarter", [
 		data_headquarter = dataNew
 		database.set("data_headquarter", data_headquarter, true)
 	} else {
-		if(!data_headquarter.version || data_headquarter.version < conf.VERSION.HEADQUARTER){
+		if(!data_headquarter.version || (typeof(data_headquarter.version) == "number" ? data_headquarter.version.toString() : data_headquarter.version) < conf.VERSION.HEADQUARTER){
 
 			data_headquarter = dataNew
 			database.set("data_headquarter", data_headquarter, true)

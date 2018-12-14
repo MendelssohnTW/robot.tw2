@@ -36,7 +36,7 @@ define("robotTW2/databases/data_attack", [
 		data_attack = dataNew
 		database.set("data_attack", data_attack, true)
 	} else {
-		if(!data_attack.version || data_attack.version < conf.VERSION.ATTACK){
+		if(!data_attack.version || (typeof(data_attack.version) == "number" ? data_attack.version.toString() : data_attack.version) < conf.VERSION.ATTACK){
 			data_attack = dataNew
 			database.set("data_attack", data_attack, true)
 			notify("data_attack");

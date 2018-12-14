@@ -38,7 +38,7 @@ define("robotTW2/databases/data_map", [
 		data_map = dataNew
 		database.set("data_map", data_map, true)
 	} else {
-		if(!data_map.version || data_map.version < conf.VERSION.MAP){
+		if(!data_map.version || (typeof(data_map.version) == "number" ? data_map.version.toString() : data_map.version) < conf.VERSION.MAP){
 			data_map = dataNew
 			notify("data_map");
 		} else {

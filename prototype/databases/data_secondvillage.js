@@ -35,7 +35,7 @@ define("robotTW2/databases/data_secondvillage", [
 		data_secondvillage = dataNew
 		database.set("data_secondvillage", data_secondvillage, true)
 	} else {
-		if(!data_secondvillage.version || data_secondvillage.version < conf.VERSION.SECONDVILLAGE){
+		if(!data_secondvillage.version || (typeof(data_secondvillage.version) == "number" ? data_secondvillage.version.toString() : data_secondvillage.version) < conf.VERSION.SECONDVILLAGE){
 			data_secondvillage = dataNew
 			notify("data_secondvillage");
 		} else {
