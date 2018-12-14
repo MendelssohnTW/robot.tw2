@@ -254,6 +254,10 @@ define("robotTW2/services/FarmService", [
 					} else {
 						lt_bb.splice(0);
 					}
+				} else {
+					console.log("lt_bb lenght" + lt_bb.length);
+					console.log("no t_obj - no units village");
+					callback();
 				}
 			} else {
 				t_slice[village_id] = {[preset_id] : 0}
@@ -266,7 +270,10 @@ define("robotTW2/services/FarmService", [
 
 			var lt_bb_sent = [];
 			
+			console.log("lt_bb lenght" + lt_bb.length);
+			
 			if(lt_bb.length == 0){
+				console.log("no villages bb");
 				callback();
 			}
 
