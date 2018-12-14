@@ -383,7 +383,7 @@ define("robotTW2/services/FarmService", [
 //			console.log("exec_promise_grid - reg "+ JSON.stringify(reg) + " cmd_preset " + cmd_preset.village_id + "/" + cmd_preset.preset_id)
 			promise_grid = new Promise(function(resolve){
 				t = $timeout(function(){
-					resolve();
+					resolve([]);
 				}, conf_conf.LOADING_TIMEOUT);
 
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
