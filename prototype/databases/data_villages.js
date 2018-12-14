@@ -136,8 +136,8 @@ define("robotTW2/databases/data_villages", [
 				}).find(f=>f==m)){
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-						buildingorder 			: conf.BUILDINGORDER,
-						buildinglimit 			: conf.BUILDINGLIMIT,
+						buildingorder 			: conf.BUILDINGORDER.academy,
+						buildinglimit 			: conf.BUILDINGLIMIT.academy,
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
 						presets					: getPst(m),
@@ -150,8 +150,8 @@ define("robotTW2/databases/data_villages", [
 					if(!data_villages.villages[m].buildingorder){
 						angular.extend(villagesExtended[m], {
 							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-							buildingorder 			: conf.BUILDINGORDER,
-							buildinglimit 			: conf.BUILDINGLIMIT,
+							buildingorder 			: conf.BUILDINGORDER.academy,
+							buildinglimit 			: conf.BUILDINGLIMIT.academy,
 							buildinglevels 			: conf.BUILDINGLEVELS,
 							farm_activate 			: true,
 							presets					: getPst(m),

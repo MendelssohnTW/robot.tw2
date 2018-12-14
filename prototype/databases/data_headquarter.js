@@ -36,10 +36,10 @@ define("robotTW2/databases/data_headquarter", [
 				iron			: conf.RESERVA.HEADQUARTER.IRON,
 				slots			: conf.RESERVA.HEADQUARTER.SLOTS
 			},
-			buildingorder 			: conf.BUILDINGORDER.academy,
-			buildinglimit 			: conf.BUILDINGLIMIT.academy,
-			buildinglevels 			: conf.BUILDINGLEVELS,
-			selects				: Object.keys(conf.BUILDINGORDER)
+//			buildingorder 			: conf.BUILDINGORDER.academy,
+//			buildinglimit 			: conf.BUILDINGLIMIT.academy,
+//			buildinglevels 			: conf.BUILDINGLEVELS,
+			selects			    	: Object.keys(conf.BUILDINGORDER)
 	}
 
 	if(!data_headquarter){
