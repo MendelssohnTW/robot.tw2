@@ -151,7 +151,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 		})
 
-		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
+//		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();
