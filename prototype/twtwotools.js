@@ -760,7 +760,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						MAP				: version.map,
 						DATA			: version.data
 					},
-					FARM_TIME		      	: h,
+					FARM_TIME		      	: 2 * h,
 					MIN_INTERVAL	     	: 5 * min,
 					INTERVAL				: {
 						HEADQUARTER	: h,
