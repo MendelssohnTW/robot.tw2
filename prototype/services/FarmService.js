@@ -307,7 +307,7 @@ define("robotTW2/services/FarmService", [
 							}
 						})
 					} else {
-						console.log("send_queue push bb.id" + barbara + " para village " + village.data.name);
+						console.log("send_queue push bb.id " + barbara + " para village " + village.data.name);
 						send_queue.push(barbara)
 					}
 				}
@@ -435,7 +435,7 @@ define("robotTW2/services/FarmService", [
 							loadVillages(cmd_preset, listaGrid, res);
 						})
 						.then(function(village_id){
-							delete countCommands[village_id];
+							console.log("preset finished" + village_id);
 							promise = undefined
 							if(command_queue.farm_queue.length){
 								cmd_preset = command_queue.farm_queue.shift();
