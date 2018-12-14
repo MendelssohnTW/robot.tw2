@@ -283,6 +283,7 @@ define("robotTW2/services/FarmService", [
 									aldeia_units = result_units[1];
 									permit_send = result_units[0];
 									if(permit_send){
+										countCommands[village_id] = countCommands[village_id].filter(f=>f!=barbara);
 										console.log("enviando " + barbara + " para village " + village.data.name);
 										socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										console.log(params);
