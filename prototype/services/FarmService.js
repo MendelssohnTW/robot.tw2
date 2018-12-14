@@ -434,7 +434,7 @@ define("robotTW2/services/FarmService", [
 							if(!listaGrid.length){return}
 							loadVillages(cmd_preset, listaGrid, res);
 						})
-						.then(function(data){
+						.then(function(village_id){
 							delete countCommands[village_id];
 							promise = undefined
 							if(command_queue.farm_queue.length){
