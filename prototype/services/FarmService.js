@@ -267,12 +267,12 @@ define("robotTW2/services/FarmService", [
 
 			console.log("countCommands village - length " + countCommands[village_id].length);
 
-			console.log("lt_bb lenght" + lt_bb.length);
-			
 			if(lt_bb.length == 0){
 				console.log("no villages bb");
 				callback();
 			}
+			
+			console.log("lt_bb lenght " + lt_bb.length);
 
 			lt_bb.forEach(function (barbara) {
 				var f = function(barbara){
@@ -444,7 +444,7 @@ define("robotTW2/services/FarmService", [
 							loadVillages(cmd_preset, listaGrid, res);
 						})
 						.then(function(village_id){
-							console.log("preset finished" + village_id);
+							console.log("preset finished para " + village_id);
 							promise = undefined
 							if(command_queue.farm_queue.length){
 								cmd_preset = command_queue.farm_queue.shift();
