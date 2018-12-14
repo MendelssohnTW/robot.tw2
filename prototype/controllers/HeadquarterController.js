@@ -28,9 +28,9 @@ define("robotTW2/controllers/HeadquarterController", [
 			});
 		}
 
-		$scope.shared = {};
+		var shared = {};
 		Object.keys($rootScope.data_villages.villages).map(function(elem){
-			$scope.shared[elem] = {
+			shared[elem] = {
 					'viewList': ret(),
 					'selectedAction': {
 						"name": services.$filter('i18n')($rootScope.data_villages.villages[elem].selected, $rootScope.loc.ale, "headquarter"),
