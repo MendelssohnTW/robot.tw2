@@ -205,7 +205,7 @@ define("robotTW2/services/DataService", [
 						var reg = grid_queue.shift();
 						exec_promise_grid(reg)
 					} else {
-						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": convertedTime()})
 						$rootScope.data_data.last_update = new date().getTime();
 						if (!villagesCheckTimer.isInitialized()) {
 							villagesCheckTimer.init();
