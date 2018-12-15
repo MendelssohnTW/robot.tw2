@@ -467,8 +467,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			self.$window = rootnode;
 			$(".win-main").removeClass("jssb-focus")
 			$(".win-main").removeClass("jssb-applied")
-//			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
-			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(["scrollbar"])) : null;
+			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
 				if(!self.$scrollbar.recalc) return;
@@ -641,21 +640,21 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/version", function(){
 			return {
-				main:			"3.0.0",
-				villages:		"3.0.0",
-				alert:			"3.0.0",
-				deposit:		"3.0.0",
-				headquarter:	"3.0.0",
-				recon:			"3.0.0",
-				spy:			"3.0.0",
-				attack:			"3.0.0",
-				defense:		"3.0.0",
-				farm:			"3.0.0",
-				recruit:		"3.0.0",
-				medic:			"3.0.0",
-				secondvillage:	"3.0.0",
-				map:			"3.0.0",
-				data:			"3.0.0"
+				main:			"3.0.4",
+				villages:		"3.0.4",
+				alert:			"3.0.4",
+				deposit:		"3.0.4",
+				headquarter:	"3.0.4",
+				recon:			"3.0.4",
+				spy:			"3.0.4",
+				attack:			"3.0.4",
+				defense:		"3.0.4",
+				farm:			"3.0.4",
+				recruit:		"3.0.4",
+				medic:			"3.0.4",
+				secondvillage:	"3.0.4",
+				map:			"3.0.4",
+				data:			"3.0.4"
 			}
 		});
 
@@ -673,45 +672,165 @@ var robotTW2 = window.robotTW2 = undefined;
 					levelsBuilding.push({[buildingTypes[type]] : 0})
 				}
 			}
-			var orderbuilding = [
-				{"academy": 1}, //Academia
-				{"headquarter": 2}, //Principal
-				{"farm": 3}, //Fazenda
-				{"warehouse": 4}, //Armazém
-				{"barracks": 5}, //Quartel
-				{"rally_point": 6}, //Ponto de encontro
-				{"timber_camp": 7}, //Bosque
-				{"iron_mine": 8}, //Mina de Ferro
-				{"clay_pit": 9}, //Poço de Argila
-				{"wall": 10}, //Muralha
-				{"statue": 11}, //Estátua
-				{"tavern": 12}, //Taverna
-				{"market": 13}, //Mercado
-				{"hospital": 14}, //Hospital
-				{"preceptory": 15}, //Salão das ordens
-				{"church": 16}, //Igreja
-				{"chapel": 17} //Caplea
-				]
+//			var orderbuilding = [
+//				{"academy": 1}, //Academia
+//				{"headquarter": 2}, //Principal
+//				{"farm": 3}, //Fazenda
+//				{"warehouse": 4}, //Armazém
+//				{"barracks": 5}, //Quartel
+//				{"rally_point": 6}, //Ponto de encontro
+//				{"timber_camp": 7}, //Bosque
+//				{"iron_mine": 8}, //Mina de Ferro
+//				{"clay_pit": 9}, //Poço de Argila
+//				{"wall": 10}, //Muralha
+//				{"statue": 11}, //Estátua
+//				{"tavern": 12}, //Taverna
+//				{"market": 13}, //Mercado
+//				{"hospital": 14}, //Hospital
+//				{"preceptory": 15}, //Salão das ordens
+//				{"church": 16}, //Igreja
+//				{"chapel": 17} //Caplea
+//				]
+			
+			var orderbuilding= {
+					academy : [
+						{"academy": 1}, //Academia
+						{"headquarter": 2}, //Principal
+						{"farm": 3}, //Fazenda
+						{"warehouse": 4}, //Armazém
+						{"barracks": 5}, //Quartel
+						{"rally_point": 6}, //Ponto de encontro
+						{"timber_camp": 7}, //Bosque
+						{"iron_mine": 8}, //Mina de Ferro
+						{"clay_pit": 9}, //Poço de Argila
+						{"wall": 10}, //Muralha
+						{"statue": 11}, //Estátua
+						{"tavern": 12}, //Taverna
+						{"market": 13}, //Mercado
+						{"hospital": 14}, //Hospital
+						{"preceptory": 15}, //Salão das ordens
+						{"church": 16}, //Igreja
+						{"chapel": 17} //Caplea
+					],
+					production : [
+						{"timber_camp": 1}, //Bosque
+						{"iron_mine": 2}, //Mina de Ferro
+						{"clay_pit": 3}, //Poço de Argila
+						{"rally_point": 4}, //Ponto de encontro
+						{"academy": 5}, //Academia
+						{"headquarter": 6}, //Principal
+						{"farm": 7}, //Fazenda
+						{"warehouse": 8}, //Armazém
+						{"barracks": 9}, //Quartel
+						{"wall": 10}, //Muralha
+						{"statue": 11}, //Estátua
+						{"tavern": 12}, //Taverna
+						{"market": 13}, //Mercado
+						{"hospital": 14}, //Hospital
+						{"preceptory": 15}, //Salão das ordens
+						{"church": 16}, //Igreja
+						{"chapel": 17} //Caplea
+					],
+					base : [
+						{"academy": 1}, //Academia
+						{"barracks": 2}, //Quartel
+						{"farm": 3}, //Fazenda
+						{"headquarter": 4}, //Principal
+						{"warehouse": 5}, //Armazém
+						{"rally_point": 6}, //Ponto de encontro
+						{"wall": 7}, //Muralha
+						{"statue": 8}, //Estátua
+						{"tavern": 9}, //Taverna
+						{"timber_camp": 10}, //Bosque
+						{"iron_mine": 11}, //Mina de Ferro
+						{"clay_pit": 12}, //Poço de Argila
+						{"market": 13}, //Mercado
+						{"hospital": 14}, //Hospital
+						{"preceptory": 15}, //Salão das ordens
+						{"church": 16}, //Igreja
+						{"chapel": 17} //Caplea
+					]
+			}
 
-			var limitBuilding = [
-				{"headquarter": 20},
-				{"barracks": 15},
-				{"tavern": 13},
-				{"hospital": 5},  
-				{"preceptory": 0},  
-				{"church": 0},
-				{"chapel": 0},
-				{"academy": 1},  
-				{"rally_point": 5},  
-				{"statue": 5},
-				{"market": 15},
-				{"timber_camp": 23},  
-				{"clay_pit": 23},
-				{"iron_mine": 25},  
-				{"farm": 30},
-				{"warehouse": 25},  
-				{"wall": 18}
-				]
+//			var limitBuilding = [
+//				{"headquarter": 20},
+//				{"barracks": 10},
+//				{"tavern": 7},
+//				{"hospital": 1},  
+//				{"preceptory": 0},  
+//				{"church": 0},
+//				{"chapel": 0},
+//				{"academy": 1},  
+//				{"rally_point": 5},  
+//				{"statue": 5},
+//				{"market": 5},
+//				{"timber_camp": 18},  
+//				{"clay_pit": 18},
+//				{"iron_mine": 18},  
+//				{"farm": 25},
+//				{"warehouse": 23},  
+//				{"wall": 10}
+//				]
+			
+			var limitBuilding = {
+					academy : [
+						{"headquarter": 20},
+						{"barracks": 10},
+						{"tavern": 7},
+						{"hospital": 1},  
+						{"preceptory": 0},  
+						{"church": 0},
+						{"chapel": 0},
+						{"academy": 1},  
+						{"rally_point": 5},  
+						{"statue": 5},
+						{"market": 5},
+						{"timber_camp": 18},  
+						{"clay_pit": 18},
+						{"iron_mine": 18},  
+						{"farm": 25},
+						{"warehouse": 23},  
+						{"wall": 10}
+					],
+					production : [
+						{"headquarter": 20},
+						{"barracks": 21},
+						{"tavern": 7},
+						{"hospital": 1},  
+						{"preceptory": 0},  
+						{"church": 0},
+						{"chapel": 0},
+						{"academy": 1},  
+						{"rally_point": 5},  
+						{"statue": 5},
+						{"market": 15},
+						{"timber_camp": 30},  
+						{"clay_pit": 30},
+						{"iron_mine": 30},  
+						{"farm": 30},
+						{"warehouse": 27},  
+						{"wall": 15}
+					],
+					base : [
+						{"headquarter": 20},
+						{"barracks": 23},
+						{"tavern": 13},
+						{"hospital": 5},  
+						{"preceptory": 0},  
+						{"church": 0},
+						{"chapel": 0},
+						{"academy": 1},  
+						{"rally_point": 5},  
+						{"statue": 5},
+						{"market": 5},
+						{"timber_camp": 15},  
+						{"clay_pit": 15},
+						{"iron_mine": 15},  
+						{"farm": 30},
+						{"warehouse": 25},  
+						{"wall": 20}
+					]
+			}
 
 			var seg = 1000 // 1000 milisegundos
 			, min = seg * 60
@@ -731,7 +850,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAP_CHUNCK_LEN 			: 30 / 2,
 					TIME_CORRECTION_COMMAND : -225,
 					TIME_DELAY_UPDATE		: 30 * seg,
-					TIME_DELAY_FARM			: 3000,
+					TIME_DELAY_FARM			: 1500,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
 					MAX_TIME_CORRECTION 	: 3 * seg,
@@ -760,7 +879,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						MAP				: version.map,
 						DATA			: version.data
 					},
-					FARM_TIME		      	: h,
+					FARM_TIME		      	: 2 * h,
 					MIN_INTERVAL	     	: 5 * min,
 					INTERVAL				: {
 						HEADQUARTER	: h,
@@ -976,7 +1095,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				angular.extend(data, {
 					"world_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
-					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
+					"tribe_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
 				}
 				)
 				id = ++id;

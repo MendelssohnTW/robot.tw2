@@ -121,41 +121,52 @@ define("robotTW2/services/DataService", [
 		})()
 		, loadVillagesWorld = function(listaGrid) {
 			var t = undefined
+			, rt = undefined
 			, promise_send = undefined
 			, send_queue = []
 			, sendVillage = function (village, callback){
 				if(!isRunning) return
+				rt = $timeout(function(){
+					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
+					callback();
+				}, conf_conf.LOADING_TIMEOUT);
+				
 				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(resp){
+					$timeout.cancel(rt);
+					rt = undefined;
 					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
+						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + "-" + "text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
 						console.log("aldeia " + countVillages + " enviada");
 					} else {
 						console.log("aldeia " + countVillages + " enviada com erro");
+						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + "-" + "text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
 					}
 					countVillages++;
 					callback();
 				});
-				return;
 			}
 			, socketGetVillages = function (reg, callbackSocket){
 				if(!isRunning) return
 				console.log("Buscando " + reg.x + "/" + reg.y);
-				$rootScope.data_data.logs.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+				$rootScope.data_data.logs.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
 				if(!$rootScope.data_data.logs) $rootScope.data_data.logs = [];
 				t = $timeout(function(){
-					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
 					callbackSocket();
 				}, conf_conf.LOADING_TIMEOUT);
 
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:reg.x, y:reg.y, width: reg.dist_x, height: reg.dist_y}, function(data){
 					var lista_barbaras = [];
+					$timeout.cancel(t);
+					t = undefined;
+
 					if (data.error_code == "INTERNAL_ERROR"){
-						console.log("Error internal x " + x + " / y " + y);
-						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+						console.log("Error internal");
+						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": convertedTime()})
 						callbackSocket();
 					} else {
 						if (data != undefined && data.villages != undefined && data.villages.length > 0){
 							var villages = data.villages || [];
-
 							villages.forEach(function(village){
 								function s(village){
 									if(!promise_send){
@@ -163,6 +174,7 @@ define("robotTW2/services/DataService", [
 											sendVillage(village, res);
 										})
 										.then(function(){
+											promise_send = undefined;
 											if(send_queue.length){
 												s(send_queue.shift())
 											} else {
@@ -175,8 +187,6 @@ define("robotTW2/services/DataService", [
 								}
 								s(village)
 							})
-
-
 						} else {
 							callbackSocket();
 						}
@@ -189,9 +199,7 @@ define("robotTW2/services/DataService", [
 					socketGetVillages(reg, resolve);
 				})
 				.then(function(){
-					$timeout.cancel(t);
-					t = undefined;
-
+					
 					promise_grid = undefined
 					if(grid_queue.length){
 						var reg = grid_queue.shift();
