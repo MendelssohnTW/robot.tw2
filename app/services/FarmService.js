@@ -289,7 +289,7 @@ define("robotTW2/services/FarmService", [
 											army_preset_id: preset_id,
 											type: "attack"
 									}
-									if (check_village(village_id, cmd_preset)) {
+									if (check_village(barbara, cmd_preset)) {
 										requestFn.trigger("Farm/sendCmd")
 //										console.log(params)
 //										console.log("count command " + g + h++)
