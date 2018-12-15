@@ -229,8 +229,20 @@ define("robotTW2/services/FarmService", [
 			, village = modelDataService.getSelectedCharacter().getVillage(village_id)
 			, aldeia_units = angular.copy(village.unitInfo.units)
 			, preset_units = cmd_preset.preset_units
-			, aldeia_commands_lenght = countCommands[village_id].length
+			, aldeia_commands = village.getCommandListModel().data
 			, t_obj = units_analyze(preset_units, aldeia_units);
+			
+			if(!countCommands[village_id]) {countCommands[village_id] = []}
+			if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
+				aldeia_commands.forEach(function (aldeia) {
+					if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId)){
+						countCommands[village_id].push(aldeia.targetVillageId);
+					}
+				})
+			}
+			
+			var aldeia_commands_lenght = countCommands[village_id].length
+			
 //			console.log("sendCmd " + village.data.name + " preset " + preset_id);
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(lt_bb.length != 0){
@@ -503,7 +515,7 @@ define("robotTW2/services/FarmService", [
 							, presets = $rootScope.data_villages.villages[village_id].presets
 							, aldeia_units = angular.copy(village.unitInfo.units)
 							, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-							, aldeia_commands = village.getCommandListModel().data
+//							, aldeia_commands = village.getCommandListModel().data
 
 							if(!presets || !aldeia_units) {
 								return !0;
@@ -517,14 +529,6 @@ define("robotTW2/services/FarmService", [
 								}).filter(f=>f.length>0)[0][0]
 							}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
-							if(!countCommands[village_id]) {countCommands[village_id] = []}
-							if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
-								aldeia_commands.forEach(function (aldeia) {
-									if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId)){
-										countCommands[village_id].push(aldeia.targetVillageId);
-									}
-								})
-							}
 							presets_order.forEach(function(preset){
 								if(
 										$rootScope.data_villages.villages[village_id].farm_activate
