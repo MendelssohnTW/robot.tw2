@@ -135,9 +135,11 @@ define("robotTW2/services/DataService", [
 					$timeout.cancel(rt);
 					rt = undefined;
 					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
+						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + " text_completed", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
 						console.log("aldeia " + countVillages + " enviada");
 					} else {
 						console.log("aldeia " + countVillages + " enviada com erro");
+						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + " text_err", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
 					}
 					countVillages++;
 					callback();
@@ -165,7 +167,6 @@ define("robotTW2/services/DataService", [
 					} else {
 						if (data != undefined && data.villages != undefined && data.villages.length > 0){
 							var villages = data.villages || [];
-
 							villages.forEach(function(village){
 								function s(village){
 									if(!promise_send){
@@ -173,6 +174,7 @@ define("robotTW2/services/DataService", [
 											sendVillage(village, res);
 										})
 										.then(function(){
+											promise_send = undefined;
 											if(send_queue.length){
 												s(send_queue.shift())
 											} else {
@@ -185,8 +187,6 @@ define("robotTW2/services/DataService", [
 								}
 								s(village)
 							})
-
-
 						} else {
 							callbackSocket();
 						}
