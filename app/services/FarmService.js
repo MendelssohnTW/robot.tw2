@@ -273,11 +273,12 @@ define("robotTW2/services/FarmService", [
 				callback(true);
 				return !1;
 			}
-			
+
 //			console.log("lt_bb lenght " + lt_bb.length);
 
 			lt_bb.forEach(function (barbara) {
 				var f = function(barbara){
+
 					if(!promise_send){
 						promise_send = new Promise(function(resolve){
 							if(permit_send){
@@ -288,17 +289,19 @@ define("robotTW2/services/FarmService", [
 											army_preset_id: preset_id,
 											type: "attack"
 									}
-									requestFn.trigger("Farm/sendCmd")
-//									console.log(params)
-//									console.log("count command " + g + h++)
-									result_units = units_subtract(preset_units, aldeia_units)
-									aldeia_units = result_units[1];
-									permit_send = result_units[0];
-									countCommands[village_id].push(village_id);
-//									console.log("countCommands length " + countCommands[village_id].length)
-//									console.log("enviando " + barbara + " para village " + village.data.name);
-									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-									console.log(params);
+									if (check_village(village_id, cmd_preset)) {
+										requestFn.trigger("Farm/sendCmd")
+//										console.log(params)
+//										console.log("count command " + g + h++)
+										result_units = units_subtract(preset_units, aldeia_units)
+										aldeia_units = result_units[1];
+										permit_send = result_units[0];
+										countCommands[village_id].push(village_id);
+//										console.log("countCommands length " + countCommands[village_id].length)
+//										console.log("enviando " + barbara + " para village " + village.data.name);
+										socketService.emit(providers.routeProvider.SEND_PRESET, params);
+										console.log(params);
+									}
 									resolve()
 								}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
 							} else {
@@ -325,9 +328,9 @@ define("robotTW2/services/FarmService", [
 				}
 				f(barbara)
 			});
-			
+
 		}
-		, check_village = function (vill, cmd_preset, lt_b) {
+		, check_village = function (vill, cmd_preset) {
 			var village_id = cmd_preset.village_id
 			, preset_id = cmd_preset.preset_id
 			, village = modelDataService.getVillage(village_id) 
@@ -408,7 +411,7 @@ define("robotTW2/services/FarmService", [
 						});
 
 						for (j = 0; j < listaVil.length; j++) {
-							if (check_village(listaVil[j], cmd_preset, lt_barbaras)) {
+							if (check_village(listaVil[j], cmd_preset)) {
 								lt_barbaras.push(listaVil[j].id);
 							}
 						}
