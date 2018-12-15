@@ -127,7 +127,7 @@ define("robotTW2/services/DataService", [
 			, sendVillage = function (village, callback){
 				if(!isRunning) return
 				rt = $timeout(function(){
-					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
+					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
 					callback();
 				}, conf_conf.LOADING_TIMEOUT);
 				
@@ -135,11 +135,11 @@ define("robotTW2/services/DataService", [
 					$timeout.cancel(rt);
 					rt = undefined;
 					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
-						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + " text_completed", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
+						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + " text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
 						console.log("aldeia " + countVillages + " enviada");
 					} else {
 						console.log("aldeia " + countVillages + " enviada com erro");
-						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + " text_err", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
+						$rootScope.data_data.logs.push({"text":$filter("i18n")(countVillages + " text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
 					}
 					countVillages++;
 					callback();
@@ -161,8 +161,8 @@ define("robotTW2/services/DataService", [
 					t = undefined;
 
 					if (data.error_code == "INTERNAL_ERROR"){
-						console.log("Error internal x " + x + " / y " + y);
-						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data") + reg.x + "/" + reg.y, "date": convertedTime()})
+						console.log("Error internal");
+						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": convertedTime()})
 						callbackSocket();
 					} else {
 						if (data != undefined && data.villages != undefined && data.villages.length > 0){
