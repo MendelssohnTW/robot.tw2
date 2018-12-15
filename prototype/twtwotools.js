@@ -1096,7 +1096,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				angular.extend(data, {
 					"world_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
-					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
+					"tribe_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
 				}
 				)
 				id = ++id;
