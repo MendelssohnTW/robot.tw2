@@ -290,17 +290,19 @@ define("robotTW2/services/FarmService", [
 											type: "attack"
 									}
 									if (check_village(barbara, cmd_preset)) {
-										requestFn.trigger("Farm/sendCmd")
-//										console.log(params)
-//										console.log("count command " + g + h++)
-										result_units = units_subtract(preset_units, aldeia_units)
-										aldeia_units = result_units[1];
-										permit_send = result_units[0];
-										countCommands[village_id].push(village_id);
-//										console.log("countCommands length " + countCommands[village_id].length)
-//										console.log("enviando " + barbara + " para village " + village.data.name);
-										socketService.emit(providers.routeProvider.SEND_PRESET, params);
-										console.log(params);
+										if(!countCommands[village_id].find(f=>f==village_id)){
+											countCommands[village_id].push(village_id);
+											requestFn.trigger("Farm/sendCmd")
+//											console.log(params)
+//											console.log("count command " + g + h++)
+											result_units = units_subtract(preset_units, aldeia_units)
+											aldeia_units = result_units[1];
+											permit_send = result_units[0];
+//											console.log("countCommands length " + countCommands[village_id].length)
+//											console.log("enviando " + barbara + " para village " + village.data.name);
+											socketService.emit(providers.routeProvider.SEND_PRESET, params);
+											console.log(params);
+										}
 									}
 									resolve()
 								}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
@@ -518,7 +520,9 @@ define("robotTW2/services/FarmService", [
 							if(!countCommands[village_id]) {countCommands[village_id] = []}
 							if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
 								aldeia_commands.forEach(function (aldeia) {
-									countCommands[village_id].push(aldeia.targetVillageId);
+									if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId)){
+										countCommands[village_id].push(aldeia.targetVillageId);
+									}
 								})
 							}
 							presets_order.forEach(function(preset){
