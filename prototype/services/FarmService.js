@@ -331,44 +331,50 @@ define("robotTW2/services/FarmService", [
 
 		}
 		, check_village = function (vill, cmd_preset) {
-			var village_id = cmd_preset.village_id
-			, preset_id = cmd_preset.preset_id
-			, village = modelDataService.getVillage(village_id) 
-			, x1 = vill.x
-			, y1 = vill.y 
-			, x2 = village.data.x 
-			, y2 = village.data.y
-
-			var quadrant = 0;
-			if(x1 < x2 && y1 < y2) {
-				quadrant = 1
-			} else if (x1 < x2 && y1 > y2) {
-				quadrant = 4
-			} else if (x1 > x2 && y1 < y2) {
-				quadrant = 2
-			} else if (x1 > x2 && y1 > y2) {
-				quadrant = 3
-			}
-
-			if (y1 % 2) //se y é impar
-				x1 += .5;
-			if (y2 % 2)
-				x2 += .5;
-			var dy = y1 - y2
-			, dx = x1 - x2
-			, distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
-
-			var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
-			var existQuadrant = false;
-			if($rootScope.data_villages.villages[village_id].presets[preset_id].quadrants){
-				existQuadrant = $rootScope.data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
+			if(typeof(vill) == "number"){
+				return !Object.values(countCommands).map(function (key) {return key.find(f => f == vill)}).filter(f => f != undefined).length > 0 ? true : false
 			} else {
-				existQuadrant = [1, 2, 3, 4].includes(quadrant);
-			}
-			if(existBarbara && existQuadrant) {
-				return true
-			} else {
-				return false
+				if(!vill) 
+					return false;
+				var village_id = cmd_preset.village_id
+				, preset_id = cmd_preset.preset_id
+				, village = modelDataService.getVillage(village_id) 
+				, x1 = vill.x
+				, y1 = vill.y 
+				, x2 = village.data.x 
+				, y2 = village.data.y
+
+				var quadrant = 0;
+				if(x1 < x2 && y1 < y2) {
+					quadrant = 1
+				} else if (x1 < x2 && y1 > y2) {
+					quadrant = 4
+				} else if (x1 > x2 && y1 < y2) {
+					quadrant = 2
+				} else if (x1 > x2 && y1 > y2) {
+					quadrant = 3
+				}
+
+				if (y1 % 2) //se y é impar
+					x1 += .5;
+				if (y2 % 2)
+					x2 += .5;
+				var dy = y1 - y2
+				, dx = x1 - x2
+				, distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
+
+				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
+				var existQuadrant = false;
+				if($rootScope.data_villages.villages[village_id].presets[preset_id].quadrants){
+					existQuadrant = $rootScope.data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
+				} else {
+					existQuadrant = [1, 2, 3, 4].includes(quadrant);
+				}
+				if(existBarbara && existQuadrant) {
+					return true
+				} else {
+					return false
+				}
 			}
 		}
 		, loadVillages = function(cmd_preset, listaGrid, res){
