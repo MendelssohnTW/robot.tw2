@@ -96,6 +96,15 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.grupoSelected = $rootScope.data_recruit.Groups[Object.keys($rootScope.data_recruit.Groups)[0]]
 
 //		$scope.setGroup($scope.grupo)
+		
+		$scope.$watch("data_logs.recruit", function(){
+			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
+
+		
 		$scope.setCollapse();
 		$scope.recalcScrollbar();
 

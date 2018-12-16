@@ -51,7 +51,7 @@ define("robotTW2/controllers/DataController", [
 			}
 		})
 		
-		$scope.$watch("data_data.logs", function(){
+		$scope.$watch("data_logs.data", function(){
 			$scope.recalcScrollbar();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();

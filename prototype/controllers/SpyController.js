@@ -42,7 +42,19 @@ define("robotTW2/controllers/SpyController", [
 			}
 		})
 		
+		$scope.$watch("data_logs.spy", function(){
+			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
+
+		
 		document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_spy.interval) : helper.readableMilliseconds($rootScope.data_spy.interval);
+		
+		$scope.setCollapse();
+		$scope.recalcScrollbar();
+		
 		return $scope;
 	}
 })

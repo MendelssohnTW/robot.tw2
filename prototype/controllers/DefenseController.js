@@ -14,6 +14,12 @@ define("robotTW2/controllers/DefenseController", [
 		var self = this;
 
 		
+		$scope.$watch("data_logs.defense", function(){
+			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
 
 		$scope.setCollapse();
 		$scope.recalcScrollbar();

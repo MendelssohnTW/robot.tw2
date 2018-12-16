@@ -125,6 +125,14 @@ define("robotTW2/controllers/AttackController", [
 			update();
 			
 		})
+		
+		$scope.$watch("data_logs.attack", function(){
+			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
+
 
 		$scope.setCollapse();
 		$scope.recalcScrollbar();

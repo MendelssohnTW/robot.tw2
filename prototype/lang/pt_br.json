@@ -146,6 +146,8 @@
 		"time_cicle": "Tempo do ciclo de farm",
 		"init_date": "Data de início",
 		"terminate_date": "Data de término",
+		"text_sent": "Comando enviado da aldeia ",
+		"text_sent_complete": " para ",
 		"text_cmd_max": "Limite de comandos",
 		"text_min_point": "Pontuação mínima",
 		"text_max_point": "Pontuação máxima",

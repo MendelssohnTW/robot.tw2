@@ -96,7 +96,7 @@ define("robotTW2/services/DataService", [
 			w = {};
 			return w.init = function() {
 				$rootScope.data_data.complete = convertedTime() + $rootScope.data_data.interval ;
-				$rootScope.data_data.logs = [];
+				$rootScope.data_logs.data = [];
 				if($rootScope.data_data.last_update + $rootScope.data_data.interval < convertedTime() && $rootScope.data_data.auto_initialize){
 					upInterval()
 				} else if($rootScope.data_data.last_update < convertedTime()){
@@ -127,7 +127,7 @@ define("robotTW2/services/DataService", [
 			, sendVillage = function (village, callback){
 				if(!isRunning) return
 				rt = $timeout(function(){
-					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
+					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
 					callback();
 				}, conf_conf.LOADING_TIMEOUT);
 				
@@ -135,11 +135,11 @@ define("robotTW2/services/DataService", [
 					$timeout.cancel(rt);
 					rt = undefined;
 					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
-						$rootScope.data_data.logs.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
+						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(convertedTime())).toString()})
 						console.log("aldeia " + countVillages + " enviada");
 					} else {
 						console.log("aldeia " + countVillages + " enviada com erro");
-						$rootScope.data_data.logs.push({"text":countVillages + "-" + $filter("i18n")("text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
+						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(convertedTime())).toString()})
 					}
 					countVillages++;
 					callback();
@@ -148,10 +148,9 @@ define("robotTW2/services/DataService", [
 			, socketGetVillages = function (reg, callbackSocket){
 				if(!isRunning) return
 				console.log("Buscando " + reg.x + "/" + reg.y);
-				$rootScope.data_data.logs.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
-				if(!$rootScope.data_data.logs) $rootScope.data_data.logs = [];
+				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(convertedTime())).toString()})
 				t = $timeout(function(){
-					$rootScope.data_data.logs.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": convertedTime()})
+					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(convertedTime())).toString()})
 					callbackSocket();
 				}, conf_conf.LOADING_TIMEOUT);
 
@@ -162,7 +161,7 @@ define("robotTW2/services/DataService", [
 
 					if (data.error_code == "INTERNAL_ERROR"){
 						console.log("Error internal");
-						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": convertedTime()})
+						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": (new Date(convertedTime())).toString()})
 						callbackSocket();
 					} else {
 						if (data != undefined && data.villages != undefined && data.villages.length > 0){
@@ -205,7 +204,7 @@ define("robotTW2/services/DataService", [
 						var reg = grid_queue.shift();
 						exec_promise_grid(reg)
 					} else {
-						$rootScope.data_data.logs.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": convertedTime()})
+						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(convertedTime())).toString()})
 						$rootScope.data_data.last_update = new date().getTime();
 						if (!villagesCheckTimer.isInitialized()) {
 							villagesCheckTimer.init();

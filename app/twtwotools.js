@@ -654,7 +654,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				medic:			"3.0.4",
 				secondvillage:	"3.0.4",
 				map:			"3.0.4",
-				data:			"3.0.4"
+				data:			"3.0.4",
+				logs:			"3.0.4"
 			}
 		});
 
@@ -877,7 +878,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC			: version.medic,
 						SECONDVILLAGE	: version.secondvillage,
 						MAP				: version.map,
-						DATA			: version.data
+						DATA			: version.data,
+						LOGS			: version.logs
 					},
 					FARM_TIME		      	: 2 * h,
 					MIN_INTERVAL	     	: 5 * min,
@@ -1062,6 +1064,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			onerror = function onerror($event){
 				if($rootScope.data_data){
 					$rootScope.data_data.possible = false;
+					$rootScope.data_data.activated = false;
 				}
 				console.log("Socket error ... \n");
 			},
@@ -1699,8 +1702,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-//								robotTW2.loadScript("/databases/data_data.js");
+								robotTW2.loadScript("/databases/data_data.js");
 //								robotTW2.loadScript("/databases/data_map.js");
+								robotTW2.loadScript("/databases/data_logs.js");
 
 								robotTW2.services.$timeout(function(){
 									robotTW2.loadScript("/databases/data_main.js");

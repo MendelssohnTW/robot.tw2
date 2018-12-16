@@ -414,6 +414,14 @@ define("robotTW2/controllers/FarmController", [
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
 		update()
+		
+		$scope.$watch("data_logs.farm", function(){
+			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
+
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();

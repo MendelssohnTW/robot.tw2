@@ -139,6 +139,14 @@ define("robotTW2/controllers/HeadquarterController", [
 
 
 //		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
+		
+		$scope.$watch("data_logs.headquarter", function(){
+			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
+
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();
