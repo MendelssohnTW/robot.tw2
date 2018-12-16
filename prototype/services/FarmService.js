@@ -220,7 +220,7 @@ define("robotTW2/services/FarmService", [
 				return [!0, aldeia_units];
 			return [!1, aldeia_units];
 		}
-		, sendCmd = function (cmd_preset, lt_bb, callback) {
+		, sendCmd = function (cmd_preset, lt_bb, res, callback) {
 			var promise_send = undefined
 			, result_units = []
 			, permit_send = true
@@ -267,7 +267,7 @@ define("robotTW2/services/FarmService", [
 				} else {
 //					console.log("lt_bb lenght " + lt_bb.length);
 //					console.log("no t_obj - no units village");
-					callback(false);
+					callback(res, false);
 					return !1;
 				}
 			} else {
@@ -280,7 +280,7 @@ define("robotTW2/services/FarmService", [
 
 			if(lt_bb.length == 0 || countCommands[village_id].length >= $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm){
 //				console.log("no villages bb or commands limit");
-				callback(true);
+				callback(res, true);
 				return !1;
 			}
 
@@ -329,7 +329,7 @@ define("robotTW2/services/FarmService", [
 							} else {
 //								console.log("clear send_queue - lenght " + send_queue.length);
 								send_queue = [];
-								callback(true);
+								callback(res, true);
 								return !0
 							}
 						})
@@ -438,7 +438,7 @@ define("robotTW2/services/FarmService", [
 				});
 			})
 			.then(function(lst_bb){
-				sendCmd(cmd_preset, lst_bb, function (cont) {
+				sendCmd(cmd_preset, lst_bb, res, function (res, cont) {
 					promise_grid = undefined
 					if(command_queue.grid_queue.length && cont){
 						var t = command_queue.grid_queue.shift();
@@ -447,7 +447,7 @@ define("robotTW2/services/FarmService", [
 						res = t[2];
 						exec_promise_grid(reg, cmd_preset, res)
 					} else {
-						res(cmd_preset.village_id)
+						res(cmd_preset)
 					}
 				});
 			})
@@ -461,19 +461,21 @@ define("robotTW2/services/FarmService", [
 			commands_for_presets.forEach(function(cmd_preset){
 				var t = function(cmd_preset){
 					if(!promise){
+						console.log("Executando cmd_preset " + JSON.stringify(cmd_preset));
 //						console.log("cmd_preset " + JSON.stringify(cmd_preset))
 						promise = new Promise(function(res){
 							var listaGrid = exec(cmd_preset)
 							if(!listaGrid.length){return}
 							loadVillages(cmd_preset, listaGrid, res);
 						})
-						.then(function(village_id){
-//							console.log("preset finished para " + village_id);
+						.then(function(c_preset){
 							promise = undefined
 							if(command_queue.farm_queue.length){
+								console.log("Terminou cmd_preset " + JSON.stringify(c_preset));
 								cmd_preset = command_queue.farm_queue.shift();
 								t(cmd_preset)
 							} else {
+								console.log("Terminou ciclo");
 //								console.log("resolve exec_promise")
 								resolve()
 							}
