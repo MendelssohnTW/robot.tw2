@@ -42,13 +42,16 @@ require(["robotTW2/time"], function(convertedTime){
 				listener_completed ? listener_completed() : listener_completed;
 				listener_completed = undefined;
 				listener_completed = $rootScope.$on(eventTypeProvider.COMMAND_SENT, function ($event, data){
-					console.log("sent")
 					console.log(data)
 					if(!data){return;}
-					if(data.direction =="forward" && data.origin.id == village.data.id){
-						socketService.emit(routeProvider.COMMAND_CANCEL, {
-							command_id: data.command_id
-						})
+					if(data.direction =="forward" && data.origin.id == village.data.villageId){
+						console.log("sent cancel")
+						console.log(modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing[0].data)
+						$timeout(function(){
+							socketService.emit(routeProvider.COMMAND_CANCEL, {
+								command_id: data.command_id
+							})
+						}, 5000)
 						listener_completed();
 						listener_completed = undefined;
 					}
