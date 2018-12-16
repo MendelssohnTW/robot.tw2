@@ -29,6 +29,7 @@ define("robotTW2/controllers/MainController", [
 						} else {
 							$scope.extensions[ext.name].activated = false;
 						}
+					}
 					var fn = arFn.fn;
 
 					if(typeof(fn.isPaused) == "function"){
