@@ -231,18 +231,16 @@ define("robotTW2/services/FarmService", [
 			, preset_units = cmd_preset.preset_units
 			, aldeia_commands = village.getCommandListModel().data
 			, t_obj = units_analyze(preset_units, aldeia_units);
-			
+
 			if(!countCommands[village_id]) {countCommands[village_id] = []}
-			if(countCommands[village_id].length == 0 && aldeia_commands.length > 0) {
-				aldeia_commands.forEach(function (aldeia) {
-					if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId)){
-						countCommands[village_id].push(aldeia.targetVillageId);
-					}
-				})
-			}
-			
+			aldeia_commands.forEach(function (aldeia) {
+				if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId)){
+					countCommands[village_id].push(aldeia.targetVillageId);
+				}
+			})
+
 			var aldeia_commands_lenght = countCommands[village_id].length
-			
+
 //			console.log("sendCmd " + village.data.name + " preset " + preset_id);
 			lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			if(lt_bb.length != 0){
@@ -289,7 +287,7 @@ define("robotTW2/services/FarmService", [
 //			console.log("lt_bb lenght " + lt_bb.length);
 
 			lt_bb.forEach(function (barbara) {
-				var f = function(barbara){
+				var f = function(bb){
 
 					if(!promise_send){
 						promise_send = new Promise(function(resolve){
@@ -297,13 +295,13 @@ define("robotTW2/services/FarmService", [
 								$timeout(function () {
 									var params =  {
 											start_village: village_id,
-											target_village: barbara,
+											target_village: bb,
 											army_preset_id: preset_id,
 											type: "attack"
 									}
-									if (check_village(barbara, cmd_preset)) {
-										if(!countCommands[village_id].find(f=>f==village_id)){
-											countCommands[village_id].push(village_id);
+									if (check_village(bb, cmd_preset)) {
+										if(!countCommands[village_id].find(f=>f==bb)){
+											countCommands[village_id].push(bb);
 											requestFn.trigger("Farm/sendCmd")
 //											console.log(params)
 //											console.log("count command " + g + h++)
