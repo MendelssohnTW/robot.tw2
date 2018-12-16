@@ -58,7 +58,7 @@ define("robotTW2/services/AttackService", [
 
 			var nx = function (){
 				if(list.length){
-					function getVills(village, callbackVill){				
+					function getVills(village, callbackVill){
 						socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:xT, y:yT, width: dist, height: dist}, function(data){
 							if(!data){return}
 							if (data.villages != undefined && data.villages.length > 0){
@@ -203,10 +203,10 @@ define("robotTW2/services/AttackService", [
 			if(opt_id){
 				id_command = params.id_command
 			}
-			
+
 			var expires = params.data_escolhida - params.duration;
 			var timer_delay = expires - convertedTime() - $rootScope.data_main.time_correction_command;
-			
+
 			params["timer_delay"] = timer_delay
 			params["id_command"] = id_command
 			commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params)
@@ -353,9 +353,10 @@ define("robotTW2/services/AttackService", [
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
+				n_calibrate_time()
 //				interval_reload = $timeout(function (){
-//					stop();
-//					start();
+//				stop();
+//				start();
 //				}, $rootScope.data_attack.interval)
 //				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
@@ -377,7 +378,7 @@ define("robotTW2/services/AttackService", [
 			interval_reload = undefined;
 			isRunning = !1;
 		}
-		
+
 		return	{
 			init				: init,
 			start				: start,

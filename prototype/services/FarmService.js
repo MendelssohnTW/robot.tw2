@@ -297,7 +297,7 @@ define("robotTW2/services/FarmService", [
 											aldeia_units = result_units[1];
 											permit_send = result_units[0];
 											var selectedVillage = modelDataService.getSelectedVillage();
-											socketService.emit(routeProvider.MAP_GET_VILLAGE_DETAILS, {
+											socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 												'my_village_id'		: selectedVillage.getId(),					
 												'village_id'		: bb,
 												'num_reports'		: 0

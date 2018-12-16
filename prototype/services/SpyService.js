@@ -90,7 +90,6 @@ define("robotTW2/services/SpyService", [
 			list.push(conf.INTERVAL.SPY)
 			$rootScope.data_spy.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_spy.interval)
 			var t = Math.min.apply(null, list)
-			t < 3000 ? t = 3000 : t;
 			$rootScope.data_spy.interval = t
 			$rootScope.data_spy.complete = convertedTime() + t
 			list = [];
