@@ -353,7 +353,6 @@ define("robotTW2/services/AttackService", [
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
-				n_calibrate_time()
 //				interval_reload = $timeout(function (){
 //				stop();
 //				start();
