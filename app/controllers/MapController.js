@@ -119,7 +119,7 @@ define("robotTW2/controllers/MapController", [
 		O()
 
 
-		$rootScope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
+		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
 			
 		})

@@ -102,7 +102,7 @@ define("robotTW2/controllers/MainController", [
 			}, 3000)
 		};
 
-		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
 			if(data.name == "ALERT"){
 				if(!toggle){
@@ -119,7 +119,7 @@ define("robotTW2/controllers/MainController", [
 			update()
 		};
 
-		$rootScope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
+		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			update()
 		})
 

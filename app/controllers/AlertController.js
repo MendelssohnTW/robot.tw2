@@ -122,7 +122,7 @@ define("robotTW2/controllers/AlertController", [
 			upDate()
 		}
 		
-		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.AlertService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();

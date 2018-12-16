@@ -21,6 +21,10 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		var self = this;
 
+		var update = function () {
+			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
 
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - convertedTime()) : 0;
@@ -125,6 +129,14 @@ define("robotTW2/controllers/HeadquarterController", [
 				$rootScope.$apply();
 			}
 		})
+		
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
+			if(!data) {return} 
+			update();
+		})
+		
+		update();
+
 
 //		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
 

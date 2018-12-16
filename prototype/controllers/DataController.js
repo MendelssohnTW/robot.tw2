@@ -26,7 +26,7 @@ define("robotTW2/controllers/DataController", [
 			}
 		}
 
-		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DATA, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DATA, function($event, data) {
 			if(document.getElementById("input-ms")){
 				document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_data.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_data.interval) : helper.readableMilliseconds($rootScope.data_data.interval);
 				if (!$rootScope.$$phase) {
@@ -44,7 +44,7 @@ define("robotTW2/controllers/DataController", [
 			services.DataService.stop();
 		}
 
-		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.DataService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();

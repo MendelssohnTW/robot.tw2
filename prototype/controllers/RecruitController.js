@@ -78,13 +78,13 @@ define("robotTW2/controllers/RecruitController", [
 			}
 		})
 		
-		$rootScope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function($event, data) {
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
 		})
 		
-		$rootScope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.RecruitService.isRunning();
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();

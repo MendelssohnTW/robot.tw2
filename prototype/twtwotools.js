@@ -1062,6 +1062,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			onerror = function onerror($event){
 				if($rootScope.data_data){
 					$rootScope.data_data.possible = false;
+					$rootScope.data_data.activated = false;
 				}
 				console.log("Socket error ... \n");
 			},

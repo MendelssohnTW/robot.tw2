@@ -22,8 +22,10 @@ define("robotTW2/services/MainService", [
 						extensions[extension].initialized = true;
 						if(fn.isInitialized())
 							return !1;
-						if(extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible))
+						if(extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible)){
+							$rootScope.data_data.activated = false;
 							return !1;
+						}
 						if(typeof(fn.init) == "function"){fn.init()}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
