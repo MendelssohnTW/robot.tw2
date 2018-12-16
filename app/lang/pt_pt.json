@@ -25,11 +25,11 @@
 		"add": "Adicionar marcação",
 		"misc": "Diversos",
 		"colors": "Cores",
-		"right" : "Clique botão direito na aldeia",
+		"right": "Clique botão direito na aldeia",
 		"highlight_village": "Destaque de aldeia",
 		"highlight_player": "Destaque de jogador",
 		"highlight_tribe": "Destaque de tribo",
-		"floating_minimap" : "Mostrar mini mapa flutuante"
+		"floating_minimap": "Mostrar mini mapa flutuante"
 	},
 	"main": {
 		"title": "Configurações principais",
@@ -219,6 +219,7 @@
 		"data_spy": "Robot TW2 - Banco de dados (SPY) atualizado, reative o módulo SPY",
 		"data_farm": "Robot TW2 - Banco de dados (FARM) atualizado, reative o módulo FARM",
 		"data_data": "Robot TW2 - Banco de dados (DATA) atualizado, reative o módulo DATA",
+		"data_logs": "Robot TW2 - Banco de dados (LOGS) atualizado",
 		"unity_select": "Selecione as unidades.",
 		"date_error": "Data inferior ao tempo necessário de percurso"
 	},

@@ -219,6 +219,7 @@
 		"data_spy": "Robot TW2 - Banco de dados (SPY) atualizado, reative o módulo SPY",
 		"data_farm": "Robot TW2 - Banco de dados (FARM) atualizado, reative o módulo FARM",
 		"data_data": "Robot TW2 - Banco de dados (DATA) atualizado, reative o módulo DATA",
+		"data_logs": "Robot TW2 - Banco de dados (LOGS) atualizado",
 		"unity_select": "Selecione as unidades.",
 		"date_error": "Data inferior ao tempo necessário de percurso"
 	},
