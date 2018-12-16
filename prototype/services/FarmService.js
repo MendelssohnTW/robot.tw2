@@ -302,7 +302,7 @@ define("robotTW2/services/FarmService", [
 												'village_id'		: bb,
 												'num_reports'		: 0
 											}, function (village) {
-												$rootScope.data_logs.farm.push({"text":$filter("i18n")("text_sent", $rootScope.loc.ale, "farm") + village.name + $filter("i18n")("text_sent_complete", $rootScope.loc.ale, "farm") + village_name + "-" + village_x + "/" + village_y, "date": (new Date(convertedTime())).toString()})
+												$rootScope.data_logs.farm.push({"text":$filter("i18n")("text_sent", $rootScope.loc.ale, "farm") + village.village_name + $filter("i18n")("text_sent_complete", $rootScope.loc.ale, "farm") + village_name + "-" + village_x + "/" + village_y, "date": (new Date(convertedTime())).toString()})
 											});
 											socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										}
