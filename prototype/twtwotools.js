@@ -861,7 +861,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAX_TIME_SNIPER_POST 	: 600,
 					MAX_JOURNEY_DISTANCE 	: 15,
 					MIN_JOURNEY_DISTANCE 	: 5,
-					MAX_JOURNEY_TIME     	: h,
+					MAX_JOURNEY_TIME     	: 3 * h,
 					MIN_JOURNEY_TIME     	: 2 * min,
 					VERSION					: {
 						MAIN			: version.main,
@@ -881,7 +881,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						DATA			: version.data,
 						LOGS			: version.logs
 					},
-					FARM_TIME		      	: 2 * h,
+					FARM_TIME		      	: 30 * min,
 					MIN_INTERVAL	     	: 5 * min,
 					INTERVAL				: {
 						HEADQUARTER	: h,
