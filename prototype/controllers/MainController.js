@@ -23,11 +23,11 @@ define("robotTW2/controllers/MainController", [
 					$scope.extensions[extension].activated = false;
 					continue
 				} else {
-					if(ext.name == "DATA"){
+					if(extension.name == "DATA"){
 						if($rootScope.data_data.possible){
-							$scope.extensions[ext.name].activated = true;
+							$scope.extensions[extension.name].activated = true;
 						} else {
-							$scope.extensions[ext.name].activated = false;
+							$scope.extensions[extension.name].activated = false;
 						}
 					}
 					var fn = arFn.fn;
