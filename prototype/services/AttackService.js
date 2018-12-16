@@ -119,7 +119,7 @@ define("robotTW2/services/AttackService", [
 							if(data.direction =="forward" && data.origin.id == village.data.villageId){
 								var outgoing = modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 								var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
-								var dif = completedAt - duration * 1000 - gTime;
+								var dif = gTime - completedAt - duration * 1000;
 								if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
 									$rootScope.data_main.time_correction_command = dif
 									$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
