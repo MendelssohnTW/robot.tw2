@@ -296,13 +296,14 @@ define("robotTW2/services/FarmService", [
 											result_units = units_subtract(preset_units, aldeia_units)
 											aldeia_units = result_units[1];
 											permit_send = result_units[0];
+											var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
 											var selectedVillage = modelDataService.getSelectedVillage();
 											socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 												'my_village_id'		: selectedVillage.getId(),					
 												'village_id'		: bb,
 												'num_reports'		: 0
 											}, function (village) {
-												$rootScope.data_logs.farm.push({"text":$filter("i18n")("text_sent", $rootScope.loc.ale, "farm") + village.village_name + $filter("i18n")("text_sent_complete", $rootScope.loc.ale, "farm") + village_name + "-" + village_x + "/" + village_y, "date": (new Date(convertedTime())).toString()})
+												$rootScope.data_logs.farm.push({"text":$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + " " + village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + "-" + village.village_x + "/" + village.village_y, "date": (new Date(convertedTime())).toString()})
 											});
 											socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										}
