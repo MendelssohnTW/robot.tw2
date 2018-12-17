@@ -271,7 +271,7 @@ define("robotTW2/services/DataService", [
 		}
 		, loadTribeProfile = function (id) {
 			return new Promise(function(res){
-				socketService.emit(routeProvider.TRIBE_GET_PROFILE, {
+				socketService.emit(providers.routeProvider.TRIBE_GET_PROFILE, {
 					'tribe_id': id
 				}, function(tribe) {
 					res(tribe);
@@ -280,7 +280,7 @@ define("robotTW2/services/DataService", [
 		}
 		, loadTribeMembers = function (id) {
 			return new Promise(function(res){
-				socketService.emit(routeProvider.TRIBE_GET_MEMBERLIST, {
+				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {
 					'tribe': tr.tribe_id
 				}, function (members) {
 					if(!members){res([])}
@@ -291,7 +291,7 @@ define("robotTW2/services/DataService", [
 		, update_tribes = function(){
 			return new Promise(function(resolve){
 				var tribes = [];
-				socketService.emit(routeProvider.RANKING_TRIBE, {
+				socketService.emit(providers.routeProvider.RANKING_TRIBE, {
 					'area_id'	: null,
 					'area_type'	: 'world',
 					'offset'	: null,
