@@ -17,7 +17,7 @@ define("robotTW2/controllers/MainController", [
 		var update = function(){
 			$scope.extensions = $rootScope.data_main.getExtensions();
 			for (var extension in $scope.extensions) {
-				$scope.extensions[extension.toUpperCase()].hotkey = conf.HOTKEY[extension.toUpperCase()].toUpperCase();
+				$scope.extensions[extension.toUpperCase()].hotkey ? $scope.extensions[extension.toUpperCase()].hotkey = conf.HOTKEY[extension.toUpperCase()].toUpperCase() : null;
 				var arFn = robotTW2.requestFn.get(extension.toLowerCase(), true);
 				if(!arFn) {
 					$scope.extensions[extension].activated = false;

@@ -24,7 +24,7 @@
 	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings"
 			ng-if="activeTab == TABS.ATTACK">
-			<div class="scroll-wrap attack" style="margin-bottom: 80px">
+			<div class="scroll-wrap attack" style="margin-bottom: 100px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
 					<table class="tbl-border-light tbl-striped">
@@ -204,19 +204,17 @@
 			</div>
 		</div>
 		<div class="box-paper content-settings" ng-if="activeTab == TABS.LOG">
-		<div style="margin-bottom: 80px">
-				<div class="scroll-wrap logs" style="margin-bottom: 80px">
-					<table class="tbl-border-light tbl-striped">
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tr ng-repeat="log in data_logs.attack">
-							<td class="cell-right">{{log.text}}</td>
-							<td class="cell-right">{{log.date}}</td>
-						</tr>
-					</table>
-				</div>
+			<div class="scroll-wrap logs" style="margin-bottom: 100px">
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="50%">
+						<col width="50%">
+					</colgroup>
+					<tr ng-repeat="log in data_logs.attack">
+						<td class="cell-right">{{log.text}}</td>
+						<td class="cell-right">{{log.date}}</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div>
