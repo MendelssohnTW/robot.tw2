@@ -11,7 +11,7 @@ define("robotTW2/services/DataService", [
 			conf,
 			conf_conf,
 			socketSend,
-			convertedTime
+			time
 	){
 	return (function DataService(
 			$rootScope,
@@ -24,7 +24,8 @@ define("robotTW2/services/DataService", [
 	) {
 		var isInitialized = !1
 		, isRunning = !1
-		, interval_data = null
+		, interval_data_villages = null
+		, interval_data_tribe = null
 		, grid_queue = []
 		, countVillages = 0
 		, promise_grid = undefined
@@ -83,31 +84,292 @@ define("robotTW2/services/DataService", [
 				grid: grid
 			};
 		}
-		, upInterval = function(){
+//		, loadTribeMembers = function (id, callback) {
+//			socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": id}, function(resp){
+//				if (resp.type == routes.SEARCH_CHARACTERS.type){
+//					var characters = resp.data.characters || []; 
+//					try {
+//						socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': id}, function (o) {
+//							//$timeout(function(){
+//							if (o.members != undefined){
+//								var players = o ? o.members : undefined;
+//
+//								var nAdd = function (character, callbackAdd){
+//									character.tribe_id = id;
+//									delete character.villages;
+//									socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(resp){
+//										if (resp.data.updated && resp.type == routes.UPDATE_CHARACTER.type){
+//											callbackAdd();
+//										};
+//									});
+//								};
+//
+//								var getProfile = function (character, callbackgetProfile){
+//									var character_id = character.id;
+//									socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
+//										'character_id': character_id
+//									}, function(data){
+//										callbackgetProfile(data)
+//									});
+//								};
+//
+//								var addPlayers = function (characters, players, callbacknAdd) {
+//
+//									function nextPlayer (){
+//										if (players.length > 0) {
+//											var player = players.shift();
+//											getProfile(player, function(data){
+//												function repasse(player, data, callbackRepasse){
+//													player.bash_points_total = data.bash_points_total;
+//													player.bash_points_def = data.bash_points_def;
+//													player.bash_points_off = data.bash_points_off;
+//													player.num_villages = player.villages;
+//													player.villages = [];
+//													var listVillages = data.villages || [];
+//													delete player.victory_points;
+//													delete player.loyalty;
+//													delete player.rights;
+//													delete player.profile_icon;
+//													listVillages.forEach(function(village){
+//														player.villages.push({
+//															"village_id": village.village_id, 
+//															"character_id": player.id
+//														});
+//													});
+//
+//													socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(resp){
+//														if (resp.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
+//															var villages_character = resp.data.villages;
+//															var count = 0;
+//															var l = villages_character.length;
+//															if(l == 0){
+//																callbackRepasse();
+//															} else {
+//																for (village in villages_character) {
+//																	if( villages_character.hasOwnProperty( village ) ) {
+//																		var located = player.villages.find(f => f.village_id == villages_character[village].id);
+//																		if (!located){
+//																			socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(resp){
+//																				count++;
+//																				if (resp.data.updated && resp.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
+//																					if(count >= l){
+//																						count = 0;
+//																						callbackRepasse();
+//																					}
+//																				};
+//																			});
+//																		} else {
+//																			count++;
+//																			if(count >= l){
+//																				count = 0;
+//																				callbackRepasse();
+//																			}
+//																		}
+//																	} 
+//																}
+//															}
+//
+////															player.villages.forEach(function(village_character){
+////															socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(resp){
+////															if (resp.data.updated && resp.type == routes.UPDATE_VILLAGE_CHARACTER.type){
+////															return;
+////															};
+////															});
+////															});
+//														};
+//													});
+//
+//												};
+//
+//												if(
+//														!characters.find(f => f.id == player.id) || 
+//														characters.find(f => f.id == player.id && f.under_attack != player.under_attack) ||
+//														characters.find(f => f.id == player.id && f.bash_points_total != data.bash_points_total) ||
+//														characters.find(f => f.id == player.id && f.points != data.points) ||
+//														characters.find(f => f.id == player.id && f.global_rank != data.rank) ||
+//														characters.find(f => f.id == player.id && f.num_villages != data.num_villages)
+//												)
+//												{
+//													console.log("player " + player.name);
+//													repasse(player, data, function(){
+//														callbacknAdd(player, function(){
+//															nextPlayer();
+//														});
+//													});
+//												} else {
+//													console.log("Dados de membro não enviado " + player.name);
+//													nextPlayer();
+//												}
+//											});
+//										} else {
+//											callback();
+//										}
+//									};
+//									nextPlayer();
+//								};
+//
+//								var nRemove = function (characters, players, listaRemove){
+//									function nextRemove(){
+//										if (listaRemove.length > 0){
+//											var character = listaRemove.shift();
+//											character.tribe_id = myObj.tribe.id;
+//											socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(resp){
+//												//if (resp.data.deleted && resp.type == routes.DELETE_CHARACTER.type){
+//												if (resp.type == routes.DELETE_CHARACTER.type){
+//													nextRemove();
+//													return;
+//												};
+//											});
+//										} else {
+//											addPlayers(characters, players, nAdd)
+//											return;
+//										}
+//									};
+//									nextRemove();
+//								};
+//
+//								function removePlayers (characters, players, callbacknRemove) {
+//									var listaRemove = [];
+//									characters.forEach(e => {
+//										if(!players.find(f => f.id == e.id)){
+//											listaRemove.push(e);
+//										}
+//									});
+//									callbacknRemove(characters, players, listaRemove);
+//								};
+//
+//								removePlayers(characters, players, nRemove);
+//							}
+//							//}, 250);
+//						});
+//					} catch (Error){
+//						sendMessage("Erro ao carregar dados dos membros da tribo ")
+//					}
+//				};
+//
+//			});
+//		}
+		, send_server = function(tribe){
+			return new Promise(function(res){
+				socketSend.emit(routes.UPDATE_WORLD, {}, function(resp){
+/*
+ * Incluir processo de envio de dados
+ */
+			})
+		}
+		, t = undefined
+		, t_send = []
+		, send_tribes = function(tribes){
+			function s(tribe){
+				send_server(tribe).then(function(){
+					t = undefined;
+					if(!tribes.length){return}
+					s(tribes.shift())
+				})
+			}
+			if(!tribes.length){return}
+			s(tribes.shift())
+		}
+		, loadTribeProfile = function (tribe) {
+			return new Promise(function(res){
+				socketService.emit(providers.routeProvider.TRIBE_GET_PROFILE, {
+					'tribe_id': tribe.tribe_id
+				}, function(tribe) {
+					res(tribe);
+				});
+			})
+		}
+		, loadTribeMembers = function (tribe) {
+			return new Promise(function(res){
+				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {
+					'tribe': tribe.tribe_id
+				}, function (members) {
+					if(!members){res([])}
+					res(members);
+				});
+			})
+		}
+		, update_tribes = function(){
+			return new Promise(function(resolve){
+				var tribes = [];
+				socketService.emit(providers.routeProvider.RANKING_TRIBE, {
+					'area_id'	: null,
+					'area_type'	: 'world',
+					'offset'	: null,
+					'count'		: 100,
+					'order_by'	: "rank",
+					'order_dir'	: 0,
+					'query'		: ''
+				}, function(data) {
+					data.ranking.map(function(tribe){
+						tribes.push(tribe)
+					})
+					if(!tribes.length){return}
+					var tribes_load = {};
+					function nextId(tribe){
+						loadTribeProfile(tribe).then(function(data_tribe){
+							var tr = angular.copy(tribe)
+							angular.merge(tr, data_tribe)
+							loadTribeMembers(tribe).then(function(members){
+								angular.merge(tr, {"member_data" : members})
+								tribes_load[tr.tribe_id] = tr; 
+								if(tribes.length){
+									nextId(tribes.shift());
+								} else {
+									resolve(tribes_load)
+								}
+							})
+						});
+					};
+					nextId(tribes.shift());
+				});
+			})
+		}
+		, upIntervalVillages = function(){
 			isRunning = !0;
-			updateVillages();
-			interval_data = setInterval(function(){
-				updateVillages();
+			update_villages();
+			interval_data_villages = setInterval(function(){
+				update_villages();
 				return;
-			}, $rootScope.data_data.interval)
+			}, $rootScope.data_data.interval.villages)
+		}
+		, upIntervalTribes = function(){
+			isRunning = !0;
+			update_tribes().then(function(tribes){
+				send_tribes(tribes);
+			});
+			interval_data_tribe = setInterval(function(){
+				update_tribes().then(function(tribes){
+					send_tribes(tribes);
+				});
+				return;
+			}, $rootScope.data_data.interval.tribes)
 		}
 		, villagesCheckTimer = (function (){
 			var interval,
 			w = {};
 			return w.init = function() {
-				$rootScope.data_data.complete = convertedTime() + $rootScope.data_data.interval ;
+				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
+				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
 				$rootScope.data_logs.data = [];
-				if($rootScope.data_data.last_update + $rootScope.data_data.interval < convertedTime() && $rootScope.data_data.auto_initialize){
-					upInterval()
-				} else if($rootScope.data_data.last_update < convertedTime()){
-					upInterval()
+				if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
+					upIntervalVillages()
+				} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
+					upIntervalVillages()
+				}
+				if($rootScope.data_data.last_update.tribes + $rootScope.data_data.interval.tribes < time.convertedTime() && $rootScope.data_data.auto_initialize){
+					upIntervalTribes()
+				} else if($rootScope.data_data.last_update.tribes < time.convertedTime()){
+					upIntervalTribes()
 				}
 			}
 			,
 			w.stop = function() {
 				isRunning = !1;
-				clearInterval(interval_data);
-				interval_data = undefined;
+				clearInterval(interval_data_villages);
+				interval_data_villages = undefined;
+				clearInterval(interval_data_tribe);
+				interval_data_tribe = undefined;
 				grid_queue = [];
 				countVillages = 0;
 				promise_grid = undefined;
@@ -127,19 +389,19 @@ define("robotTW2/services/DataService", [
 			, sendVillage = function (village, callback){
 				if(!isRunning) return
 				rt = $timeout(function(){
-					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": convertedTime()})
+					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": time.convertedTime()})
 					callback();
 				}, conf_conf.LOADING_TIMEOUT);
-				
+
 				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(resp){
 					$timeout.cancel(rt);
 					rt = undefined;
 					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
-						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(convertedTime())).toString()})
+						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
 						console.log("aldeia " + countVillages + " enviada");
 					} else {
 						console.log("aldeia " + countVillages + " enviada com erro");
-						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(convertedTime())).toString()})
+						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
 					}
 					countVillages++;
 					callback();
@@ -148,9 +410,9 @@ define("robotTW2/services/DataService", [
 			, socketGetVillages = function (reg, callbackSocket){
 				if(!isRunning) return
 				console.log("Buscando " + reg.x + "/" + reg.y);
-				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(convertedTime())).toString()})
+				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(time.convertedTime())).toString()})
 				t = $timeout(function(){
-					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(convertedTime())).toString()})
+					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(time.convertedTime())).toString()})
 					callbackSocket();
 				}, conf_conf.LOADING_TIMEOUT);
 
@@ -161,7 +423,7 @@ define("robotTW2/services/DataService", [
 
 					if (data.error_code == "INTERNAL_ERROR"){
 						console.log("Error internal");
-						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": (new Date(convertedTime())).toString()})
+						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
 						callbackSocket();
 					} else {
 						if (data != undefined && data.villages != undefined && data.villages.length > 0){
@@ -198,14 +460,14 @@ define("robotTW2/services/DataService", [
 					socketGetVillages(reg, resolve);
 				})
 				.then(function(){
-					
+
 					promise_grid = undefined
 					if(grid_queue.length){
 						var reg = grid_queue.shift();
 						exec_promise_grid(reg)
 					} else {
-						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(convertedTime())).toString()})
-						$rootScope.data_data.last_update = new date().getTime();
+						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
+						$rootScope.data_data.last_update = new Date().getTime();
 						if (!villagesCheckTimer.isInitialized()) {
 							villagesCheckTimer.init();
 						}
@@ -225,7 +487,7 @@ define("robotTW2/services/DataService", [
 			})
 
 		}
-		, updateVillages = function(){
+		, update_villages = function(){
 			var grid = loadMap(400, 500, 400 ,500).grid;
 			var listaGrid = [];
 			var l = Object.keys(grid).length;

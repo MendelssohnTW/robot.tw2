@@ -6,7 +6,7 @@ define("robotTW2/services/DepositService", [
 	], function(
 			robotTW2,
 			version,
-			convertedTime,
+			time,
 			conf
 	){
 	return (function DepositService(
@@ -75,7 +75,7 @@ define("robotTW2/services/DepositService", [
 			$timeout.cancel(interval_deposit),
 			interval_deposit = $timeout(getInfo, time_rest)
 			$rootScope.data_deposit.interval = time_rest
-			$rootScope.data_deposit.complete = convertedTime() + time_rest
+			$rootScope.data_deposit.complete = time.convertedTime() + time_rest
 		}
 		, init = function (){
 			isInitialized = !0

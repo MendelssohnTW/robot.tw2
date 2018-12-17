@@ -674,25 +674,25 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 //			var orderbuilding = [
-//				{"academy": 1}, //Academia
-//				{"headquarter": 2}, //Principal
-//				{"farm": 3}, //Fazenda
-//				{"warehouse": 4}, //Armazém
-//				{"barracks": 5}, //Quartel
-//				{"rally_point": 6}, //Ponto de encontro
-//				{"timber_camp": 7}, //Bosque
-//				{"iron_mine": 8}, //Mina de Ferro
-//				{"clay_pit": 9}, //Poço de Argila
-//				{"wall": 10}, //Muralha
-//				{"statue": 11}, //Estátua
-//				{"tavern": 12}, //Taverna
-//				{"market": 13}, //Mercado
-//				{"hospital": 14}, //Hospital
-//				{"preceptory": 15}, //Salão das ordens
-//				{"church": 16}, //Igreja
-//				{"chapel": 17} //Caplea
-//				]
-			
+//			{"academy": 1}, //Academia
+//			{"headquarter": 2}, //Principal
+//			{"farm": 3}, //Fazenda
+//			{"warehouse": 4}, //Armazém
+//			{"barracks": 5}, //Quartel
+//			{"rally_point": 6}, //Ponto de encontro
+//			{"timber_camp": 7}, //Bosque
+//			{"iron_mine": 8}, //Mina de Ferro
+//			{"clay_pit": 9}, //Poço de Argila
+//			{"wall": 10}, //Muralha
+//			{"statue": 11}, //Estátua
+//			{"tavern": 12}, //Taverna
+//			{"market": 13}, //Mercado
+//			{"hospital": 14}, //Hospital
+//			{"preceptory": 15}, //Salão das ordens
+//			{"church": 16}, //Igreja
+//			{"chapel": 17} //Caplea
+//			]
+
 			var orderbuilding= {
 					academy : [
 						{"academy": 1}, //Academia
@@ -712,67 +712,67 @@ var robotTW2 = window.robotTW2 = undefined;
 						{"preceptory": 15}, //Salão das ordens
 						{"church": 16}, //Igreja
 						{"chapel": 17} //Caplea
-					],
-					production : [
-						{"timber_camp": 1}, //Bosque
-						{"iron_mine": 2}, //Mina de Ferro
-						{"clay_pit": 3}, //Poço de Argila
-						{"rally_point": 4}, //Ponto de encontro
-						{"academy": 5}, //Academia
-						{"headquarter": 6}, //Principal
-						{"farm": 7}, //Fazenda
-						{"warehouse": 8}, //Armazém
-						{"barracks": 9}, //Quartel
-						{"wall": 10}, //Muralha
-						{"statue": 11}, //Estátua
-						{"tavern": 12}, //Taverna
-						{"market": 13}, //Mercado
-						{"hospital": 14}, //Hospital
-						{"preceptory": 15}, //Salão das ordens
-						{"church": 16}, //Igreja
-						{"chapel": 17} //Caplea
-					],
-					base : [
-						{"academy": 1}, //Academia
-						{"barracks": 2}, //Quartel
-						{"farm": 3}, //Fazenda
-						{"headquarter": 4}, //Principal
-						{"warehouse": 5}, //Armazém
-						{"rally_point": 6}, //Ponto de encontro
-						{"wall": 7}, //Muralha
-						{"statue": 8}, //Estátua
-						{"tavern": 9}, //Taverna
-						{"timber_camp": 10}, //Bosque
-						{"iron_mine": 11}, //Mina de Ferro
-						{"clay_pit": 12}, //Poço de Argila
-						{"market": 13}, //Mercado
-						{"hospital": 14}, //Hospital
-						{"preceptory": 15}, //Salão das ordens
-						{"church": 16}, //Igreja
-						{"chapel": 17} //Caplea
-					]
+						],
+						production : [
+							{"timber_camp": 1}, //Bosque
+							{"iron_mine": 2}, //Mina de Ferro
+							{"clay_pit": 3}, //Poço de Argila
+							{"rally_point": 4}, //Ponto de encontro
+							{"academy": 5}, //Academia
+							{"headquarter": 6}, //Principal
+							{"farm": 7}, //Fazenda
+							{"warehouse": 8}, //Armazém
+							{"barracks": 9}, //Quartel
+							{"wall": 10}, //Muralha
+							{"statue": 11}, //Estátua
+							{"tavern": 12}, //Taverna
+							{"market": 13}, //Mercado
+							{"hospital": 14}, //Hospital
+							{"preceptory": 15}, //Salão das ordens
+							{"church": 16}, //Igreja
+							{"chapel": 17} //Caplea
+							],
+							base : [
+								{"academy": 1}, //Academia
+								{"barracks": 2}, //Quartel
+								{"farm": 3}, //Fazenda
+								{"headquarter": 4}, //Principal
+								{"warehouse": 5}, //Armazém
+								{"rally_point": 6}, //Ponto de encontro
+								{"wall": 7}, //Muralha
+								{"statue": 8}, //Estátua
+								{"tavern": 9}, //Taverna
+								{"timber_camp": 10}, //Bosque
+								{"iron_mine": 11}, //Mina de Ferro
+								{"clay_pit": 12}, //Poço de Argila
+								{"market": 13}, //Mercado
+								{"hospital": 14}, //Hospital
+								{"preceptory": 15}, //Salão das ordens
+								{"church": 16}, //Igreja
+								{"chapel": 17} //Caplea
+								]
 			}
 
 //			var limitBuilding = [
-//				{"headquarter": 20},
-//				{"barracks": 10},
-//				{"tavern": 7},
-//				{"hospital": 1},  
-//				{"preceptory": 0},  
-//				{"church": 0},
-//				{"chapel": 0},
-//				{"academy": 1},  
-//				{"rally_point": 5},  
-//				{"statue": 5},
-//				{"market": 5},
-//				{"timber_camp": 18},  
-//				{"clay_pit": 18},
-//				{"iron_mine": 18},  
-//				{"farm": 25},
-//				{"warehouse": 23},  
-//				{"wall": 10}
-//				]
-			
+//			{"headquarter": 20},
+//			{"barracks": 10},
+//			{"tavern": 7},
+//			{"hospital": 1},  
+//			{"preceptory": 0},  
+//			{"church": 0},
+//			{"chapel": 0},
+//			{"academy": 1},  
+//			{"rally_point": 5},  
+//			{"statue": 5},
+//			{"market": 5},
+//			{"timber_camp": 18},  
+//			{"clay_pit": 18},
+//			{"iron_mine": 18},  
+//			{"farm": 25},
+//			{"warehouse": 23},  
+//			{"wall": 10}
+//			]
+
 			var limitBuilding = {
 					academy : [
 						{"headquarter": 20},
@@ -792,45 +792,45 @@ var robotTW2 = window.robotTW2 = undefined;
 						{"farm": 25},
 						{"warehouse": 23},  
 						{"wall": 10}
-					],
-					production : [
-						{"headquarter": 20},
-						{"barracks": 21},
-						{"tavern": 7},
-						{"hospital": 1},  
-						{"preceptory": 0},  
-						{"church": 0},
-						{"chapel": 0},
-						{"academy": 1},  
-						{"rally_point": 5},  
-						{"statue": 5},
-						{"market": 15},
-						{"timber_camp": 30},  
-						{"clay_pit": 30},
-						{"iron_mine": 30},  
-						{"farm": 30},
-						{"warehouse": 27},  
-						{"wall": 15}
-					],
-					base : [
-						{"headquarter": 20},
-						{"barracks": 23},
-						{"tavern": 13},
-						{"hospital": 5},  
-						{"preceptory": 0},  
-						{"church": 0},
-						{"chapel": 0},
-						{"academy": 1},  
-						{"rally_point": 5},  
-						{"statue": 5},
-						{"market": 5},
-						{"timber_camp": 15},  
-						{"clay_pit": 15},
-						{"iron_mine": 15},  
-						{"farm": 30},
-						{"warehouse": 25},  
-						{"wall": 20}
-					]
+						],
+						production : [
+							{"headquarter": 20},
+							{"barracks": 21},
+							{"tavern": 7},
+							{"hospital": 1},  
+							{"preceptory": 0},  
+							{"church": 0},
+							{"chapel": 0},
+							{"academy": 1},  
+							{"rally_point": 5},  
+							{"statue": 5},
+							{"market": 15},
+							{"timber_camp": 30},  
+							{"clay_pit": 30},
+							{"iron_mine": 30},  
+							{"farm": 30},
+							{"warehouse": 27},  
+							{"wall": 15}
+							],
+							base : [
+								{"headquarter": 20},
+								{"barracks": 23},
+								{"tavern": 13},
+								{"hospital": 5},  
+								{"preceptory": 0},  
+								{"church": 0},
+								{"chapel": 0},
+								{"academy": 1},  
+								{"rally_point": 5},  
+								{"statue": 5},
+								{"market": 5},
+								{"timber_camp": 15},  
+								{"clay_pit": 15},
+								{"iron_mine": 15},  
+								{"farm": 30},
+								{"warehouse": 25},  
+								{"wall": 20}
+								]
 			}
 
 			var seg = 1000 // 1000 milisegundos
@@ -890,7 +890,10 @@ var robotTW2 = window.robotTW2 = undefined;
 						ALERT		: 5 * min,
 						ATTACK		: h,
 						MEDIC		: h,
-						DATA		: 6 * h,
+						DATA		: {
+							villages	: 6 * h,
+							tribes		: 3 * h
+						},
 						SPY			: 30 * min
 					},
 					DBS : [
@@ -906,7 +909,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						"spy",
 						"secondvillage",
 						"map",
-						"data"
+						"data",
+						"logs"
 						]
 					,
 					HOTKEY					: {
@@ -1006,6 +1010,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				'SEARCH_WORLD':{
 					type:"search_world",
 					data:["world"]
+				},
+				'SEARCH_TRIBES_PERMITED':{
+					type:"search_tribes_permited",
+					data:[]
 				},
 				'UPDATE_VILLAGE':{
 					type:"update_village",
@@ -1263,11 +1271,18 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 		,
 		define("robotTW2/time", ["helper/time"], function(helper) {
-			return function(){
+			var w = {};
+			return w.convertedTime = function(){
 				var date = new Date(helper.gameTime())
 				date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
 				return date.getTime() + helper.getGameTimeOffset();
 			}
+			, w.convertMStoUTC = function(ms){
+				var date = new Date(ms)
+				date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
+				return date.getTime() + helper.getGameTimeOffset();
+			}
+			, w;
 		})
 		,
 		define("robotTW2/notify", [

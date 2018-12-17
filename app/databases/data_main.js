@@ -39,7 +39,7 @@ define("robotTW2/databases/data_main", [
 		dbs.forEach(function(db_name){
 			var string = "data_" + db_name.toLowerCase();
 			var db = services.$rootScope[string]
-			if(db){
+			if(db && string != "data_logs"){
 				angular.extend(extensions, {
 					[db_name.toUpperCase()] : {
 						initialized 		: db.initialized,

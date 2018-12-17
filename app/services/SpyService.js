@@ -7,7 +7,7 @@ define("robotTW2/services/SpyService", [
 	], function(
 			robotTW2,
 			version,
-			convertedTime,
+			time,
 			conf,
 			SPY_TYPES
 	){
@@ -91,7 +91,7 @@ define("robotTW2/services/SpyService", [
 			$rootScope.data_spy.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_spy.interval)
 			var t = Math.min.apply(null, list)
 			$rootScope.data_spy.interval = t
-			$rootScope.data_spy.complete = convertedTime() + t
+			$rootScope.data_spy.complete = time.convertedTime() + t
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_SPY)
 			if(callback && typeof(callback) == "function"){callback(t)}

@@ -8,8 +8,7 @@
 	</header>
 	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
-			<div style="margin-bottom: 80px">
-				<div class="scroll-wrap data" style="margin-bottom: 80px">
+				<div class="scroll-wrap data" style="margin-bottom: 100px">
 					<table class="tbl-border-light tbl-striped">
 						<colgroup>
 							<col width="*">
@@ -17,15 +16,22 @@
 
 						</colgroup>
 						<tr>
-							<td class="cell-right">{{text_interval_data}}</td>
+							<td class="cell-right">{{text_interval_data_villages}}</td>
 							<td><input id="input-ms" class="input-border inpt"
 								type="time" step="1" min="00:00:00" max="23:59:59"
-								value="{{data_data.interval | date : 'HH:mm:ss'}}" disabled></td>
+								value="{{data_data.interval.villages | date : 'HH:mm:ss'}}" disabled></td>
+								<td class="cell-right">{{text_interval_data_tribes}}</td>
+							<td><input id="input-ms" class="input-border inpt"
+								type="time" step="1" min="00:00:00" max="23:59:59"
+								value="{{data_data.interval.tribes | date : 'HH:mm:ss'}}" disabled></td>
 						</tr>
 						<tr>
 							<td class="cell-right">{{text_interval}}</td>
-							<td><input id="input-ms" class="input-border inpt disabled"
-								type=text value="{{getTimeRest()}}" disabled></td>
+							<td><input id="input-ms-villages" class="input-border inpt disabled"
+								type=text value="{{getTimeRestVillages()}}" disabled></td>
+								<td class="cell-right">{{text_interval}}</td>
+							<td><input id="input-ms-tribes" class="input-border inpt disabled"
+								type=text value="{{getTimeRestTribes()}}" disabled></td>
 						</tr>
 					</table>
 					<div class="scroll-wrap">
@@ -41,7 +47,6 @@
 						</table>
 					</div>
 				</div>
-			</div>
 		</div>
 		<div>
 			<div class="jssb-y  ">

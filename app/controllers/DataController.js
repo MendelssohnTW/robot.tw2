@@ -18,20 +18,31 @@ define("robotTW2/controllers/DataController", [
 		
 		var self = this;
 
-		$scope.getTimeRest = function(){
-			if($rootScope.data_data.complete > convertedTime()){
-				return helper.readableMilliseconds($rootScope.data_data.complete - convertedTime())
+		$scope.getTimeRestVillages = function(){
+			if($rootScope.data_data.complete_villages > convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_data.complete_villages - convertedTime())
+			} else {
+				return 0;
+			}
+		}
+
+		$scope.getTimeRestTribes = function(){
+			if($rootScope.data_data.complete_tribes > convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_data.complete_tribes - convertedTime())
 			} else {
 				return 0;
 			}
 		}
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DATA, function($event, data) {
-			if(document.getElementById("input-ms")){
-				document.getElementById("input-ms").value = helper.readableMilliseconds($rootScope.data_data.interval).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_data.interval) : helper.readableMilliseconds($rootScope.data_data.interval);
-				if (!$rootScope.$$phase) {
-					$rootScope.$apply();
-				}
+			if(document.getElementById("input-ms-villages")){
+				document.getElementById("input-ms-villages").value = helper.readableMilliseconds($rootScope.data_data.interval.villages).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_data.interval.villages) : helper.readableMilliseconds($rootScope.data_data.interval.villages);
+			}
+			if(document.getElementById("input-ms-tribes")){
+				document.getElementById("input-ms-tribes").value = helper.readableMilliseconds($rootScope.data_data.interval.tribes).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_data.interval.tribes) : helper.readableMilliseconds($rootScope.data_data.interval.tribes);
+			}
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		})
 

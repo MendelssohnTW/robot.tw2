@@ -24,7 +24,7 @@
 	<div class="win-main" scrollbar=""
 		style="position: relative; float: left;">
 		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
-			<div class="scroll-wrap farm" style="margin-bottom: 80px">
+			<div class="scroll-wrap farm" style="margin-bottom: 100px">
 				<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 					<colgroup>
 						<col width="50%">
@@ -147,7 +147,7 @@
 
 		<div class="box-paper content-settings"
 			ng-if="activeTab == TABS.PRESET">
-			<div class="scroll-wrap farm">
+			<div class="scroll-wrap preset"  style="margin-bottom: 100px">
 				<div class="list-collapse">
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 						<colgroup>
@@ -211,8 +211,7 @@
 									class="with-margin">{{text_all_preset}}</label>
 									<div class="checkbox box-border-dark" id="check_all">
 										<div switch-slider="" border="true" enabled="true"
-											value="update_all_presets" vertical="false" size="'56x28'"
-											ng-model="update_all_presets">
+											value="update_all_presets" vertical="false" size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -363,21 +362,22 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="box-paper content-settings" ng-if="activeTab == TABS.LOG">
-			<div style="margin-bottom: 80px">
-				<div class="scroll-wrap logs" style="margin-bottom: 80px">
-					<table class="tbl-border-light tbl-striped">
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tr ng-repeat="log in data_logs.farm">
-							<td class="cell-right">{{log.text}}</td>
-							<td class="cell-right">{{log.date}}</td>
-						</tr>
-					</table>
+				<div class="scroll-wrap logs" style="margin-bottom: 100px">
+					<div>
+						<table class="tbl-border-light tbl-striped">
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tr ng-repeat="log in data_logs.farm">
+								<td class="cell-right">{{log.text}}</td>
+								<td class="cell-right">{{log.date}}</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-			</div>
 		</div>
 		<div class="jssb-y">
 			<div class="jssb-y-track">

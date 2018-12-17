@@ -11,7 +11,7 @@ define("robotTW2/services/AttackService", [
 			helper,
 			conf,
 			notify,
-			convertedTime
+			time
 	){
 	return (function AttackService(
 			$rootScope,
@@ -119,7 +119,7 @@ define("robotTW2/services/AttackService", [
 							if(data.direction =="forward" && data.origin.id == village.data.villageId){
 								var outgoing = modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 								var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
-								var dif = completedAt - duration * 1000 - gTime;
+								var dif = gTime - time.convertMStoUTC(completedAt - duration * 1000);
 								if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
 									$rootScope.data_main.time_correction_command = dif
 									$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
@@ -133,7 +133,7 @@ define("robotTW2/services/AttackService", [
 								listener_completed = undefined;
 							}
 						})
-						gTime = convertedTime();
+						gTime = time.convertedTime();
 						socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 							start_village: village.getId(),
 							target_village: bb.id,
@@ -149,13 +149,13 @@ define("robotTW2/services/AttackService", [
 		}
 		, addAttack = function(params, opt_id){
 			if(!params){return}
-			var id_command = (Math.round(convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
+			var id_command = (Math.round(time.convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
 			if(opt_id){
 				id_command = params.id_command
 			}
 
 			var expires = params.data_escolhida - params.duration;
-			var timer_delay = expires - convertedTime() - $rootScope.data_main.time_correction_command;
+			var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
 
 			params["timer_delay"] = timer_delay
 			params["id_command"] = id_command
@@ -202,7 +202,7 @@ define("robotTW2/services/AttackService", [
 //			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
 			var expires_send = params.data_escolhida - params.duration;
-			var timer_delay_send = expires_send - convertedTime() - $rootScope.data_main.time_correction_command;
+			var timer_delay_send = expires_send - time.convertedTime() - $rootScope.data_main.time_correction_command;
 			if(timer_delay_send > 0){
 				return $timeout(function(){
 					listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
@@ -266,7 +266,7 @@ define("robotTW2/services/AttackService", [
 				if (get_data != undefined && get_time != undefined){
 					scope.milisegundos_duracao = durationInSeconds * 1000;
 					scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-					if (scope.tempo_escolhido > convertedTime() + scope.milisegundos_duracao){
+					if (scope.tempo_escolhido > time.convertedTime() + scope.milisegundos_duracao){
 						addScopeAttack(scope);
 						scope.closeWindow();
 					} else {
@@ -310,7 +310,7 @@ define("robotTW2/services/AttackService", [
 //				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
 				Object.values($rootScope.data_attack.commands).forEach(function(param){
-					if((param.data_escolhida - param.duration) < convertedTime()){
+					if((param.data_escolhida - param.duration) < time.convertedTime()){
 						commandQueue.unbind(param.id_command, $rootScope.data_attack)
 					} else {
 						addAttack(param, true);
