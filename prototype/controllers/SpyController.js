@@ -7,7 +7,7 @@ define("robotTW2/controllers/SpyController", [
 			services,
 			providers,
 			helper,
-			convertedTime
+			time
 	){
 	return function SpyController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -24,7 +24,7 @@ define("robotTW2/controllers/SpyController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_spy.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_spy.complete - convertedTime()) : 0;
+			return $rootScope.data_spy.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_spy.complete - time.convertedTime()) : 0;
 		}
 
 		

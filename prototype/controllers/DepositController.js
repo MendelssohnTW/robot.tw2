@@ -8,7 +8,7 @@ define("robotTW2/controllers/DepositController", [
 			services,
 			providers,
 			conf,
-			convertedTime,
+			time,
 			helper
 	){
 	return function DepositController($rootScope, $scope) {
@@ -16,8 +16,8 @@ define("robotTW2/controllers/DepositController", [
 		var self = this;
 
 		$scope.getTimeRest = function(){
-			if($rootScope.data_deposit.complete > convertedTime()){
-				return helper.readableMilliseconds($rootScope.data_deposit.complete - convertedTime())
+			if($rootScope.data_deposit.complete > time.convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_deposit.complete - time.convertedTime())
 			} else {
 				return 0;
 			}

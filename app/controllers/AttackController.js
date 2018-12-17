@@ -8,7 +8,7 @@ define("robotTW2/controllers/AttackController", [
 			services,
 			providers,
 			conf,
-			convertedTime,
+			time,
 			helper
 	){
 	return function AttackController($rootScope, $scope) {
@@ -43,7 +43,7 @@ define("robotTW2/controllers/AttackController", [
 			$scope.comandos = Object.keys($rootScope.data_attack.commands).map(function(elem, index, array){
 				return $rootScope.data_attack.commands[elem]
 			});
-			$scope.comandos.sort(function(a,b){return (a.data_escolhida - convertedTime() - a.duration) - (b.data_escolhida - convertedTime() - b.duration)})
+			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
@@ -106,7 +106,7 @@ define("robotTW2/controllers/AttackController", [
 		}
 
 		$scope.getTimeRest = function(param){
-			var difTime = param.data_escolhida - convertedTime() - param.duration; 
+			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
 			return helper.readableMilliseconds(difTime)
 		}
 

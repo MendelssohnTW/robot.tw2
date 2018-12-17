@@ -7,7 +7,7 @@ define("robotTW2/controllers/RecruitController", [
 	"conf/unitTypes"
 	], function(
 			helper,
-			convertedTime,
+			time,
 			services,
 			providers,
 			conf,
@@ -41,7 +41,7 @@ define("robotTW2/controllers/RecruitController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_recruit.complete > convertedTime() ? helper.readableMilliseconds($rootScope.data_recruit.complete - convertedTime()) : 0; 
+			return $rootScope.data_recruit.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_recruit.complete - time.convertedTime()) : 0; 
 		}
 
 		$scope.getText = function(key){

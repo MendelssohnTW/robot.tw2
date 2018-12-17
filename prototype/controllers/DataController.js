@@ -9,7 +9,7 @@ define("robotTW2/controllers/DataController", [
 			providers,
 			helper,
 			conf,
-			convertedTime
+			time
 	){
 	return function DataController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -19,16 +19,16 @@ define("robotTW2/controllers/DataController", [
 		var self = this;
 
 		$scope.getTimeRestVillages = function(){
-			if($rootScope.data_data.complete_villages > convertedTime()){
-				return helper.readableMilliseconds($rootScope.data_data.complete_villages - convertedTime())
+			if($rootScope.data_data.complete_villages > time.convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_data.complete_villages - time.convertedTime())
 			} else {
 				return 0;
 			}
 		}
 
 		$scope.getTimeRestTribes = function(){
-			if($rootScope.data_data.complete_tribes > convertedTime()){
-				return helper.readableMilliseconds($rootScope.data_data.complete_tribes - convertedTime())
+			if($rootScope.data_data.complete_tribes > time.convertedTime()){
+				return helper.readableMilliseconds($rootScope.data_data.complete_tribes - time.convertedTime())
 			} else {
 				return 0;
 			}

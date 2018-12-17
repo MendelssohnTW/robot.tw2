@@ -6,7 +6,7 @@ define("robotTW2/controllers/FarmController", [
 	"conf/conf"
 	], function(
 			helper,
-			convertedTime,
+			time,
 			services,
 			providers,
 			conf_conf
@@ -49,8 +49,8 @@ define("robotTW2/controllers/FarmController", [
 		, presetIds = []
 		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, update = function () {
-			if($rootScope.data_farm.farm_time_start < convertedTime()) {
-				$rootScope.data_farm.farm_time_start = convertedTime();
+			if($rootScope.data_farm.farm_time_start < time.convertedTime()) {
+				$rootScope.data_farm.farm_time_start = time.convertedTime();
 			}
 			if($rootScope.data_farm.farm_time_stop < $rootScope.data_farm.farm_time_start) {
 				$rootScope.data_farm.farm_time_stop = $rootScope.data_farm.farm_time_start + 86400000;
