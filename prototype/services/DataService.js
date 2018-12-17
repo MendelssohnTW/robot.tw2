@@ -269,10 +269,10 @@ define("robotTW2/services/DataService", [
 			if(!tribes.length){return}
 			s(tribes.shift())
 		}
-		, loadTribeProfile = function (id) {
+		, loadTribeProfile = function (tribe) {
 			return new Promise(function(res){
 				socketService.emit(providers.routeProvider.TRIBE_GET_PROFILE, {
-					'tribe_id': id
+					'tribe_id': tribe.tribe_id
 				}, function(tribe) {
 					res(tribe);
 				});
