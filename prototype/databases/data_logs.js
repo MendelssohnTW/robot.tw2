@@ -27,7 +27,8 @@ define("robotTW2/databases/data_logs", [
 			defense		: [],
 			data		: [],
 			recruit		: [],
-			spy			: []
+			spy			: [],
+			version		: conf.VERSION.LOGS,
 	}
 
 	if(!data_logs){

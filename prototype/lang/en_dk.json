@@ -242,8 +242,9 @@
 	},
 	"data": {
 		"title": "Data update",
-		"text_interval_data": "Check interval",
+		"text_interval_data_villages": "Check interval villages",
 		"text_interval": "Next cycle in",
+		"text_interval_data_tribes": "Check interval tribes",
 		"text_search": "Searching ",
 		"text_timeout": "Timeout ",
 		"text_err": "Internal error ",

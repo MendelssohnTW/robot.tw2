@@ -29,6 +29,8 @@ define("robotTW2/controllers/FarmController", [
 			TABS.PRESET,
 			TABS.LOG,
 			]
+		
+		$scope.update_all_presets = false;
 
 		$scope.requestedTab = TABS.FARM;
 		$scope.TABS = TABS;
@@ -409,7 +411,7 @@ define("robotTW2/controllers/FarmController", [
 
 		triggerUpdate()
 
-		$scope.update_all_presets = false;
+		
 
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();

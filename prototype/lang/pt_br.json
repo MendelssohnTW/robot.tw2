@@ -243,12 +243,12 @@
 	},
 	"data": {
 		"title": "Atualização de dados",
-		"text_interval_deposit": "Intervalo de nova atualização",
+		"text_interval_data_villages": "Intervalo de nova atualização das aldeias",
 		"text_interval": "Próximo ciclo em ",
+		"text_interval_data_tribes": "Intervalo de nova atualização das tribos",
 		"text_search": "Buscando ",
 		"text_timeout": "Tempo esgotado ",
 		"text_err": "Erro interno ",
 		"text_completed": "Aldeias enviadas"
-		
 	}
 }
