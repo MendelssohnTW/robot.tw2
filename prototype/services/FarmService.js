@@ -476,10 +476,10 @@ define("robotTW2/services/FarmService", [
 
 							if(!isRunning){
 								resolve_cicle();
-								break;
+								return !1;
 							}
 							if(!presets || !aldeia_units || village_id) {
-								continue;
+								return !0;
 							}
 
 							var presets_order = Object.keys(presets).map(function(preset){
