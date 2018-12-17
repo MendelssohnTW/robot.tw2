@@ -21,9 +21,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="win-main" scrollbar="">
-		<div class="box-paper content-settings"
-			ng-if="activeTab == TABS.ATTACK">
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.ATTACK">
+		<div class="box-paper content-settings">
 			<div class="scroll-wrap attack" style="margin-bottom: 100px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
@@ -203,6 +202,19 @@
 				</div>
 			</div>
 		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.ATTACK">
 		<div class="box-paper content-settings" ng-if="activeTab == TABS.LOG">
 			<div class="scroll-wrap logs" style="margin-bottom: 100px">
 				<table class="tbl-border-light tbl-striped">

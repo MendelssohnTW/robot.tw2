@@ -6,7 +6,23 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main" scrollbar="">
+	<div class="tabs tabs-bg">
+		<div class="tabs-three-col">
+			<div ng-repeat="tabName in TAB_ORDER" class="tab"
+				ng-click="userSetActiveTab(tabName)"
+				ng-class="{'tab-active': activeTab === tabName}">
+				<div class="tab-inner">
+					<div
+						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
+						<a href="#"
+							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.RECRUIT">
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap recruit" style="margin-bottom: 100px">
 				<div>
@@ -97,6 +113,35 @@
 									</div>
 								</div>
 							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOGS">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap logs" style="margin-bottom: 100px">
+				<div>
+					<table class="tbl-border-light tbl-striped">
+						<colgroup>
+							<col width="50%">
+							<col width="50%">
+						</colgroup>
+						<tr ng-repeat="log in data_logs.recruit">
+							<td class="cell-right">{{log.text}}</td>
+							<td class="cell-right">{{log.date}}</td>
 						</tr>
 					</table>
 				</div>

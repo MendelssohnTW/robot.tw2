@@ -22,9 +22,31 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 		var self = this;
 		
+		var TABS = {
+				RECRUIT	: services.$filter("i18n")("recruit", $rootScope.loc.ale, "recruit"),
+				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "recruit")
+		}
+		, TAB_ORDER = [
+			TABS.RECRUIT,
+			TABS.LOG,
+			]
+		
 		$scope.isRunning = services.RecruitService.isRunning();
 		
-		var return_units = function (){
+		$scope.requestedTab = TABS.RECRUIT;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
+
+		var setActiveTab = function setActiveTab(tab) {
+			$scope.activeTab								= tab;
+			$scope.requestedTab								= null;
+		}
+		, initTab = function initTab() {
+			if (!$scope.activeTab) {
+				setActiveTab($scope.requestedTab);
+			}
+		}
+		, return_units = function (){
 			var units = {};
 			Object.keys(unitTypes).map(function(key){
 				if($rootScope.data_recruit.troops_not.some(elem => elem == unitTypes[key])){
