@@ -364,11 +364,12 @@ define("robotTW2/services/FarmService", [
 						} else {
 							promise_grid = exec_promise_grid(r, c_preset).then(function(lst_bb){
 								if(!lst_bb || !lst_bb.length){
+									promise_grid = undefined
 									resol();
 									return
 								}
 								sendCmd(c_preset, lst_bb, function (permited) {
-									promise_grid = undefined
+									promise_grid = undefined	
 									if(command_queue.grid_queue.length && permited){
 										var j = command_queue.grid_queue.shift();
 										r = j[0];
