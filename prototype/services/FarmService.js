@@ -478,7 +478,7 @@ define("robotTW2/services/FarmService", [
 								resolve_cicle();
 								return !1;
 							}
-							if(!presets || !aldeia_units || village_id) {
+							if(!presets || !aldeia_units || !village_id) {
 								return !0;
 							}
 
@@ -549,7 +549,7 @@ define("robotTW2/services/FarmService", [
 								if(!init_first){
 									tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
 								}
-								init_fisrt = false;
+								init_first = false;
 								$rootScope.data_logs.farm.push({"text":$filter("i18n")("farm_init", $rootScope.loc.ale, "farm"), "date": (new Date(convertedTime())).toString()})
 								promise_farm = new Promise(function(resolve_cicle){
 									execute_cicle(tempo, resolve_cicle)
