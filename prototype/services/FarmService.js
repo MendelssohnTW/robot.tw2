@@ -1,7 +1,6 @@
 define("robotTW2/farm/command_queue", function(){
 	var w = {}
-	return w.preset_queue = []
-	, w.farm_queue = []
+	return  w.farm_queue = []
 	, w.grid_queue = []
 	,w
 })
@@ -543,34 +542,31 @@ define("robotTW2/services/FarmService", [
 						$rootScope.data_logs.farm.push({"text":$filter("i18n")("wait_init", $rootScope.loc.ale, "farm"), "date": (new Date(convertedTime())).toString()})
 					};
 					interval_init = $timeout(function () {
-						command_queue.preset_queue = []
-						var qtd_ciclo = Math.trunc(($rootScope.data_farm.farm_time_stop - $rootScope.data_farm.farm_time_start) / $rootScope.data_farm.farm_time);
-						if (qtd_ciclo > 0 && !isNaN(parseInt(qtd_ciclo))) {
-							for (i = 0; i < qtd_ciclo; i++) {
-								var tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
-								i == 0 ? tempo = 0: tempo;
-								var f = function(tempo){
-									if(!promise_farm){
-										$rootScope.data_logs.farm.push({"text":$filter("i18n")("farm_init", $rootScope.loc.ale, "farm"), "date": (new Date(convertedTime())).toString()})
-										promise_farm = new Promise(function(resolve){
-											execute_cicle(tempo, resolve_cicle)
-										})
-										. then(function(){
-											promise_farm = undefined;
-											if(command_queue.preset_queue.length){
-												tempo = command_queue.preset_queue.shift()
-												f(tempo)
-											} else {
-												$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(convertedTime())).toString()})
-											}
-										})
-									} else {
-										command_queue.preset_queue.push(tempo)
-									}
+						var init_first = true;
+						var f = function(){
+							if(convertedTime() + $rootScope.data_farm.farm_time < $rootScope.data_farm.farm_time_stop){
+								var tempo = 0;
+								if(!init_first){
+									tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
 								}
-								f(i)
+								init_fisrt = false;
+								$rootScope.data_logs.farm.push({"text":$filter("i18n")("farm_init", $rootScope.loc.ale, "farm"), "date": (new Date(convertedTime())).toString()})
+								promise_farm = new Promise(function(resolve_cicle){
+									execute_cicle(tempo, resolve_cicle)
+								})
+								. then(function(){
+									promise_farm = undefined;
+									if(convertedTime() + $rootScope.data_farm.farm_time < $rootScope.data_farm.farm_time_stop){
+										f()
+									} else {
+										$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(convertedTime())).toString()})
+									}
+								})
+							} else {
+								$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(convertedTime())).toString()})
 							}
 						}
+						f()
 
 					}, tempo_delay);
 					return;
@@ -604,7 +600,6 @@ define("robotTW2/services/FarmService", [
 			promise_preset = undefined
 			promise_grid = undefined
 			promise_farm = undefined
-			command_queue.preset_queue = []
 			command_queue.farm_queue = []
 			command_queue.grid_queue = []
 			send_queue = []
@@ -635,7 +630,6 @@ define("robotTW2/services/FarmService", [
 			promise_preset = undefined
 			promise_grid = undefined
 			promise_farm = undefined
-			command_queue.preset_queue = []
 			command_queue.farm_queue = []
 			command_queue.grid_queue = []
 			send_queue = []
