@@ -32,7 +32,10 @@ define("robotTW2/databases/data_data", [
 			},
 			version					: conf.VERSION.DATA,
 			possible				: true,
-			last_update				: new Date().getTime(),
+			last_update				: {
+				villages	: new Date().getTime(),
+				tribes 		: new Date().getTime()
+			},
 			logs					: []
 	}
 
