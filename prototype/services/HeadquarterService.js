@@ -8,7 +8,7 @@ define("robotTW2/services/HeadquarterService", [
 	], function(
 			robotTW2,
 			version,
-			convertedTime,
+			time,
 			conf,
 			upgradeabilityStates,
 			locationTypes
@@ -142,7 +142,7 @@ define("robotTW2/services/HeadquarterService", [
 			$rootScope.data_headquarter.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_headquarter.interval);
 			var t = Math.min.apply(null, list);
 			$rootScope.data_headquarter.interval = t
-			$rootScope.data_headquarter.complete = convertedTime() + t
+			$rootScope.data_headquarter.complete = time.convertedTime() + t
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 			if(callback && typeof(callback) == "function"){callback(t)}

@@ -6,7 +6,7 @@ define("robotTW2/services/RecruitService", [
 	], function(
 			robotTW2,
 			version,
-			convertedTime,
+			time,
 			conf
 	){
 	return (function FarmService(
@@ -319,7 +319,7 @@ define("robotTW2/services/RecruitService", [
 			var job = village.getRecruitingQueue("barracks").jobs[0];
 			if(job){
 				var timer = job.data.completed * 1000;
-				var dif = timer - convertedTime();
+				var dif = timer - time.convertedTime();
 				dif < conf.MIN_INTERVAL ? dif = conf.MIN_INTERVAL : dif;
 				lt.push(dif);
 				lt.push($rootScope.data_recruit.interval);
@@ -335,7 +335,7 @@ define("robotTW2/services/RecruitService", [
 			$rootScope.data_recruit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_recruit.interval)
 			var t = Math.min.apply(null, list);
 			$rootScope.data_recruit.interval = t
-			$rootScope.data_recruit.complete = convertedTime() + t
+			$rootScope.data_recruit.complete = time.convertedTime() + t
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
 			if(callback && typeof(callback) == "function"){callback(t)}

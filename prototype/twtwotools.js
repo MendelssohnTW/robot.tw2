@@ -1271,11 +1271,18 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 		,
 		define("robotTW2/time", ["helper/time"], function(helper) {
-			return function(){
+			var w = {};
+			return w.convertedTime = function(){
 				var date = new Date(helper.gameTime())
 				date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
 				return date.getTime() + helper.getGameTimeOffset();
 			}
+			, w.convertMStoUTC = function(ms){
+				var date = new Date(ms)
+				date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
+				return date.getTime() + helper.getGameTimeOffset();
+			}
+			, w;
 		})
 		,
 		define("robotTW2/notify", [
