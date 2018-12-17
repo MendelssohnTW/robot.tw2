@@ -304,16 +304,18 @@ define("robotTW2/services/DataService", [
 						tribes.push(tribe)
 					})
 					if(!tribes.length){return}
+					var tribes_load = {};
 					function nextId(tribe){
 						loadTribeProfile(tribe).then(function(data_tribe){
 							var tr = angular.copy(tribe)
 							angular.merge(tr, data_tribe)
 							loadTribeMembers(tribe).then(function(members){
 								angular.merge(tr, {"member_data" : members})
+								tribes_load[tr.tribe_id] = tr; 
 								if(tribes.length){
 									nextId(tribes.shift());
 								} else {
-									resolve(tribes)
+									resolve(tribes_load)
 								}
 							})
 						});
@@ -464,7 +466,7 @@ define("robotTW2/services/DataService", [
 						exec_promise_grid(reg)
 					} else {
 						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(convertedTime())).toString()})
-						$rootScope.data_data.last_update = new date().getTime();
+						$rootScope.data_data.last_update = new Date().getTime();
 						if (!villagesCheckTimer.isInitialized()) {
 							villagesCheckTimer.init();
 						}
