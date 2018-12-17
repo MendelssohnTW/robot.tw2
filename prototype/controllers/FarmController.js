@@ -417,8 +417,8 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.$watch("data_logs.farm", function(){
 			$scope.recalcScrollbar();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		}, true)
 

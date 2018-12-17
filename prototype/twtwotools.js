@@ -909,7 +909,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						"spy",
 						"secondvillage",
 						"map",
-						"data"
+						"data",
+						"logs"
 						]
 					,
 					HOTKEY					: {

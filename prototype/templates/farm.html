@@ -363,19 +363,22 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="box-paper content-settings" ng-if="activeTab == TABS.LOG">
 			<div style="margin-bottom: 80px">
 				<div class="scroll-wrap logs" style="margin-bottom: 80px">
-					<table class="tbl-border-light tbl-striped">
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tr ng-repeat="log in data_logs.farm">
-							<td class="cell-right">{{log.text}}</td>
-							<td class="cell-right">{{log.date}}</td>
-						</tr>
-					</table>
+					<div>
+						<table class="tbl-border-light tbl-striped">
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tr ng-repeat="log in data_logs.farm">
+								<td class="cell-right">{{log.text}}</td>
+								<td class="cell-right">{{log.date}}</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
