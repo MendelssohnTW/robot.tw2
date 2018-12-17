@@ -168,6 +168,8 @@
 		"villages_selections": "Activation / deactivation"
 	},
 	"recruit": {
+		"recruit": "Recruit settings",
+		"log": "Log",
 		"title": "Recruitment of troops",
 		"settings": "Settings for troop recruitment",
 		"recruit_running": "Current recruitment status",

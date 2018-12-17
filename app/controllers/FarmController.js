@@ -29,7 +29,7 @@ define("robotTW2/controllers/FarmController", [
 			TABS.PRESET,
 			TABS.LOG,
 			]
-		
+
 		$scope.update_all_presets = false;
 
 		$scope.requestedTab = TABS.FARM;
@@ -207,6 +207,8 @@ define("robotTW2/controllers/FarmController", [
 					)
 				});
 				services.$timeout(blurPreset, 1500)
+			} else if ($scope.activeTab == TABS.FARM){
+				getDetailsExceptions()
 			}
 		}, true)
 
@@ -326,32 +328,31 @@ define("robotTW2/controllers/FarmController", [
 		 * Exceptions
 		 */
 
-//		var my_village_id = services.modelDataService.getSelectedVillage().getId();
+		$scope.deleteException = function (id_village) {
+			$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village)
+			getDetailsExceptions();
+		}
 
-//		$scope.deleteException = function (id_village) {
-//		$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id_village)
-//		getDetailsExceptions();
-//		}
+		function getDetailsExceptions() {
+			var my_village_id = services.modelDataService.getSelectedVillage().getId();
+			$scope.list_exceptions = {};
+			$rootScope.data_farm.list_exceptions.forEach(function (vid) {
+				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+					'village_id'	: vid,
+					'my_village_id'	: my_village_id,
+					'num_reports'	: 5
+				}, function (data) {
+					$scope.list_exceptions[data.village_id] = {
+							village_name : data.village_name,
+							village_x : data.village_x,
+							village_y : data.village_y
+					}
+					if (!$rootScope.$$phase) $rootScope.$apply();
+				})
+			})
+		}
 
-//		function getDetailsExceptions() {
-//		$scope.list_exceptions = {};
-//		$rootScope.data_farm.list_exceptions.forEach(function (vid) {
-//		services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-//		'village_id'	: vid,
-//		'my_village_id'	: my_village_id,
-//		'num_reports'	: 5
-//		}, function (data) {
-//		$scope.list_exceptions[data.village_id] = {
-//		village_name : data.village_name,
-//		village_x : data.village_x,
-//		village_y : data.village_y
-//		}
-//		if (!$rootScope.$$phase) $rootScope.$apply();
-//		})
-//		})
-//		}
-
-//		getDetailsExceptions();
+		getDetailsExceptions();
 
 		$scope.start_farm = function () {
 			$scope.blur(function () {
@@ -411,12 +412,12 @@ define("robotTW2/controllers/FarmController", [
 
 		triggerUpdate()
 
-		
+
 
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
 		update()
-		
+
 		$scope.$watch("data_logs.farm", function(){
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {
