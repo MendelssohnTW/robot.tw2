@@ -25,7 +25,8 @@ define("robotTW2/databases/data_data", [
 			initialized 			: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.DATA,
-			complete				: 0,
+			complete_villages		: 0,
+			complete_tribes			: 0,
 			interval	 			: {
 				villages	: conf.INTERVAL.DATA.villages,
 				tribes		: conf.INTERVAL.DATA.tribes
@@ -35,8 +36,7 @@ define("robotTW2/databases/data_data", [
 			last_update				: {
 				villages	: new Date().getTime(),
 				tribes 		: new Date().getTime()
-			},
-			logs					: []
+			}
 	}
 
 	if(!data_data){
