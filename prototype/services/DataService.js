@@ -328,7 +328,7 @@ define("robotTW2/services/DataService", [
 			interval_data_villages = setInterval(function(){
 				update_villages();
 				return;
-			}, $rootScope.data_data.interval.world)
+			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(){
 			isRunning = !0;
@@ -340,7 +340,7 @@ define("robotTW2/services/DataService", [
 					send_tribes(tribes);
 				});
 				return;
-			}, $rootScope.data_data.interval.tribe)
+			}, $rootScope.data_data.interval.tribes)
 		}
 		, villagesCheckTimer = (function (){
 			var interval,
