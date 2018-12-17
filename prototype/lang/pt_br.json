@@ -137,6 +137,8 @@
 		"title": "Coleta de recursos",
 		"wait_init": "Aguardando início do ciclo de Farm",
 		"farm_init": "Novo ciclo de Farm iniciado",
+		"terminate_cicles": "Terminado todos os Ciclos de Farm",
+		"terminate_cicle": "Ciclo de Farm terminado",
 		"farm_no_init": "Ciclo de Farm não iniciado. Término de farm inferior ao tempo mínimo do ciclo",
 		"farm_running": "Estado atual do processamento de farm",
 		"time_max": "Tempo máximo",
