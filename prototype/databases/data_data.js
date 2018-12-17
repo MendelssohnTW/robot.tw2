@@ -11,9 +11,9 @@ define("robotTW2/databases/data_data", [
 	) {
 	var data_data = database.get("data_data")
 	, db_data = {};
-	
+
 	db_data.set = function(){
-			database.set("data_data", data_data, true)
+		database.set("data_data", data_data, true)
 	}
 
 	db_data.get = function(){
@@ -26,7 +26,10 @@ define("robotTW2/databases/data_data", [
 			activated 				: false,
 			hotkey					: conf.HOTKEY.DATA,
 			complete				: 0,
-			interval	 			: conf.INTERVAL.DATA,
+			interval	 			: {
+				villages	: conf.INTERVAL.DATA.villages,
+				tribe		: conf.INTERVAL.DATA.tribe
+			},
 			version					: conf.VERSION.DATA,
 			possible				: true,
 			last_update				: new Date().getTime(),
@@ -48,7 +51,7 @@ define("robotTW2/databases/data_data", [
 	}
 
 	Object.setPrototypeOf(data_data, db_data);
-	
+
 	services.$rootScope.data_data = data_data;
 
 	services.$rootScope.$watch("data_data", function(){
