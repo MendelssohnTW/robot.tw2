@@ -245,11 +245,9 @@ var robotTW2 = window.robotTW2 = undefined;
 //				b.src = host + url + '?' + a;
 				b.src = host + url;
 
-				if(!scripts_loaded.some(f => f == url)){
-					if(!scripts_removed.some(f => f == url)){
+				if(!scripts_loaded.find(f => f == url)){
+					if(!scripts_removed.find(f => f == url)){
 						document.head.appendChild(b);	
-					} else {
-						addScript(url);
 					}
 				}
 			})
@@ -266,14 +264,16 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 	}
 	, addScript = function(script){
-		scripts_loaded.push(script)
+		if(!scripts_loaded.find(f => f == script)){
+			scripts_loaded.push(script)
+		}
 		scripts_removed = scripts_removed.filter(f => f != script)
 	}
 	, removeScript = function(script){
-		if(scripts_loaded.some(f => f == script)){
-			scripts_loaded = scripts_loaded.filter(f => f != script)
+		if(!scripts_removed.find(f => f == script)){
 			scripts_removed.push(script);
 		}
+		scripts_loaded = scripts_loaded.filter(f => f != script)
 	}
 	, ready = function(opt_callback, array_keys){
 		array_keys = array_keys || ["map"];
