@@ -251,10 +251,8 @@ define("robotTW2/services/DataService", [
 //		}
 		, send_server = function(tribe){
 			return new Promise(function(res){
-				socketSend.emit(routes.UPDATE_WORLD, {}, function(resp){
-					/*
-					 * Incluir processo de envio de dados
-					 */
+				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(resp){
+					res()
 				})
 			})
 		}
@@ -268,8 +266,10 @@ define("robotTW2/services/DataService", [
 					s(tribes.shift())
 				})
 			}
-			if(!tribes.length){return}
-			s(tribes.shift())
+			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {}, function(resp){
+				if(!tribes.length){return}
+				s(tribes.shift())
+			})
 		}
 		, loadTribeProfile = function (tribe) {
 			return new Promise(function(res){
