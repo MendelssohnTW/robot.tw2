@@ -141,11 +141,7 @@ define("robotTW2/databases/data_villages", [
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
 						presets					: getPst(m),
-						selected				: {
-							id		: 1,
-							name	: services.$filter("i18n")("academy", services.$rootScope.loc.ale, "headquarter"),
-							value	: "academy"
-							}
+						selected				: undefined
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
@@ -159,11 +155,7 @@ define("robotTW2/databases/data_villages", [
 							buildinglevels 			: conf.BUILDINGLEVELS,
 							farm_activate 			: true,
 							presets					: getPst(m),
-							selected				: {
-								id		: 1,
-								name	: services.$filter("i18n")("academy", services.$rootScope.loc.ale, "headquarter"),
-								value	: "academy"
-								}
+							selected				: undefined
 						})
 						data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					} else {
