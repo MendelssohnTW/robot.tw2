@@ -241,7 +241,11 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 					})
 					res()
-				};
+				}
+				b.onerror = function(erro){
+					console.log(erro)
+					return
+				}
 //				b.src = host + url + '?' + a;
 				b.src = host + url;
 
