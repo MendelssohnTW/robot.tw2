@@ -150,6 +150,7 @@ define("robotTW2/services/HeadquarterService", [
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
 		, upgradeBuilding = function(village_id, resolve){
+			character = modelDataService.getSelectedCharacter();
 			return new Promise(function(resolve){
 				var village = character.getVillage(village_id);
 				buildingService.compute(village)
