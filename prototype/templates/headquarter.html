@@ -116,11 +116,11 @@
 								</td>
 								<td class="cell-top">
 									<div class="component-interface size-fill-x">
-										<span class="select-wrapper box-border-dark"
-											ng-click="toggleSelect()"> 
+										<span class="select-wrapper box-border-dark">
 											<select id="select_order" class="select-handler"
 											ng-options="item as item.name for item in data_headquarter.selects"
-											ng-model="vill.selected"></select>
+											ng-model="vill.selected"
+											ng-change="toggleSelect()"></select>
 										</span>
 									</div>
 								</td>
