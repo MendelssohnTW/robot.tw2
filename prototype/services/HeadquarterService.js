@@ -244,9 +244,7 @@ define("robotTW2/services/HeadquarterService", [
 							}
 						}, function(village_id){
 							promise_next = undefined;
-//							g.unshift(build);
-							seq_cicle(village_id);
-							return true;
+							reject(village_id);
 						})
 					} else {
 						next_queue.push(build)
@@ -254,13 +252,6 @@ define("robotTW2/services/HeadquarterService", [
 				}
 				a(b)
 			})
-
-//			if(reqD == respD){
-//				reqD = 0;
-//				respD = 0;
-//				wait();
-//				return !0;
-//			}
 		}
 		, seq_cicle = function(village_id){
 			function f(village_id){
@@ -274,6 +265,7 @@ define("robotTW2/services/HeadquarterService", [
 							f(village_id);	
 						}
 					}, function(village_id){
+						promise = undefined;
 						f(village_id);
 					})
 				} else {
