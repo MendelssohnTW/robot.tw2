@@ -110,12 +110,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
 		}
 
-		$scope.set_selected_buildingOrder = function(selected_buildingOrder){
-			$scope.selected_buildingOrder = selected_buildingOrder
-		}
-
-		$scope.selected_buildingOrder = {};
-		$scope.selected_village_buildingOrder = [];
+		$scope.selected_village_buildingOrder = {};
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
 			if (!$rootScope.$$phase) {
