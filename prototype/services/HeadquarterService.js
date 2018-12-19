@@ -237,11 +237,13 @@ define("robotTW2/services/HeadquarterService", [
 								})
 							}
 						}).then(function(){
+							promise_next = undefined;
 							if(g.length && isRunning){
 								build = g.shift()
 								a(build)
 							}
 						}, function(village_id){
+							promise_next = undefined;
 //							g.unshift(build);
 							seq_cicle(village_id);
 							return true;
