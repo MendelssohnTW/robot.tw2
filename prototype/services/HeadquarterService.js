@@ -38,6 +38,8 @@ define("robotTW2/services/HeadquarterService", [
 		, y = {}
 		, promise = undefined
 		, promise_queue = []	
+		, promise_next = undefined
+		, next_queue = []	
 		, listener_building_level_change = undefined
 		, listener_resume = undefined
 		, checkBuildingOrderLimit = function(vill) {
@@ -332,6 +334,10 @@ define("robotTW2/services/HeadquarterService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
+			promise = undefined
+			promise_queue = []	
+			promise_next = undefined
+			next_queue = []	
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
 			typeof(listener_building_level_change) == "function" ? listener_building_level_change(): null;
