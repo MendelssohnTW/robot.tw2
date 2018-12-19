@@ -18,6 +18,15 @@ define("robotTW2/services/MainService", [
 					var fn = arFn.fn;
 					extensions[extension].hotkey = conf.HOTKEY[extension].toUpperCase();
 					extensions[extension].activated = true;
+					if(extension.toLowerCase() == "secondvillage"){
+						if(!secondVillageService.isFeatureActive()){
+							extensions[extension].activated = false;
+							return !1;
+						} else {
+							extensions[extension].activated = true;
+						}
+					}
+
 					if(extensions[extension].auto_initialize){
 						extensions[extension].initialized = true;
 						if(fn.isInitialized())
