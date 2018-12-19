@@ -137,7 +137,7 @@ define("robotTW2/services/AttackService", [
 						socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 							start_village: village.getId(),
 							target_village: bb.id,
-							type: "support",
+							type: "attack",
 							units: units,
 							icon: 0,
 							officers: {},
