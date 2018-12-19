@@ -27,12 +27,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
-		Object.keys($rootScope.data_villages.villages).map(function(village){
-			if(!village.selected){
-				village.selected = $rootScope.data_headquarter.selects[0];
-			}
-		})
-
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
