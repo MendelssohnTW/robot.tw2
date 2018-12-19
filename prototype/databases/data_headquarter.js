@@ -39,7 +39,8 @@ define("robotTW2/databases/data_headquarter", [
 //			buildingorder 			: conf.BUILDINGORDER.academy,
 //			buildinglimit 			: conf.BUILDINGLIMIT.academy,
 //			buildinglevels 			: conf.BUILDINGLEVELS,
-			selects			    	: Object.keys(conf.BUILDINGORDER)
+			selects			    	: services.$filter("i18n")(Object.keys(conf.BUILDINGORDER), $rootScope.loc.ale, "headquarter")
+			
 	}
 
 	if(!data_headquarter){

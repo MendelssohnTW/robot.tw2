@@ -142,6 +142,12 @@ define("robotTW2/controllers/HeadquarterController", [
 				$rootScope.$apply();
 			}
 		}, true)
+		
+		$scope.$watch("vill.selected", function(){
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
 
 
 		$scope.recalcScrollbar();
