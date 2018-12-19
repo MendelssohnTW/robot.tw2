@@ -64,9 +64,9 @@ define("robotTW2/services/AttackService", [
 			for(obj in unitInfo){
 				if (unitInfo.hasOwnProperty(obj)){
 					if (unitInfo[obj].available > 0){
-						var campo = {[obj]: unitInfo[obj].available};
-						units[Object.keys(campo)[0]] = 
-							Object.keys(campo).map(function(key) {return campo[key]})[0];
+						var unit_available = {[obj]: unitInfo[obj].available};
+						units[Object.keys(unit_available)[0]] = 
+							Object.keys(unit_available).map(function(key) {return unit_available[key]})[0];
 					}
 				}
 			}
