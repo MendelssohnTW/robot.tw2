@@ -79,7 +79,6 @@ define("robotTW2/services/AttackService", [
 				obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
 			}
 
-			Object.keys(units).map(function(unit) {return units[unit] = 0});
 			units = angular.merge({}, obj_unit)
 
 			var newTimeTable = [];

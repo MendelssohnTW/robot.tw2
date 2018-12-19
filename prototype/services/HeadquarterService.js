@@ -253,12 +253,12 @@ define("robotTW2/services/HeadquarterService", [
 				a(b)
 			})
 
-			if(reqD == respD){
-				reqD = 0;
-				respD = 0;
-				wait();
-				return !0;
-			}
+//			if(reqD == respD){
+//				reqD = 0;
+//				respD = 0;
+//				wait();
+//				return !0;
+//			}
 		}
 		, seq_cicle = function(village_id){
 			function f(village_id){
