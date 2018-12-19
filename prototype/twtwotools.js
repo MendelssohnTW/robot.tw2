@@ -232,7 +232,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					h.push(g);	
 					var i = h.join("/")
 					require([i], function(type){
-						console.log(url)
 						addScript(url)
 						exports[f][g] = type
 						if(f == "databases"){
@@ -271,7 +270,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	}
 	, addScript = function(script){
 		
-		console.log("add " + script)
 		if(!scripts_loaded.find(f => f == script)){
 			scripts_loaded.push(script)
 		}
