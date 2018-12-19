@@ -165,10 +165,12 @@
 
 .robotTW2 .select-wrapper {
 	    height: 36px;
+	    min-width: 130px;
 }
 
 .robotTW2 select {
 	    height: 34px;
+	    width: 100%;
 }
 
 #Minimap .minimap {
