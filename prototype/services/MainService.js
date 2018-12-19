@@ -11,30 +11,21 @@ define("robotTW2/services/MainService", [
 			var extensions = $rootScope.data_main.getExtensions();
 			for (var extension in extensions) {
 				var arFn = requestFn.get(extension.toLowerCase(), true);
-				if(!arFn) {
+				if(!arFn 
+						|| (extension.toLowerCase() == "secondvillage" && !secondVillageService.isFeatureActive())
+						|| (extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible))
+				) {
 					extensions[extension].activated = false;
 					continue
 				} else {
 					var fn = arFn.fn;
 					extensions[extension].hotkey = conf.HOTKEY[extension].toUpperCase();
 					extensions[extension].activated = true;
-					if(extension.toLowerCase() == "secondvillage"){
-						if(!secondVillageService.isFeatureActive()){
-							extensions[extension].activated = false;
-							return !1;
-						} else {
-							extensions[extension].activated = true;
-						}
-					}
 
 					if(extensions[extension].auto_initialize){
 						extensions[extension].initialized = true;
 						if(fn.isInitialized())
 							return !1;
-						if(extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible)){
-							$rootScope.data_data.activated = false;
-							return !1;
-						}
 						if(typeof(fn.init) == "function"){fn.init()}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
