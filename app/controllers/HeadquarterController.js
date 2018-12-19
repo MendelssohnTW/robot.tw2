@@ -47,19 +47,19 @@ define("robotTW2/controllers/HeadquarterController", [
 			return Object.values(buildingOrder)[0];
 		}
 
-		$scope.up = function(data, buildingOrder){
-			var ant = data.buildingorder.find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]-1})
+		$scope.up = function(vill, buildingOrder){
+			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]-1})
 			ant[Object.keys(ant)[0]] += 1
 			buildingOrder[Object.keys(buildingOrder)[0]] -= 1
-			data.buildingorder = data.buildingorder.map(function(key,index,array){return delete data.buildingorder[index].$$hashKey ? data.buildingorder[index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.down = function(data, buildingOrder){
-			var prox = data.buildingorder.find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]+1})
+		$scope.down = function(vill, buildingOrder){
+			var prox = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]+1})
 			prox[Object.keys(prox)[0]] -= 1
 			buildingOrder[Object.keys(buildingOrder)[0]] += 1
-			data.buildingorder = data.buildingorder.map(function(key,index,array){return delete data.buildingorder[index].$$hashKey ? data.buildingorder[index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
@@ -147,12 +147,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 		}, true)
 		
-		$scope.$watch("vill.selected", function(){
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
-		}, true)
-
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();
