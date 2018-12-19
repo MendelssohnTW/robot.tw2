@@ -62,9 +62,9 @@ define("robotTW2/services/AttackService", [
 
 			if (!unitInfo) {return};
 			for(obj in unitInfo){
-				if (unitInfo.hasOwnProperty(obj)){
-					if (unitInfo[obj].available > 0 && !["doppelsoldner","knight","trebuchet"].some(f => f == unitInfo[obj])){
-						var unit_available = {[obj]: unitInfo[obj].available};
+				if (unitInfo.hasOwnProperty(unit)){
+					if (unitInfo[unit].available > 0 && !["doppelsoldner","knight","trebuchet"].some(f => f == unit)){
+						var unit_available = {[unit]: unitInfo[unit].available};
 						units[Object.keys(unit_available)[0]] = 
 							Object.keys(unit_available).map(function(key) {return unit_available[key] = 1})[0];
 					}
