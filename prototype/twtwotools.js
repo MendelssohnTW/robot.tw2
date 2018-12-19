@@ -240,8 +240,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						} else {
 							$rootScope.$broadcast("ready", type);
 						}
+						res()
 					})
-					res()
+					
 				}
 				b.onerror = function(erro){
 					console.log(erro)
