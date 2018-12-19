@@ -254,29 +254,29 @@ define("robotTW2/services/HeadquarterService", [
 			})
 		}
 		, seq_cicle = function(village_id){
-			function f(village_id){
+			function f(vill_id){
 				if(!promise){
 					promise = new Promise(function(res, rej){
-						upgradeBuilding(village_id, res, rej)
+						upgradeBuilding(vill_id, res, rej)
 					}).then(function(){
 						promise = undefined;
 						if (promise_queue.length){
-							village_id = promise_queue.shift();
-							f(village_id);	
+							vill_id = promise_queue.shift();
+							f(vill_id);	
 						}
-					}, function(village_id){
+					}, function(vill_id){
 						promise = undefined;
-						if(!village_id){
+						if(!vill_id){
 							if (promise_queue.length){
-								village_id = promise_queue.shift();
-								f(village_id);	
+								vill_id = promise_queue.shift();
+								f(vill_id);	
 							}
 						} else {
-							f(village_id);
+							f(vill_id);
 						}
 					})
 				} else {
-					promise_queue.push(village_id)
+					promise_queue.push(vill_id)
 				}
 			}
 			f(village_id)
