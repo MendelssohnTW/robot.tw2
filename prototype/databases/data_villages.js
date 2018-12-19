@@ -142,6 +142,7 @@ define("robotTW2/databases/data_villages", [
 						farm_activate 			: true,
 						presets					: getPst(m),
 						selected				: {
+							id		: 1,
 							name	: services.$filter("i18n")("academy", services.$rootScope.loc.ale, "headquarter"),
 							value	: "academy"
 							}
@@ -159,6 +160,7 @@ define("robotTW2/databases/data_villages", [
 							farm_activate 			: true,
 							presets					: getPst(m),
 							selected				: {
+								id		: 1,
 								name	: services.$filter("i18n")("academy", services.$rootScope.loc.ale, "headquarter"),
 								value	: "academy"
 								}
