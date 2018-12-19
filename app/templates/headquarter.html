@@ -87,8 +87,8 @@
 					<table class="tbl-border-light tbl-striped" id="preset-list">
 						<colgroup>
 							<col width="20%">
-							<col width="150px">
-							<col width="62px">
+							<col width="64px">
+							<col width="130px">	
 							<col width="*">
 						</colgroup>
 						<tbody>
@@ -112,6 +112,16 @@
 												</div>
 											</div>
 										</div>
+									</div>
+								</td>
+								<td class="cell-top">
+									<div class="component-interface size-fill-x">
+										<span class="select-wrapper box-border-dark"
+											ng-click="toggleSelect()"> 
+											<select id="select_order" class="select-handler"
+											ng-options="item as item.name for item in data_headquarter.selects"
+											ng-model="vill.selected"></select>
+										</span>
 									</div>
 								</td>
 								<!-- 
@@ -167,7 +177,7 @@
 																	class="size-12x12 btn-orange icon-26x26-rte-building"
 																	ng-click="selectvillagebuildingOrder(vill.data.villageId, buildingOrder)"></span></td>
 																<td class="cell-right"><div
-																		ng-show="selected_village_buildingOrder[vill.data.villageId] = buildingOrder">
+																		ng-show="selected_village_buildingOrder[vill.data.villageId] == buildingOrder">
 																		<span
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																			ng-click="up(vill, buildingOrder)"></span> <span

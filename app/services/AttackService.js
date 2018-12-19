@@ -61,34 +61,31 @@ define("robotTW2/services/AttackService", [
 			, unitInfo = village.unitInfo.getUnits();
 
 			if (!unitInfo) {return};
-			for(obj in unitInfo){
-				if (unitInfo.hasOwnProperty(obj)){
-					if (unitInfo[obj].available > 0){
-						var campo = {[obj]: unitInfo[obj].available};
-						units[Object.keys(campo)[0]] = 
-							Object.keys(campo).map(function(key) {return campo[key]})[0];
+			for(unit in unitInfo){
+				if (unitInfo.hasOwnProperty(unit)){
+					if (unitInfo[unit].available > 0 && !["doppelsoldner","knight","trebuchet"].some(f => f == unit)){
+						var unit_available = {[unit]: unitInfo[unit].available};
+						units[Object.keys(unit_available)[0]] = 
+							Object.keys(unit_available).map(function(key) {return unit_available[key] = 1})[0];
 					}
 				}
 			}
 
+			var obj_unit;
 			if(!units){
 				console.log("no units")
 				return
+			} else {
+				obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
 			}
+
+			units = angular.merge({}, obj_unit)
 
 			var newTimeTable = [];
 
-			if(Object.keys(units).find(f=> f == "knight")) {
-				newTimeTable.push([480, "light_cavalry"])
-			} else {
-				timetable.map(m => {
-					if(Object.keys(units).find(f=> f == m[1])) {newTimeTable.push(m)}
-				});
-			}
-
-			var timeCampo = newTimeTable.sort((a, b) => {
-				return b[0] - a[0];
-			})[0][0];
+			var timeCampo = timetable.map(m => {
+				if(Object.keys(units).find(f=> f == m[1])) {return m}
+			}).filter(f=>f!=undefined)[0][0];
 
 			socketService.emit(providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
 				'x' : village.data.x,
@@ -137,7 +134,7 @@ define("robotTW2/services/AttackService", [
 						socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 							start_village: village.getId(),
 							target_village: bb.id,
-							type: "support",
+							type: "attack",
 							units: units,
 							icon: 0,
 							officers: {},

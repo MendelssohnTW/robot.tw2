@@ -19,6 +19,8 @@ define("robotTW2/databases/data_headquarter", [
 	db_headquarter.get = function(){
 		return database.get("data_headquarter")
 	}
+	
+	var id = 1;
 
 	var dataNew = {
 			auto_initialize			: false,
@@ -39,7 +41,14 @@ define("robotTW2/databases/data_headquarter", [
 //			buildingorder 			: conf.BUILDINGORDER.academy,
 //			buildinglimit 			: conf.BUILDINGLIMIT.academy,
 //			buildinglevels 			: conf.BUILDINGLEVELS,
-			selects			    	: Object.keys(conf.BUILDINGORDER)
+			selects			    	: Object.keys(conf.BUILDINGORDER).map(function(elem){
+				return {
+					id		: id++,
+					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
+					value	: elem
+				}
+			})
+
 	}
 
 	if(!data_headquarter){
@@ -59,7 +68,7 @@ define("robotTW2/databases/data_headquarter", [
 	}
 
 	Object.setPrototypeOf(data_headquarter, db_headquarter);
-	
+
 	services.$rootScope.data_headquarter = data_headquarter;
 
 	services.$rootScope.$watch("data_headquarter", function(){

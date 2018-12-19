@@ -60,7 +60,7 @@ define("robotTW2/databases/data_main", [
 			max_time_correction		: conf.MAX_TIME_CORRECTION,
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
 			version					: conf.VERSION.MAIN,
-			pages_excludes			: ["farm", "recruit", "data"],
+			pages_excludes			: ["farm", "recruit", "headquarter", "data"],
 			name					: "data_main"
 	}
 

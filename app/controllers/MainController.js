@@ -72,6 +72,7 @@ define("robotTW2/controllers/MainController", [
 				} else {
 					$scope.extensions[ext.name].activated = true;
 				}
+				
 				if(ext.initialized){
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){

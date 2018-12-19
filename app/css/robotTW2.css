@@ -163,6 +163,25 @@
 	width: 200px;
 }
 
+.robotTW2 .select-wrapper {
+	height: 36px;
+	min-width: 130px;
+}
+
+.robotTW2 select {
+	-webkit-appearance: button;
+	-moz-appearance: button;
+	appearance: button;
+	height: 34px;
+	width: 100%;
+	background: url(../imgs/arrow_down.png);
+	background-repeat: no-repeat;
+	background-position: 100% center;
+	background-color: #b89064;
+	color: white;
+	overflow: hidden;
+}
+
 #Minimap .minimap {
 	background: #436213;
 	position: absolute;

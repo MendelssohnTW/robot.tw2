@@ -20,12 +20,17 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 
 		var self = this;
+		
 
 		var update = function () {
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-
+		
+		$scope.toggleSelect = function(){
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+		
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
@@ -110,12 +115,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
 		}
 
-		$scope.set_selected_buildingOrder = function(selected_buildingOrder){
-			$scope.selected_buildingOrder = selected_buildingOrder
-		}
-
-		$scope.selected_buildingOrder = {};
-		$scope.selected_village_buildingOrder = [];
+		$scope.selected_village_buildingOrder = {};
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
 			if (!$rootScope.$$phase) {
@@ -142,6 +142,12 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.$watch("data_logs.headquarter", function(){
 			$scope.recalcScrollbar();
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		}, true)
+		
+		$scope.$watch("vill.selected", function(){
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
