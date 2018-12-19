@@ -230,10 +230,10 @@ define("robotTW2/services/HeadquarterService", [
 								isUpgradeable(village, buildLevel, function(success, data) {
 									if (success) {
 										++buildAmounts;
-										res()
 									} else if(data == "instant"){
 										rej(village_id);
 									}
+									res()
 								})
 							}
 						}).then(function(){
