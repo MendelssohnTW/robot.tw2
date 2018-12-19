@@ -236,7 +236,7 @@ define("robotTW2/services/HeadquarterService", [
 									})
 								} else {
 									res();
-										
+
 								}
 							}).then(function(repeat){
 								promise_next = undefined;
@@ -257,31 +257,31 @@ define("robotTW2/services/HeadquarterService", [
 					}
 					a(b)
 				})
-			}
-			, seq_cicle = function(village_id){
-				function f(vill_id){
-					if(!promise){
-						promise = new Promise(function(res){
-							upgradeBuilding(vill_id).then(function(repeat){
-								if(repeat){
-									f(vill_id)
-								} else {
-									res()
-								}
-							})
-						}).then(function(){
-							promise = undefined;
-							if (promise_queue.length){
-								vill_id = promise_queue.shift();
-								f(vill_id);	
+			})
+		}
+		, seq_cicle = function(village_id){
+			function f(vill_id){
+				if(!promise){
+					promise = new Promise(function(res){
+						upgradeBuilding(vill_id).then(function(repeat){
+							if(repeat){
+								f(vill_id)
+							} else {
+								res()
 							}
 						})
-					} else {
-						promise_queue.push(vill_id)
-					}
+					}).then(function(){
+						promise = undefined;
+						if (promise_queue.length){
+							vill_id = promise_queue.shift();
+							f(vill_id);	
+						}
+					})
+				} else {
+					promise_queue.push(vill_id)
 				}
-				f(village_id)
-			})
+			}
+			f(village_id)
 		}
 		, cicle_building = function($event, data){
 			if (!isInitialized)
