@@ -268,7 +268,7 @@ define("robotTW2/services/FarmService", [
 										army_preset_id: preset_id,
 										type: "attack"
 								}
-								if (check_village(bb, cmd_preset) && !countCommands[village_id].find(f=>f==bb)) {
+								if (check_village(bb, cmd_preset) && !countCommands[village_id].some(f=>f==bb)) {
 									countCommands[village_id].push(bb);
 									requestFn.trigger("Farm/sendCmd")
 									result_units = units_subtract(preset_units, aldeia_units)
