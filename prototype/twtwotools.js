@@ -695,10 +695,10 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			var orderbuilding= {
 					academy : [
-						{"academy": 1}, //Academia
+						{"warehouse": 1}, //Armazém
 						{"headquarter": 2}, //Principal
-						{"farm": 3}, //Fazenda
-						{"warehouse": 4}, //Armazém
+						{"academy": 3}, //Academia
+						{"farm": 4}, //Fazenda
 						{"barracks": 5}, //Quartel
 						{"rally_point": 6}, //Ponto de encontro
 						{"timber_camp": 7}, //Bosque
