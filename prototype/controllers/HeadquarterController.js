@@ -28,7 +28,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 		
 		$scope.toggleSelect = function(){
-			
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
 		$scope.getTimeRest = function(){
