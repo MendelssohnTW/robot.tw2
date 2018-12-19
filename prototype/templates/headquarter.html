@@ -115,7 +115,7 @@
 									</div>
 								</td>
 								<td class="cell-top">
-									<select ng-options="item for item in data_headquarter.selects" ng-model="vill.selected"></select>
+									<select ng-options="item as item.name for item in data_headquarter.selects" ng-model="vill.selected"></select>
 								</td>
 								<!-- 
 								<td class="cell-top">
