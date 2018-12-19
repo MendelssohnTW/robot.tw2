@@ -163,6 +163,14 @@
 	width: 200px;
 }
 
+.robotTW2 .select-wrapper {
+	    height: 36px;
+}
+
+.robotTW2 select {
+	    height: 34px;
+}
+
 #Minimap .minimap {
 	background: #436213;
 	position: absolute;
