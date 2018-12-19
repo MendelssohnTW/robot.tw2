@@ -286,8 +286,9 @@ define("robotTW2/services/HeadquarterService", [
 				}
 			});
 		}
-		, init = function(){
+		, init = function(bool){
 			isInitialized = !0
+			if(bool){return}
 			start();
 		}
 		, start = function(){
