@@ -302,7 +302,7 @@ define("robotTW2/services/HeadquarterService", [
 		, init = function(bool){
 			isInitialized = !0
 			Object.keys($rootScope.data_villages.villages).map(function(village){
-				if(!village.selected){
+				if(!$rootScope.data_villages.villages[village].selected){
 					$rootScope.data_villages.villages[village].selected = $rootScope.data_headquarter.selects[0];
 				}
 			})
