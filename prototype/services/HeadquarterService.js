@@ -277,29 +277,7 @@ define("robotTW2/services/HeadquarterService", [
 		, cicle_building = function($event, data){
 			if (!isInitialized)
 				return;
-			character = modelDataService.getSelectedCharacter();
-			if(isPaused){
-				listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT, function(){
-					var data_resume = data;
-					if(data_resume != undefined){
-						cicle_building(null, data_resume)
-					} else {
-						cicle_building()
-					}
-					listener_resume()
-					listener_resume = undefined;
-					return
-				})
-			}
-
-			if(data != undefined){
-				$timeout(function() {
-					isRunning = !0
-					seq_cicle(data.village_id)
-				}, 3e3)
-			} else {
-				Object.keys($rootScope.data_villages.villages).map(function(village_id){seq_cicle(village_id)})
-			}
+			Object.keys($rootScope.data_villages.villages).map(function(village_id){seq_cicle(village_id)})
 		}
 		, wait = function(){
 			setList(function(tm){
