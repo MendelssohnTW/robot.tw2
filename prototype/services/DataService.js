@@ -289,7 +289,7 @@ define("robotTW2/services/DataService", [
 		}
 		, loadTribeMembers = function (tribe) {
 			return new Promise(function(res){
-				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + tribe.name, "date": (new Date(time.convertedTime())).toString()})
+				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + tribe.name + " " + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {
 					'tribe': tribe.tribe_id
 				}, function (members) {
@@ -305,14 +305,14 @@ define("robotTW2/services/DataService", [
 					'area_id'	: null,
 					'area_type'	: 'world',
 					'offset'	: null,
-					'count'		: 100,
+					'count'		: 5,
 					'order_by'	: "rank",
 					'order_dir'	: 0,
 					'query'		: ''
 				}, function(data) {
 					data.ranking.map(function(tribe){
 						tribes.push(tribe)
-						$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name, "date": (new Date(time.convertedTime())).toString()})
+						$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + " " + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 					})
 					if(!tribes.length){return}
 					var tribes_load = {};
