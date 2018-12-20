@@ -266,6 +266,7 @@ define("robotTW2/services/DataService", [
 					if(list_tribes.length){
 						s(list_tribes.shift())
 					} else {
+						$rootScope.data_data.last_update.tribes = new Date().getTime();
 						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
 							upIntervalVillages()
 						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
@@ -310,7 +311,7 @@ define("robotTW2/services/DataService", [
 					'area_id'	: null,
 					'area_type'	: 'world',
 					'offset'	: null,
-					'count'		: 5,
+					'count'		: 1,
 					'order_by'	: "rank",
 					'order_dir'	: 0,
 					'query'		: ''
@@ -478,7 +479,7 @@ define("robotTW2/services/DataService", [
 						exec_promise_grid(reg)
 					} else {
 						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
-						$rootScope.data_data.last_update = new Date().getTime();
+						$rootScope.data_data.last_update.tribes = new Date().getTime();
 						if (!villagesCheckTimer.isInitialized()) {
 							villagesCheckTimer.init();
 						}
