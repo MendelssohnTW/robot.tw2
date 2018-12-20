@@ -278,7 +278,7 @@ define("robotTW2/services/DataService", [
 					"name" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 			}
 			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(resp){
-				if(!Object.keys(tribes.length)){return}
+				if(!Object.keys(tribes).length){return}
 				s(tribes.shift())
 			})
 		}
