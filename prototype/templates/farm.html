@@ -37,7 +37,7 @@
 								style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
 								class="input-border inpt" type="time" id="inicio_de_farm"
 								step="1" min="00:00:00" max="23:59:59"
-								value="{{data_farm.farm_time_start | date : 'HH:mm:ss' : 'UTC'}}"
+								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 								ng-blur="blur()"></td>
 							<td class="cell-right"><label for="data_inicio_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
@@ -50,7 +50,7 @@
 								style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
 								class="input-border inpt" type="time" id="termino_de_farm"
 								step="1" min="00:00:00" max="23:59:59"
-								value="{{data_farm.farm_time_start | date : 'HH:mm:ss' : 'UTC'}}"
+								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 								ng-blur="blur()"></td>
 							<td class="cell-right"><label for="data_termino_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
