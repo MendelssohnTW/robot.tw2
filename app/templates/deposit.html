@@ -38,7 +38,7 @@
 							<td class="cell-right">{{text_interval_deposit}}</td>
 							<td><input id="input-ms" class="input-border inpt" type="time"
 								step="1" min="00:00:00" max="23:59:59"
-								value="{{data_deposit.interval | date : 'HH:mm:ss'}}"
+								value="{{data_deposit.interval | date : 'HH:mm:ss' : 'UTC'}}"
 								disabled></td>
 						</tr>
 						<tr>

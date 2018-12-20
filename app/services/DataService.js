@@ -259,16 +259,29 @@ define("robotTW2/services/DataService", [
 		, t = undefined
 		, t_send = []
 		, send_tribes = function(tribes){
+			var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
 			function s(tribe){
 				send_server(tribe).then(function(){
 					t = undefined;
-					if(!tribes.length){return}
-					s(tribes.shift())
+					if(list_tribes.length){
+						s(list_tribes.shift())
+					} else {
+						$rootScope.data_data.last_update.tribes = new Date().getTime();
+						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
+							upIntervalVillages()
+						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
+							upIntervalVillages()
+						}
+					}
 				})
 			}
-			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {}, function(resp){
-				if(!tribes.length){return}
-				s(tribes.shift())
+			var world = {
+					"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
+					"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
+			}
+			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(resp){
+				if(!list_tribes || !list_tribes.length){return}
+				s(list_tribes.shift())
 			})
 		}
 		, loadTribeProfile = function (tribe) {
@@ -282,6 +295,7 @@ define("robotTW2/services/DataService", [
 		}
 		, loadTribeMembers = function (tribe) {
 			return new Promise(function(res){
+				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {
 					'tribe': tribe.tribe_id
 				}, function (members) {
@@ -304,6 +318,7 @@ define("robotTW2/services/DataService", [
 				}, function(data) {
 					data.ranking.map(function(tribe){
 						tribes.push(tribe)
+						$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 					})
 					if(!tribes.length){return}
 					var tribes_load = {};
@@ -353,11 +368,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
 				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
 				$rootScope.data_logs.data = [];
-				if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
-					upIntervalVillages()
-				} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
-					upIntervalVillages()
-				}
+
 				if($rootScope.data_data.last_update.tribes + $rootScope.data_data.interval.tribes < time.convertedTime() && $rootScope.data_data.auto_initialize){
 					upIntervalTribes()
 				} else if($rootScope.data_data.last_update.tribes < time.convertedTime()){
@@ -390,7 +401,7 @@ define("robotTW2/services/DataService", [
 			, sendVillage = function (village, callback){
 				if(!isRunning) return
 				rt = $timeout(function(){
-					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": time.convertedTime()})
+					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
 					callback();
 				}, conf_conf.LOADING_TIMEOUT);
 
@@ -468,8 +479,8 @@ define("robotTW2/services/DataService", [
 						exec_promise_grid(reg)
 					} else {
 						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
-						$rootScope.data_data.last_update = new Date().getTime();
-						if (!villagesCheckTimer.isInitialized()) {
+						$rootScope.data_data.last_update.tribes = new Date().getTime();
+						if (!villagesCheckTimer.isInitialized() && isRunning) {
 							villagesCheckTimer.init();
 						}
 						return;
@@ -489,7 +500,8 @@ define("robotTW2/services/DataService", [
 
 		}
 		, update_villages = function(){
-			var grid = loadMap(400, 500, 400 ,500).grid;
+
+			var grid = loadMap($rootScope.data_data.xmin, $rootScope.data_data.xmax, $rootScope.data_data.ymin, $rootScope.data_data.ymax).grid;
 			var listaGrid = [];
 			var l = Object.keys(grid).length;
 			for(tx = 0; tx < l; tx++) {

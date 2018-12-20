@@ -160,9 +160,8 @@ define("robotTW2/databases/data_villages", [
 						data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					} else {
 						angular.merge(villagesExtended[m], {
-							farm_activate 			: true,
-							presets					: getPst(m),
-							selected				: "academy"
+//							farm_activate 			: true,
+							presets					: getPst(m)
 						})
 						angular.extend(data_villages.villages[m], villagesExtended[m])
 					}

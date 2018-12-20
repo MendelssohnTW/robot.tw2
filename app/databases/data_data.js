@@ -25,6 +25,10 @@ define("robotTW2/databases/data_data", [
 			initialized 			: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.DATA,
+			xmin					: 400,
+			xmax					: 600,
+			ymin					: 400,
+			ymax					: 600,
 			complete_villages		: 0,
 			complete_tribes			: 0,
 			interval	 			: {

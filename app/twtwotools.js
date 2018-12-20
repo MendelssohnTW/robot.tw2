@@ -981,32 +981,30 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("providers", "routeProvider", {
 				'UPDATE_WORLD':{
 					type:"update_world",
-					br:"br",
-					data:["world_tribe"],
+					data:["world"],
+				},
+				'UPDATE_TRIBE':{
+					type:"update_tribe",
+					data:["tribe"],
 				},
 				'SEARCH_CHARACTERS':{
 					type:"search_characters",
-					br:"br",
 					data:["id"]
 				},
 				'UPDATE_CHARACTER':{
 					type:"update_character",
-					br:"br",
 					data:["character"]
 				},
 				'UPDATE_VILLAGE_CHARACTER':{
 					type:"update_village_character",
-					br:"br",
 					data:["village_character"]
 				},
 				'UPDATE_VILLAGE_LOST_CHARACTER':{
 					type:"update_village_lost_character",
-					br:"br",
 					data:["village_character"]
 				},
 				'SEARCH_VILLAGES_FOR_CHARACTER':{
 					type:"search_villages_for_character",
-					br:"br",
 					data:["id"]
 				},
 				'DELETE_CHARACTER':{
@@ -1073,7 +1071,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				var opt_callback = callbacks[id_return];
 				opt_callback(msg);
 			},
-			onclose = function onclose(){
+			onclose = function onclose($event){
+//				$event.code == 1006
+				console.log($event)
 			},
 			onerror = function onerror($event){
 				if($rootScope.data_data){
@@ -1111,7 +1111,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			sendMsg = function sendMsg(type, data, opt_callback){
 				angular.extend(data, {
 					"world_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
-					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
+					"member_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
 					"tribe_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
 				}
 				)
