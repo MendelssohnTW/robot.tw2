@@ -1071,9 +1071,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				var opt_callback = callbacks[id_return];
 				opt_callback(msg);
 			},
-			onclose = function onclose($event, data){
+			onclose = function onclose($event){
+//				$event.code == 1006
 				console.log($event)
-				console.log(data)
 			},
 			onerror = function onerror($event){
 				if($rootScope.data_data){
