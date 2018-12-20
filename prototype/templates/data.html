@@ -19,12 +19,12 @@
 						<td class="cell-right">{{text_interval_data_villages}}</td>
 						<td><input id="input-ms" class="input-border inpt"
 							type="time" step="1" min="00:00:00" max="23:59:59"
-							value="{{data_data.interval.villages | date : 'HH:mm:ss'}}"
+							value="{{data_data.interval.villages | date : 'HH:mm:ss' : 'UTC'}}"
 							disabled></td>
 						<td class="cell-right">{{text_interval_data_tribes}}</td>
 						<td><input id="input-ms" class="input-border inpt"
 							type="time" step="1" min="00:00:00" max="23:59:59"
-							value="{{data_data.interval.tribes | date : 'HH:mm:ss'}}"
+							value="{{data_data.interval.tribes | date : 'HH:mm:ss' : 'UTC'}}"
 							disabled></td>
 					</tr>
 					<tr>
