@@ -981,32 +981,30 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("providers", "routeProvider", {
 				'UPDATE_WORLD':{
 					type:"update_world",
-					br:"br",
 					data:["world"],
+				},
+				'UPDATE_TRIBE':{
+					type:"update_tribe",
+					data:["tribe"],
 				},
 				'SEARCH_CHARACTERS':{
 					type:"search_characters",
-					br:"br",
 					data:["id"]
 				},
 				'UPDATE_CHARACTER':{
 					type:"update_character",
-					br:"br",
 					data:["character"]
 				},
 				'UPDATE_VILLAGE_CHARACTER':{
 					type:"update_village_character",
-					br:"br",
 					data:["village_character"]
 				},
 				'UPDATE_VILLAGE_LOST_CHARACTER':{
 					type:"update_village_lost_character",
-					br:"br",
 					data:["village_character"]
 				},
 				'SEARCH_VILLAGES_FOR_CHARACTER':{
 					type:"search_villages_for_character",
-					br:"br",
 					data:["id"]
 				},
 				'DELETE_CHARACTER':{
