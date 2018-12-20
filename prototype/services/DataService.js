@@ -311,7 +311,7 @@ define("robotTW2/services/DataService", [
 					'area_id'	: null,
 					'area_type'	: 'world',
 					'offset'	: null,
-					'count'		: 1,
+					'count'		: 100,
 					'order_by'	: "rank",
 					'order_dir'	: 0,
 					'query'		: ''
