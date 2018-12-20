@@ -259,11 +259,12 @@ define("robotTW2/services/DataService", [
 		, t = undefined
 		, t_send = []
 		, send_tribes = function(tribes){
+			var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
 			function s(tribe){
 				send_server(tribe).then(function(){
 					t = undefined;
-					if(tribes.length){
-						s(tribes.shift())
+					if(list_tribes.length){
+						s(list_tribes.shift())
 					} else {
 						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
 							upIntervalVillages()
@@ -278,8 +279,8 @@ define("robotTW2/services/DataService", [
 					"name" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 			}
 			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(resp){
-				if(!Object.keys(tribes).length){return}
-				s(tribes.shift())
+				if(!list_tribes || !list_tribes.length){return}
+				s(list_tribes.shift())
 			})
 		}
 		, loadTribeProfile = function (tribe) {
