@@ -273,7 +273,11 @@ define("robotTW2/services/DataService", [
 					}
 				})
 			}
-			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {}, function(resp){
+			var world = {
+					"id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
+					"name" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_name
+			}
+			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(resp){
 				if(!tribes.length){return}
 				s(tribes.shift())
 			})

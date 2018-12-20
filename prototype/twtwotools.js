@@ -982,7 +982,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				'UPDATE_WORLD':{
 					type:"update_world",
 					br:"br",
-					data:["world_tribe"],
+					data:["world"],
 				},
 				'SEARCH_CHARACTERS':{
 					type:"search_characters",
@@ -1111,7 +1111,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			sendMsg = function sendMsg(type, data, opt_callback){
 				angular.extend(data, {
 					"world_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
-					"character_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
+					"member_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
 					"tribe_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
 				}
 				)
