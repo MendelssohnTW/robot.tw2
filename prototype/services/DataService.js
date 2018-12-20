@@ -481,7 +481,7 @@ define("robotTW2/services/DataService", [
 					} else {
 						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
 						$rootScope.data_data.last_update.tribes = new Date().getTime();
-						if (!villagesCheckTimer.isInitialized()) {
+						if (!villagesCheckTimer.isInitialized() && isRunning) {
 							villagesCheckTimer.init();
 						}
 						return;
