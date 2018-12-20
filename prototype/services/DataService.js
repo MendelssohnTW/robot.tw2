@@ -390,7 +390,7 @@ define("robotTW2/services/DataService", [
 			, sendVillage = function (village, callback){
 				if(!isRunning) return
 				rt = $timeout(function(){
-					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": time.convertedTime()})
+					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
 					callback();
 				}, conf_conf.LOADING_TIMEOUT);
 
@@ -489,7 +489,8 @@ define("robotTW2/services/DataService", [
 
 		}
 		, update_villages = function(){
-			var grid = loadMap(400, 500, 400 ,500).grid;
+			
+			var grid = loadMap($rootScope.data_data.xmin, $rootScope.data_data.xmax, $rootScope.data_data.ymin, $rootScope.data_data.ymax).grid;
 			var listaGrid = [];
 			var l = Object.keys(grid).length;
 			for(tx = 0; tx < l; tx++) {

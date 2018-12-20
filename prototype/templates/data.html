@@ -8,45 +8,63 @@
 	</header>
 	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
-				<div class="scroll-wrap data" style="margin-bottom: 100px">
+			<div class="scroll-wrap data" style="margin-bottom: 100px">
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="*">
+						<col width="100px">
+
+					</colgroup>
+					<tr>
+						<td class="cell-right">{{text_interval_data_villages}}</td>
+						<td><input id="input-ms" class="input-border inpt"
+							type="time" step="1" min="00:00:00" max="23:59:59"
+							value="{{data_data.interval.villages | date : 'HH:mm:ss'}}"
+							disabled></td>
+						<td class="cell-right">{{text_interval_data_tribes}}</td>
+						<td><input id="input-ms" class="input-border inpt"
+							type="time" step="1" min="00:00:00" max="23:59:59"
+							value="{{data_data.interval.tribes | date : 'HH:mm:ss'}}"
+							disabled></td>
+					</tr>
+					<tr>
+						<td class="cell-right">{{text_interval}}</td>
+						<td><input id="input-ms-villages"
+							class="input-border inpt disabled" type=text
+							value="{{getTimeRestVillages()}}" disabled></td>
+						<td class="cell-right">{{text_interval}}</td>
+						<td><input id="input-ms-tribes"
+							class="input-border inpt disabled" type=text
+							value="{{getTimeRestTribes()}}" disabled></td>
+					</tr>
+					<tr>
+						<td><label for="input-xmin">xmin</label><input id="input-xmin"
+							class="input-border inpt disabled" type=text
+							ng-model="data_data.xmin"></td>
+						<td><label for="input-xmax">xmax</label><input id="input-xmax"
+							class="input-border inpt disabled" type=text
+							ng-model="data_data.xmax"></td>
+						<td><label for="input-ymin">ymin</label><input id="input-ymin"
+							class="input-border inpt disabled" type=text
+							ng-model="data_data.ymin"></td>
+						<td><label for="input-ymax">ymax</label><input id="input-ymax"
+							class="input-border inpt disabled" type=text
+							ng-model="data_data.ymax"></td>
+					</tr>
+				</table>
+				<div class="scroll-wrap">
 					<table class="tbl-border-light tbl-striped">
 						<colgroup>
-							<col width="*">
-							<col width="100px">
-
+							<col width="50%">
+							<col width="50%">
 						</colgroup>
-						<tr>
-							<td class="cell-right">{{text_interval_data_villages}}</td>
-							<td><input id="input-ms" class="input-border inpt"
-								type="time" step="1" min="00:00:00" max="23:59:59"
-								value="{{data_data.interval.villages | date : 'HH:mm:ss'}}" disabled></td>
-								<td class="cell-right">{{text_interval_data_tribes}}</td>
-							<td><input id="input-ms" class="input-border inpt"
-								type="time" step="1" min="00:00:00" max="23:59:59"
-								value="{{data_data.interval.tribes | date : 'HH:mm:ss'}}" disabled></td>
-						</tr>
-						<tr>
-							<td class="cell-right">{{text_interval}}</td>
-							<td><input id="input-ms-villages" class="input-border inpt disabled"
-								type=text value="{{getTimeRestVillages()}}" disabled></td>
-								<td class="cell-right">{{text_interval}}</td>
-							<td><input id="input-ms-tribes" class="input-border inpt disabled"
-								type=text value="{{getTimeRestTribes()}}" disabled></td>
+						<tr ng-repeat="log in data_logs.data">
+							<td class="cell-right">{{log.text}}</td>
+							<td class="cell-right">{{log.date}}</td>
 						</tr>
 					</table>
-					<div class="scroll-wrap">
-						<table class="tbl-border-light tbl-striped">
-							<colgroup>
-								<col width="50%">
-								<col width="50%">
-							</colgroup>
-							<tr ng-repeat="log in data_logs.data">
-								<td class="cell-right">{{log.text}}</td>
-								<td class="cell-right">{{log.date}}</td>
-							</tr>
-						</table>
-					</div>
 				</div>
+			</div>
 		</div>
 		<div>
 			<div class="jssb-y  ">
