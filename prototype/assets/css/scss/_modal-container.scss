@@ -1,0 +1,101 @@
+.modal-container {
+  height: 100vh;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+
+  &.ativo {
+    display: flex;
+    .modal {
+      animation: modal .3s forwards;
+    }
+  }
+
+  .modal {
+    position: relative;
+    background: #ffffff;
+    padding: 40px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    width: 100%;   
+    &.modal-new-reservation {
+      max-width: 400px;
+    }  
+
+    .modal-tittle-close-box {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+
+      .modal-tittle {
+        margin: 0px;
+        font-size: 22px;        
+        color: #222222;
+        padding: 4px 0px;
+        font-weight: bold;        
+      }
+  
+      .fechar { 
+        background: none;
+        color: #c01212;
+        border: none;
+        padding: 4px 8px;
+        cursor: pointer;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+        font-size: 24px;  
+      }
+    }
+  
+    .new-reservation-form {
+      width: 100%;      
+
+      .new-reservation-buttons-box {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        button {          
+          outline: 0;
+          background: #c01212;
+          border: 0;
+          padding: 10px 20px;
+          color: #FFFFFF;
+          font-size: 14px;
+          font-weight: bold;
+          -webkit-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out;
+          cursor: pointer;
+          margin-top: 30px;
+
+          &:hover,
+          &:focus,
+          &:active {
+            background: #8E0E00;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes modal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
