@@ -29,7 +29,7 @@ define("robotTW2/databases/data_data", [
 			xmax					: 600,
 			ymin					: 400,
 			ymax					: 600,
-			count					: 5,
+			count					: 100,
 			complete_villages		: 0,
 			complete_tribes			: 0,
 			interval	 			: {
