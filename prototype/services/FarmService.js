@@ -515,8 +515,8 @@ define("robotTW2/services/FarmService", [
 										preset_id				: preset.id,
 										preset_units			: preset.units,
 										x						: village.data.x,
-										y						: village.data.y,
-										max_journey_distance	: get_dist(village_id, preset.id, village_bonus, preset.units)
+										y						: village.data.y
+//										max_journey_distance	: get_dist(village_id, preset.id, village_bonus, preset.units)
 
 								};
 								if (!commands_for_presets.find(f => f === comando)) {
