@@ -256,11 +256,14 @@ define("robotTW2/services/FarmService", [
 			} else {
 				lt_bb.splice(0);
 			}
-
+			var r = undefined;
 			lt_bb.forEach(function (barbara) {
 				var f = function(bb){
 					if(!promise_send){
 						promise_send = new Promise(function(resolve_send){
+							r = $timeout(function(){
+								resolve_send(true)
+							}, conf_conf.LOADING_TIMEOUT);
 							$timeout(function () {
 								var params =  {
 										start_village: village_id,
@@ -281,10 +284,11 @@ define("robotTW2/services/FarmService", [
 										'village_id'		: bb,
 										'num_reports'		: 0
 									}, function (village) {
+										$timeout.cancel(r);
 										$rootScope.data_logs.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
+										socketService.emit(providers.routeProvider.SEND_PRESET, params);
+										resolve_send(permit_send)
 									});
-									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-									resolve_send(permit_send)
 								} else {
 									resolve_send(true)
 								}

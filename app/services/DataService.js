@@ -288,9 +288,7 @@ define("robotTW2/services/DataService", [
 			return new Promise(function(res){
 				socketService.emit(providers.routeProvider.TRIBE_GET_PROFILE, {
 					'tribe_id': tribe.tribe_id
-				}, function(tribe) {
-					res(tribe);
-				});
+				}, res);
 			})
 		}
 		, loadTribeMembers = function (tribe) {
@@ -298,10 +296,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {
 					'tribe': tribe.tribe_id
-				}, function (members) {
-					if(!members){res([])}
-					res(members);
-				});
+				}, res);
 			})
 		}
 		, update_tribes = function(){
