@@ -52,7 +52,7 @@ define("robotTW2/services/DefenseService", [
 			var lista_aldeiasY = [];
 			var lista_aldeias = [];
 			var lista_barbaras = [];
-			return socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
+			return socketService(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
 				lista_barbaras = [];
 				lista_aldeias = [];
 				lista_aldeiasY = [];
@@ -426,7 +426,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, sendCancel = function(timer_delay, id){
 			return $timeout(function () {
-				socketService.emit(routeProvider.COMMAND_CANCEL, {
+				socketService(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
 				}, function(data){
 					if (data.error_code == "ENTITY_NOT_FOUND" 
@@ -573,8 +573,7 @@ define("robotTW2/services/DefenseService", [
 								time 		: params.data_escolhida - params.time_sniper_ant,
 								listener 	: $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_sent)
 						} 
-						socketService.emit(
-								routeProvider.SEND_CUSTOM_ARMY, {
+						socketService(providers.routeProvider.SEND_CUSTOM_ARMY, {
 									start_village: params.start_village,
 									target_village: params.target_village,
 									type: params.type,
