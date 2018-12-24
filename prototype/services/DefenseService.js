@@ -416,6 +416,7 @@ define("robotTW2/services/DefenseService", [
 			function f (){
 				if(!promise_verify){
 					promise_verify = v().then(function(){
+						promise_verify = undefined;
 						if(queue_verify){
 							queue_verify = false;
 							f()
