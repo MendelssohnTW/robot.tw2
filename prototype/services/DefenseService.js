@@ -422,8 +422,6 @@ define("robotTW2/services/DefenseService", [
 							f()
 						}
 					})
-				} else {
-					f()
 				}
 			}
 			f()
@@ -760,6 +758,8 @@ define("robotTW2/services/DefenseService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
+			promise_verify = undefined
+			queue_verifiy = [];
 			$timeout.cancel(t);
 			t = undefined;
 			typeof(listener_verify) == "function" ? listener_verify(): null;
