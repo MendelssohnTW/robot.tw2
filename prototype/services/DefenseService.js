@@ -355,7 +355,7 @@ define("robotTW2/services/DefenseService", [
 					var vls = charData.getVillageList(); 
 					function gt(){
 						if (vls.length){
-							var id = vls.shift()
+							var id = vls.shift().data.villageId;
 							var list_snob = [];
 							var list_trebuchet = [];
 							var list_calvary = [];
