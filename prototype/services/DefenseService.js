@@ -735,7 +735,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, handlerVerify = function(){
 			if(!listener_verify){
-				listener_verify = $rootScope.$on(eventTypeProvider.COMMAND_INCOMING, _ => {
+				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
 					$timeout(verificarAtaques , 60000);
 				});
