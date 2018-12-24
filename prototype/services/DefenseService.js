@@ -138,10 +138,8 @@ define("robotTW2/services/DefenseService", [
 			var distancia = Math.abs(Math.sqrt(Math.pow(dx, 2) + (Math.pow(dy, 2) * 0.75)));
 
 			var t = modelDataService.getGameData().data.units.map(function(obj, index, array){
-				if(troops.some(f=>f==obj.name)){
+				if(obj.name != "knight"){
 					return [obj.speed, obj.name]
-				} else {
-					return undefined
 				}
 			}).filter(f=>f!=undefined).map(m => {
 				return [m[0], m[1], Math.abs(minutes_duration - Math.round(m[0] * distancia))];
