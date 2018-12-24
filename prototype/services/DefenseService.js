@@ -484,9 +484,7 @@ define("robotTW2/services/DefenseService", [
 			, command_sent = function($event, data){
 				if(params.start_village == data.origin.id){
 					b[data.command_id] = $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
-					var dados = database.get("dados_support")
 					if(a[id_command] && typeof(a[id_command].listener) == "function") {
-						database.set("dados_support", dados, true);
 						a[id_command].listener();
 						delete a[id_command];
 					}
@@ -568,7 +566,6 @@ define("robotTW2/services/DefenseService", [
 					params.units = units;
 				};
 				var par = angular.copy(params);
-				var dados = database.get("dados_support")
 				var expires_send = params.data_escolhida - params.time_sniper_ant;
 				var timer_delay_send = expires_send - gameTime() - $rootScope.data_main.time_correction_command;
 				if(timer_delay_send > - 2000){
@@ -636,7 +633,6 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, addDefenseSelector = function(command, i){
-			var dados = database.get("dados_support");
 			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
 			var isSelected = command_queue.find(f => f.id_command == command.command_id);
 			var isMark = false;
