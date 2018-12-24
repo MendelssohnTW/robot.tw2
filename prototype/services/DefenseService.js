@@ -660,13 +660,15 @@ define("robotTW2/services/DefenseService", [
 
 			overviewService.formatCommand = function (command) {
 				overviewService.supportFormatCommand(command);
-				OverviewController = loadController("OverviewController");
-				if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
-					addDefenseSelector(command, iCount);
-					iCount++
-					if ($('span.type').length <= iCount) 
-						iCount = 0;
-				}
+				$timeout(function(){
+					OverviewController = loadController("OverviewController");
+					if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
+						addDefenseSelector(command, iCount);
+						iCount++
+						if ($('span.type').length <= iCount) 
+							iCount = 0;
+					}
+				}, 200)
 			};
 		}
 		, init = function(){
