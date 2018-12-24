@@ -334,7 +334,7 @@ define("robotTW2/services/DefenseService", [
 									type				: "support",
 									data_escolhida		: time.convertMStoUTC(cmt.completedAt),
 									time_sniper_ant		: $rootScope.data_defense.time_sniper_ant,
-									time_snipe_ant		: timeSniperPost,
+									time_sniper_post	: timeSniperPost,
 									no_target			: false
 							}
 							addDefense(params, cmt.id);
