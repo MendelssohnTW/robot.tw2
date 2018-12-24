@@ -1,5 +1,5 @@
 define("robotTW2/defense/command_queue", function(){
-	var w = {}
+	var w = []
 	return w;
 })
 define("robotTW2/services/DefenseService", [
