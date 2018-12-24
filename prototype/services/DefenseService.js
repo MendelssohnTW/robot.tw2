@@ -332,7 +332,7 @@ define("robotTW2/services/DefenseService", [
 									target_x			: aldeia.x,
 									target_y			: aldeia.y,
 									type				: "support",
-									data_escolhida		: time.convertMStoUTC(cmt.completedAt),
+									data_escolhida		: time.convertMStoUTC(helper.unreadableSeconds(helper.readableMilliseconds(cmt.completedAt, false))),
 									time_sniper_ant		: $rootScope.data_defense.time_sniper_ant,
 									time_sniper_post	: timeSniperPost,
 									no_target			: false
