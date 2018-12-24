@@ -744,6 +744,7 @@ define("robotTW2/services/DefenseService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
+				isRunning = !0;
 				reformatCommand();
 //				w.reload();
 				if(!listener_lost){
@@ -752,7 +753,6 @@ define("robotTW2/services/DefenseService", [
 				if(!listener_conquered){
 					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
 				}
-				isRunning = !0;
 				handlerVerify();
 				verificarAtaques();
 			}, ["all_villages_ready"])
