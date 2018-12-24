@@ -300,11 +300,6 @@ define("robotTW2/services/AttackService", [
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
-//				interval_reload = $timeout(function (){
-//				stop();
-//				start();
-//				}, $rootScope.data_attack.interval)
-//				listener_change = $rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"ATTACK"})
 				isRunning = !0
 				Object.values($rootScope.data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
@@ -318,9 +313,7 @@ define("robotTW2/services/AttackService", [
 		, stop = function(){
 			robotTW2.removeScript("/controllers/AttackCompletionController.js");
 			commandQueue.unbindAll($rootScope.data_attack)
-//			typeof(listener_change) == "function" ? listener_change(): null;
 			interval_reload ? $timeout.cancel(interval_reload): null;
-//			listener_change = undefined;
 			interval_reload = undefined;
 			isRunning = !1;
 		}

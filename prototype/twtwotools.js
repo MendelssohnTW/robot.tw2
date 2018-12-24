@@ -860,6 +860,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					TIME_DELAY_FARM			: 1000,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
+					TIME_SNIPER_POST_SNOB	: 3000,
 					MAX_TIME_CORRECTION 	: 3 * seg,
 					MIN_TIME_SNIPER_ANT 	: 5,
 					MAX_TIME_SNIPER_ANT 	: 600,
@@ -1033,6 +1034,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
 				"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
 				"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
+				"CHANGE_COMMANDS_DEFENSE"		: "Internal/robotTW2/change_commands_defense",
 				"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
 				"CMD_SENT"						: "Internal/robotTW2/cmd_sent",
 				"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
@@ -1610,6 +1612,27 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+//				case robotTW2.controllers.AttackDefenseController : {
+//					robotTW2.createScopeLang("attack", function(scopeLang){
+//						var get_father = function(){
+//							return $('[ng-controller=OverviewController]');
+//						}
+//						, get_son = function(){
+//							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+//						}
+//						, params = {
+//								included_controller		: "OverviewController",
+//								controller				: robotTW2.controllers.AttackCompletionController,
+//								get_son					: get_son,
+//								provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
+//								scopeLang 				: scopeLang,
+//								templateName 			: "defensecompletion",
+//								url		 				: "/controllers/DefenseCompletionController.js"
+//						}	
+//						robotTW2.build(params)
+//					})
+//					break
+//				}
 				case robotTW2.controllers.FarmCompletionController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
 						var get_father = function(){
@@ -1718,7 +1741,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_alert.js");
 								robotTW2.loadScript("/databases/data_attack.js");
 								robotTW2.loadScript("/databases/data_recon.js");
-//								robotTW2.loadScript("/databases/data_defense.js");
+								robotTW2.loadScript("/databases/data_defense.js");
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");
