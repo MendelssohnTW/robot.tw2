@@ -352,7 +352,7 @@ define("robotTW2/services/DefenseService", [
 			var v = function(){
 				return new Promise(function(resolve){
 					t = $timeout(resolve , 480000);
-					var vls = charData.getVillagesList(); 
+					var vls = charData.getVillageList(); 
 					function gt(){
 						if (vls.length){
 							var id = vls.shift()
