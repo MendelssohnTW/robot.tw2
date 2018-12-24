@@ -506,12 +506,12 @@ define("robotTW2/services/DefenseService", [
 						}
 					} else {
 						console.log(timer_delay)
-								console.log("Comando sniper da (sendDefense) aldeia " 
-										+ modelDataService.charData.getVillage(params.start_village).data.name + 
-										" não enviado as "
-										+ new Date(time.convertedTime()) + 
-										" com tempo do servidor, devido vencimento de limite de delay"
-								);
+						console.log("Comando sniper da (sendDefense) aldeia " 
+								+ modelDataService.charData.getVillage(params.start_village).data.name + 
+								" não enviado as "
+								+ new Date(time.convertedTime()) + 
+								" com tempo do servidor, devido vencimento de limite de delay"
+						);
 					}
 				}
 			}
@@ -545,14 +545,14 @@ define("robotTW2/services/DefenseService", [
 								listener 	: $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_sent)
 						} 
 						socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
-									start_village: params.start_village,
-									target_village: params.target_village,
-									type: params.type,
-									units: params.units,
-									icon: 0,
-									officers: params.officers,
-									catapult_target: params.catapult_target
-								});
+							start_village: params.start_village,
+							target_village: params.target_village,
+							type: params.type,
+							units: params.units,
+							icon: 0,
+							officers: params.officers,
+							catapult_target: params.catapult_target
+						});
 					}, timer_delay_send);
 				} else {
 					console.log("Comando de defesa da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay");
@@ -698,10 +698,13 @@ define("robotTW2/services/DefenseService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
-			Object.keys(timeoutIdDefense).map(function(id){
-				$timeout.cancel(timeoutIdDefense[id])
-				delete timeoutIdDefense[id];
-			})
+			isRunning = !1;
+			if(timeoutIdDefense){
+				Object.keys(timeoutIdDefense).map(function(id){
+					$timeout.cancel(timeoutIdDefense[id])
+					delete timeoutIdDefense[id];
+				})
+			}
 			timeoutIdDefense = undefined;
 			promise_verify = undefined
 			queue_verifiy = [];
@@ -713,7 +716,6 @@ define("robotTW2/services/DefenseService", [
 			listener_verify = undefined;
 			listener_lost = undefined;
 			listener_conquered = undefined;
-			isRunning = !1;
 			returnCommand();
 		}
 
