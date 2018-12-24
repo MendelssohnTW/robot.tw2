@@ -6,16 +6,13 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2",
 	"robotTW2/version",
 	"robotTW2/conf",
-	"robotTW2/convert_readable_for_ms",
-	"robotTW2/readableSeconds",
 	"robotTW2/defense/command_queue",
 	"helper/time",
 	"conf/unitTypes",
 	], function(
 			robotTW2,
+			version,
 			conf,
-			convert_readable_for_ms,
-			readableSeconds,
 			command_queue,
 			helper,
 			unitTypes
@@ -334,7 +331,7 @@ define("robotTW2/services/DefenseService", [
 									target_x			: aldeia.x,
 									target_y			: aldeia.y,
 									type				: "support",
-									data_escolhida		: convert_readable_for_ms(readableSeconds(cmt.completedAt / 1000, false)),
+									data_escolhida		: helper.unreadableSeconds(helper.readableMilliseconds(cmt.completedAt, false)),
 									time_sniper_ant		: $rootScope.data_defense.time_sniper_ant,
 									time_snipe_ant		: timeSniperPost,
 									no_target			: false
@@ -672,7 +669,7 @@ define("robotTW2/services/DefenseService", [
 									target_x			: aldeia.x,
 									target_y			: aldeia.y,
 									type				: "support",
-									data_escolhida		: convert_readable_for_ms(readableSeconds(cmt.time_completed, false)),
+									data_escolhida		: helper.unreadableSeconds(helper.readableMilliseconds(cmt.time_completed * 1000, false)),
 									time_sniper_ant		: sniper_ant * 1000,
 									time_sniper_post	: sniper_post * 1000,
 									no_target			: true
