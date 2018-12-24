@@ -33,6 +33,7 @@ define("robotTW2/services/DefenseService", [
 		, isPaused = !1
 		, isInitialized = !1
 		, t = undefined
+		, oldCommand
 		, interval_reload = undefined
 		, timeoutIdDefense = {}
 		, listener_verify = undefined
