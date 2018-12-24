@@ -9,13 +9,15 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/defense/command_queue",
 	"helper/time",
 	"conf/unitTypes",
+	"robotTW2/time",
 	], function(
 			robotTW2,
 			version,
 			conf,
 			command_queue,
 			helper,
-			unitTypes
+			unitTypes,
+			time
 	){
 	return (function DefenseService(
 			$rootScope,
@@ -451,12 +453,12 @@ define("robotTW2/services/DefenseService", [
 				addLog("Aldeia " 
 						+ charData.getVillage(data.origin.id).data.name + 
 						" comando sniper retornado em " 
-						+ new Date(gameTime())
+						+ new Date(time.convertedTime())
 						, "support");
 				console.log("Aldeia "
 						+ charData.getVillage(data.origin.id).data.name + 
 						" comando sniper retornado em " 
-						+ new Date(gameTime()) 
+						+ new Date(time.convertedTime()) 
 				);
 				data && typeof(d[data.command_id]) == "function" ? d[data.command_id]() : null;
 			}
@@ -464,12 +466,12 @@ define("robotTW2/services/DefenseService", [
 				addLog("Aldeia " 
 						+ charData.getVillage(data.origin.id).data.name + 
 						" comando sniper cancelado em " 
-						+ new Date(gameTime())
+						+ new Date(time.convertedTime())
 						, "support");
 				console.log("Aldeia " 
 						+ charData.getVillage(data.origin.id).data.name + 
 						" comando sniper cancelado em " 
-						+ new Date(gameTime())
+						+ new Date(time.convertedTime())
 				);
 				data && typeof(b[data.command_id]) == "function" ? b[data.command_id]() : null;
 				if(c[data.command_id]) {
@@ -489,7 +491,7 @@ define("robotTW2/services/DefenseService", [
 					addLog("Comando de defesa da aldeia "
 							+ data.home.name + 
 							" enviado as "
-							+ new Date(gameTime()) + 
+							+ new Date(time.convertedTime()) + 
 							" solicitado para sair as " 
 							+ new Date(data.time_start * 1000) + 
 							" solicitado para chegar as " 
@@ -500,7 +502,7 @@ define("robotTW2/services/DefenseService", [
 					console.log("Comando de defesa da aldeia "
 							+ data.home.name + 
 							" enviado as "
-							+ new Date(gameTime()) + 
+							+ new Date(time.convertedTime()) + 
 							" solicitado para sair as " 
 							+ new Date(data.time_start * 1000) + 
 							" solicitado para chegar as " 
@@ -515,7 +517,7 @@ define("robotTW2/services/DefenseService", [
 					removeDefense(id_command, "comandos_support", timeoutIdSupport, function(){$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)})
 					//var expires = params.data_escolhida + params.time_sniper_post - conf.TIME_RATE_CANCEL;
 					var expires = params.data_escolhida + params.time_sniper_post;
-					var timer_delay = ((expires - gameTime()) / 2) - $rootScope.data_main.time_correction_command;
+					var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
 					if(timer_delay > 0){
 						addLog("Comando sniper da aldeia aguardando", "support")
 						console.log("Comando sniper da aldeia aguardando")
@@ -532,13 +534,13 @@ define("robotTW2/services/DefenseService", [
 						addLog("Comando sniper da (sendDefense) aldeia " 
 								+ modelDataService.charData.getVillage(params.start_village).data.name + 
 								" não enviado as " 
-								+ new Date(gameTime()) + 
+								+ new Date(time.convertedTime()) + 
 								" com tempo do servidor, devido vencimento de limite de delay"
 								, "support")
 								console.log("Comando sniper da (sendDefense) aldeia " 
 										+ modelDataService.charData.getVillage(params.start_village).data.name + 
 										" não enviado as "
-										+ new Date(gameTime()) + 
+										+ new Date(time.convertedTime()) + 
 										" com tempo do servidor, devido vencimento de limite de delay"
 								);
 					}
@@ -565,7 +567,7 @@ define("robotTW2/services/DefenseService", [
 				};
 				var par = angular.copy(params);
 				var expires_send = params.data_escolhida - params.time_sniper_ant;
-				var timer_delay_send = expires_send - gameTime() - $rootScope.data_main.time_correction_command;
+				var timer_delay_send = expires_send - time.convertedTime() - $rootScope.data_main.time_correction_command;
 				if(timer_delay_send > - 2000){
 					timer_delay_send < 0 ? timer_delay_send = 0 : timer_delay_send;
 					$timeout(function () {
@@ -584,8 +586,8 @@ define("robotTW2/services/DefenseService", [
 								});
 					}, timer_delay_send);
 				} else {
-					addLog("Comando de defesa da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(gameTime()) + " com tempo do servidor, devido vencimento de limite de delay", "support")
-					console.log("Comando de defesa da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+					addLog("Comando de defesa da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay", "support")
+					console.log("Comando de defesa da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 				}
 
 			}, timer_delay - conf.TIME_DELAY_UPDATE);
@@ -601,7 +603,7 @@ define("robotTW2/services/DefenseService", [
 						params: params
 				}
 				var expires = params.data_escolhida - params.time_sniper_ant;
-				var timer_delay = expires - gameTime() - $rootScope.data_main.time_correction_command;
+				var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
 
 				if(timeoutIdSupport[id_command]) {
 					$timeout.cancel(timeoutIdSupport[id_command]);
@@ -613,8 +615,8 @@ define("robotTW2/services/DefenseService", [
 					!command_queue.find(f => f.id_command == cmd.id_command) ? command_queue.push(cmd) : null;
 				} else {
 					command_queue = command_queue.filter(f => f.id_command != cmd.id_command);
-//					addLog("Comando de defesa (addsupport) da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(gameTime()) + " com tempo do servidor, devido vencimento de limite de delay", "support")
-					console.log("Comando de defesa  (addsupport) da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(gameTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+//					addLog("Comando de defesa (addsupport) da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay", "support")
+					console.log("Comando de defesa  (addsupport) da aldeia " + charData.getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay");
 				}
 			}
 		}
