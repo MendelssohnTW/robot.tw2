@@ -38,6 +38,7 @@ define("robotTW2/services/DefenseService", [
 		, oldCommand
 		, interval_reload = undefined
 		, timeoutIdDefense = {}
+		, timeoutIdSupport = {}
 		, listener_verify = undefined
 		, listener_lost = undefined
 		, listener_conquered = undefined
@@ -731,6 +732,16 @@ define("robotTW2/services/DefenseService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
+			Object.keys(timeoutIdSupport).map(function(id){
+				$timeout.cancel(timeoutIdSupport[id])
+				delete timeoutIdSupport[id];
+			})
+			timeoutIdSupport = undefined;
+			Object.keys(timeoutIdSniper).map(function(id){
+				$timeout.cancel(timeoutIdSniper[id])
+				delete timeoutIdSniper[id];
+			})
+			timeoutIdSniper = undefined;
 			promise_verify = undefined
 			queue_verifiy = [];
 			$timeout.cancel(t);
