@@ -764,7 +764,7 @@ define("robotTW2/services/DefenseService", [
 			robotTW2.providers,
 			robotTW2.services.$timeout,
 			robotTW2.commandQueue,
-			robotTW2.socketService,
+			robotTW2.services.socketService,
 			robotTW2.services.modelDataService,
 			robotTW2.services.overviewService,
 			robotTW2.loadController,
