@@ -38,7 +38,6 @@ define("robotTW2/services/DefenseService", [
 		, oldCommand
 		, interval_reload = undefined
 		, timeoutIdDefense = {}
-		, timeoutIdSupport = {}
 		, listener_verify = undefined
 		, listener_lost = undefined
 		, listener_conquered = undefined
@@ -511,11 +510,11 @@ define("robotTW2/services/DefenseService", [
 							" com as seguintes unidades " 
 							+ JSON.stringify(data.units)
 					);
-					if (timeoutIdSupport[id_command]){
-						$timeout.cancel(timeoutIdSupport[id_command]);
-						delete timeoutIdSupport[id_command]	
+					if (timeoutIdDefense[id_command]){
+						$timeout.cancel(timeoutIdDefense[id_command]);
+						delete timeoutIdDefense[id_command]	
 					}
-					removeDefense(id_command, "comandos_support", timeoutIdSupport, function(){$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)})
+					removeDefense(id_command, "comandos_support", timeoutIdDefense, function(){$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)})
 					//var expires = params.data_escolhida + params.time_sniper_post - conf.TIME_RATE_CANCEL;
 					var expires = params.data_escolhida + params.time_sniper_post;
 					var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
@@ -606,13 +605,13 @@ define("robotTW2/services/DefenseService", [
 				var expires = params.data_escolhida - params.time_sniper_ant;
 				var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
 
-				if(timeoutIdSupport[id_command]) {
-					$timeout.cancel(timeoutIdSupport[id_command]);
-					delete $timeout.cancel(timeoutIdSupport[id_command]);
+				if(timeoutIdDefense[id_command]) {
+					$timeout.cancel(timeoutIdDefense[id_command]);
+					delete timeoutIdDefense[id_command];
 				}
 				if(timer_delay > -2000){
 					timer_delay < 0 ? timer_delay = 0 : timer_delay;
-					timeoutIdSupport[id_command] = sendDefense(timer_delay, params, id_command, params.enviarFull);
+					timeoutIdDefense[id_command] = sendDefense(timer_delay, params, id_command, params.enviarFull);
 					!command_queue.find(f => f.id_command == cmd.id_command) ? command_queue.push(cmd) : null;
 				} else {
 					command_queue = command_queue.filter(f => f.id_command != cmd.id_command);
@@ -732,16 +731,11 @@ define("robotTW2/services/DefenseService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
-			Object.keys(timeoutIdSupport).map(function(id){
-				$timeout.cancel(timeoutIdSupport[id])
-				delete timeoutIdSupport[id];
+			Object.keys(timeoutIdDefense).map(function(id){
+				$timeout.cancel(timeoutIdDefense[id])
+				delete timeoutIdDefense[id];
 			})
-			timeoutIdSupport = undefined;
-			Object.keys(timeoutIdSniper).map(function(id){
-				$timeout.cancel(timeoutIdSniper[id])
-				delete timeoutIdSniper[id];
-			})
-			timeoutIdSniper = undefined;
+			timeoutIdDefense = undefined;
 			promise_verify = undefined
 			queue_verifiy = [];
 			$timeout.cancel(t);
