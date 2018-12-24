@@ -747,10 +747,10 @@ define("robotTW2/services/DefenseService", [
 				reformatCommand();
 //				w.reload();
 				if(!listener_lost){
-					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, updateVillages);
+					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
 				}
 				if(!listener_conquered){
-					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, updateVillages);
+					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
 				}
 				isRunning = !0;
 				handlerVerify();
