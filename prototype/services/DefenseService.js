@@ -136,7 +136,7 @@ define("robotTW2/services/DefenseService", [
 			var dy = y1 - y2,
 			dx = x1 - x2;
 			var distancia = Math.abs(Math.sqrt(Math.pow(dx, 2) + (Math.pow(dy, 2) * 0.75)));
-			
+
 			var t = modelDataService.getGameData().data.units.map(function(obj, index, array){
 				if(troops.some(f=>f==obj.name)){
 					return [obj.speed, obj.name]
@@ -148,11 +148,11 @@ define("robotTW2/services/DefenseService", [
 			}).sort((a, b) => {
 				return a[2] - b[2];
 			});
-			
+
 			var units_ret = [];
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[0][1];
-			
+
 			switch (unitType) {
 			case "light_cavalry":
 				callback(unitTypes.LIGHT_CAVALRY, unitType);
@@ -700,32 +700,10 @@ define("robotTW2/services/DefenseService", [
 				overviewService.supportFormatCommand(command);
 				OverviewController = loadController("OverviewController");
 				if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
-					f = function(iC){
-						return new Promise(function(res, rej){
-							addDefenseSelector(command, iC);
-							if ($('span.type').length <= iC) {
-								rej()
-							} else {
-								res()
-							}
-						}).then(function(){
-							f = undefined;
-							if(queue_f.length){
-								f(queue_f.shift())
-							}
-						}, function(){
-							f = undefined;
-							iC = 0;
-							queue_f = [];
-							return
-						})
-					}
-					if(!f){
-						f(iCount)
-					} else {
-						queue_f.push(iCount)
-					}
+					addDefenseSelector(command, iCount);
 					iCount++
+					if ($('span.type').length <= iCount) 
+						iCount = 0;
 				}
 			};
 		}
