@@ -33,7 +33,6 @@ define("robotTW2/services/AttackService", [
 		, interval_reload = undefined
 //		, listener_change = undefined
 		, listener = []
-		, timeoutIdAttack = {}
 		, that = this
 		, promiseReSendAttack
 		, queueReSendAttack = []
@@ -58,7 +57,7 @@ define("robotTW2/services/AttackService", [
 			params["id_command"] = id_command
 			commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params)
 
-			if(timer_delay > 0){
+			if(timer_delay >= 0){
 				commandQueue.trigger(id_command, params)
 			}
 		}
@@ -85,7 +84,7 @@ define("robotTW2/services/AttackService", [
 					};
 				};
 				if (lista.length > 0 || !params.enviarFull) {
-					timeoutIdAttack[id_command] = resendAttack(params)
+					resendAttack(params)
 				} else {
 					commandQueue.unbind(id_command, $rootScope.data_attack)
 				}
@@ -93,29 +92,33 @@ define("robotTW2/services/AttackService", [
 
 			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
 
-			return promiseSendAttack
+			return
 		}
 		, resendAttack = function(params){
 //			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
 			var expires_send = params.data_escolhida - params.duration;
 			var timer_delay_send = expires_send - time.convertedTime() - $rootScope.data_main.time_correction_command;
-			if(timer_delay_send > 0){
-				return $timeout(function(){
-					listener[id_command] = {listener : $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
+			if(timer_delay_send >= 0){
+				function e (){
+					return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
 						if(params.start_village == data.origin.id){
-							var id_command = params.id_command;
+							var id_command = data.command_id;
 							if(listener[id_command] && typeof(listener[id_command].listener) == "function") {
 								listener[id_command].listener();
 								delete listener[id_command];
 							}
 							commandQueue.unbind(id_command, $rootScope.data_attack)
 						}
-					})}
-					if (promiseReSendAttack) {
-						queueReSendAttack.push(arguments);
-						return;
-					}
+					})
+				}
+
+				return $timeout(function(){
+					listener[id_command] = {listener : e}
+//					if (promiseReSendAttack) {
+//						queueReSendAttack.push(arguments);
+//						return;
+//					}
 
 					socketService.emit(
 							providers.routeProvider.SEND_CUSTOM_ARMY, {
@@ -212,7 +215,7 @@ define("robotTW2/services/AttackService", [
 		}
 		, stop = function(){
 			robotTW2.removeScript("/controllers/AttackCompletionController.js");
-			commandQueue.unbindAll($rootScope.data_attack)
+			commandQueue.unbindAll("attack", $rootScope.data_attack)
 			interval_reload ? $timeout.cancel(interval_reload): null;
 			interval_reload = undefined;
 			isRunning = !1;
@@ -228,7 +231,7 @@ define("robotTW2/services/AttackService", [
 				commandQueue.unbind(id_command, $rootScope.data_attack)
 			},
 			removeAll			: function(id_command){
-				commandQueue.unbindAll($rootScope.data_attack)
+				commandQueue.unbindAll("attack", $rootScope.data_attack)
 			},
 			isRunning			: function () {
 				return isRunning

@@ -112,6 +112,22 @@ var robotTW2 = window.robotTW2 = undefined;
 				delete fns[key];
 			}
 		}
+		, service.unbindAll = function(type) {
+			Object.keys(fns).map(function(fn){
+				if(!fns[fn].params) {
+					return undefined
+				} else {
+					if(!fns[fn].params.type) {
+						return undefined
+					} else {
+						if(fns[fn].params.type == type){
+							exports.services.$timeout.cancel(fns[fn])
+							delete fns[fn]
+						}
+					}
+				}
+			})
+		}
 		, service.getFns = function(){return fns}
 		,
 		service
@@ -147,8 +163,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			requestFn.unbind(key);
 		}
 		,
-		service.unbindAll = function(opt_db) {
-			if(!opt_db) return
+		service.unbindAll = function(type, opt_db) {
+			if(!opt_db)	{
+				if(type){
+					requestFn.unbindAll(type)
+				}
+				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+				return
+			}
 			Object.keys(opt_db.commands).forEach(function(key) {
 				try {
 					exports.services.$timeout.cancel(requestFn.get(key));
