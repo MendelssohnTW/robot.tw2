@@ -1459,7 +1459,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								var dy = y1 - y2,
 								dx = x1 - x2; 
 
-								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * (village_bonus / 100) * 0.75)));
+								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) / (village_bonus / 100) * 0.75)));
 								duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
 
 								robotTW2.services.$timeout(function(){
