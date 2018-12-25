@@ -1405,6 +1405,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						, listener_completed = undefined
 						, gTime
 						, duration = undefined
+						, rallyPointSpeedBonusVsBarbarians = that.services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
+						, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
 						, timetable = that.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 							return [obj.speed * 60, obj.name]
 						}).map(m => {
@@ -1460,7 +1462,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								var dy = y1 - y2,
 								dx = x1 - x2; 
 
-								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
+								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * (bonus / 100) * 0.75)));
 								duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
 
 								that.services.$timeout(function(){
