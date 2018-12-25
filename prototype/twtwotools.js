@@ -643,6 +643,8 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 
+		angular.extend(this, robotTW2);
+
 		define("robotTW2/version", function(){
 			return {
 				main:			"3.0.4",
@@ -1368,124 +1370,126 @@ var robotTW2 = window.robotTW2 = undefined;
 					time,
 					conf
 			) {
+			return function(){
 
-			var promise_calibrate = undefined;
+				var promise_calibrate = undefined;
 
-			promise_calibrate = function () {
-				return new Promise (function(resolve){
-					var villages = this.services.modeDataService.getVillages()
-					, village = villages[Object.keys(villages).shift()]
-					, units = {}
-					, unitInfo = village.unitInfo.getUnits()
-					, listener_completed = undefined
-					, gTime
-					, duration = undefined
-					, timetable = this.services.modeDataService.getGameData().data.units.map(function(obj, index, array){
-						return [obj.speed * 60, obj.name]
-					}).map(m => {
-						return [m[0], m[1]];
-					}).sort((a, b) => {
-						return a[0] - b[0];
-					})
-					, units = {}
-					, unitInfo = village.unitInfo.getUnits();
+				promise_calibrate = function () {
+					return new Promise (function(resolve){
+						var villages = this.services.modeDataService.getVillages()
+						, village = villages[Object.keys(villages).shift()]
+						, units = {}
+						, unitInfo = village.unitInfo.getUnits()
+						, listener_completed = undefined
+						, gTime
+						, duration = undefined
+						, timetable = this.services.modeDataService.getGameData().data.units.map(function(obj, index, array){
+							return [obj.speed * 60, obj.name]
+						}).map(m => {
+							return [m[0], m[1]];
+						}).sort((a, b) => {
+							return a[0] - b[0];
+						})
+						, units = {}
+						, unitInfo = village.unitInfo.getUnits();
 
-					if (!unitInfo) {return};
-					for(unit in unitInfo){
-						if (unitInfo.hasOwnProperty(unit)){
-							if (unitInfo[unit].available > 0 && !["doppelsoldner","knight","trebuchet"].some(f => f == unit)){
-								var unit_available = {[unit]: unitInfo[unit].available};
-								units[Object.keys(unit_available)[0]] = 
-									Object.keys(unit_available).map(function(key) {return unit_available[key] = 1})[0];
+						if (!unitInfo) {return};
+						for(unit in unitInfo){
+							if (unitInfo.hasOwnProperty(unit)){
+								if (unitInfo[unit].available > 0 && !["doppelsoldner","knight","trebuchet"].some(f => f == unit)){
+									var unit_available = {[unit]: unitInfo[unit].available};
+									units[Object.keys(unit_available)[0]] = 
+										Object.keys(unit_available).map(function(key) {return unit_available[key] = 1})[0];
+								}
 							}
 						}
-					}
 
-					var obj_unit;
-					if(!units){
-						console.log("no units")
-						return
-					} else {
-						obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
-					}
-
-					units = angular.merge({}, obj_unit)
-
-					var newTimeTable = [];
-
-					var timeCampo = timetable.map(m => {
-						if(Object.keys(units).find(f=> f == m[1])) {return m}
-					}).filter(f=>f!=undefined)[0][0];
-
-					this.services.socketService.emit(this.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
-						'x' : village.data.x,
-						'y' : village.data.y
-					}, function(bb) {
-						if (bb) {
-
-							var x1 = village.getX(), 
-							y1 = village.getY(), 
-							x2 = bb.x, 
-							y2 = bb.y;
-
-							if (y1 % 2) //se y é impar
-								x1 += .5;
-							if (y2 % 2)
-								x2 += .5;
-							var dy = y1 - y2,
-							dx = x1 - x2; 
-
-							var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
-							duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
-
-							$timeout(function(){
-								listener_completed ? listener_completed() : listener_completed;
-								listener_completed = undefined;
-								listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
-									if(!data){
-										resolve()
-										return
-									}
-									if(data.direction =="forward" && data.origin.id == village.data.villageId){
-										var outgoing = this.services.modeDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
-										var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
-										var dif = gTime - time.convertMStoUTC(completedAt - duration * 1000);
-										if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
-											$rootScope.data_main.time_correction_command = dif
-											$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
-										}
-										$timeout(function(){
-											this.services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
-												command_id: data.command_id
-											})
-											resolve();
-										}, 5000)
-										listener_completed();
-										listener_completed = undefined;
-									}
-								})
-								gTime = time.convertedTime();
-								this.services.socketService.emit(this.providers.routeProvider.SEND_CUSTOM_ARMY, {
-									start_village: village.getId(),
-									target_village: bb.id,
-									type: "attack",
-									units: units,
-									icon: 0,
-									officers: {},
-									catapult_target: null
-								});
-							}, 1000);
+						var obj_unit;
+						if(!units){
+							console.log("no units")
+							return
+						} else {
+							obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
 						}
-					})
-				})
-			}
 
-			if(!promise_calibrate){
-				promise_calibrate().then(function(){
-					$timeout(function(){
-						promise_calibrate = undefined;
-					}, 10 * conf.min)
-				})
+						units = angular.merge({}, obj_unit)
+
+						var newTimeTable = [];
+
+						var timeCampo = timetable.map(m => {
+							if(Object.keys(units).find(f=> f == m[1])) {return m}
+						}).filter(f=>f!=undefined)[0][0];
+
+						this.services.socketService.emit(this.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
+							'x' : village.data.x,
+							'y' : village.data.y
+						}, function(bb) {
+							if (bb) {
+
+								var x1 = village.getX(), 
+								y1 = village.getY(), 
+								x2 = bb.x, 
+								y2 = bb.y;
+
+								if (y1 % 2) //se y é impar
+									x1 += .5;
+								if (y2 % 2)
+									x2 += .5;
+								var dy = y1 - y2,
+								dx = x1 - x2; 
+
+								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
+								duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
+
+								$timeout(function(){
+									listener_completed ? listener_completed() : listener_completed;
+									listener_completed = undefined;
+									listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+										if(!data){
+											resolve()
+											return
+										}
+										if(data.direction =="forward" && data.origin.id == village.data.villageId){
+											var outgoing = this.services.modeDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
+											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
+											var dif = gTime - time.convertMStoUTC(completedAt - duration * 1000);
+											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
+												$rootScope.data_main.time_correction_command = dif
+												$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
+											}
+											$timeout(function(){
+												this.services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
+													command_id: data.command_id
+												})
+												resolve();
+											}, 5000)
+											listener_completed();
+											listener_completed = undefined;
+										}
+									})
+									gTime = time.convertedTime();
+									this.services.socketService.emit(this.providers.routeProvider.SEND_CUSTOM_ARMY, {
+										start_village: village.getId(),
+										target_village: bb.id,
+										type: "attack",
+										units: units,
+										icon: 0,
+										officers: {},
+										catapult_target: null
+									});
+								}, 1000);
+							}
+						})
+					})
+				}
+
+				if(!promise_calibrate){
+					promise_calibrate().then(function(){
+						$timeout(function(){
+							promise_calibrate = undefined;
+						}, 10 * conf.min)
+					})
+				}
 			}
 		})
 
