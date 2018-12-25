@@ -10,6 +10,7 @@ define("robotTW2/services/DefenseService", [
 	"helper/time",
 	"conf/unitTypes",
 	"robotTW2/time",
+	"robotTW2/calibrate_time",
 	], function(
 			robotTW2,
 			version,
@@ -17,7 +18,8 @@ define("robotTW2/services/DefenseService", [
 			command_queue,
 			helper,
 			unitTypes,
-			time
+			time,
+			calibrate_time
 	){
 	return (function DefenseService(
 			$rootScope,
@@ -686,6 +688,7 @@ define("robotTW2/services/DefenseService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
+				calibrate_time()
 				isRunning = !0;
 				reformatCommand();
 //				w.reload();
