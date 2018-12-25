@@ -665,7 +665,8 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 
-		angular.extend(this, robotTW2);
+		var that = this;
+		angular.extend(that, robotTW2);
 
 		define("robotTW2/version", function(){
 			return {
@@ -981,28 +982,28 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 			return conf;
 		})
-		angular.extend(this.services, define("robotTW2/services", [], function(){
-			this.register("services", "hotkeys");
-			this.register("services", "premiumActionService");
-			this.register("services", "secondVillageService");
-			this.register("services", "villageService");
-			this.register("services", "buildingService");
-			this.register("services", "armyService");
-			this.register("services", "overviewService");
-			this.register("services", "$filter");
-			this.register("services", "storageService");
-			this.register("services", "presetListService");
-			this.register("services", "presetService");
-			this.register("services", "groupService");
+		angular.extend(that.services, define("robotTW2/services", [], function(){
+			that.register("services", "hotkeys");
+			that.register("services", "premiumActionService");
+			that.register("services", "secondVillageService");
+			that.register("services", "villageService");
+			that.register("services", "buildingService");
+			that.register("services", "armyService");
+			that.register("services", "overviewService");
+			that.register("services", "$filter");
+			that.register("services", "storageService");
+			that.register("services", "presetListService");
+			that.register("services", "presetService");
+			that.register("services", "groupService");
 
-			return this.services;
+			return that.services;
 		}))
-		angular.extend(this.databases, define("robotTW2/databases", [], function(){
-			this.loadScript("/databases/database.js");
-			return this.databases;
+		angular.extend(that.databases, define("robotTW2/databases", [], function(){
+			that.loadScript("/databases/database.js");
+			return that.databases;
 		}))
-		angular.extend(this.providers, define("robotTW2/providers", [], function(){
-			this.register("providers", "routeProvider", {
+		angular.extend(that.providers, define("robotTW2/providers", [], function(){
+			that.register("providers", "routeProvider", {
 				'UPDATE_WORLD':{
 					type:"update_world",
 					data:["world"],
@@ -1048,7 +1049,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					data:["village"]
 				}
 			});
-			this.register("providers", "eventTypeProvider", {
+			that.register("providers", "eventTypeProvider", {
 				"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
 				"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
 				"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
@@ -1064,15 +1065,15 @@ var robotTW2 = window.robotTW2 = undefined;
 				"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command",
 				"OPEN_REPORT"					: "Internal/robotTW2/open_report"
 			});
-			return this.providers;
+			return that.providers;
 		}))
 
-		var $rootScope = this.services.$rootScope;
+		var $rootScope = that.services.$rootScope;
 
-		var new_extendScopeWithReportData = this.services.reportService.extendScopeWithReportData; 
+		var new_extendScopeWithReportData = that.services.reportService.extendScopeWithReportData; 
 
-		this.services.reportService.extendScopeWithReportData = function ($scope, report) {
-			$rootScope.$broadcast(this.providers.eventTypeProvider.OPEN_REPORT);
+		that.services.reportService.extendScopeWithReportData = function ($scope, report) {
+			$rootScope.$broadcast(that.providers.eventTypeProvider.OPEN_REPORT);
 			new_extendScopeWithReportData($scope, report)
 		}
 
@@ -1135,9 +1136,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			sendMsg = function sendMsg(type, data, opt_callback){
 				angular.extend(data, {
-					"world_id": this.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
-					"member_id": this.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
-					"tribe_id": this.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
+					"world_id": that.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
+					"member_id": that.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
+					"tribe_id": that.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
 				}
 				)
 				id = ++id;
@@ -1293,7 +1294,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		define("robotTW2/unitTypesRenameRecon", [], function() {
 			var l = {}
-			this.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+			that.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 				if(obj.name != "knight"){
 					{l[obj.name] = true}
 				}
@@ -1322,7 +1323,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					firework
 			) {
 			return function(message, opt){
-				var $scope = this.loadController("NotificationController")
+				var $scope = that.loadController("NotificationController")
 				, promise
 				, that = this
 				, queue = []
@@ -1339,11 +1340,11 @@ var robotTW2 = window.robotTW2 = undefined;
 						return;
 					}
 
-					$rootScope.$broadcast(this.providers.eventTypeProvider.NOTIFICATION_SHOW);
+					$rootScope.$broadcast(that.providers.eventTypeProvider.NOTIFICATION_SHOW);
 
 					$scope.content			= message;
 					$scope.type				= "achievement";
-					$scope.title			= this.services.$filter('i18n')('title', $rootScope.loc.ale, 'notify');
+					$scope.title			= that.services.$filter('i18n')('title', $rootScope.loc.ale, 'notify');
 					$scope.notificationId	= null;
 					$scope.icon				= "icon-90x90-achievement-loot";
 					$scope.offer			= null;
@@ -1359,9 +1360,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						$scope.$digest();
 					}
 
-					(promise = this.services.$timeout(function timeoutCallback() {
+					(promise = that.services.$timeout(function timeoutCallback() {
 						$scope.visible = null;
-						$rootScope.$broadcast(this.providers.eventTypeProvider.NOTIFICATION_HIDE);
+						$rootScope.$broadcast(that.providers.eventTypeProvider.NOTIFICATION_HIDE);
 
 						if ($scope.onHide) {
 							$scope.onHide();
@@ -1377,7 +1378,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				if(opt){
 					return display(message);
 				} else {
-					return display(this.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));	
+					return display(that.services.$filter("i18n")(message, $rootScope.loc.ale, "notify"));	
 				}
 
 			}
@@ -1397,14 +1398,14 @@ var robotTW2 = window.robotTW2 = undefined;
 
 				function calibrate () {
 					return new Promise (function(resolve){
-						var villages = this.services.modelDataService.getVillages()
+						var villages = that.services.modelDataService.getVillages()
 						, village = villages[Object.keys(villages).shift()]
 						, units = {}
 						, unitInfo = village.unitInfo.getUnits()
 						, listener_completed = undefined
 						, gTime
 						, duration = undefined
-						, timetable = this.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+						, timetable = that.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 							return [obj.speed * 60, obj.name]
 						}).map(m => {
 							return [m[0], m[1]];
@@ -1441,7 +1442,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							if(Object.keys(units).find(f=> f == m[1])) {return m}
 						}).filter(f=>f!=undefined)[0][0];
 
-						this.services.socketService.emit(this.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
+						that.services.socketService.emit(that.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
 							'x' : village.data.x,
 							'y' : village.data.y
 						}, function(bb) {
@@ -1462,7 +1463,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
 								duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
 
-								this.services.$timeout(function(){
+								that.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
 									listener_completed = undefined;
 									listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
@@ -1471,15 +1472,15 @@ var robotTW2 = window.robotTW2 = undefined;
 											return
 										}
 										if(data.direction =="forward" && data.origin.id == village.data.villageId){
-											var outgoing = this.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
+											var outgoing = that.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
 											var dif = gTime - time.convertMStoUTC(completedAt - (duration*1000));
 											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
 												$rootScope.data_main.time_correction_command = dif
 												$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 											}
-											this.services.$timeout(function(){
-												this.services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
+											that.services.$timeout(function(){
+												that.services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 													command_id: data.command_id
 												})
 												resolve();
@@ -1489,7 +1490,7 @@ var robotTW2 = window.robotTW2 = undefined;
 										}
 									})
 									gTime = time.convertedTime();
-									this.services.socketService.emit(this.providers.routeProvider.SEND_CUSTOM_ARMY, {
+									that.services.socketService.emit(that.providers.routeProvider.SEND_CUSTOM_ARMY, {
 										start_village: village.getId(),
 										target_village: bb.id,
 										type: "attack",
@@ -1506,7 +1507,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				
 				if(!promise_calibrate){
 					promise_calibrate = calibrate().then(function(){
-						this.services.$timeout(function(){
+						that.services.$timeout(function(){
 							promise_calibrate = undefined;
 						}, 10 * conf.min)
 					})
@@ -1516,14 +1517,14 @@ var robotTW2 = window.robotTW2 = undefined;
 
 
 		$rootScope.$on("ready_init", function($event){
-			this.ready(function(){
+			that.ready(function(){
 				require(["robotTW2/services"]);
 				require(["robotTW2/databases"]);
 				require(["robotTW2/controllers"]);
 
-				angular.extend(this.controllers, define("robotTW2/controllers", [], function(){
-					this.loadScript("/controllers/MainController.js");
-					return this.controllers;
+				angular.extend(that.controllers, define("robotTW2/controllers", [], function(){
+					that.loadScript("/controllers/MainController.js");
+					return that.controllers;
 				}))	
 			}, ["all_villages_ready"])
 		})
@@ -1531,26 +1532,26 @@ var robotTW2 = window.robotTW2 = undefined;
 		$rootScope.$on("ready", function($event, type){
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
-				case this.controllers.MainController : {
-					this.loadScript("/controllers/FarmController.js");
-					this.loadScript("/controllers/AttackController.js");
-					this.loadScript("/controllers/HeadquarterController.js");
-					this.loadScript("/controllers/DefenseController.js");
-					this.loadScript("/controllers/ReconController.js");
-					this.loadScript("/controllers/AlertController.js");
-					this.loadScript("/controllers/SpyController.js");
-					this.loadScript("/controllers/DepositController.js");
-					this.loadScript("/controllers/RecruitController.js");
-					this.loadScript("/controllers/SecondVillageController.js");
-					this.loadScript("/controllers/DataController.js");
-//					this.loadScript("/controllers/MapController.js");
-//					this.loadScript("/controllers/MedicController.js");
+				case that.controllers.MainController : {
+					that.loadScript("/controllers/FarmController.js");
+					that.loadScript("/controllers/AttackController.js");
+					that.loadScript("/controllers/HeadquarterController.js");
+					that.loadScript("/controllers/DefenseController.js");
+					that.loadScript("/controllers/ReconController.js");
+					that.loadScript("/controllers/AlertController.js");
+					that.loadScript("/controllers/SpyController.js");
+					that.loadScript("/controllers/DepositController.js");
+					that.loadScript("/controllers/RecruitController.js");
+					that.loadScript("/controllers/SecondVillageController.js");
+					that.loadScript("/controllers/DataController.js");
+//					that.loadScript("/controllers/MapController.js");
+//					that.loadScript("/controllers/MedicController.js");
 					break
 				}
-				case this.controllers.AlertController : {
-					this.createScopeLang("alert", function(scopeLang){
+				case that.controllers.AlertController : {
+					that.createScopeLang("alert", function(scopeLang){
 						var params = {
-								controller		: this.controllers.AlertController,
+								controller		: that.controllers.AlertController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.ALERT,
 								templateName 	: "alert",
@@ -1558,13 +1559,13 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/AlertController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 				}
-				case this.controllers.RecruitController : {
-					this.createScopeLang("recruit", function(scopeLang){
+				case that.controllers.RecruitController : {
+					that.createScopeLang("recruit", function(scopeLang){
 						var params = {
-								controller		: this.controllers.RecruitController,
+								controller		: that.controllers.RecruitController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.RECRUIT,
 								templateName 	: "recruit",
@@ -1572,13 +1573,13 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/RecruitController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 				}
-				case this.controllers.HeadquarterController : {
-					this.createScopeLang("headquarter", function(scopeLang){
+				case that.controllers.HeadquarterController : {
+					that.createScopeLang("headquarter", function(scopeLang){
 						var params = {
-								controller		: this.controllers.HeadquarterController,
+								controller		: that.controllers.HeadquarterController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.HEADQUARTER,
 								templateName 	: "headquarter",
@@ -1586,13 +1587,13 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/HeadquarterController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 				}
-				case this.controllers.MedicController : {
-					this.createScopeLang("medic", function(scopeLang){
+				case that.controllers.MedicController : {
+					that.createScopeLang("medic", function(scopeLang){
 						var params = {
-								controller		: this.controllers.MedicController,
+								controller		: that.controllers.MedicController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.MEDIC,
 								templateName 	: "medic",
@@ -1600,13 +1601,13 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/MedicController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 				}
-				case this.controllers.SpyController : {
-					this.createScopeLang("spy", function(scopeLang){
+				case that.controllers.SpyController : {
+					that.createScopeLang("spy", function(scopeLang){
 						var params = {
-								controller		: this.controllers.SpyController,
+								controller		: that.controllers.SpyController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.SPY,
 								templateName 	: "spy",
@@ -1616,13 +1617,13 @@ var robotTW2 = window.robotTW2 = undefined;
 									width:"350px"
 								}
 						}		
-						this.build(params)
+						that.build(params)
 					})
 				}
-				case this.controllers.FarmController : {
-					this.createScopeLang("farm", function(scopeLang){
+				case that.controllers.FarmController : {
+					that.createScopeLang("farm", function(scopeLang){
 						var params = {
-								controller		: this.controllers.FarmController,
+								controller		: that.controllers.FarmController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.FARM,
 								templateName 	: "farm",
@@ -1632,13 +1633,13 @@ var robotTW2 = window.robotTW2 = undefined;
 									width:"950px"
 								}
 						}		
-						this.build(params)
+						that.build(params)
 					})
 				}
-				case this.controllers.DefenseController : {
-					this.createScopeLang("defense", function(scopeLang){
+				case that.controllers.DefenseController : {
+					that.createScopeLang("defense", function(scopeLang){
 						var params = {
-								controller		: this.controllers.DefenseController,
+								controller		: that.controllers.DefenseController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.DEFENSE,
 								templateName 	: "defense",
@@ -1646,14 +1647,14 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/DefenseController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.controllers.ReconController : {
-					this.createScopeLang("recon", function(scopeLang){
+				case that.controllers.ReconController : {
+					that.createScopeLang("recon", function(scopeLang){
 						var params = {
-								controller		: this.controllers.ReconController,
+								controller		: that.controllers.ReconController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.RECON,
 								templateName 	: "recon",
@@ -1663,14 +1664,14 @@ var robotTW2 = window.robotTW2 = undefined;
 									width:"350px"
 								}
 						}		
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.controllers.AttackController : {
-					this.createScopeLang("attack", function(scopeLang){
+				case that.controllers.AttackController : {
+					that.createScopeLang("attack", function(scopeLang){
 						var params = {
-								controller		: this.controllers.AttackController,
+								controller		: that.controllers.AttackController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.ATTACK,
 								templateName 	: "attack",
@@ -1678,14 +1679,14 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/AttackController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.controllers.DepositController : {
-					this.createScopeLang("deposit", function(scopeLang){
+				case that.controllers.DepositController : {
+					that.createScopeLang("deposit", function(scopeLang){
 						var params = {
-								controller		: this.controllers.DepositController,
+								controller		: that.controllers.DepositController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.DEPOSIT,
 								templateName 	: "deposit",
@@ -1695,14 +1696,14 @@ var robotTW2 = window.robotTW2 = undefined;
 									width:"350px"
 								}
 						}		
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.controllers.SecondVillageController : {
-					this.createScopeLang("secondvillage", function(scopeLang){
+				case that.controllers.SecondVillageController : {
+					that.createScopeLang("secondvillage", function(scopeLang){
 						var params = {
-								controller		: this.controllers.SecondVillageController,
+								controller		: that.controllers.SecondVillageController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.SECONDVILLAGE,
 								templateName 	: "secondvillage",
@@ -1712,14 +1713,14 @@ var robotTW2 = window.robotTW2 = undefined;
 									width:"350px"
 								}
 						}		
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.controllers.MapController : {
-					this.createScopeLang("map", function(scopeLang){
+				case that.controllers.MapController : {
+					that.createScopeLang("map", function(scopeLang){
 						var params = {
-								controller		: this.controllers.MapController,
+								controller		: that.controllers.MapController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.MAP,
 								templateName 	: "map",
@@ -1727,14 +1728,14 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/MapController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.controllers.DataController : {
-					this.createScopeLang("data", function(scopeLang){
+				case that.controllers.DataController : {
+					that.createScopeLang("data", function(scopeLang){
 						var params = {
-								controller		: this.controllers.DataController,
+								controller		: that.controllers.DataController,
 								scopeLang 		: scopeLang,
 								hotkey 			: conf.HOTKEY.DATA,
 								templateName 	: "data",
@@ -1742,12 +1743,12 @@ var robotTW2 = window.robotTW2 = undefined;
 								url		 		: "/controllers/DataController.js",
 								style 			: null
 						}		
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.controllers.AttackCompletionController : {
-					this.createScopeLang("attack", function(scopeLang){
+				case that.controllers.AttackCompletionController : {
+					that.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
 							return $('[ng-controller=ModalCustomArmyController]');
 						}
@@ -1756,19 +1757,19 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						, params = {
 								included_controller		: "ModalCustomArmyController",
-								controller				: this.controllers.AttackCompletionController,
+								controller				: that.controllers.AttackCompletionController,
 								get_son					: get_son,
-								provider_listener		: this.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
+								provider_listener		: that.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
 								scopeLang 				: scopeLang,
 								templateName 			: "attackcompletion",
 								url		 				: "/controllers/AttackCompletionController.js"
 						}	
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-//				case this.controllers.AttackDefenseController : {
-//				this.createScopeLang("attack", function(scopeLang){
+//				case that.controllers.AttackDefenseController : {
+//				that.createScopeLang("attack", function(scopeLang){
 //				var get_father = function(){
 //				return $('[ng-controller=OverviewController]');
 //				}
@@ -1777,19 +1778,19 @@ var robotTW2 = window.robotTW2 = undefined;
 //				}
 //				, params = {
 //				included_controller		: "OverviewController",
-//				controller				: this.controllers.AttackCompletionController,
+//				controller				: that.controllers.AttackCompletionController,
 //				get_son					: get_son,
-//				provider_listener		: this.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
+//				provider_listener		: that.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
 //				scopeLang 				: scopeLang,
 //				templateName 			: "defensecompletion",
 //				url		 				: "/controllers/DefenseCompletionController.js"
 //				}	
-//				this.build(params)
+//				that.build(params)
 //				})
 //				break
 //				}
-				case this.controllers.FarmCompletionController : {
-					this.createScopeLang("farm", function(scopeLang){
+				case that.controllers.FarmCompletionController : {
+					that.createScopeLang("farm", function(scopeLang){
 						var get_father = function(){
 							return $('[ng-controller=BattleReportController]');
 						}
@@ -1798,24 +1799,24 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						, params = {
 								included_controller		: "BattleReportController",
-								controller				: this.controllers.FarmCompletionController,
+								controller				: that.controllers.FarmCompletionController,
 								get_son					: get_son,
-								provider_listener		: this.providers.eventTypeProvider.OPEN_REPORT,
+								provider_listener		: that.providers.eventTypeProvider.OPEN_REPORT,
 								scopeLang 				: scopeLang,
 								templateName 			: "farmcompletion",
 								url		 				: "/controllers/FarmCompletionController.js"
 						}	
-						this.build(params)
+						that.build(params)
 					})
 					break
 				}
-				case this.services.MainService : {
-					this.createScopeLang("main", function(scopeLang){
-						this.services.$timeout(function(){
-							this.services.MainService && typeof(this.services.MainService.initExtensions) == "function" ? this.services.MainService.initExtensions() : null;
-							this.build(
+				case that.services.MainService : {
+					that.createScopeLang("main", function(scopeLang){
+						that.services.$timeout(function(){
+							that.services.MainService && typeof(that.services.MainService.initExtensions) == "function" ? that.services.MainService.initExtensions() : null;
+							that.build(
 									{
-										controller		: this.controllers.MainController,
+										controller		: that.controllers.MainController,
 										scopeLang 		: scopeLang,
 										hotkey 			: conf.HOTKEY.MAIN,
 										templateName 	: "main",
@@ -1833,80 +1834,80 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
-				case this.services.FarmService : {
-					this.services.FarmService && typeof(this.services.FarmService.init) == "function" ? this.requestFn.bind("farm", this.services.FarmService) : null;	
+				case that.services.FarmService : {
+					that.services.FarmService && typeof(that.services.FarmService.init) == "function" ? that.requestFn.bind("farm", that.services.FarmService) : null;	
 					break
 				}
-				case this.services.AttackService : {
-					this.services.AttackService && typeof(this.services.AttackService.init) == "function" ? this.requestFn.bind("attack", this.services.AttackService) : null;	
+				case that.services.AttackService : {
+					that.services.AttackService && typeof(that.services.AttackService.init) == "function" ? that.requestFn.bind("attack", that.services.AttackService) : null;	
 					break
 				}
-				case this.services.DefenseService : {
-					this.services.DefenseService && typeof(this.services.DefenseService.init) == "function" ? this.requestFn.bind("defense", this.services.DefenseService) : null;	
+				case that.services.DefenseService : {
+					that.services.DefenseService && typeof(that.services.DefenseService.init) == "function" ? that.requestFn.bind("defense", that.services.DefenseService) : null;	
 					break
 				}
-				case this.services.DepositService : {
-					this.services.DepositService && typeof(this.services.DepositService.init) == "function" ? this.requestFn.bind("deposit", this.services.DepositService) : null;	
+				case that.services.DepositService : {
+					that.services.DepositService && typeof(that.services.DepositService.init) == "function" ? that.requestFn.bind("deposit", that.services.DepositService) : null;	
 					break
 				}
-				case this.services.HeadquarterService : {
-					this.services.HeadquarterService && typeof(this.services.HeadquarterService.init) == "function" ? this.requestFn.bind("headquarter", this.services.HeadquarterService) : null;	
+				case that.services.HeadquarterService : {
+					that.services.HeadquarterService && typeof(that.services.HeadquarterService.init) == "function" ? that.requestFn.bind("headquarter", that.services.HeadquarterService) : null;	
 					break
 				}
-				case this.services.ReconService : {
-					this.services.ReconService && typeof(this.services.ReconService.init) == "function" ? this.requestFn.bind("recon", this.services.ReconService) : null;	
+				case that.services.ReconService : {
+					that.services.ReconService && typeof(that.services.ReconService.init) == "function" ? that.requestFn.bind("recon", that.services.ReconService) : null;	
 					break
 				}
-				case this.services.AlertService : {
-					this.services.AlertService && typeof(this.services.AlertService.init) == "function" ? this.requestFn.bind("alert", this.services.AlertService) : null;	
+				case that.services.AlertService : {
+					that.services.AlertService && typeof(that.services.AlertService.init) == "function" ? that.requestFn.bind("alert", that.services.AlertService) : null;	
 					break
 				}
-				case this.services.RecruitService : {
-					this.services.RecruitService && typeof(this.services.RecruitService.init) == "function" ? this.requestFn.bind("recruit", this.services.RecruitService) : null;	
+				case that.services.RecruitService : {
+					that.services.RecruitService && typeof(that.services.RecruitService.init) == "function" ? that.requestFn.bind("recruit", that.services.RecruitService) : null;	
 					break
 				}
-				case this.services.SpyService : {
-					this.services.SpyService && typeof(this.services.SpyService.init) == "function" ? this.requestFn.bind("spy", this.services.SpyService) : null;	
+				case that.services.SpyService : {
+					that.services.SpyService && typeof(that.services.SpyService.init) == "function" ? that.requestFn.bind("spy", that.services.SpyService) : null;	
 					break
 				}
-				case this.services.MedicService : {
-					this.services.MedicService && typeof(this.services.MedicService.init) == "function" ? this.requestFn.bind("medic", this.services.MedicService) : null;	
+				case that.services.MedicService : {
+					that.services.MedicService && typeof(that.services.MedicService.init) == "function" ? that.requestFn.bind("medic", that.services.MedicService) : null;	
 					break
 				}
-				case this.services.SecondVillageService : {
-					this.services.SecondVillageService && typeof(this.services.SecondVillageService.init) == "function" ? this.requestFn.bind("secondvillage", this.services.SecondVillageService) : null;	
+				case that.services.SecondVillageService : {
+					that.services.SecondVillageService && typeof(that.services.SecondVillageService.init) == "function" ? that.requestFn.bind("secondvillage", that.services.SecondVillageService) : null;	
 					break
 				}
-				case this.services.MapService : {
-					this.services.MapService && typeof(this.services.MapService.init) == "function" ? this.requestFn.bind("map", this.services.MapService) : null;	
+				case that.services.MapService : {
+					that.services.MapService && typeof(that.services.MapService.init) == "function" ? that.requestFn.bind("map", that.services.MapService) : null;	
 					break
 				}
-				case this.services.DataService : {
-					this.services.DataService && typeof(this.services.DataService.init) == "function" ? this.requestFn.bind("data", this.services.DataService) : null;	
+				case that.services.DataService : {
+					that.services.DataService && typeof(that.services.DataService.init) == "function" ? that.requestFn.bind("data", that.services.DataService) : null;	
 					break
 				}
 				case "database" : {
-					this.ready(function(){
-						this.services.$timeout(function(){
-							this.loadScript("/databases/data_villages.js")
-							this.services.$timeout(function(){
-								this.loadScript("/databases/data_farm.js");
-								this.loadScript("/databases/data_deposit.js");
-								this.loadScript("/databases/data_spy.js");
-								this.loadScript("/databases/data_alert.js");
-								this.loadScript("/databases/data_attack.js");
-								this.loadScript("/databases/data_recon.js");
-								this.loadScript("/databases/data_defense.js");
-								this.loadScript("/databases/data_headquarter.js");
-								this.loadScript("/databases/data_recruit.js");
-//								this.loadScript("/databases/data_medic.js");
-								this.loadScript("/databases/data_secondvillage.js");
-								this.loadScript("/databases/data_data.js");
-//								this.loadScript("/databases/data_map.js");
-								this.loadScript("/databases/data_logs.js");
+					that.ready(function(){
+						that.services.$timeout(function(){
+							that.loadScript("/databases/data_villages.js")
+							that.services.$timeout(function(){
+								that.loadScript("/databases/data_farm.js");
+								that.loadScript("/databases/data_deposit.js");
+								that.loadScript("/databases/data_spy.js");
+								that.loadScript("/databases/data_alert.js");
+								that.loadScript("/databases/data_attack.js");
+								that.loadScript("/databases/data_recon.js");
+								that.loadScript("/databases/data_defense.js");
+								that.loadScript("/databases/data_headquarter.js");
+								that.loadScript("/databases/data_recruit.js");
+//								that.loadScript("/databases/data_medic.js");
+								that.loadScript("/databases/data_secondvillage.js");
+								that.loadScript("/databases/data_data.js");
+//								that.loadScript("/databases/data_map.js");
+								that.loadScript("/databases/data_logs.js");
 
-								this.services.$timeout(function(){
-									this.loadScript("/databases/data_main.js");
+								that.services.$timeout(function(){
+									that.loadScript("/databases/data_main.js");
 								}, 3000)
 							}, 3000)
 						}, 1000)
@@ -1916,59 +1917,59 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 				case "data_main" : {
-					this.loadScript("/services/MainService.js");
+					that.loadScript("/services/MainService.js");
 					break
 				}
 				case "data_farm" : {
-					this.loadScript("/services/FarmService.js");
+					that.loadScript("/services/FarmService.js");
 					break
 				}
 				case "data_attack" : {
-					this.loadScript("/services/AttackService.js");
+					that.loadScript("/services/AttackService.js");
 					break
 				}
 				case "data_defense" : {
-					this.loadScript("/services/DefenseService.js");
+					that.loadScript("/services/DefenseService.js");
 					break
 				}
 				case "data_deposit" : {
-					this.loadScript("/services/DepositService.js");
+					that.loadScript("/services/DepositService.js");
 					break
 				}
 				case "data_headquarter" : {
-					this.loadScript("/services/HeadquarterService.js");
+					that.loadScript("/services/HeadquarterService.js");
 					break
 				}
 				case "data_recon" : {
-					this.loadScript("/services/ReconService.js");
+					that.loadScript("/services/ReconService.js");
 					break
 				}
 				case "data_alert" : {
-					this.loadScript("/services/AlertService.js");
+					that.loadScript("/services/AlertService.js");
 					break
 				}
 				case "data_recruit" : {
-					this.loadScript("/services/RecruitService.js");
+					that.loadScript("/services/RecruitService.js");
 					break
 				}
 				case "data_spy" : {
-					this.loadScript("/services/SpyService.js");
+					that.loadScript("/services/SpyService.js");
 					break
 				}
 				case "data_medic" : {
-					this.loadScript("/services/MedicService.js");
+					that.loadScript("/services/MedicService.js");
 					break
 				}
 				case "data_secondvillage" : {
-					this.loadScript("/services/SecondVillageService.js");
+					that.loadScript("/services/SecondVillageService.js");
 					break
 				}
 				case "data_map" : {
-					this.loadScript("/services/MapService.js");
+					that.loadScript("/services/MapService.js");
 					break
 				}
 				case "data_data" : {
-					this.loadScript("/services/DataService.js");
+					that.loadScript("/services/DataService.js");
 					break
 				}
 				}
