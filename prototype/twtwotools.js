@@ -623,9 +623,12 @@ var robotTW2 = window.robotTW2 = undefined;
 			windowManagerService 		: windowManagerService,
 			modelDataService			: modelDataService,
 			socketService				: socketService,
+			villageInfoService			: villageInfoService,
+			armyService					: armyService,
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService
 	};
+
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
 			routeProvider				: routeProvider
