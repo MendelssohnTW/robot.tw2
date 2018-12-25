@@ -1397,14 +1397,14 @@ var robotTW2 = window.robotTW2 = undefined;
 
 				function calibrate () {
 					return new Promise (function(resolve){
-						var villages = this.services.modeDataService.getVillages()
+						var villages = this.services.modelDataService.getVillages()
 						, village = villages[Object.keys(villages).shift()]
 						, units = {}
 						, unitInfo = village.unitInfo.getUnits()
 						, listener_completed = undefined
 						, gTime
 						, duration = undefined
-						, timetable = this.services.modeDataService.getGameData().data.units.map(function(obj, index, array){
+						, timetable = this.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
 							return [obj.speed * 60, obj.name]
 						}).map(m => {
 							return [m[0], m[1]];
@@ -1471,7 +1471,7 @@ var robotTW2 = window.robotTW2 = undefined;
 											return
 										}
 										if(data.direction =="forward" && data.origin.id == village.data.villageId){
-											var outgoing = this.services.modeDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
+											var outgoing = this.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
 											var dif = gTime - time.convertMStoUTC(completedAt - duration * 1000);
 											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
