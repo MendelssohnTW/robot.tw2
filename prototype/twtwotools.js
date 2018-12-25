@@ -36,6 +36,8 @@ var robotTW2 = window.robotTW2 = undefined;
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
 	var templateManagerService 	= injector.get("templateManagerService");
+	var villageInfoService 		= injector.get("villageInfoService");
+	var armyService 			= injector.get("armyService");
 	var reportService 			= injector.get("reportService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
 	var routeProvider 			= injector.get("routeProvider");
@@ -985,7 +987,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "secondVillageService");
 			robotTW2.register("services", "villageService");
 			robotTW2.register("services", "buildingService");
-			robotTW2.register("services", "armyService");
 			robotTW2.register("services", "overviewService");
 			robotTW2.register("services", "$filter");
 			robotTW2.register("services", "storageService");
@@ -1385,10 +1386,12 @@ var robotTW2 = window.robotTW2 = undefined;
 			"helper/time", 
 			"robotTW2/time",
 			"robotTW2/conf",
+			'helper/math',
 			], function(
 					helper, 
 					time,
-					conf
+					conf,
+					math
 			) {
 			return function(){
 				var promise_calibrate = undefined;
@@ -1426,6 +1429,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 
 						var obj_unit;
+
 						if(!units){
 							console.log("no units")
 							return
@@ -1435,32 +1439,24 @@ var robotTW2 = window.robotTW2 = undefined;
 
 						units = angular.merge({}, obj_unit)
 
-						var newTimeTable = [];
-
-						var timeCampo = timetable.map(m => {
-							if(Object.keys(units).find(f=> f == m[1])) {return m}
-						}).filter(f=>f!=undefined)[0][0];
+						var army = {
+							"officers"	: {},
+							"units"		: units
+						}
 
 						robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
 							'x' : village.data.x,
 							'y' : village.data.y
 						}, function(bb) {
 							if (bb) {
-
-								var x1 = village.getX(), 
-								y1 = village.getY(), 
-								x2 = bb.x, 
-								y2 = bb.y;
-
-								if (y1 % 2) //se y é impar
-									x1 += .5;
-								if (y2 % 2)
-									x2 += .5;
-								var dy = y1 - y2,
-								dx = x1 - x2; 
-
-								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75))) / (village_bonus / 100);
-								duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
+								var distancia = math.actualDistance(village.getPosition(), {
+									'x'			: bb.x,
+									'y'			: bb.y
+								})
+								, duration = robotTW2.services.armyService.calculateTravelTime(army, {
+									'barbarian'		: true,
+									'ownTribe'		: false
+								}, "attack");
 
 								robotTW2.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
@@ -1503,7 +1499,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						})
 					})
 				}
-				
+
 				if(!promise_calibrate){
 					promise_calibrate = calibrate().then(function(){
 						robotTW2.services.$timeout(function(){
