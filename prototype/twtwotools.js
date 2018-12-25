@@ -35,6 +35,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var windowManagerService 	= injector.get("windowManagerService");
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
+	var armyService		 		= injector.get("armyService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var reportService 			= injector.get("reportService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
@@ -622,7 +623,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			modelDataService			: modelDataService,
 			socketService				: socketService,
 			templateManagerService 		: templateManagerService,
-			reportService 				: reportService
+			reportService 				: reportService,
+			armyService					: armyService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
@@ -1380,16 +1382,148 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 		,
+		define("robotTW2/calculateTravelTime", [
+			"conf/commandTypes",
+			"conf/unitTypes",
+			"conf/buildingTypes",
+			"conf/researchTypes",
+			], function(
+					commandTypesConf,
+					unitTypes,
+					buildingTypes,
+					researchTypes
+			){
+			return function(army, village, opt_commandType, opt_flags) {
+
+
+				isForcedMarchActive = function (army, commandType, village) {
+					var forcedMarchResearch;
+
+					if (hasUnitsOfType(army, unitTypes.KNIGHT) && (commandType === commandTypesConf.TYPES.SUPPORT)) {
+						// forced march
+						forcedMarchResearch	= village.getBuildingResearch(buildingTypes.STATUE, researchTypes.STATUE.FORCED_MARCH);
+
+						if (forcedMarchResearch && forcedMarchResearch.active) {
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				var unitsObject			= robotTW2.services.modelDataService.getGameData().getUnitsObject(),
+				officerSpeeds		= robotTW2.services.modelDataService.getOfficers().getDataForType('change_movement_speed', army.officers),
+				worldConfig			= robotTW2.services.modelDataService.getWorldConfig(),
+				travelTime			= 0,
+				barbarianTarget		= false,
+				ownTribeTarget		= false,
+				useOfficers			= true,
+				useEffects			= true,
+				useBastard			= false,
+				commandType			= opt_commandType || commandTypesConf.TYPES.ATTACK,
+				forcedMarch			= isForcedMarchActive(army, commandType, village),
+				officerSpeed,
+				unitTravelTime,
+				unitName,
+				effectValue,
+				rallyPointData,
+				i;
+
+				if (!Object.keys(army.units).length) {
+					return 0;
+				}
+
+				if (opt_flags) {
+					if (opt_flags.hasOwnProperty('barbarian')) {
+						barbarianTarget = opt_flags.barbarian;
+					}
+					if (opt_flags.hasOwnProperty('ownTribe')) {
+						ownTribeTarget = opt_flags.ownTribe;
+					}
+					if (opt_flags.hasOwnProperty('officers')) {
+						useOfficers = opt_flags.officers;
+					}
+					if (opt_flags.hasOwnProperty('effects')) {
+						useEffects = opt_flags.effects;
+					}
+				}
+
+				// Get slowest unit (with biggest speed property) and set it's speed as the army travel time
+				for (unitName in unitsObject) {
+					if (army.units[unitName]) {
+						unitTravelTime = unitsObject[unitName].speed;
+						if (unitTravelTime > travelTime) {
+							travelTime = unitTravelTime;
+						}
+					}
+				}
+
+				if (useEffects && forcedMarch) {
+					travelTime = unitsObject[unitTypes.KNIGHT].speed;
+				}
+
+				if (useOfficers) {
+					// Modify the travel time via the officer values
+					for (i = 0; i < officerSpeeds.length; i++) {
+						officerSpeed = officerSpeeds[i];
+						if ((barbarianTarget && officerSpeed.conditions.target_barbarian) || (!officerSpeed.conditions.target_barbarian)) {
+							if (officerSpeed.speed) {
+								// The bastard officer has special speed flag, as take the same as snob speed. In these
+								// cases, the unit type as string should be in the officerSpeed.speed property.
+								travelTime = unitsObject[officerSpeed.speed].speed;
+								useBastard = true;
+							} else if (officerSpeed.bonus_percentage && !forcedMarch) {
+								// Other officers who modify speed, has a bonus_percentage value.
+								travelTime /= (1 + (officerSpeed.bonus_percentage / 100));
+							}
+						}
+					}
+				}
+
+				if (useEffects) {
+					if (barbarianTarget && (commandType === commandTypesConf.TYPES.ATTACK)) {
+						// farm speed effect
+						effectValue = effectService.getStackedEffectValue(effectTypes.FARM_SPEED_INCREASE);
+						if (effectValue) {
+							travelTime /= effectValue;
+						}
+
+						// rally point speed bonus
+						if (worldConfig.isRallyPointSpeedBonusEnabled() &&
+								worldConfig.getRallyPointSpeedBonusVsBarbarians() &&
+								!hasUnitsOfType(army, unitTypes.SNOB) &&
+								!useBastard
+						) {
+							rallyPointData = selectedVillage.getBuildingData().getDataForBuilding(buildingTypes.RALLY_POINT);
+							travelTime /= (rallyPointData.specialFunction.currentValue / 100);
+						}
+					}
+
+					if (ownTribeTarget && (commandType === commandTypesConf.TYPES.SUPPORT)) {
+						// tribe support effect
+						effectValue = effectService.getStackedEffectValue(effectTypes.FASTER_TRIBE_SUPPORT);
+						if (effectValue) {
+							travelTime /= effectValue;
+						}
+					}
+				}
+
+				return +((travelTime / worldConfig.getSpeed()) * 60).toFixed(2);
+			}
+		})
+		,
 		define("robotTW2/calibrate_time", [
 			"helper/time", 
 			"robotTW2/time",
 			"robotTW2/conf",
-			'helper/math',
+			"helper/math",
+			"robotTW2/calculateTravelTime",
 			], function(
 					helper, 
 					time,
 					conf,
-					math
+					math,
+					calculateTravelTime
 			) {
 			return function(){
 				var promise_calibrate = undefined;
@@ -1402,18 +1536,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						, unitInfo = village.unitInfo.getUnits()
 						, listener_completed = undefined
 						, gTime
-						, duration = undefined
-						, rallyPointSpeedBonusVsBarbarians = robotTW2.services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
-						, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-//						, timetable = robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
-//							return [obj.speed * 60, obj.name]
-//						}).map(m => {
-//							return [m[0], m[1]];
-//						}).sort((a, b) => {
-//							return a[0] - b[0];
-//						})
-						, units = {}
-						, unitInfo = village.unitInfo.getUnits();
 
 						if (!unitInfo) {return};
 						for(unit in unitInfo){
@@ -1437,17 +1559,10 @@ var robotTW2 = window.robotTW2 = undefined;
 
 						units = angular.merge({}, obj_unit)
 
-//						var newTimeTable = [];
-//
-//						var timeCampo = timetable.map(m => {
-//							if(Object.keys(units).find(f=> f == m[1])) {return m}
-//						}).filter(f=>f!=undefined)[0][0];
-						
-						var unitsObject = robotTW2.services.modelDataService.getGameData().getUnitsObject();
-						
-						var speed = unitsObject[Object.keys(units)[0]].speed;
-						
-						// farm_speed_increase
+						var army = {
+							'officers'	: {},
+							"units"		: units
+						}
 
 						robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
 							'x' : village.data.x,
@@ -1458,7 +1573,11 @@ var robotTW2 = window.robotTW2 = undefined;
 									'x'			: bb.x,
 									'y'			: bb.y
 								})
+								speed = calculateTravelTime(army, "attack", {
+									'barbarian'		: true
+								})
 								, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
+								
 
 								robotTW2.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
