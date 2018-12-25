@@ -1465,7 +1465,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
 									listener_completed = undefined;
-									listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+									listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
 										if(!data){
 											resolve()
 											return
@@ -1476,10 +1476,10 @@ var robotTW2 = window.robotTW2 = undefined;
 											var dif = gTime - time.convertMStoUTC(completedAt - (duration*1000));
 											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
 												$rootScope.data_main.time_correction_command = dif
-												$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
+												$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 											}
 											robotTW2.services.$timeout(function(){
-												robotTW2.services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
+												robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_CANCEL, {
 													command_id: data.command_id
 												})
 												resolve();
