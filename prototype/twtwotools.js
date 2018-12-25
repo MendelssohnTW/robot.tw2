@@ -1576,7 +1576,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									'x'			: bb.x,
 									'y'			: bb.y
 								})
-								speed = calculateTravelTime(army, "attack", {
+								speed = calculateTravelTime(army, village, "attack", {
 									'barbarian'		: true
 								})
 								, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
