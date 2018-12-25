@@ -1443,7 +1443,7 @@ var robotTW2 = window.robotTW2 = undefined;
 //							if(Object.keys(units).find(f=> f == m[1])) {return m}
 //						}).filter(f=>f!=undefined)[0][0];
 						
-						var unitsObject = modelDataService.getGameData().getUnitsObject();
+						var unitsObject = robotTW2.services.modelDataService.getGameData().getUnitsObject();
 						
 						var speed = unitsObject[Object.keys(units)[0]].speed;
 						
