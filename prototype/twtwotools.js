@@ -1394,9 +1394,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			) {
 			return function(){
 
-				var promise_calibrate = undefined;
-
-				promise_calibrate = function () {
+				var promise_calibrate = function () {
 					return new Promise (function(resolve){
 						var villages = this.services.modeDataService.getVillages()
 						, village = villages[Object.keys(villages).shift()]
@@ -1503,7 +1501,6 @@ var robotTW2 = window.robotTW2 = undefined;
 							}
 						})
 					})
-				}
 
 				if(!promise_calibrate){
 					promise_calibrate().then(function(){
