@@ -12,7 +12,8 @@ define("robotTW2/services/AttackService", [
 			helper,
 			conf,
 			notify,
-			time
+			time,
+			calibrate_time
 	){
 	return (function AttackService(
 			$rootScope,
@@ -23,8 +24,7 @@ define("robotTW2/services/AttackService", [
 			commandQueue,
 			socketService,
 			ready,
-			loadScript,
-			calibrate_time
+			loadScript
 	) {
 
 		var isRunning = !1
