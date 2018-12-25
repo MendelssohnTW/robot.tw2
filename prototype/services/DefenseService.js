@@ -757,7 +757,6 @@ define("robotTW2/services/DefenseService", [
 			init				: init,
 			start				: start,
 			stop 				: stop,
-			sendCommandDefense 	: sendCommandDefense,
 			calibrate_time		: calibrate_time,
 			removeCommandDefense: function(id_command){
 				commandQueue.unbind(id_command)
