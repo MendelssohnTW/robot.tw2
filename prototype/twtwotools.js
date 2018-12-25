@@ -1473,7 +1473,7 @@ var robotTW2 = window.robotTW2 = undefined;
 										if(data.direction =="forward" && data.origin.id == village.data.villageId){
 											var outgoing = this.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
-											var dif = gTime - time.convertMStoUTC(completedAt - duration * 1000);
+											var dif = gTime - time.convertMStoUTC(completedAt - duration);
 											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
 												$rootScope.data_main.time_correction_command = dif
 												$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
