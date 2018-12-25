@@ -36,8 +36,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
 	var templateManagerService 	= injector.get("templateManagerService");
-	var villageInfoService 		= injector.get("villageInfoService");
-	var armyService 			= injector.get("armyService");
 	var reportService 			= injector.get("reportService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
 	var routeProvider 			= injector.get("routeProvider");
@@ -623,12 +621,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			windowManagerService 		: windowManagerService,
 			modelDataService			: modelDataService,
 			socketService				: socketService,
-			villageInfoService			: villageInfoService,
-			armyService					: armyService,
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService
 	};
-
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
 			routeProvider				: routeProvider
@@ -1410,13 +1405,13 @@ var robotTW2 = window.robotTW2 = undefined;
 						, duration = undefined
 						, rallyPointSpeedBonusVsBarbarians = robotTW2.services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 						, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-						, timetable = robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
-							return [obj.speed * 60, obj.name]
-						}).map(m => {
-							return [m[0], m[1]];
-						}).sort((a, b) => {
-							return a[0] - b[0];
-						})
+//						, timetable = robotTW2.services.modelDataService.getGameData().data.units.map(function(obj, index, array){
+//							return [obj.speed * 60, obj.name]
+//						}).map(m => {
+//							return [m[0], m[1]];
+//						}).sort((a, b) => {
+//							return a[0] - b[0];
+//						})
 						, units = {}
 						, unitInfo = village.unitInfo.getUnits();
 
@@ -1442,10 +1437,17 @@ var robotTW2 = window.robotTW2 = undefined;
 
 						units = angular.merge({}, obj_unit)
 
-						var army = {
-							"officers"	: {},
-							"units"		: units
-						}
+//						var newTimeTable = [];
+//
+//						var timeCampo = timetable.map(m => {
+//							if(Object.keys(units).find(f=> f == m[1])) {return m}
+//						}).filter(f=>f!=undefined)[0][0];
+						
+						var unitsObject = modelDataService.getGameData().getUnitsObject();
+						
+						var speed = unitsObject[Object.keys(units)[0]].speed;
+						
+						// farm_speed_increase
 
 						robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
 							'x' : village.data.x,
@@ -1456,10 +1458,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									'x'			: bb.x,
 									'y'			: bb.y
 								})
-								, duration = robotTW2.services.armyService.calculateTravelTime(army, {
-									'barbarian'		: true,
-									'ownTribe'		: false
-								}, "attack");
+								, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
 
 								robotTW2.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
