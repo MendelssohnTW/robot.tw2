@@ -1462,7 +1462,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								var distancia = Math.abs(Math.sqrt(Math.pow(dx,2) + (Math.pow(dy,2) * 0.75)));
 								duration = helper.unreadableSeconds(helper.readableSeconds(timeCampo * distancia, false))
 
-								$timeout(function(){
+								this.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
 									listener_completed = undefined;
 									listener_completed = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
@@ -1478,7 +1478,7 @@ var robotTW2 = window.robotTW2 = undefined;
 												$rootScope.data_main.time_correction_command = dif
 												$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 											}
-											$timeout(function(){
+											this.services.$timeout(function(){
 												this.services.socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 													command_id: data.command_id
 												})
