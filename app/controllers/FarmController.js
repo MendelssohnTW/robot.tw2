@@ -108,7 +108,8 @@ define("robotTW2/controllers/FarmController", [
 				}
 			};
 			for (presetId in $scope.data.presets) {
-				$scope.data.presets[presetId] = angular.merge({}, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
+//				$scope.data.presets[presetId] = angular.merge({}, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
+				angular.merge($scope.data.presets[presetId], $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[presetId])
 				if(!$scope.data.presets[presetId].assigned_villages){continue}
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
 			}

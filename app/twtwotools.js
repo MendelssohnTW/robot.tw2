@@ -112,6 +112,22 @@ var robotTW2 = window.robotTW2 = undefined;
 				delete fns[key];
 			}
 		}
+		, service.unbindAll = function(type) {
+			Object.keys(fns).map(function(fn){
+				if(!fns[fn].params) {
+					return undefined
+				} else {
+					if(!fns[fn].params.type) {
+						return undefined
+					} else {
+						if(fns[fn].params.type == type){
+							exports.services.$timeout.cancel(fns[fn])
+							delete fns[fn]
+						}
+					}
+				}
+			})
+		}
 		, service.getFns = function(){return fns}
 		,
 		service
@@ -147,8 +163,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			requestFn.unbind(key);
 		}
 		,
-		service.unbindAll = function(opt_db) {
-			if(!opt_db) return
+		service.unbindAll = function(type, opt_db) {
+			if(!opt_db)	{
+				if(type){
+					requestFn.unbindAll(type)
+				}
+				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+				return
+			}
 			Object.keys(opt_db.commands).forEach(function(key) {
 				try {
 					exports.services.$timeout.cancel(requestFn.get(key));
@@ -241,7 +263,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						res()
 					})
-					
+
 				}
 				b.onerror = function(erro){
 					console.log(erro)
@@ -269,7 +291,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 	}
 	, addScript = function(script){
-		
+
 		if(!scripts_loaded.find(f => f == script)){
 			scripts_loaded.push(script)
 		}
@@ -602,7 +624,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService
 	};
-
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
 			routeProvider				: routeProvider
@@ -860,6 +881,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					TIME_DELAY_FARM			: 1000,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
+					TIME_SNIPER_POST_SNOB	: 3000,
 					MAX_TIME_CORRECTION 	: 3 * seg,
 					MIN_TIME_SNIPER_ANT 	: 5,
 					MAX_TIME_SNIPER_ANT 	: 600,
@@ -963,13 +985,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "secondVillageService");
 			robotTW2.register("services", "villageService");
 			robotTW2.register("services", "buildingService");
-			robotTW2.register("services", "armyService");
 			robotTW2.register("services", "overviewService");
 			robotTW2.register("services", "$filter");
 			robotTW2.register("services", "storageService");
 			robotTW2.register("services", "presetListService");
 			robotTW2.register("services", "presetService");
 			robotTW2.register("services", "groupService");
+			robotTW2.register("services", "effectService");
+			robotTW2.register("services", "armyService");
 
 			return robotTW2.services;
 		}))
@@ -1033,6 +1056,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
 				"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
 				"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
+				"CHANGE_COMMANDS_DEFENSE"		: "Internal/robotTW2/change_commands_defense",
 				"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
 				"CMD_SENT"						: "Internal/robotTW2/cmd_sent",
 				"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
@@ -1357,6 +1381,261 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			}
 		})
+		,
+		define("robotTW2/calculateTravelTime", [
+			"conf/commandTypes",
+			"conf/unitTypes",
+			"conf/buildingTypes",
+			"conf/researchTypes",
+			"conf/effectTypes",
+			], function(
+					commandTypesConf,
+					unitTypes,
+					buildingTypes,
+					researchTypes,
+					effectTypes
+			){
+			return function(army, village, opt_commandType, opt_flags) {
+
+				hasUnitsOfType = function (army, type) {
+					return !!army.units[type] && (army.units[type] > 0);
+				}
+				
+				isForcedMarchActive = function (army, commandType, village) {
+					var forcedMarchResearch;
+
+					if (hasUnitsOfType(army, unitTypes.KNIGHT) && (commandType === commandTypesConf.TYPES.SUPPORT)) {
+						// forced march
+						forcedMarchResearch	= village.getBuildingResearch(buildingTypes.STATUE, researchTypes.STATUE.FORCED_MARCH);
+
+						if (forcedMarchResearch && forcedMarchResearch.active) {
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				var unitsObject			= robotTW2.services.modelDataService.getGameData().getUnitsObject(),
+				officerSpeeds		= robotTW2.services.modelDataService.getOfficers().getDataForType('change_movement_speed', army.officers),
+				worldConfig			= robotTW2.services.modelDataService.getWorldConfig(),
+				travelTime			= 0,
+				barbarianTarget		= false,
+				ownTribeTarget		= false,
+				useOfficers			= true,
+				useEffects			= true,
+				useBastard			= false,
+				commandType			= opt_commandType || commandTypesConf.TYPES.ATTACK,
+				forcedMarch			= isForcedMarchActive(army, commandType, village),
+				officerSpeed,
+				unitTravelTime,
+				unitName,
+				effectValue,
+				rallyPointData,
+				i;
+
+				if (!Object.keys(army.units).length) {
+					return 0;
+				}
+
+				if (opt_flags) {
+					if (opt_flags.hasOwnProperty('barbarian')) {
+						barbarianTarget = opt_flags.barbarian;
+					}
+					if (opt_flags.hasOwnProperty('ownTribe')) {
+						ownTribeTarget = opt_flags.ownTribe;
+					}
+					if (opt_flags.hasOwnProperty('officers')) {
+						useOfficers = opt_flags.officers;
+					}
+					if (opt_flags.hasOwnProperty('effects')) {
+						useEffects = opt_flags.effects;
+					}
+				}
+
+				// Get slowest unit (with biggest speed property) and set it's speed as the army travel time
+				for (unitName in unitsObject) {
+					if (army.units[unitName]) {
+						unitTravelTime = unitsObject[unitName].speed;
+						if (unitTravelTime > travelTime) {
+							travelTime = unitTravelTime;
+						}
+					}
+				}
+
+				if (useEffects && forcedMarch) {
+					travelTime = unitsObject[unitTypes.KNIGHT].speed;
+				}
+
+				if (useOfficers) {
+					// Modify the travel time via the officer values
+					for (i = 0; i < officerSpeeds.length; i++) {
+						officerSpeed = officerSpeeds[i];
+						if ((barbarianTarget && officerSpeed.conditions.target_barbarian) || (!officerSpeed.conditions.target_barbarian)) {
+							if (officerSpeed.speed) {
+								// The bastard officer has special speed flag, as take the same as snob speed. In these
+								// cases, the unit type as string should be in the officerSpeed.speed property.
+								travelTime = unitsObject[officerSpeed.speed].speed;
+								useBastard = true;
+							} else if (officerSpeed.bonus_percentage && !forcedMarch) {
+								// Other officers who modify speed, has a bonus_percentage value.
+								travelTime /= (1 + (officerSpeed.bonus_percentage / 100));
+							}
+						}
+					}
+				}
+
+				if (useEffects) {
+					if (barbarianTarget && (commandType === commandTypesConf.TYPES.ATTACK)) {
+						// farm speed effect
+						effectValue = robotTW2.services.effectService.getStackedEffectValue(effectTypes.FARM_SPEED_INCREASE);
+						if (effectValue) {
+							travelTime /= effectValue;
+						}
+
+						// rally point speed bonus
+						if (worldConfig.isRallyPointSpeedBonusEnabled() &&
+								worldConfig.getRallyPointSpeedBonusVsBarbarians() &&
+								!hasUnitsOfType(army, unitTypes.SNOB) &&
+								!useBastard
+						) {
+							rallyPointData = village.getBuildingData().getDataForBuilding(buildingTypes.RALLY_POINT);
+							travelTime /= (rallyPointData.specialFunction.currentValue / 100);
+						}
+					}
+
+					if (ownTribeTarget && (commandType === commandTypesConf.TYPES.SUPPORT)) {
+						// tribe support effect
+						effectValue = effectService.getStackedEffectValue(effectTypes.FASTER_TRIBE_SUPPORT);
+						if (effectValue) {
+							travelTime /= effectValue;
+						}
+					}
+				}
+
+				return +((travelTime / worldConfig.getSpeed()) * 60).toFixed(2);
+			}
+		})
+		,
+		define("robotTW2/calibrate_time", [
+			"helper/time", 
+			"robotTW2/time",
+			"robotTW2/conf",
+			"helper/math",
+			"robotTW2/calculateTravelTime",
+			], function(
+					helper, 
+					time,
+					conf,
+					math,
+					calculateTravelTime
+			) {
+			return function(){
+				var promise_calibrate = undefined;
+
+				function calibrate () {
+					return new Promise (function(resolve){
+						var villages = robotTW2.services.modelDataService.getVillages()
+						, village = villages[Object.keys(villages).shift()]
+						, units = {}
+						, unitInfo = village.unitInfo.getUnits()
+						, listener_completed = undefined
+						, gTime
+
+						if (!unitInfo) {return};
+						for(unit in unitInfo){
+							if (unitInfo.hasOwnProperty(unit)){
+								if (unitInfo[unit].available > 0 && !["doppelsoldner","knight","trebuchet"].some(f => f == unit)){
+									var unit_available = {[unit]: unitInfo[unit].available};
+									units[Object.keys(unit_available)[0]] = 
+										Object.keys(unit_available).map(function(key) {return unit_available[key] = 1})[0];
+								}
+							}
+						}
+
+						var obj_unit;
+
+						if(!units){
+							console.log("no units")
+							return
+						} else {
+							obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
+						}
+
+						units = angular.merge({}, obj_unit)
+
+						var army = {
+							'officers'	: {},
+							"units"		: units
+						}
+
+						robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
+							'x' : village.data.x,
+							'y' : village.data.y
+						}, function(bb) {
+							if (bb) {
+								var distancia = math.actualDistance(village.getPosition(), {
+									'x'			: bb.x,
+									'y'			: bb.y
+								})
+								speed = calculateTravelTime(army, village, "attack", {
+									'barbarian'		: true
+								})
+								, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
+								
+
+								robotTW2.services.$timeout(function(){
+									listener_completed ? listener_completed() : listener_completed;
+									listener_completed = undefined;
+									listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+										if(!data){
+											resolve()
+											return
+										}
+										if(data.direction =="forward" && data.origin.id == village.data.villageId){
+											var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
+											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
+											var dif = gTime - time.convertMStoUTC(completedAt - (duration*1000));
+											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
+												$rootScope.data_main.time_correction_command = dif
+												$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
+											}
+											robotTW2.services.$timeout(function(){
+												robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_CANCEL, {
+													command_id: data.command_id
+												})
+												resolve();
+											}, 5000)
+											listener_completed();
+											listener_completed = undefined;
+										}
+									})
+									gTime = time.convertedTime();
+									robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SEND_CUSTOM_ARMY, {
+										start_village: village.getId(),
+										target_village: bb.id,
+										type: "attack",
+										units: units,
+										icon: 0,
+										officers: {},
+										catapult_target: null
+									});
+								}, 1000);
+							}
+						})
+					})
+				}
+
+				if(!promise_calibrate){
+					promise_calibrate = calibrate().then(function(){
+						robotTW2.services.$timeout(function(){
+							promise_calibrate = undefined;
+						}, 10 * conf.min)
+					})
+				}
+			}
+		})
+
 
 		$rootScope.$on("ready_init", function($event){
 			robotTW2.ready(function(){
@@ -1610,6 +1889,27 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+//				case robotTW2.controllers.AttackDefenseController : {
+//				robotTW2.createScopeLang("attack", function(scopeLang){
+//				var get_father = function(){
+//				return $('[ng-controller=OverviewController]');
+//				}
+//				, get_son = function(){
+//				return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+//				}
+//				, params = {
+//				included_controller		: "OverviewController",
+//				controller				: robotTW2.controllers.AttackCompletionController,
+//				get_son					: get_son,
+//				provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
+//				scopeLang 				: scopeLang,
+//				templateName 			: "defensecompletion",
+//				url		 				: "/controllers/DefenseCompletionController.js"
+//				}	
+//				robotTW2.build(params)
+//				})
+//				break
+//				}
 				case robotTW2.controllers.FarmCompletionController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
 						var get_father = function(){

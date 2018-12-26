@@ -31,7 +31,7 @@ define("robotTW2/databases/data_defense", [
 			version					: conf.VERSION.DEFENSE,
 			time_sniper_ant			: conf.TIME_SNIPER_ANT,
 			time_sniper_post		: conf.TIME_SNIPER_POST,
-			commands				: {}
+			time_sniper_post_snob	: conf.TIME_SNIPER_POST_SNOB
 	}
 
 	if(!data_defense){
