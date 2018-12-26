@@ -570,6 +570,7 @@ define("robotTW2/services/FarmService", [
 										f()
 									} else {
 										$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+										clear()
 									}
 								})
 							} else {
