@@ -41,8 +41,11 @@ define("robotTW2/controllers/MainController", [
 			}
 			$rootScope.data_main.setExtensions($scope.extensions);
 
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			if (!$scope.$$phase) $scope.$apply();
 
+		}
+		, updateCorrection = function(){
+			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.recalibrate = function(){
@@ -128,7 +131,7 @@ define("robotTW2/controllers/MainController", [
 		};
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
-			update()
+			updateCorrection()
 		})
 
 		update()

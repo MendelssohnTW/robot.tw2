@@ -236,7 +236,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, promise = undefined
 	, loadScript = function(url){
 		if(!promise){
-			robotTW2.services.$timeout(function(){
+			exports.services.$timeout(function(){
 				res()
 			}, 30000)
 			promise = new Promise(function(res){
