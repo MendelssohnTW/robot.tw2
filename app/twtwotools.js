@@ -236,10 +236,10 @@ var robotTW2 = window.robotTW2 = undefined;
 	, promise = undefined
 	, loadScript = function(url){
 		if(!promise){
-			exports.services.$timeout(function(){
-				res()
-			}, 30000)
 			promise = new Promise(function(res){
+				t = exports.services.$timeout(function(){
+					res()
+				}, 30000)
 				var a = Math.round(Math.random() * 1e10)
 				var b = document.createElement("script");
 				b.type = "text/javascript";
