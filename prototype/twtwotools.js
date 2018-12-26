@@ -1499,7 +1499,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								!hasUnitsOfType(army, unitTypes.SNOB) &&
 								!useBastard
 						) {
-							rallyPointData = selectedVillage.getBuildingData().getDataForBuilding(buildingTypes.RALLY_POINT);
+							rallyPointData = village.getBuildingData().getDataForBuilding(buildingTypes.RALLY_POINT);
 							travelTime /= (rallyPointData.specialFunction.currentValue / 100);
 						}
 					}
