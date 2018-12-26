@@ -235,15 +235,18 @@ var robotTW2 = window.robotTW2 = undefined;
 	, script_queue = []
 	, promise = undefined
 	, loadScript = function(url){
+		var t = undefined;
 		if(!promise){
-			exports.services.$timeout(function(){
-				res()
-			}, 30000)
 			promise = new Promise(function(res){
+				t = exports.services.$timeout(function(){
+					res()
+				}, 30000)
 				var a = Math.round(Math.random() * 1e10)
 				var b = document.createElement("script");
 				b.type = "text/javascript";
 				b.onload = function(data){
+					exports.services.$timeout.cancel(t);
+					t = undefined;
 					var c = data.target.src.split(host)[1];
 					c = c.substr(1);
 					var d = c.split("/");
