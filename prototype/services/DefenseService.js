@@ -635,7 +635,7 @@ define("robotTW2/services/DefenseService", [
 		, addDefenseSelector = function(command, i){
 			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
 			
-			var isSelected = Object.keys(requestFn).map(function(fn){return requestFn[fn]}).find(f => f.id_command == command.command_id);
+			var isSelected = requestFn.get(command.command_id);
 			var isMark = false;
 			if (isSelected != undefined){
 				isMark = true;
