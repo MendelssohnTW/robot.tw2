@@ -572,7 +572,7 @@ define("robotTW2/services/DefenseService", [
 				return null
 			}
 		}
-		, addDefense = function(params, id_command){
+		, addDefense = function(params, opt_id){
 //			if(params && id_command){
 //			var t = {
 //			id_command: id_command
