@@ -1103,7 +1103,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onclose = function onclose($event){
 //				$event.code == 1006
-				console.log($event)
 			},
 			onerror = function onerror($event){
 				if($rootScope.data_data){
