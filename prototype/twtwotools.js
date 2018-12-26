@@ -35,7 +35,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var windowManagerService 	= injector.get("windowManagerService");
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
-	var armyService		 		= injector.get("armyService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var reportService 			= injector.get("reportService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
@@ -623,8 +622,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			modelDataService			: modelDataService,
 			socketService				: socketService,
 			templateManagerService 		: templateManagerService,
-			reportService 				: reportService,
-			armyService					: armyService
+			reportService 				: reportService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
@@ -993,6 +991,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "presetListService");
 			robotTW2.register("services", "presetService");
 			robotTW2.register("services", "groupService");
+			robotTW2.register("services", "effectService");
+			robotTW2.register("services", "armyService");
 
 			return robotTW2.services;
 		}))
@@ -1387,11 +1387,13 @@ var robotTW2 = window.robotTW2 = undefined;
 			"conf/unitTypes",
 			"conf/buildingTypes",
 			"conf/researchTypes",
+			"conf/effectTypes",
 			], function(
 					commandTypesConf,
 					unitTypes,
 					buildingTypes,
-					researchTypes
+					researchTypes,
+					effectTypes
 			){
 			return function(army, village, opt_commandType, opt_flags) {
 
@@ -1486,7 +1488,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				if (useEffects) {
 					if (barbarianTarget && (commandType === commandTypesConf.TYPES.ATTACK)) {
 						// farm speed effect
-						effectValue = effectService.getStackedEffectValue(effectTypes.FARM_SPEED_INCREASE);
+						effectValue = robotTW2.services.effectService.getStackedEffectValue(effectTypes.FARM_SPEED_INCREASE);
 						if (effectValue) {
 							travelTime /= effectValue;
 						}
