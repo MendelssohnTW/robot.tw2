@@ -19,13 +19,13 @@ define("robotTW2/services/DefenseService", [
 			$rootScope,
 			providers,
 			$timeout,
-			commandQueue,
 			socketService,
 			modelDataService,
 			overviewService,
 			loadController,
 			ready,
-			commandQueue
+			commandQueue,
+			requestFn
 	) {
 
 		var isRunning = !1
@@ -633,7 +633,8 @@ define("robotTW2/services/DefenseService", [
 //		}
 		, addDefenseSelector = function(command, i){
 			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
-			var isSelected = commandQueue.find(f => f.id_command == command.command_id);
+			
+			var isSelected = Object.keys(fns).map(function(fn){return fns[fn]}).find(f => f.id_command == command.command_id);
 			var isMark = false;
 			if (isSelected != undefined){
 				isMark = true;
@@ -777,12 +778,12 @@ define("robotTW2/services/DefenseService", [
 			robotTW2.services.$rootScope,
 			robotTW2.providers,
 			robotTW2.services.$timeout,
-			robotTW2.commandQueue,
 			robotTW2.services.socketService,
 			robotTW2.services.modelDataService,
 			robotTW2.services.overviewService,
 			robotTW2.loadController,
 			robotTW2.ready,
-			robotTW2.commandQueue
+			robotTW2.commandQueue,
+			robotTW2.requestFn
 	)
 })
