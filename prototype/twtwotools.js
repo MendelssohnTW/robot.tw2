@@ -236,6 +236,9 @@ var robotTW2 = window.robotTW2 = undefined;
 	, promise = undefined
 	, loadScript = function(url){
 		if(!promise){
+			robotTW2.services.$timeout(function(){
+				res()
+			}, 30000)
 			promise = new Promise(function(res){
 				var a = Math.round(Math.random() * 1e10)
 				var b = document.createElement("script");
@@ -882,7 +885,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
 					TIME_SNIPER_POST_SNOB	: 3000,
-					MAX_TIME_CORRECTION 	: 3 * seg,
+					MAX_TIME_CORRECTION 	: 5 * seg,
 					MIN_TIME_SNIPER_ANT 	: 5,
 					MAX_TIME_SNIPER_ANT 	: 600,
 					MIN_TIME_SNIPER_POST 	: 0.3,
