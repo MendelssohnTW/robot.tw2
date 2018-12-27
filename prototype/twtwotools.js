@@ -35,6 +35,9 @@ var robotTW2 = window.robotTW2 = undefined;
 	var windowManagerService 	= injector.get("windowManagerService");
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
+	var buildingService		 	= injector.get("buildingService");
+	var resourceService		 	= injector.get("resourceService");
+	var recruitingService	 	= injector.get("recruitingService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var reportService 			= injector.get("reportService");
 	var VillageService 			= injector.get("VillageService");
@@ -309,6 +312,26 @@ var robotTW2 = window.robotTW2 = undefined;
 			scripts_removed.push(script);
 		}
 		scripts_loaded = scripts_loaded.filter(f => f != script)
+	}
+	, initializeVillage = function initializeVillage(village) {
+		if (village.isInitialized() || !village.isReady()) {
+			return;
+		}
+
+		buildingService.initializeBuildings(village);
+		resourceService.updateProductionRates(village);
+		resourceService.updateMaxStorage(village);
+		recruitingService.updateRecruitableUnits(village);
+		village.setInitialized(true);
+	}
+	, getInitializedVillage = function(villageId){
+		var village = modelDataService.getVillage(villageId);
+
+		if (!village.isInitialized()) {
+			initializeVillage(village);
+		}
+
+		return village;
 	}
 	, ready = function(opt_callback, array_keys){
 		array_keys = array_keys || ["map"];
@@ -628,28 +651,32 @@ var robotTW2 = window.robotTW2 = undefined;
 			windowManagerService 		: windowManagerService,
 			modelDataService			: modelDataService,
 			socketService				: socketService,
+			buildingService				: buildingService,
+			resourceService				: resourceService,
+			recruitingService			: recruitingService,
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService,
 			VillageService				: VillageService
 	};
-	exports.providers 			= {
+	exports.providers 				= {
 			eventTypeProvider 			: eventTypeProvider,
 			routeProvider				: routeProvider
 	};
-	exports.controllers			= {};
-	exports.databases			= {};
+	exports.controllers				= {};
+	exports.databases				= {};
 
-	exports.ready				= ready;
-	exports.register			= register;
-	exports.host				= host;
-	exports.build				= build;
-	exports.loadScript			= loadScript;
-	exports.addScript			= addScript;
-	exports.removeScript		= removeScript;
-	exports.loadController		= loadController;
-	exports.createScopeLang 	= createScopeLang;
-	exports.requestFn 			= requestFn;
-	exports.commandQueue 		= commandQueue;
+	exports.ready					= ready;
+	exports.register				= register;
+	exports.host					= host;
+	exports.build					= build;
+	exports.loadScript				= loadScript;
+	exports.addScript				= addScript;
+	exports.removeScript			= removeScript;
+	exports.loadController			= loadController;
+	exports.createScopeLang 		= createScopeLang;
+	exports.requestFn 				= requestFn;
+	exports.commandQueue 			= commandQueue;
+	exports.getInitializedVillage 	= getInitializedVillage;
 
 	(function ($rootScope){
 		var lded = false;
@@ -992,7 +1019,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "premiumActionService");
 			robotTW2.register("services", "secondVillageService");
 			robotTW2.register("services", "villageService");
-			robotTW2.register("services", "buildingService");
 			robotTW2.register("services", "overviewService");
 			robotTW2.register("services", "$filter");
 			robotTW2.register("services", "storageService");
