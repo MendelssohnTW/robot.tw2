@@ -374,7 +374,6 @@ define("robotTW2/services/FarmService", [
 						var listaVil = angular.copy(data.villages)
 						, x2 = cmd_preset.x
 						, y2 = cmd_preset.y
-						, d = Math.sqrt(Math.pow(f.x - x2,2) + (Math.pow(f.y - y2,2) * 0.75));
 
 						listaVil = listaVil.filter(f => f.affiliation == "barbarian")
 						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
