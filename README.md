@@ -6,3 +6,4 @@ Script de automação para TW2
 * Abra o navegador Chrome/Opera/Chromium e digite na barra de endereço **chrome://extensions/**. 
 * Selecione Modo de desenvolvedor, após faça o carregamento de extensão sem compactação selecionando a pasta à partir do local de extração.
 * Ao carregar a extensão reinicie seu navegador.
+* Para aceesar use as teclas ctrl + alt + p para menu principal.
