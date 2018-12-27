@@ -999,6 +999,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "groupService");
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
+			robotTW2.register("services", "VillageService");
 
 			return robotTW2.services;
 		}))
