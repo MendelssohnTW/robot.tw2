@@ -89,25 +89,7 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 			
-//			for (un in units) {
-//				if (units.hasOwnProperty(un)) {
-//					if(units[un] > 0) {
-//						for(ch in timetable) {
-//							if (timetable.hasOwnProperty(ch)) {
-//								if (timetable[ch][0] == un) {
-//									list_select.push(timetable[ch]);
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//			if (list_select.length > 0) {
-//				list_select.sort(function (a, b) {return a[1] - b[1]});
-//				return Math.trunc((((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75)) / 2);
-//			}
-//			return Math.trunc((((max_journey_time / 60 / 1000 / speed) * (bonus / 100) * 0.75)) / 2);
-			return Math.trunc((max_journey_time / 60 / 1000 * speed) / 2);;
+			return Math.trunc((max_journey_time / 60 / 1000 * speed / 60) / 2);;
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
 			presetIds = [];
