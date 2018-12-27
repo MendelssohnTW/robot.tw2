@@ -37,6 +37,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var socketService		 	= injector.get("socketService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var reportService 			= injector.get("reportService");
+	var VillageService 			= injector.get("VillageService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
 	var routeProvider 			= injector.get("routeProvider");
 	var CONTENT_CLASS			= 'win-content';
@@ -628,7 +629,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			modelDataService			: modelDataService,
 			socketService				: socketService,
 			templateManagerService 		: templateManagerService,
-			reportService 				: reportService
+			reportService 				: reportService,
+			VillageService				: VillageService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
@@ -999,7 +1001,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "groupService");
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
-			robotTW2.register("services", "VillageService");
+			
 
 			return robotTW2.services;
 		}))
