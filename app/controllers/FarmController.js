@@ -3,13 +3,15 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/time",
 	"robotTW2/services",
 	"robotTW2/providers",
-	"conf/conf"
+	"conf/conf",
+	"robotTW2/calculateTravelTime",
 	], function(
 			helper,
 			time,
 			services,
 			providers,
-			conf_conf
+			conf_conf,
+			calculateTravelTime
 	){
 	return function FarmController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -59,43 +61,17 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function (max_journey_time) {
-			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId);
-			var bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-			function return_min(tempo) {
-				if (tempo != undefined) {
-					var ar_tempo = tempo.split(":");
-					var hr = parseInt(ar_tempo[0]) || 0;
-					var min = parseInt(ar_tempo[1]) || 0;
-					var seg = parseInt(ar_tempo[2]) || 0;
-					return (hr * 60 + min +  seg / 60);
-				} else {
-					return 0;
+			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId)
+			, units = $scope.presetSelected.units
+			, army = {
+					'officers'	: {},
+					"units"		: units
 				}
-			}
-			var list_select = []
-			, timetable = services.modelDataService.getGameData().data.units.map(function (obj) {
-				return [obj.name, obj.speed]
+			, travelTime = calculateTravelTime(army, village, "attack", {
+				'barbarian'		: true
 			})
-			var units = $scope.presetSelected.units;
-			for (un in units) {
-				if (units.hasOwnProperty(un)) {
-					if(units[un] > 0) {
-						for(ch in timetable) {
-							if (timetable.hasOwnProperty(ch)) {
-								if (timetable[ch][0] == un) {
-									list_select.push(timetable[ch]);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			if (list_select.length > 0) {
-				list_select.sort(function (a, b) {return a[1] - b[1]});
-				return Math.trunc((((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75)) / 2);
-			}
-			return 0;
+			
+			return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
 			presetIds = [];

@@ -35,8 +35,13 @@ var robotTW2 = window.robotTW2 = undefined;
 	var windowManagerService 	= injector.get("windowManagerService");
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
+	var storageService		 	= injector.get("storageService")
+	var buildingService		 	= injector.get("buildingService");
+	var resourceService		 	= injector.get("resourceService");
+	var recruitingService	 	= injector.get("recruitingService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var reportService 			= injector.get("reportService");
+	var villageService 			= injector.get("villageService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
 	var routeProvider 			= injector.get("routeProvider");
 	var CONTENT_CLASS			= 'win-content';
@@ -235,6 +240,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	, script_queue = []
 	, promise = undefined
 	, loadScript = function(url){
+		var t = undefined;
 		if(!promise){
 			promise = new Promise(function(res){
 				t = exports.services.$timeout(function(){
@@ -244,6 +250,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				var b = document.createElement("script");
 				b.type = "text/javascript";
 				b.onload = function(data){
+					exports.services.$timeout.cancel(t);
+					t = undefined;
 					var c = data.target.src.split(host)[1];
 					c = c.substr(1);
 					var d = c.split("/");
@@ -622,10 +630,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			$compile 					: $compile,
 			httpService 				: httpService,
 			windowManagerService 		: windowManagerService,
+			storageService				: storageService,
 			modelDataService			: modelDataService,
 			socketService				: socketService,
+			buildingService				: buildingService,
+			resourceService				: resourceService,
+			recruitingService			: recruitingService,
 			templateManagerService 		: templateManagerService,
-			reportService 				: reportService
+			reportService 				: reportService,
+			villageService				: villageService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
@@ -986,16 +999,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "premiumActionService");
 			robotTW2.register("services", "secondVillageService");
-			robotTW2.register("services", "villageService");
-			robotTW2.register("services", "buildingService");
 			robotTW2.register("services", "overviewService");
 			robotTW2.register("services", "$filter");
-			robotTW2.register("services", "storageService");
 			robotTW2.register("services", "presetListService");
 			robotTW2.register("services", "presetService");
 			robotTW2.register("services", "groupService");
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
+			
 
 			return robotTW2.services;
 		}))
@@ -1100,7 +1111,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onclose = function onclose($event){
 //				$event.code == 1006
-				console.log($event)
 			},
 			onerror = function onerror($event){
 				if($rootScope.data_data){
@@ -2036,7 +2046,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							}, 3000)
 						}, 1000)
 
-					},  ["all_villages_ready"])
+					},  ["all_villages_ready", "tribe_relations"])
 
 					break
 				}

@@ -19,13 +19,13 @@ define("robotTW2/services/DefenseService", [
 			$rootScope,
 			providers,
 			$timeout,
-			commandQueue,
 			socketService,
 			modelDataService,
 			overviewService,
 			loadController,
 			ready,
-			commandQueue
+			commandQueue,
+			requestFn
 	) {
 
 		var isRunning = !1
@@ -333,9 +333,10 @@ define("robotTW2/services/DefenseService", [
 									data_escolhida		: time.convertMStoUTC(cmt.completedAt),
 									time_sniper_ant		: $rootScope.data_defense.time_sniper_ant,
 									time_sniper_post	: timeSniperPost,
-									no_target			: false
+									no_target			: false,
+									id_command 			: cmt.id
 							}
-							addDefense(params, cmt.id);
+							addDefense(params);
 						}
 						ct();
 					});
@@ -572,7 +573,7 @@ define("robotTW2/services/DefenseService", [
 				return null
 			}
 		}
-		, addDefense = function(params, id_command){
+		, addDefense = function(params){
 //			if(params && id_command){
 //			var t = {
 //			id_command: id_command
@@ -601,7 +602,7 @@ define("robotTW2/services/DefenseService", [
 
 			if(!params){return}
 			var id_command = (Math.round(time.convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
-			if(opt_id){
+			if(params.id_command){
 				id_command = params.id_command
 			}
 
@@ -633,7 +634,8 @@ define("robotTW2/services/DefenseService", [
 //		}
 		, addDefenseSelector = function(command, i){
 			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
-			var isSelected = commandQueue.find(f => f.id_command == command.command_id);
+			
+			var isSelected = command.command_id && requestFn.get(command.command_id, true);
 			var isMark = false;
 			if (isSelected != undefined){
 				isMark = true;
@@ -667,9 +669,10 @@ define("robotTW2/services/DefenseService", [
 									data_escolhida		: time.convertMStoUTC(cmt.model.completedAt),
 									time_sniper_ant		: sniper_ant * 1000,
 									time_sniper_post	: sniper_post * 1000,
-									no_target			: true
+									no_target			: true,
+									id_command			: cmt.command_id
 							}
-							addDefense(params, cmt.command_id);
+							addDefense(params);
 						}
 					})
 				} else {
@@ -777,12 +780,12 @@ define("robotTW2/services/DefenseService", [
 			robotTW2.services.$rootScope,
 			robotTW2.providers,
 			robotTW2.services.$timeout,
-			robotTW2.commandQueue,
 			robotTW2.services.socketService,
 			robotTW2.services.modelDataService,
 			robotTW2.services.overviewService,
 			robotTW2.loadController,
 			robotTW2.ready,
-			robotTW2.commandQueue
+			robotTW2.commandQueue,
+			robotTW2.requestFn
 	)
 })

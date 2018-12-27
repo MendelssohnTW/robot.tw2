@@ -2,53 +2,27 @@ define("robotTW2/databases/data_villages", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
-	"robotTW2/providers"
+	"robotTW2/providers",
+	"robotTW2/calculateTravelTime",
 	], function(
 			database,
 			conf,
 			services,
-			providers
+			providers,
+			calculateTravelTime
 	){
 	var rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 	, get_dist = function (v, max_journey_time, units) {
-		var village = services.modelDataService.getVillage(v);
-		var bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-		function return_min(tempo) {
-			if (tempo != undefined) {
-				var ar_tempo = tempo.split(":");
-				var hr = parseInt(ar_tempo[0]) || 0;
-				var min = parseInt(ar_tempo[1]) || 0;
-				var seg = parseInt(ar_tempo[2]) || 0;
-				return (hr * 60 + min +  seg / 60);
-			} else {
-				return 0;
+		var village = services.villageService.getInitializedVillage(v)
+		, army = {
+				'officers'	: {},
+				"units"		: units
 			}
-		}
-		var list_select = []
-		, timetable = services.modelDataService.getGameData().data.units.map(function (obj) {
-			return [obj.name, obj.speed]
+		, travelTime = calculateTravelTime(army, village, "attack", {
+			'barbarian'		: true
 		})
-
-		for (un in units) {
-			if (units.hasOwnProperty(un)) {
-				if(units[un] > 0) {
-					for(ch in timetable) {
-						if (timetable.hasOwnProperty(ch)) {
-							if (timetable[ch][0] == un) {
-								list_select.push(timetable[ch]);
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (list_select.length > 0) {
-			list_select.sort(function (a, b) {return a[1] - b[1]});
-			return Math.trunc(((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75));
-		}
-		return 0;
-
+		
+		return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
 	}
 	, getPst = function (v) {
 		var presets_d = services.presetListService.getPresetsForVillageId(v)
@@ -181,7 +155,12 @@ define("robotTW2/databases/data_villages", [
 
 	db_villages.updateVillages = function($event){
 		var updated = false;
-		var villagesExtended = angular.merge({}, services.modelDataService.getVillages())
+		var villages = services.modelDataService.getVillages();
+		Object.keys(villages).map(function(village_id){
+			var vill = services.villageService.getInitializedVillage(village_id)	
+		})
+		
+		var villagesExtended = angular.merge({}, villages)
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){
 				updated ? res() : rej()
