@@ -64,7 +64,7 @@ define("robotTW2/services/FarmService", [
 				return arr.concat();
 			});
 		}
-		, loadMap = function (x, y, dist, village_id) {
+		, loadMap = function (x, y, dist) {
 			var coordX = x - dist;
 			var coordY = y - dist;
 			var ciclos = 0;
@@ -83,8 +83,7 @@ define("robotTW2/services/FarmService", [
 			var grid = setupGrid(t_ciclo);
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
-					grid[i][j] = {"x":coordX + (map_chunk_size * i), "y":coordY + (map_chunk_size * j), "dist": map_chunk_size, "village_id" : village_id};
-					grid[i][j].villages = [];
+					grid[i][j] = {"x":coordX + (map_chunk_size * i), "y":coordY + (map_chunk_size * j), "dist": map_chunk_size};
 				};
 			};
 			return {
@@ -97,7 +96,7 @@ define("robotTW2/services/FarmService", [
 			, preset_id = cmd_preset.preset_id
 			, village_id = cmd_preset.village_id
 
-			var grid = loadMap(x, y, $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance, village_id).grid;
+			var grid = loadMap(x, y, $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance).grid;
 			var listaGrid = [];
 			var l = Object.keys(grid).length;
 			for(tx = 0; tx < l; tx++) {
@@ -105,7 +104,9 @@ define("robotTW2/services/FarmService", [
 					listaGrid.push({
 						x			: grid[tx][ty].x,
 						y			: grid[tx][ty].y,
-						dist		: grid[tx][ty].dist
+						dist		: grid[tx][ty].dist,
+						village_id	: grid[tx][ty].village_id,
+						villages	: []
 					});
 				}
 			};
@@ -369,7 +370,6 @@ define("robotTW2/services/FarmService", [
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 					$timeout.cancel(t);
 					t = undefined;
-					var lt_barbaras = []
 					if (data != undefined && data.villages != undefined && data.villages.length > 0) {
 						var listaVil = angular.copy(data.villages)
 						, x2 = cmd_preset.x
@@ -390,11 +390,11 @@ define("robotTW2/services/FarmService", [
 
 						for (j = 0; j < listaVil.length; j++) {
 							if (check_village(listaVil[j], cmd_preset)) {
-								lt_barbaras.push(listaVil[j].id);
+								reg.villages.push(listaVil[j].id);
 							}
 						}
 					}
-					resolve_grid(lt_barbaras)
+					resolve_grid(reg.villages)
 				});
 			})
 		}
