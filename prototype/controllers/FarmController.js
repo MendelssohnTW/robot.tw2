@@ -85,11 +85,11 @@ define("robotTW2/controllers/FarmController", [
 					"units"		: units
 				}
 			
-			var speed = calculateTravelTime(army, village, "attack", {
+			var travelTime = calculateTravelTime(army, village, "attack", {
 				'barbarian'		: true
 			})
 			
-			return Math.trunc((max_journey_time / 1000 / speed) / 2);
+			return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
 			presetIds = [];
