@@ -35,12 +35,13 @@ var robotTW2 = window.robotTW2 = undefined;
 	var windowManagerService 	= injector.get("windowManagerService");
 	var modelDataService	 	= injector.get("modelDataService");
 	var socketService		 	= injector.get("socketService");
+	var storageService		 	= injector.get("storageService")
 	var buildingService		 	= injector.get("buildingService");
 	var resourceService		 	= injector.get("resourceService");
 	var recruitingService	 	= injector.get("recruitingService");
 	var templateManagerService 	= injector.get("templateManagerService");
 	var reportService 			= injector.get("reportService");
-	var VillageService 			= injector.get("VillageService");
+	var villageService 			= injector.get("villageService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
 	var routeProvider 			= injector.get("routeProvider");
 	var CONTENT_CLASS			= 'win-content';
@@ -312,26 +313,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			scripts_removed.push(script);
 		}
 		scripts_loaded = scripts_loaded.filter(f => f != script)
-	}
-	, initializeVillage = function initializeVillage(village) {
-		if (village.isInitialized() || !village.isReady()) {
-			return;
-		}
-
-		buildingService.initializeBuildings(village);
-		resourceService.updateProductionRates(village);
-		resourceService.updateMaxStorage(village);
-		recruitingService.updateRecruitableUnits(village);
-		village.setInitialized(true);
-	}
-	, getInitializedVillage = function(villageId){
-		var village = modelDataService.getVillage(villageId);
-
-		if (!village.isInitialized()) {
-			initializeVillage(village);
-		}
-
-		return village;
 	}
 	, ready = function(opt_callback, array_keys){
 		array_keys = array_keys || ["map"];
@@ -649,6 +630,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			$compile 					: $compile,
 			httpService 				: httpService,
 			windowManagerService 		: windowManagerService,
+			storageService				: storageService,
 			modelDataService			: modelDataService,
 			socketService				: socketService,
 			buildingService				: buildingService,
@@ -656,27 +638,26 @@ var robotTW2 = window.robotTW2 = undefined;
 			recruitingService			: recruitingService,
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService,
-			VillageService				: VillageService
+			villageService				: villageService
 	};
-	exports.providers 				= {
+	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
 			routeProvider				: routeProvider
 	};
-	exports.controllers				= {};
-	exports.databases				= {};
+	exports.controllers			= {};
+	exports.databases			= {};
 
-	exports.ready					= ready;
-	exports.register				= register;
-	exports.host					= host;
-	exports.build					= build;
-	exports.loadScript				= loadScript;
-	exports.addScript				= addScript;
-	exports.removeScript			= removeScript;
-	exports.loadController			= loadController;
-	exports.createScopeLang 		= createScopeLang;
-	exports.requestFn 				= requestFn;
-	exports.commandQueue 			= commandQueue;
-	exports.getInitializedVillage 	= getInitializedVillage;
+	exports.ready				= ready;
+	exports.register			= register;
+	exports.host				= host;
+	exports.build				= build;
+	exports.loadScript			= loadScript;
+	exports.addScript			= addScript;
+	exports.removeScript		= removeScript;
+	exports.loadController		= loadController;
+	exports.createScopeLang 	= createScopeLang;
+	exports.requestFn 			= requestFn;
+	exports.commandQueue 		= commandQueue;
 
 	(function ($rootScope){
 		var lded = false;
@@ -1018,10 +999,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "premiumActionService");
 			robotTW2.register("services", "secondVillageService");
-			robotTW2.register("services", "villageService");
 			robotTW2.register("services", "overviewService");
 			robotTW2.register("services", "$filter");
-			robotTW2.register("services", "storageService");
 			robotTW2.register("services", "presetListService");
 			robotTW2.register("services", "presetService");
 			robotTW2.register("services", "groupService");
