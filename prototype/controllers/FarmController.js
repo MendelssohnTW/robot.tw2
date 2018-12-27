@@ -89,7 +89,7 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 			
-			return Math.trunc((max_journey_time / 60 / 1000 * speed / 60) / 2);;
+			return Math.trunc((max_journey_time / 1000 / speed) / 2);
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
 			presetIds = [];
