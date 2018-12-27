@@ -61,31 +61,13 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function (max_journey_time) {
-			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId);
-			var bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
-			function return_min(tempo) {
-				if (tempo != undefined) {
-					var ar_tempo = tempo.split(":");
-					var hr = parseInt(ar_tempo[0]) || 0;
-					var min = parseInt(ar_tempo[1]) || 0;
-					var seg = parseInt(ar_tempo[2]) || 0;
-					return (hr * 60 + min +  seg / 60);
-				} else {
-					return 0;
-				}
-			}
-			var list_select = []
-			, timetable = services.modelDataService.getGameData().data.units.map(function (obj) {
-				return [obj.name, obj.speed]
-			})
-			var units = $scope.presetSelected.units;
-			
-			var army = {
+			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId)
+			, units = $scope.presetSelected.units
+			, army = {
 					'officers'	: {},
 					"units"		: units
 				}
-			
-			var travelTime = calculateTravelTime(army, village, "attack", {
+			, travelTime = calculateTravelTime(army, village, "attack", {
 				'barbarian'		: true
 			})
 			
