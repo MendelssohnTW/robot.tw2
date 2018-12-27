@@ -3,13 +3,15 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/time",
 	"robotTW2/services",
 	"robotTW2/providers",
-	"conf/conf"
+	"conf/conf",
+	"robotTW2/calculateTravelTime",
 	], function(
 			helper,
 			time,
 			services,
 			providers,
-			conf_conf
+			conf_conf,
+			calculateTravelTime
 	){
 	return function FarmController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -77,25 +79,35 @@ define("robotTW2/controllers/FarmController", [
 				return [obj.name, obj.speed]
 			})
 			var units = $scope.presetSelected.units;
-			for (un in units) {
-				if (units.hasOwnProperty(un)) {
-					if(units[un] > 0) {
-						for(ch in timetable) {
-							if (timetable.hasOwnProperty(ch)) {
-								if (timetable[ch][0] == un) {
-									list_select.push(timetable[ch]);
-								}
-							}
-						}
-					}
+			
+			var army = {
+					'officers'	: {},
+					"units"		: units
 				}
-			}
-
-			if (list_select.length > 0) {
-				list_select.sort(function (a, b) {return a[1] - b[1]});
-				return Math.trunc((((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75)) / 2);
-			}
-			return 0;
+			
+			var speed = calculateTravelTime(army, village, "attack", {
+				'barbarian'		: true
+			})
+			
+//			for (un in units) {
+//				if (units.hasOwnProperty(un)) {
+//					if(units[un] > 0) {
+//						for(ch in timetable) {
+//							if (timetable.hasOwnProperty(ch)) {
+//								if (timetable[ch][0] == un) {
+//									list_select.push(timetable[ch]);
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//			if (list_select.length > 0) {
+//				list_select.sort(function (a, b) {return a[1] - b[1]});
+//				return Math.trunc((((max_journey_time / 60 / 1000 / list_select.pop()[1]) * (bonus / 100) * 0.75)) / 2);
+//			}
+//			return Math.trunc((((max_journey_time / 60 / 1000 / speed) * (bonus / 100) * 0.75)) / 2);
+			return Math.trunc((max_journey_time / 60 / 1000 * speed) / 2);;
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
 			presetIds = [];
