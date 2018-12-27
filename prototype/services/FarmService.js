@@ -53,7 +53,6 @@ define("robotTW2/services/FarmService", [
 		, promise_grid = undefined
 		, send_queue = []
 		, completion_loaded = !1
-		, rallyPointSpeedBonusVsBarbarians = modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, setupGrid = function (len) {
 			var i, t = 0,
 			arr;
@@ -456,7 +455,6 @@ define("robotTW2/services/FarmService", [
 						var village_id = village.data.villageId
 						, presets = $rootScope.data_villages.villages[village_id].presets
 						, aldeia_units = angular.copy(village.unitInfo.units)
-						, village_bonus = rallyPointSpeedBonusVsBarbarians[village.getBuildingData() ? village.getBuildingData().getDataForBuilding("rally_point").level :  1] * 100
 
 						if(!isRunning){
 							resol();
@@ -482,7 +480,6 @@ define("robotTW2/services/FarmService", [
 							) {
 								var comando = {
 										village_id				: village_id,
-										bonus					: village_bonus,
 										preset_id				: preset.id,
 										preset_units			: preset.units,
 										x						: village.data.x,
@@ -624,7 +621,6 @@ define("robotTW2/services/FarmService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 			$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_FARM, {name:"FARM"})
 		}
-
 
 		return	{
 			init			: init,
