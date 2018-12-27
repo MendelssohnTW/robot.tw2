@@ -51,7 +51,7 @@ define("robotTW2/services/AttackService", [
 			}
 
 			var expires = params.data_escolhida - params.duration;
-			var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
+			var timer_delay = expires - time.convertedTime();
 
 			params["timer_delay"] = timer_delay
 			params["id_command"] = id_command
@@ -97,7 +97,7 @@ define("robotTW2/services/AttackService", [
 		, resendAttack = function(params){
 //			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
-			var expires_send = params.data_escolhida - params.duration;
+			var expires_send = params.data_escolhida - params.duration + $rootScope.data_main.time_correction_command;
 			var timer_delay_send = expires_send - time.convertedTime();
 			if(timer_delay_send >= 0){
 				function e (){

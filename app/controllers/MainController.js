@@ -49,7 +49,7 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.recalibrate = function(){
-			service.AttackService.calibrate_time();
+			services.AttackService.calibrate_time();
 		}
 
 		$scope.toggleValueState = function(ext) {
