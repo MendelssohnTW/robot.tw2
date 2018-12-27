@@ -105,7 +105,7 @@ define("robotTW2/services/FarmService", [
 						x			: grid[tx][ty].x,
 						y			: grid[tx][ty].y,
 						dist		: grid[tx][ty].dist,
-						village_id	: grid[tx][ty].village_id,
+						village_id	: village_id,
 						villages	: []
 					});
 				}
