@@ -13,7 +13,7 @@ define("robotTW2/databases/data_villages", [
 	){
 	var rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 	, get_dist = function (v, max_journey_time, units) {
-		var village = services.modelDataService.getVillage(v)
+		var village = getInitializedVillage(v)
 		, army = {
 				'officers'	: {},
 				"units"		: units
