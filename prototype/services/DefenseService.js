@@ -459,333 +459,339 @@ define("robotTW2/services/DefenseService", [
 			var id_command = params.id_command
 			, timer_delay = params.timer_delay
 			, d = {}
-			, command_returned = function($event, data){
-				if(!data)return
-				var id_command = data.command_id;
-				//remove listener de retorno
+			, command_returned = function(id_command){
 				clearListener(listener_returned[id_command])
 			}
-			, command_cancelled = function($event, data){
-				if(!data)return
-				var id_command = data.command_id;
-				//remove listeners de cancelamento e timeout
+			, command_cancelled = function(id_command){
 				clearListener(listener_cancel[id_command])
 				clearListener(listener_timeout[id_command])
-				//cria listener de retorno
-				listener_returned[id_command] = $rootScope.$on(providers.eventTypeProvider.COMMAND_RETURNED, command_returned);
-			}
-			, command_sent = function($event, data){
-				if(params.start_village == data.origin.id){
-					function e() {
-						return $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
-					}
-					var id_command = data.command_id;
-					//cria listener para comando cancelado
-					listener_cancel[id_command] = e();
-					clearListener(listener_sent[id_command]);
-					commandQueue.unbind(id_command)
-					var expires = params.data_escolhida + params.time_sniper_post;
-					var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
-
-					var par = {
-							"timer_delay" : timer_delay,
-							"id_command" : id_command
-					}
-					commandQueue.bind(id_command, sendCancel, par)
-
-					if(timer_delay > 0){
-						//envia o comando de cancelamento
-						commandQueue.trigger(id_command, par)
-						//cria listener de erro timeout
-						listener_timeout[id_command] = function(){
-							return $timeout(function () {
-								clearListener(listener_cancel[id_command]);
-								clearListener(listener_timeout[id_command]);
-							}, timer_delay + 5000);
-						}
-					} else {
-						//cancela comando se tempo de cancelamento expirou
-						commandQueue.unbind(id_command)
-					}
-				}
-			}
-
-			return $timeout(function () {
-				var lista = [],
-				units = {};
-				var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
-				if (village && village.unitInfo != undefined){
-					var unitInfo = village.unitInfo.units;
-					for(obj in unitInfo){
-						if (unitInfo.hasOwnProperty(obj)){
-							if (unitInfo[obj].available > 0){
-								var campo = {[obj]: unitInfo[obj].available};
-								units[Object.keys(campo)[0]] = 
-									Object.keys(campo).map(function(key) {return campo[key]})[0];
-								lista.push(units);
-							}
-						}
-					}
-					params.units = units;
-				};
-
-				if (lista.length > 0) {
-					//Envia o comando
-					resendDefense(params)
-				} else {
-					//se não tem unidades cancela o comando
-					commandQueue.unbind(id_command)
-				}
-				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
-
-			}, timer_delay - conf.TIME_DELAY_UPDATE);
-
-			return
-		}
-		, resendDefense = function(params){
-			var id_command = params.id_command;
-			var expires_send = params.data_escolhida - params.time_sniper_ant;
-			var timer_delay_send = expires_send - time.convertedTime() - $rootScope.data_main.time_correction_command;
-			if(timer_delay_send >= 0){
-				function e(){
-					return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_sent)
-				}
-
-				return $timeout(function () {
-					//cria listener para o comando se enviado
-					listener_sent[id_command] = {
-							listener 	: e(), 
-							time 		: params.data_escolhida - params.time_sniper_ant
-					}
-					socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
-						start_village: params.start_village,
-						target_village: params.target_village,
-						type: params.type,
-						units: params.units,
-						icon: 0,
-						officers: params.officers,
-						catapult_target: params.catapult_target
-					});
-				}, timer_delay_send);
-			} else {
-				//cancela comando se o tempo de envio expirou
-				commandQueue.unbind(id_command)
-				return null
-			}
-		}
-		, addDefense = function(params){
-//			if(params && id_command){
-//			var t = {
-//			id_command: id_command
-//			}
-//			angular.merge(params, t);
-//			var cmd = {
-//			id_command: id_command,
-//			params: params
-//			}
-//			var expires = params.data_escolhida - params.time_sniper_ant;
-//			var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
-
-//			if(timeoutIdDefense[id_command]) {
-//			$timeout.cancel(timeoutIdDefense[id_command]);
-//			delete timeoutIdDefense[id_command];
-//			}
-//			if(timer_delay > -2000){
-//			timer_delay < 0 ? timer_delay = 0 : timer_delay;
-//			timeoutIdDefense[id_command] = sendDefense(timer_delay, params, id_command, params.enviarFull);
-//			!commandQueue.find(f => f.id_command == cmd.id_command) ? commandQueue.push(cmd) : null;
-//			} else {
-//			commandQueue = commandQueue.filter(f => f.id_command != cmd.id_command);
-//			console.log("Comando de defesa  (addsupport) da aldeia " + modelDataService.getSelectedCharacter().getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay");
-//			}
-//			}
-
-			if(!params){return}
-			var id_command = (Math.round(time.convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
-			if(params.id_command){
-				id_command = params.id_command
-			}
-
-			var expires = params.data_escolhida - params.time_sniper_ant;
-			var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
-
-			angular.extend(params, {
-				"timer_delay" : timer_delay,
-				"id_command": id_command
-			})
-
-			//Cria o timeout para envio do comando
-			commandQueue.bind(id_command, sendDefense, null, params)
-
-			if(timer_delay >= 0){
-				commandQueue.trigger(id_command, params)
-			}
-		}
-//		, removeDefense = function(id_command, db, timeoutId, opt_callback){
-//		var comando = null;
-//		commandQueue = commandQueue.filter(f => f.id_command != id_command);
-//		if (timeoutId[id_command]){
-//		$timeout.cancel(timeoutId[id_command]);
-//		delete timeoutId[id_command]	
-//		}
-//		if(commandQueue){
-//		typeof(opt_callback) == "function" ? opt_callback() : null;
-//		}
-//		}
-		, addDefenseSelector = function(command, i){
-			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
-			
-			var isSelected = command.command_id && requestFn.get(command.command_id, true);
-			var isMark = false;
-			if (isSelected != undefined){
-				isMark = true;
-			} else {
-				isMark = false;
-			}
-			$($(".content.incoming td.column-time_completed")[i]).prepend('<div style="float: right;"><input id="sniper_ant" class="sniper_ant" type="number" style="width: 40px; color: white;" step="1" min="5" max"600"><input id="sniper_post" class="sniper_post" type="number" style="width: 40px; color: white;"  step="1" min="1" max"600"></div><div class="' + opts[(isMark) ? 1 : 0] + ' indicatorSelected"></div>');
-			if (($(".sniper_ant")[i]) != undefined){
-				($(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : $rootScope.data_defense.time_sniper_ant / 1000;
-			}
-			if (($(".sniper_post")[i]) != undefined){
-				($(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : $rootScope.data_defense.time_sniper_post / 1000;
-			}
-			$(".indicatorSelected").css("float", "right");
-			$($(".indicatorSelected")[i]).click(function () {
-				if ($($(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
-					$(this).removeClass("icon-26x26-dot-red").addClass("icon-26x26-dot-green");
-					var sniper_ant;
-					var sniper_post;
-					($(".sniper_ant")[i]).value < conf.MIN_TIME_SNIPE_ANT ? sniper_ant = conf.MIN_TIME_SNIPE_ANT : ($(".sniper_ant")[i]).value > conf.MAX_TIME_SNIPE_ANT ? sniper_ant = conf.MAX_TIME_SNIPE_ANT : sniper_ant = ($(".sniper_ant")[i]).value; 
-					($(".sniper_post")[i]).value < conf.MIN_TIME_SNIPE_POST ? sniper_post = conf.MIN_TIME_SNIPE_POST : ($(".sniper_post")[i]).value > conf.MAX_TIME_SNIPE_POST ? sniper_post = conf.MAX_TIME_SNIPE_POST : sniper_post = ($(".sniper_post")[i]).value;
-					loadVillage(command, function(aldeia, cmt){
-						if(aldeia){
-							var params = {
-									start_village		: cmt.target_village_id,
-									target_village		: aldeia.id,
-									target_name			: aldeia.name,
-									target_x			: aldeia.x,
-									target_y			: aldeia.y,
-									type				: "support",
-									data_escolhida		: time.convertMStoUTC(cmt.model.completedAt),
-									time_sniper_ant		: sniper_ant * 1000,
-									time_sniper_post	: sniper_post * 1000,
-									no_target			: true,
-									id_command			: cmt.command_id
-							}
-							addDefense(params);
-						}
-					})
-				} else {
-					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
-					commandQueue.unbind(command.id_command)
-//					removeDefense(command.command_id, "comandos_support", timeoutIdDefense, upDateTbodyDefense)
-				}
-			});
-		}
-		, returnCommand = function(){
-			overviewService.formatCommand = oldCommand;
-		}
-		, reformatCommand = function() {
-			if(!isRunning){return}
-			var OverviewController;
-			oldCommand = overviewService.formatCommand;
-			overviewService.supportFormatCommand = overviewService.formatCommand;
-			var iCount = 0;
-			var t = 0;
-			var f = undefined;
-			var queue_f = [];
-
-			overviewService.formatCommand = function (command) {
-				overviewService.supportFormatCommand(command);
-				$timeout(function(){
-					OverviewController = loadController("OverviewController");
-					if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
-						addDefenseSelector(command, iCount);
-						iCount++
-						if ($('span.type').length <= iCount) 
-							iCount = 0;
-					}
-				}, 200)
-			};
-		}
-		, init = function(){
-			isInitialized = !0
-			start();
-		}
-		, handlerVerify = function(){
-			if(!listener_verify){
-				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
-					if(!isRunning){return}
-					$timeout(verificarAtaques , 60000);
+				listener_returned[id_command] = $rootScope.$on(providers.eventTypeProvider.COMMAND_RETURNED, function($event, data){
+					if(!data)return
+					command_returned(id_command)
 				});
 			}
 		}
-		, start = function(){
-			if(isRunning){return}
-			ready(function(){
-				calibrate_time()
-				isRunning = !0;
-				reformatCommand();
-//				w.reload();
-				if(!listener_lost){
-					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
+		, command_sent = function(id_command){
+			if(params.start_village == data.origin.id){
+				function e(id_command) {
+					var that = this;
+					that.id_command = id_command;
+					return $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, function($event, data){
+						if(!data)return
+						command_cancelled(that.id_command)
+					});
 				}
-				if(!listener_conquered){
-					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
+				//cria listener para comando cancelado
+				listener_cancel[id_command] = e(id_command);
+				clearListener(listener_sent[id_command]);
+				commandQueue.unbind(id_command)
+				var expires = params.data_escolhida + params.time_sniper_post;
+				var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
+
+				var par = {
+						"timer_delay" : timer_delay,
+						"id_command" : id_command
 				}
-				handlerVerify();
-				verificarAtaques();
-			}, ["all_villages_ready"])
-		}
-		, stop = function(){
-			isRunning = !1;
-			commandQueue.unbindAll("support");
-			promise_verify = undefined
-			queue_verifiy = [];
-			$timeout.cancel(t);
-			t = undefined;
-			typeof(listener_verify) == "function" ? listener_verify(): null;
-			typeof(listener_lost) == "function" ? listener_lost(): null;
-			typeof(listener_conquered) == "function" ? listener_conquered(): null;
-			listener_verify = undefined;
-			listener_lost = undefined;
-			listener_conquered = undefined;
-			returnCommand();
+				commandQueue.bind(id_command, sendCancel, par)
+
+				if(timer_delay > 0){
+					//envia o comando de cancelamento
+					commandQueue.trigger(id_command, par)
+					//cria listener de erro timeout
+					listener_timeout[id_command] = function(){
+						return $timeout(function () {
+							clearListener(listener_cancel[id_command]);
+							clearListener(listener_timeout[id_command]);
+						}, timer_delay + 5000);
+					}
+				} else {
+					//cancela comando se tempo de cancelamento expirou
+					commandQueue.unbind(id_command)
+				}
+			}
 		}
 
-		return	{
-			init				: init,
-			start				: start,
-			stop 				: stop,
-			calibrate_time		: calibrate_time,
-			removeCommandDefense: function(id_command){
+		return $timeout(function () {
+			var lista = [],
+			units = {};
+			var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
+			if (village && village.unitInfo != undefined){
+				var unitInfo = village.unitInfo.units;
+				for(obj in unitInfo){
+					if (unitInfo.hasOwnProperty(obj)){
+						if (unitInfo[obj].available > 0){
+							var campo = {[obj]: unitInfo[obj].available};
+							units[Object.keys(campo)[0]] = 
+								Object.keys(campo).map(function(key) {return campo[key]})[0];
+							lista.push(units);
+						}
+					}
+				}
+				params.units = units;
+			};
+
+			if (lista.length > 0) {
+				//Envia o comando
+				resendDefense(params)
+			} else {
+				//se não tem unidades cancela o comando
 				commandQueue.unbind(id_command)
-			},
-			removeAll			: function(id_command){
-				commandQueue.unbindAll("support")
-			},
-			isRunning			: function () {
-				return isRunning
-			},
-			isPaused			: function () {
-				return isPaused
-			},
-			isInitialized		: function () {
-				return isInitialized
-			},
-			version				: version.defense,
-			name				: "defense",
+			}
+			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+
+		}, timer_delay - conf.TIME_DELAY_UPDATE);
+
+		return
+	}
+	, resendDefense = function(params){
+		var id_command = params.id_command;
+		var expires_send = params.data_escolhida - params.time_sniper_ant;
+		var timer_delay_send = expires_send - time.convertedTime() - $rootScope.data_main.time_correction_command;
+		if(timer_delay_send >= 0){
+			function e(id_command){
+				var that = this;
+				that.id_command = id_command;
+				return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
+					if(!data) {return}
+					command_sent(that.id_command)
+				})
+			}
+
+			return $timeout(function () {
+				//cria listener para o comando se enviado
+				listener_sent[id_command] = {
+						listener 	: e(id_command), 
+						time 		: params.data_escolhida - params.time_sniper_ant
+				}
+				socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
+					start_village: params.start_village,
+					target_village: params.target_village,
+					type: params.type,
+					units: params.units,
+					icon: 0,
+					officers: params.officers,
+					catapult_target: params.catapult_target
+				});
+			}, timer_delay_send);
+		} else {
+			//cancela comando se o tempo de envio expirou
+			commandQueue.unbind(id_command)
+			return null
 		}
-	})(
-			robotTW2.services.$rootScope,
-			robotTW2.providers,
-			robotTW2.services.$timeout,
-			robotTW2.services.socketService,
-			robotTW2.services.modelDataService,
-			robotTW2.services.overviewService,
-			robotTW2.loadController,
-			robotTW2.ready,
-			robotTW2.commandQueue,
-			robotTW2.requestFn
-	)
+	}
+	, addDefense = function(params){
+//		if(params && id_command){
+//		var t = {
+//		id_command: id_command
+//		}
+//		angular.merge(params, t);
+//		var cmd = {
+//		id_command: id_command,
+//		params: params
+//		}
+//		var expires = params.data_escolhida - params.time_sniper_ant;
+//		var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
+
+//		if(timeoutIdDefense[id_command]) {
+//		$timeout.cancel(timeoutIdDefense[id_command]);
+//		delete timeoutIdDefense[id_command];
+//		}
+//		if(timer_delay > -2000){
+//		timer_delay < 0 ? timer_delay = 0 : timer_delay;
+//		timeoutIdDefense[id_command] = sendDefense(timer_delay, params, id_command, params.enviarFull);
+//		!commandQueue.find(f => f.id_command == cmd.id_command) ? commandQueue.push(cmd) : null;
+//		} else {
+//		commandQueue = commandQueue.filter(f => f.id_command != cmd.id_command);
+//		console.log("Comando de defesa  (addsupport) da aldeia " + modelDataService.getSelectedCharacter().getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay");
+//		}
+//		}
+
+		if(!params){return}
+		var id_command = (Math.round(time.convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
+		if(params.id_command){
+			id_command = params.id_command
+		}
+
+		var expires = params.data_escolhida - params.time_sniper_ant;
+		var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
+
+		angular.extend(params, {
+			"timer_delay" : timer_delay,
+			"id_command": id_command
+		})
+
+		//Cria o timeout para envio do comando
+		commandQueue.bind(id_command, sendDefense, null, params)
+
+		if(timer_delay >= 0){
+			commandQueue.trigger(id_command, params)
+		}
+	}
+//	, removeDefense = function(id_command, db, timeoutId, opt_callback){
+//	var comando = null;
+//	commandQueue = commandQueue.filter(f => f.id_command != id_command);
+//	if (timeoutId[id_command]){
+//	$timeout.cancel(timeoutId[id_command]);
+//	delete timeoutId[id_command]	
+//	}
+//	if(commandQueue){
+//	typeof(opt_callback) == "function" ? opt_callback() : null;
+//	}
+//	}
+	, addDefenseSelector = function(command, i){
+		var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
+
+		var isSelected = command.command_id && requestFn.get(command.command_id, true);
+		var isMark = false;
+		if (isSelected != undefined){
+			isMark = true;
+		} else {
+			isMark = false;
+		}
+		$($(".content.incoming td.column-time_completed")[i]).prepend('<div style="float: right;"><input id="sniper_ant" class="sniper_ant" type="number" style="width: 40px; color: white;" step="1" min="5" max"600"><input id="sniper_post" class="sniper_post" type="number" style="width: 40px; color: white;"  step="1" min="1" max"600"></div><div class="' + opts[(isMark) ? 1 : 0] + ' indicatorSelected"></div>');
+		if (($(".sniper_ant")[i]) != undefined){
+			($(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : $rootScope.data_defense.time_sniper_ant / 1000;
+		}
+		if (($(".sniper_post")[i]) != undefined){
+			($(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : $rootScope.data_defense.time_sniper_post / 1000;
+		}
+		$(".indicatorSelected").css("float", "right");
+		$($(".indicatorSelected")[i]).click(function () {
+			if ($($(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
+				$(this).removeClass("icon-26x26-dot-red").addClass("icon-26x26-dot-green");
+				var sniper_ant;
+				var sniper_post;
+				($(".sniper_ant")[i]).value < conf.MIN_TIME_SNIPE_ANT ? sniper_ant = conf.MIN_TIME_SNIPE_ANT : ($(".sniper_ant")[i]).value > conf.MAX_TIME_SNIPE_ANT ? sniper_ant = conf.MAX_TIME_SNIPE_ANT : sniper_ant = ($(".sniper_ant")[i]).value; 
+				($(".sniper_post")[i]).value < conf.MIN_TIME_SNIPE_POST ? sniper_post = conf.MIN_TIME_SNIPE_POST : ($(".sniper_post")[i]).value > conf.MAX_TIME_SNIPE_POST ? sniper_post = conf.MAX_TIME_SNIPE_POST : sniper_post = ($(".sniper_post")[i]).value;
+				loadVillage(command, function(aldeia, cmt){
+					if(aldeia){
+						var params = {
+								start_village		: cmt.target_village_id,
+								target_village		: aldeia.id,
+								target_name			: aldeia.name,
+								target_x			: aldeia.x,
+								target_y			: aldeia.y,
+								type				: "support",
+								data_escolhida		: time.convertMStoUTC(cmt.model.completedAt),
+								time_sniper_ant		: sniper_ant * 1000,
+								time_sniper_post	: sniper_post * 1000,
+								no_target			: true,
+								id_command			: cmt.command_id
+						}
+						addDefense(params);
+					}
+				})
+			} else {
+				$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
+				commandQueue.unbind(command.id_command)
+//				removeDefense(command.command_id, "comandos_support", timeoutIdDefense, upDateTbodyDefense)
+			}
+		});
+	}
+	, returnCommand = function(){
+		overviewService.formatCommand = oldCommand;
+	}
+	, reformatCommand = function() {
+		if(!isRunning){return}
+		var OverviewController;
+		oldCommand = overviewService.formatCommand;
+		overviewService.supportFormatCommand = overviewService.formatCommand;
+		var iCount = 0;
+		var t = 0;
+		var f = undefined;
+		var queue_f = [];
+
+		overviewService.formatCommand = function (command) {
+			overviewService.supportFormatCommand(command);
+			$timeout(function(){
+				OverviewController = loadController("OverviewController");
+				if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
+					addDefenseSelector(command, iCount);
+					iCount++
+					if ($('span.type').length <= iCount) 
+						iCount = 0;
+				}
+			}, 200)
+		};
+	}
+	, init = function(){
+		isInitialized = !0
+		start();
+	}
+	, handlerVerify = function(){
+		if(!listener_verify){
+			listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
+				if(!isRunning){return}
+				$timeout(verificarAtaques , 60000);
+			});
+		}
+	}
+	, start = function(){
+		if(isRunning){return}
+		ready(function(){
+			calibrate_time()
+			isRunning = !0;
+			reformatCommand();
+//			w.reload();
+			if(!listener_lost){
+				listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
+			}
+			if(!listener_conquered){
+				listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
+			}
+			handlerVerify();
+			verificarAtaques();
+		}, ["all_villages_ready"])
+	}
+	, stop = function(){
+		isRunning = !1;
+		commandQueue.unbindAll("support");
+		promise_verify = undefined
+		queue_verifiy = [];
+		$timeout.cancel(t);
+		t = undefined;
+		typeof(listener_verify) == "function" ? listener_verify(): null;
+		typeof(listener_lost) == "function" ? listener_lost(): null;
+		typeof(listener_conquered) == "function" ? listener_conquered(): null;
+		listener_verify = undefined;
+		listener_lost = undefined;
+		listener_conquered = undefined;
+		returnCommand();
+	}
+
+	return	{
+		init				: init,
+		start				: start,
+		stop 				: stop,
+		calibrate_time		: calibrate_time,
+		removeCommandDefense: function(id_command){
+			commandQueue.unbind(id_command)
+		},
+		removeAll			: function(id_command){
+			commandQueue.unbindAll("support")
+		},
+		isRunning			: function () {
+			return isRunning
+		},
+		isPaused			: function () {
+			return isPaused
+		},
+		isInitialized		: function () {
+			return isInitialized
+		},
+		version				: version.defense,
+		name				: "defense",
+	}
+})(
+		robotTW2.services.$rootScope,
+		robotTW2.providers,
+		robotTW2.services.$timeout,
+		robotTW2.services.socketService,
+		robotTW2.services.modelDataService,
+		robotTW2.services.overviewService,
+		robotTW2.loadController,
+		robotTW2.ready,
+		robotTW2.commandQueue,
+		robotTW2.requestFn
+)
 })
