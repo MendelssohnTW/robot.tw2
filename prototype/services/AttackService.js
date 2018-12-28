@@ -50,7 +50,7 @@ define("robotTW2/services/AttackService", [
 				id_command = params.id_command
 			}
 
-			var expires = params.data_escolhida - params.duration;
+			var expires = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command;;
 			var timer_delay = expires - time.convertedTime();
 
 			params["timer_delay"] = timer_delay
@@ -88,7 +88,7 @@ define("robotTW2/services/AttackService", [
 				} else {
 					commandQueue.unbind(id_command, $rootScope.data_attack)
 				}
-				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+				
 
 			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
 
@@ -97,7 +97,7 @@ define("robotTW2/services/AttackService", [
 		, resendAttack = function(params){
 //			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
-			var expires_send = params.data_escolhida - params.duration + $rootScope.data_main.time_correction_command;
+			var expires_send = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command;
 			var timer_delay_send = expires_send - time.convertedTime();
 			if(timer_delay_send >= 0){
 				function e (){
@@ -109,6 +109,7 @@ define("robotTW2/services/AttackService", [
 								delete listener[id_command];
 							}
 							commandQueue.unbind(id_command, $rootScope.data_attack)
+							$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 						}
 					})
 				}
