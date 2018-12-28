@@ -482,8 +482,8 @@ define("robotTW2/services/DefenseService", [
 			listener_cancel[id_command] = e(id_command);
 			clearListener(listener_sent[params.id_command]);
 			commandQueue.unbind(params.id_command)
-			var expires = params.data_escolhida + params.time_sniper_post;
-			var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
+			var expires = params.data_escolhida + params.time_sniper_post - $rootScope.data_main.time_correction_command;
+			var timer_delay = ((expires - time.convertedTime()) / 2);
 
 			var par = {
 					"timer_delay" : timer_delay,
@@ -546,7 +546,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, resendDefense = function(params){
 			var id_command = params.id_command;
-			var expires_send = params.data_escolhida - params.time_sniper_ant  - $rootScope.data_main.time_correction_command;
+			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command;
 			var timer_delay_send = expires_send - time.convertedTime();
 			if(timer_delay_send >= 0){
 				function e(id_command){
