@@ -438,7 +438,7 @@ define("robotTW2/services/DefenseService", [
 						delete listener_cancel[id]
 					}
 					if(typeof(listener_timeout[data.command_id]) == "function"){
-						$timeout.cancel(c[data.listener_timeout]);
+						$timeout.cancel(listener_timeout[data.listener_timeout]);
 						delete listener_timeout[id]
 					}
 					return;
