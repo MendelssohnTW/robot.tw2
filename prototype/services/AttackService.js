@@ -45,7 +45,7 @@ define("robotTW2/services/AttackService", [
 		})
 		, addAttack = function(params, opt_id){
 			if(!params){return}
-			var id_command = (Math.round(time.convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
+			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(opt_id){
 				id_command = params.id_command
 			}
