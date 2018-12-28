@@ -114,7 +114,7 @@ define("robotTW2/services/AttackService", [
 				}
 
 				return $timeout(function(){
-					listener[id_command] = {listener : function(){return e()}}
+					listener[id_command] = {listener : e()}
 //					if (promiseReSendAttack) {
 //						queueReSendAttack.push(arguments);
 //						return;
