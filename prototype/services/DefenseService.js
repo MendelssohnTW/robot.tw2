@@ -481,7 +481,7 @@ define("robotTW2/services/DefenseService", [
 					}
 					var id_command = data.command_id;
 					//cria listener para comando cancelado
-					listener_cancel[id_command] = e;
+					listener_cancel[id_command] = e();
 					clearListener(listener_sent[id_command]);
 					commandQueue.unbind(id_command)
 					var expires = params.data_escolhida + params.time_sniper_post;
@@ -554,7 +554,7 @@ define("robotTW2/services/DefenseService", [
 				return $timeout(function () {
 					//cria listener para o comando se enviado
 					listener_sent[id_command] = {
-							listener : e, 
+							listener 	: e(), 
 							time 		: params.data_escolhida - params.time_sniper_ant
 					}
 					socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
