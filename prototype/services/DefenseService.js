@@ -447,7 +447,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, clearListener = function(listener){
 			if(typeof(listener == "object")){
-				if(listener.$$timeoutId != undefined && listener.$$timeoutId > 0){
+				if(listener && listener.$$timeoutId && listener.$$timeoutId != undefined && listener.$$timeoutId > 0){
 					$timeout.cancel(listener_timeout);
 				}
 			} else if(typeof(listener == "function")){
