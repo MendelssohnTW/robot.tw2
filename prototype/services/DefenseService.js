@@ -455,60 +455,61 @@ define("robotTW2/services/DefenseService", [
 				delete listener
 			}
 		}
+		, command_returned = function($event, data){
+			if(!data)return
+			var id_command = data.command_id;
+			//remove listener de retorno
+			clearListener(listener_returned[id_command])
+		}
+		, command_cancelled = function($event, data){
+			if(!data)return
+			var id_command = data.command_id;
+			//remove listeners de cancelamento e timeout
+			clearListener(listener_cancel[id_command])
+			clearListener(listener_timeout[id_command])
+			//cria listener de retorno
+			listener_returned[id_command] = $rootScope.$on(providers.eventTypeProvider.COMMAND_RETURNED, command_returned);
+		}
+		, command_sent = function(params, data){
+			function e(id_command) {
+				var that = this;
+				that.id_command = id_command;
+				return $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
+			}
+			var id_command = data.command_id;
+			//cria listener para comando cancelado
+			listener_cancel[id_command] = e(id_command);
+			clearListener(listener_sent[params.id_command]);
+			commandQueue.unbind(params.id_command)
+			var expires = params.data_escolhida + params.time_sniper_post;
+			var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
+
+			var par = {
+					"timer_delay" : timer_delay,
+					"id_command" : id_command
+			}
+			commandQueue.bind(id_command, sendCancel, par)
+
+			if(timer_delay > 0){
+				//envia o comando de cancelamento
+				commandQueue.trigger(id_command, par)
+				//cria listener de erro timeout
+				listener_timeout[id_command] = function(){
+					return $timeout(function () {
+						clearListener(listener_cancel[id_command]);
+						clearListener(listener_timeout[id_command]);
+					}, timer_delay + 5000);
+				}
+			} else {
+				//cancela comando se tempo de cancelamento expirou
+				commandQueue.unbind(id_command)
+			}
+		}
 		, sendDefense = function(params){
 			var id_command = params.id_command
 			, timer_delay = params.timer_delay
 			, d = {}
-			, command_returned = function($event, data){
-				if(!data)return
-				var id_command = data.command_id;
-				//remove listener de retorno
-				clearListener(listener_returned[id_command])
-			}
-			, command_cancelled = function($event, data){
-				if(!data)return
-				var id_command = data.command_id;
-				//remove listeners de cancelamento e timeout
-				clearListener(listener_cancel[id_command])
-				clearListener(listener_timeout[id_command])
-				//cria listener de retorno
-				listener_returned[id_command] = $rootScope.$on(providers.eventTypeProvider.COMMAND_RETURNED, command_returned);
-			}
-			, command_sent = function(params, data){
-				function e(id_command) {
-					var that = this;
-					that.id_command = id_command;
-					return $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
-				}
-				var id_command = data.command_id;
-				//cria listener para comando cancelado
-				listener_cancel[id_command] = e(id_command);
-				clearListener(listener_sent[params.id_command]);
-				commandQueue.unbind(params.id_command)
-				var expires = params.data_escolhida + params.time_sniper_post;
-				var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
-
-				var par = {
-						"timer_delay" : timer_delay,
-						"id_command" : id_command
-				}
-				commandQueue.bind(id_command, sendCancel, par)
-
-				if(timer_delay > 0){
-					//envia o comando de cancelamento
-					commandQueue.trigger(id_command, par)
-					//cria listener de erro timeout
-					listener_timeout[id_command] = function(){
-						return $timeout(function () {
-							clearListener(listener_cancel[id_command]);
-							clearListener(listener_timeout[id_command]);
-						}, timer_delay + 5000);
-					}
-				} else {
-					//cancela comando se tempo de cancelamento expirou
-					commandQueue.unbind(id_command)
-				}
-			}
+			
 
 			return $timeout(function () {
 				var lista = [],
