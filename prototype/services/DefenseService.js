@@ -36,6 +36,7 @@ define("robotTW2/services/DefenseService", [
 		, listener_sent = []
 		, listener_cancel = []
 		, listener_timeout = []
+		, listener_returned = []
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
