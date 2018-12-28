@@ -109,13 +109,12 @@ define("robotTW2/services/AttackService", [
 								delete listener[id_command];
 							}
 							commandQueue.unbind(id_command, $rootScope.data_attack)
-							$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 						}
 					})
 				}
 
 				return $timeout(function(){
-					listener[id_command] = {listener : e}
+					listener[id_command] = {listener : function(){return e()}}
 //					if (promiseReSendAttack) {
 //						queueReSendAttack.push(arguments);
 //						return;
