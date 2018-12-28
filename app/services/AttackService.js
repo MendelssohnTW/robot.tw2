@@ -45,12 +45,12 @@ define("robotTW2/services/AttackService", [
 		})
 		, addAttack = function(params, opt_id){
 			if(!params){return}
-			var id_command = (Math.round(time.convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
+			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(opt_id){
 				id_command = params.id_command
 			}
 
-			var expires = params.data_escolhida - params.duration;
+			var expires = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command;;
 			var timer_delay = expires - time.convertedTime();
 
 			params["timer_delay"] = timer_delay
@@ -88,7 +88,7 @@ define("robotTW2/services/AttackService", [
 				} else {
 					commandQueue.unbind(id_command, $rootScope.data_attack)
 				}
-				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+				
 
 			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
 
@@ -97,24 +97,26 @@ define("robotTW2/services/AttackService", [
 		, resendAttack = function(params){
 //			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
-			var expires_send = params.data_escolhida - params.duration + $rootScope.data_main.time_correction_command;
+			var expires_send = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command;
 			var timer_delay_send = expires_send - time.convertedTime();
 			if(timer_delay_send >= 0){
-				function e (){
+				function e (id_command){
+					var that = this;
+					that.id_command = id_command;
 					return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
 						if(params.start_village == data.origin.id){
-							var id_command = data.command_id;
-							if(listener[id_command] && typeof(listener[id_command].listener) == "function") {
-								listener[id_command].listener();
-								delete listener[id_command];
+//							var id_command = data.command_id;
+							if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
+								listener[that.id_command].listener();
+								delete listener[that.id_command];
 							}
-							commandQueue.unbind(id_command, $rootScope.data_attack)
+							commandQueue.unbind(that.id_command, $rootScope.data_attack)
 						}
 					})
 				}
 
 				return $timeout(function(){
-					listener[id_command] = {listener : e}
+					listener[id_command] = {listener : e(id_command)}
 //					if (promiseReSendAttack) {
 //						queueReSendAttack.push(arguments);
 //						return;

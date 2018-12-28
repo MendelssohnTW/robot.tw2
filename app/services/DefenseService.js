@@ -474,39 +474,39 @@ define("robotTW2/services/DefenseService", [
 				//cria listener de retorno
 				listener_returned[id_command] = $rootScope.$on(providers.eventTypeProvider.COMMAND_RETURNED, command_returned);
 			}
-			, command_sent = function($event, data){
-				if(params.start_village == data.origin.id){
-					function e() {
-						return $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
+			, command_sent = function(params, data){
+				function e(id_command) {
+					var that = this;
+					that.id_command = id_command;
+					return $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
+				}
+				var id_command = data.command_id;
+				//cria listener para comando cancelado
+				listener_cancel[id_command] = e(id_command);
+				clearListener(listener_sent[params.id_command]);
+				commandQueue.unbind(params.id_command)
+				var expires = params.data_escolhida + params.time_sniper_post;
+				var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
+
+				var par = {
+						"timer_delay" : timer_delay,
+						"id_command" : id_command
+				}
+				commandQueue.bind(id_command, sendCancel, par)
+
+				if(timer_delay > 0){
+					//envia o comando de cancelamento
+					commandQueue.trigger(id_command, par)
+					//cria listener de erro timeout
+					listener_timeout[id_command] = function(){
+						return $timeout(function () {
+							clearListener(listener_cancel[id_command]);
+							clearListener(listener_timeout[id_command]);
+						}, timer_delay + 5000);
 					}
-					var id_command = data.command_id;
-					//cria listener para comando cancelado
-					listener_cancel[id_command] = e;
-					clearListener(listener_sent[id_command]);
+				} else {
+					//cancela comando se tempo de cancelamento expirou
 					commandQueue.unbind(id_command)
-					var expires = params.data_escolhida + params.time_sniper_post;
-					var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
-
-					var par = {
-							"timer_delay" : timer_delay,
-							"id_command" : id_command
-					}
-					commandQueue.bind(id_command, sendCancel, par)
-
-					if(timer_delay > 0){
-						//envia o comando de cancelamento
-						commandQueue.trigger(id_command, par)
-						//cria listener de erro timeout
-						listener_timeout[id_command] = function(){
-							return $timeout(function () {
-								clearListener(listener_cancel[id_command]);
-								clearListener(listener_timeout[id_command]);
-							}, timer_delay + 5000);
-						}
-					} else {
-						//cancela comando se tempo de cancelamento expirou
-						commandQueue.unbind(id_command)
-					}
 				}
 			}
 
@@ -544,17 +544,23 @@ define("robotTW2/services/DefenseService", [
 		}
 		, resendDefense = function(params){
 			var id_command = params.id_command;
-			var expires_send = params.data_escolhida - params.time_sniper_ant;
-			var timer_delay_send = expires_send - time.convertedTime() - $rootScope.data_main.time_correction_command;
+			var expires_send = params.data_escolhida - params.time_sniper_ant  - $rootScope.data_main.time_correction_command;
+			var timer_delay_send = expires_send - time.convertedTime();
 			if(timer_delay_send >= 0){
-				function e(){
-					return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, command_sent)
+				function e(id_command){
+					var that = this;
+					that.params = params;
+					return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
+						if(that.params.start_village == data.origin.id){
+							command_sent(that.params, data)
+						}
+					})
 				}
 
 				return $timeout(function () {
 					//cria listener para o comando se enviado
 					listener_sent[id_command] = {
-							listener : e, 
+							listener 	: e(id_command), 
 							time 		: params.data_escolhida - params.time_sniper_ant
 					}
 					socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
@@ -634,7 +640,7 @@ define("robotTW2/services/DefenseService", [
 //		}
 		, addDefenseSelector = function(command, i){
 			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
-			
+
 			var isSelected = command.command_id && requestFn.get(command.command_id, true);
 			var isMark = false;
 			if (isSelected != undefined){
