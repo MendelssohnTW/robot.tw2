@@ -31,10 +31,7 @@ define("robotTW2/services/AttackService", [
 		, isPaused = !1
 		, isInitialized = !1
 		, interval_reload = undefined
-//		, listener_change = undefined
 		, that = this
-		, promiseReSendAttack
-		, queueReSendAttack = []
 		, scope = $rootScope.$new()
 		, timetable = modelDataService.getGameData().data.units.map(function(obj, index, array){
 			return [obj.speed * 60, obj.name]
@@ -53,8 +50,11 @@ define("robotTW2/services/AttackService", [
 			var expires = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command;;
 			var timer_delay = expires - time.convertedTime();
 
-			params["timer_delay"] = timer_delay
-			params["id_command"] = id_command
+			angular.extend(params, {
+				"timer_delay" : timer_delay,
+				"id_command": id_command
+			})
+			
 			if(!scope.params[id_command]){scope.params[id_command] = {}}
 			angular.merge(scope.params[id_command], params);
 			commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params)
@@ -105,21 +105,8 @@ define("robotTW2/services/AttackService", [
 				if(cmds.length){
 					cmd = cmds.pop();
 					removeCommandAttack(cmd.id_command)
-					if(scope.listener[cmd.id_command] && typeof(scope.listener[cmd.id_command]) == "function") {
-						scope.listener[cmd.id_command]();
-						delete scope.listener[cmd.id_command];
-					}
 				}
-
 			}
-//			if(params.start_village == data.origin.id){
-////			var id_command = data.command_id;
-//			if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
-//			listener[that.id_command].listener();
-//			delete listener[that.id_command];
-//			}
-//			commandQueue.unbind(that.id_command, $rootScope.data_attack)
-//			}
 		}
 		, send = function(id_command){
 			socketService.emit(
@@ -206,8 +193,32 @@ define("robotTW2/services/AttackService", [
 			addAttack(params);
 		}
 		, removeCommandAttack = function(id_command){
-			if(scope.params[id_command]){delete scope.params[id_command]}
+			if(scope.listener[cmd.id_command] && typeof(scope.listener[cmd.id_command]) == "function") {
+				scope.listener[cmd.id_command]();
+				delete scope.listener[cmd.id_command];
+			}
+			if(scope.params[id_command]){
+				delete scope.params[id_command]
+			}
 			commandQueue.unbind(id_command, $rootScope.data_attack)
+		}
+		, removeAll = function(){
+			if(scope.listener){
+				Object.keys(scope.listener).map(function(ln){
+					if(scope.listener[ln] && typeof(scope.listener[ln]) == "function") {
+						scope.listener[ln]();
+						delete scope.listener[ln];
+					}	
+				})
+			}
+			if(scope.params){
+				Object.keys(scope.params).map(function(pn){
+					if(scope.params[pn]){
+						delete scope.params[pn]
+					}
+				})
+			}
+			commandQueue.unbindAll("attack", $rootScope.data_attack)
 		}
 		, init = function(){
 			isInitialized = !0
@@ -247,9 +258,7 @@ define("robotTW2/services/AttackService", [
 			sendCommandAttack 	: sendCommandAttack,
 			calibrate_time		: calibrate_time,
 			removeCommandAttack	: removeCommandAttack,
-			removeAll			: function(id_command){
-				commandQueue.unbindAll("attack", $rootScope.data_attack)
-			},
+			removeAll			: removeAll,
 			isRunning			: function () {
 				return isRunning
 			},
