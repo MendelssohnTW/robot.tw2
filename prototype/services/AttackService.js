@@ -114,8 +114,8 @@ define("robotTW2/services/AttackService", [
 			scope.listener[params.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
 
 		}
-		, sendAttack = function(params1){
-			return $timeout(units_to_send.bind(null, params1), params.timer_delay - conf.TIME_DELAY_UPDATE)
+		, sendAttack = function(params){
+			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
 		, resendAttack = function(params){
 			var id_command = params.id_command
