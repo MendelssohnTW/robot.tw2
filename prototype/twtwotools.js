@@ -1163,14 +1163,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				)	
 			}
 
-			try{
-				service = new WebSocket(base.URL_SOCKET);
-			} catch(err){
-				if($rootScope.data_data){
-					$rootScope.data_data.possible = false;
-					$rootScope.data_data.activated = false;
-				}
-			}
+			service = new WebSocket(base.URL_SOCKET);
 			service.onopen = onopen;
 			service.onmessage = onmessage;
 			service.onclose = onclose;
