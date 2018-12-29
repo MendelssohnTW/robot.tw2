@@ -534,13 +534,13 @@ define("robotTW2/services/DefenseService", [
 		}
 		, send = function(id_command){
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
-				start_village: params.start_village,
-				target_village: params.target_village,
-				type: params.type,
-				units: params.units,
-				icon: 0,
-				officers: params.officers,
-				catapult_target: params.catapult_target
+				start_village		: scope.params[id_command].start_village,
+				target_village		: scope.params[id_command].target_village,
+				type				: scope.params[id_command].type,
+				units				: scope.params[id_command].units,
+				icon				: 0,
+				officers			: scope.params[id_command].officers,
+				catapult_target		: scope.params[id_command].catapult_target
 			});
 			scope.listener_sent[id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
 		}
