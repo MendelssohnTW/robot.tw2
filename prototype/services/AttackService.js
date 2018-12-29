@@ -219,8 +219,8 @@ define("robotTW2/services/AttackService", [
 			isRunning = !1;
 		}
 		angular.extend(scope, {
-			listener : [], 
-			params : []
+			listener : {}, 
+			params : {}
 		})
 
 		return	{
