@@ -93,6 +93,7 @@ define("robotTW2/services/AttackService", [
 		, listener_command_sent = function($event, data){
 			if(data.direction == "forward" && data.type == "attack"){
 				var p = angular.merge({}, $event.currentScope.params);
+				console.log(p);
 			}
 //			if(params.start_village == data.origin.id){
 ////				var id_command = data.command_id;
