@@ -33,9 +33,7 @@ define("robotTW2/services/DefenseService", [
 		, isInitialized = !1
 		, t = undefined
 		, oldCommand
-		, listener_sent = []
-		, listener_cancel = []
-		, listener_timeout = []
+		, scope = $rootScope.$new()
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
@@ -429,215 +427,158 @@ define("robotTW2/services/DefenseService", [
 			return $timeout(function () {
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
-				}, function(data){
-					//remove listeners de cancelamento e timeout
-					if(typeof(listener_cancel[data.command_id]) == "function"){
-						listener_cancel[id]()
-						listener_cancel[id] = undefined;
-						delete listener_cancel[id]
-					}
-					if(typeof(listener_timeout[data.command_id]) == "function"){
-						$timeout.cancel(c[data.listener_timeout]);
-						delete listener_timeout[id]
-					}
-					return;
 				})
 			}, timer_delay);
 		}
-		, clearListener = function(listener){
-			if(typeof(listener == "object")){
-				if(listener.$$timeoutId != undefined && listener.$$timeoutId > 0){
-					$timeout.cancel(listener_timeout);
+		, units_to_send = function(params){
+			var lista = [],
+			units = {};
+			var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
+			if (village && village.unitInfo != undefined){
+				var unitInfo = village.unitInfo.units;
+				for(obj in unitInfo){
+					if (unitInfo.hasOwnProperty(obj)){
+						if (unitInfo[obj].available > 0){
+							var campo = {[obj]: unitInfo[obj].available};
+							units[Object.keys(campo)[0]] = 
+								Object.keys(campo).map(function(key) {return campo[key]})[0];
+							lista.push(units);
+						}
+					}
 				}
-			} else if(typeof(listener == "function")){
-				listener()
-				listener = undefined;
-				delete listener
+				params.units = units;
+				scope.params[params.id_command].units = units
+			};
+			if (lista.length > 0 || !params.enviarFull) {
+				resendDefense(params.id_command)
+			} else {
+				removeCommandDefense(params.id_command)
 			}
 		}
 		, sendDefense = function(params){
-			var id_command = params.id_command
-			, timer_delay = params.timer_delay
-			, d = {}
-			, command_returned = function($event, data){
-				if(!data)return
-				var id_command = data.command_id;
-				//remove listener de retorno
-				clearListener(listener_returned[id_command])
-			}
-			, command_cancelled = function($event, data){
-				if(!data)return
-				var id_command = data.command_id;
-				//remove listeners de cancelamento e timeout
-				clearListener(listener_cancel[id_command])
-				clearListener(listener_timeout[id_command])
-				//cria listener de retorno
-				listener_returned[id_command] = $rootScope.$on(providers.eventTypeProvider.COMMAND_RETURNED, command_returned);
-			}
-			, command_sent = function(params, data){
-				function e(id_command) {
-					var that = this;
-					that.id_command = id_command;
-					return $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, command_cancelled);
-				}
-				var id_command = data.command_id;
-				//cria listener para comando cancelado
-				listener_cancel[id_command] = e(id_command);
-				clearListener(listener_sent[params.id_command]);
-				commandQueue.unbind(params.id_command)
-				var expires = params.data_escolhida + params.time_sniper_post;
-				var timer_delay = ((expires - time.convertedTime()) / 2) - $rootScope.data_main.time_correction_command;
-
-				var par = {
-						"timer_delay" : timer_delay,
-						"id_command" : id_command
-				}
-				commandQueue.bind(id_command, sendCancel, par)
-
-				if(timer_delay > 0){
-					//envia o comando de cancelamento
-					commandQueue.trigger(id_command, par)
-					//cria listener de erro timeout
-					listener_timeout[id_command] = function(){
-						return $timeout(function () {
-							clearListener(listener_cancel[id_command]);
-							clearListener(listener_timeout[id_command]);
-						}, timer_delay + 5000);
-					}
-				} else {
-					//cancela comando se tempo de cancelamento expirou
-					commandQueue.unbind(id_command)
-				}
-			}
-
-			return $timeout(function () {
-				var lista = [],
-				units = {};
-				var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
-				if (village && village.unitInfo != undefined){
-					var unitInfo = village.unitInfo.units;
-					for(obj in unitInfo){
-						if (unitInfo.hasOwnProperty(obj)){
-							if (unitInfo[obj].available > 0){
-								var campo = {[obj]: unitInfo[obj].available};
-								units[Object.keys(campo)[0]] = 
-									Object.keys(campo).map(function(key) {return campo[key]})[0];
-								lista.push(units);
-							}
-						}
-					}
-					params.units = units;
-				};
-
-				if (lista.length > 0) {
-					//Envia o comando
-					resendDefense(params)
-				} else {
-					//se não tem unidades cancela o comando
-					commandQueue.unbind(id_command)
-				}
-				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
-
-			}, timer_delay - conf.TIME_DELAY_UPDATE);
-
-			return
+			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
-		, resendDefense = function(params){
-			var id_command = params.id_command;
-			var expires_send = params.data_escolhida - params.time_sniper_ant  - $rootScope.data_main.time_correction_command;
-			var timer_delay_send = expires_send - time.convertedTime();
-			if(timer_delay_send >= 0){
-				function e(id_command){
-					var that = this;
-					that.params = params;
-					return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
-						if(that.params.start_village == data.origin.id){
-							command_sent(that.params, data)
-						}
-					})
+		, listener_command_returned = function($event, data){
+			var cmds = Object.keys($event.currentScope.params).map(function(param){
+				if($event.currentScope.params[param].id_command == data.command_id) {
+					return $event.currentScope.params[param]	
+				} else {
+					return undefined
+				}
+			}).filter(f => f != undefined)
+			var cmd = undefined;
+			if(cmds.length){
+				cmd = cmds.pop();
+				if(scope.listener_returned[cmd.id_command] && typeof(scope.listener_returned[cmd.id_command]) == "function") {
+					scope.listener_returned[cmd.id_command]();
+					delete scope.listener_returned[cmd.id_command];
+				}
+				if(scope.params[cmd.id_command]){
+					delete scope.params[cmd.id_command]
 				}
 
-				return $timeout(function () {
-					//cria listener para o comando se enviado
-					listener_sent[id_command] = {
-							listener 	: e(id_command), 
-							time 		: params.data_escolhida - params.time_sniper_ant
-					}
-					socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
-						start_village: params.start_village,
-						target_village: params.target_village,
-						type: params.type,
-						units: params.units,
-						icon: 0,
-						officers: params.officers,
-						catapult_target: params.catapult_target
-					});
-				}, timer_delay_send);
-			} else {
-				//cancela comando se o tempo de envio expirou
-				commandQueue.unbind(id_command)
-				return null
 			}
+		}
+		, listener_command_cancel = function($event, data){
+			if(data.direction == "backward" && data.type == "support"){
+				var cmds = Object.keys($event.currentScope.params).map(function(param){
+					if($event.currentScope.params[param].start_village == data.home.id
+							&& $event.currentScope.params[param].target_village == data.target.id
+							&& $event.currentScope.params[param].id_command == data.command_id
+					) {
+						return $event.currentScope.params[param]	
+					} else {
+						return undefined
+					}
+				}).filter(f => f != undefined)
+				var cmd = undefined;
+				if(cmds.length){
+					cmd = cmds.pop();
+					if(scope.listener_command_cancel[cmd.id_command] && typeof(scope.listener_command_cancel[cmd.id_command]) == "function") {
+						scope.listener_command_cancel[cmd.id_command]();
+						delete scope.listener_command_cancel[cmd.id_command];
+					}
+					scope.listener_returned[data.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned)
+				}
+			}
+		}
+		, listener_command_sent = function($event, data){
+			if(data.direction == "forward" && data.type == "support"){
+				var cmds = Object.keys($event.currentScope.params).map(function(param){
+					if($event.currentScope.params[param].start_village == data.home.id
+							&& $event.currentScope.params[param].target_village == data.target.id
+					) {
+						return $event.currentScope.params[param]	
+					} else {
+						return undefined
+					}
+				}).filter(f => f != undefined)
+				var cmd = undefined;
+				if(cmds.length){
+					cmd = cmds.pop();
+					scope.params[cmd.id_command].id_command = data.command_id;
+					if(!scope.params[data.command_id]){scope.params[data.command_id] = {}}
+					scope.params[data.command_id] = scope.params[cmd.id_command];
+					removeCommandDefense(cmd.id_command)
+					scope.listener_cancel[data.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel)
+
+					var expires = scope.params[data.command_id].data_escolhida + scope.params[data.command_id].time_sniper_post - $rootScope.data_main.time_correction_command
+					, timer_delay = ((expires - time.convertedTime()) / 2)
+					, par = {
+							"timer_delay" 	: timer_delay,
+							"id_command" 	: data.command_id
+					}
+					commandQueue.bind(data.command_id, sendCancel, par)
+				}
+			}
+		}
+		, send = function(id_command){
+			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
+				start_village: params.start_village,
+				target_village: params.target_village,
+				type: params.type,
+				units: params.units,
+				icon: 0,
+				officers: params.officers,
+				catapult_target: params.catapult_target
+			});
+			scope.listener_sent[id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
+		}
+		, resendDefense = function(id_command){
+			var expires_send = scope.params[id_command].data_escolhida - scope.params[id_command].time_sniper_ant - $rootScope.data_main.time_correction_command
+			, timer_delay_send = expires_send - time.convertedTime();
+
+			if(timer_delay_send < 0){
+				removeCommandDefense(id_command)
+				return 
+			}
+			return $timeout(send.bind(null, id_command), timer_delay_send);
 		}
 		, addDefense = function(params){
-//			if(params && id_command){
-//			var t = {
-//			id_command: id_command
-//			}
-//			angular.merge(params, t);
-//			var cmd = {
-//			id_command: id_command,
-//			params: params
-//			}
-//			var expires = params.data_escolhida - params.time_sniper_ant;
-//			var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
-
-//			if(timeoutIdDefense[id_command]) {
-//			$timeout.cancel(timeoutIdDefense[id_command]);
-//			delete timeoutIdDefense[id_command];
-//			}
-//			if(timer_delay > -2000){
-//			timer_delay < 0 ? timer_delay = 0 : timer_delay;
-//			timeoutIdDefense[id_command] = sendDefense(timer_delay, params, id_command, params.enviarFull);
-//			!commandQueue.find(f => f.id_command == cmd.id_command) ? commandQueue.push(cmd) : null;
-//			} else {
-//			commandQueue = commandQueue.filter(f => f.id_command != cmd.id_command);
-//			console.log("Comando de defesa  (addsupport) da aldeia " + modelDataService.getSelectedCharacter().getVillage(params.start_village).data.name + " não enviado as " + new Date(time.convertedTime()) + " com tempo do servidor, devido vencimento de limite de delay");
-//			}
-//			}
-
 			if(!params){return}
-			var id_command = (Math.round(time.convertedTime() / 1e9)).toString() + params.data_escolhida.toString();
+			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(params.id_command){
 				id_command = params.id_command
 			}
 
-			var expires = params.data_escolhida - params.time_sniper_ant;
-			var timer_delay = expires - time.convertedTime() - $rootScope.data_main.time_correction_command;
+			var expires = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command;
+			var timer_delay = expires - time.convertedTime();
 
 			angular.extend(params, {
 				"timer_delay" : timer_delay,
 				"id_command": id_command
 			})
 
-			//Cria o timeout para envio do comando
+			if(!scope.params[id_command]){scope.params[id_command] = {}}
+			angular.merge(scope.params[id_command], params);
 			commandQueue.bind(id_command, sendDefense, null, params)
 
 			if(timer_delay >= 0){
 				commandQueue.trigger(id_command, params)
+			} else {
+				removeCommandDefense(id_command)
 			}
 		}
-//		, removeDefense = function(id_command, db, timeoutId, opt_callback){
-//		var comando = null;
-//		commandQueue = commandQueue.filter(f => f.id_command != id_command);
-//		if (timeoutId[id_command]){
-//		$timeout.cancel(timeoutId[id_command]);
-//		delete timeoutId[id_command]	
-//		}
-//		if(commandQueue){
-//		typeof(opt_callback) == "function" ? opt_callback() : null;
-//		}
-//		}
 		, addDefenseSelector = function(command, i){
 			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
 
@@ -683,8 +624,7 @@ define("robotTW2/services/DefenseService", [
 					})
 				} else {
 					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
-					commandQueue.unbind(command.id_command)
-//					removeDefense(command.command_id, "comandos_support", timeoutIdDefense, upDateTbodyDefense)
+					removeCommandDefense(command.id_command)
 				}
 			});
 		}
@@ -713,6 +653,19 @@ define("robotTW2/services/DefenseService", [
 					}
 				}, 200)
 			};
+		}
+		, removeCommandDefense = function(id_command){
+			if(scope.listener_command_sent[id_command] && typeof(scope.listener_command_sent[id_command]) == "function") {
+				scope.listener_command_sent[id_command]();
+				delete scope.listener[id_command];
+			}
+			if(scope.params[id_command]){
+				delete scope.params[id_command]
+			}
+			commandQueue.unbind(id_command)
+		}
+		, removeAll = function(){
+			commandQueue.unbindAll("support")
 		}
 		, init = function(){
 			isInitialized = !0
@@ -759,17 +712,21 @@ define("robotTW2/services/DefenseService", [
 			returnCommand();
 		}
 
+		angular.extend(scope, {
+			listener_sent 		: {},
+			listener_cancel 	: {},
+			listener_timeout 	: {},
+			listener_returned 	: {},
+			params 				: {}
+		})
+
 		return	{
 			init				: init,
 			start				: start,
 			stop 				: stop,
 			calibrate_time		: calibrate_time,
-			removeCommandDefense: function(id_command){
-				commandQueue.unbind(id_command)
-			},
-			removeAll			: function(id_command){
-				commandQueue.unbindAll("support")
-			},
+			removeCommandDefense: removeCommandDefense,
+			removeAll			: removeAll,
 			isRunning			: function () {
 				return isRunning
 			},

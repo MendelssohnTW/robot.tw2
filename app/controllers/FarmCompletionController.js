@@ -27,6 +27,7 @@ define("robotTW2/controllers/FarmCompletionController", [
 		}
 		
 		$scope.$watch('reportData', function () {
+			if(!$scope.reportData.defVillageId) {return}
 			if($rootScope.data_farm.list_exceptions.find(f => f == $scope.reportData.defVillageId)){
 				$scope.checked = true;
 			} else {
