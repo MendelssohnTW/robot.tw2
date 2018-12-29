@@ -55,7 +55,7 @@ define("robotTW2/services/AttackService", [
 
 			params["timer_delay"] = timer_delay
 			params["id_command"] = id_command
-			
+			if(!scope.params[id_command]){scope.params[id_command] = {}}
 			angular.merge(scope.params[id_command], params);
 			commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params)
 
