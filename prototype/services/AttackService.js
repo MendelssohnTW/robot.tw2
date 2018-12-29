@@ -55,6 +55,8 @@ define("robotTW2/services/AttackService", [
 
 			params["timer_delay"] = timer_delay
 			params["id_command"] = id_command
+			
+			angular.merge(scope.params[id_command], params);
 			commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params)
 
 			if(timer_delay >= 0){
@@ -79,54 +81,56 @@ define("robotTW2/services/AttackService", [
 						}
 					}
 					params.units = units;
+					scope.params[params.id_command].units = units
 				};
 			};
 			if (lista.length > 0 || !params.enviarFull) {
-				resendAttack(params)
+				resendAttack(params.id_command)
 			} else {
 				removeCommandAttack(params.id_command)
 			}
 		}
 		, listener_command_sent = function($event, data){
-			
-			if(params.start_village == data.origin.id){
-//				var id_command = data.command_id;
-				if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
-					listener[that.id_command].listener();
-					delete listener[that.id_command];
-				}
-				commandQueue.unbind(that.id_command, $rootScope.data_attack)
+			if(data.direction == "forward" && data.type == "attack"){
+				
 			}
+//			if(params.start_village == data.origin.id){
+////				var id_command = data.command_id;
+//				if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
+//					listener[that.id_command].listener();
+//					delete listener[that.id_command];
+//				}
+//				commandQueue.unbind(that.id_command, $rootScope.data_attack)
+//			}
 		}
-		, send = function(params){
+		, send = function(id_command){
 			socketService.emit(
 					providers.routeProvider.SEND_CUSTOM_ARMY, {
-						start_village: params.start_village,
-						target_village: params.target_village,
-						type: params.type,
-						units: params.units,
-						icon: 0,
-						officers: params.officers,
-						catapult_target: params.catapult_target
+						start_village		: scope.params[id_command].start_village,
+						target_village		: scope.params[id_command].target_village,
+						type				: scope.params[id_command].type,
+						units				: scope.params[id_command].units,
+						icon				: 0,
+						officers			: scope.params[id_command].officers,
+						catapult_target		: scope.params[id_command].catapult_target
 					}
 			)
 
-			scope.listener[params.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
+			scope.listener[id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
 
 		}
 		, sendAttack = function(params){
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
-		, resendAttack = function(params){
-			var id_command = params.id_command
-			, expires_send = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command
+		, resendAttack = function(id_command){
+			var expires_send = scope.params[id_command].data_escolhida - scope.params[id_command].duration - $rootScope.data_main.time_correction_command
 			, timer_delay_send = expires_send - time.convertedTime();
 
 			if(timer_delay_send < 0){
-				removeCommandAttack(params.id_command)
+				removeCommandAttack(id_command)
 				return 
 			}
-			return $timeout(send.bind(null, params), timer_delay_send)
+			return $timeout(send.bind(null, id_command), timer_delay_send)
 		}
 		, sendCommandAttack = function(scp){
 			scp.army = {
@@ -184,6 +188,7 @@ define("robotTW2/services/AttackService", [
 			addAttack(params);
 		}
 		, removeCommandAttack = function(id_command){
+			if(scope.params[id_command]){delete scope.params[id_command]}
 			commandQueue.unbind(id_command, $rootScope.data_attack)
 		}
 		, init = function(){
@@ -212,7 +217,10 @@ define("robotTW2/services/AttackService", [
 			interval_reload = undefined;
 			isRunning = !1;
 		}
-		angular.extend(scope, {listener : []})
+		angular.extend(scope, {
+			listener : [], 
+			params : []
+		})
 
 		return	{
 			init				: init,
