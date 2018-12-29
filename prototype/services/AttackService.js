@@ -92,16 +92,33 @@ define("robotTW2/services/AttackService", [
 		}
 		, listener_command_sent = function($event, data){
 			if(data.direction == "forward" && data.type == "attack"){
-				var p = angular.merge({}, $event.currentScope.params);
-				console.log(p);
+				var cmds = Object.keys($event.currentScope.params).map(function(param){
+					if($event.currentScope.params[param].start_village == data.home.id
+							&& $event.currentScope.params[param].target_village == data.target.id
+					) {
+						return $event.currentScope.params[param]	
+					} else {
+						return undefined
+					}
+				}).filter(f => f != undefined)
+				var cmd = undefined;
+				if(cmds.length){
+					cmd = cmds.pop();
+					removeCommandAttack(cmd.id_command)
+					if(scope.listener[cmd.id_command] && typeof(scope.listener[cmd.id_command]) == "function") {
+						scope.listener[cmd.id_command]();
+						delete scope.listener[cmd.id_command];
+					}
+				}
+
 			}
 //			if(params.start_village == data.origin.id){
-////				var id_command = data.command_id;
-//				if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
-//					listener[that.id_command].listener();
-//					delete listener[that.id_command];
-//				}
-//				commandQueue.unbind(that.id_command, $rootScope.data_attack)
+////			var id_command = data.command_id;
+//			if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
+//			listener[that.id_command].listener();
+//			delete listener[that.id_command];
+//			}
+//			commandQueue.unbind(that.id_command, $rootScope.data_attack)
 //			}
 		}
 		, send = function(id_command){
