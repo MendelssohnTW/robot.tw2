@@ -32,10 +32,10 @@ define("robotTW2/services/AttackService", [
 		, isInitialized = !1
 		, interval_reload = undefined
 //		, listener_change = undefined
-		, listener = []
 		, that = this
 		, promiseReSendAttack
 		, queueReSendAttack = []
+		, scope = $rootScope.$new()
 		, timetable = modelDataService.getGameData().data.units.map(function(obj, index, array){
 			return [obj.speed * 60, obj.name]
 		}).map(m => {
@@ -59,104 +59,91 @@ define("robotTW2/services/AttackService", [
 
 			if(timer_delay >= 0){
 				commandQueue.trigger(id_command, params)
+			} else {
+				removeCommandAttack(id_command)
 			}
 		}
-		, sendAttack = function(params){
-			var id_command = params.id_command
-			, timer_delay = params.timer_delay;
-
-			return $timeout(function () {
-				var lista = [],
-				units = {};
-				if (params.enviarFull){
-					var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
-					if (village.unitInfo != undefined){
-						var unitInfo = village.unitInfo.units;
-						for(obj in unitInfo){
-							if (unitInfo.hasOwnProperty(obj)){
-								if (unitInfo[obj].available > 0){
-									units[obj] = unitInfo[obj].available
-									lista.push(units);
-								}
+		, units_to_send = function (params) {
+			var lista = [],
+			units = {};
+			if (params.enviarFull){
+				var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
+				if (village.unitInfo != undefined){
+					var unitInfo = village.unitInfo.units;
+					for(obj in unitInfo){
+						if (unitInfo.hasOwnProperty(obj)){
+							if (unitInfo[obj].available > 0){
+								units[obj] = unitInfo[obj].available
+								lista.push(units);
 							}
 						}
-						params.units = units;
-					};
+					}
+					params.units = units;
 				};
-				if (lista.length > 0 || !params.enviarFull) {
-					resendAttack(params)
-				} else {
-					commandQueue.unbind(id_command, $rootScope.data_attack)
+			};
+			if (lista.length > 0 || !params.enviarFull) {
+				resendAttack(params)
+			} else {
+				removeCommandAttack(params.id_command)
+			}
+		}
+		, listener_command_sent = function($event, data){
+			
+			if(params.start_village == data.origin.id){
+//				var id_command = data.command_id;
+				if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
+					listener[that.id_command].listener();
+					delete listener[that.id_command];
 				}
-				
+				commandQueue.unbind(that.id_command, $rootScope.data_attack)
+			}
+		}
+		, send = function(params){
+			socketService.emit(
+					providers.routeProvider.SEND_CUSTOM_ARMY, {
+						start_village: params.start_village,
+						target_village: params.target_village,
+						type: params.type,
+						units: params.units,
+						icon: 0,
+						officers: params.officers,
+						catapult_target: params.catapult_target
+					}
+			)
 
-			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
+			scope.listener[params.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
 
-			return
+		}
+		, sendAttack = function(params1){
+			return $timeout(units_to_send.bind(null, params1), params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
 		, resendAttack = function(params){
-//			var data_main = robotTW2.databases.data_main.get()
 			var id_command = params.id_command
-			var expires_send = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command;
-			var timer_delay_send = expires_send - time.convertedTime();
-			if(timer_delay_send >= 0){
-				function e (id_command){
-					var that = this;
-					that.id_command = id_command;
-					return $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
-						if(params.start_village == data.origin.id){
-//							var id_command = data.command_id;
-							if(listener[that.id_command] && typeof(listener[that.id_command].listener) == "function") {
-								listener[that.id_command].listener();
-								delete listener[that.id_command];
-							}
-							commandQueue.unbind(that.id_command, $rootScope.data_attack)
-						}
-					})
-				}
+			, expires_send = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command
+			, timer_delay_send = expires_send - time.convertedTime();
 
-				return $timeout(function(){
-					listener[id_command] = {listener : e(id_command)}
-//					if (promiseReSendAttack) {
-//						queueReSendAttack.push(arguments);
-//						return;
-//					}
-
-					socketService.emit(
-							providers.routeProvider.SEND_CUSTOM_ARMY, {
-								start_village: params.start_village,
-								target_village: params.target_village,
-								type: params.type,
-								units: params.units,
-								icon: 0,
-								officers: params.officers,
-								catapult_target: params.catapult_target
-							}
-					)
-
-				}, timer_delay_send)
-			} else {
-				commandQueue.unbind(id_command, $rootScope.data_attack)
-				return null
+			if(timer_delay_send < 0){
+				removeCommandAttack(params.id_command)
+				return 
 			}
-
+			return $timeout(send.bind(null, params), timer_delay_send)
 		}
-		, sendCommandAttack = function(scope){
-			scope.army = {
+		, sendCommandAttack = function(scp){
+			scp.army = {
 					'officers': {}
 			}
-			for (officerName in scope.officers) {
-				if (scope.officers.hasOwnProperty(officerName)) {
-					if (scope.officers[officerName].checked === true) {
-						scope.army.officers[officerName] = true;
+			for (officerName in scp.officers) {
+				if (scp.officers.hasOwnProperty(officerName)) {
+					if (scp.officers[officerName].checked === true) {
+						scp.army.officers[officerName] = true;
 					}
 				}
 			}
-			var durationInSeconds = helper.unreadableSeconds(scope.properties.duration);
-			if (scope.enviarFull){
+			var durationInSeconds = helper.unreadableSeconds(scp.properties.duration);
+			if (scp.enviarFull){
 				durationInSeconds = 0;
 			}
-			if (scope.armyEmpty && !scope.enviarFull){
+			if (scp.armyEmpty && !scp.enviarFull){
 				notify("unity_select");
 			} else {
 				var get_data = $("#input-date").val();
@@ -166,11 +153,11 @@ define("robotTW2/services/AttackService", [
 					get_time = get_time + ":00"; 
 				}
 				if (get_data != undefined && get_time != undefined){
-					scope.milisegundos_duracao = durationInSeconds * 1000;
-					scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-					if (scope.tempo_escolhido > time.convertedTime() + scope.milisegundos_duracao){
-						addScopeAttack(scope);
-						scope.closeWindow();
+					scp.milisegundos_duracao = durationInSeconds * 1000;
+					scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+					if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
+						addScopeAttack(scp);
+						scp.closeWindow();
 					} else {
 						notify("date_error");
 					}       
@@ -195,6 +182,9 @@ define("robotTW2/services/AttackService", [
 					catapult_target		: scp.catapultTarget.value
 			}
 			addAttack(params);
+		}
+		, removeCommandAttack = function(id_command){
+			commandQueue.unbind(id_command, $rootScope.data_attack)
 		}
 		, init = function(){
 			isInitialized = !0
@@ -222,6 +212,7 @@ define("robotTW2/services/AttackService", [
 			interval_reload = undefined;
 			isRunning = !1;
 		}
+		angular(scope, {listener : []})
 
 		return	{
 			init				: init,
@@ -229,9 +220,7 @@ define("robotTW2/services/AttackService", [
 			stop 				: stop,
 			sendCommandAttack 	: sendCommandAttack,
 			calibrate_time		: calibrate_time,
-			removeCommandAttack	: function(id_command){
-				commandQueue.unbind(id_command, $rootScope.data_attack)
-			},
+			removeCommandAttack	: removeCommandAttack,
 			removeAll			: function(id_command){
 				commandQueue.unbindAll("attack", $rootScope.data_attack)
 			},
