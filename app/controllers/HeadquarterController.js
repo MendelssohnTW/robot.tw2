@@ -23,6 +23,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 
 		var update = function () {
+			$scope.isRunning = services.HeadquarterService.isRunning();
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
