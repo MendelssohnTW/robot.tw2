@@ -356,7 +356,7 @@ define("robotTW2/services/DataService", [
 				
 				var last_logs = $rootScope.data_data.last_update.logs;
 				var last_villages = $rootScope.data_data.last_update.villages;
-				var last = Math.min(last_logs, last_villages);
+				var last = Math.max(last_logs, last_villages);
 				
 				var entries = Object.keys(data.entries).map(function(entrie){
 					if(entrie.eventTime > last) {
