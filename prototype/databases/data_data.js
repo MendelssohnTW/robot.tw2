@@ -3,7 +3,7 @@ define("robotTW2/databases/data_data", [
 	"robotTW2/conf",
 	"robotTW2/services",
 	"robotTW2/notify",
-	'helper/time'
+	"robotTW2/time"
 	], function(
 			database,
 			conf,
