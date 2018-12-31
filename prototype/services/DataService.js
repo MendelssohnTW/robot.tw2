@@ -358,8 +358,8 @@ define("robotTW2/services/DataService", [
 
 					switch (message.type) {
 
-					case LOG_TYPES.VILLAGE_CONQUERED:
-					case LOG_TYPES.VILLAGE_LOST:
+					case "village_conquered":
+					case "village_lost":
 						param1 = bbcode.createPlayerTag(msgData.character_name, msgData.character_id);
 						param2 = msgData.village_id ? bbcode.createVillageTag(msgData.village_name.replace('[', '&#91;').replace(']', '&#93;'), msgData.village_id) : $filter('i18n')('unknown_village', $rootScope.loc.ale, logTextObject);
 						break;
