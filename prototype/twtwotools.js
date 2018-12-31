@@ -1162,14 +1162,14 @@ var robotTW2 = window.robotTW2 = undefined;
 					dt = data.tribe.id;
 				if(data){
 					if(data.user){
-						angular.extend(data.user, {"pui": modelDataService.getSelectedCharacter().getWorldId() + "_" + modelDataService.getSelectedCharacter().getId()})
+						angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
 					} else {
-						data.user = {"pui": modelDataService.getSelectedCharacter().getWorldId() + "_" + modelDataService.getSelectedCharacter().getId()}
+						data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
 					}
 					angular.extend(data, {
-						"world_id": modelDataService.getSelectedCharacter().getWorldId() || dw,
-						"member_id": modelDataService.getSelectedCharacter().getId(),
-						"tribe_id": modelDataService.getSelectedCharacter().getTribeId() || dt,
+						"world_id": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() || dw,
+						"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+						"tribe_id": robotTW2.services.modelDataService.getSelectedCharacter().getTribeId() || dt,
 					});
 				}
 
@@ -1179,7 +1179,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						angular.toJson({
 							'type'		: type,
 							'data'		: data,
-							'pui'		: modelDataService.getSelectedCharacter().getWorldId() + "_" + modelDataService.getSelectedCharacter().getId(),
+							'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
 							'id'		: id
 						})
 				)	
