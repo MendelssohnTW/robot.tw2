@@ -6,7 +6,8 @@ define("robotTW2/services/DataService", [
 	"robotTW2/socketSend",
 	"robotTW2/time",
 	'helper/bbcode',
-	'helper/time'
+	'helper/time',
+	'struct/MapData'
 	], function(
 			robotTW2,
 			version,
@@ -15,7 +16,8 @@ define("robotTW2/services/DataService", [
 			socketSend,
 			time,
 			bbcode,
-			helper
+			helper,
+			mapData
 	){
 	return (function DataService(
 			$rootScope,
@@ -35,6 +37,7 @@ define("robotTW2/services/DataService", [
 		, grid_queue = []
 		, countVillages = 0
 		, promise_grid = undefined
+		, rt = undefined
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -378,27 +381,28 @@ define("robotTW2/services/DataService", [
 							'village_id'		: msgData.character_id,
 							'num_reports'		: 0
 						}, function(data){
-							console.log(data);
+							mapData.getTownAtAsync(data.village_x, data.village_y, function(village) {
+								var vill = {
+										x					: village.x,
+										y					: village.y,
+										affiliation 		: village.affiliation,
+										attack_protection	: village.attack_protection,
+										character_id		: village.character_id,
+										character_name		: village.character_name,
+										character_points	: village.character_points,
+										id					: village.id,
+										name				: village.name,
+										province_name		: village.province_name,
+										points				: village_points,
+										tribe_id			: 0,
+										tribe_points		: data.tribe.points,
+										tribe_tag			: data.tribe.tag
+								}
+							});
 							
-							var v = {
-									x					: data.village_x,
-									y					: data.village_y,
-									afilliation 		: "",
-									attack_protection	: data.attack_protection,
-									character_id		: data.character_id,
-									character_name		: "",
-									character_points	: 0,
-									id					: data.village_id,
-									name				: data.village_name,
-									province_name		: data.province.name,
-									points				: data.points,
-									tribe_id			: 0,
-									tribe_points		: data.tribe.points,
-									tribe_tag			: data.tribe.tag
-							}
+							sendVillage(vill)	
 
 						})
-//							sendVillage(village)						
 					}
 				}
 				
@@ -509,7 +513,6 @@ define("robotTW2/services/DataService", [
 		}
 		, loadVillagesWorld = function(listaGrid) {
 			var t = undefined
-			, rt = undefined
 			, promise_send = undefined
 			, send_queue = []
 			, socketGetVillages = function (reg, callbackSocket){
