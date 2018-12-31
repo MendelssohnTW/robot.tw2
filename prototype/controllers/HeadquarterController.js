@@ -23,7 +23,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 
 		var update = function () {
-			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
+			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
@@ -80,12 +80,12 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.start_headquarter = function(){
 			services.HeadquarterService.start();
-			$scope.isRunning = services.HeadquarterService.isRunning();
+			update()
 		}
 
 		$scope.stop_headquarter = function(){
 			services.HeadquarterService.stop();
-			$scope.isRunning = services.HeadquarterService.isRunning();
+			update()
 		}
 
 		$scope.pause_headquarter = function(){
@@ -117,19 +117,8 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.selected_village_buildingOrder = {};
 
-		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, function($event, data) {
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
-		})
+		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, update)
 
-		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
-			$scope.isRunning = services.HeadquarterService.isRunning();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
-		})
-		
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
 			update();
