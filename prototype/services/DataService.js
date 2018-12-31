@@ -369,7 +369,10 @@ define("robotTW2/services/DataService", [
 					
 					message.text		= $filter('i18n')(message.type, $rootScope.loc.ale, logTextObject, param1, param2, param3);
 					message.eventTime	= helper.server2GameTime(message.event_time);
-					console.log(message.text);
+					
+					if(message.type == "illage_conquered" || message.type == "village_lost"){
+						console.log(message.text);
+					}
 				}
 			});
 		}
