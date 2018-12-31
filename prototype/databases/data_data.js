@@ -34,7 +34,8 @@ define("robotTW2/databases/data_data", [
 			complete_tribes			: 0,
 			interval	 			: {
 				villages	: conf.INTERVAL.DATA.villages,
-				tribes		: conf.INTERVAL.DATA.tribes
+				tribes		: conf.INTERVAL.DATA.tribes,
+				logs		: conf.INTERVAL.DATA.logs
 			},
 			version					: conf.VERSION.DATA,
 			possible				: true,

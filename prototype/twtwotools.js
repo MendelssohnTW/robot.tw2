@@ -936,7 +936,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC		: h,
 						DATA		: {
 							villages	: 6 * h,
-							tribes		: 3 * h
+							tribes		: 3 * h,
+							logs		: 1 * h
 						},
 						SPY			: 30 * min
 					},
