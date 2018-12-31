@@ -5,7 +5,8 @@ define("robotTW2/services/DataService", [
 	"conf/conf",
 	"robotTW2/socketSend",
 	"robotTW2/time",
-	'helper/bbcode'
+	'helper/bbcode',
+	'helper/time'
 	], function(
 			robotTW2,
 			version,
@@ -13,7 +14,8 @@ define("robotTW2/services/DataService", [
 			conf_conf,
 			socketSend,
 			time,
-			bbcode
+			bbcode,
+			helper
 	){
 	return (function DataService(
 			$rootScope,
