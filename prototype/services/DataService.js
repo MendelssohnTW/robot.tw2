@@ -28,6 +28,7 @@ define("robotTW2/services/DataService", [
 		, isRunning = !1
 		, interval_data_villages = null
 		, interval_data_tribe = null
+		, interval_data_logs = null
 		, grid_queue = []
 		, countVillages = 0
 		, promise_grid = undefined
