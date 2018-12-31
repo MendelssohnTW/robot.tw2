@@ -26,6 +26,7 @@ define("robotTW2/services/DataService", [
 	) {
 		var isInitialized = !1
 		, isRunning = !1
+		, isRunningLog = !1
 		, interval_data_villages = null
 		, interval_data_tribe = null
 		, interval_data_logs = null
@@ -391,6 +392,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.tribes)
 		}
 		, upIntervalLogs = function(){
+			isRunningLog = !0;
 			update_logs();
 			interval_data_logs = setInterval(function(){
 				update_logs();
@@ -437,13 +439,13 @@ define("robotTW2/services/DataService", [
 			}
 			,
 			w.stop = function() {
-				isRunning = !1;
+				isRunningLog = !1;
 				clearInterval(interval_data_logs);
 				interval_data_logs = undefined;
 			}
 			,
 			w.isInitialized = function() {
-				return isRunning
+				return isRunningLog
 			}
 			,
 			w
