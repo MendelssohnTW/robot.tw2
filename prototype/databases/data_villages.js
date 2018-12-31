@@ -121,7 +121,11 @@ define("robotTW2/databases/data_villages", [
 					callback(true)
 					return m;
 				} else {
-					if(!data_villages.villages[m].buildingorder){
+					if(data_villages.villages[m].presets){
+						angular.merge(villagesExtended[m], {
+							presets					: getPst(m)
+						})
+					} else {
 						angular.extend(villagesExtended[m], {
 							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 							buildingorder 			: conf.BUILDINGORDER,
@@ -131,14 +135,8 @@ define("robotTW2/databases/data_villages", [
 							presets					: getPst(m),
 							selected				: undefined
 						})
-						data_villages.villages[m] = angular.extend({}, villagesExtended[m])
-					} else {
-						angular.merge(villagesExtended[m], {
-//							farm_activate 			: true,
-							presets					: getPst(m)
-						})
-						angular.extend(data_villages.villages[m], villagesExtended[m])
 					}
+					angular.extend(data_villages.villages[m], villagesExtended[m])
 					callback(true)
 					return m;
 				}
