@@ -1104,10 +1104,18 @@ var robotTW2 = window.robotTW2 = undefined;
 				connect.call(true);
 			},
 			onmessage = function onmessage(message){
-				var msg = angular.fromJson(message.data);
+				var msg;
+				try {
+					msg = angular.fromJson(message.data);
+				} catch (err) {
+					msg = message.data;
+				}
+				
 				var id_return = msg.id
 				var opt_callback = callbacks[id_return];
-				opt_callback(msg);
+				if(typeof(opt_callback) == "function"){
+					opt_callback(msg);
+				}
 			},
 			onclose = function onclose($event){
 //				$event.code == 1006
