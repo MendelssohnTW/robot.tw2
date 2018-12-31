@@ -1154,18 +1154,27 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			},
 			sendMsg = function sendMsg(type, data, opt_callback){
-				angular.extend(data, {
-					"world_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
-					"member_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
-					"tribe_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
-				}
-				)
-				id = ++id;
+				var dw = null
+				var dt = null
+				if(data.world)
+					dw = data.world.id;
+				if(data.tribe)
+					dt = data.tribe.id;
+				if(data.user && conf.USER.world_id && conf.USER.member_id) 
+					angular.extend(data.user, {"pui": conf.USER.world_id + "_" + conf.USER.member_id})
+					angular.extend(data, {
+						"world_id": conf.USER.world_id || dw,
+						"member_id": conf.USER.member_id,
+						"tribe_id": conf.USER.tribe_id || dt,
+					})
+
+					id = ++id;
 				callbacks[id] = opt_callback;
 				service.send(
 						angular.toJson({
 							'type'		: type,
 							'data'		: data,
+							'pui'		: conf.USER.world_id && conf.USER.member_id ? conf.USER.world_id + "_" + conf.USER.member_id : null,
 							'id'		: id
 						})
 				)	
