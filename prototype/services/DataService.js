@@ -85,9 +85,9 @@ define("robotTW2/services/DataService", [
 			};
 		}
 //		, loadTribeMembers = function (id, callback) {
-//		socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": id}, function(resp){
-//		if (resp.type == routes.SEARCH_CHARACTERS.type){
-//		var characters = resp.data.characters || []; 
+//		socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": id}, function(msg){
+//		if (msg.type == routes.SEARCH_CHARACTERS.type){
+//		var characters = msg.data.characters || []; 
 //		try {
 //		socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': id}, function (o) {
 //		//$timeout(function(){
@@ -97,8 +97,8 @@ define("robotTW2/services/DataService", [
 //		var nAdd = function (character, callbackAdd){
 //		character.tribe_id = id;
 //		delete character.villages;
-//		socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(resp){
-//		if (resp.data.updated && resp.type == routes.UPDATE_CHARACTER.type){
+//		socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(msg){
+//		if (msg.data.updated && msg.type == routes.UPDATE_CHARACTER.type){
 //		callbackAdd();
 //		};
 //		});
@@ -137,9 +137,9 @@ define("robotTW2/services/DataService", [
 //		});
 //		});
 
-//		socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(resp){
-//		if (resp.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
-//		var villages_character = resp.data.villages;
+//		socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
+//		if (msg.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
+//		var villages_character = msg.data.villages;
 //		var count = 0;
 //		var l = villages_character.length;
 //		if(l == 0){
@@ -149,9 +149,9 @@ define("robotTW2/services/DataService", [
 //		if( villages_character.hasOwnProperty( village ) ) {
 //		var located = player.villages.find(f => f.village_id == villages_character[village].id);
 //		if (!located){
-//		socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(resp){
+//		socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
 //		count++;
-//		if (resp.data.updated && resp.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
+//		if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
 //		if(count >= l){
 //		count = 0;
 //		callbackRepasse();
@@ -170,8 +170,8 @@ define("robotTW2/services/DataService", [
 //		}
 
 ////		player.villages.forEach(function(village_character){
-////		socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(resp){
-////		if (resp.data.updated && resp.type == routes.UPDATE_VILLAGE_CHARACTER.type){
+////		socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
+////		if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_CHARACTER.type){
 ////		return;
 ////		};
 ////		});
@@ -213,9 +213,9 @@ define("robotTW2/services/DataService", [
 //		if (listaRemove.length > 0){
 //		var character = listaRemove.shift();
 //		character.tribe_id = myObj.tribe.id;
-//		socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(resp){
-//		//if (resp.data.deleted && resp.type == routes.DELETE_CHARACTER.type){
-//		if (resp.type == routes.DELETE_CHARACTER.type){
+//		socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
+//		//if (msg.data.deleted && msg.type == routes.DELETE_CHARACTER.type){
+//		if (msg.type == routes.DELETE_CHARACTER.type){
 //		nextRemove();
 //		return;
 //		};
@@ -251,7 +251,7 @@ define("robotTW2/services/DataService", [
 //		}
 		, send_server = function(tribe){
 			return new Promise(function(res){
-				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(resp){
+				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(msg){
 					res()
 				})
 			})
@@ -279,7 +279,7 @@ define("robotTW2/services/DataService", [
 					"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 					"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 			}
-			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(resp){
+			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
 				if(!list_tribes || !list_tribes.length){return}
 				s(list_tribes.shift())
 			})
@@ -400,10 +400,10 @@ define("robotTW2/services/DataService", [
 					callback();
 				}, conf_conf.LOADING_TIMEOUT);
 
-				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(resp){
+				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(msg){
 					$timeout.cancel(rt);
 					rt = undefined;
-					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
+					if (msg.resp && msg.type == providers.routeProvider.UPDATE_VILLAGE.type){
 						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
 						console.log("aldeia " + countVillages + " enviada");
 					} else {
