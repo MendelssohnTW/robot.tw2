@@ -365,7 +365,7 @@ define("robotTW2/services/DataService", [
 						break;
 					}
 					
-					message.text		= $filter('i18n')(translationKey, $rootScope.loc.ale, logTextObject, param1, param2, param3);
+					message.text		= $filter('i18n')(message.type, $rootScope.loc.ale, logTextObject, param1, param2, param3);
 					message.eventTime	= timeHelper.server2GameTime(message.event_time);
 					console.log(message.text);
 				}
