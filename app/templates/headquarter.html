@@ -10,8 +10,7 @@
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap headquarter" style="margin-bottom: 100px">
 				<div>
-					<span
-						ng-class="{'icon-26x26-dot-green' : isRunning, 'icon-26x26-dot-red' : !isRunning, 'icon-26x26-dot-blue' : isRunning && paused}"></span>{{headquarter_running}}
+				<span ng-class="{'icon-26x26-dot-green' : status == running, 'icon-26x26-dot-red' : status ==stopped , 'icon-26x26-dot-blue' : status == paused, 'icon-26x26-dot-yellow' : status == disabled}"></span>
 				</div>
 				<h5 class="twx-section collapse">{{settings}}</h5>
 				<div>

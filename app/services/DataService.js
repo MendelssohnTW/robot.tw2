@@ -4,14 +4,20 @@ define("robotTW2/services/DataService", [
 	"robotTW2/conf",
 	"conf/conf",
 	"robotTW2/socketSend",
-	"robotTW2/time"
+	"robotTW2/time",
+	'helper/bbcode',
+	'helper/time',
+	'struct/MapData'
 	], function(
 			robotTW2,
 			version,
 			conf,
 			conf_conf,
 			socketSend,
-			time
+			time,
+			bbcode,
+			helper,
+			mapData
 	){
 	return (function DataService(
 			$rootScope,
@@ -24,11 +30,14 @@ define("robotTW2/services/DataService", [
 	) {
 		var isInitialized = !1
 		, isRunning = !1
+		, isRunningLog = !1
 		, interval_data_villages = null
 		, interval_data_tribe = null
+		, interval_data_logs = null
 		, grid_queue = []
 		, countVillages = 0
 		, promise_grid = undefined
+		, rt = undefined
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -85,9 +94,9 @@ define("robotTW2/services/DataService", [
 			};
 		}
 //		, loadTribeMembers = function (id, callback) {
-//		socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": id}, function(resp){
-//		if (resp.type == routes.SEARCH_CHARACTERS.type){
-//		var characters = resp.data.characters || []; 
+//		socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": id}, function(msg){
+//		if (msg.type == routes.SEARCH_CHARACTERS.type){
+//		var characters = msg.data.characters || []; 
 //		try {
 //		socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': id}, function (o) {
 //		//$timeout(function(){
@@ -97,8 +106,8 @@ define("robotTW2/services/DataService", [
 //		var nAdd = function (character, callbackAdd){
 //		character.tribe_id = id;
 //		delete character.villages;
-//		socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(resp){
-//		if (resp.data.updated && resp.type == routes.UPDATE_CHARACTER.type){
+//		socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(msg){
+//		if (msg.data.updated && msg.type == routes.UPDATE_CHARACTER.type){
 //		callbackAdd();
 //		};
 //		});
@@ -137,9 +146,9 @@ define("robotTW2/services/DataService", [
 //		});
 //		});
 
-//		socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(resp){
-//		if (resp.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
-//		var villages_character = resp.data.villages;
+//		socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
+//		if (msg.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
+//		var villages_character = msg.data.villages;
 //		var count = 0;
 //		var l = villages_character.length;
 //		if(l == 0){
@@ -149,9 +158,9 @@ define("robotTW2/services/DataService", [
 //		if( villages_character.hasOwnProperty( village ) ) {
 //		var located = player.villages.find(f => f.village_id == villages_character[village].id);
 //		if (!located){
-//		socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(resp){
+//		socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
 //		count++;
-//		if (resp.data.updated && resp.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
+//		if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
 //		if(count >= l){
 //		count = 0;
 //		callbackRepasse();
@@ -170,8 +179,8 @@ define("robotTW2/services/DataService", [
 //		}
 
 ////		player.villages.forEach(function(village_character){
-////		socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(resp){
-////		if (resp.data.updated && resp.type == routes.UPDATE_VILLAGE_CHARACTER.type){
+////		socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
+////		if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_CHARACTER.type){
 ////		return;
 ////		};
 ////		});
@@ -213,9 +222,9 @@ define("robotTW2/services/DataService", [
 //		if (listaRemove.length > 0){
 //		var character = listaRemove.shift();
 //		character.tribe_id = myObj.tribe.id;
-//		socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(resp){
-//		//if (resp.data.deleted && resp.type == routes.DELETE_CHARACTER.type){
-//		if (resp.type == routes.DELETE_CHARACTER.type){
+//		socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
+//		//if (msg.data.deleted && msg.type == routes.DELETE_CHARACTER.type){
+//		if (msg.type == routes.DELETE_CHARACTER.type){
 //		nextRemove();
 //		return;
 //		};
@@ -251,7 +260,7 @@ define("robotTW2/services/DataService", [
 //		}
 		, send_server = function(tribe){
 			return new Promise(function(res){
-				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(resp){
+				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(msg){
 					res()
 				})
 			})
@@ -266,7 +275,7 @@ define("robotTW2/services/DataService", [
 					if(list_tribes.length){
 						s(list_tribes.shift())
 					} else {
-						$rootScope.data_data.last_update.tribes = new Date().getTime();
+						$rootScope.data_data.last_update.tribes = time.convertedTime();
 						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
 							upIntervalVillages()
 						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
@@ -279,7 +288,7 @@ define("robotTW2/services/DataService", [
 					"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 					"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 			}
-			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(resp){
+			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
 				if(!list_tribes || !list_tribes.length){return}
 				s(list_tribes.shift())
 			})
@@ -336,6 +345,70 @@ define("robotTW2/services/DataService", [
 				});
 			})
 		}
+		, update_logs = function(){
+			var offset	= 0;
+			var limit	= 100;
+			var message = {}
+			var param1, param2, param3;
+			var logTextObject = 'tribe_event_types';
+			
+			socketService.emit(providers.routeProvider.TRIBE_GET_LOG, {
+				'start'	: offset,
+				'count'	: limit
+			}, function(data) {
+				
+				var last_logs = $rootScope.data_data.last_update.logs;
+				var last_villages = $rootScope.data_data.last_update.villages;
+				var last = Math.max(last_logs, last_villages);
+				
+				var entries = Object.keys(data.entries).map(function(entrie){
+					if(entrie.eventTime > last) {
+						return data.entries[entrie]
+					} else {
+						return undefined
+					};
+				}).filter(f=>f!=undefined)
+				
+				i = entries.length;
+				while (i--) {
+					message = entries[i];
+					msgData = message.data;
+
+					if(message.type == "village_conquered" || message.type == "village_lost"){
+						
+						socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+							'my_village_id'		: modelDataService.getSelectedVillage().getId(),
+							'village_id'		: msgData.character_id,
+							'num_reports'		: 0
+						}, function(data){
+							mapData.getTownAtAsync(data.village_x, data.village_y, function(village) {
+								var vill = {
+										x					: village.x,
+										y					: village.y,
+										affiliation 		: village.affiliation,
+										attack_protection	: village.attack_protection,
+										character_id		: village.character_id,
+										character_name		: village.character_name,
+										character_points	: village.character_points,
+										id					: village.id,
+										name				: village.name,
+										province_name		: village.province_name,
+										points				: village_points,
+										tribe_id			: 0,
+										tribe_points		: data.tribe.points,
+										tribe_tag			: data.tribe.tag
+								}
+							});
+							
+							sendVillage(vill)	
+
+						})
+					}
+				}
+				
+				$rootScope.data_data.last_update.logs = time.convertedTime();
+			});
+		}
 		, upIntervalVillages = function(){
 			isRunning = !0;
 			update_villages();
@@ -355,6 +428,14 @@ define("robotTW2/services/DataService", [
 				});
 				return;
 			}, $rootScope.data_data.interval.tribes)
+		}
+		, upIntervalLogs = function(){
+			isRunningLog = !0;
+			update_logs();
+			interval_data_logs = setInterval(function(){
+				update_logs();
+				return;
+			}, $rootScope.data_data.interval.logs)
 		}
 		, villagesCheckTimer = (function (){
 			var interval,
@@ -388,32 +469,52 @@ define("robotTW2/services/DataService", [
 			,
 			w
 		})()
+		, logsCheckTimer = (function (){
+			var interval,
+			w = {};
+			return w.init = function() {
+				upIntervalLogs()
+			}
+			,
+			w.stop = function() {
+				isRunningLog = !1;
+				clearInterval(interval_data_logs);
+				interval_data_logs = undefined;
+			}
+			,
+			w.isInitialized = function() {
+				return isRunningLog
+			}
+			,
+			w
+		})()
+		, sendVillage = function (village, callback){
+			if(!isRunning) return
+			rt = $timeout(function(){
+				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
+				callback();
+			}, conf_conf.LOADING_TIMEOUT);
+
+			socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(msg){
+				$timeout.cancel(rt);
+				rt = undefined;
+				if (msg.resp && msg.type == providers.routeProvider.UPDATE_VILLAGE.type){
+					$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
+					console.log("aldeia " + countVillages + " enviada");
+				} else {
+					console.log("aldeia " + countVillages + " enviada com erro");
+					$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
+				}
+				countVillages++;
+				if(typeof(callback) == "function"){
+					callback();
+				}
+			});
+		}
 		, loadVillagesWorld = function(listaGrid) {
 			var t = undefined
-			, rt = undefined
 			, promise_send = undefined
 			, send_queue = []
-			, sendVillage = function (village, callback){
-				if(!isRunning) return
-				rt = $timeout(function(){
-					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
-					callback();
-				}, conf_conf.LOADING_TIMEOUT);
-
-				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(resp){
-					$timeout.cancel(rt);
-					rt = undefined;
-					if (resp.data.updated && resp.type == providers.routeProvider.UPDATE_VILLAGE.type){
-						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
-						console.log("aldeia " + countVillages + " enviada");
-					} else {
-						console.log("aldeia " + countVillages + " enviada com erro");
-						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
-					}
-					countVillages++;
-					callback();
-				});
-			}
 			, socketGetVillages = function (reg, callbackSocket){
 				if(!isRunning) return
 				console.log("Buscando " + reg.x + "/" + reg.y);
@@ -474,7 +575,7 @@ define("robotTW2/services/DataService", [
 						exec_promise_grid(reg)
 					} else {
 						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
-						$rootScope.data_data.last_update.tribes = new Date().getTime();
+						$rootScope.data_data.last_update.tribes = time.convertedTime();
 						if (!villagesCheckTimer.isInitialized() && isRunning) {
 							villagesCheckTimer.init();
 						}
@@ -523,11 +624,15 @@ define("robotTW2/services/DataService", [
 				if (!villagesCheckTimer.isInitialized()){
 					villagesCheckTimer.init();
 				};
+				if (!logsCheckTimer.isInitialized()){
+					logsCheckTimer.init();
+				};
 			}, ["all_villages_ready"])
 		}
 		, stop = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			villagesCheckTimer.stop()
+			logsCheckTimer.stop()
 		}
 		return	{
 			init			: init,

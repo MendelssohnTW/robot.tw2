@@ -2,12 +2,14 @@ define("robotTW2/databases/data_data", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
-	"robotTW2/notify"
+	"robotTW2/notify",
+	"robotTW2/time"
 	], function(
 			database,
 			conf,
 			services,
-			notify
+			notify,
+			time
 	) {
 	var data_data = database.get("data_data")
 	, db_data = {};
@@ -34,13 +36,15 @@ define("robotTW2/databases/data_data", [
 			complete_tribes			: 0,
 			interval	 			: {
 				villages	: conf.INTERVAL.DATA.villages,
-				tribes		: conf.INTERVAL.DATA.tribes
+				tribes		: conf.INTERVAL.DATA.tribes,
+				logs		: conf.INTERVAL.DATA.logs
 			},
 			version					: conf.VERSION.DATA,
 			possible				: true,
 			last_update				: {
-				villages	: new Date().getTime(),
-				tribes 		: new Date().getTime()
+				villages	: time.convertedTime(),
+				tribes 		: time.convertedTime(),
+				logs 		: time.convertedTime()
 			}
 	}
 
