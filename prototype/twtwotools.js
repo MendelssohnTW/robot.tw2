@@ -1006,7 +1006,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "groupService");
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
-			
+
 
 			return robotTW2.services;
 		}))
@@ -1110,7 +1110,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				} catch (err) {
 					msg = message.data;
 				}
-				
+
 				var id_return = msg.id
 				var opt_callback = callbacks[id_return];
 				if(typeof(opt_callback) == "function"){
@@ -1160,21 +1160,26 @@ var robotTW2 = window.robotTW2 = undefined;
 					dw = data.world.id;
 				if(data.tribe)
 					dt = data.tribe.id;
-				if(data.user && conf.USER.world_id && conf.USER.member_id) 
-					angular.extend(data.user, {"pui": conf.USER.world_id + "_" + conf.USER.member_id})
+				if(data){
+					if(data.user){
+						angular.extend(data.user, {"pui": modelDataService.getSelectedCharacter().getWorldId() + "_" + modelDataService.getSelectedCharacter().getId()})
+					} else {
+						data.user = {"pui": modelDataService.getSelectedCharacter().getWorldId() + "_" + modelDataService.getSelectedCharacter().getId()}
+					}
 					angular.extend(data, {
-						"world_id": conf.USER.world_id || dw,
-						"member_id": conf.USER.member_id,
-						"tribe_id": conf.USER.tribe_id || dt,
-					})
+						"world_id": modelDataService.getSelectedCharacter().getWorldId() || dw,
+						"member_id": modelDataService.getSelectedCharacter().getId(),
+						"tribe_id": modelDataService.getSelectedCharacter().getTribeId() || dt,
+					});
+				}
 
-					id = ++id;
+				id = ++id;
 				callbacks[id] = opt_callback;
 				service.send(
 						angular.toJson({
 							'type'		: type,
 							'data'		: data,
-							'pui'		: conf.USER.world_id && conf.USER.member_id ? conf.USER.world_id + "_" + conf.USER.member_id : null,
+							'pui'		: modelDataService.getSelectedCharacter().getWorldId() + "_" + modelDataService.getSelectedCharacter().getId(),
 							'id'		: id
 						})
 				)	
@@ -1430,7 +1435,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				hasUnitsOfType = function (army, type) {
 					return !!army.units[type] && (army.units[type] > 0);
 				}
-				
+
 				isForcedMarchActive = function (army, commandType, village) {
 					var forcedMarchResearch;
 
@@ -1612,7 +1617,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									'barbarian'		: true
 								})
 								, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
-								
+
 
 								robotTW2.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
