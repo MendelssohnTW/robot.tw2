@@ -426,8 +426,8 @@ define("robotTW2/services/DefenseService", [
 		, sendCancel = function(params){
 			var timer_delay = params.timer_delay,
 			id = params.id_command;
-
 			return $timeout(function () {
+				commandQueue.unbind(id)
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
 				})
