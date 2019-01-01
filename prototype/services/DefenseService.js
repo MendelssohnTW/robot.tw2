@@ -350,6 +350,7 @@ define("robotTW2/services/DefenseService", [
 			d = {};
 			var v = function(){
 				return new Promise(function(resolve){
+					promise_verify = undefined;
 					t = $timeout(resolve , 480000);
 					var vls = modelDataService.getSelectedCharacter().getVillageList(); 
 					function gt(){
@@ -680,6 +681,8 @@ define("robotTW2/services/DefenseService", [
 			if(!listener_verify){
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
+					promise_verify = undefined;
+					$timeout.cancel(t);
 					$timeout(verificarAtaques , 60000);
 				});
 			}
