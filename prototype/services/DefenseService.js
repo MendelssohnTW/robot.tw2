@@ -33,6 +33,7 @@ define("robotTW2/services/DefenseService", [
 		, isInitialized = !1
 		, t = undefined
 		, oldCommand
+		, d = {}
 		, scope = $rootScope.$new()
 		, interval_reload = undefined
 		, listener_verify = undefined
@@ -346,6 +347,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, verificarAtaques = function (){
 			if(!isRunning){return}
+			d = {};
 			var v = function(){
 				return new Promise(function(resolve){
 					t = $timeout(resolve , 480000);
@@ -502,7 +504,7 @@ define("robotTW2/services/DefenseService", [
 				}
 			}
 		}
-		, listener_command_sent = function($event, data){
+		, listener_command_sent = function(id_command, data){
 			if(data.direction == "forward" && data.type == "support"){
 				var cmds = Object.keys($event.currentScope.params).map(function(param){
 					if($event.currentScope.params[param].start_village == data.home.id
@@ -519,20 +521,21 @@ define("robotTW2/services/DefenseService", [
 					scope.params[cmd.id_command].id_command = data.command_id;
 					if(!scope.params[data.command_id]){scope.params[data.command_id] = {}}
 					scope.params[data.command_id] = scope.params[cmd.id_command];
-					removeCommandDefense(cmd.id_command)
+					removeCommandDefense(id_command)
 					scope.listener_cancel[data.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel)
 
 					var expires = scope.params[data.command_id].data_escolhida + scope.params[data.command_id].time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = ((expires - time.convertedTime()) / 2)
 					, par = {
-							"timer_delay" 	: timer_delay,
-							"id_command" 	: data.command_id
+						"timer_delay" 	: timer_delay,
+						"id_command" 	: data.command_id
 					}
 					commandQueue.bind(data.command_id, sendCancel, par)
 				}
 			}
 		}
 		, send = function(id_command){
+			d[id_command] = id_command;
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: scope.params[id_command].start_village,
 				target_village		: scope.params[id_command].target_village,
@@ -542,7 +545,9 @@ define("robotTW2/services/DefenseService", [
 				officers			: scope.params[id_command].officers,
 				catapult_target		: scope.params[id_command].catapult_target
 			});
-			scope.listener_sent[id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
+			scope.listener_sent[id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
+				listener_command_sent(d[id_command], data)
+			})
 		}
 		, resendDefense = function(id_command){
 			var expires_send = scope.params[id_command].data_escolhida - scope.params[id_command].time_sniper_ant - $rootScope.data_main.time_correction_command
@@ -655,8 +660,8 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			if(scope.listener_command_sent[id_command] && typeof(scope.listener_command_sent[id_command]) == "function") {
-				scope.listener_command_sent[id_command]();
+			if(scope.listener_sent[id_command] && typeof(scope.listener_sent[id_command]) == "function") {
+				scope.listener_sent[id_command]();
 				delete scope.listener[id_command];
 			}
 			if(scope.params[id_command]){
