@@ -663,7 +663,7 @@ define("robotTW2/services/DefenseService", [
 		, removeCommandDefense = function(id_command){
 			if(scope.listener_sent[id_command] && typeof(scope.listener_sent[id_command]) == "function") {
 				scope.listener_sent[id_command]();
-				delete scope.listener[id_command];
+				delete scope.listener_sent[id_command];
 			}
 			if(scope.params[id_command]){
 				delete scope.params[id_command]
