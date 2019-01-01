@@ -504,7 +504,7 @@ define("robotTW2/services/DefenseService", [
 				}
 			}
 		}
-		, listener_command_sent = function(id_command, data){
+		, listener_command_sent = function(id_command, $event, data){
 			if(data.direction == "forward" && data.type == "support"){
 				var cmds = Object.keys($event.currentScope.params).map(function(param){
 					if($event.currentScope.params[param].start_village == data.home.id
@@ -546,7 +546,7 @@ define("robotTW2/services/DefenseService", [
 				catapult_target		: scope.params[id_command].catapult_target
 			});
 			scope.listener_sent[id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, function($event, data){
-				listener_command_sent(d[id_command], data)
+				listener_command_sent(d[id_command], $event, data)
 			})
 		}
 		, resendDefense = function(id_command){
