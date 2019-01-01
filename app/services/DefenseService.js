@@ -532,6 +532,11 @@ define("robotTW2/services/DefenseService", [
 						"id_command" 	: data.command_id
 					}
 					commandQueue.bind(data.command_id, sendCancel, par)
+					if(timer_delay >= 0){
+						commandQueue.trigger(data.command_id, par)
+					} else {
+						commandQueue.unbind(data.command_id)
+					}
 				}
 			}
 		}
