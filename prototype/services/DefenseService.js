@@ -519,8 +519,9 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					cmd = cmds.pop();
-					scope.params[cmd.id_command].id_command = data.command_id;
 					if(!scope.params[data.command_id]){scope.params[data.command_id] = {}}
+					scope.params[cmd.id_command] = cmd;
+					scope.params[cmd.id_command].id_command = data.command_id;
 					scope.params[data.command_id] = scope.params[cmd.id_command];
 					removeCommandDefense(id_command)
 					scope.listener_cancel[data.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel)
