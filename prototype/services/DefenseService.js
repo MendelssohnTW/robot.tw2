@@ -450,7 +450,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				}
 				params.units = units;
-				scope.params[params.id_command].units = units
+				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				resendDefense(params.id_command)
