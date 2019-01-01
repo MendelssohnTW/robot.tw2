@@ -580,7 +580,7 @@ define("robotTW2/services/DefenseService", [
 			})
 
 			if(!scope.params[id_command]){scope.params[id_command] = {}}
-			angular.merge(scope.params[id_command], params);
+			scope.params[id_command] = params;
 			commandQueue.bind(id_command, sendDefense, null, params)
 
 			if(timer_delay >= 0){
