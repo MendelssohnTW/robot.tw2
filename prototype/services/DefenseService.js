@@ -519,25 +519,23 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					cmd = cmds.pop();
-					if(!scope.params[data.command_id]){scope.params[data.command_id] = {}}
 					scope.params[cmd.id_command] = cmd;
-					scope.params[cmd.id_command].id_command = data.command_id;
-					scope.params[data.command_id] = scope.params[cmd.id_command];
-					removeCommandDefense(id_command)
-					scope.listener_cancel[data.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel)
+					scope.listener_cancel[cmd.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel)
 
-					var expires = scope.params[data.command_id].data_escolhida + scope.params[data.command_id].time_sniper_post - $rootScope.data_main.time_correction_command
+					var expires = scope.params[id_command].data_escolhida + scope.params[id_command].time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = ((expires - time.convertedTime()) / 2)
 					, par = {
 						"timer_delay" 	: timer_delay,
-						"id_command" 	: data.command_id
+						"id_command" 	: cmd.id_command
 					}
-					commandQueue.bind(data.command_id, sendCancel, par)
+					commandQueue.bind(cmd.id_command, sendCancel, par)
 					if(timer_delay >= 0){
-						commandQueue.trigger(data.command_id, par)
+						commandQueue.trigger(cmd.id_command, par)
 					} else {
-						commandQueue.unbind(data.command_id)
+						commandQueue.unbind(cmd.id_command)
 					}
+					removeCommandDefense(id_command)
+					delete scope.params[id_command]
 				}
 			}
 		}
