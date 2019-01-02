@@ -253,7 +253,7 @@ define("robotTW2/services/DataService", [
 								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe": tribes[tribe_id]}, function(msg){
 									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
-										var players = tribes[tribe_id].data ? tribes[tribe_id].data.members : undefined;
+										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data.members : undefined;
 
 										function getProfile(character, callbackgetProfile){
 											var character_id = character.id;
