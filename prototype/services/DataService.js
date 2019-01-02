@@ -93,171 +93,171 @@ define("robotTW2/services/DataService", [
 				grid: grid
 			};
 		}
-//		, loadTribeMembers = function (id, callback) {
-//		socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": id}, function(msg){
-//		if (msg.type == routes.SEARCH_CHARACTERS.type){
-//		var characters = msg.data.characters || []; 
-//		try {
-//		socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': id}, function (o) {
-//		//$timeout(function(){
-//		if (o.members != undefined){
-//		var players = o ? o.members : undefined;
+		, loadTribeMembers = function (id, callback) {
+			socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": id}, function(msg){
+				if (msg.type == routes.SEARCH_CHARACTERS.type){
+					var characters = msg.data.characters || []; 
+					try {
+						socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': id}, function (o) {
+							//$timeout(function(){
+							if (o.members != undefined){
+								var players = o ? o.members : undefined;
 
-//		var nAdd = function (character, callbackAdd){
-//		character.tribe_id = id;
-//		delete character.villages;
-//		socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(msg){
-//		if (msg.data.updated && msg.type == routes.UPDATE_CHARACTER.type){
-//		callbackAdd();
-//		};
-//		});
-//		};
+								var nAdd = function nAdd(character, callbackAdd){
+									character.tribe_id = id;
+									delete character.villages;
+									socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(msg){
+										if (msg.data.updated && msg.type == routes.UPDATE_CHARACTER.type){
+											callbackAdd();
+										};
+									});
+								};
 
-//		var getProfile = function (character, callbackgetProfile){
-//		var character_id = character.id;
-//		socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
-//		'character_id': character_id
-//		}, function(data){
-//		callbackgetProfile(data)
-//		});
-//		};
+								var getProfile = function (character, callbackgetProfile){
+									var character_id = character.id;
+									socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
+										'character_id': character_id
+									}, function(data){
+										callbackgetProfile(data)
+									});
+								};
 
-//		var addPlayers = function (characters, players, callbacknAdd) {
+								var addPlayers = function (characters, players, callbacknAdd) {
 
-//		function nextPlayer (){
-//		if (players.length > 0) {
-//		var player = players.shift();
-//		getProfile(player, function(data){
-//		function repasse(player, data, callbackRepasse){
-//		player.bash_points_total = data.bash_points_total;
-//		player.bash_points_def = data.bash_points_def;
-//		player.bash_points_off = data.bash_points_off;
-//		player.num_villages = player.villages;
-//		player.villages = [];
-//		var listVillages = data.villages || [];
-//		delete player.victory_points;
-//		delete player.loyalty;
-//		delete player.rights;
-//		delete player.profile_icon;
-//		listVillages.forEach(function(village){
-//		player.villages.push({
-//		"village_id": village.village_id, 
-//		"character_id": player.id
-//		});
-//		});
+									function nextPlayer (){
+										if (players.length > 0) {
+											var player = players.shift();
+											getProfile(player, function(data){
+												function repasse(player, data, callbackRepasse){
+													player.bash_points_total = data.bash_points_total;
+													player.bash_points_def = data.bash_points_def;
+													player.bash_points_off = data.bash_points_off;
+													player.num_villages = player.villages;
+													player.villages = [];
+													var listVillages = data.villages || [];
+													delete player.victory_points;
+													delete player.loyalty;
+													delete player.rights;
+													delete player.profile_icon;
+													listVillages.forEach(function(village){
+														player.villages.push({
+															"village_id": village.village_id, 
+															"character_id": player.id
+														});
+													});
 
-//		socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
-//		if (msg.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
-//		var villages_character = msg.data.villages;
-//		var count = 0;
-//		var l = villages_character.length;
-//		if(l == 0){
-//		callbackRepasse();
-//		} else {
-//		for (village in villages_character) {
-//		if( villages_character.hasOwnProperty( village ) ) {
-//		var located = player.villages.find(f => f.village_id == villages_character[village].id);
-//		if (!located){
-//		socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
-//		count++;
-//		if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
-//		if(count >= l){
-//		count = 0;
-//		callbackRepasse();
-//		}
-//		};
-//		});
-//		} else {
-//		count++;
-//		if(count >= l){
-//		count = 0;
-//		callbackRepasse();
-//		}
-//		}
-//		} 
-//		}
-//		}
+													socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
+														if (msg.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
+															var villages_character = msg.data.villages;
+															var count = 0;
+															var l = villages_character.length;
+															if(l == 0){
+																callbackRepasse();
+															} else {
+																for (village in villages_character) {
+																	if( villages_character.hasOwnProperty( village ) ) {
+																		var located = player.villages.find(f => f.village_id == villages_character[village].id);
+																		if (!located){
+																			socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
+																				count++;
+																				if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
+																					if(count >= l){
+																						count = 0;
+																						callbackRepasse();
+																					}
+																				};
+																			});
+																		} else {
+																			count++;
+																			if(count >= l){
+																				count = 0;
+																				callbackRepasse();
+																			}
+																		}
+																	} 
+																}
+															}
 
-////		player.villages.forEach(function(village_character){
-////		socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
-////		if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_CHARACTER.type){
-////		return;
-////		};
-////		});
-////		});
-//		};
-//		});
+//															player.villages.forEach(function(village_character){
+//															socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
+//															if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_CHARACTER.type){
+//															return;
+//															};
+//															});
+//															});
+														};
+													});
 
-//		};
+												};
 
-//		if(
-//		!characters.find(f => f.id == player.id) || 
-//		characters.find(f => f.id == player.id && f.under_attack != player.under_attack) ||
-//		characters.find(f => f.id == player.id && f.bash_points_total != data.bash_points_total) ||
-//		characters.find(f => f.id == player.id && f.points != data.points) ||
-//		characters.find(f => f.id == player.id && f.global_rank != data.rank) ||
-//		characters.find(f => f.id == player.id && f.num_villages != data.num_villages)
-//		)
-//		{
-//		console.log("player " + player.name);
-//		repasse(player, data, function(){
-//		callbacknAdd(player, function(){
-//		nextPlayer();
-//		});
-//		});
-//		} else {
-//		console.log("Dados de membro não enviado " + player.name);
-//		nextPlayer();
-//		}
-//		});
-//		} else {
-//		callback();
-//		}
-//		};
-//		nextPlayer();
-//		};
+												if(
+														!characters.find(f => f.id == player.id) || 
+														characters.find(f => f.id == player.id && f.under_attack != player.under_attack) ||
+														characters.find(f => f.id == player.id && f.bash_points_total != data.bash_points_total) ||
+														characters.find(f => f.id == player.id && f.points != data.points) ||
+														characters.find(f => f.id == player.id && f.global_rank != data.rank) ||
+														characters.find(f => f.id == player.id && f.num_villages != data.num_villages)
+												)
+												{
+													console.log("player " + player.name);
+													repasse(player, data, function(){
+														callbacknAdd(player, function(){
+															nextPlayer();
+														});
+													});
+												} else {
+													console.log("Dados de membro não enviado " + player.name);
+													nextPlayer();
+												}
+											});
+										} else {
+											callback();
+										}
+									};
+									nextPlayer();
+								};
 
-//		var nRemove = function (characters, players, listaRemove){
-//		function nextRemove(){
-//		if (listaRemove.length > 0){
-//		var character = listaRemove.shift();
-//		character.tribe_id = myObj.tribe.id;
-//		socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
-//		//if (msg.data.deleted && msg.type == routes.DELETE_CHARACTER.type){
-//		if (msg.type == routes.DELETE_CHARACTER.type){
-//		nextRemove();
-//		return;
-//		};
-//		});
-//		} else {
-//		addPlayers(characters, players, nAdd)
-//		return;
-//		}
-//		};
-//		nextRemove();
-//		};
+								var nRemove = function (characters, players, listaRemove){
+									function nextRemove(){
+										if (listaRemove.length > 0){
+											var character = listaRemove.shift();
+											character.tribe_id = myObj.tribe.id;
+											socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
+												//if (msg.data.deleted && msg.type == routes.DELETE_CHARACTER.type){
+												if (msg.type == routes.DELETE_CHARACTER.type){
+													nextRemove();
+													return;
+												};
+											});
+										} else {
+											addPlayers(characters, players, nAdd)
+											return;
+										}
+									};
+									nextRemove();
+								};
 
-//		function removePlayers (characters, players, callbacknRemove) {
-//		var listaRemove = [];
-//		characters.forEach(e => {
-//		if(!players.find(f => f.id == e.id)){
-//		listaRemove.push(e);
-//		}
-//		});
-//		callbacknRemove(characters, players, listaRemove);
-//		};
+								function removePlayers (characters, players, callbacknRemove) {
+									var listaRemove = [];
+									characters.forEach(e => {
+										if(!players.find(f => f.id == e.id)){
+											listaRemove.push(e);
+										}
+									});
+									callbacknRemove(characters, players, listaRemove);
+								};
 
-//		removePlayers(characters, players, nRemove);
-//		}
-//		//}, 250);
-//		});
-//		} catch (Error){
-//		sendMessage("Erro ao carregar dados dos membros da tribo ")
-//		}
-//		};
+								removePlayers(characters, players, nRemove);
+							}
+							//}, 250);
+						});
+					} catch (Error){
+						sendMessage("Erro ao carregar dados dos membros da tribo ")
+					}
+				};
 
-//		});
-//		}
+			});
+		}
 		, send_server = function(tribe){
 			return new Promise(function(res){
 				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(msg){
@@ -268,29 +268,27 @@ define("robotTW2/services/DataService", [
 		, t = undefined
 		, t_send = []
 		, send_tribes = function(tribes){
-			var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
-			function s(tribe){
-				send_server(tribe).then(function(){
-					t = undefined;
-					if(list_tribes.length){
-						s(list_tribes.shift())
-					} else {
-						$rootScope.data_data.last_update.tribes = time.convertedTime();
-						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
-							upIntervalVillages()
-						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
-							upIntervalVillages()
+			return new Promise(function(res){
+				var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
+				function s(tribe){
+					send_server(tribe).then(function(){
+						t = undefined;
+						if(list_tribes.length){
+							s(list_tribes.shift())
+						} else {
+							$rootScope.data_data.last_update.tribes = time.convertedTime();
+							res()
 						}
-					}
+					})
+				}
+				var world = {
+						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
+						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
+				}
+				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
+					if(!list_tribes || !list_tribes.length){return}
+					s(list_tribes.shift())
 				})
-			}
-			var world = {
-					"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
-					"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
-			}
-			socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
-				if(!list_tribes || !list_tribes.length){return}
-				s(list_tribes.shift())
 			})
 		}
 		, loadTribeProfile = function (tribe) {
@@ -351,16 +349,16 @@ define("robotTW2/services/DataService", [
 			var message = {}
 			var param1, param2, param3;
 			var logTextObject = 'tribe_event_types';
-			
+
 			socketService.emit(providers.routeProvider.TRIBE_GET_LOG, {
 				'start'	: offset,
 				'count'	: limit
 			}, function(data) {
-				
+
 				var last_logs = $rootScope.data_data.last_update.logs;
 				var last_villages = $rootScope.data_data.last_update.villages;
 				var last = Math.max(last_logs, last_villages);
-				
+
 				var entries = Object.keys(data.entries).map(function(entrie){
 					if(entrie.eventTime > last) {
 						return data.entries[entrie]
@@ -368,14 +366,14 @@ define("robotTW2/services/DataService", [
 						return undefined
 					};
 				}).filter(f=>f!=undefined)
-				
+
 				i = entries.length;
 				while (i--) {
 					message = entries[i];
 					msgData = message.data;
 
 					if(message.type == "village_conquered" || message.type == "village_lost"){
-						
+
 						socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 							'my_village_id'		: modelDataService.getSelectedVillage().getId(),
 							'village_id'		: msgData.character_id,
@@ -399,15 +397,189 @@ define("robotTW2/services/DataService", [
 										tribe_tag			: data.tribe.tag
 								}
 							});
-							
+
 							sendVillage(vill)	
 
 						})
 					}
 				}
-				
+
 				$rootScope.data_data.last_update.logs = time.convertedTime();
 			});
+		}
+		, prom = undefined
+		, prom_queue = []
+		, update_members = function(tribes){
+			return new Promise(function(res){
+				Object.keys(tribes).map(function(tribe_id){
+					function n(tribe_id){
+						if(!prom){
+							prom = new Promise(function(resolve_prom){
+								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": tribe_id}, function(msg){
+									if (msg.type == routes.SEARCH_CHARACTERS.type){
+										var characters = msg.data.characters || [];
+										var players = tribes[tribe_id].data ? tribes[tribe_id].data.members : undefined;
+
+										function getProfile(character, callbackgetProfile){
+											var character_id = character.id;
+											socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
+												'character_id': character_id
+											}, function(data){
+												callbackgetProfile(data)
+											});
+										};
+
+										function nAdd(character, callbackAdd){
+											character.tribe_id = id;
+											delete character.villages;
+											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"character": character}, function(msg){
+												if (msg.data.updated && msg.type == routes.UPDATE_CHARACTER.type){
+													callbackAdd();
+												};
+											});
+										};
+
+										function addPlayers(characters, players) {
+											function nextPlayer (){
+												if (players.length > 0) {
+													var player = players.shift();
+													getProfile(player, function(data){
+														function repasse(player, data, callbackRepasse){
+															player.bash_points_total = data.bash_points_total;
+															player.bash_points_def = data.bash_points_def;
+															player.bash_points_off = data.bash_points_off;
+															player.num_villages = player.villages;
+															player.villages = [];
+															var listVillages = data.villages || [];
+															delete player.victory_points;
+															delete player.loyalty;
+															delete player.rights;
+															delete player.profile_icon;
+															listVillages.forEach(function(village){
+																player.villages.push({
+																	"village_id": village.village_id, 
+																	"character_id": player.id
+																});
+															});
+
+															socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
+																if (msg.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
+																	var villages_character = msg.data.villages;
+																	var count = 0;
+																	var l = villages_character.length;
+																	if(l == 0){
+																		callbackRepasse();
+																	} else {
+																		for (village in villages_character) {
+																			if( villages_character.hasOwnProperty( village ) ) {
+																				var located = player.villages.find(f => f.village_id == villages_character[village].id);
+																				if (!located){
+																					socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
+																						count++;
+																						if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
+																							if(count >= l){
+																								count = 0;
+																								callbackRepasse();
+																							}
+																						};
+																					});
+																				} else {
+																					count++;
+																					if(count >= l){
+																						count = 0;
+																						callbackRepasse();
+																					}
+																				}
+																			} 
+																		}
+																	}
+
+//																	player.villages.forEach(function(village_character){
+//																	socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
+//																	if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_CHARACTER.type){
+//																	return;
+//																	};
+//																	});
+//																	});
+																};
+															});
+
+														};
+
+														if(
+																!characters.find(f => f.id == player.id) || 
+																characters.find(f => f.id == player.id && f.under_attack != player.under_attack) ||
+																characters.find(f => f.id == player.id && f.bash_points_total != data.bash_points_total) ||
+																characters.find(f => f.id == player.id && f.points != data.points) ||
+																characters.find(f => f.id == player.id && f.global_rank != data.rank) ||
+																characters.find(f => f.id == player.id && f.num_villages != data.num_villages)
+														)
+														{
+															console.log("player " + player.name);
+															repasse(player, data, function(){
+																nAdd(player, function(){
+																	nextPlayer();
+																});
+															});
+														} else {
+															console.log("Dados de membro não enviado " + player.name);
+															nextPlayer();
+														}
+													});
+												} else {
+													res();
+												}
+											};
+											nextPlayer();
+										};
+
+										function nRemove(characters, players, listaRemove){
+											function nextRemove(){
+												if (listaRemove.length > 0){
+													var character = listaRemove.shift();
+													character.tribe_id = myObj.tribe.id;
+													socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
+														if (msg.type == routes.DELETE_CHARACTER.type){
+															nextRemove();
+															return;
+														};
+													});
+												} else {
+													addPlayers(characters, players)
+													return;
+												}
+											};
+											nextRemove();
+										};
+
+										function removePlayers (characters, players) {
+											var listaRemove = [];
+											characters.forEach(e => {
+												if(!players.find(f => f.id == e.id)){
+													listaRemove.push(e);
+												}
+											});
+											nRemove(characters, players, listaRemove);
+										};
+
+										removePlayers(characters, players);
+									}
+								})
+							}).then(function(){
+								prom = undefined
+								if(prom_queue.length){
+									n(prom_queue.shift())
+								} else {
+									res()
+								}
+							})
+						} else {
+							prom_queue.push(tribe_id);
+						}
+					}
+					n(tribe_id)
+				})
+			})
 		}
 		, upIntervalVillages = function(){
 			isRunning = !0;
@@ -419,15 +591,24 @@ define("robotTW2/services/DataService", [
 		}
 		, upIntervalTribes = function(){
 			isRunning = !0;
-			update_tribes().then(function(tribes){
-				send_tribes(tribes);
-			});
-			interval_data_tribe = setInterval(function(){
+			function exec(){
 				update_tribes().then(function(tribes){
-					send_tribes(tribes);
+					send_tribes(tribes).then(function(){
+						update_members(tribes).then(function(){
+							if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
+								upIntervalVillages()
+							} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
+								upIntervalVillages()
+							}
+						})
+					});
 				});
+			}
+			interval_data_tribe = setInterval(function(){
+				exec()
 				return;
 			}, $rootScope.data_data.interval.tribes)
+			exec();
 		}
 		, upIntervalLogs = function(){
 			isRunningLog = !0;
