@@ -1046,8 +1046,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					data:["id"]
 				},
 				'DELETE_CHARACTER':{
-					type:"delete_character",
-					data:["id"]
+					type:"delete_member",
+					data:["character_id"]
 				},
 				'SEARCH_WORLD':{
 					type:"search_world",
