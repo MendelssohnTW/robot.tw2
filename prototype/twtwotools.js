@@ -1160,7 +1160,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				if(data.world)
 					dw = data.world.id;
 				if(data.tribe)
-					dt = data.tribe.id;
+					dt = data.tribe.tribe_id;
 				if(data){
 					if(data.user){
 						angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
