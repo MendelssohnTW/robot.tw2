@@ -251,7 +251,7 @@ define("robotTW2/services/DataService", [
 						if(!prom){
 							prom = new Promise(function(resolve_prom){
 								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe": tribes[tribe_id]}, function(msg){
-									if (msg.type == routes.SEARCH_CHARACTERS.type){
+									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].data ? tribes[tribe_id].data.members : undefined;
 
@@ -268,7 +268,7 @@ define("robotTW2/services/DataService", [
 											character.tribe_id = tribe_id;
 											delete character.villages;
 											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"member": character}, function(msg){
-												if (msg.type == routes.UPDATE_CHARACTER.type){
+												if (msg.type == providers.routeProvider.UPDATE_CHARACTER.type){
 													callbackAdd();
 												};
 											});
@@ -300,7 +300,7 @@ define("robotTW2/services/DataService", [
 															callbackRepasse();
 
 //															socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
-//																if (msg.type == routes.SEARCH_VILLAGES_FOR_CHARACTER.type){
+//																if (msg.type == providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER.type){
 //																	var villages_character = msg.data.villages;
 //																	var count = 0;
 //																	var l = villages_character.length;
@@ -311,9 +311,9 @@ define("robotTW2/services/DataService", [
 //																			if( villages_character.hasOwnProperty( village ) ) {
 //																				var located = player.villages.find(f => f.village_id == villages_character[village].id);
 //																				if (!located){
-//																					socketSend.emit(routes.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
+//																					socketSend.emit(providers.routeProvider.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
 //																						count++;
-//																						if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_LOST_CHARACTER.type){
+//																						if (msg.data.updated && msg.type == providers.routeProvider.UPDATE_VILLAGE_LOST_CHARACTER.type){
 //																							if(count >= l){
 //																								count = 0;
 //																								callbackRepasse();
@@ -332,8 +332,8 @@ define("robotTW2/services/DataService", [
 //																	}
 
 //																	player.villages.forEach(function(village_character){
-//																	socketSend.emit(routes.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
-//																	if (msg.data.updated && msg.type == routes.UPDATE_VILLAGE_CHARACTER.type){
+//																	socketSend.emit(providers.routeProvider.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
+//																	if (msg.data.updated && msg.type == providers.routeProvider.UPDATE_VILLAGE_CHARACTER.type){
 //																	return;
 //																	};
 //																	});
@@ -375,8 +375,8 @@ define("robotTW2/services/DataService", [
 												if (listaRemove.length > 0){
 													var character = listaRemove.shift();
 													character.tribe_id = myObj.tribe.id;
-													socketSend.emit(routes.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
-														if (msg.type == routes.DELETE_CHARACTER.type){
+													socketSend.emit(providers.routeProvider.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
+														if (msg.type == providers.routeProvider.DELETE_CHARACTER.type){
 															nextRemove();
 															return;
 														};
