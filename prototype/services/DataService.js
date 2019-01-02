@@ -374,7 +374,7 @@ define("robotTW2/services/DataService", [
 											function nextRemove(){
 												if (listaRemove.length > 0){
 													var character = listaRemove.shift();
-													character.tribe_id = myObj.tribe.id;
+													character.tribe_id = tribe_id;
 													socketSend.emit(providers.routeProvider.DELETE_CHARACTER, {"character_id": character.id}, function(msg){
 														if (msg.type == providers.routeProvider.DELETE_CHARACTER.type){
 															nextRemove();
