@@ -1168,9 +1168,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
 					}
 					angular.extend(data, {
-						"world_id": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() || dw,
+						"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
 						"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-						"tribe_id": robotTW2.services.modelDataService.getSelectedCharacter().getTribeId() || dt,
+						"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
 					});
 				}
 
