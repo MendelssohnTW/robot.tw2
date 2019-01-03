@@ -95,6 +95,7 @@ define("robotTW2/services/DataService", [
 		}
 		, send_server = function(tribe){
 			return new Promise(function(res){
+				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(msg){
 					res()
 				})
@@ -120,6 +121,8 @@ define("robotTW2/services/DataService", [
 						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 				}
+				
+				
 				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
 					if(!list_tribes || !list_tribes.length){return}
 					s(list_tribes.shift())
