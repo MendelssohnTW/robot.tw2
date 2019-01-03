@@ -170,55 +170,61 @@ define("robotTW2/services/DataService", [
 							angular.merge(tr, data_tribe)
 							loadTribeMembers(tribe).then(function(members){
 
-								members.forEach(function(member){
-									function v(member){
-										if(!t){
-											t = new Promise(function(res){
-												getProfile(member, function(data){
-													angular.extend(member, data)
-													delete member.achievement_average;
-													delete member.achievement_count;
-													delete member.achievement_points;
-													delete member.points_per_villages;
-													delete member.profile_achievements;
-													delete member.profile_text;
-													delete member.profile_title;
-													delete member.profile_title_id;
-													delete member.rank_old;
-													delete member.tribe_name;
-													delete member.tribe_points;
-													delete member.tribe_tag;
-													delete member.rank_old;
-													delete member.character_name;
-													delete member.character_id;
-													delete member.rank;
-													!member.under_attack ? member.under_attack = null : member.under_attack; 
-													!member.trusted ? member.trusted = null : member.trusted;
-													!member.loyalty ? member.loyalty = null : member.loyalty;
-													!member.last_login ? member.last_login = null : member.last_login;
-													!member.banned ? member.banned = null : member.banned;
-													!member.ban_expires ? member.ban_expires = null : member.ban_expires;
-													res(member)
-												})
-											}).then(function(member){
-												t = undefined
-												if(t_queue.length){
-													v(t_queue.shift())
-												} else {
-													angular.merge(tr, {"member_data" : mb})
-													tribes_load[tr.tribe_id] = tr; 
-													if(tribes.length){
-														nextId(tribes.shift());
+								function d(members, callback){
+									members.forEach(function(member){
+										function v(member){
+											if(!t){
+												t = new Promise(function(res){
+													getProfile(member, function(data){
+														angular.extend(member, data)
+														delete member.achievement_average;
+														delete member.achievement_count;
+														delete member.achievement_points;
+														delete member.points_per_villages;
+														delete member.profile_achievements;
+														delete member.profile_text;
+														delete member.profile_title;
+														delete member.profile_title_id;
+														delete member.rank_old;
+														delete member.tribe_name;
+														delete member.tribe_points;
+														delete member.tribe_tag;
+														delete member.rank_old;
+														delete member.character_name;
+														delete member.character_id;
+														delete member.rank;
+														delete member.villages;
+														!member.under_attack ? member.under_attack = null : member.under_attack; 
+														!member.trusted ? member.trusted = null : member.trusted;
+														!member.loyalty ? member.loyalty = null : member.loyalty;
+														!member.last_login ? member.last_login = null : member.last_login;
+														!member.banned ? member.banned = null : member.banned;
+														!member.ban_expires ? member.ban_expires = null : member.ban_expires;
+														res(member)
+													})
+												}).then(function(member){
+													t = undefined
+													if(t_queue.length){
+														v(t_queue.shift())
 													} else {
-														resolve(tribes_load)
+														callback()
 													}
-												}
-											})
-										} else {
-											t_queue.push(member)
+												})
+											} else {
+												t_queue.push(member)
+											}
 										}
+										v(member)
+									})
+								}
+								d(members, function(){
+									angular.merge(tr, {"member_data" : members})
+									tribes_load[tr.tribe_id] = tr; 
+									if(tribes.length){
+										nextId(tribes.shift());
+									} else {
+										resolve(tribes_load)
 									}
-									v(member)
 								})
 
 							})
