@@ -218,7 +218,7 @@ define("robotTW2/services/DataService", [
 									})
 								}
 								d(data.members, function(){
-									angular.merge(tr, {"member_data" : members})
+									angular.merge(tr, {"member_data" : data.members})
 									tribes_load[tr.tribe_id] = tr; 
 									if(tribes.length){
 										nextId(tribes.shift());
