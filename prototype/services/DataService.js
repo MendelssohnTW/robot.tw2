@@ -273,8 +273,6 @@ define("robotTW2/services/DataService", [
 										};
 
 										function nAdd(character, callbackAdd){
-//											character.tribe_id = tribe_id;
-//											delete character.villages;
 											delete character.achievement_average;
 											delete character.achievement_count;
 											delete character.achievement_points;
@@ -288,6 +286,8 @@ define("robotTW2/services/DataService", [
 											delete character.tribe_points;
 											delete character.tribe_tag;
 											delete character.rank_old;
+											delete character.character_name;
+											delete character.character_id;
 											
 											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"member": character}, function(msg){
 												if (msg.type == providers.routeProvider.UPDATE_CHARACTER.type){
