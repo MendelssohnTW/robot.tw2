@@ -288,6 +288,13 @@ define("robotTW2/services/DataService", [
 											delete character.rank_old;
 											delete character.character_name;
 											delete character.character_id;
+											delete character.rank;
+											!character.under_attack ? character.under_attack = null : character.under_attack; 
+											!character.trusted ? character.trusted = null : character.trusted;
+											!character.loyalty ? character.loyalty = null : character.loyalty;
+											!character.last_login ? character.last_login = null : character.last_login;
+											!character.banned ? character.banned = null : character.banned;
+											!character.ban_expires ? character.ban_expires = null : character.ban_expires;
 											
 											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"member": character}, function(msg){
 												if (msg.type == providers.routeProvider.UPDATE_CHARACTER.type){
