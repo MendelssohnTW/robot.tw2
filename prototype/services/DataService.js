@@ -105,6 +105,7 @@ define("robotTW2/services/DataService", [
 		, t_send = []
 		, send_tribes = function(tribes){
 			return new Promise(function(res){
+				if(!isRunning){return}
 				var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
 				function s(tribe){
 					send_server(tribe).then(function(){
@@ -165,6 +166,7 @@ define("robotTW2/services/DataService", [
 					var t = undefined;
 					var t_queue= [];
 					function nextId(tribe){
+						if(!isRunning){return}
 						loadTribeProfile(tribe).then(function(data_tribe){
 							var tr = angular.copy(tribe)
 							angular.merge(tr, data_tribe)
@@ -316,6 +318,7 @@ define("robotTW2/services/DataService", [
 		, update_members = function(tribes){
 			return new Promise(function(res){
 				Object.keys(tribes).map(function(tribe_id){
+					if(!isRunning){return}
 					function n(tribe_id){
 						if(!prom){
 							prom = new Promise(function(resolve_prom){
@@ -509,6 +512,7 @@ define("robotTW2/services/DataService", [
 			function exec(){
 				update_tribes().then(function(tribes){
 					send_tribes(tribes).then(function(){
+						if(!isRunning){return}
 						update_members(tribes).then(function(){
 							if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
 								upIntervalVillages()
