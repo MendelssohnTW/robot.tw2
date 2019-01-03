@@ -273,6 +273,8 @@ define("robotTW2/services/DataService", [
 										};
 
 										function nAdd(character, callbackAdd){
+											$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + character.name + "-" + character.tribe_name, "date": (new Date(time.convertedTime())).toString()})
+											
 											delete character.achievement_average;
 											delete character.achievement_count;
 											delete character.achievement_points;
@@ -381,7 +383,7 @@ define("robotTW2/services/DataService", [
 																});
 															});
 														} else {
-															console.log("Dados de membro não enviado " + player.name);
+															$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + player.name + "-" + player.tribe_name, "date": (new Date(time.convertedTime())).toString()})
 															nextPlayer();
 														}
 													});
