@@ -168,7 +168,7 @@ define("robotTW2/services/DataService", [
 						loadTribeProfile(tribe).then(function(data_tribe){
 							var tr = angular.copy(tribe)
 							angular.merge(tr, data_tribe)
-							loadTribeMembers(tribe).then(function(members){
+							loadTribeMembers(tribe).then(function(data){
 
 								function d(members, callback){
 									members.forEach(function(member){
@@ -217,7 +217,7 @@ define("robotTW2/services/DataService", [
 										v(member)
 									})
 								}
-								d(members, function(){
+								d(data.members, function(){
 									angular.merge(tr, {"member_data" : members})
 									tribes_load[tr.tribe_id] = tr; 
 									if(tribes.length){
