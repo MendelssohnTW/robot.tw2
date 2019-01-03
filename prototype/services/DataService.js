@@ -388,7 +388,7 @@ define("robotTW2/services/DataService", [
 														}
 													});
 												} else {
-													res();
+													resolve_prom();
 												}
 											};
 											nextPlayer();
