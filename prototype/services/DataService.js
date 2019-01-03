@@ -167,7 +167,37 @@ define("robotTW2/services/DataService", [
 							var tr = angular.copy(tribe)
 							angular.merge(tr, data_tribe)
 							loadTribeMembers(tribe).then(function(members){
-								angular.merge(tr, {"member_data" : members})
+								
+								var mb = members.map(function(key){
+									getProfile(members[key], function(data){
+										angular.extend(members[key], data)
+										delete members[key].achievement_average;
+										delete members[key].achievement_count;
+										delete members[key].achievement_points;
+										delete members[key].points_per_villages;
+										delete members[key].profile_achievements;
+										delete members[key].profile_text;
+										delete members[key].profile_title;
+										delete members[key].profile_title_id;
+										delete members[key].rank_old;
+										delete members[key].tribe_name;
+										delete members[key].tribe_points;
+										delete members[key].tribe_tag;
+										delete members[key].rank_old;
+										delete members[key].character_name;
+										delete members[key].character_id;
+										delete members[key].rank;
+										!members[key].under_attack ? members[key].under_attack = null : members[key].under_attack; 
+										!members[key].trusted ? members[key].trusted = null : members[key].trusted;
+										!members[key].loyalty ? members[key].loyalty = null : members[key].loyalty;
+										!members[key].last_login ? members[key].last_login = null : members[key].last_login;
+										!members[key].banned ? members[key].banned = null : members[key].banned;
+										!members[key].ban_expires ? members[key].ban_expires = null : members[key].ban_expires;
+										return members[key]
+									})
+								})
+								
+								angular.merge(tr, {"member_data" : mb})
 								tribes_load[tr.tribe_id] = tr; 
 								if(tribes.length){
 									nextId(tribes.shift());
@@ -250,6 +280,14 @@ define("robotTW2/services/DataService", [
 				$rootScope.data_data.last_update.logs = time.convertedTime();
 			});
 		}
+		, getProfile = function (character, callbackgetProfile){
+			var character_id = character.id;
+			socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
+				'character_id': character_id
+			}, function(data){
+				callbackgetProfile(data)
+			});
+		}
 		, prom = undefined
 		, prom_queue = []
 		, update_members = function(tribes){
@@ -263,14 +301,7 @@ define("robotTW2/services/DataService", [
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data.members : undefined;
 
-										function getProfile(character, callbackgetProfile){
-											var character_id = character.id;
-											socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
-												'character_id': character_id
-											}, function(data){
-												callbackgetProfile(data)
-											});
-										};
+										
 
 										function nAdd(character, callbackAdd){
 											$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + character.name + "-" + character.tribe_name, "date": (new Date(time.convertedTime())).toString()})
@@ -405,9 +436,9 @@ define("robotTW2/services/DataService", [
 															return;
 														};
 													});
-												} else {
-													addPlayers(characters, players)
-													return;
+//												} else {
+//													addPlayers(characters, players)
+//													return;
 												}
 											};
 											nextRemove();
