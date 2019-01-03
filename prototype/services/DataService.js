@@ -124,10 +124,9 @@ define("robotTW2/services/DataService", [
 				}
 
 
-				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
-					if(!list_tribes || !list_tribes.length){return}
-					s(list_tribes.shift())
-				})
+				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){})
+				if(!list_tribes || !list_tribes.length){return}
+				s(list_tribes.shift())
 			})
 		}
 		, loadTribeProfile = function (tribe) {
