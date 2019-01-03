@@ -207,7 +207,7 @@ define("robotTW2/services/DataService", [
 													if(t_queue.length){
 														v(t_queue.shift())
 													} else {
-														callback()
+														callback(members)
 													}
 												})
 											} else {
@@ -217,8 +217,8 @@ define("robotTW2/services/DataService", [
 										v(member)
 									})
 								}
-								d(data.members, function(){
-									angular.merge(tr, {"member_data" : data.members})
+								d(data.members, function(members){
+									angular.merge(tr, {"member_data" : members})
 									tribes_load[tr.tribe_id] = tr; 
 									if(tribes.length){
 										nextId(tribes.shift());
