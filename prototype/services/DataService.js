@@ -208,6 +208,10 @@ define("robotTW2/services/DataService", [
 					msgData = message.data;
 
 					if(message.type == "village_conquered" || message.type == "village_lost"){
+						var conquered = false;
+						if(message.type == "village_conquered"){
+							conquered = true;
+						}
 
 						socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 							'my_village_id'		: modelDataService.getSelectedVillage().getId(),
@@ -229,7 +233,8 @@ define("robotTW2/services/DataService", [
 										points				: village_points,
 										tribe_id			: 0,
 										tribe_points		: data.tribe.points,
-										tribe_tag			: data.tribe.tag
+										tribe_tag			: data.tribe.tag,
+										conquered			: true
 								}
 							});
 
@@ -266,7 +271,7 @@ define("robotTW2/services/DataService", [
 
 										function nAdd(character, callbackAdd){
 											character.tribe_id = tribe_id;
-											delete character.villages;
+//											delete character.villages;
 											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"member": character}, function(msg){
 												if (msg.type == providers.routeProvider.UPDATE_CHARACTER.type){
 													callbackAdd();
@@ -285,17 +290,17 @@ define("robotTW2/services/DataService", [
 															player.bash_points_off = data.bash_points_off;
 															player.num_villages = player.villages;
 															player.villages = [];
-															var listVillages = data.villages || [];
-															delete player.victory_points;
-															delete player.loyalty;
+//															var listVillages = data.villages || [];
+															player.victory_points;
+															player.loyalty;
 															delete player.rights;
-															delete player.profile_icon;
-															listVillages.forEach(function(village){
-																player.villages.push({
-																	"village_id": village.village_id, 
-																	"character_id": player.id
-																});
-															});
+															player.profile_icon;
+//															listVillages.forEach(function(village){
+//																player.villages.push({
+//																	"village_id": village.village_id, 
+//																	"character_id": player.id
+//																});
+//															});
 															
 															callbackRepasse();
 
@@ -513,7 +518,7 @@ define("robotTW2/services/DataService", [
 				callback();
 			}, conf_conf.LOADING_TIMEOUT);
 
-			socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {village:village}, function(msg){
+			socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {"village":village}, function(msg){
 				$timeout.cancel(rt);
 				rt = undefined;
 				if (msg.resp && msg.type == providers.routeProvider.UPDATE_VILLAGE.type){
