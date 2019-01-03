@@ -121,8 +121,8 @@ define("robotTW2/services/DataService", [
 						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 				}
-				
-				
+
+
 				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
 					if(!list_tribes || !list_tribes.length){return}
 					s(list_tribes.shift())
@@ -273,7 +273,7 @@ define("robotTW2/services/DataService", [
 										};
 
 										function nAdd(character, callbackAdd){
-											character.tribe_id = tribe_id;
+//											character.tribe_id = tribe_id;
 //											delete character.villages;
 											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"member": character}, function(msg){
 												if (msg.type == providers.routeProvider.UPDATE_CHARACTER.type){
@@ -287,82 +287,75 @@ define("robotTW2/services/DataService", [
 												if (players.length > 0) {
 													var player = players.shift();
 													getProfile(player, function(data){
-														function repasse(player, data, callbackRepasse){
-															player.bash_points_total = data.bash_points_total;
-															player.bash_points_def = data.bash_points_def;
-															player.bash_points_off = data.bash_points_off;
-															player.num_villages = player.villages;
-															player.villages = [];
+														function repasse(player, callbackRepasse){
+															player.villages ? delete player.villages : null;
 //															var listVillages = data.villages || [];
-															player.victory_points;
-															player.loyalty;
-															delete player.rights;
-															player.profile_icon;
 //															listVillages.forEach(function(village){
-//																player.villages.push({
-//																	"village_id": village.village_id, 
-//																	"character_id": player.id
-//																});
+//															player.villages.push({
+//															"village_id": village.village_id, 
+//															"character_id": player.id
 //															});
-															
-															callbackRepasse();
+//															});
+
+															callbackRepasse(player);
 
 //															socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
-//																if (msg.type == providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER.type){
-//																	var villages_character = msg.data.villages;
-//																	var count = 0;
-//																	var l = villages_character.length;
-//																	if(l == 0){
-//																		callbackRepasse();
-//																	} else {
-//																		for (village in villages_character) {
-//																			if( villages_character.hasOwnProperty( village ) ) {
-//																				var located = player.villages.find(f => f.village_id == villages_character[village].id);
-//																				if (!located){
-//																					socketSend.emit(providers.routeProvider.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
-//																						count++;
-//																						if (msg.data.updated && msg.type == providers.routeProvider.UPDATE_VILLAGE_LOST_CHARACTER.type){
-//																							if(count >= l){
-//																								count = 0;
-//																								callbackRepasse();
-//																							}
-//																						};
-//																					});
-//																				} else {
-//																					count++;
-//																					if(count >= l){
-//																						count = 0;
-//																						callbackRepasse();
-//																					}
-//																				}
-//																			} 
-//																		}
-//																	}
+//															if (msg.type == providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER.type){
+//															var villages_character = msg.data.villages;
+//															var count = 0;
+//															var l = villages_character.length;
+//															if(l == 0){
+//															callbackRepasse();
+//															} else {
+//															for (village in villages_character) {
+//															if( villages_character.hasOwnProperty( village ) ) {
+//															var located = player.villages.find(f => f.village_id == villages_character[village].id);
+//															if (!located){
+//															socketSend.emit(providers.routeProvider.UPDATE_VILLAGE_LOST_CHARACTER, {"village_id":villages_character[village].id}, function(msg){
+//															count++;
+//															if (msg.data.updated && msg.type == providers.routeProvider.UPDATE_VILLAGE_LOST_CHARACTER.type){
+//															if(count >= l){
+//															count = 0;
+//															callbackRepasse();
+//															}
+//															};
+//															});
+//															} else {
+//															count++;
+//															if(count >= l){
+//															count = 0;
+//															callbackRepasse();
+//															}
+//															}
+//															} 
+//															}
+//															}
 
-//																	player.villages.forEach(function(village_character){
-//																	socketSend.emit(providers.routeProvider.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
-//																	if (msg.data.updated && msg.type == providers.routeProvider.UPDATE_VILLAGE_CHARACTER.type){
-//																	return;
-//																	};
-//																	});
-//																	});
-//																};
+//															player.villages.forEach(function(village_character){
+//															socketSend.emit(providers.routeProvider.UPDATE_VILLAGE_CHARACTER, {"village":village_character}, function(msg){
+//															if (msg.data.updated && msg.type == providers.routeProvider.UPDATE_VILLAGE_CHARACTER.type){
+//															return;
+//															};
+//															});
+//															});
+//															};
 //															});
 
 														};
 
-														if(
-																!characters.find(f => f.id == player.id) || 
-																characters.find(f => f.id == player.id && f.under_attack != player.under_attack) ||
-																characters.find(f => f.id == player.id && f.bash_points_total != data.bash_points_total) ||
-																characters.find(f => f.id == player.id && f.points != data.points) ||
-																characters.find(f => f.id == player.id && f.global_rank != data.rank) ||
-																characters.find(f => f.id == player.id && f.num_villages != data.num_villages)
-														)
-														{
-															console.log("player " + player.name);
-															repasse(player, data, function(){
-																nAdd(player, function(){
+														angular.extend(player, data)
+
+														if(!characters.find(f => f.id == player.id) 
+																|| characters.find(f => f.id == player.id 
+																		&& (f.under_attack != player.under_attack
+																				|| f.bash_points_total != data.bash_points_total
+																				|| f.points != data.points
+																				|| f.global_rank != data.rank
+																				|| f.num_villages != data.num_villages
+																		))
+														){
+															repasse(player, function(p){
+																nAdd(p, function(){
 																	nextPlayer();
 																});
 															});
