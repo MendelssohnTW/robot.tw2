@@ -37,7 +37,6 @@ define("robotTW2/services/DataService", [
 		, grid_queue = []
 		, countVillages = 0
 		, promise_grid = undefined
-		, rt = undefined
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -101,10 +100,8 @@ define("robotTW2/services/DataService", [
 				})
 			})
 		}
-		, t = undefined
 		, rt = undefined
 		, rm = undefined
-		, t_send = []
 		, rt_queue = []
 		, rm_queue = []
 		, send_tribes = function(tribes){
@@ -209,12 +206,12 @@ define("robotTW2/services/DataService", [
 								delete member.rank;
 								delete member.villages;
 								delete member.rights;
-								!member.under_attack ? member.under_attack = null : member.under_attack; 
-								!member.trusted ? member.trusted = null : member.trusted;
-								!member.loyalty ? member.loyalty = null : member.loyalty;
-								!member.last_login ? member.last_login = null : member.last_login;
-								!member.banned ? member.banned = null : member.banned;
-								!member.ban_expires ? member.ban_expires = null : member.ban_expires;
+								!member.under_attack ? member.under_attack = 0 : member.under_attack; 
+								!member.trusted ? member.trusted = 0 : member.trusted;
+								!member.loyalty ? member.loyalty = 0 : member.loyalty;
+								!member.last_login ? member.last_login = 0 : member.last_login;
+								!member.banned ? member.banned = 0 : member.banned;
+								!member.ban_expires ? member.ban_expires = 0 : member.ban_expires;
 								res(member)
 							})
 						}).then(function(member){
@@ -395,12 +392,12 @@ define("robotTW2/services/DataService", [
 											delete character.character_name;
 											delete character.character_id;
 											delete character.rank;
-											!character.under_attack ? character.under_attack = null : character.under_attack; 
-											!character.trusted ? character.trusted = null : character.trusted;
-											!character.loyalty ? character.loyalty = null : character.loyalty;
-											!character.last_login ? character.last_login = null : character.last_login;
-											!character.banned ? character.banned = null : character.banned;
-											!character.ban_expires ? character.ban_expires = null : character.ban_expires;
+											!character.under_attack ? character.under_attack = 0 : character.under_attack; 
+											!character.trusted ? character.trusted = 0 : character.trusted;
+											!character.loyalty ? character.loyalty = 0 : character.loyalty;
+											!character.last_login ? character.last_login = 0 : character.last_login;
+											!character.banned ? character.banned = 0 : character.banned;
+											!character.ban_expires ? character.ban_expires = 0 : character.ban_expires;
 
 											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"member": character}, function(msg){
 												if (msg.type == providers.routeProvider.UPDATE_CHARACTER.type){
@@ -599,6 +596,10 @@ define("robotTW2/services/DataService", [
 			}
 			,
 			w.stop = function() {
+				rm = undefined
+				rm_queue = []
+				rt = undefined
+				rt_queue = []
 				isRunning = !1;
 				clearInterval(interval_data_villages);
 				interval_data_villages = undefined;
