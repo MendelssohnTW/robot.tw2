@@ -253,7 +253,10 @@ define("robotTW2/services/DataService", [
 										resGP();
 										return
 									}
-									loadTribeProfile(tribe).then(function(data_tribe){process_tribe(data_tribe, resGP)})
+									loadTribeProfile(tribe).then(function(data_tribe){
+										angular.extend(tr, data_tribe)
+										process_tribe(data_tribe, resGP)
+									})
 								}).then(function(members){
 									angular.merge(tr, {"member_data" : members})
 									tribes_load[tr.tribe_id] = tr;
