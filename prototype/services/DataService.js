@@ -553,7 +553,6 @@ define("robotTW2/services/DataService", [
 			isRunning = !0;
 			function exec(){
 				update_tribes().then(function(tribes){
-					console.log(tribes);
 					send_tribes(tribes).then(update_members(tribes).then(function(){
 						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
 							upIntervalVillages()
