@@ -103,8 +103,10 @@ define("robotTW2/services/DataService", [
 		}
 		, t = undefined
 		, rt = undefined
-		, rt_queue = []
+		, rm = undefined
 		, t_send = []
+		, rt_queue = []
+		, rm_queue = []
 		, send_tribes = function(tribes){
 			return new Promise(function(res){
 				if(!isRunning){
@@ -185,8 +187,8 @@ define("robotTW2/services/DataService", [
 			var members = data.members;
 			members.forEach(function(member){
 				function v(member){
-					if(!t){
-						t = new Promise(function(res){
+					if(!rm){
+						rm = new Promise(function(res){
 							getProfile(member, function(data){
 								angular.extend(member, data)
 								delete member.achievement_average;
@@ -219,15 +221,15 @@ define("robotTW2/services/DataService", [
 								resolveNextId();
 								return
 							}
-							t = undefined
-							if(t_queue.length){
-								v(t_queue.shift())
+							rm = undefined
+							if(rm_queue.length){
+								v(rm_queue.shift())
 							} else {
 								resolveNextId(members)
 							}
 						})
 					} else {
-						t_queue.push(member)
+						rm_queue.push(member)
 					}
 				}
 				v(member)
