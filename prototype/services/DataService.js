@@ -554,6 +554,7 @@ define("robotTW2/services/DataService", [
 		}
 		, upIntervalTribes = function(){
 			isRunning = !0;
+			console.log("Atualização iniciada")
 			function exec(){
 				update_tribes().then(function(tribes){
 					console.log("Enviando as tribos e membros")
