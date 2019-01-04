@@ -234,7 +234,7 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, process_tribe = function(data_tribe, resolveNextId){
-			loadTribeMembers(tribe).then(function(data){process_members(data, resolveNextId)})
+			loadTribeMembers(data_tribe).then(function(data){process_members(data, resolveNextId)})
 		}
 		, update_tribes = function(){
 			return new Promise(function(resolveTribes){
