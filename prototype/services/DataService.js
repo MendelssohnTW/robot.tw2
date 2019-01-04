@@ -172,7 +172,7 @@ define("robotTW2/services/DataService", [
 					'query'		: ''
 				}, function(data) {
 					data.ranking.map(function(tribe){
-						if(tribe.id == 51){
+						if(tribe.tribe_id == 51){
 							tribes.push(tribe)
 							$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 						}
