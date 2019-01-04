@@ -238,7 +238,7 @@ define("robotTW2/services/DataService", [
 		}
 		, update_tribes = function(){
 			return new Promise(function(resolveTribes){
-				get_tribe().then(function(tribes){
+				get_tribes().then(function(tribes){
 					if(!tribes.length || !isRunning){return}
 					var tribes_load = {}
 					, gp = undefined
