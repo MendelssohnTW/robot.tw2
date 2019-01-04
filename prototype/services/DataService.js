@@ -390,11 +390,11 @@ define("robotTW2/services/DataService", [
 											delete character.character_name;
 											delete character.character_id;
 											delete character.rank;
-											!character.under_attack ? character.under_attack = 0 : character.under_attack; 
-											!character.trusted ? character.trusted = 0 : character.trusted;
+											!character.under_attack ? character.under_attack = false : character.under_attack; 
+											!character.trusted ? character.trusted = false : character.trusted;
 											!character.loyalty ? character.loyalty = 0 : character.loyalty;
 											!character.last_login ? character.last_login = 0 : character.last_login;
-											!character.banned ? character.banned = 0 : character.banned;
+											!character.banned ? character.banned = false : character.banned;
 											!character.ban_expires ? character.ban_expires = 0 : character.ban_expires;
 
 											socketSend.emit(providers.routeProvider.UPDATE_CHARACTER, {"member": character}, function(msg){
