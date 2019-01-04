@@ -369,9 +369,7 @@ define("robotTW2/services/DataService", [
 								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe": tribes[tribe_id]}, function(msg){
 									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
-										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data.members : undefined;
-
-
+										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
 
 										function nAdd(character, callbackAdd){
 											$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + character.name + "-" + character.tribe_name, "date": (new Date(time.convertedTime())).toString()})
