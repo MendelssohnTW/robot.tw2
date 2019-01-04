@@ -102,34 +102,49 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, t = undefined
+		, rt = undefined
+		, rt_queue = []
 		, t_send = []
 		, send_tribes = function(tribes){
 			return new Promise(function(res){
-				if(!isRunning){return}
-				var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
-				function s(tribe){
-					send_server(tribe).then(function(){
-						t = undefined;
-						if(list_tribes.length){
-							s(list_tribes.shift())
-						} else {
-							$rootScope.data_data.last_update.tribes = time.convertedTime();
-							res()
-						}
-					})
+				if(!isRunning){
+					res();
+					return
 				}
 				var world = {
 						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 				}
+				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
+					console.log("world updated")
+				})
 
+				function s(tribe){
+					if(!rt){
+						rt = send_server(tribe).then(function(){
+							rt = undefined;
+							if(rt_queue.length){
+								s(rt_queue.shift())
+							} else {
+								$rootScope.data_data.last_update.tribes = time.convertedTime();
+								res()
+							}
+						})
+					} else {
+						rt_queue.push(tribe)
+					}
+				}
 
-				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){})
-				if(!list_tribes || !list_tribes.length){return}
+				var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
+				if(!list_tribes || !list_tribes.length){
+					res()
+					return
+				}
 				s(list_tribes.shift())
+
 			})
 		}
-		, loadTribeProfile = function (tribe) {
+		, loadTribeProfile = function (tribe, resolve) {
 			return new Promise(function(res){
 				socketService.emit(providers.routeProvider.TRIBE_GET_PROFILE, {
 					'tribe_id': tribe.tribe_id
@@ -144,7 +159,7 @@ define("robotTW2/services/DataService", [
 				}, res);
 			})
 		}
-		, update_tribes = function(){
+		, get_tribes = function(){
 			return new Promise(function(resolve){
 				var tribes = [];
 				socketService.emit(providers.routeProvider.RANKING_TRIBE, {
@@ -160,79 +175,104 @@ define("robotTW2/services/DataService", [
 						tribes.push(tribe)
 						$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 					})
-					if(!tribes.length){return}
-					var tribes_load = {};
-					var t = undefined;
-					var t_queue= [];
-					function nextId(tribe){
-						if(!isRunning){return}
-						loadTribeProfile(tribe).then(function(data_tribe){
-							var tr = angular.copy(tribe)
-							angular.merge(tr, data_tribe)
-							loadTribeMembers(tribe).then(function(data){
+					resolve(tribes)
+				});
+			})
+		}
+		, process_members = function(data, resolveNextId){
+			var members = data.members;
+			members.forEach(function(member){
+				function v(member){
+					if(!t){
+						t = new Promise(function(res){
+							getProfile(member, function(data){
+								angular.extend(member, data)
+								delete member.achievement_average;
+								delete member.achievement_count;
+								delete member.achievement_points;
+								delete member.points_per_villages;
+								delete member.profile_achievements;
+								delete member.profile_text;
+								delete member.profile_title;
+								delete member.profile_title_id;
+								delete member.rank_old;
+								delete member.tribe_name;
+								delete member.tribe_points;
+								delete member.tribe_tag;
+								delete member.rank_old;
+								delete member.character_name;
+								delete member.character_id;
+								delete member.rank;
+								delete member.villages;
+								!member.under_attack ? member.under_attack = null : member.under_attack; 
+								!member.trusted ? member.trusted = null : member.trusted;
+								!member.loyalty ? member.loyalty = null : member.loyalty;
+								!member.last_login ? member.last_login = null : member.last_login;
+								!member.banned ? member.banned = null : member.banned;
+								!member.ban_expires ? member.ban_expires = null : member.ban_expires;
+								res(member)
+							})
+						}).then(function(member){
+							if(!isRunning){
+								resolveNextId();
+								return
+							}
+							t = undefined
+							if(t_queue.length){
+								v(t_queue.shift())
+							} else {
+								resolveNextId(members)
+							}
+						})
+					} else {
+						t_queue.push(member)
+					}
+				}
+				v(member)
+			})
+		}
+		, process_tribe = function(data_tribe, resolveNextId){
+			loadTribeMembers(tribe).then(function(data){process_members(data, resolveNextId)})
+		}
+		, update_tribes = function(){
+			return new Promise(function(resolveTribes){
+				get_tribe().then(function(tribes){
+					if(!tribes.length || !isRunning){return}
+					var tribes_load = {}
+					, gp = undefined
+					, gp_queue = []
 
-								function d(members, callback){
-									members.forEach(function(member){
-										function v(member){
-											if(!t){
-												t = new Promise(function(res){
-													getProfile(member, function(data){
-														angular.extend(member, data)
-														delete member.achievement_average;
-														delete member.achievement_count;
-														delete member.achievement_points;
-														delete member.points_per_villages;
-														delete member.profile_achievements;
-														delete member.profile_text;
-														delete member.profile_title;
-														delete member.profile_title_id;
-														delete member.rank_old;
-														delete member.tribe_name;
-														delete member.tribe_points;
-														delete member.tribe_tag;
-														delete member.rank_old;
-														delete member.character_name;
-														delete member.character_id;
-														delete member.rank;
-														delete member.villages;
-														!member.under_attack ? member.under_attack = null : member.under_attack; 
-														!member.trusted ? member.trusted = null : member.trusted;
-														!member.loyalty ? member.loyalty = null : member.loyalty;
-														!member.last_login ? member.last_login = null : member.last_login;
-														!member.banned ? member.banned = null : member.banned;
-														!member.ban_expires ? member.ban_expires = null : member.ban_expires;
-														res(member)
-													})
-												}).then(function(member){
-													t = undefined
-													if(t_queue.length){
-														v(t_queue.shift())
-													} else {
-														callback(members)
-													}
-												})
-											} else {
-												t_queue.push(member)
-											}
-										}
-										v(member)
-									})
-								}
-								d(data.members, function(members){
+					tribes.forEach(function(tribe){
+						var tr = angular.copy(tribe)
+						function nextId(tribe){
+							if (!gp){
+								gp = new Promise(function(resGP){
+									if(!isRunning){
+										resGP();
+										return
+									}
+									loadTribeProfile(tribe).then(function(data_tribe){process_tribe(data_tribe, resGP)})
+								}).then(function(members){
 									angular.merge(tr, {"member_data" : members})
-									tribes_load[tr.tribe_id] = tr; 
-									if(tribes.length){
-										nextId(tribes.shift());
+									tribes_load[tr.tribe_id] = tr;
+									gp = undefined
+									if(!isRunning){
+										gp_queue = []
+										return
+									}
+									if(gp_queue.length){
+										nextId(gp_queue.shift())
 									} else {
-										resolve(tribes_load)
+										resolveTribes(tribes_load)
 									}
 								})
-
-							})
-						});
-					};
-					nextId(tribes.shift());
-				});
+							} else {
+								gp_queue.push(tribe)
+							}
+						}
+						nextId(tribe)
+					})
+				})
 			})
 		}
 		, update_logs = function(){
@@ -510,16 +550,15 @@ define("robotTW2/services/DataService", [
 			isRunning = !0;
 			function exec(){
 				update_tribes().then(function(tribes){
-					send_tribes(tribes).then(function(){
-						if(!isRunning){return}
-						update_members(tribes).then(function(){
-							if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
-								upIntervalVillages()
-							} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
-								upIntervalVillages()
-							}
-						})
-					});
+					console.log(tribes);
+					send_tribes(tribes).then(update_members(tribes).then(function(){
+						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
+							upIntervalVillages()
+						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
+							upIntervalVillages()
+						}
+					})
+					);
 				});
 			}
 			interval_data_tribe = setInterval(function(){
