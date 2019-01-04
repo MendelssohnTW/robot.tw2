@@ -208,6 +208,8 @@ define("robotTW2/services/DataService", [
 								delete member.character_id;
 								delete member.rank;
 								delete member.villages;
+								delete member.num_villages;
+								delete member.rights;
 								!member.under_attack ? member.under_attack = null : member.under_attack; 
 								!member.trusted ? member.trusted = null : member.trusted;
 								!member.loyalty ? member.loyalty = null : member.loyalty;
