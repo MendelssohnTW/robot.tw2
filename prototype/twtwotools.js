@@ -1100,6 +1100,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/socket", ["robotTW2/base"], function(base) {
 			var service = {},
 			id = 0,
+			timeouts = {}
 			callbacks = {},
 			onopen = function onopen(){
 				connect.call(true);
@@ -1113,6 +1114,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 				var id_return = msg.id
+				if(timeouts[id_return]){
+					robotTW2.services.$timeout.cancel(timeouts[id_return])
+					delete timeouts[id_return];
+				}
 				var opt_callback = callbacks[id_return];
 				if(typeof(opt_callback) == "function"){
 					opt_callback(msg);
@@ -1153,8 +1158,19 @@ var robotTW2 = window.robotTW2 = undefined;
 				if (service) {
 					service.close();
 				}
-			},
-			sendMsg = function sendMsg(type, data, opt_callback){
+			}
+			, createTimeout = function (id, type, opt_callback){
+				if(!timeouts[id]){
+					timeouts[id] = robotTW2.services.$timeout(function(){
+						if(typeof(opt_callback) == "function"){
+						opt_callback({"type" : type, "data": "Timeout"})
+						}
+					}, 15000)
+				}
+			}
+			, sendMsg = function sendMsg(type, data, opt_callback){
+				id = ++id;
+				createTimeout(id, type, opt_callback)
 				var dw = null
 				var dt = null
 				if(data.world)
@@ -1173,8 +1189,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
 					});
 				}
-
-				id = ++id;
 				callbacks[id] = opt_callback;
 				service.send(
 						angular.toJson({
