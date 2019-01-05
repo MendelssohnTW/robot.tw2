@@ -150,12 +150,12 @@ define("robotTW2/services/DataService", [
 				}, res);
 			})
 		}
-		, loadTribeMembers = function (tribe) {
+		, loadTribeMembers = function (tribe, resolveNextId) {
 			return new Promise(function(res){
 				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {
 					'tribe': tribe.tribe_id
-				}, res);
+				}, function(data){res(data, resolveNextId)});
 			})
 		}
 		, get_tribes = function(){
@@ -235,7 +235,7 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, process_tribe = function(data_tribe, resolveNextId){
-			loadTribeMembers(data_tribe).then(function(data){process_members(data, resolveNextId)})
+			loadTribeMembers(data_tribe, resolveNextId).then(process_members)
 		}
 		, update_tribes = function(){
 			return new Promise(function(resolveTribes){
