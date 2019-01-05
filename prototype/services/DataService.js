@@ -372,8 +372,11 @@ define("robotTW2/services/DataService", [
 									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
-										promise_analise_removed_players(characters, players).then()
-										promise_remove_players(characters, players, listaRemove).then()
+										promise_analise_removed_players(characters, players).then(function(characters, players){
+											console.log(characters)
+											console.log(players)
+										})
+//										promise_remove_players(characters, players, listaRemove).then()
 //												.then(analise_villages_players
 //														.then(add_remove_villages
 //																.then(resolve_prom))
