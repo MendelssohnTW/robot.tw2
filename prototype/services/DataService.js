@@ -151,11 +151,12 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, loadTribeMembers = function (tribe, resolveNextId) {
+			this.resolveNextId = resolveNextId;
 			return new Promise(function(res){
 				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {
 					'tribe': tribe.tribe_id
-				}, function(data){res(data, resolveNextId)});
+				}, function(data){res(data, this.resolveNextId)});
 			})
 		}
 		, get_tribes = function(){
