@@ -1025,6 +1025,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					type:"update_tribe",
 					data:["tribe"],
 				},
+				'SEARCH_CHARACTER':{
+					type:"search_character",
+					data:["character_id"]
+				},
 				'SEARCH_CHARACTERS':{
 					type:"search_characters",
 					data:["id"]
@@ -1059,6 +1063,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				},
 				'UPDATE_VILLAGE':{
 					type:"update_village",
+					data:["village"]
+				},
+				'UPT_VILLAGE':{
+					type:"upt_village",
 					data:["village"]
 				}
 			});
