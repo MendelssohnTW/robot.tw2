@@ -1068,6 +1068,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				'UPT_VILLAGE':{
 					type:"upt_village",
 					data:["village"]
+				},
+				'VERIFY_RESERVATION':{
+					type:"verify_reservation",
+					data:["verify_reservation"]
 				}
 			});
 			robotTW2.register("providers", "eventTypeProvider", {
