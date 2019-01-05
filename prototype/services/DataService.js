@@ -373,10 +373,8 @@ define("robotTW2/services/DataService", [
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
 										analise_removed_players(characters, players)
-										.then(function(characters, players, listaRemove){
-											remove_players(characters, players, listaRemove)
-											})
-										.then(analise_villages_players, rejected)
+										.then(remove_players())
+										.then(analise_villages_players(), rejected())
 										.then(add_remove_villages)
 										.then(resolve_prom)
 									}
