@@ -372,13 +372,13 @@ define("robotTW2/services/DataService", [
 									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
-										analise_removed_players(characters, players)
-										.then(remove_players
-												.then(analise_villages_players
-														.then(add_remove_villages
-																.then(resolve_prom))
-																, rejected)
-										)
+										promise_analise_removed_players(characters, players).then()
+										promise_remove_players(characters, players, listaRemove).then()
+//												.then(analise_villages_players
+//														.then(add_remove_villages
+//																.then(resolve_prom))
+//																, rejected)
+//										)
 									}
 								})
 							}).then(function(){
@@ -442,8 +442,7 @@ define("robotTW2/services/DataService", [
 				})
 			})
 		}
-		, remove_players =  function (characters, players, listaRemove){
-			return new Promise(function(res, rej){
+		, remove_players = new Promise(function(res, rej){
 				function nextRemove(){
 					if (listaRemove.length > 0){
 						var character = listaRemove.shift();
@@ -463,18 +462,17 @@ define("robotTW2/services/DataService", [
 				};
 				nextRemove();
 			})
-		}
-		, analise_removed_players = function (characters, players) {
-			return new Promise(function(res){
-				var listaRemove = [];
-				characters.forEach(e => {
-					if(!players.find(f => f.id == e.id)){
-						listaRemove.push(e);
-					}
-				});
-				res(characters, players, listaRemove)
-			})
-		}
+		, promise_remove_players = function(characters, players, listaRemove){return remove_players}
+		, analise_removed_players = new Promise(function(res){
+			var listaRemove = [];
+			characters.forEach(e => {
+				if(!players.find(f => f.id == e.id)){
+					listaRemove.push(e);
+				}
+			});
+			res(characters, players, listaRemove)
+		})
+		, promise_analise_removed_players = function(characters, player){return analise_removed_players}
 		, process_villages_player = function(villages_game, villages_player){
 
 		}
