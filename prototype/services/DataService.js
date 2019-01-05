@@ -372,16 +372,19 @@ define("robotTW2/services/DataService", [
 									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
-										promise_analise_removed_players(characters, players).then(function(characters, players){
-											console.log(characters)
-											console.log(players)
+										analise_removed_players(characters, players).then(function(listaRemove){
+											remove_players(listaRemove).then(function(){
+												analise_villages_players(characters, players).then(function(removeVillage, addVillage){
+													add_remove_villages(list_removeVillage, list_addVillage).then(function(){
+														resolve_prom()
+													}, function(msg){
+														rejected(msg)
+													})
+												})
+											}, function(msg){
+												rejected(msg)
+											})
 										})
-//										promise_remove_players(characters, players, listaRemove).then()
-//												.then(analise_villages_players
-//														.then(add_remove_villages
-//																.then(resolve_prom))
-//																, rejected)
-//										)
 									}
 								})
 							}).then(function(){
@@ -404,7 +407,7 @@ define("robotTW2/services/DataService", [
 			console.log(msg.data + " - " + msg.type)
 		}
 		, add_remove_villages = function(list_removeVillage, list_addVillage){
-			return new Promise(function(termina){
+			return new Promise(function(termina, reject){
 				var re = undefined
 				, re_queue = [];
 
@@ -435,7 +438,7 @@ define("robotTW2/services/DataService", [
 									}
 								})
 							}, function(msg){
-								rejected(msg)
+								reject(msg)
 							})
 						} else {
 							re_queue.push(player_id)
@@ -445,7 +448,8 @@ define("robotTW2/services/DataService", [
 				})
 			})
 		}
-		, remove_players = new Promise(function(res, rej){
+		, remove_players =  function (listaRemove){
+			return new Promise(function(res, rej){
 				function nextRemove(){
 					if (listaRemove.length > 0){
 						var character = listaRemove.shift();
@@ -460,22 +464,23 @@ define("robotTW2/services/DataService", [
 							};
 						});
 					} else {
-						res(characters, players)
+						res()
 					}
 				};
 				nextRemove();
 			})
-		, promise_remove_players = function(characters, players, listaRemove){return remove_players}
-		, analise_removed_players = new Promise(function(res){
-			var listaRemove = [];
-			characters.forEach(e => {
-				if(!players.find(f => f.id == e.id)){
-					listaRemove.push(e);
-				}
-			});
-			res(characters, players, listaRemove)
-		})
-		, promise_analise_removed_players = function(characters, player){return analise_removed_players}
+		}
+		, analise_removed_players = function (characters, players) {
+			return new Promise(function(res){
+				var listaRemove = [];
+				characters.forEach(e => {
+					if(!players.find(f => f.id == e.id)){
+						listaRemove.push(e);
+					}
+				});
+				res(listaRemove)
+			})
+		}
 		, process_villages_player = function(villages_game, villages_player){
 
 		}
@@ -512,9 +517,9 @@ define("robotTW2/services/DataService", [
 					update_members(tribes).then(function(){
 						console.log("Tribos e membros enviados")
 //						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
-//						upIntervalVillages()
+//							upIntervalVillages()
 //						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
-//						upIntervalVillages()
+//							upIntervalVillages()
 //						}
 					})
 //					);
