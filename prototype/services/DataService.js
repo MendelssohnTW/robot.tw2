@@ -373,12 +373,12 @@ define("robotTW2/services/DataService", [
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
 										analise_removed_players(characters, players)
-										.then(remove_players()
-												.then(analise_villages_players()
-														.then(add_remove_villages()
+										.then(remove_players
+												.then(analise_villages_players
+														.then(add_remove_villages
 																.then(resolve_prom))
-														, rejected)
-												)
+																, rejected)
+										)
 									}
 								})
 							}).then(function(){
@@ -511,9 +511,9 @@ define("robotTW2/services/DataService", [
 					update_members(tribes).then(function(){
 						console.log("Tribos e membros enviados")
 //						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
-//							upIntervalVillages()
+//						upIntervalVillages()
 //						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
-//							upIntervalVillages()
+//						upIntervalVillages()
 //						}
 					})
 //					);
