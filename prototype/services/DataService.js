@@ -373,10 +373,12 @@ define("robotTW2/services/DataService", [
 										var characters = msg.data.members || [];
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
 										analise_removed_players(characters, players)
-										.then(remove_players())
-										.then(analise_villages_players(), rejected())
-										.then(add_remove_villages)
-										.then(resolve_prom)
+										.then(remove_players()
+												.then(analise_villages_players()
+														.then(add_remove_villages()
+																.then(resolve_prom))
+														, rejected)
+												)
 									}
 								})
 							}).then(function(){
