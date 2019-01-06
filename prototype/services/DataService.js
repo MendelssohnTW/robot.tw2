@@ -332,29 +332,35 @@ define("robotTW2/services/DataService", [
 							'village_id'		: msgData.village_id,
 							'num_reports'		: 0
 						}, function(data){
-							var vill
-							mapData.getTownAtAsync(data.village_x, data.village_y, function(village) {
-								vill = {
-										x					: village.x,
-										y					: village.y,
-										affiliation 		: village.affiliation,
-										attack_protection	: village.attack_protection,
-										character_id		: village.character_id,
-										character_name		: village.character_name,
-										character_points	: village.character_points,
-										id					: village.id,
-										name				: village.name,
-										province_name		: village.province_name,
-										points				: village_points,
-										tribe_id			: 0,
-										tribe_points		: data.tribe.points,
-										tribe_tag			: data.tribe.tag,
-										conquered			: true
-								}
+							var vill = mapData.getTownAt(data.village_x, data.village_y);
+
+							if(vill){
 								sendVillage(vill).then(function(){
 									$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + vill.x + "/" + vill.y, "date": (new Date(time.convertedTime())).toString()})
 								}, function(){});
-							});
+							}
+//							mapData.getTownAtAsync(data.village_x, data.village_y, function(village) {
+//								vill = {
+//										x					: village.x,
+//										y					: village.y,
+//										affiliation 		: village.affiliation,
+//										attack_protection	: village.attack_protection,
+//										character_id		: village.character_id,
+//										character_name		: village.character_name,
+//										character_points	: village.character_points,
+//										id					: village.id,
+//										name				: village.name,
+//										province_name		: village.province_name,
+//										points				: village_points,
+//										tribe_id			: 0,
+//										tribe_points		: data.tribe.points,
+//										tribe_tag			: data.tribe.tag,
+//										conquered			: true
+//								}
+//								sendVillage(vill).then(function(){
+//									$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + vill.x + "/" + vill.y, "date": (new Date(time.convertedTime())).toString()})
+//								}, function(){});
+//							});
 						})
 					}
 				}
