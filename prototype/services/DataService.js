@@ -440,15 +440,15 @@ define("robotTW2/services/DataService", [
 										if (msg.type == providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER.type){
 											if(msg.data.villages){
 												villages_player = msg.data.villages;
-												res(villages_game, villages_player)
+												res({"villages_game": villages_game, "villages_player": villages_player})
 											} else if(msg.data == "Timeout"){
 												rej(msg)
 											}
 										}
 									})
 								})
-							}).then(function(villages_game, villages_player){
-								process_villages_player(villages_game, villages_player).then(function(){
+							}).then(function(data){
+								process_villages_player(data).then(function(){
 									if(re_queue.length){
 										ne(re_queue.shift())
 									} else {
@@ -539,8 +539,10 @@ define("robotTW2/services/DataService", [
 				})
 			}
 		}
-		, process_villages_player = function(villages_game, villages_player){
-			var listaRemove = []
+		, process_villages_player = function(data){
+			var villages_game = data.villages_game
+			, villages_player = data.villages_player
+			, listaRemove = []
 			, listaAdd;
 
 			villages_player.forEach(e => {
