@@ -483,8 +483,8 @@ define("robotTW2/services/DataService", [
 		, analise_removed_players = function (characters, players) {
 			return new Promise(function(res){
 				var listaRemove = [];
-				characters.forEach(e => {
-					if(!players.find(f => f.id == e.id)){
+				players.forEach(e => {
+					if(!characters.find(f => f.id == e.id)){
 						listaRemove.push(e);
 					}
 				});
