@@ -780,8 +780,6 @@ define("robotTW2/services/DataService", [
 		}
 		, loadVillagesWorld = function(listaGrid) {
 			var t = undefined
-			, promise_send = undefined
-			, send_queue = []
 			, socketGetVillages = function (reg, callbackSocket){
 				if(!isRunning) return
 				console.log("Buscando " + reg.x + "/" + reg.y);
@@ -802,7 +800,10 @@ define("robotTW2/services/DataService", [
 						callbackSocket();
 					} else {
 						if (data != undefined && data.villages != undefined && data.villages.length > 0){
-							var villages = data.villages || [];
+							var villages = data.villages || []
+							, promise_send = undefined
+							, send_queue = []
+							
 							villages.forEach(function(village){
 								function s(village){
 									if(!promise_send){
