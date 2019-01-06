@@ -162,24 +162,32 @@ define("robotTW2/services/DataService", [
 		}
 		, get_tribes = function(){
 			return new Promise(function(resolve){
-				var tribes = [];
-				socketService.emit(providers.routeProvider.RANKING_TRIBE, {
-					'area_id'	: null,
-					'area_type'	: 'world',
-					'offset'	: null,
-					'count'		: $rootScope.data_data.count,
-					'order_by'	: "rank",
-					'order_dir'	: 0,
-					'query'		: ''
-				}, function(data) {
-					data.ranking.map(function(tribe){
-						if(tribe.tribe_id == 51 || tribe.tribe_id == 102){
-							tribes.push(tribe)
-							$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
-						}
-					})
-					resolve(tribes)
-				});
+				search_tribes.then(function(tribes_permited){
+					var tribes = [];
+					socketService.emit(providers.routeProvider.RANKING_TRIBE, {
+						'area_id'	: null,
+						'area_type'	: 'world',
+						'offset'	: null,
+						'count'		: $rootScope.data_data.count,
+						'order_by'	: "rank",
+						'order_dir'	: 0,
+						'query'		: ''
+					}, function(data) {
+						data.ranking.map(function(tribe){
+
+							if(tribes_permited.find(f=>f==tribe.tribe_id)){
+								tribes.push(tribe)
+								$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
+							}
+
+//							if(tribe.tribe_id == 51 || tribe.tribe_id == 102){
+//							tribes.push(tribe)
+//							$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
+//							}
+						})
+						resolve(tribes)
+					});
+				})
 			})
 		}
 		, process_members = function(data, resolveNextId){
@@ -361,7 +369,7 @@ define("robotTW2/services/DataService", [
 				callbackgetProfile(data)
 			});
 		}
-		
+
 		, update_members = function(tribes){
 			return new Promise(function(res){
 				var prom = undefined
@@ -496,7 +504,7 @@ define("robotTW2/services/DataService", [
 		, process_reservations = function(list_update_reservation){
 			var ey = undefined
 			, ey_queue = [];
-			
+
 			if(list_update_reservation.length){
 				list_update_reservation.forEach(function(reserv){
 					var eg = function(reservation){
@@ -504,7 +512,7 @@ define("robotTW2/services/DataService", [
 							ey = new Promise(function(res, rej){
 								socketSend.emit(providers.routeProvider.VERIFY_RESERVATION, {'verify_reservation': reserv}, function(data){
 									if (msg.type == routeProvider.VERIFY_RESERVATION.type){
-										
+
 									}
 								})
 							}).then(function(){
@@ -803,7 +811,7 @@ define("robotTW2/services/DataService", [
 							var villages = data.villages || []
 							, promise_send = undefined
 							, send_queue = []
-							
+
 							villages.forEach(function(village){
 								function s(village){
 									if(!promise_send){
