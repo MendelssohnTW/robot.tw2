@@ -162,7 +162,7 @@ define("robotTW2/services/DataService", [
 		}
 		, get_tribes = function(){
 			return new Promise(function(resolve){
-				search_tribes.then(function(tribes_permited){
+				search_tribes().then(function(tribes_permited){
 					var tribes = [];
 					socketService.emit(providers.routeProvider.RANKING_TRIBE, {
 						'area_id'	: null,
