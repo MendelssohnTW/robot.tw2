@@ -254,8 +254,7 @@ define("robotTW2/services/DataService", [
 					, gp_queue = []
 					this.tribes = tribes;
 
-					tribes.forEach(function(tribe){
-						var tr = angular.copy(tribe)
+					tribes.forEach(function(tr){
 						function nextId(tribe){
 							if (!gp){
 								gp = new Promise(function(resGP){
@@ -264,7 +263,7 @@ define("robotTW2/services/DataService", [
 										return
 									}
 									loadTribeProfile(tribe).then(function(data_tribe){
-										angular.extend(tr, data_tribe)
+										angular.extend(tribe, data_tribe)
 										process_tribe(data_tribe, resGP)
 									})
 								}).then(function(members){
@@ -287,7 +286,7 @@ define("robotTW2/services/DataService", [
 								gp_queue.push(tribe)
 							}
 						}
-						nextId(tribe)
+						nextId(tr)
 					})
 				})
 			})
