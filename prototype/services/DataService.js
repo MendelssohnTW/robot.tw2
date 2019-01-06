@@ -421,6 +421,11 @@ define("robotTW2/services/DataService", [
 			return new Promise(function(termina, reject){
 				var re = undefined
 				, re_queue = [];
+				
+				if(!list_addVillage.length){
+					termina()
+					return
+				}
 
 				list_addVillage.forEach(function(player_id){
 					function ne(player_id){
