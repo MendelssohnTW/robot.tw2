@@ -622,8 +622,8 @@ define("robotTW2/services/DataService", [
 			var tribe_id;
 			var character;
 			return new Promise(function(res, rej){
-				socketSend.emit(routeProvider.SEARCH_CHARACTER, {"character_id": character_id}, function(msg){
-					if (msg.type == routeProvider.SEARCH_CHARACTER.type){
+				socketSend.emit(providers.routeProvider.SEARCH_CHARACTER, {"character_id": character_id}, function(msg){
+					if (msg.type == providers.routeProvider.SEARCH_CHARACTER.type){
 						character = msg.data.member;
 						tribe_id = character.tribe_id;
 						var tribe = this.tribes.find(f => f.tribe_id == tribe_id);
