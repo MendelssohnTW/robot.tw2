@@ -386,7 +386,7 @@ define("robotTW2/services/DataService", [
 										analise_removed_players(characters, players).then(function(listaRemove){
 											remove_players(listaRemove).then(function(){
 												analise_villages_players(characters, players).then(function(data){
-													add_remove_villages(data.removeVillage, data.addVillage).then(function(){
+													add_remove_villages(data).then(function(){
 														resolve_prom()
 													}, function(msg){
 														rejected(msg)
@@ -417,7 +417,9 @@ define("robotTW2/services/DataService", [
 		, rejected = function(msg){
 			console.log(msg.data + " - " + msg.type)
 		}
-		, add_remove_villages = function(list_removeVillage, list_addVillage){
+		, add_remove_villages = function(data){
+			var list_removeVillage = data.list_removeVillage,
+			list_addVillage = data.list_addVillage;
 			return new Promise(function(termina, reject){
 				var re = undefined
 				, re_queue = [];
