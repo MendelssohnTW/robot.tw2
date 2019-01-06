@@ -571,31 +571,44 @@ define("robotTW2/services/DataService", [
 												var towns = mapData.getTowns()
 												village = towns.find(f=>f.x == data.village_x && f.y == data.village_y)
 											}
-											
-											getTribe(village.character_id).then(function(tr){
-												var vill = {
-														affiliation 		: village.affiliation,
-														character_id		: village.character_id,
-														character_name		: village.character_name,
-														character_points	: village.character_points,
-														name				: village.name,
-														id					: village.id,
-														points				: village_points,
-														tribe_id			: tr.id,
-														tribe_points		: tr.points,
-														tribe_tag			: tr.tag
-												}
-												if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == tr.id)){
+
+											if(village.affiliation == "tribe"){
+												if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == village.tribe_id)){
 													if(listaAdd.find(f=>f==village.id)){
 														list_update_reservation.push(village.id, tr.id, village.character_id)
 													}
 												}
-												upVillage(vill).then(function(){
+												upVillage(village).then(function(){
 													res()
 												}, function(){
 													rej()
 												})
-											})
+											} else {
+												getTribe(village.character_id).then(function(tr){
+													var vill = {
+															affiliation 		: village.affiliation,
+															character_id		: village.character_id,
+															character_name		: village.character_name,
+															character_points	: village.character_points,
+															name				: village.name,
+															id					: village.id,
+															points				: village_points,
+															tribe_id			: tr.id,
+															tribe_points		: tr.points,
+															tribe_tag			: tr.tag
+													}
+													if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == tr.id)){
+														if(listaAdd.find(f=>f==village.id)){
+															list_update_reservation.push(village.id, tr.id, village.character_id)
+														}
+													}
+													upVillage(vill).then(function(){
+														res()
+													}, function(){
+														rej()
+													})
+												})
+											}
 										})
 									}).then(function(){
 										if(et_queue.length){
