@@ -34,11 +34,8 @@ define("robotTW2/services/DataService", [
 		, interval_data_villages = null
 		, interval_data_tribe = null
 		, interval_data_logs = null
-		, grid_queue = []
-		, countVillages = 0
 		, tribes
 		, tribe_permited
-		, promise_grid = undefined
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -58,7 +55,6 @@ define("robotTW2/services/DataService", [
 			});
 		}
 		, loadMap = function (x_min, x_max, y_min, y_max) {
-			countVillages = 0;
 			var dist_x = Math.abs(x_max - x_min);
 			var dist_y = Math.abs(y_max - y_min);
 			var ciclos_x = 0;
@@ -102,10 +98,6 @@ define("robotTW2/services/DataService", [
 				})
 			})
 		}
-		, rt = undefined
-		, rm = undefined
-		, rt_queue = []
-		, rm_queue = []
 		, send_tribes = function(tribes){
 			return new Promise(function(res){
 				if(!isRunning){
@@ -116,6 +108,9 @@ define("robotTW2/services/DataService", [
 						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
 						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
 				}
+				, rt = undefined
+				, rt_queue = []
+
 				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
 					console.log("world updated")
 				})
@@ -191,7 +186,10 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, process_members = function(data, resolveNextId){
-			var members = data.members;
+			var members = data.members
+			rm = undefined,
+			rm_queue = [];
+
 			members.forEach(function(member){
 				function v(member){
 					if(!rm){
@@ -353,7 +351,9 @@ define("robotTW2/services/DataService", [
 										tribe_tag			: data.tribe.tag,
 										conquered			: true
 								}
-								sendVillage(vill).then(function(){}, function(){});
+								sendVillage(vill).then(function(){
+									$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + vill.x + "/" + vill.y, "date": (new Date(time.convertedTime())).toString()})
+								}, function(){});
 							});
 						})
 					}
@@ -421,7 +421,7 @@ define("robotTW2/services/DataService", [
 			return new Promise(function(termina, reject){
 				var re = undefined
 				, re_queue = [];
-				
+
 				if(!list_addVillage.length){
 					termina()
 					return
@@ -655,28 +655,36 @@ define("robotTW2/services/DataService", [
 		}
 		, upIntervalVillages = function(){
 			isRunning = !0;
-			update_villages();
+			if($rootScope.data_data.last_update.villages < (time.convertedTime() - $rootScope.data_data.interval.villages)){
+				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
+				update_villages()
+			}	
 			interval_data_villages = setInterval(function(){
+				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
 				update_villages();
 				return;
 			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(){
+			if($rootScope.data_data.last_update.tribes + $rootScope.data_data.interval.tribes < time.convertedTime() && $rootScope.data_data.auto_initialize){
+				upIntervalTribes()
+			} else if($rootScope.data_data.last_update.tribes < time.convertedTime()){
+				upIntervalTribes()
+			}
+
+
+			$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
 			isRunning = !0;
 			console.log("Atualização iniciada")
 			function exec(){
 				update_tribes().then(function(tribes){
 					console.log("Enviando as tribos e membros")
-//					send_tribes(tribes).then(update_members(tribes).then(function(){
 					update_members(tribes).then(function(){
-						console.log("Tribos e membros enviados")
-//						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
-//						upIntervalVillages()
-//						} else if($rootScope.data_data.last_update.villages < time.convertedTime()){
-//						upIntervalVillages()
-//						}
+						send_tribes(tribes).then(function(){
+							console.log("Tribos e membros enviados")
+							upIntervalVillages()
+						})
 					})
-//					);
 				});
 			}
 			interval_data_tribe = setInterval(function(){
@@ -693,34 +701,20 @@ define("robotTW2/services/DataService", [
 				return;
 			}, $rootScope.data_data.interval.logs)
 		}
-		, villagesCheckTimer = (function (){
+		, checkTimer = (function (){
 			var interval,
 			w = {};
 			return w.init = function() {
-				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
-				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
 				$rootScope.data_logs.data = [];
-
-				if($rootScope.data_data.last_update.tribes + $rootScope.data_data.interval.tribes < time.convertedTime() && $rootScope.data_data.auto_initialize){
-					upIntervalTribes()
-				} else if($rootScope.data_data.last_update.tribes < time.convertedTime()){
-					upIntervalTribes()
-				}
+				upIntervalTribes()
 			}
 			,
 			w.stop = function() {
-				rm = undefined
-				rm_queue = []
-				rt = undefined
-				rt_queue = []
 				isRunning = !1;
 				clearInterval(interval_data_villages);
 				interval_data_villages = undefined;
 				clearInterval(interval_data_tribe);
 				interval_data_tribe = undefined;
-				grid_queue = [];
-				countVillages = 0;
-				promise_grid = undefined;
 			}
 			,
 			w.isInitialized = function() {
@@ -757,17 +751,11 @@ define("robotTW2/services/DataService", [
 				}, conf_conf.LOADING_TIMEOUT);
 
 				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {"village":village}, function(msg){
-					$timeout.cancel(rt);
-					rt = undefined;
 					if (msg.resp && msg.type == providers.routeProvider.UPDATE_VILLAGE.type){
-						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
-						console.log("aldeia " + countVillages + " enviada");
-					} else {
-						console.log("aldeia " + countVillages + " enviada com erro");
-						$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_err", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
+						$timeout.cancel(rt);
+						rt = undefined;
+						res();
 					}
-					countVillages++;
-					res();
 				});
 			})
 		}
@@ -816,12 +804,17 @@ define("robotTW2/services/DataService", [
 							var villages = data.villages || []
 							, promise_send = undefined
 							, send_queue = []
+							var countVillages = 0;
 
 							villages.forEach(function(village){
 								function s(village){
 									if(!promise_send){
 										promise_send = new Promise(function(res, rej){
-											sendVillage(village).then(function(){res()}, function(){rej()});
+											sendVillage(village).then(function(){
+												countVillages++;
+												$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
+												res()
+											}, function(){rej()});
 										})
 										.then(function(){
 											promise_send = undefined;
@@ -846,6 +839,9 @@ define("robotTW2/services/DataService", [
 				});
 			};
 
+			var promise_grid = undefined,
+			grid_queue = []
+
 			var exec_promise_grid = function (reg){
 				promise_grid = new Promise(function(resolve){
 					socketGetVillages(reg, resolve);
@@ -856,8 +852,8 @@ define("robotTW2/services/DataService", [
 						exec_promise_grid(reg)
 					} else {
 						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
-						if (!villagesCheckTimer.isInitialized() && isRunning) {
-							villagesCheckTimer.init();
+						if (!checkTimer.isInitialized() && isRunning) {
+							checkTimer.init();
 						}
 						return;
 //						res()
@@ -901,8 +897,8 @@ define("robotTW2/services/DataService", [
 		, start = function (){
 			if(isRunning){return}
 			ready(function(){
-				if (!villagesCheckTimer.isInitialized()){
-					villagesCheckTimer.init();
+				if (!checkTimer.isInitialized()){
+					checkTimer.init();
 				};
 				if (!logsCheckTimer.isInitialized()){
 					logsCheckTimer.init();
@@ -911,7 +907,7 @@ define("robotTW2/services/DataService", [
 		}
 		, stop = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
-			villagesCheckTimer.stop()
+			checkTimer.stop()
 			logsCheckTimer.stop()
 		}
 		return	{
