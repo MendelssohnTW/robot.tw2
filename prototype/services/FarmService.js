@@ -1,16 +1,9 @@
-define("robotTW2/farm/command_queue", function(){
-	var w = {}
-	return  w.farm_queue = []
-	, w.grid_queue = []
-	,w
-})
 define("robotTW2/services/FarmService", [
 	"robotTW2",
 	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/conf",
-	"robotTW2/farm/command_queue",
 	"helper/math",
 	"robotTW2/calculateTravelTime",
 	], function(
@@ -19,7 +12,6 @@ define("robotTW2/services/FarmService", [
 			time,
 			conf,
 			conf_conf,
-			command_queue,
 			math,
 			calculateTravelTime
 	){
@@ -39,19 +31,7 @@ define("robotTW2/services/FarmService", [
 		, isRunning = !1
 		, isPaused = !1
 		, interval_init = null
-		, timeoutIdFarm = {}
-//		, listener_change = undefined
-		, listener_resume = undefined
 		, countCommands = {}
-		, commands_for_send = []
-		, cicle = 0
-		, req = 0
-		, rdy = 0
-		, s = {}
-		, g = 0
-		, promise_preset = undefined
-		, promise_grid = undefined
-		, send_queue = []
 		, completion_loaded = !1
 		, setupGrid = function (len) {
 			var i, t = 0,
@@ -187,8 +167,7 @@ define("robotTW2/services/FarmService", [
 			return [!1, aldeia_units];
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
-			var promise_send = undefined
-			, result_units = []
+			var result_units = []
 			, village_id = cmd_preset.village_id
 			, preset_id = cmd_preset.preset_id
 			, village = modelDataService.getSelectedCharacter().getVillage(village_id)
@@ -225,7 +204,10 @@ define("robotTW2/services/FarmService", [
 			} else {
 				lt_bb.splice(0);
 			}
-			var r = undefined;
+			var r = undefined
+			, promise_send = undefined
+			, promise_send_queue= [];
+			
 			lt_bb.forEach(function (barbara) {
 				var f = function(bb){
 					if(!promise_send){
@@ -265,17 +247,17 @@ define("robotTW2/services/FarmService", [
 						})
 						.then(function(permited){
 							promise_send = undefined;
-							if(send_queue.length && permited){
-								barbara = send_queue.shift()
+							if(promise_send_queue.length && permited){
+								barbara = promise_send_queue.shift()
 								f(barbara)
 							} else {
-								send_queue = [];
+								promise_send_queue = [];
 								callback(true);
 								return !0
 							}
 						})
 					} else {
-						send_queue.push(barbara)
+						promise_send_queue.push(barbara)
 					}
 				}
 				f(barbara)
@@ -322,10 +304,13 @@ define("robotTW2/services/FarmService", [
 		}
 		, loadVillages = function(cmd_preset, listaGrid){
 			return new Promise(function(resol){
+				var promise_grid = undefined
+				, promise_grid_queue = [];
+				
 				listaGrid.forEach(function(reg){
 					function t (c_preset, r){
 						if(promise_grid){
-							command_queue.grid_queue.push([r, c_preset])
+							promise_grid_queue.push([r, c_preset])
 						} else {
 							promise_grid = exec_promise_grid(r, c_preset).then(function(lst_bb){
 								if(!lst_bb || !lst_bb.length){
@@ -335,8 +320,8 @@ define("robotTW2/services/FarmService", [
 								}
 								sendCmd(c_preset, lst_bb, function (permited) {
 									promise_grid = undefined	
-									if(command_queue.grid_queue.length && permited){
-										var j = command_queue.grid_queue.shift();
+									if(promise_grid_queue.length && permited){
+										var j = promise_grid_queue.shift();
 										r = j[0];
 										c_preset = j[1];
 //										res = t[2];
@@ -404,6 +389,10 @@ define("robotTW2/services/FarmService", [
 					resol()
 					return !1;
 				}
+				
+				var promise_preset = undefined
+				, promise_preset_queue = [];
+				
 				commands_for_presets.forEach(function(cmd_preset){
 					var t = function(cmd_preset){
 						if(!promise_preset){
@@ -414,8 +403,8 @@ define("robotTW2/services/FarmService", [
 							})
 							.then(function(c_preset){
 								promise_preset = undefined
-								if(command_queue.farm_queue.length){
-									cmd_preset = command_queue.farm_queue.shift();
+								if(promise_preset_queue.length){
+									cmd_preset = promise_preset_queue.shift();
 									t(cmd_preset)
 								} else {
 									$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
@@ -423,7 +412,7 @@ define("robotTW2/services/FarmService", [
 								}
 							})
 						} else {
-							command_queue.farm_queue.push(cmd_preset)
+							promise_preset_queue.push(cmd_preset)
 						}
 					}
 					t(cmd_preset)
@@ -432,15 +421,6 @@ define("robotTW2/services/FarmService", [
 		}
 		, clear = function(){
 			countCommands = {}
-			commands_for_send = []
-			req = 0
-			rdy = 0
-			s = {}
-			promise_preset = undefined
-			promise_grid = undefined
-			command_queue.farm_queue = []
-			command_queue.grid_queue = []
-			send_queue = []
 		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
@@ -563,51 +543,18 @@ define("robotTW2/services/FarmService", [
 			start();
 		}
 		, clear = function(){
-			Object.keys(timeoutIdFarm).map(function (key) {
-				$timeout.cancel(timeoutIdFarm[key]);
-			});
 			interval_init = null
-			timeoutIdFarm = {}
-			listener_resume = undefined
 			countCommands = {}
-			commands_for_send = []
-			req = 0
-			rdy = 0
-			s = {}
-			promise_preset = undefined
-			promise_grid = undefined
-			command_queue.farm_queue = []
-			command_queue.grid_queue = []
-			send_queue = []
 		}
 		, stop = function () {
-			Object.keys(timeoutIdFarm).map(function (key) {
-				$timeout.cancel(timeoutIdFarm[key]);
-			});
 
 			if(completion_loaded){
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
 			}
 
-//			typeof(listener_change) == "function" ? listener_change(): null;
-//			listener_change = undefined;
-//			$rootScope.data_farm.clearBB();
-
 			interval_init = null
-			timeoutIdFarm = {}
-			//		listener_change = undefined
-			listener_resume = undefined
 			countCommands = {}
-			commands_for_send = []
-			req = 0
-			rdy = 0
-			s = {}
-			promise_preset = undefined
-			promise_grid = undefined
-			command_queue.farm_queue = []
-			command_queue.grid_queue = []
-			send_queue = []
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}

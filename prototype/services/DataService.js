@@ -54,11 +54,15 @@ define("robotTW2/services/DataService", [
 				return arr_y.concat()
 			});
 		}
-		, loadMap = function (x_min, x_max, y_min, y_max) {
-			var dist_x = Math.abs(x_max - x_min);
-			var dist_y = Math.abs(y_max - y_min);
-			var ciclos_x = 0;
-			var ciclos_y = 0;
+		, loadMap = function (data) {
+			var x_min = data.x_min 
+			, x_max = data.x_max
+			, y_min = data.y_min
+			, y_max = data.y_max
+			, dist_x = Math.abs(x_max - x_min)
+			, dist_y = Math.abs(y_max - y_min)
+			, ciclos_x = 0
+			, ciclos_y = 0;
 
 			Math.trunc(dist_x / conf.MAP_CHUNCK_LEN) / (dist_x / conf.MAP_CHUNCK_LEN) < 1 ? ciclos_x = Math.trunc(dist_x / conf.MAP_CHUNCK_LEN) + 1 : ciclos_x = Math.trunc(dist_x / conf.MAP_CHUNCK_LEN);
 			Math.trunc(dist_y / conf.MAP_CHUNCK_LEN) / (dist_y / conf.MAP_CHUNCK_LEN) < 1 ? ciclos_y = Math.trunc(dist_y / conf.MAP_CHUNCK_LEN) + 1 : ciclos_y = Math.trunc(dist_y / conf.MAP_CHUNCK_LEN);
@@ -886,9 +890,10 @@ define("robotTW2/services/DataService", [
 		}
 		, update_villages = function(){
 
-			var grid = loadMap($rootScope.data_data.xmin, $rootScope.data_data.xmax, $rootScope.data_data.ymin, $rootScope.data_data.ymax).grid;
-			var listaGrid = [];
-			var l = Object.keys(grid).length;
+			var grid = loadMap($rootScope.data_data).grid
+			, listaGrid = []
+			, lx = Object.keys(grid).length
+			, ly = Object.keys(grid[0]).length;
 			for(tx = 0; tx < l; tx++) {
 				for(ty = 0; ty < l; ty++) {
 					listaGrid.push({
