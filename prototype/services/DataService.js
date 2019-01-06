@@ -361,10 +361,11 @@ define("robotTW2/services/DataService", [
 				callbackgetProfile(data)
 			});
 		}
-		, prom = undefined
-		, prom_queue = []
+		
 		, update_members = function(tribes){
 			return new Promise(function(res){
+				var prom = undefined
+				, prom_queue = [];
 				Object.keys(tribes).map(function(tribe_id){
 					if(!isRunning){return}
 					function n(tribe_id){
