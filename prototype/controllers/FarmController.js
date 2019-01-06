@@ -395,7 +395,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.isPaused = services.FarmService.isPaused();
 		update()
 
-		$scope.$watch("data_logs.farm", function(){
+		$scope.$watch("data_logs", function(){
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {
 				$scope.$apply();
