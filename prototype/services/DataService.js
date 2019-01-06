@@ -666,13 +666,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(callback){
-			if($rootScope.data_data.last_update.tribes + $rootScope.data_data.interval.tribes < time.convertedTime() && $rootScope.data_data.auto_initialize){
-				upIntervalTribes()
-			} else if($rootScope.data_data.last_update.tribes < time.convertedTime()){
-				upIntervalTribes()
-			}
-
-			$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
+			
 			isRunning = !0;
 			console.log("Atualização iniciada")
 			function exec(back){
@@ -686,6 +680,12 @@ define("robotTW2/services/DataService", [
 					})
 				});
 			}
+
+			if($rootScope.data_data.last_update.tribes < (time.convertedTime() - $rootScope.data_data.interval.tribes)){
+				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
+				exec(callback)
+			}
+
 			return setInterval(function(){
 				exec(callback)
 				return;
