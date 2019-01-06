@@ -385,8 +385,8 @@ define("robotTW2/services/DataService", [
 										var players = tribes[tribe_id].member_data ? tribes[tribe_id].member_data : undefined;
 										analise_removed_players(characters, players).then(function(listaRemove){
 											remove_players(listaRemove).then(function(){
-												analise_villages_players(characters, players).then(function(removeVillage, addVillage){
-													add_remove_villages(removeVillage, addVillage).then(function(){
+												analise_villages_players(characters, players).then(function(data){
+													add_remove_villages(data.removeVillage, data.addVillage).then(function(){
 														resolve_prom()
 													}, function(msg){
 														rejected(msg)
@@ -645,7 +645,7 @@ define("robotTW2/services/DataService", [
 						addVillage.push(locate.id);
 					}
 				});
-				res(removeVillage, addVillage)
+				res({"removeVillage" : removeVillage, "addVillage" : addVillage})
 			})
 		}
 		, upIntervalVillages = function(){
