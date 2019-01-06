@@ -158,7 +158,7 @@ define("robotTW2/services/DataService", [
 		, get_tribes = function(){
 			return new Promise(function(resolve){
 				search_tribes().then(function(tribes_permited){
-					var tribes = [];
+					var tbs = [];
 					socketService.emit(providers.routeProvider.RANKING_TRIBE, {
 						'area_id'	: null,
 						'area_type'	: 'world',
@@ -171,7 +171,7 @@ define("robotTW2/services/DataService", [
 						data.ranking.map(function(tribe){
 
 							if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
-								tribes.push(tribe)
+								tbs.push(tribe)
 								$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 							}
 
@@ -180,7 +180,7 @@ define("robotTW2/services/DataService", [
 //							$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 //							}
 						})
-						resolve(tribes)
+						resolve(tbs)
 					});
 				})
 			})
@@ -632,26 +632,14 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, getTribe = function(character_id){
-			var tribe_id;
-			var character;
 			return new Promise(function(res, rej){
-				socketSend.emit(providers.routeProvider.SEARCH_CHARACTER, {"character_id": character_id}, function(msg){
-					if (msg.type == providers.routeProvider.SEARCH_CHARACTER.type){
-						character = msg.data.member;
-						tribe_id = character.tribe_id;
-						var tribe = this.tribes.find(f => f.tribe_id == tribe_id);
-						if(tribe)
-							res({
-								"id": tribe_id,
-								"tag": tribe.tag, 
-								"points": tribe.points
-							});
-						res({
-							"id": 0,
-							"tag": "", 
-							"points": 0
-						})
-					}
+				var id = Object.keys(this.tribes).map(function(key){
+					return this.tribes[key].member_data.find(f=>f.id==character_id);
+				}).filter(f=>f!=undefined)[0].tribe_id;
+				res({
+					"id": id,
+					"tag": this.tribes[id].tag, 
+					"points": this.tribes[id].points
 				});
 			})
 		}
@@ -688,6 +676,7 @@ define("robotTW2/services/DataService", [
 			console.log("Atualização iniciada")
 			function exec(back){
 				update_tribes().then(function(tribes){
+					this.tribes = tribes;
 					console.log("Enviando as tribos e membros")
 					update_members(tribes).then(function(){
 						send_tribes(tribes).then(function(){
