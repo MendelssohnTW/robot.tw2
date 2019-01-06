@@ -483,8 +483,8 @@ define("robotTW2/services/DataService", [
 		, analise_removed_players = function (characters, players) {
 			return new Promise(function(res){
 				var listaRemove = [];
-				players.forEach(e => {
-					if(!characters.find(f => f.id == e.id)){
+				characters.forEach(e => {
+					if(!players.find(f => f.id == e.id)){
 						listaRemove.push(e);
 					}
 				});
@@ -662,8 +662,8 @@ define("robotTW2/services/DataService", [
 			function exec(){
 				update_tribes().then(function(tribes){
 					console.log("Enviando as tribos e membros")
-//					send_tribes(tribes).then(update_members(tribes).then(function(){
-					update_members(tribes).then(function(){
+					send_tribes(tribes).then(update_members(tribes).then(function(){
+//					update_members(tribes).then(function(){
 						console.log("Tribos e membros enviados")
 //						if($rootScope.data_data.last_update.villages + $rootScope.data_data.interval.villages < time.convertedTime() && $rootScope.data_data.auto_initialize){
 //						upIntervalVillages()
@@ -671,7 +671,7 @@ define("robotTW2/services/DataService", [
 //						upIntervalVillages()
 //						}
 					})
-//					);
+					);
 				});
 			}
 			interval_data_tribe = setInterval(function(){
