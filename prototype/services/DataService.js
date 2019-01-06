@@ -509,116 +509,125 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, process_reservations = function(list_update_reservation){
-			var ey = undefined
-			, ey_queue = [];
+			return new Promise(function(resolve){
+				var ey = undefined
+				, ey_queue = [];
 
-			if(list_update_reservation.length){
-				list_update_reservation.forEach(function(reserv){
-					var eg = function(reservation){
-						if(!ey){
-							ey = new Promise(function(res, rej){
-								socketSend.emit(providers.routeProvider.VERIFY_RESERVATION, {'verify_reservation': reserv}, function(data){
-									if (msg.type == routeProvider.VERIFY_RESERVATION.type){
+				if(list_update_reservation.length){
+					list_update_reservation.forEach(function(reserv){
+						var eg = function(reservation){
+							if(!ey){
+								ey = new Promise(function(res, rej){
+									socketSend.emit(providers.routeProvider.VERIFY_RESERVATION, {'verify_reservation': reserv}, function(data){
+										if (msg.type == routeProvider.VERIFY_RESERVATION.type){
 
-									}
-								})
-							}).then(function(){
-								if(ey_queue.length){
-									eg(ey_queue.shift())
-								} else {
-//									process_reservations(list_update_reservation)
-								}
-							}, function(){
-//								return
-							})
-						} else {
-							ey_queue.push(reservation)
-						}
-					}
-					ey(reserv)
-				})
-			}
-		}
-		, process_villages_player = function(data){
-			var villages_game = data.villages_game
-			, villages_player = data.villages_player
-			, listaRemove = []
-			, listaAdd = [];
-
-			villages_player.forEach(e => {
-			    if(!villages_game.find(f => f.village_id == e.id)){
-			        listaRemove.push(e.id);
-			    }
-			});
-			
-			villages_game.forEach(e => {
-			    if(!villages_player.find(f => f.village_id == e.id)){
-			    	listaAdd.push(e.id);
-			    }
-			});
-
-			search_tribes().then(function(tribes_permited){
-				this.tribes_permited = tribes_permited;
-
-				var lista = listaRemove.concat(listaAdd)
-				, list_update_reservation = []
-				, et = undefined
-				, et_queue = [];
-
-				if(lista.length){
-					lista.forEach(function(vill_id){
-						var eg = function(village_id){
-							if(!et){
-								et = new Promise(function(res, rej){
-									socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-										'my_village_id'		: modelDataService.getSelectedVillage().getId(),
-										'village_id'		: village_id,
-										'num_reports'		: 0
-									}, function(data){
-										var vill
-										mapData.getTownAtAsync(data.village_x, data.village_y, function(village) {
-											getTribe(village.character_id).then(function(tr){
-												vill = {
-														affiliation 		: village.affiliation,
-														character_id		: village.character_id,
-														character_name		: village.character_name,
-														character_points	: village.character_points,
-														name				: village.name,
-														id					: village.id,
-														points				: village_points,
-														tribe_id			: tr.id,
-														tribe_points		: tr.points,
-														tribe_tag			: tr.tag
-												}
-												if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == tr.id)){
-													if(listaAdd.find(f=>f==village.id)){
-														list_update_reservation.push(village.id, tr.id, village.character_id)
-													}
-												}
-												upVillage(vill).then(function(){
-													res()
-												}, function(){
-													rej()
-												})
-											})
-										});
+										}
 									})
 								}).then(function(){
-									if(et_queue.length){
-										eg(et_queue.shift())
+									if(ey_queue.length){
+										eg(ey_queue.shift())
 									} else {
-										process_reservations(list_update_reservation)
+										resolve()
+//										process_reservations(list_update_reservation)
 									}
 								}, function(){
-									return
+//									return
 								})
 							} else {
-								et_queue.push(village_id)
+								ey_queue.push(reservation)
 							}
 						}
-						eg(vill_id)
+						ey(reserv)
 					})
+				} else {
+					resolve()
 				}
+			})
+		}
+		, process_villages_player = function(data){
+			return new Promise(function(resolve){
+				var villages_game = data.villages_game
+				, villages_player = data.villages_player
+				, listaRemove = []
+				, listaAdd = [];
+
+				villages_player.forEach(e => {
+					if(!villages_game.find(f => f.village_id == e.id)){
+						listaRemove.push(e.id);
+					}
+				});
+
+				villages_game.forEach(e => {
+					if(!villages_player.find(f => f.village_id == e.id)){
+						listaAdd.push(e.id);
+					}
+				});
+
+				search_tribes().then(function(tribes_permited){
+					this.tribes_permited = tribes_permited;
+
+					var lista = listaRemove.concat(listaAdd)
+					, list_update_reservation = []
+					, et = undefined
+					, et_queue = [];
+
+					if(lista.length){
+						lista.forEach(function(vill_id){
+							var eg = function(village_id){
+								if(!et){
+									et = new Promise(function(res, rej){
+										socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+											'my_village_id'		: modelDataService.getSelectedVillage().getId(),
+											'village_id'		: village_id,
+											'num_reports'		: 0
+										}, function(data){
+											var vill
+											mapData.getTownAtAsync(data.village_x, data.village_y, function(village) {
+												getTribe(village.character_id).then(function(tr){
+													vill = {
+															affiliation 		: village.affiliation,
+															character_id		: village.character_id,
+															character_name		: village.character_name,
+															character_points	: village.character_points,
+															name				: village.name,
+															id					: village.id,
+															points				: village_points,
+															tribe_id			: tr.id,
+															tribe_points		: tr.points,
+															tribe_tag			: tr.tag
+													}
+													if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == tr.id)){
+														if(listaAdd.find(f=>f==village.id)){
+															list_update_reservation.push(village.id, tr.id, village.character_id)
+														}
+													}
+													upVillage(vill).then(function(){
+														res()
+													}, function(){
+														rej()
+													})
+												})
+											});
+										})
+									}).then(function(){
+										if(et_queue.length){
+											eg(et_queue.shift())
+										} else {
+											process_reservations(list_update_reservation).then(function(){
+												resolve()
+											})
+										}
+									}, function(){
+										return
+									})
+								} else {
+									et_queue.push(village_id)
+								}
+							}
+							eg(vill_id)
+						})
+					}
+				})
 			})
 		}
 		, getTribe = function(character_id){
@@ -673,7 +682,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(callback){
-			
+
 			isRunning = !0;
 			console.log("Atualização iniciada")
 			function exec(back){
