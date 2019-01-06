@@ -659,39 +659,38 @@ define("robotTW2/services/DataService", [
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
 				update_villages()
 			}	
-			interval_data_villages = setInterval(function(){
+			return setInterval(function(){
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
 				update_villages();
 				return;
 			}, $rootScope.data_data.interval.villages)
 		}
-		, upIntervalTribes = function(){
+		, upIntervalTribes = function(callback){
 			if($rootScope.data_data.last_update.tribes + $rootScope.data_data.interval.tribes < time.convertedTime() && $rootScope.data_data.auto_initialize){
 				upIntervalTribes()
 			} else if($rootScope.data_data.last_update.tribes < time.convertedTime()){
 				upIntervalTribes()
 			}
 
-
 			$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
 			isRunning = !0;
 			console.log("Atualização iniciada")
-			function exec(){
+			function exec(back){
 				update_tribes().then(function(tribes){
 					console.log("Enviando as tribos e membros")
 					update_members(tribes).then(function(){
 						send_tribes(tribes).then(function(){
 							console.log("Tribos e membros enviados")
-							upIntervalVillages()
+							back()
 						})
 					})
 				});
 			}
-			interval_data_tribe = setInterval(function(){
-				exec()
+			return setInterval(function(){
+				exec(callback)
 				return;
 			}, $rootScope.data_data.interval.tribes)
-			exec();
+			exec(callback);
 		}
 		, upIntervalLogs = function(){
 			isRunningLog = !0;
@@ -702,11 +701,14 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.logs)
 		}
 		, checkTimer = (function (){
-			var interval,
-			w = {};
+			var interval_data_tribe = undefined
+			, interval_data_villages = undefined
+			, w = {};
 			return w.init = function() {
 				$rootScope.data_logs.data = [];
-				upIntervalTribes()
+				interval_data_tribe = upIntervalTribes(function(){
+					interval_data_villages = upIntervalVillages()
+				})
 			}
 			,
 			w.stop = function() {
