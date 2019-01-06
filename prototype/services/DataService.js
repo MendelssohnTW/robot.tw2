@@ -780,7 +780,7 @@ define("robotTW2/services/DataService", [
 		, upVillage = function(village){
 			return new Promise(function(res, rej){
 				if(!isRunning) return
-				rt = $timeout(function(){
+				var rt = $timeout(function(){
 					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
 					rej();
 				}, conf_conf.LOADING_TIMEOUT);
