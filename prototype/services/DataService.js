@@ -267,8 +267,8 @@ define("robotTW2/services/DataService", [
 										process_tribe(data_tribe, resGP)
 									})
 								}).then(function(members){
-									angular.merge(tr, {"member_data" : members})
-									tribes_load[tr.tribe_id] = tr;
+									angular.extend(tribe, {"member_data" : members})
+									tribes_load[tribe.tribe_id] = tribe;
 									gp = undefined
 									if(!isRunning){
 										gp_queue = []
