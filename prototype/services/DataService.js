@@ -175,7 +175,7 @@ define("robotTW2/services/DataService", [
 					}, function(data) {
 						data.ranking.map(function(tribe){
 
-							if(Object.keys(tribes_permited).find(f=>f==tribe.tribe_id)){
+							if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
 								tribes.push(tribe)
 								$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 							}
@@ -580,7 +580,7 @@ define("robotTW2/services/DataService", [
 														tribe_points		: tr.points,
 														tribe_tag			: tr.tag
 												}
-												if(Object.keys(tribes_permited).find(f=>f==tr.id)){
+												if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tr.id)){
 													list_update_reservation.push(village.id, tr.id, village.character_id)
 												}
 												upVillage(vill).then(function(){
