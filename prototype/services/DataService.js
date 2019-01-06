@@ -436,7 +436,7 @@ define("robotTW2/services/DataService", [
 								getProfile(player_id, function(player){
 									var villages_game = player.villages
 									, villages_player
-									socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.id}, function(msg){
+									socketSend.emit(providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER, {"character_id":player.character_id}, function(msg){
 										if (msg.type == providers.routeProvider.SEARCH_VILLAGES_FOR_CHARACTER.type){
 											if(msg.data.villages){
 												villages_player = msg.data.villages;
