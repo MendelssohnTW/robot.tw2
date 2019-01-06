@@ -493,8 +493,8 @@ define("robotTW2/services/DataService", [
 		}
 		, search_tribes = function(){
 			return new Promise(function(resolve){
-				socketSend.emit(routeProvider.SEARCH_TRIBES_PERMITED, {}, function(msg){
-					if (msg.type == routeProvider.SEARCH_TRIBES_PERMITED.type){
+				socketSend.emit(providers.routeProvider.SEARCH_TRIBES_PERMITED, {}, function(msg){
+					if (msg.type == providers.routeProvider.SEARCH_TRIBES_PERMITED.type){
 
 						resolve(msg.data.tribes)
 					}
