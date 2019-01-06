@@ -418,18 +418,18 @@ define("robotTW2/services/DataService", [
 			console.log(msg.data + " - " + msg.type)
 		}
 		, add_remove_villages = function(data){
-			var list_removeVillage = data.list_removeVillage,
-			list_addVillage = data.list_addVillage;
+			this.list_removeVillage = data.list_removeVillage,
+			this.list_addVillage = data.list_addVillage;
 			return new Promise(function(termina, reject){
 				var re = undefined
 				, re_queue = [];
 
-				if(!list_addVillage.length){
+				if(!this.list_addVillage.length){
 					termina()
 					return
 				}
 
-				list_addVillage.forEach(function(player_id){
+				this.list_addVillage.forEach(function(player_id){
 					function ne(player_id){
 						if(!re){
 							re = new Promise(function(res, rej){
