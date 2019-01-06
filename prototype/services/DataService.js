@@ -566,8 +566,8 @@ define("robotTW2/services/DataService", [
 											'village_id'		: village_id,
 											'num_reports'		: 0
 										}, function(data){
-											var vill
-											mapData.getTownAtAsync(data.village_x, data.village_y, function(village) {
+											var village = mapData.getTownAt(data.village_x, data.village_y);
+											if(village){
 												getTribe(village.character_id).then(function(tr){
 													vill = {
 															affiliation 		: village.affiliation,
@@ -592,7 +592,7 @@ define("robotTW2/services/DataService", [
 														rej()
 													})
 												})
-											});
+											}
 										})
 									}).then(function(){
 										if(et_queue.length){
