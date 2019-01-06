@@ -712,7 +712,7 @@ define("robotTW2/services/DataService", [
 			return w.init = function() {
 				$rootScope.data_logs.data = [];
 //				interval_data_tribe = upIntervalTribes(function(){
-					interval_data_villages = upIntervalVillages()
+				interval_data_villages = upIntervalVillages()
 //				})
 			}
 			,
@@ -758,10 +758,14 @@ define("robotTW2/services/DataService", [
 				}, conf_conf.LOADING_TIMEOUT);
 
 				socketSend.emit(providers.routeProvider.UPDATE_VILLAGE, {"village":village}, function(msg){
-					if (msg.resp && msg.type == providers.routeProvider.UPDATE_VILLAGE.type){
-						$timeout.cancel(rt);
-						rt = undefined;
-						res();
+					if (msg.type == providers.routeProvider.UPDATE_VILLAGE.type){
+						if(msg.resp){
+							$timeout.cancel(rt);
+							rt = undefined;
+							res();
+						} else {
+							rej();
+						}
 					}
 				});
 			})
@@ -821,7 +825,9 @@ define("robotTW2/services/DataService", [
 												countVillages++;
 												$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
 												res()
-											}, function(){rej()});
+											}, function(){
+												rej()
+											});
 										})
 										.then(function(){
 											promise_send = undefined;
