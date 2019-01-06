@@ -125,6 +125,8 @@ define("robotTW2/controllers/RecruitController", [
 				$rootScope.$apply();
 			}
 		}, true)
+		
+		initTab();
 
 		
 		$scope.setCollapse();

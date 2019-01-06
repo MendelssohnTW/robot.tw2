@@ -936,7 +936,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC		: h,
 						DATA		: {
 							villages	: 6 * h,
-							tribes		: 3 * h
+							tribes		: 3 * h,
+							logs		: 1 * h
 						},
 						SPY			: 30 * min
 					},
@@ -1006,7 +1007,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "groupService");
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
-			
+
 
 			return robotTW2.services;
 		}))
@@ -1023,6 +1024,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				'UPDATE_TRIBE':{
 					type:"update_tribe",
 					data:["tribe"],
+				},
+				'SEARCH_CHARACTER':{
+					type:"search_character",
+					data:["character_id"]
 				},
 				'SEARCH_CHARACTERS':{
 					type:"search_characters",
@@ -1045,8 +1050,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					data:["id"]
 				},
 				'DELETE_CHARACTER':{
-					type:"delete_character",
-					data:["id"]
+					type:"delete_member",
+					data:["character_id"]
 				},
 				'SEARCH_WORLD':{
 					type:"search_world",
@@ -1059,6 +1064,14 @@ var robotTW2 = window.robotTW2 = undefined;
 				'UPDATE_VILLAGE':{
 					type:"update_village",
 					data:["village"]
+				},
+				'UPT_VILLAGE':{
+					type:"upt_village",
+					data:["village"]
+				},
+				'VERIFY_RESERVATION':{
+					type:"verify_reservation",
+					data:["verify_reservation"]
 				}
 			});
 			robotTW2.register("providers", "eventTypeProvider", {
@@ -1099,15 +1112,28 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/socket", ["robotTW2/base"], function(base) {
 			var service = {},
 			id = 0,
+			timeouts = {}
 			callbacks = {},
 			onopen = function onopen(){
 				connect.call(true);
 			},
 			onmessage = function onmessage(message){
-				var msg = angular.fromJson(message.data);
+				var msg;
+				try {
+					msg = angular.fromJson(message.data);
+				} catch (err) {
+					msg = message.data;
+				}
+
 				var id_return = msg.id
+				if(timeouts[id_return]){
+					robotTW2.services.$timeout.cancel(timeouts[id_return])
+					delete timeouts[id_return];
+				}
 				var opt_callback = callbacks[id_return];
-				opt_callback(msg);
+				if(typeof(opt_callback) == "function"){
+					opt_callback(msg);
+				}
 			},
 			onclose = function onclose($event){
 //				$event.code == 1006
@@ -1144,20 +1170,43 @@ var robotTW2 = window.robotTW2 = undefined;
 				if (service) {
 					service.close();
 				}
-			},
-			sendMsg = function sendMsg(type, data, opt_callback){
-				angular.extend(data, {
-					"world_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.world_id,
-					"member_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.character_id,
-					"tribe_id": robotTW2.services.modelDataService.getPlayer().data.selectedCharacter.data.tribeId
+			}
+			, createTimeout = function (id, type, opt_callback){
+				if(!timeouts[id]){
+					timeouts[id] = robotTW2.services.$timeout(function(){
+						if(typeof(opt_callback) == "function"){
+						opt_callback({"type" : type, "data": "Timeout"})
+						}
+					}, 15000)
 				}
-				)
+			}
+			, sendMsg = function sendMsg(type, data, opt_callback){
 				id = ++id;
+				createTimeout(id, type, opt_callback)
+				var dw = null
+				var dt = null
+				if(data.world)
+					dw = data.world.id;
+				if(data.tribe)
+					dt = data.tribe.tribe_id;
+				if(data){
+					if(data.user){
+						angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
+					} else {
+						data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
+					}
+					angular.extend(data, {
+						"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
+						"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+						"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
+					});
+				}
 				callbacks[id] = opt_callback;
 				service.send(
 						angular.toJson({
 							'type'		: type,
 							'data'		: data,
+							'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
 							'id'		: id
 						})
 				)	
@@ -1413,7 +1462,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				hasUnitsOfType = function (army, type) {
 					return !!army.units[type] && (army.units[type] > 0);
 				}
-				
+
 				isForcedMarchActive = function (army, commandType, village) {
 					var forcedMarchResearch;
 
@@ -1595,7 +1644,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									'barbarian'		: true
 								})
 								, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
-								
+
 
 								robotTW2.services.$timeout(function(){
 									listener_completed ? listener_completed() : listener_completed;
