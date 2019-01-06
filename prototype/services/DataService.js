@@ -543,17 +543,18 @@ define("robotTW2/services/DataService", [
 			var villages_game = data.villages_game
 			, villages_player = data.villages_player
 			, listaRemove = []
-			, listaAdd;
+			, listaAdd = [];
 
 			villages_player.forEach(e => {
-				if(!Object.keys(villages_game).find(f => f == e)){
-					listaRemove.push(e);
-				}
+			    if(!villages_game.find(f => f.village_id == e.id)){
+			        listaRemove.push(e.id);
+			    }
 			});
-			Object.keys(villages_game).forEach(e => {
-				if(!villages_player.find(f => f == e)){
-					listaAdd.push(e); 
-				}
+			
+			villages_game.forEach(e => {
+			    if(!villages_player.find(f => f.village_id == e.id)){
+			    	listaAdd.push(e.id);
+			    }
 			});
 
 			search_tribes().then(function(tribes_permited){
@@ -589,8 +590,10 @@ define("robotTW2/services/DataService", [
 														tribe_points		: tr.points,
 														tribe_tag			: tr.tag
 												}
-												if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tr.id)){
-													list_update_reservation.push(village.id, tr.id, village.character_id)
+												if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == tr.id)){
+													if(listaAdd.find(f=>f==village.id)){
+														list_update_reservation.push(village.id, tr.id, village.character_id)
+													}
 												}
 												upVillage(vill).then(function(){
 													res()
