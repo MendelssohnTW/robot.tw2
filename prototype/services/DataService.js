@@ -654,14 +654,24 @@ define("robotTW2/services/DataService", [
 		}
 		, getTribe = function(character_id){
 			return new Promise(function(res, rej){
-				var id = Object.keys(this.tribes).map(function(key){
+				var ent = Object.keys(this.tribes).map(function(key){
 					return this.tribes[key].member_data.find(f=>f.id==character_id);
-				}).filter(f=>f!=undefined)[0].tribe_id;
-				res({
-					"id": id,
-					"tag": this.tribes[id].tag, 
-					"points": this.tribes[id].points
-				});
+				}).filter(f=>f!=undefined)
+				
+				if(ent.lenght || character_id != 0){
+					var id = ent[0].tribe_id;
+					res({
+						"id": id,
+						"tag": this.tribes[id].tag, 
+						"points": this.tribes[id].points
+					});
+				} else {
+					res({
+						"id": 0,
+						"tag": "", 
+						"points": 0
+					});
+				}
 			})
 		}
 		, analise_villages_players = function (characters, players) {
