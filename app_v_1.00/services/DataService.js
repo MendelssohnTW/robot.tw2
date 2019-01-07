@@ -432,6 +432,7 @@ define("robotTW2/services/DataService", [
 									})
 								})
 							}).then(function(data){
+								re = undefined;
 								process_villages_player(data).then(function(){
 									if(re_queue.length){
 										ne(re_queue.shift())
