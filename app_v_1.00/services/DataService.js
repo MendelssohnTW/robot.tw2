@@ -591,7 +591,7 @@ define("robotTW2/services/DataService", [
 															character_points	: village.character_points,
 															name				: village.name,
 															id					: village.id,
-															points				: village_points,
+															points				: village.points,
 															tribe_id			: tr.id,
 															tribe_points		: tr.points,
 															tribe_tag			: tr.tag
