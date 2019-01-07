@@ -626,6 +626,8 @@ define("robotTW2/services/DataService", [
 							}
 							eg(vill_id)
 						})
+					} else {
+						resolve()
 					}
 				})
 			})
