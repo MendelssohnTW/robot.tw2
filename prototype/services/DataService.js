@@ -711,9 +711,9 @@ define("robotTW2/services/DataService", [
 			, w = {};
 			return w.init = function() {
 				$rootScope.data_logs.data = [];
-//				interval_data_tribe = upIntervalTribes(function(){
-				interval_data_villages = upIntervalVillages()
-//				})
+				interval_data_tribe = upIntervalTribes(function(){
+					interval_data_villages = upIntervalVillages()
+				})
 			}
 			,
 			w.stop = function() {
