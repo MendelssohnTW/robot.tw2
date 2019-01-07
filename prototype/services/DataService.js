@@ -709,7 +709,7 @@ define("robotTW2/services/DataService", [
 			}
 
 			if($rootScope.data_data.last_update.tribes < (time.convertedTime() - $rootScope.data_data.interval.tribes)){
-				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes ;
+				$rootScope.data_data.complete_tribes = time.convertedTime();
 				exec(callback)
 			}
 
