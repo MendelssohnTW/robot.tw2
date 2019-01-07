@@ -572,7 +572,8 @@ define("robotTW2/services/DataService", [
 												village = towns.find(f=>f.x == data.village_x && f.y == data.village_y)
 											}
 
-											if(village.affiliation == "tribe"){
+
+											if(village && village.affiliation == "tribe"){
 												if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == village.tribe_id)){
 													if(listaAdd.find(f=>f==village.id)){
 														list_update_reservation.push(village.id, tr.id, village.character_id)
@@ -584,28 +585,46 @@ define("robotTW2/services/DataService", [
 													rej()
 												})
 											} else {
-												getTribe(village.character_id).then(function(tr){
-													var vill = {
-															affiliation 		: village.affiliation,
-															character_id		: village.character_id,
-															character_name		: village.character_name,
-															character_points	: village.character_points,
-															name				: village.name,
-															id					: village.id,
-															points				: village.points,
-															tribe_id			: tr.id,
-															tribe_points		: tr.points,
-															tribe_tag			: tr.tag
-													}
-													if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == tr.id)){
-														if(listaAdd.find(f=>f==village.id)){
-															list_update_reservation.push(village.id, tr.id, village.character_id)
+												getTribe(data.character_id).then(function(tr){
+													getProfile(data.character_id, function(profile){
+														var vill = {}
+														if(!village){
+															vill = {
+																	affiliation 		: null,
+																	character_id		: data.character_id,
+																	character_name		: profile.character_points,
+																	name				: data.village_name,
+																	id					: data.village_id,
+																	points				: data.points,
+																	tribe_id			: tr.id,
+																	tribe_points		: tr.points,
+																	tribe_tag			: tr.tag
+															}
+														} else {
+															vill = {
+																	affiliation 		: village.affiliation,
+																	character_id		: village.character_id,
+																	character_name		: village.character_name,
+																	character_points	: village.character_points,
+																	name				: village.name,
+																	id					: village.id,
+																	points				: village.points,
+																	tribe_id			: tr.id,
+																	tribe_points		: tr.points,
+																	tribe_tag			: tr.tag
+															}
 														}
-													}
-													upVillage(vill).then(function(){
-														res()
-													}, function(){
-														rej()
+
+														if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id == tr.id)){
+															if(listaAdd.find(f=>f==village.id)){
+																list_update_reservation.push(vill.id, tr.id, vill.character_id)
+															}
+														}
+														upVillage(vill).then(function(){
+															res()
+														}, function(){
+															rej()
+														})
 													})
 												})
 											}
