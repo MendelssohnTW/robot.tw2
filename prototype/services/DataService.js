@@ -35,7 +35,7 @@ define("robotTW2/services/DataService", [
 		, interval_data_tribe = null
 		, interval_data_logs = null
 		, tribes
-		, tribe_permited
+		, tribes_permited
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -170,10 +170,10 @@ define("robotTW2/services/DataService", [
 					}, function(data) {
 						data.ranking.map(function(tribe){
 
-							if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
+//							if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
 								tbs.push(tribe)
 								$rootScope.data_logs.data.push({"text":$filter("i18n")("title", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
-							}
+//							}
 
 //							if(tribe.tribe_id == 51 || tribe.tribe_id == 102){
 //							tribes.push(tribe)
