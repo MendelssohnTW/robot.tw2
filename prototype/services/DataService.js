@@ -721,6 +721,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
 				update_villages(function(){
 					checkTimerVillage.setIsRunning(!1);
+					$rootScope.data_data.last_update.villages = time.convertedTime();
 					callback()
 				});
 			}	
@@ -730,6 +731,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
 				update_villages(function(){
 					checkTimerVillage.setIsRunning(!1);
+					$rootScope.data_data.last_update.villages = time.convertedTime();
 					callback()
 				});
 			}, $rootScope.data_data.interval.villages)
@@ -763,6 +765,7 @@ define("robotTW2/services/DataService", [
 						checkTimerTribe.setIsRunning(!1);
 						$rootScope.$broadcast("finaly_village")
 						$rootScope.$broadcast("finaly")
+						$rootScope.data_data.last_update.tribes = time.convertedTime();
 						console.log("Tribos e membros atualizados")
 						callback()
 					})
@@ -780,6 +783,7 @@ define("robotTW2/services/DataService", [
 					checkTimerMember.setIsRunning(!1);
 					$rootScope.$broadcast("finaly_member")
 					$rootScope.$broadcast("finaly")
+					$rootScope.data_data.last_update.members = time.convertedTime();
 					callback()
 				})
 			}
@@ -793,6 +797,7 @@ define("robotTW2/services/DataService", [
 					checkTimerMember.setIsRunning(!1);
 					$rootScope.$broadcast("finaly_member")
 					$rootScope.$broadcast("finaly")
+					$rootScope.data_data.last_update.members = time.convertedTime();
 					callback()
 				})
 			}, $rootScope.data_data.interval.members)
@@ -805,6 +810,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.data_data.complete_logs = time.convertedTime() + $rootScope.data_data.interval.logs;
 				update_logs(function(){
 					console.log("Logs de tribo atualizados")
+					$rootScope.data_data.last_update.logs = time.convertedTime();
 					checkTimerLog.setIsRunning(!1);
 					callback()
 				})
