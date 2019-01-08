@@ -167,8 +167,8 @@ define("robotTW2/services/DataService", [
 						'order_by'	: "rank",
 						'order_dir'	: 0,
 						'query'		: ''
-					}, function(data) {
-						var total = data.total
+					}, function(dt) {
+						var total = dt.total
 						if($rootScope.data_data.full){
 							$rootScope.data_data.count = total
 						}
