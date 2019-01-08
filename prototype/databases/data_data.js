@@ -35,9 +35,14 @@ define("robotTW2/databases/data_data", [
 			full					: true,
 			complete_villages		: 0,
 			complete_tribes			: 0,
+			complete_members		: 0,
+			complete_logs			: 0,
+			tribes					: [],
+			members					: [],
 			interval	 			: {
 				villages	: conf.INTERVAL.DATA.villages,
 				tribes		: conf.INTERVAL.DATA.tribes,
+				members		: conf.INTERVAL.DATA.members,
 				logs		: conf.INTERVAL.DATA.logs
 			},
 			version					: conf.VERSION.DATA,
@@ -45,6 +50,7 @@ define("robotTW2/databases/data_data", [
 			last_update				: {
 				villages	: time.convertedTime(),
 				tribes 		: time.convertedTime(),
+				members		: time.convertedTime(),
 				logs 		: time.convertedTime()
 			}
 	}

@@ -28,10 +28,7 @@ define("robotTW2/services/DataService", [
 			$filter,
 			ready
 	) {
-		var isInitialized = !1
-		, isRunning = !1
-		, isRunningLog = !1
-		, interval_data_villages = null
+		var interval_data_villages = null
 		, interval_data_tribe = null
 		, interval_data_member = null
 		, interval_data_logs = null
@@ -101,7 +98,7 @@ define("robotTW2/services/DataService", [
 		}
 		, send_tribes = function(tribes){
 			return new Promise(function(res){
-				if(!isRunning){
+				if(!checkTimerTribe.isRunning()){
 					res();
 					return
 				}
@@ -309,7 +306,7 @@ define("robotTW2/services/DataService", [
 				})
 			})
 		}
-		, update_logs = function(){
+		, update_logs = function(callback){
 			var offset	= 0;
 			var limit	= 100;
 			var message = {}
@@ -360,6 +357,8 @@ define("robotTW2/services/DataService", [
 						})
 					}
 				}
+
+				callback()
 
 				$rootScope.data_data.last_update.logs = time.convertedTime();
 			});
@@ -707,81 +706,135 @@ define("robotTW2/services/DataService", [
 				res({"removeVillage" : removeVillage, "addVillage" : addVillage})
 			})
 		}
-		, upIntervalVillages = function(){
-			isRunning = !0;
+		, upIntervalVillages = function(callback){
+			var temp = 1;
 			if($rootScope.data_data.last_update.villages < (time.convertedTime() - $rootScope.data_data.interval.villages)){
-				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
-				update_villages()
+				temp = 0;
 			}	
 			return setInterval(function(){
-				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages ;
-				update_villages();
-				return;
+				if(!$rootScope.data_data.tribes.length || !checkTimerVillage.isRunning()){callback; return}
+				temp = 1
+				checkTimerVillage.isRunning = !0;
+				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
+				update_villages(function(){
+					checkTimerVillage.isRunning = !1;
+					callback()
+				});
 			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(callback){
-
-			isRunning = !0;
-			console.log("Atualização iniciada")
-			function exec(back){
-				update_tribes().then(function(tribes){
-					this.tribes = tribes;
-					back()
-				});
-			}
-
+			var temp = 1;
 			if($rootScope.data_data.last_update.tribes < (time.convertedTime() - $rootScope.data_data.interval.tribes)){
-				$rootScope.data_data.complete_tribes = time.convertedTime();
-				exec(callback)
+				temp = 0;
 			}
-
 			return setInterval(function(){
-				exec(callback)
-				return;
-			}, $rootScope.data_data.interval.tribes)
+				temp = 1
+				if(!checkTimerTribe.isRunning()){callback; return}
+				checkTimerTribe.isRunning = !0;
+				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
+				update_tribes().then(function(tribes){
+					console.log("Atualizando dados de tribos")
+					$rootScope.data_data.tribes = tribes;
+					send_tribes(tribes).then(function(){
+						checkTimerTribe.isRunning = !1;
+						$rootScope.$broadcast("finaly_village")
+						$rootScope.$broadcast("finaly")
+						console.log("Tribos e membros atualizados")
+						callback()
+					})
+				});
+			}, temp * $rootScope.data_data.interval.tribes)
 		}
-		, upIntervalMembers = function(){
-			if(!this.tribes.length || !isRunning){return}
-			console.log("Atualizando dados de membros")
-			update_members(tribes).then(function(){
-				console.log("Atualizando dados de tribos")
-				send_tribes(tribes).then(function(){
-					console.log("Tribos e membros enviados")
-					back()
+		, upIntervalMembers = function(callback){
+			var temp = 1;
+			if($rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)){
+				temp = 0;
+			}
+			return setInterval(function(){
+				console.log("Atualizando dados de membros")
+				temp = 1
+				if(!$rootScope.data_data.tribes.length || !checkTimerMember.isRunning()){callback; return}
+				checkTimerMember.isRunning = !0;
+				$rootScope.data_data.complete_members = time.convertedTime() + $rootScope.data_data.interval.members;
+				update_members().then(function(){
+					console.log("Membros atualizados")
+					checkTimerMember.isRunning = !1;
+					$rootScope.$broadcast("finaly_member")
+					$rootScope.$broadcast("finaly")
+					callback()
 				})
-			})
+			}, temp * $rootScope.data_data.interval.members)
 		}
-		, upIntervalLogs = function(){
-			isRunningLog = !0;
-			update_logs();
-			interval_data_logs = setInterval(function(){
-				update_logs();
-				return;
-			}, $rootScope.data_data.interval.logs)
+		, upIntervalLogs = function(callback){
+			var temp = 1;
+			if($rootScope.data_data.last_update.logs < (time.convertedTime() - $rootScope.data_data.interval.logs)){
+				temp = 0;
+			}
+			return setInterval(function(){
+				console.log("Atualizando logs de tribo")
+				temp = 1
+				if(!$rootScope.data_data.logs.length || !checkTimerLog.isRunning()){callback; return}
+				checkTimerLog.isRunning = !0;
+				$rootScope.data_data.complete_logs = time.convertedTime() + $rootScope.data_data.interval.logs;
+				update_logs(function(){
+					console.log("Logs de tribo atualizados")
+					checkTimerLog.isRunning = !1;
+					callback()
+				})
+			}, temp * $rootScope.data_data.interval.logs)
 		}
-		, checkTimer = (function (){
+		, checkTimerTribe = (function (){
 			var interval_data_tribe = undefined
-			, interval_data_villages = undefined
-			, interval_data_tribe = undefined
-			, w = {};
+			, w = {},
+			isRunning = !1;
 			return w.init = function() {
-				$rootScope.data_logs.data = [];
-				isRunning = !1;
+				isRunning = !0;
 				if($rootScope.data_data.possible){
 					interval_data_tribe = upIntervalTribes(function(){
-						interval_data_member = upIntervalMembers(function(){
-							interval_data_villages = upIntervalVillages()
-						})
+						console.log("Terminate Tribes")
 					})
 				}
 			}
 			,
 			w.stop = function() {
 				isRunning = !1;
-				clearInterval(interval_data_villages);
-				interval_data_villages = undefined;
 				clearInterval(interval_data_tribe);
 				interval_data_tribe = undefined;
+			}
+			,
+			w.isInitialized = function() {
+				return isRunning
+			}
+			w.isRunning = function() {
+				return isRunning
+			}
+			,
+			w
+		})()
+		, checkTimerMember = (function (){
+			var interval_data_member = undefined
+			, w = {}
+			, isRunning = !1
+			, listen = undefined;
+			return w.init = function() {
+				if(checkTimerTribe.isRunning()){
+					listen = $rootScope.$on("finaly_village", function($event){
+						listen()
+						listen = undefined
+						checkTimerMember.init();
+					})
+				} else {
+					isRunning = !0;
+					if($rootScope.data_data.possible){
+						interval_data_member = upIntervalMembers(function(){
+							console.log("Terminate Tribes")
+						})
+					}
+				}
+			}
+			,
+			w.stop = function() {
+				isRunning = !1;
 				clearInterval(interval_data_member);
 				interval_data_member = undefined;
 			}
@@ -789,24 +842,69 @@ define("robotTW2/services/DataService", [
 			w.isInitialized = function() {
 				return isRunning
 			}
+			w.isRunning = function() {
+				return isRunning
+			}
 			,
 			w
 		})()
-		, logsCheckTimer = (function (){
+		, checkTimerVillage = (function (){
+			var interval_data_village = undefined
+			, w = {}
+			, isRunning = !1
+			, listen = undefined;
+			return w.init = function() {
+				if(checkTimerTribe.isRunning() || checkTimerMember.isRunning()){
+					listen = $rootScope.$on("finaly", function($event){
+						listen()
+						listen = undefined
+						checkTimerVillage.init();
+					})
+				} else {
+					isRunning = !0;
+					if($rootScope.data_data.possible){
+						interval_data_village = upIntervalVillages(function(){
+							
+							console.log("Terminate Villages")
+						})
+					}
+				}
+			}
+			,
+			w.stop = function() {
+				isRunning = !1;
+				clearInterval(interval_data_village);
+				interval_data_village = undefined;
+			}
+			,
+			w.isInitialized = function() {
+				return isRunning
+			}
+			w.isRunning = function() {
+				return isRunning
+			}
+			,
+			w
+		})()
+		, checkTimerLog = (function (){
 			var interval,
-			w = {};
+			w = {},
+			isRunning = !1;
 			return w.init = function() {
 				upIntervalLogs()
 			}
 			,
 			w.stop = function() {
-				isRunningLog = !1;
+				isRunning = !1;
 				clearInterval(interval_data_logs);
 				interval_data_logs = undefined;
 			}
 			,
 			w.isInitialized = function() {
-				return isRunningLog
+				return isRunning
+			}
+			w.isRunning = function() {
+				return isRunning
 			}
 			,
 			w
@@ -923,12 +1021,7 @@ define("robotTW2/services/DataService", [
 						var reg = grid_queue.shift();
 						exec_promise_grid(reg)
 					} else {
-//						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
-						if (!checkTimer.isInitialized() && isRunning) {
-							checkTimer.init();
-						}
 						return;
-//						res()
 					}
 				})
 
@@ -970,28 +1063,74 @@ define("robotTW2/services/DataService", [
 		, start = function (){
 			if(isRunning){return}
 			ready(function(){
-				if (!checkTimer.isInitialized()){
-					checkTimer.init();
-				};
-				if (!logsCheckTimer.isInitialized()){
-					logsCheckTimer.init();
+				if (!checkTimerTribe.isInitialized()){
+					checkTimerTribe.init();
+					if (!checkTimerMember.isInitialized()){
+						checkTimerMember.init();
+						if (!checkTimerVillage.isInitialized()){
+							checkTimerVillage.init();
+						}
+						if (!checkTimerLog.isInitialized()){
+							checkTimerLog.init();
+						};
+					}
 				};
 			}, ["all_villages_ready"])
 		}
-		, stop = function (){
+		, stopAll = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
-			checkTimer.stop()
-			logsCheckTimer.stop()
+			checkTimerTribe.stop()
+			checkTimerVillage.stop()
+			checkTimerMember.stop()
+			checkTimerLog.stop()
+		}
+		, stopTribe = function (){
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
+			checkTimerTribe.stop()
+		}
+		, stopVillage = function (){
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
+			checkTimerVillage.stop()
+		}
+		, stopMember = function (){
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
+			checkTimerMember.stop()
+		}
+		, stopLog = function (){
+			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
+			checkTimerLog.stop()
 		}
 		return	{
 			init			: init,
 			start 			: start,
-			stop 			: stop,
-			isRunning		: function() {
-				return isRunning
+			stopAll			: stopAll,
+			stopTribes		: stopTribes,
+			stopVillages	: stopVillages,
+			stopMembers		: stopMembers,
+			stopLogs		: stopLogs,
+			isRunningLogs		: function() {
+				return checkTimerLog.isRunning()
+			},
+			isInitialized		: function(){
+				return checkTimerLog.isInitialized()
+			},
+			isRunningVillages	: function() {
+				return checkTimerVillage.isRunning()
 			},
 			isInitialized	: function(){
-				return isInitialized
+				return checkTimerVillage.isInitialized()
+			},
+			isRunningMembers	: function() {
+				return checkTimerMember.isRunning()
+			},
+			isInitialized	: function(){
+				return checkTimerMember.isInitialized()
+			},
+			isRunningTribes		: function() {
+				return checkTimerTribe.isRunning()
+			},
+			isInitialized	: function(){
+				return checkTimerTribe.isInitialized()
 			},
 			version			: version.data,
 			name			: "data"
