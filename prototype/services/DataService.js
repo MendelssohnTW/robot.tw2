@@ -786,10 +786,11 @@ define("robotTW2/services/DataService", [
 		}
 		, checkTimerTribe = (function (){
 			var interval_data_tribe = undefined
-			, w = {},
-			isRunning = !1;
+			, w = {}
+			, isRunning = !1
+			, isInitialized = !0
 			return w.init = function() {
-				isRunning = !0;
+				this.isRunning = !0;
 				if($rootScope.data_data.possible){
 					interval_data_tribe = upIntervalTribes(function(){
 						console.log("Terminate Tribes")
@@ -798,16 +799,16 @@ define("robotTW2/services/DataService", [
 			}
 			,
 			w.stop = function() {
-				isRunning = !1;
+				this.isRunning = !1;
 				clearInterval(interval_data_tribe);
 				interval_data_tribe = undefined;
 			}
 			,
 			w.isInitialized = function() {
-				return isRunning
+				return this.isInitialized
 			}
 			w.isRunning = function() {
-				return isRunning
+				return this.isRunning
 			}
 			,
 			w
@@ -816,6 +817,7 @@ define("robotTW2/services/DataService", [
 			var interval_data_member = undefined
 			, w = {}
 			, isRunning = !1
+			, isInitialized = !0
 			, listen = undefined;
 			return w.init = function() {
 				if(checkTimerTribe.isRunning()){
@@ -825,7 +827,7 @@ define("robotTW2/services/DataService", [
 						checkTimerMember.init();
 					})
 				} else {
-					isRunning = !0;
+					this.isRunning = !0;
 					if($rootScope.data_data.possible){
 						interval_data_member = upIntervalMembers(function(){
 							console.log("Terminate Tribes")
@@ -835,16 +837,16 @@ define("robotTW2/services/DataService", [
 			}
 			,
 			w.stop = function() {
-				isRunning = !1;
+				this.isRunning = !1;
 				clearInterval(interval_data_member);
 				interval_data_member = undefined;
 			}
 			,
 			w.isInitialized = function() {
-				return isRunning
+				return this.isInitialized
 			}
 			w.isRunning = function() {
-				return isRunning
+				return this.isRunning
 			}
 			,
 			w
@@ -853,6 +855,7 @@ define("robotTW2/services/DataService", [
 			var interval_data_village = undefined
 			, w = {}
 			, isRunning = !1
+			, isInitialized = !0
 			, listen = undefined;
 			return w.init = function() {
 				if(checkTimerTribe.isRunning() || checkTimerMember.isRunning()){
@@ -862,7 +865,7 @@ define("robotTW2/services/DataService", [
 						checkTimerVillage.init();
 					})
 				} else {
-					isRunning = !0;
+					this.isRunning = !0;
 					if($rootScope.data_data.possible){
 						interval_data_village = upIntervalVillages(function(){
 							
@@ -873,39 +876,40 @@ define("robotTW2/services/DataService", [
 			}
 			,
 			w.stop = function() {
-				isRunning = !1;
+				this.isRunning = !1;
 				clearInterval(interval_data_village);
 				interval_data_village = undefined;
 			}
 			,
 			w.isInitialized = function() {
-				return isRunning
+				return this.isInitialized
 			}
 			w.isRunning = function() {
-				return isRunning
+				return this.isRunning
 			}
 			,
 			w
 		})()
 		, checkTimerLog = (function (){
-			var interval,
-			w = {},
-			isRunning = !1;
+			var interval
+			, w = {}
+			, isRunning = !1
+			, isInitialized = !0
 			return w.init = function() {
 				upIntervalLogs()
 			}
 			,
 			w.stop = function() {
-				isRunning = !1;
+				this.isRunning = !1;
 				clearInterval(interval_data_logs);
 				interval_data_logs = undefined;
 			}
 			,
 			w.isInitialized = function() {
-				return isRunning
+				return this.isInitialized
 			}
 			w.isRunning = function() {
-				return isRunning
+				return this.isRunning
 			}
 			,
 			w
