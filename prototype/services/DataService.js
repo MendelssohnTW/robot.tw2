@@ -847,7 +847,6 @@ define("robotTW2/services/DataService", [
 			, is_running = !1
 			, is_initialized = !1
 			return w.init = function() {
-				is_running = !0;
 				if($rootScope.data_data.possible){
 					interval_data_tribe = upIntervalTribes(function(){
 						console.log("Terminate Tribes")
@@ -889,10 +888,9 @@ define("robotTW2/services/DataService", [
 						checkTimerMember.init();
 					})
 				} else {
-					is_running = !0;
 					if($rootScope.data_data.possible){
 						interval_data_member = upIntervalMembers(function(){
-							console.log("Terminate Tribes")
+							console.log("Terminate Members")
 						})
 					}
 				}
@@ -932,7 +930,6 @@ define("robotTW2/services/DataService", [
 						checkTimerVillage.init();
 					})
 				} else {
-					is_running = !0;
 					if($rootScope.data_data.possible){
 						interval_data_village = upIntervalVillages(function(){
 
@@ -968,7 +965,6 @@ define("robotTW2/services/DataService", [
 			, is_running = !1
 			, is_initialized = !1
 			return w.init = function() {
-				is_running = !0;
 //				upIntervalLogs()
 			}
 			,
