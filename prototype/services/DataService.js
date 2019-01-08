@@ -716,10 +716,10 @@ define("robotTW2/services/DataService", [
 			return setInterval(function(){
 				if(!$rootScope.data_data.tribes.length || !checkTimerVillage.isRunning()){callback; return}
 				temp = 1
-				checkTimerVillage.isRunning = !0;
+				checkTimerVillage.setIsRunning(!0);
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
 				update_villages(function(){
-					checkTimerVillage.isRunning = !1;
+					checkTimerVillage.setIsRunning(!1);
 					callback()
 				});
 			}, $rootScope.data_data.interval.villages)
@@ -732,13 +732,13 @@ define("robotTW2/services/DataService", [
 			return setInterval(function(){
 				temp = 1
 				if(!checkTimerTribe.isRunning()){callback; return}
-				checkTimerTribe.isRunning = !0;
+				checkTimerTribe.setIsRunning(!0);
 				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
 				update_tribes().then(function(tribes){
 					console.log("Atualizando dados de tribos")
 					$rootScope.data_data.tribes = tribes;
 					send_tribes(tribes).then(function(){
-						checkTimerTribe.isRunning = !1;
+						checkTimerTribe.setIsRunning(!1);
 						$rootScope.$broadcast("finaly_village")
 						$rootScope.$broadcast("finaly")
 						console.log("Tribos e membros atualizados")
@@ -756,11 +756,11 @@ define("robotTW2/services/DataService", [
 				console.log("Atualizando dados de membros")
 				temp = 1
 				if(!$rootScope.data_data.tribes.length || !checkTimerMember.isRunning()){callback; return}
-				checkTimerMember.isRunning = !0;
+				checkTimerMember.setIsRunning(!0);
 				$rootScope.data_data.complete_members = time.convertedTime() + $rootScope.data_data.interval.members;
 				update_members().then(function(){
 					console.log("Membros atualizados")
-					checkTimerMember.isRunning = !1;
+					checkTimerMember.setIsRunning(!1);
 					$rootScope.$broadcast("finaly_member")
 					$rootScope.$broadcast("finaly")
 					callback()
@@ -776,11 +776,11 @@ define("robotTW2/services/DataService", [
 				console.log("Atualizando logs de tribo")
 				temp = 1
 				if(!$rootScope.data_data.logs.length || !checkTimerLog.isRunning()){callback; return}
-				checkTimerLog.isRunning = !0;
+				checkTimerLog.setIsRunning(!0);
 				$rootScope.data_data.complete_logs = time.convertedTime() + $rootScope.data_data.interval.logs;
 				update_logs(function(){
 					console.log("Logs de tribo atualizados")
-					checkTimerLog.isRunning = !1;
+					checkTimerLog.setIsRunning(!1);
 					callback()
 				})
 			}, temp * $rootScope.data_data.interval.logs)
@@ -811,6 +811,10 @@ define("robotTW2/services/DataService", [
 			,
 			w.isRunning = function() {
 				return is_running
+			}
+			,
+			w.setIsRunning = function(val) {
+				is_running = val
 			}
 			,
 			w
@@ -850,6 +854,10 @@ define("robotTW2/services/DataService", [
 			,
 			w.isRunning = function() {
 				return is_running
+			}
+			,
+			w.setIsRunning = function(val) {
+				is_running = val
 			}
 			,
 			w
@@ -892,6 +900,10 @@ define("robotTW2/services/DataService", [
 				return is_running
 			}
 			,
+			w.setIsRunning = function(val) {
+				is_running = val
+			}
+			,
 			w
 		})()
 		, checkTimerLog = (function (){
@@ -916,6 +928,10 @@ define("robotTW2/services/DataService", [
 			,
 			w.isRunning = function() {
 				return is_running
+			}
+			,
+			w.setIsRunning = function(val) {
+				is_running = val
 			}
 			,
 			w
