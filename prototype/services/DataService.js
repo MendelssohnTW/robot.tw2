@@ -808,6 +808,7 @@ define("robotTW2/services/DataService", [
 			w.isInitialized = function() {
 				return this.isInitialized
 			}
+			,
 			w.isRunning = function() {
 				return this.isRunning
 			}
@@ -846,6 +847,7 @@ define("robotTW2/services/DataService", [
 			w.isInitialized = function() {
 				return this.isInitialized
 			}
+			,
 			w.isRunning = function() {
 				return this.isRunning
 			}
@@ -885,6 +887,7 @@ define("robotTW2/services/DataService", [
 			w.isInitialized = function() {
 				return this.isInitialized
 			}
+			,
 			w.isRunning = function() {
 				return this.isRunning
 			}
@@ -909,6 +912,7 @@ define("robotTW2/services/DataService", [
 			w.isInitialized = function() {
 				return this.isInitialized
 			}
+			,
 			w.isRunning = function() {
 				return this.isRunning
 			}
