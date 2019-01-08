@@ -1592,7 +1592,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					math,
 					calculateTravelTime
 			) {
-			var promise_calibrate = undefined;
+			var promise_calibrate = undefined
+			, listener_completed = undefined
 			return function(){
 				function calibrate () {
 					return new Promise (function(resolve){
@@ -1600,7 +1601,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						, village = villages[Object.keys(villages).shift()]
 						, units = {}
 						, unitInfo = village.unitInfo.getUnits()
-						, listener_completed = undefined
 						, gTime
 
 						if (!unitInfo) {return};
@@ -1646,9 +1646,9 @@ var robotTW2 = window.robotTW2 = undefined;
 
 
 								robotTW2.services.$timeout(function(){
-									listener_completed ? listener_completed() : listener_completed;
-									listener_completed = undefined;
-									listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+									this.listener_completed ? this.listener_completed() : this.listener_completed;
+									this.listener_completed = undefined;
+									this.listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
 										if(!data){
 											resolve()
 											return
@@ -1661,14 +1661,14 @@ var robotTW2 = window.robotTW2 = undefined;
 												$rootScope.data_main.time_correction_command = dif
 												$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 											}
+											this.listener_completed();
+											this.listener_completed = undefined;
 											robotTW2.services.$timeout(function(){
 												robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_CANCEL, {
 													command_id: data.command_id
 												})
 												resolve();
 											}, 5000)
-											listener_completed();
-											listener_completed = undefined;
 										}
 									})
 									gTime = time.convertedTime();
