@@ -373,10 +373,11 @@ define("robotTW2/services/DataService", [
 			});
 		}
 
-		, update_members = function(tribes){
+		, update_members = function(){
 			return new Promise(function(res){
 				var prom = undefined
 				, prom_queue = [];
+				var tribes = $rootScope.data_data.tribes;
 				Object.keys(tribes).map(function(tribe_id){
 					if(!checkTimerMember.isRunning()){return}
 					function n(tribe_id){
