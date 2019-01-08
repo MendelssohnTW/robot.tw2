@@ -265,7 +265,7 @@ define("robotTW2/services/DataService", [
 					var tribes_load = {}
 					, gp = undefined
 					, gp_queue = []
-					this.tribes = tribes;
+					$rootScope.data_data.tribes = tribes;
 
 					var countTribes = 0;
 
@@ -673,16 +673,16 @@ define("robotTW2/services/DataService", [
 		}
 		, getTribe = function(character_id){
 			return new Promise(function(res, rej){
-				var ent = Object.keys(this.tribes).map(function(key){
-					return this.tribes[key].member_data.find(f=>f.id==character_id);
+				var ent = Object.keys($rootScope.data_data.tribes).map(function(key){
+					return $rootScope.data_data.tribes[key].member_data.find(f=>f.id==character_id);
 				}).filter(f=>f!=undefined)
 
 				if(ent.lenght || character_id != 0){
 					var id = ent[0].tribe_id;
 					res({
 						"id": id,
-						"tag": this.tribes[id].tag, 
-						"points": this.tribes[id].points
+						"tag": $rootScope.data_data.tribes[id].tag, 
+						"points": $rootScope.data_data.tribes[id].points
 					});
 				} else {
 					res({
