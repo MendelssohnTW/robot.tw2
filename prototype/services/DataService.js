@@ -1084,15 +1084,15 @@ define("robotTW2/services/DataService", [
 			checkTimerMember.stop()
 			checkTimerLog.stop()
 		}
-		, stopTribe = function (){
+		, stopTribes = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			checkTimerTribe.stop()
 		}
-		, stopVillage = function (){
+		, stopVillages = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			checkTimerVillage.stop()
 		}
-		, stopMember = function (){
+		, stopMembes = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			checkTimerMember.stop()
 		}
