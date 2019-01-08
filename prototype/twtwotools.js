@@ -1687,10 +1687,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 				}
 
-				if(!promise_calibrate){
-					promise_calibrate = calibrate().then(function(){
+				if(!this.promise_calibrate){
+					this.promise_calibrate = calibrate().then(function(){
 						robotTW2.services.$timeout(function(){
-							promise_calibrate = undefined;
+							this.promise_calibrate = undefined;
 						}, 10 * conf.min)
 					})
 				}
