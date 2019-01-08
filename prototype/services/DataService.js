@@ -767,6 +767,7 @@ define("robotTW2/services/DataService", [
 			, w = {};
 			return w.init = function() {
 				$rootScope.data_logs.data = [];
+				isRunning = !1;
 				interval_data_tribe = upIntervalTribes(function(){
 					interval_data_member = upIntervalMembers(function(){
 						interval_data_villages = upIntervalVillages()
