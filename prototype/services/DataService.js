@@ -711,7 +711,7 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, upIntervalVillages = function(callback){
-			if($rootScope.data_data.last_update.villages < (time.convertedTime() - $rootScope.data_data.interval.villages)){
+			if(!$rootScope.data_data.last_update.villages || $rootScope.data_data.last_update.villages < (time.convertedTime() - $rootScope.data_data.interval.villages)){
 				if(!$rootScope.data_data.tribes.length || !checkTimerVillage.isRunning()){callback; return}
 				checkTimerVillage.setIsRunning(!0);
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
@@ -731,7 +731,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(callback){
-			if($rootScope.data_data.last_update.tribes < (time.convertedTime() - $rootScope.data_data.interval.tribes)){
+			if(!$rootScope.data_data.last_update.tribes || $rootScope.data_data.last_update.tribes < (time.convertedTime() - $rootScope.data_data.interval.tribes)){
 				if(!checkTimerTribe.isRunning()){callback; return}
 				checkTimerTribe.setIsRunning(!0);
 				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
@@ -765,7 +765,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.tribes)
 		}
 		, upIntervalMembers = function(callback){
-			if($rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)){
+			if(!$rootScope.data_data.last_update.members || $rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)){
 				console.log("Atualizando dados de membros")
 				if(!$rootScope.data_data.tribes.length || !checkTimerMember.isRunning()){callback; return}
 				checkTimerMember.setIsRunning(!0);
@@ -793,7 +793,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.members)
 		}
 		, upIntervalLogs = function(callback){
-			if($rootScope.data_data.last_update.logs < (time.convertedTime() - $rootScope.data_data.interval.logs)){
+			if(!$rootScope.data_data.last_update.logs || $rootScope.data_data.last_update.logs < (time.convertedTime() - $rootScope.data_data.interval.logs)){
 				console.log("Atualizando logs de tribo")
 				if(!checkTimerLog.isRunning()){callback; return}
 				checkTimerLog.setIsRunning(!0);
