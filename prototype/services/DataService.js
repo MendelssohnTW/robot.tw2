@@ -32,6 +32,7 @@ define("robotTW2/services/DataService", [
 		, interval_data_tribe = null
 		, interval_data_member = null
 		, interval_data_logs = null
+		, isRunning = !0
 		, tribes
 		, tribes_permited
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
@@ -1063,6 +1064,7 @@ define("robotTW2/services/DataService", [
 		, start = function (){
 			if(isRunning){return}
 			ready(function(){
+				isRunning = !1;
 				if (!checkTimerTribe.isInitialized()){
 					checkTimerTribe.init();
 					if (!checkTimerMember.isInitialized()){
@@ -1108,6 +1110,9 @@ define("robotTW2/services/DataService", [
 			stopVillages	: stopVillages,
 			stopMembers		: stopMembers,
 			stopLogs		: stopLogs,
+			isRunning			: function() {
+				return isRunning;
+			},
 			isRunningLogs		: function() {
 				return checkTimerLog.isRunning()
 			},
