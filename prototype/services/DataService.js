@@ -237,11 +237,11 @@ define("robotTW2/services/DataService", [
 								res(member)
 							})
 						}).then(function(member){
-							if(!checkTimerMember.isRunning()){
+							rm = undefined
+							if(!checkTimerTribe.isRunning()){
 								resolveNextId();
 								return
 							}
-							rm = undefined
 							if(rm_queue.length){
 								v(rm_queue.shift())
 							} else {
