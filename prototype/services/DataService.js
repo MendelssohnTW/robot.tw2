@@ -1142,6 +1142,7 @@ define("robotTW2/services/DataService", [
 		}
 		, stopAll = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
+			isRunning = !1;
 			checkTimerTribe.stop()
 			checkTimerVillage.stop()
 			checkTimerMember.stop()
