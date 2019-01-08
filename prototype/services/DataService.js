@@ -282,9 +282,13 @@ define("robotTW2/services/DataService", [
 										process_tribe(data_tribe, resGP)
 									})
 								}).then(function(members){
-									angular.extend(tribe, {"member_data" : members})
-									
-									tribes_load[tribe.tribe_id] = tribe;
+									if(members && members.length){
+										angular.extend(tribe, {"member_data" : members})
+										tribes_load[tribe.tribe_id] = tribe;
+									} else {
+										console.log("Tribo " + tri.name + " - " + tri.tag + " não atualizada")
+									}
+
 									gp = undefined
 									if(!checkTimerTribe.isRunning()){
 										gp_queue = []
