@@ -739,7 +739,6 @@ define("robotTW2/services/DataService", [
 				exec(callback)
 				return;
 			}, $rootScope.data_data.interval.tribes)
-			exec(callback);
 		}
 		, upIntervalMembers = function(){
 			if(!this.tribes.length || !isRunning){return}
