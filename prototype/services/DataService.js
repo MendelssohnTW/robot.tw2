@@ -122,7 +122,7 @@ define("robotTW2/services/DataService", [
 							if(rt_queue.length){
 								s(rt_queue.shift())
 							} else {
-								
+
 								res()
 							}
 						})
@@ -131,13 +131,14 @@ define("robotTW2/services/DataService", [
 					}
 				}
 
-				var list_tribes = Object.keys(tribes).map(function(tribe_id){return tribes[tribe_id]})
-				if(!list_tribes || !list_tribes.length){
+				if(Object.keys(tribes).length){
+					Object.keys(tribes).map(function(tribe_id){
+						s(tribe_id)
+					})
+				} else {
 					res()
 					return
 				}
-				s(list_tribes.shift())
-
 			})
 		}
 		, loadTribeProfile = function (tribe) {
