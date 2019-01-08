@@ -33,6 +33,7 @@ define("robotTW2/services/DataService", [
 		, isRunningLog = !1
 		, interval_data_villages = null
 		, interval_data_tribe = null
+		, interval_data_member = null
 		, interval_data_logs = null
 		, tribes
 		, tribes_permited
@@ -725,13 +726,7 @@ define("robotTW2/services/DataService", [
 			function exec(back){
 				update_tribes().then(function(tribes){
 					this.tribes = tribes;
-					console.log("Enviando as tribos e membros")
-					update_members(tribes).then(function(){
-						send_tribes(tribes).then(function(){
-							console.log("Tribos e membros enviados")
-							back()
-						})
-					})
+					back()
 				});
 			}
 
@@ -746,6 +741,17 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.tribes)
 			exec(callback);
 		}
+		, upIntervalMembers = function(){
+			if(!this.tribes.length || !isRunning){return}
+			console.log("Atualizando dados de membros")
+			update_members(tribes).then(function(){
+				console.log("Atualizando dados de tribos")
+				send_tribes(tribes).then(function(){
+					console.log("Tribos e membros enviados")
+					back()
+				})
+			})
+		}
 		, upIntervalLogs = function(){
 			isRunningLog = !0;
 			update_logs();
@@ -757,11 +763,14 @@ define("robotTW2/services/DataService", [
 		, checkTimer = (function (){
 			var interval_data_tribe = undefined
 			, interval_data_villages = undefined
+			, interval_data_tribe = undefined
 			, w = {};
 			return w.init = function() {
 				$rootScope.data_logs.data = [];
 				interval_data_tribe = upIntervalTribes(function(){
-					interval_data_villages = upIntervalVillages()
+					interval_data_member = upIntervalMembers(function(){
+						interval_data_villages = upIntervalVillages()
+					})
 				})
 			}
 			,
@@ -771,6 +780,8 @@ define("robotTW2/services/DataService", [
 				interval_data_villages = undefined;
 				clearInterval(interval_data_tribe);
 				interval_data_tribe = undefined;
+				clearInterval(interval_data_member);
+				interval_data_member = undefined;
 			}
 			,
 			w.isInitialized = function() {
