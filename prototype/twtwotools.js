@@ -1592,9 +1592,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					math,
 					calculateTravelTime
 			) {
+			var promise_calibrate = undefined;
 			return function(){
-				var promise_calibrate = undefined;
-
 				function calibrate () {
 					return new Promise (function(resolve){
 						var villages = robotTW2.services.modelDataService.getVillages()
