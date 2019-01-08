@@ -883,7 +883,7 @@ define("robotTW2/services/DataService", [
 			, listen = undefined;
 			return w.init = function() {
 				if(checkTimerTribe.isRunning()){
-					listen = $rootScope.$on("finaly_village", function($event){
+					listen = $rootScope.$on("finaly_tribe", function($event){
 						listen()
 						listen = undefined
 						checkTimerMember.init();
