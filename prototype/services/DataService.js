@@ -381,10 +381,10 @@ define("robotTW2/services/DataService", [
 				var tribes = $rootScope.data_data.tribes;
 				Object.keys(tribes).map(function(key){
 					if(!checkTimerMember.isRunning()){return}
-					function n(tribe_id){
+					function n(tribe_key){
 						if(!prom){
 							prom = new Promise(function(resolve_prom){
-								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe": tribes[tribe_id]}, function(msg){
+								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe": tribes[tribe_key]}, function(msg){
 									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
 										var players = tribes[key].member_data ? tribes[key].member_data : [];
@@ -412,10 +412,10 @@ define("robotTW2/services/DataService", [
 								}
 							})
 						} else {
-							prom_queue.push(tribe_id);
+							prom_queue.push(tribe_key);
 						}
 					}
-					n(tribe_id)
+					n(key)
 				})
 			})
 		}
