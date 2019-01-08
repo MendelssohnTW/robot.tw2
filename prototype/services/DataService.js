@@ -144,7 +144,9 @@ define("robotTW2/services/DataService", [
 			return new Promise(function(res){
 				socketService.emit(providers.routeProvider.TRIBE_GET_PROFILE, {
 					'tribe_id': tribe.tribe_id
-				}, res);
+				}, function(data){
+					res(data)
+				});
 			})
 		}
 		, loadTribeMembers = function (tribe) {
@@ -879,7 +881,7 @@ define("robotTW2/services/DataService", [
 					is_running = !0;
 					if($rootScope.data_data.possible){
 						interval_data_village = upIntervalVillages(function(){
-							
+
 							console.log("Terminate Villages")
 						})
 					}
