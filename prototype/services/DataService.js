@@ -725,7 +725,10 @@ define("robotTW2/services/DataService", [
 					$rootScope.data_data.last_update.villages = time.convertedTime();
 					callback()
 				});
-			}	
+			} else {
+				$rootScope.$broadcast("finaly_village")
+				$rootScope.$broadcast("finaly")
+			}
 			return setInterval(function(){
 				if(!Object.keys($rootScope.data_data.tribes).length || !checkTimerVillage.isRunning()){callback; return}
 				checkTimerVillage.setIsRunning(!0);
@@ -747,13 +750,17 @@ define("robotTW2/services/DataService", [
 					$rootScope.data_data.tribes = tribes;
 					send_tribes(tribes).then(function(){
 						checkTimerTribe.setIsRunning(!1);
-						$rootScope.$broadcast("finaly_village")
+						$rootScope.$broadcast("finaly_tribe")
 						$rootScope.$broadcast("finaly")
 						$rootScope.data_data.last_update.tribes = time.convertedTime();
 						console.log("Tribos e membros atualizados")
 						callback()
 					})
 				});
+			} else {
+				console.log("Tribos e membros atualizados")
+				$rootScope.$broadcast("finaly_tribe")
+				$rootScope.$broadcast("finaly")
 			}
 			return setInterval(function(){
 				if(!checkTimerTribe.isRunning()){callback; return}
@@ -764,7 +771,7 @@ define("robotTW2/services/DataService", [
 					$rootScope.data_data.tribes = tribes;
 					send_tribes(tribes).then(function(){
 						checkTimerTribe.setIsRunning(!1);
-						$rootScope.$broadcast("finaly_village")
+						$rootScope.$broadcast("finaly_tribe")
 						$rootScope.$broadcast("finaly")
 						$rootScope.data_data.last_update.tribes = time.convertedTime();
 						console.log("Tribos e membros atualizados")
@@ -787,6 +794,10 @@ define("robotTW2/services/DataService", [
 					$rootScope.data_data.last_update.members = time.convertedTime();
 					callback()
 				})
+			} else {
+				console.log("Membros atualizados")
+				$rootScope.$broadcast("finaly_member")
+				$rootScope.$broadcast("finaly")
 			}
 			return setInterval(function(){
 				console.log("Atualizando dados de membros")
@@ -815,6 +826,8 @@ define("robotTW2/services/DataService", [
 					checkTimerLog.setIsRunning(!1);
 					callback()
 				})
+			} else {
+				console.log("Logs de tribo atualizados")
 			}
 			return setInterval(function(){
 				console.log("Atualizando logs de tribo")
