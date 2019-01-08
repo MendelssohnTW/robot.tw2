@@ -253,6 +253,8 @@ define("robotTW2/services/DataService", [
 					, gp = undefined
 					, gp_queue = []
 					this.tribes = tribes;
+					
+					var countTribes = 0;
 
 					tribes.forEach(function(tr){
 						function nextId(tribe){
@@ -275,8 +277,10 @@ define("robotTW2/services/DataService", [
 										return
 									}
 									if(gp_queue.length){
-										console.log("Próxima tribo")
-										nextId(gp_queue.shift())
+										countTribes++;
+										var tri = gp_queue.shift();
+										console.log(countTribes + "- Tribo " + tri.name + " - " + tri.tag)
+										nextId(tri)
 									} else {
 										console.log("Tribos processadas")
 										resolveTribes(tribes_load)
