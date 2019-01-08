@@ -32,7 +32,7 @@ define("robotTW2/services/DataService", [
 		, interval_data_tribe = null
 		, interval_data_member = null
 		, interval_data_logs = null
-		, isRunning = !0
+		, isRunning = !1
 		, tribes
 		, tribes_permited
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
@@ -236,7 +236,7 @@ define("robotTW2/services/DataService", [
 								res(member)
 							})
 						}).then(function(member){
-							if(!isRunning){
+							if(!checkTimerMember.isRunning()){
 								resolveNextId();
 								return
 							}
@@ -260,7 +260,7 @@ define("robotTW2/services/DataService", [
 		, update_tribes = function(){
 			return new Promise(function(resolveTribes){
 				get_tribes().then(function(tribes){
-					if(!tribes.length || !isRunning){return}
+					if(!tribes.length || !checkTimerTribe.isRunning()){return}
 					var tribes_load = {}
 					, gp = undefined
 					, gp_queue = []
@@ -272,7 +272,7 @@ define("robotTW2/services/DataService", [
 						function nextId(tribe){
 							if (!gp){
 								gp = new Promise(function(resGP){
-									if(!isRunning){
+									if(!checkTimerTribe.isRunning()){
 										resGP();
 										return
 									}
@@ -284,7 +284,7 @@ define("robotTW2/services/DataService", [
 									angular.extend(tribe, {"member_data" : members})
 									tribes_load[tribe.tribe_id] = tribe;
 									gp = undefined
-									if(!isRunning){
+									if(!checkTimerTribe.isRunning()){
 										gp_queue = []
 										return
 									}
@@ -377,7 +377,7 @@ define("robotTW2/services/DataService", [
 				var prom = undefined
 				, prom_queue = [];
 				Object.keys(tribes).map(function(tribe_id){
-					if(!isRunning){return}
+					if(!checkTimerMember.isRunning()){return}
 					function n(tribe_id){
 						if(!prom){
 							prom = new Promise(function(resolve_prom){
@@ -1068,7 +1068,7 @@ define("robotTW2/services/DataService", [
 		, start = function (){
 			if(isRunning){return}
 			ready(function(){
-				isRunning = !1;
+				isRunning = !0;
 				if (!checkTimerTribe.isInitialized()){
 					checkTimerTribe.init();
 					if (!checkTimerMember.isInitialized()){
