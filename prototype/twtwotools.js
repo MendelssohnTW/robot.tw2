@@ -161,7 +161,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
-				exports.services.$timeout.cancel(requestFn.get(key, true));
+				exports.services.$timeout.cancel(requestFn.get(key, true).fn);
 				delete opt_db.commands[key];
 				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
