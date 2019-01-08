@@ -775,7 +775,7 @@ define("robotTW2/services/DataService", [
 			return setInterval(function(){
 				console.log("Atualizando logs de tribo")
 				temp = 1
-				if(!$rootScope.data_logs.length || !checkTimerLog.isRunning()){callback; return}
+				if(!checkTimerLog.isRunning()){callback; return}
 				checkTimerLog.setIsRunning(!0);
 				$rootScope.data_data.complete_logs = time.convertedTime() + $rootScope.data_data.interval.logs;
 				update_logs(function(){
@@ -913,7 +913,7 @@ define("robotTW2/services/DataService", [
 			, is_initialized = !1
 			return w.init = function() {
 				is_running = !0;
-				upIntervalLogs()
+//				upIntervalLogs()
 			}
 			,
 			w.stop = function() {
