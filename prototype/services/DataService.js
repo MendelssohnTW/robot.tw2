@@ -378,7 +378,8 @@ define("robotTW2/services/DataService", [
 				var prom = undefined
 				, prom_queue = [];
 				var tribes = $rootScope.data_data.tribes;
-				Object.keys(tribes).map(function(tribe_id){
+				Object.keys(tribes).map(function(key){
+					var tribe_id = tribes[key].tribe_id;
 					if(!checkTimerMember.isRunning()){return}
 					function n(tribe_id){
 						if(!prom){
