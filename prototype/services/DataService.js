@@ -1092,11 +1092,11 @@ define("robotTW2/services/DataService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			checkTimerVillage.stop()
 		}
-		, stopMembes = function (){
+		, stopMembers = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			checkTimerMember.stop()
 		}
-		, stopLog = function (){
+		, stopLogs = function (){
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			checkTimerLog.stop()
 		}
