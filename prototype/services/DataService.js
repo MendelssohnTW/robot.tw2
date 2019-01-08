@@ -144,9 +144,7 @@ define("robotTW2/services/DataService", [
 			return new Promise(function(res){
 				socketService.emit(providers.routeProvider.TRIBE_GET_PROFILE, {
 					'tribe_id': tribe.tribe_id
-				}, function(data){
-					res(data)
-				});
+				}, res);
 			})
 		}
 		, loadTribeMembers = function (tribe) {
