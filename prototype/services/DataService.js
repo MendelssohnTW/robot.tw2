@@ -33,6 +33,7 @@ define("robotTW2/services/DataService", [
 		, interval_data_member = null
 		, interval_data_logs = null
 		, isRunning = !1
+		, isInitialized = !1
 		, tribes
 		, tribes_permited
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
@@ -1119,6 +1120,9 @@ define("robotTW2/services/DataService", [
 			},
 			isRunningLogs		: function() {
 				return checkTimerLog.isRunning()
+			},
+			isInitialized		: function(){
+				return isInitialized;
 			},
 			isInitializedLogs		: function(){
 				return checkTimerLog.isInitialized()
