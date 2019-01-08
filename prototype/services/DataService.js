@@ -122,7 +122,7 @@ define("robotTW2/services/DataService", [
 							if(rt_queue.length){
 								s(rt_queue.shift())
 							} else {
-								$rootScope.data_data.last_update.tribes = time.convertedTime();
+								
 								res()
 							}
 						})
@@ -746,6 +746,7 @@ define("robotTW2/services/DataService", [
 						checkTimerTribe.setIsRunning(!1);
 						$rootScope.$broadcast("finaly_village")
 						$rootScope.$broadcast("finaly")
+						$rootScope.data_data.last_update.tribes = time.convertedTime();
 						console.log("Tribos e membros atualizados")
 						callback()
 					})
