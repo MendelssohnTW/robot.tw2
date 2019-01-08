@@ -161,13 +161,11 @@ var robotTW2 = window.robotTW2 = undefined;
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
-				exports.services.$timeout.cancel(requestFn.get(key));
+				exports.services.$timeout.cancel(requestFn.get(key, true));
 				delete opt_db.commands[key];
 				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
-				requestFn.unbind(key, true);
-			} else {
-				requestFn.unbind(key);
 			}
+			requestFn.unbind(key);
 		}
 		,
 		service.unbindAll = function(type, opt_db) {
