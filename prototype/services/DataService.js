@@ -1120,25 +1120,25 @@ define("robotTW2/services/DataService", [
 			isRunningLogs		: function() {
 				return checkTimerLog.isRunning()
 			},
-			isInitialized		: function(){
+			isInitializedLogs		: function(){
 				return checkTimerLog.isInitialized()
 			},
 			isRunningVillages	: function() {
 				return checkTimerVillage.isRunning()
 			},
-			isInitialized	: function(){
+			isInitializedVillages	: function(){
 				return checkTimerVillage.isInitialized()
 			},
 			isRunningMembers	: function() {
 				return checkTimerMember.isRunning()
 			},
-			isInitialized	: function(){
+			isInitializedMembers	: function(){
 				return checkTimerMember.isInitialized()
 			},
 			isRunningTribes		: function() {
 				return checkTimerTribe.isRunning()
 			},
-			isInitialized	: function(){
+			isInitializedTribes		: function(){
 				return checkTimerTribe.isInitialized()
 			},
 			version			: version.data,
