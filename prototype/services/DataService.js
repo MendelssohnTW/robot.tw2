@@ -783,7 +783,7 @@ define("robotTW2/services/DataService", [
 		, upIntervalMembers = function(callback){
 			if(!$rootScope.data_data.last_update.members || $rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)){
 				console.log("Atualizando dados de membros")
-				if(!Object.keys($rootScope.data_data.tribes).length || !checkTimerMember.isRunning()){callback; return}
+				if(!Object.keys($rootScope.data_data.tribes).length || checkTimerMember.isRunning()){callback; return}
 				checkTimerMember.setIsRunning(!0);
 				$rootScope.data_data.complete_members = time.convertedTime() + $rootScope.data_data.interval.members;
 				update_members().then(function(){
