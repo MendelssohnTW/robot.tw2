@@ -789,7 +789,7 @@ define("robotTW2/services/DataService", [
 			var interval_data_tribe = undefined
 			, w = {}
 			, is_running = !1
-			, is_initialized = !0
+			, is_initialized = !1
 			return w.init = function() {
 				is_running = !0;
 				if($rootScope.data_data.possible){
@@ -819,7 +819,7 @@ define("robotTW2/services/DataService", [
 			var interval_data_member = undefined
 			, w = {}
 			, is_running = !1
-			, is_initialized = !0
+			, is_initialized = !1
 			, listen = undefined;
 			return w.init = function() {
 				if(checkTimerTribe.isRunning()){
@@ -858,7 +858,7 @@ define("robotTW2/services/DataService", [
 			var interval_data_village = undefined
 			, w = {}
 			, is_running = !1
-			, is_initialized = !0
+			, is_initialized = !1
 			, listen = undefined;
 			return w.init = function() {
 				if(checkTimerTribe.isRunning() || checkTimerMember.isRunning()){
@@ -898,7 +898,7 @@ define("robotTW2/services/DataService", [
 			var interval
 			, w = {}
 			, is_running = !1
-			, is_initialized = !0
+			, is_initialized = !1
 			return w.init = function() {
 				is_running = !0;
 				upIntervalLogs()
