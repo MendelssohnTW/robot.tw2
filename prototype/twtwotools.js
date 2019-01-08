@@ -164,8 +164,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				exports.services.$timeout.cancel(requestFn.get(key));
 				delete opt_db.commands[key];
 				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+				requestFn.unbind(key, true);
+			} else {
+				requestFn.unbind(key);
 			}
-			requestFn.unbind(key);
 		}
 		,
 		service.unbindAll = function(type, opt_db) {
