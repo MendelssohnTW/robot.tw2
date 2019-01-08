@@ -128,6 +128,7 @@ define("robotTW2/services/AttackService", [
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
 		, resendAttack = function(id_command){
+			if(!scope.params[id_command].data_escolhida){return}
 			var expires_send = scope.params[id_command].data_escolhida - scope.params[id_command].duration - $rootScope.data_main.time_correction_command
 			, timer_delay_send = expires_send - time.convertedTime();
 
