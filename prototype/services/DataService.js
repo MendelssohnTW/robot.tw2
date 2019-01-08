@@ -709,13 +709,17 @@ define("robotTW2/services/DataService", [
 			})
 		}
 		, upIntervalVillages = function(callback){
-			var temp = 1;
 			if($rootScope.data_data.last_update.villages < (time.convertedTime() - $rootScope.data_data.interval.villages)){
-				temp = 0;
+				if(!$rootScope.data_data.tribes.length || !checkTimerVillage.isRunning()){callback; return}
+				checkTimerVillage.setIsRunning(!0);
+				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
+				update_villages(function(){
+					checkTimerVillage.setIsRunning(!1);
+					callback()
+				});
 			}	
 			return setInterval(function(){
 				if(!$rootScope.data_data.tribes.length || !checkTimerVillage.isRunning()){callback; return}
-				temp = 1
 				checkTimerVillage.setIsRunning(!0);
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
 				update_villages(function(){
@@ -725,12 +729,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(callback){
-			var temp = 1;
 			if($rootScope.data_data.last_update.tribes < (time.convertedTime() - $rootScope.data_data.interval.tribes)){
-				temp = 0;
-			}
-			return setInterval(function(){
-				temp = 1
 				if(!checkTimerTribe.isRunning()){callback; return}
 				checkTimerTribe.setIsRunning(!0);
 				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
@@ -745,16 +744,27 @@ define("robotTW2/services/DataService", [
 						callback()
 					})
 				});
-			}, temp * $rootScope.data_data.interval.tribes)
-		}
-		, upIntervalMembers = function(callback){
-			var temp = 1;
-			if($rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)){
-				temp = 0;
 			}
 			return setInterval(function(){
+				if(!checkTimerTribe.isRunning()){callback; return}
+				checkTimerTribe.setIsRunning(!0);
+				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
+				update_tribes().then(function(tribes){
+					console.log("Atualizando dados de tribos")
+					$rootScope.data_data.tribes = tribes;
+					send_tribes(tribes).then(function(){
+						checkTimerTribe.setIsRunning(!1);
+						$rootScope.$broadcast("finaly_village")
+						$rootScope.$broadcast("finaly")
+						console.log("Tribos e membros atualizados")
+						callback()
+					})
+				});
+			}, $rootScope.data_data.interval.tribes)
+		}
+		, upIntervalMembers = function(callback){
+			if($rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)){
 				console.log("Atualizando dados de membros")
-				temp = 1
 				if(!$rootScope.data_data.tribes.length || !checkTimerMember.isRunning()){callback; return}
 				checkTimerMember.setIsRunning(!0);
 				$rootScope.data_data.complete_members = time.convertedTime() + $rootScope.data_data.interval.members;
@@ -765,16 +775,24 @@ define("robotTW2/services/DataService", [
 					$rootScope.$broadcast("finaly")
 					callback()
 				})
-			}, temp * $rootScope.data_data.interval.members)
-		}
-		, upIntervalLogs = function(callback){
-			var temp = 1;
-			if($rootScope.data_data.last_update.logs < (time.convertedTime() - $rootScope.data_data.interval.logs)){
-				temp = 0;
 			}
 			return setInterval(function(){
+				console.log("Atualizando dados de membros")
+				if(!$rootScope.data_data.tribes.length || !checkTimerMember.isRunning()){callback; return}
+				checkTimerMember.setIsRunning(!0);
+				$rootScope.data_data.complete_members = time.convertedTime() + $rootScope.data_data.interval.members;
+				update_members().then(function(){
+					console.log("Membros atualizados")
+					checkTimerMember.setIsRunning(!1);
+					$rootScope.$broadcast("finaly_member")
+					$rootScope.$broadcast("finaly")
+					callback()
+				})
+			}, $rootScope.data_data.interval.members)
+		}
+		, upIntervalLogs = function(callback){
+			if($rootScope.data_data.last_update.logs < (time.convertedTime() - $rootScope.data_data.interval.logs)){
 				console.log("Atualizando logs de tribo")
-				temp = 1
 				if(!checkTimerLog.isRunning()){callback; return}
 				checkTimerLog.setIsRunning(!0);
 				$rootScope.data_data.complete_logs = time.convertedTime() + $rootScope.data_data.interval.logs;
@@ -783,7 +801,18 @@ define("robotTW2/services/DataService", [
 					checkTimerLog.setIsRunning(!1);
 					callback()
 				})
-			}, temp * $rootScope.data_data.interval.logs)
+			}
+			return setInterval(function(){
+				console.log("Atualizando logs de tribo")
+				if(!checkTimerLog.isRunning()){callback; return}
+				checkTimerLog.setIsRunning(!0);
+				$rootScope.data_data.complete_logs = time.convertedTime() + $rootScope.data_data.interval.logs;
+				update_logs(function(){
+					console.log("Logs de tribo atualizados")
+					checkTimerLog.setIsRunning(!1);
+					callback()
+				})
+			}, $rootScope.data_data.interval.logs)
 		}
 		, checkTimerTribe = (function (){
 			var interval_data_tribe = undefined
@@ -879,7 +908,7 @@ define("robotTW2/services/DataService", [
 					is_running = !0;
 					if($rootScope.data_data.possible){
 						interval_data_village = upIntervalVillages(function(){
-							
+
 							console.log("Terminate Villages")
 						})
 					}
