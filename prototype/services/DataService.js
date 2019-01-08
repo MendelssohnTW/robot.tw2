@@ -855,13 +855,13 @@ define("robotTW2/services/DataService", [
 			, is_initialized = !1
 			, listen = undefined;
 			return w.init = function() {
-				if(checkTimerTribe.isRunning()){
-					listen = $rootScope.$on("finaly_village", function($event){
-						listen()
-						listen = undefined
-						checkTimerMember.init();
-					})
-				} else {
+//				if(checkTimerTribe.isRunning()){
+//					listen = $rootScope.$on("finaly_village", function($event){
+//						listen()
+//						listen = undefined
+//						checkTimerMember.init();
+//					})
+//				} else {
 					is_running = !0;
 					if($rootScope.data_data.possible){
 						interval_data_member = upIntervalMembers(function(){
@@ -869,7 +869,7 @@ define("robotTW2/services/DataService", [
 						})
 					}
 				}
-			}
+//			}
 			,
 			w.stop = function() {
 				is_running = !1;
@@ -1120,8 +1120,8 @@ define("robotTW2/services/DataService", [
 			if(isRunning){return}
 			ready(function(){
 				isRunning = !0;
-				if (!checkTimerTribe.isInitialized()){
-					checkTimerTribe.init();
+//				if (!checkTimerTribe.isInitialized()){
+//					checkTimerTribe.init();
 					if (!checkTimerMember.isInitialized()){
 						checkTimerMember.init();
 						if (!checkTimerVillage.isInitialized()){
@@ -1130,7 +1130,7 @@ define("robotTW2/services/DataService", [
 						if (!checkTimerLog.isInitialized()){
 							checkTimerLog.init();
 						};
-					}
+//					}
 				};
 			}, ["all_villages_ready"])
 		}
