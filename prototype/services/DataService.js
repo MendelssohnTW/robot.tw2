@@ -286,6 +286,8 @@ define("robotTW2/services/DataService", [
 									if(members && members.length){
 										angular.extend(tribe, {"member_data" : members})
 										tribes_load[tribe.tribe_id] = tribe;
+										countTribes++;
+										console.log(countTribes + "- Tribo " + tri.name + " - " + tri.tag)
 									} else {
 										console.log("Tribo " + tri.name + " - " + tri.tag + " não atualizada")
 									}
@@ -296,12 +298,9 @@ define("robotTW2/services/DataService", [
 										return
 									}
 									if(gp_queue.length){
-										countTribes++;
 										var tri = gp_queue.shift();
-										console.log(countTribes + "- Tribo " + tri.name + " - " + tri.tag)
 										nextId(tri)
 									} else {
-										console.log(countTribes + "- Tribo " + tri.name + " - " + tri.tag)
 										console.log("Tribos processadas")
 										resolveTribes(tribes_load)
 									}
