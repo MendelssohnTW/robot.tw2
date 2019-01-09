@@ -287,9 +287,9 @@ define("robotTW2/services/DataService", [
 										angular.extend(tribe, {"member_data" : members})
 										tribes_load[tribe.tribe_id] = tribe;
 										countTribes++;
-										console.log(countTribes + "- Tribo " + tri.name + " - " + tri.tag)
+										console.log(countTribes + "- Tribo " + tribe.name + " - " + tribe.tag)
 									} else {
-										console.log("Tribo " + tri.name + " - " + tri.tag + " não atualizada")
+										console.log("Tribo " + tribe.name + " - " + tribe.tag + " não atualizada")
 									}
 
 									gp = undefined
