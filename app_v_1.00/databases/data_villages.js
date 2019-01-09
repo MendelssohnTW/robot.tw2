@@ -15,13 +15,13 @@ define("robotTW2/databases/data_villages", [
 	, get_dist = function (v, max_journey_time, units) {
 		var village = services.villageService.getInitializedVillage(v)
 		, army = {
-				'officers'	: {},
-				"units"		: units
-			}
+			'officers'	: {},
+			"units"		: units
+		}
 		, travelTime = calculateTravelTime(army, village, "attack", {
 			'barbarian'		: true
 		})
-		
+
 		return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
 	}
 	, getPst = function (v) {
@@ -115,7 +115,9 @@ define("robotTW2/databases/data_villages", [
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
 						presets					: getPst(m),
-						selected				: undefined
+						selected				: Object.keys(conf.BUILDINGORDER).map(function(elem){
+							return elem
+						})[0]
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
@@ -133,7 +135,9 @@ define("robotTW2/databases/data_villages", [
 							buildinglevels 			: conf.BUILDINGLEVELS,
 							farm_activate 			: true,
 							presets					: getPst(m),
-							selected				: undefined
+							selected				: Object.keys(conf.BUILDINGORDER).map(function(elem){
+								return elem
+							})[0]
 						})
 					}
 					angular.extend(data_villages.villages[m], villagesExtended[m])
@@ -157,7 +161,7 @@ define("robotTW2/databases/data_villages", [
 		Object.keys(villages).map(function(village_id){
 			var vill = services.villageService.getInitializedVillage(village_id)	
 		})
-		
+
 		var villagesExtended = angular.merge({}, villages)
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){

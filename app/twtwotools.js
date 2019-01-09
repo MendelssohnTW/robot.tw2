@@ -161,7 +161,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
-				exports.services.$timeout.cancel(requestFn.get(key));
+				var r = requestFn.get(key, true)
+				, g;
+				if(r){g = r.fn}
+				if(g){
+					exports.services.$timeout.cancel(g);
+				}
 				delete opt_db.commands[key];
 				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
@@ -1175,7 +1180,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				if(!timeouts[id]){
 					timeouts[id] = robotTW2.services.$timeout(function(){
 						if(typeof(opt_callback) == "function"){
-						opt_callback({"type" : type, "data": "Timeout"})
+							opt_callback({"type" : type, "data": "Timeout"})
 						}
 					}, 15000)
 				}
@@ -1592,16 +1597,15 @@ var robotTW2 = window.robotTW2 = undefined;
 					math,
 					calculateTravelTime
 			) {
+			var promise_calibrate = undefined
+			, listener_completed = undefined
 			return function(){
-				var promise_calibrate = undefined;
-
 				function calibrate () {
 					return new Promise (function(resolve){
 						var villages = robotTW2.services.modelDataService.getVillages()
 						, village = villages[Object.keys(villages).shift()]
 						, units = {}
 						, unitInfo = village.unitInfo.getUnits()
-						, listener_completed = undefined
 						, gTime
 
 						if (!unitInfo) {return};
@@ -1647,9 +1651,9 @@ var robotTW2 = window.robotTW2 = undefined;
 
 
 								robotTW2.services.$timeout(function(){
-									listener_completed ? listener_completed() : listener_completed;
-									listener_completed = undefined;
-									listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+									this.listener_completed ? this.listener_completed() : this.listener_completed;
+									this.listener_completed = undefined;
+									this.listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
 										if(!data){
 											resolve()
 											return
@@ -1662,14 +1666,14 @@ var robotTW2 = window.robotTW2 = undefined;
 												$rootScope.data_main.time_correction_command = dif
 												$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 											}
+											this.listener_completed();
+											this.listener_completed = undefined;
 											robotTW2.services.$timeout(function(){
 												robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_CANCEL, {
 													command_id: data.command_id
 												})
 												resolve();
 											}, 5000)
-											listener_completed();
-											listener_completed = undefined;
 										}
 									})
 									gTime = time.convertedTime();
@@ -1688,10 +1692,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 				}
 
-				if(!promise_calibrate){
-					promise_calibrate = calibrate().then(function(){
+				if(!this.promise_calibrate){
+					this.promise_calibrate = calibrate().then(function(){
 						robotTW2.services.$timeout(function(){
-							promise_calibrate = undefined;
+							this.promise_calibrate = undefined;
 						}, 10 * conf.min)
 					})
 				}
@@ -2080,7 +2084,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_alert.js");
 								robotTW2.loadScript("/databases/data_attack.js");
 								robotTW2.loadScript("/databases/data_recon.js");
-//								robotTW2.loadScript("/databases/data_defense.js");
+								robotTW2.loadScript("/databases/data_defense.js");
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");

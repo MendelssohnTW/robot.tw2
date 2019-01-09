@@ -52,7 +52,7 @@ define("robotTW2/controllers/DataController", [
 		}
 		
 		$scope.stop_data = function () {
-			services.DataService.stop();
+			services.DataService.stopAll();
 		}
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
