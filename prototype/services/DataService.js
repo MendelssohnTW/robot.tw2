@@ -184,9 +184,9 @@ define("robotTW2/services/DataService", [
 						}, function(data) {
 							data.ranking.map(function(tribe){
 
-								if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
+//								if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
 								tbs.push(tribe)
-								}
+//								}
 
 //								if(tribe.tribe_id == 51 || tribe.tribe_id == 102){
 //								tribes.push(tribe)
