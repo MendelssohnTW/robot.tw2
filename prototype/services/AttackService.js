@@ -42,25 +42,25 @@ define("robotTW2/services/AttackService", [
 		})
 		, addAttack = function(params, opt_id){
 			if(!params){return}
-			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
+			var expires = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command
+			, timer_delay = expires - time.convertedTime()
+			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
+
 			if(opt_id){
 				id_command = params.id_command
 			}
 
-			var expires = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command;;
-			var timer_delay = expires - time.convertedTime();
-
-			angular.extend(params, {
-				"timer_delay" : timer_delay,
-				"id_command": id_command
-			})
-			
-			commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params)
-
 			if(timer_delay >= 0){
-				commandQueue.trigger(id_command, params)
-			} else {
-				removeCommandAttack(id_command)
+				angular.extend(params, {
+					"timer_delay" : timer_delay,
+					"id_command": id_command
+				})
+				commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params, function(fns){
+					fns.fn.apply(this, fns.params)
+				})
+//				commandQueue.trigger(id_command, params)
+//			} else {
+//				removeCommandAttack(id_command)
 			}
 		}
 		, units_to_send = function (params) {

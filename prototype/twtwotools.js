@@ -83,6 +83,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			, service.bind = function(key, fn, params) {
 			fns.hasOwnProperty(this.prefix + key) || (fns[this.prefix + key] = []),
 			fns[this.prefix + key].push({fn:fn, params:params || {}})
+			if(typeof(callback)=="function"){
+				callback({fn:fn, params:params || {}})
+			}
 		}
 		,
 		service.trigger = function(key, params) {
@@ -139,14 +142,18 @@ var robotTW2 = window.robotTW2 = undefined;
 	})()
 	, commandQueue = (function (){
 		var service = {};
-		return service.bind = function(key, fn, opt_db, params) {
+		return service.bind = function(key, fn, opt_db, params, callback) {
 			if(!key) return;
 			if(opt_db && typeof(opt_db.get) == "function"){
 				if(!opt_db.commands){opt_db["commands"]= {}}
 				!opt_db.commands[key] ? opt_db.commands[key] = params : null;
 				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
-			requestFn.bind(key, fn, params)
+			requestFn.bind(key, fn, params, function(fns){
+				if(typeof(callback)=="function"){
+					callback(fns)
+				}	
+			})
 		}
 		,
 		service.trigger = function(key, params) {
