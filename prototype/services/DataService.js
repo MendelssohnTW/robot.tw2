@@ -133,7 +133,7 @@ define("robotTW2/services/DataService", [
 
 				if(Object.keys(tribes).length){
 					Object.keys(tribes).map(function(tribe_id){
-						s(tribe_id)
+						s(tribes[tribe_id])
 					})
 				} else {
 					res()
@@ -301,6 +301,7 @@ define("robotTW2/services/DataService", [
 										console.log(countTribes + "- Tribo " + tri.name + " - " + tri.tag)
 										nextId(tri)
 									} else {
+										console.log(countTribes + "- Tribo " + tri.name + " - " + tri.tag)
 										console.log("Tribos processadas")
 										resolveTribes(tribes_load)
 									}
