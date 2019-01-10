@@ -747,9 +747,10 @@ define("robotTW2/services/DataService", [
 					console.log("world updated")
 				})
 				console.log("Atualizando dados de tribos")
+				
+				var sent_tr = update_tribes(send_tribes); 
 
-				update_tribes(send_tribes(tribe).then(function(){
-					send_promise = undefined;
+				sent_tr.then(function(){
 				}, function(){
 					checkTimerTribe.setIsRunning(!1);
 					$rootScope.$broadcast("finaly_tribe")
@@ -758,7 +759,7 @@ define("robotTW2/services/DataService", [
 					console.log("Tribos e membros atualizados")
 					callback()
 
-				}))
+				})
 			} else {
 				console.log("Tribos e membros atualizados")
 				$rootScope.$broadcast("finaly_tribe")
