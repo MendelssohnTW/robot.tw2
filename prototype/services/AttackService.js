@@ -59,7 +59,7 @@ define("robotTW2/services/AttackService", [
 					fns.fn.apply(this, [fns.params])
 				})
 //				commandQueue.trigger(id_command, params)
-//			} else {
+//				} else {
 //				removeCommandAttack(id_command)
 			}
 		}
@@ -118,6 +118,8 @@ define("robotTW2/services/AttackService", [
 						catapult_target		: params.catapult_target
 					}
 			)
+
+			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
 			scope.listener[params.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
 

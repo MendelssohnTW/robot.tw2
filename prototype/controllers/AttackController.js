@@ -123,7 +123,6 @@ define("robotTW2/controllers/AttackController", [
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
-			
 		})
 		
 		$scope.$watch("data_logs.attack", function(){
