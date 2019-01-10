@@ -1201,6 +1201,7 @@ define("robotTW2/services/DataService", [
 		return	{
 			init			: init,
 			start 			: start,
+			stop			: stopAll,
 			stopAll			: stopAll,
 			stopTribes		: stopTribes,
 			stopVillages	: stopVillages,
