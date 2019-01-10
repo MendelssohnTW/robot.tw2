@@ -278,14 +278,13 @@ define("robotTW2/services/DataService", [
 									if(members && members.length){
 										angular.extend(tribe, {"member_data" : members})
 										tribes_load[tribe.tribe_id] = tribe;
+										countTribes++;
+										if(!checkTimerTribe.isRunning()){
+											gp_queue = []
+											return
+										}
 										send_tribes(tribe).then(function(){
-											countTribes++;
 											console.log(countTribes + "- Tribo " + tribe.name + " - " + tribe.tag)
-											
-											if(!checkTimerTribe.isRunning()){
-												gp_queue = []
-												return
-											}
 											if(gp_queue.length){
 												var tri = gp_queue.shift();
 												nextId(tri)
@@ -294,6 +293,16 @@ define("robotTW2/services/DataService", [
 												$rootScope.data_data.tribes = tribes_load;
 //												resolveTribes(tribes_load)
 											}		
+										}, function(){
+											console.log("Tribo " + tribe.name + " - " + tribe.tag + " não atualizada")
+											if(gp_queue.length){
+												var tri = gp_queue.shift();
+												nextId(tri)
+											} else {
+												res()
+												$rootScope.data_data.tribes = tribes_load;
+//												resolveTribes(tribes_load)
+											}	
 										})
 									} else {
 										console.log("Tribo " + tribe.name + " - " + tribe.tag + " não atualizada")
