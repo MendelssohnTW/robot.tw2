@@ -109,17 +109,17 @@ define("robotTW2/services/DataService", [
 
 
 //				function s(tribe){
-				if(!this.rt){
-					this.rt = send_server(tribe).then(function(){
-						this.rt = undefined;
-						if(this.rt_queue.length){
-							s(this.rt_queue.shift())
+				if(!rt){
+					rt = send_server(tribe).then(function(){
+						rt = undefined;
+						if(rt_queue.length){
+							s(rt_queue.shift())
 						} else {
 							res()
 						}
 					})
 				} else {
-					this.rt_queue.push(tribe)
+					rt_queue.push(tribe)
 				}
 //				}
 
