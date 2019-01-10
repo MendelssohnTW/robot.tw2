@@ -582,9 +582,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
 			onLoad(responseText);
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
 		};
 		if (opt_host && typeof(opt_host) == "boolean") {
 //			uri = uri.substr(1);
