@@ -56,7 +56,7 @@ define("robotTW2/services/AttackService", [
 					"id_command": id_command
 				})
 				commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params, function(fns){
-					fns.fn.apply(this, fns.params)
+					fns.fn.apply(this, [fns.params])
 				})
 //				commandQueue.trigger(id_command, params)
 //			} else {
