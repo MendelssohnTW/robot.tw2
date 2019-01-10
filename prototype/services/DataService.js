@@ -390,13 +390,13 @@ define("robotTW2/services/DataService", [
 				var tribes = $rootScope.data_data.tribes;
 				Object.keys(tribes).map(function(key){
 					if(!checkTimerMember.isRunning()){return}
-					function n(tribe_key){
+					function n(tribe){
 						if(!prom){
 							prom = new Promise(function(resolve_prom){
-								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe": tribes[tribe_key]}, function(msg){
+								socketSend.emit(providers.routeProvider.SEARCH_CHARACTERS, {"tribe_id": tribe.tribe_id}, function(msg){
 									if (msg.type == providers.routeProvider.SEARCH_CHARACTERS.type){
 										var characters = msg.data.members || [];
-										var players = tribes[key].member_data ? tribes[key].member_data : [];
+										var players = tribe.member_data ? tribe.member_data : [];
 										analise_removed_players(characters, players).then(function(listaRemove){
 											remove_players(listaRemove).then(function(){
 												analise_villages_players(characters, players).then(function(data){
@@ -421,10 +421,10 @@ define("robotTW2/services/DataService", [
 								}
 							})
 						} else {
-							prom_queue.push(tribe_key);
+							prom_queue.push(tribe);
 						}
 					}
-					n(key)
+					n(tribes[key])
 				})
 			})
 		}

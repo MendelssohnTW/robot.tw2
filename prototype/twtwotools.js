@@ -1040,7 +1040,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				},
 				'SEARCH_CHARACTERS':{
 					type:"search_characters",
-					data:["id"]
+					data:[""]
 				},
 				'UPDATE_CHARACTER':{
 					type:"update_character",
@@ -1195,10 +1195,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				createTimeout(id, type, opt_callback)
 				var dw = null
 				var dt = null
-				if(data.world)
+				if(data.world_id)
 					dw = data.world.id;
-				if(data.tribe)
-					dt = data.tribe.tribe_id;
+				if(data.tribe_id)
+					dt = data.tribe_id;
 				if(data){
 					if(data.user){
 						angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
