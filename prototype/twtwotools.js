@@ -80,7 +80,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		var fns = {}
 		, service = {};
 		return service.prefix = "robotTW2/" 
-			, service.bind = function(key, fn, params) {
+			, service.bind = function(key, fn, params, callback) {
 			fns.hasOwnProperty(this.prefix + key) || (fns[this.prefix + key] = []),
 			fns[this.prefix + key].push({fn:fn, params:params || {}})
 			if(typeof(callback)=="function"){
