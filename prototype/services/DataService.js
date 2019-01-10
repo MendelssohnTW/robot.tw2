@@ -1195,6 +1195,7 @@ define("robotTW2/services/DataService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DATA"})
 			checkTimerLog.stop()
 		}
+		$rootScope.$on("stopAll", stopAll);
 		return	{
 			init			: init,
 			start 			: start,

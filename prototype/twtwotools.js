@@ -1152,6 +1152,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					$rootScope.data_data.possible = false;
 					$rootScope.data_data.activated = false;
 				}
+				$rootScope.$broadcast("stopAll")
 				console.log("Socket error ... \n");
 			},
 			connect = function connect(callback){
