@@ -98,47 +98,39 @@ define("robotTW2/services/DataService", [
 				})
 			})
 		}
-		, send_tribes = function(tribes){
+		, send_tribes = function(tribe){
+			var rt = undefined
+			, rt_queue = []
 			return new Promise(function(res){
 				if(!checkTimerTribe.isRunning()){
 					res();
 					return
 				}
-				var world = {
-						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
-						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
-				}
-				, rt = undefined
-				, rt_queue = []
 
-				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
-					console.log("world updated")
-				})
 
-				function s(tribe){
-					if(!rt){
-						rt = send_server(tribe).then(function(){
-							rt = undefined;
-							if(rt_queue.length){
-								s(rt_queue.shift())
-							} else {
-
-								res()
-							}
-						})
-					} else {
-						rt_queue.push(tribe)
-					}
-				}
-
-				if(Object.keys(tribes).length){
-					Object.keys(tribes).map(function(tribe_id){
-						s(tribes[tribe_id])
+//				function s(tribe){
+				if(!this.rt){
+					this.rt = send_server(tribe).then(function(){
+						this.rt = undefined;
+						if(this.rt_queue.length){
+							s(this.rt_queue.shift())
+						} else {
+							res()
+						}
 					})
 				} else {
-					res()
-					return
+					this.rt_queue.push(tribe)
 				}
+//				}
+
+//				if(Object.keys(tribes).length){
+//				Object.keys(tribes).map(function(tribe_id){
+//				s(tribes[tribe_id])
+//				})
+//				} else {
+//				res()
+//				return
+//				}
 			})
 		}
 		, loadTribeProfile = function (tribe) {
@@ -260,7 +252,7 @@ define("robotTW2/services/DataService", [
 			loadTribeMembers(data_tribe).then(function(data){process_members(data, resolveNextId)})
 		}
 		, update_tribes = function(){
-			return new Promise(function(resolveTribes){
+			return new Promise(function(resolveTribes, rejectTribes){
 				get_tribes().then(function(tribes){
 					if(!tribes.length || !checkTimerTribe.isRunning()){return}
 					var tribes_load = {}
@@ -286,6 +278,7 @@ define("robotTW2/services/DataService", [
 									if(members && members.length){
 										angular.extend(tribe, {"member_data" : members})
 										tribes_load[tribe.tribe_id] = tribe;
+										resolveTribes(tribe)
 										countTribes++;
 										console.log(countTribes + "- Tribo " + tribe.name + " - " + tribe.tag)
 									} else {
@@ -301,8 +294,9 @@ define("robotTW2/services/DataService", [
 										var tri = gp_queue.shift();
 										nextId(tri)
 									} else {
-										console.log("Tribos processadas")
-										resolveTribes(tribes_load)
+										rejectTribes()
+										$rootScope.data_data.tribes = tribes_load;
+//										resolveTribes(tribes_load)
 									}
 								})
 							} else {
@@ -745,17 +739,27 @@ define("robotTW2/services/DataService", [
 				if(checkTimerTribe.isRunning()){callback; return}
 				checkTimerTribe.setIsRunning(!0);
 				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
-				update_tribes().then(function(tribes){
-					console.log("Atualizando dados de tribos")
-					$rootScope.data_data.tribes = tribes;
-					send_tribes(tribes).then(function(){
-						checkTimerTribe.setIsRunning(!1);
-						$rootScope.$broadcast("finaly_tribe")
-						$rootScope.$broadcast("finaly")
-						$rootScope.data_data.last_update.tribes = time.convertedTime();
-						console.log("Tribos e membros atualizados")
-						callback()
+				var world = {
+						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
+						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
+				}
+
+				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
+					console.log("world updated")
+				})
+				console.log("Atualizando dados de tribos")
+
+				update_tribes().then(function(tribe){
+					send_tribes(tribe).then(function(){
+						send_promise = undefined;
 					})
+				}, function(){
+					checkTimerTribe.setIsRunning(!1);
+					$rootScope.$broadcast("finaly_tribe")
+					$rootScope.$broadcast("finaly")
+					$rootScope.data_data.last_update.tribes = time.convertedTime();
+					console.log("Tribos e membros atualizados")
+					callback()
 				});
 			} else {
 				console.log("Tribos e membros atualizados")
@@ -766,17 +770,27 @@ define("robotTW2/services/DataService", [
 				if(!checkTimerTribe.isRunning()){callback; return}
 				checkTimerTribe.setIsRunning(!0);
 				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
-				update_tribes().then(function(tribes){
-					console.log("Atualizando dados de tribos")
-					$rootScope.data_data.tribes = tribes;
-					send_tribes(tribes).then(function(){
-						checkTimerTribe.setIsRunning(!1);
-						$rootScope.$broadcast("finaly_tribe")
-						$rootScope.$broadcast("finaly")
-						$rootScope.data_data.last_update.tribes = time.convertedTime();
-						console.log("Tribos e membros atualizados")
-						callback()
+				var world = {
+						"world_id" 	: modelDataService.getPlayer().data.selectedCharacter.data.world_id,
+						"name" 		: modelDataService.getPlayer().data.selectedCharacter.data.world_name
+				}
+
+				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
+					console.log("world updated")
+				})
+				console.log("Atualizando dados de tribos")
+
+				update_tribes().then(function(tribe){
+					send_tribes(tribe).then(function(){
+						send_promise = undefined;
 					})
+				}, function(){
+					checkTimerTribe.setIsRunning(!1);
+					$rootScope.$broadcast("finaly_tribe")
+					$rootScope.$broadcast("finaly")
+					$rootScope.data_data.last_update.tribes = time.convertedTime();
+					console.log("Tribos e membros atualizados")
+					callback()
 				});
 			}, $rootScope.data_data.interval.tribes)
 		}

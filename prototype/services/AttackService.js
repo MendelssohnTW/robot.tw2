@@ -118,7 +118,8 @@ define("robotTW2/services/AttackService", [
 						catapult_target		: params.catapult_target
 					}
 			)
-
+			
+			removeCommandAttack(params.id_command)
 			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
 			scope.listener[params.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
