@@ -750,7 +750,7 @@ define("robotTW2/services/DataService", [
 				
 				var sent_tr = update_tribes(send_tribes); 
 
-				sent_tr.then(function(){
+				sent_tr().then(function(){
 				}, function(){
 					checkTimerTribe.setIsRunning(!1);
 					$rootScope.$broadcast("finaly_tribe")
