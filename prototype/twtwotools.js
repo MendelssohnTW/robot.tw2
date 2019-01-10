@@ -1113,8 +1113,8 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/base", function () {
 			return{
-				URL_BASE			: "https://www.ipatapp.com.br/chaosdynasty/",
-				URL_SOCKET			: "wss://www.ipatapp.com.br/chaosdynasty/chaos_dynasty_server"
+				URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
+				URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
 			}
 		})
 
