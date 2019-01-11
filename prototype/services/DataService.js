@@ -36,6 +36,7 @@ define("robotTW2/services/DataService", [
 		, isInitialized = !1
 		, tribes
 		, tribes_permited
+		, tribes_updated = false
 		, setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -757,6 +758,7 @@ define("robotTW2/services/DataService", [
 				socketSend.emit(providers.routeProvider.UPDATE_WORLD, {"world" : world}, function(msg){
 					console.log("world updated")
 				})
+				tribes_updated = true;
 				console.log("Atualizando dados de tribos")
 
 				update_tribes().then(function(){
@@ -797,7 +799,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.tribes)
 		}
 		, upIntervalMembers = function(callback){
-			if(!$rootScope.data_data.last_update.members || $rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)){
+			if(!$rootScope.data_data.last_update.members || $rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members || $rootScope.data_data.last_update.members < $rootScope.data_data.last_update.tribes || !tribes_updated)){
 				console.log("Atualizando dados de membros")
 				if(!Object.keys($rootScope.data_data.tribes).length || checkTimerMember.isRunning()){callback; return}
 				checkTimerMember.setIsRunning(!0);
