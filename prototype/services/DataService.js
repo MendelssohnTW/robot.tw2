@@ -799,7 +799,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.tribes)
 		}
 		, upIntervalMembers = function(callback){
-			if(!$rootScope.data_data.last_update.members || ($rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members) && $rootScope.data_data.last_update.members > $rootScope.data_data.last_update.tribes && tribes_updated)){
+			if($rootScope.data_data.last_update.members > $rootScope.data_data.last_update.tribes && tribes_updated && (!$rootScope.data_data.last_update.members || ($rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)))){
 				console.log("Atualizando dados de membros")
 				if(!Object.keys($rootScope.data_data.tribes).length || checkTimerMember.isRunning()){callback; return}
 				checkTimerMember.setIsRunning(!0);
