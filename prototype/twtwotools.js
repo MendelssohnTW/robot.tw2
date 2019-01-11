@@ -48,6 +48,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
 	var scripts_removed = [];
+	exports.commands_defense = [];
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -144,10 +145,14 @@ var robotTW2 = window.robotTW2 = undefined;
 		var service = {};
 		return service.bind = function(key, fn, opt_db, params, callback) {
 			if(!key) return;
-			if(opt_db && typeof(opt_db.get) == "function"){
-				if(!opt_db.commands){opt_db["commands"]= {}}
-				!opt_db.commands[key] ? opt_db.commands[key] = params : null;
-				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+			if(opt_db){
+				if(typeof(opt_db.get) == "function"){
+					if(!opt_db.commands){opt_db["commands"]= {}}
+					!opt_db.commands[key] ? opt_db.commands[key] = params : null;
+					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+				} else if(opt_db == "commands_defense"){
+					exports.commands_defense.push({[params.id_command] : params})
+				}
 			}
 			requestFn.bind(key, fn, params, function(fns){
 				if(typeof(callback)=="function"){
@@ -167,15 +172,19 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
-			if(opt_db && typeof(opt_db.get) == "function"){
-				var r = requestFn.get(key, true)
-				, g;
-				if(r){g = r.fn}
-				if(g){
-					exports.services.$timeout.cancel(g);
+			if(opt_db){
+				if(typeof(opt_db.get) == "function"){
+					var r = requestFn.get(key, true)
+					, g;
+					if(r){g = r.fn}
+					if(g){
+						exports.services.$timeout.cancel(g);
+					}
+					delete opt_db.commands[key];
+					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+				} else if(opt_db == "commands_defense"){
+					exports.commands_defense = exports.commands_defense.filter(f => f.id_command != key)
 				}
-				delete opt_db.commands[key];
-				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
 			requestFn.unbind(key);
 		}
@@ -1698,7 +1707,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					}
 				})
 			})
-			
+
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
 				case robotTW2.controllers.MainController : {

@@ -471,7 +471,7 @@ define("robotTW2/services/DefenseService", [
 					delete scope.listener_returned[cmd.id_command];
 				}
 //				if(scope.params[cmd.id_command]){
-//					delete scope.params[cmd.id_command]
+//				delete scope.params[cmd.id_command]
 //				}
 
 			}
@@ -525,12 +525,12 @@ define("robotTW2/services/DefenseService", [
 						"id_command" 	: cmd.id_command
 					}
 					if(timer_delay >= 0){
-					commandQueue.bind(cmd.id_command, sendCancel, params, function(fns){
-						fns.fn.apply(this, [fns.params])
-					})
-				
+						commandQueue.bind(cmd.id_command, sendCancel, "commands_defense", params, function(fns){
+							fns.fn.apply(this, [fns.params])
+						})
+
 //						commandQueue.trigger(cmd.id_command, params)
-//					} else {
+//						} else {
 //						commandQueue.unbind(cmd.id_command)
 					}
 //					delete scope.params[id_command]
@@ -576,11 +576,11 @@ define("robotTW2/services/DefenseService", [
 					"id_command": id_command
 				})
 
-				commandQueue.bind(id_command, sendDefense, $rootScope.data_defense, params, function(fns){
+				commandQueue.bind(id_command, sendDefense, "commands_defense", params, function(fns){
 					fns.fn.apply(this, [fns.params])
 				})
 //				commandQueue.trigger(id_command, params)
-//			} else {
+//				} else {
 //				removeCommandDefense(id_command)
 			}
 		}
@@ -665,7 +665,7 @@ define("robotTW2/services/DefenseService", [
 				delete scope.listener_sent[id_command];
 			}
 //			if(scope.params[id_command]){
-//				delete scope.params[id_command]
+//			delete scope.params[id_command]
 //			}
 			commandQueue.unbind(id_command)
 		}

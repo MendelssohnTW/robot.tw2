@@ -1,9 +1,11 @@
 define("robotTW2/controllers/DefenseController", [
+	"robotTW2",
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"helper/time",
 	], function(
+			robotTW2,
 			services,
 			providers,
 			conf,
@@ -37,9 +39,7 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 		, update = function(){
-			$scope.comandos = Object.keys($rootScope.data_defense.commands).map(function(elem, index, array){
-				return $rootScope.data_defense.commands[elem]
-			});
+			$scope.comandos = RobotTW2.commands_defense;
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
