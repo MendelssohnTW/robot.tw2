@@ -43,8 +43,8 @@ define("robotTW2/services/HeadquarterService", [
 		, listener_building_level_change = undefined
 		, listener_resume = undefined
 		, checkBuildingOrderLimit = function(vill) {
-			var buildingLevels = vill.buildinglevels[vill.selected]
-			, buildingLimit = vill.buildinglimit[vill.selected]
+			var buildingLevels = vill.buildinglevels[vill.selected.value]
+			, buildingLimit = vill.buildinglimit[vill.selected.value]
 			, builds = [];
 
 			buildingLevels.map(
@@ -187,11 +187,11 @@ define("robotTW2/services/HeadquarterService", [
 					resolve();
 				}
 
-				$rootScope.data_villages.villages[village_id].buildinglevels[$rootScope.data_villages.villages[village_id].selected] = buildingLevels;
+				$rootScope.data_villages.villages[village_id].buildinglevels[$rootScope.data_villages.villages[village_id].selected.value] = buildingLevels;
 				if (queues.length) {
 					queues.forEach(
 							function(queue) {
-								$rootScope.data_villages.villages[village_id].buildinglevels[$rootScope.data_villages.villages[village_id].selected].map(function(value){
+								$rootScope.data_villages.villages[village_id].buildinglevels[$rootScope.data_villages.villages[village_id].selected.value].map(function(value){
 									Object.keys(value)[0] == queue.building ? value[queue.building]++ :undefined;
 								})
 							}
