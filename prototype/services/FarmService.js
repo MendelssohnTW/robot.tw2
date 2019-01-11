@@ -209,13 +209,14 @@ define("robotTW2/services/FarmService", [
 			, promise_send_queue= [];
 			
 			lt_bb.forEach(function (barbara) {
+				var g = undefined;
 				var f = function(bb){
 					if(!promise_send){
 						promise_send = new Promise(function(resolve_send){
 							r = $timeout(function(){
 								resolve_send(true)
 							}, conf_conf.LOADING_TIMEOUT);
-							$timeout(function () {
+							g = $timeout(function () {
 								var params =  {
 										start_village: village_id,
 										target_village: bb,
@@ -235,7 +236,6 @@ define("robotTW2/services/FarmService", [
 										'village_id'		: bb,
 										'num_reports'		: 0
 									}, function (village) {
-										$timeout.cancel(r);
 										$rootScope.data_logs.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
 										socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										resolve_send(permit_send)
@@ -246,6 +246,10 @@ define("robotTW2/services/FarmService", [
 							}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
 						})
 						.then(function(permited){
+							$timeout.cancel(r);
+							r = undefined;
+							$timeout.cancel(g);
+							g = undefined;
 							promise_send = undefined;
 							if(promise_send_queue.length && permited){
 								barbara = promise_send_queue.shift()
@@ -424,7 +428,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
-				return $timeout(function(){
+				var g = $timeout(function(){
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 					clear()
 					var commands_for_presets = []
@@ -473,6 +477,9 @@ define("robotTW2/services/FarmService", [
 					})
 
 					execute_presets(commands_for_presets).then(resol)
+					$timeout.cancel(g);
+					g= undefined;
+					
 				}, tempo)
 			})
 		}
