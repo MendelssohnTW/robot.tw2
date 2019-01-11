@@ -725,25 +725,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					levelsBuilding.push({[buildingTypes[type]] : 0})
 				}
 			}
-//			var orderbuilding = [
-//			{"academy": 1}, //Academia
-//			{"headquarter": 2}, //Principal
-//			{"farm": 3}, //Fazenda
-//			{"warehouse": 4}, //Armazém
-//			{"barracks": 5}, //Quartel
-//			{"rally_point": 6}, //Ponto de encontro
-//			{"timber_camp": 7}, //Bosque
-//			{"iron_mine": 8}, //Mina de Ferro
-//			{"clay_pit": 9}, //Poço de Argila
-//			{"wall": 10}, //Muralha
-//			{"statue": 11}, //Estátua
-//			{"tavern": 12}, //Taverna
-//			{"market": 13}, //Mercado
-//			{"hospital": 14}, //Hospital
-//			{"preceptory": 15}, //Salão das ordens
-//			{"church": 16}, //Igreja
-//			{"chapel": 17} //Caplea
-//			]
 
 			var orderbuilding= {
 					academy : [
@@ -804,26 +785,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								{"chapel": 17} //Caplea
 								]
 			}
-
-//			var limitBuilding = [
-//			{"headquarter": 20},
-//			{"barracks": 10},
-//			{"tavern": 7},
-//			{"hospital": 1},  
-//			{"preceptory": 0},  
-//			{"church": 0},
-//			{"chapel": 0},
-//			{"academy": 1},  
-//			{"rally_point": 5},  
-//			{"statue": 5},
-//			{"market": 5},
-//			{"timber_camp": 18},  
-//			{"clay_pit": 18},
-//			{"iron_mine": 18},  
-//			{"farm": 25},
-//			{"warehouse": 23},  
-//			{"wall": 10}
-//			]
 
 			var limitBuilding = {
 					academy : [
