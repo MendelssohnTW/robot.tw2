@@ -722,6 +722,7 @@ define("robotTW2/services/DataService", [
 		}
 		, upIntervalVillages = function(callback){
 			if(!$rootScope.data_data.last_update.villages || $rootScope.data_data.last_update.villages < (time.convertedTime() - $rootScope.data_data.interval.villages)){
+				$rootScope.data_logs.data = [];
 				if(!Object.keys($rootScope.data_data.tribes).length || checkTimerVillage.isRunning()){callback; return}
 				checkTimerVillage.setIsRunning(!0);
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
@@ -735,6 +736,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.$broadcast("finaly")
 			}
 			return setInterval(function(){
+				$rootScope.data_logs.data = [];
 				if(!Object.keys($rootScope.data_data.tribes).length || !checkTimerVillage.isRunning()){callback; return}
 				checkTimerVillage.setIsRunning(!0);
 				$rootScope.data_data.complete_villages = time.convertedTime() + $rootScope.data_data.interval.villages;
@@ -746,6 +748,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.villages)
 		}
 		, upIntervalTribes = function(callback){
+			$rootScope.data_logs.data = [];
 			if(!$rootScope.data_data.last_update.tribes || $rootScope.data_data.last_update.tribes < (time.convertedTime() - $rootScope.data_data.interval.tribes)){
 				if(checkTimerTribe.isRunning()){callback; return}
 				checkTimerTribe.setIsRunning(!0);
@@ -775,6 +778,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.$broadcast("finaly")
 			}
 			return setInterval(function(){
+				$rootScope.data_logs.data = [];
 				if(!checkTimerTribe.isRunning()){callback; return}
 				checkTimerTribe.setIsRunning(!0);
 				$rootScope.data_data.complete_tribes = time.convertedTime() + $rootScope.data_data.interval.tribes;
@@ -799,6 +803,7 @@ define("robotTW2/services/DataService", [
 			}, $rootScope.data_data.interval.tribes)
 		}
 		, upIntervalMembers = function(callback){
+			$rootScope.data_logs.data = [];
 			if($rootScope.data_data.last_update.members > $rootScope.data_data.last_update.tribes && tribes_updated && (!$rootScope.data_data.last_update.members || ($rootScope.data_data.last_update.members < (time.convertedTime() - $rootScope.data_data.interval.members)))){
 				console.log("Atualizando dados de membros")
 				if(!Object.keys($rootScope.data_data.tribes).length || checkTimerMember.isRunning()){callback; return}
@@ -818,6 +823,7 @@ define("robotTW2/services/DataService", [
 				$rootScope.$broadcast("finaly")
 			}
 			return setInterval(function(){
+				$rootScope.data_logs.data = [];
 				console.log("Atualizando dados de membros")
 				if(!Object.keys($rootScope.data_data.tribes).length || !checkTimerMember.isRunning()){callback; return}
 				checkTimerMember.setIsRunning(!0);
