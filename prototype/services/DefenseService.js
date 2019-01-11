@@ -345,7 +345,7 @@ define("robotTW2/services/DefenseService", [
 			}
 			ct()
 		}
-		, getAtatques = function(){
+		, getAtaques = function(){
 			return new Promise(function(resolve){
 				t = $timeout(resolve , 480000);
 				var vls = modelDataService.getSelectedCharacter().getVillageList(); 
