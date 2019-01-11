@@ -1692,7 +1692,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			$rootScope.local = "";
 			require(["robotTW2/socketSend"], function(socketSend){
 				socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
-					if (msg.type == providers.routeProvider.SEARCH_LOCAL.type){
+					if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
 						$rootScope.local = msg.local;
 						if (!$rootScope.$$phase) $rootScope.$apply();
 					}
