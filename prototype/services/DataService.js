@@ -1167,7 +1167,7 @@ define("robotTW2/services/DataService", [
 			if(isRunning){return}
 			ready(function(){
 				isRunning = !0;
-				if (!checkTimerTribe.isInitialized()){
+				if (!checkTimerTribe.isInitialized() && $rootScope.local != ""){
 					checkTimerTribe.init();
 					if (!checkTimerMember.isInitialized()){
 						checkTimerMember.init();

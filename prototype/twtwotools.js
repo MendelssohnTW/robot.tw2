@@ -1043,6 +1043,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				'VERIFY_RESERVATION':{
 					type:"verify_reservation",
 					data:["verify_reservation"]
+				},
+				'SEARCH_LOCAL':{
+					type:"search_local",
+					data:[""]
 				}
 			});
 			robotTW2.register("providers", "eventTypeProvider", {
@@ -1179,7 +1183,8 @@ var robotTW2 = window.robotTW2 = undefined;
 							'type'		: type,
 							'data'		: data,
 							'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-							'id'		: id
+							'id'		: id,
+							'local'		: $rootScope.local
 						})
 				)	
 			}
@@ -1684,6 +1689,16 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 
 		$rootScope.$on("ready", function($event, type){
+			$rootScope.local = "";
+			require(["robotTW2/socketSend"], function(socketSend){
+				socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
+					if (msg.type == providers.routeProvider.SEARCH_LOCAL.type){
+						$rootScope.local = msg.local;
+						if (!$rootScope.$$phase) $rootScope.$apply();
+					}
+				})
+			})
+			
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
 				case robotTW2.controllers.MainController : {
