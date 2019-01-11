@@ -470,9 +470,9 @@ define("robotTW2/services/DefenseService", [
 					scope.listener_returned[cmd.id_command]();
 					delete scope.listener_returned[cmd.id_command];
 				}
-				if(scope.params[cmd.id_command]){
-					delete scope.params[cmd.id_command]
-				}
+//				if(scope.params[cmd.id_command]){
+//					delete scope.params[cmd.id_command]
+//				}
 
 			}
 		}
@@ -576,7 +576,7 @@ define("robotTW2/services/DefenseService", [
 					"id_command": id_command
 				})
 
-				commandQueue.bind(id_command, sendDefense, null, params, function(fns){
+				commandQueue.bind(id_command, sendDefense, $rootScope.data_defense, params, function(fns){
 					fns.fn.apply(this, [fns.params])
 				})
 //				commandQueue.trigger(id_command, params)
@@ -664,9 +664,9 @@ define("robotTW2/services/DefenseService", [
 				scope.listener_sent[id_command]();
 				delete scope.listener_sent[id_command];
 			}
-			if(scope.params[id_command]){
-				delete scope.params[id_command]
-			}
+//			if(scope.params[id_command]){
+//				delete scope.params[id_command]
+//			}
 			commandQueue.unbind(id_command)
 		}
 		, removeAll = function(){
