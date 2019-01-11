@@ -447,7 +447,7 @@ define("robotTW2/services/DefenseService", [
 //				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
-				resendDefense(paramsd)
+				resendDefense(params)
 			} else {
 				removeCommandDefense(params.id_command)
 			}
