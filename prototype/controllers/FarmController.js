@@ -62,7 +62,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, get_dist = function (max_journey_time) {
 			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId)
-			, units = $scope.presetSelected.units
+			, units = $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[$scope.villageSelected.data.villageId].units
 			, army = {
 					'officers'	: {},
 					"units"		: units
