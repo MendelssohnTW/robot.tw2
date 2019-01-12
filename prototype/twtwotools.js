@@ -151,7 +151,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					!opt_db.commands[key] ? opt_db.commands[key] = params : null;
 					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 				} else if(opt_db == "commands_defense"){
-					exports.commands_defense.push({[params.id_command] : params})
+					exports.commands_defense.push(params)
 				}
 			}
 			requestFn.bind(key, fn, params, function(fns){
