@@ -3,12 +3,14 @@ define("robotTW2/controllers/DefenseController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
+	"robotTW2/time",
 	"helper/time",
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
+			time,
 			helper
 	){
 	return function DefenseController($rootScope, $scope) {
