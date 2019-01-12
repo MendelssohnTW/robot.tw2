@@ -64,13 +64,13 @@ define("robotTW2/controllers/FarmController", [
 			var village = services.modelDataService.getVillage($scope.villageSelected.data.villageId)
 			, units = units
 			, army = {
-					'officers'	: {},
-					"units"		: units
-				}
+				'officers'	: {},
+				"units"		: units
+			}
 			, travelTime = calculateTravelTime(army, village, "attack", {
 				'barbarian'		: true
 			})
-			
+
 			return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
@@ -105,7 +105,14 @@ define("robotTW2/controllers/FarmController", [
 				$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time, $scope.presetSelected.units)
 			}
 			angular.extend($scope.villageSelected.presets, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets)
-			blurPreset();
+			triggerUpdate(function(){
+				$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
+						function(elem){
+							if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+						}).filter(f=>f!=undefined)[0]
+				)
+			});
+			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function(){
 			if($scope.activeTab != TABS.PRESET){return}
@@ -138,7 +145,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-		
+
 		$scope.toggleValueState = function(update_all_presets){
 			$scope.update_all_presets = update_all_presets;
 			if (!$scope.$$phase) {$scope.$apply();}
