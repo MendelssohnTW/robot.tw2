@@ -105,13 +105,16 @@ define("robotTW2/controllers/FarmController", [
 				$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time, $scope.presetSelected.units)
 			}
 			angular.extend($scope.villageSelected.presets, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets)
-			triggerUpdate(function(){
-				$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
-						function(elem){
-							if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-						}).filter(f=>f!=undefined)[0]
-				)
-			});
+			if (!$rootScope.$$phase) {$rootScope.$apply();}
+			if($scope.update_all_presets){
+				triggerUpdate(function(){
+					$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
+							function(elem){
+								if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+							}).filter(f=>f!=undefined)[0]
+					)
+				});
+			}
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function(){
