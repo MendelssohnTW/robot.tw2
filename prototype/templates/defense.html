@@ -61,9 +61,9 @@
 							<td class="cell-center"><span
 								class="icon icon-34x34-time-remaining"></span></td>
 							<td class="cell-center"><span class="icon icon-26x26-time"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-time-completed"></span></td>
-							<td class="cell-center"><span>Data</span></td>
+							<td class="cell-center"><span>Envio</span></td>
+							<td class="cell-center"><span>Comando</span></td>
+							<td class="cell-center"><span>Retorno</span></td>
 							<td class="cell-center"><span>Tempo anterior</span></td>
 							<td class="cell-center"><span>Tempo posterior</span></td>
 							<td class="cell-center"></td>
@@ -111,12 +111,17 @@
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.time_sniper_ant}}</span>
+									<span>{{getHoraRetorno(comando)}}</span>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.time_sniper_post}}</span>
+									<span>{{comando.time_sniper_ant / 1000}} seg</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.time_sniper_post / 1000}} seg</span>
 								</div>
 							</td>
 							
