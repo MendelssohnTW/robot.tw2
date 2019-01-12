@@ -362,7 +362,7 @@ define("robotTW2/services/DefenseService", [
 						
 						robotTW2.commands_defense = robotTW2.commands_defense.filter(f => !f.preserv)
 						
-						list_others = commands_defense;
+						list_others = robotTW2.commands_defense;
 
 						var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
 						var comandos_incoming = cmds.incoming;
