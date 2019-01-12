@@ -548,7 +548,7 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-			scope.listener_sent[parms.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
+			scope.listener_sent[params.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
