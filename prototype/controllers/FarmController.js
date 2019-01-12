@@ -265,7 +265,7 @@ define("robotTW2/controllers/FarmController", [
 				$rootScope.data_farm.farm_time
 
 				$scope.presetSelected.max_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time)
+				$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time, $scope.presetSelected.units)
 			}
 		}
 
@@ -276,7 +276,7 @@ define("robotTW2/controllers/FarmController", [
 					r = r + ":00"
 				}
 				$scope.presetSelected.min_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time)
+				$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time, $scope.presetSelected.units)
 			}
 		}
 
