@@ -135,6 +135,11 @@ define("robotTW2/controllers/FarmController", [
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
+		
+		$scope.toggleValueState = function(update_all_presets){
+			$scope.update_all_presets = update_all_presets;
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
 
 		$scope.blur = function (callback) {
 			if($scope.activeTab == TABS.FARM){
