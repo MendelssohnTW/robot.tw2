@@ -39,7 +39,7 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 		, update = function(){
-			$scope.comandos = RobotTW2.commands_defense;
+			$scope.comandos = robotTW2.commands_defense;
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
