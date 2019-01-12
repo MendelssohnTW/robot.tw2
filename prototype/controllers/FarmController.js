@@ -93,7 +93,7 @@ define("robotTW2/controllers/FarmController", [
 				callback()
 			}
 		}
-		, blurPreset = function(){
+		, updateBlur = function(){
 			if($scope.activeTab != TABS.PRESET){return}
 			if($scope.update_all_presets){
 				Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets).map(function(elem){
@@ -104,8 +104,11 @@ define("robotTW2/controllers/FarmController", [
 				$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time, $scope.presetSelected.units)
 				$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time, $scope.presetSelected.units)
 			}
-			
 			angular.extend($scope.villageSelected.presets, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets)
+			blurPreset();
+		}
+		, blurPreset = function(){
+			if($scope.activeTab != TABS.PRESET){return}
 			var tmMax = helper.readableMilliseconds($scope.presetSelected.max_journey_time);
 			if(tmMax.length == 7) {
 				tmMax = "0" + tmMax;
@@ -280,7 +283,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 		}
 
-		$scope.blurPreset = blurPreset;
+		$scope.updateBlur = updateBlur;
 
 		$scope.$watch("presetSelected", function(){
 			if(!$scope.presetSelected || !blurPreset){return}
