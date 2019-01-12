@@ -42,7 +42,7 @@ define("robotTW2/controllers/DefenseController", [
 		}
 		, update = function(){
 			$scope.comandos = robotTW2.commands_defense;
-			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
+			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.time_sniper_ant) - (b.data_escolhida - time.convertedTime() - b.time_sniper_ant)})
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
@@ -91,7 +91,7 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.getHoraSend = function(param){
 
-			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
+			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
 		}
 
 		$scope.getHoraAlvo = function(param){
@@ -105,7 +105,7 @@ define("robotTW2/controllers/DefenseController", [
 		}
 
 		$scope.getTimeRest = function(param){
-			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
+			var difTime = param.data_escolhida - time.convertedTime() - param.time_sniper_ant; 
 			return helper.readableMilliseconds(difTime)
 		}
 
