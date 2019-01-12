@@ -95,17 +95,22 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, updateBlur = function(){
 			if($scope.activeTab != TABS.PRESET){return}
+			var vills = $rootScope.data_villages.villages;
+			var villSel = $scope.villageSelected.data.villageId;
 			if($scope.update_all_presets){
-				Object.keys($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets).map(function(elem){
-					$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].max_journey_distance = get_dist($scope.presetSelected.max_journey_time, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].units)
-					$rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].min_journey_distance = get_dist($scope.presetSelected.min_journey_time, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets[elem].units)
+				Object.keys(vills[villSel].presets).map(function(elem){
+					var pre = vills[villSel].presets[elem];
+					pre.max_journey_distance = get_dist($scope.presetSelected.max_journey_time, pre.units)
+					pre.min_journey_distance = get_dist($scope.presetSelected.min_journey_time, pre.units)
+					vills[villSel].presets[elem] = pre;
 				})
+				$rootScope.data_villages.villages = vills;
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			} else {
 				$scope.presetSelected.max_journey_distance = get_dist($scope.presetSelected.max_journey_time, $scope.presetSelected.units)
 				$scope.presetSelected.min_journey_distance = get_dist($scope.presetSelected.min_journey_time, $scope.presetSelected.units)
 			}
-			angular.extend($scope.villageSelected.presets, $rootScope.data_villages.villages[$scope.villageSelected.data.villageId].presets)
+			angular.extend($scope.villageSelected.presets, vills[villSel].presets)
 			
 			if (!$scope.$$phase) {$scope.$apply();}
 			if($scope.update_all_presets){
