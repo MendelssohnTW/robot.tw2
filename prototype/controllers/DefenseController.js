@@ -104,7 +104,7 @@ define("robotTW2/controllers/DefenseController", [
 			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
 		}
 
-		$scope.getRetorno = function(param){
+		$scope.getHoraRetorno = function(param){
 
 			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "HH:mm:ss.sss");
 		}
