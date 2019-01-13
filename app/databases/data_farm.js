@@ -38,7 +38,7 @@ define("robotTW2/databases/data_farm", [
 			time_delay_farm			: conf.TIME_DELAY_FARM,
 			list_exceptions			: [],
 			commands				: {},
-			troops_not				: conf.FARM.TROOPS_NOT,
+			troops_not				: conf.TROOPS_NOT.FARM,
 			name					: "data_farm"
 	}
 

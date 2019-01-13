@@ -44,7 +44,7 @@ define("robotTW2/databases/data_recruit", [
 				iron			: conf.RESERVA.RECRUIT.IRON,
 				slots			: conf.RESERVA.RECRUIT.SLOTS
 			},
-			troops_not				: conf.RECRUIT.TROOPS_NOT,
+			troops_not				: conf.TROOPS_NOT.RECRUIT,
 			Groups					: services.groupService.getGroups(),
 			GroupsKeys				: Object.keys(services.groupService.getGroups()),
 			GroupsName				: Object.keys(services.groupService.getGroups()).map(m => services.groupService.getGroups()[m].name),
