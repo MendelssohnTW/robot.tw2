@@ -1686,7 +1686,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 
 
-		var ready_init = $rootScope.$on("ready_init", function($event){
+		$rootScope.$on("ready_init", function($event){
 			robotTW2.ready(function(){
 				require(["robotTW2/services"]);
 				require(["robotTW2/databases"]);
@@ -1696,8 +1696,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/MainController.js");
 					return robotTW2.controllers;
 				}))
-				ready_init();
-				ready_init = undefined;
 			}, ["all_villages_ready"])
 		})
 
