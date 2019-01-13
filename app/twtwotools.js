@@ -973,8 +973,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 
 					},
-					TROOPS_NOT				: ["knight", "snob", "doppelsoldner", "trebuchet"]
-
+					TROOPS_NOT				: {
+						RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
+						FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
 			}
 			return conf;
 		})
