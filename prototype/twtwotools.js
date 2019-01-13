@@ -1701,7 +1701,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}, ["all_villages_ready"])
 		})
 
-		var ready = $rootScope.$on("ready", function($event, type){
+		$rootScope.$on("ready", function($event, type){
 			$rootScope.local = "";
 			require(["robotTW2/socketSend"], function(socketSend){
 				socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
@@ -2157,8 +2157,6 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 			});
-			ready()
-			ready = undefined;
 		})
 	});
 }.call(this)
