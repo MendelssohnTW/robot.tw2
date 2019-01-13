@@ -242,6 +242,18 @@
 		"exclude_button": "Delete command",
 		"schedule": "Schedule"
 	},
+	"defense": {
+		"defense": "Defense",
+		"log": "Log",
+		"text_date": "Date",
+		"text_hour": "Hour",
+		"text_ms": "Milliseconds",
+		"title": "Scheduled commands",
+		"command_list": "List of commands",
+		"ident_cmd": "Command identification",
+		"exclude_button": "Delete command",
+		"schedule": "Schedule"
+	},
 	"data": {
 		"title": "Data update",
 		"text_interval_data_villages": "Check interval villages",

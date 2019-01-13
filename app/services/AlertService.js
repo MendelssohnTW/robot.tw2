@@ -32,25 +32,21 @@ define("robotTW2/services/AlertService", [
 								notifyAttacks();
 							}
 						}
-						wait();
 					}, 2000);
 				});
 			} catch (Error){
-				wait();
 				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Erro ao carregar dados dos membros da tribo"})
 			}
 		}
 		, wait = function(){
 			if(!interval_alert){
-				interval_alert = $timeout(verify_alert, $rootScope.data_alert.interval)
-			} else {
-				$timeout.cancel(interval_alert);
-				interval_alert = $timeout(verify_alert, $rootScope.data_alert.interval)
+				interval_alert = setInterval(verify_alert, $rootScope.data_alert.interval)
 			}
 		}
 		, init = function (){
 			isInitialized = !0
 			start();
+			wait();
 		}
 		, start = function (){
 			if(isRunning){return}

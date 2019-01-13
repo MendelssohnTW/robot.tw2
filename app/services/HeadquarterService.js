@@ -173,7 +173,7 @@ define("robotTW2/services/HeadquarterService", [
 				}
 
 				list.push(getFinishedForFree(village))
-				setList();
+//				setList();
 
 				if (
 						!(
@@ -276,6 +276,8 @@ define("robotTW2/services/HeadquarterService", [
 						if (promise_queue.length){
 							vill_id = promise_queue.shift();
 							f(vill_id);	
+						} else {
+							wait()
 						}
 					})
 				} else {

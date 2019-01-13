@@ -241,6 +241,18 @@
 		"exclude_button": "Excluir comando",
 		"schedule": "Programar"
 	},
+	"defense": {
+		"defense": "Defense",
+		"log": "Log",
+		"text_date": "Data",
+		"text_hour": "Hora",
+		"text_ms": "Milisegundos",
+		"title": "Comandos programados",
+		"command_list": "Lista de comandos",
+		"ident_cmd": "Identificação do comando",
+		"exclude_button": "Excluir comando",
+		"schedule": "Programar"
+	},
 	"data": {
 		"title": "Atualização de dados",
 		"text_interval_data_villages": "Intervalo de nova atualização das aldeias",
