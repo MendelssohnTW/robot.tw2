@@ -60,7 +60,7 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-		, get_dist = function (villageId, max_journey_time, units) {
+		, get_dist = function (villageId, journey_time, units) {
 			var village = services.modelDataService.getVillage(villageId)
 			, units = units
 			, army = {
@@ -71,7 +71,20 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 
-			return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
+			return Math.trunc((journey_time / 1000 / travelTime) / 2);
+		}
+		, get_time = function (villageId, distance, units) {
+			var village = services.modelDataService.getVillage(villageId)
+			, units = units
+			, army = {
+				'officers'	: {},
+				"units"		: units
+			}
+			, travelTime = calculateTravelTime(army, village, "attack", {
+				'barbarian'		: true
+			})
+			
+			return helper.readableSeconds(services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack"))
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
 			presetIds = [];
@@ -101,14 +114,16 @@ define("robotTW2/controllers/FarmController", [
 				Object.keys(vills[villSel].presets).map(function(elem){
 					var pre = vills[villSel].presets[elem];
 					pre.max_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.max_journey_time, pre.units)
-					pre.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, pre.units)
+					pre.max_journey_time = get_time(vills[villSel].data.villageId, pre.max_journey_distance, pre.units)
+					pre.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, pre.units) || 0
+					pre.min_journey_time = get_time(vills[villSel].data.villageId, pre.min_journey_distance, pre.units) || 0
 					vills[villSel].presets[elem] = pre;
 				})
 				$rootScope.data_villages.villages = vills;
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			} else {
 				$scope.presetSelected.max_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)
-				$scope.presetSelected.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units)
+				$scope.presetSelected.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units) || 0
 			}
 			angular.extend($scope.villageSelected.presets, vills[villSel].presets)
 			
@@ -297,7 +312,7 @@ define("robotTW2/controllers/FarmController", [
 					r = r + ":00"
 				}
 				$scope.presetSelected.min_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.presetSelected.min_journey_distance = get_dist($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units)
+				$scope.presetSelected.min_journey_distance = get_dist($rootScope.data_villages.villages[$scope.villageSelected.data.villageId].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units) || 0
 				updateBlur()
 			}
 		}
