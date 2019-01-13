@@ -1686,7 +1686,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 
 
-		$rootScope.$on("ready_init", function($event){
+		var ready_init = $rootScope.$on("ready_init", function($event){
 			robotTW2.ready(function(){
 				require(["robotTW2/services"]);
 				require(["robotTW2/databases"]);
@@ -1695,11 +1695,13 @@ var robotTW2 = window.robotTW2 = undefined;
 				angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
 					robotTW2.loadScript("/controllers/MainController.js");
 					return robotTW2.controllers;
-				}))	
+				}))
+				ready_init();
+				ready_init = undefined;
 			}, ["all_villages_ready"])
 		})
 
-		$rootScope.$on("ready", function($event, type){
+		var ready = $rootScope.$on("ready", function($event, type){
 			$rootScope.local = "";
 			require(["robotTW2/socketSend"], function(socketSend){
 				socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
@@ -2155,7 +2157,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 			});
-
+			ready()
+			ready = undefined;
 		})
 	});
 }.call(this)
