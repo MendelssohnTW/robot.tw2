@@ -84,7 +84,7 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 			
-			return helper.readableSeconds(services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack"))
+			return services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack")
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
 			presetIds = [];
