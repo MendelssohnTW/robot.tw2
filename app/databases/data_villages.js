@@ -135,9 +135,9 @@ define("robotTW2/databases/data_villages", [
 							buildinglevels 			: conf.BUILDINGLEVELS,
 							farm_activate 			: true,
 							presets					: getPst(m),
-							selected				: Object.keys(conf.BUILDINGORDER).map(function(elem){
+							selected				: {value: Object.keys(conf.BUILDINGORDER).map(function(elem){
 								return elem
-							})[0]
+							})[0]}
 						})
 					}
 					angular.extend(data_villages.villages[m], villagesExtended[m])
