@@ -93,7 +93,7 @@ define("robotTW2/services/DataService", [
 		}
 		, send_server = function(tribe){
 			return new Promise(function(res){
-				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
+				$rootScope.data_logs.data.push({"text": tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(msg){
 					res()
 				})
