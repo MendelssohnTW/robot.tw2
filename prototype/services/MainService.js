@@ -9,16 +9,13 @@ define("robotTW2/services/MainService", [
 	){
 	return (function MainService($rootScope, requestFn, secondVillageService) {
 		$rootScope.local = "";
-		var count_ready = true;
-		if(count_ready){
-			count_ready = false;
-			socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
-				if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
-					$rootScope.local = msg.local;
-					if (!$rootScope.$$phase) $rootScope.$apply();
-				}
-			})
-		}
+		socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
+			if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
+				$rootScope.local = msg.local;
+				if (!$rootScope.$$phase) $rootScope.$apply();
+			}
+		})
+		
 		var service = {};
 		return service.initExtensions = function(){
 			var extensions = $rootScope.data_main.getExtensions();
