@@ -703,22 +703,22 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/version", function(){
 			return {
-				main:			"3.1.0",
-				villages:		"3.1.0",
-				alert:			"3.1.0",
-				deposit:		"3.1.0",
-				headquarter:	"3.1.0",
-				recon:			"3.1.0",
-				spy:			"3.1.0",
-				attack:			"3.1.0",
-				defense:		"3.1.0",
-				farm:			"3.1.0",
-				recruit:		"3.1.0",
-				medic:			"3.1.0",
-				secondvillage:	"3.1.0",
-				map:			"3.1.0",
-				data:			"3.1.0",
-				logs:			"3.1.0"
+				main:			"3.0.4",
+				villages:		"3.0.4",
+				alert:			"3.0.4",
+				deposit:		"3.0.4",
+				headquarter:	"3.0.4",
+				recon:			"3.0.4",
+				spy:			"3.0.4",
+				attack:			"3.0.4",
+				defense:		"3.0.4",
+				farm:			"3.0.4",
+				recruit:		"3.0.4",
+				medic:			"3.0.4",
+				secondvillage:	"3.0.4",
+				map:			"3.0.4",
+				data:			"3.0.4",
+				logs:			"3.0.4"
 			}
 		});
 
@@ -976,6 +976,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					TROOPS_NOT				: {
 						RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
 						FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
+
 			}
 			return conf;
 		})
@@ -1700,16 +1701,21 @@ var robotTW2 = window.robotTW2 = undefined;
 			}, ["all_villages_ready"])
 		})
 
+		var count_ready = true;
+
 		$rootScope.$on("ready", function($event, type){
 			$rootScope.local = "";
-			require(["robotTW2/socketSend"], function(socketSend){
-				socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
-					if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
-						$rootScope.local = msg.local;
-						if (!$rootScope.$$phase) $rootScope.$apply();
-					}
+			if(count_ready){
+				count_ready = false;
+				require(["robotTW2/socketSend"], function(socketSend){
+					socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
+						if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
+							$rootScope.local = msg.local;
+							if (!$rootScope.$$phase) $rootScope.$apply();
+						}
+					})
 				})
-			})
+			}
 
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
@@ -2009,7 +2015,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									}
 							)
 							require(["robotTW2/notify"], function(notify){
-								notify("RobotTW2 - Menu = Ctrl + Alt + p", true)
+								notify("RobotTW2", true)
 							})
 						}, 3000)
 					})
@@ -2078,7 +2084,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_alert.js");
 								robotTW2.loadScript("/databases/data_attack.js");
 								robotTW2.loadScript("/databases/data_recon.js");
-//								robotTW2.loadScript("/databases/data_defense.js");
+								robotTW2.loadScript("/databases/data_defense.js");
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 //								robotTW2.loadScript("/databases/data_medic.js");

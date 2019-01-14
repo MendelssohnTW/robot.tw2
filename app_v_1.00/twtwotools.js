@@ -25,7 +25,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	"use strict";
 
-	var host = "https://mendelssohntw.github.io/robot.tw2/app_v_1.00";
+	var host = "https://mendelssohntw.github.io/robot.tw2/app-v_1.00";
 	var $rootScope				= injector.get('$rootScope');
 	var $templateCache 			= injector.get('$templateCache');
 	var $exceptionHandler 		= injector.get('$exceptionHandler');
@@ -48,6 +48,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
 	var scripts_removed = [];
+	exports.commands_defense = [];
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -80,9 +81,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		var fns = {}
 		, service = {};
 		return service.prefix = "robotTW2/" 
-			, service.bind = function(key, fn, params) {
+			, service.bind = function(key, fn, params, callback) {
 			fns.hasOwnProperty(this.prefix + key) || (fns[this.prefix + key] = []),
 			fns[this.prefix + key].push({fn:fn, params:params || {}})
+			if(typeof(callback)=="function"){
+				callback({fn:fn, params:params || {}})
+			}
 		}
 		,
 		service.trigger = function(key, params) {
@@ -139,14 +143,24 @@ var robotTW2 = window.robotTW2 = undefined;
 	})()
 	, commandQueue = (function (){
 		var service = {};
-		return service.bind = function(key, fn, opt_db, params) {
+		return service.bind = function(key, fn, opt_db, params, callback) {
 			if(!key) return;
-			if(opt_db && typeof(opt_db.get) == "function"){
-				if(!opt_db.commands){opt_db["commands"]= {}}
-				!opt_db.commands[key] ? opt_db.commands[key] = params : null;
-				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+			if(opt_db){
+				if(typeof(opt_db.get) == "function"){
+					if(!opt_db.commands){opt_db["commands"]= {}}
+					!opt_db.commands[key] ? opt_db.commands[key] = params : null;
+					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+				} else if(opt_db == "commands_defense"){
+					if(!exports.commands_defense.find(f => f.id_command = params.id_command)){
+						exports.commands_defense.push(params)
+					}
+				}
 			}
-			requestFn.bind(key, fn, params)
+			requestFn.bind(key, fn, params, function(fns){
+				if(typeof(callback)=="function"){
+					callback(fns)
+				}	
+			})
 		}
 		,
 		service.trigger = function(key, params) {
@@ -160,15 +174,19 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
-			if(opt_db && typeof(opt_db.get) == "function"){
-				var r = requestFn.get(key, true)
-				, g;
-				if(r){g = r.fn}
-				if(g){
-					exports.services.$timeout.cancel(g);
+			if(opt_db){
+				if(typeof(opt_db.get) == "function"){
+					var r = requestFn.get(key, true)
+					, g;
+					if(r){g = r.fn}
+					if(g){
+						exports.services.$timeout.cancel(g);
+					}
+					delete opt_db.commands[key];
+					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
+				} else if(opt_db == "commands_defense"){
+					exports.commands_defense = exports.commands_defense.filter(f => f.id_command != key)
 				}
-				delete opt_db.commands[key];
-				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
 			requestFn.unbind(key);
 		}
@@ -575,9 +593,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
 			onLoad(responseText);
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
-			}
 		};
 		if (opt_host && typeof(opt_host) == "boolean") {
 //			uri = uri.substr(1);
@@ -721,25 +736,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					levelsBuilding.push({[buildingTypes[type]] : 0})
 				}
 			}
-//			var orderbuilding = [
-//			{"academy": 1}, //Academia
-//			{"headquarter": 2}, //Principal
-//			{"farm": 3}, //Fazenda
-//			{"warehouse": 4}, //Armazém
-//			{"barracks": 5}, //Quartel
-//			{"rally_point": 6}, //Ponto de encontro
-//			{"timber_camp": 7}, //Bosque
-//			{"iron_mine": 8}, //Mina de Ferro
-//			{"clay_pit": 9}, //Poço de Argila
-//			{"wall": 10}, //Muralha
-//			{"statue": 11}, //Estátua
-//			{"tavern": 12}, //Taverna
-//			{"market": 13}, //Mercado
-//			{"hospital": 14}, //Hospital
-//			{"preceptory": 15}, //Salão das ordens
-//			{"church": 16}, //Igreja
-//			{"chapel": 17} //Caplea
-//			]
 
 			var orderbuilding= {
 					academy : [
@@ -800,26 +796,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								{"chapel": 17} //Caplea
 								]
 			}
-
-//			var limitBuilding = [
-//			{"headquarter": 20},
-//			{"barracks": 10},
-//			{"tavern": 7},
-//			{"hospital": 1},  
-//			{"preceptory": 0},  
-//			{"church": 0},
-//			{"chapel": 0},
-//			{"academy": 1},  
-//			{"rally_point": 5},  
-//			{"statue": 5},
-//			{"market": 5},
-//			{"timber_camp": 18},  
-//			{"clay_pit": 18},
-//			{"iron_mine": 18},  
-//			{"farm": 25},
-//			{"warehouse": 23},  
-//			{"wall": 10}
-//			]
 
 			var limitBuilding = {
 					academy : [
@@ -941,8 +917,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						MEDIC		: h,
 						DATA		: {
 							villages	: 6 * h,
-							tribes		: 3 * h,
-							logs		: 1 * h
+							tribes		: 2 * h,
+							logs		: 1 * h,
+							members		: 3 * h
 						},
 						SPY			: 30 * min
 					},
@@ -996,7 +973,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 
 					},
-					TROOPS_NOT				: ["knight", "snob", "doppelsoldner", "trebuchet"]
+					TROOPS_NOT				: {
+						RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
+						FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
 
 			}
 			return conf;
@@ -1036,7 +1015,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				},
 				'SEARCH_CHARACTERS':{
 					type:"search_characters",
-					data:["id"]
+					data:[""]
 				},
 				'UPDATE_CHARACTER':{
 					type:"update_character",
@@ -1077,6 +1056,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				'VERIFY_RESERVATION':{
 					type:"verify_reservation",
 					data:["verify_reservation"]
+				},
+				'SEARCH_LOCAL':{
+					type:"search_local",
+					data:[""]
 				}
 			});
 			robotTW2.register("providers", "eventTypeProvider", {
@@ -1109,8 +1092,8 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/base", function () {
 			return{
-				URL_BASE			: "https://www.ipatapp.com.br/chaosdynasty/",
-				URL_SOCKET			: "wss://www.ipatapp.com.br/chaosdynasty/chaos_dynasty_server"
+				URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
+				URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
 			}
 		})
 
@@ -1148,6 +1131,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					$rootScope.data_data.possible = false;
 					$rootScope.data_data.activated = false;
 				}
+				$rootScope.$broadcast("stopAll")
 				console.log("Socket error ... \n");
 			},
 			connect = function connect(callback){
@@ -1190,10 +1174,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				createTimeout(id, type, opt_callback)
 				var dw = null
 				var dt = null
-				if(data.world)
+				if(data.world_id)
 					dw = data.world.id;
-				if(data.tribe)
-					dt = data.tribe.tribe_id;
+				if(data.tribe_id)
+					dt = data.tribe_id;
 				if(data){
 					if(data.user){
 						angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
@@ -1212,7 +1196,8 @@ var robotTW2 = window.robotTW2 = undefined;
 							'type'		: type,
 							'data'		: data,
 							'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-							'id'		: id
+							'id'		: id,
+							'local'		: $rootScope.local
 						})
 				)	
 			}
@@ -1712,11 +1697,26 @@ var robotTW2 = window.robotTW2 = undefined;
 				angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
 					robotTW2.loadScript("/controllers/MainController.js");
 					return robotTW2.controllers;
-				}))	
+				}))
 			}, ["all_villages_ready"])
 		})
 
+		var count_ready = true;
+
 		$rootScope.$on("ready", function($event, type){
+			$rootScope.local = "";
+			if(count_ready){
+				count_ready = false;
+				require(["robotTW2/socketSend"], function(socketSend){
+					socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
+						if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
+							$rootScope.local = msg.local;
+							if (!$rootScope.$$phase) $rootScope.$apply();
+						}
+					})
+				})
+			}
+
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
 				case robotTW2.controllers.MainController : {
@@ -2162,7 +2162,6 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 			});
-
 		})
 	});
 }.call(this)
