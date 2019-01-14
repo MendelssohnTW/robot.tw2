@@ -1701,16 +1701,21 @@ var robotTW2 = window.robotTW2 = undefined;
 			}, ["all_villages_ready"])
 		})
 
+		var count_ready = true;
+
 		$rootScope.$on("ready", function($event, type){
 			$rootScope.local = "";
-			require(["robotTW2/socketSend"], function(socketSend){
-				socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
-					if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
-						$rootScope.local = msg.local;
-						if (!$rootScope.$$phase) $rootScope.$apply();
-					}
+			if(count_ready){
+				count_ready = false;
+				require(["robotTW2/socketSend"], function(socketSend){
+					socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
+						if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
+							$rootScope.local = msg.local;
+							if (!$rootScope.$$phase) $rootScope.$apply();
+						}
+					})
 				})
-			})
+			}
 
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
