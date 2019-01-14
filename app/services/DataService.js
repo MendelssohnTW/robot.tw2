@@ -93,7 +93,7 @@ define("robotTW2/services/DataService", [
 		}
 		, send_server = function(tribe){
 			return new Promise(function(res){
-				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
+				$rootScope.data_logs.data.push({"text": tribe.name + "-" + tribe.tag, "date": (new Date(time.convertedTime())).toString()})
 				socketSend.emit(providers.routeProvider.UPDATE_TRIBE, {"tribe": tribe}, function(msg){
 					res()
 				})
@@ -745,7 +745,7 @@ define("robotTW2/services/DataService", [
 					$rootScope.data_data.last_update.villages = time.convertedTime();
 					callback()
 				});
-			}, $rootScope.data_data.interval.villages)
+			}, $rootScope.data_data.interval.villages || 6 * 60 * 60 * 1000)
 		}
 		, upIntervalTribes = function(callback){
 			$rootScope.data_logs.data = [];
@@ -800,7 +800,7 @@ define("robotTW2/services/DataService", [
 					console.log("Tribos e membros atualizados")
 					callback()
 				})
-			}, $rootScope.data_data.interval.tribes)
+			}, $rootScope.data_data.interval.tribes || 3 * 60 * 60 * 1000)
 		}
 		, upIntervalMembers = function(callback){
 			$rootScope.data_logs.data = [];
@@ -836,7 +836,7 @@ define("robotTW2/services/DataService", [
 					$rootScope.data_data.last_update.members = time.convertedTime();
 					callback()
 				})
-			}, $rootScope.data_data.interval.members)
+			}, $rootScope.data_data.interval.members || 2 * 60 * 60 * 1000)
 		}
 		, upIntervalLogs = function(callback){
 			if(!$rootScope.data_data.last_update.logs || $rootScope.data_data.last_update.logs < (time.convertedTime() - $rootScope.data_data.interval.logs)){
@@ -863,7 +863,7 @@ define("robotTW2/services/DataService", [
 					checkTimerLog.setIsRunning(!1);
 					callback()
 				})
-			}, $rootScope.data_data.interval.logs)
+			}, $rootScope.data_data.interval.logs || 60 * 60 * 1000)
 		}
 		, checkTimerTribe = (function (){
 			var interval_data_tribe = undefined
@@ -875,6 +875,8 @@ define("robotTW2/services/DataService", [
 					interval_data_tribe = upIntervalTribes(function(){
 						console.log("Terminate Tribes")
 					})
+				} else {
+					console.log("Servidor https não acessível")
 				}
 			}
 			,
@@ -1177,7 +1179,11 @@ define("robotTW2/services/DataService", [
 						if (!checkTimerLog.isInitialized()){
 							checkTimerLog.init();
 						};
+					} else {
+						console.log("CheckTimer não inicializado")
 					}
+				} else {
+					console.log("Não encontrado o local")
 				};
 			}, ["all_villages_ready"])
 		}
