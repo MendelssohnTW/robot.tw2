@@ -9,6 +9,7 @@ define("robotTW2/services/MainService", [
 	){
 	return (function MainService($rootScope, requestFn, secondVillageService) {
 		$rootScope.local = "";
+		var count_ready = true;
 		if(count_ready){
 			count_ready = false;
 			socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
