@@ -207,7 +207,7 @@ define("robotTW2/services/FarmService", [
 			var r = undefined
 			, promise_send = undefined
 			, promise_send_queue= [];
-			
+
 			lt_bb.forEach(function (barbara) {
 				var g = undefined;
 				var f = function(bb){
@@ -311,7 +311,7 @@ define("robotTW2/services/FarmService", [
 			return new Promise(function(resol){
 				var promise_grid = undefined
 				, promise_grid_queue = [];
-				
+
 				listaGrid.forEach(function(reg){
 					function t (c_preset, r){
 						if(promise_grid){
@@ -394,10 +394,10 @@ define("robotTW2/services/FarmService", [
 					resol()
 					return !1;
 				}
-				
+
 				var promise_preset = undefined
 				, promise_preset_queue = [];
-				
+
 				commands_for_presets.forEach(function(cmd_preset){
 					var t = function(cmd_preset){
 						if(!promise_preset){
@@ -481,7 +481,7 @@ define("robotTW2/services/FarmService", [
 					execute_presets(commands_for_presets).then(resol)
 					$timeout.cancel(g);
 					g= undefined;
-					
+
 				}, tempo)
 			})
 		}
@@ -521,15 +521,11 @@ define("robotTW2/services/FarmService", [
 								}
 								init_first = false;
 								execute_cicle(tempo).then(function(){
-									
-									if(time.convertedTime() + $rootScope.data_farm.farm_time < $rootScope.data_farm.farm_time_stop){
-										f()
-									} else {
-										$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
-										clear()
-									}
+									console.log("Terminate cicle process " + new Date(time.convertedTime()).toString())
+									f()
 								})
 							} else {
+								clear()
 								$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							}
 						}
