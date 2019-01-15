@@ -127,6 +127,7 @@ define("robotTW2/controllers/FarmController", [
 				$scope.presetSelected.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units) || 0
 				angular.extend($scope.villageSelected.presets[$scope.presetSelected.id], $scope.presetSelected)
 				angular.extend(vills[villSel].presets, $scope.villageSelected.presets)
+				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			}
 			
 			if (!$scope.$$phase) {$scope.$apply();}
