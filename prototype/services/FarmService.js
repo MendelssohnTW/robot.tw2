@@ -429,6 +429,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
+				console.log("New cicle farm " + new Date(time.convertedTime()).toString())
 				var g = $timeout(function(){
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 					clear()
@@ -520,7 +521,7 @@ define("robotTW2/services/FarmService", [
 								}
 								init_first = false;
 								execute_cicle(tempo).then(function(){
-									console.log("New cicle farm " + new Date(time.convertedTime()).toString())
+									
 									if(time.convertedTime() + $rootScope.data_farm.farm_time < $rootScope.data_farm.farm_time_stop){
 										f()
 									} else {
