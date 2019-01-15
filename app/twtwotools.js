@@ -703,22 +703,22 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/version", function(){
 			return {
-				main:			"3.0.4",
-				villages:		"3.0.4",
-				alert:			"3.0.4",
-				deposit:		"3.0.4",
-				headquarter:	"3.0.4",
-				recon:			"3.0.4",
-				spy:			"3.0.4",
-				attack:			"3.0.4",
-				defense:		"3.0.4",
-				farm:			"3.0.4",
-				recruit:		"3.0.4",
-				medic:			"3.0.4",
-				secondvillage:	"3.0.4",
-				map:			"3.0.4",
-				data:			"3.0.4",
-				logs:			"3.0.4"
+				main:			"3.1.1",
+				villages:		"3.1.1",
+				alert:			"3.1.1",
+				deposit:		"3.1.1",
+				headquarter:	"3.1.1",
+				recon:			"3.1.1",
+				spy:			"3.1.1",
+				attack:			"3.1.1",
+				defense:		"3.1.1",
+				farm:			"3.1.1",
+				recruit:		"3.1.1",
+				medic:			"3.1.1",
+				secondvillage:	"3.1.1",
+				map:			"3.1.1",
+				data:			"3.1.1",
+				logs:			"3.1.1"
 			}
 		});
 
@@ -1704,19 +1704,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		var count_ready = true;
 
 		$rootScope.$on("ready", function($event, type){
-			$rootScope.local = "";
-			if(count_ready){
-				count_ready = false;
-				require(["robotTW2/socketSend"], function(socketSend){
-					socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
-						if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
-							$rootScope.local = msg.local;
-							if (!$rootScope.$$phase) $rootScope.$apply();
-						}
-					})
-				})
-			}
-
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
 				case robotTW2.controllers.MainController : {

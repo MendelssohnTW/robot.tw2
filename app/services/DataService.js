@@ -109,18 +109,18 @@ define("robotTW2/services/DataService", [
 				}
 
 //				function s(tribe){
-				if(!rt){
-					rt = send_server(tribe).then(function(){
+//				if(!rt){
+					var rt = send_server(tribe).then(function(){
 						rt = undefined;
-						if(rt_queue.length){
-							s(rt_queue.shift())
-						} else {
+//						if(rt_queue.length){
+//							s(rt_queue.shift())
+//						} else {
 							res()
-						}
+//						}
 					})
-				} else {
-					rt_queue.push(tribe)
-				}
+//				} else {
+//					rt_queue.push(tribe)
+//				}
 //				}
 
 //				if(Object.keys(tribes).length){
