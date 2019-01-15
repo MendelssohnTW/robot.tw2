@@ -71,7 +71,7 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 
-			return Math.trunc((journey_time / 1000 / travelTime) / 2);
+			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function (villageId, distance, units) {
 			var village = services.modelDataService.getVillage(villageId)
@@ -124,8 +124,10 @@ define("robotTW2/controllers/FarmController", [
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			} else {
 				$scope.presetSelected.max_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)
-				$scope.presetSelected.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units) || 0
+				$scope.presetSelected.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units);
+				angular.extend($scope.villageSelected.presets[$scope.presetSelected.id], $scope.presetSelected)
 				angular.extend(vills[villSel].presets, $scope.villageSelected.presets)
+				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			}
 			
 			if (!$scope.$$phase) {$scope.$apply();}
