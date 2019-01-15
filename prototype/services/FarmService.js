@@ -217,6 +217,7 @@ define("robotTW2/services/FarmService", [
 								resolve_send(true)
 							}, conf_conf.LOADING_TIMEOUT);
 							g = $timeout(function () {
+								if(!isRunning){resolve_send(true); return}
 								var params =  {
 										start_village: village_id,
 										target_village: bb,
