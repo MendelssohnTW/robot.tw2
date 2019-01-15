@@ -703,22 +703,22 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/version", function(){
 			return {
-				main:			"3.1.1",
-				villages:		"3.1.1",
-				alert:			"3.1.1",
-				deposit:		"3.1.1",
-				headquarter:	"3.1.1",
-				recon:			"3.1.1",
-				spy:			"3.1.1",
-				attack:			"3.1.1",
-				defense:		"3.1.1",
-				farm:			"3.1.1",
-				recruit:		"3.1.1",
-				medic:			"3.1.1",
-				secondvillage:	"3.1.1",
-				map:			"3.1.1",
-				data:			"3.1.1",
-				logs:			"3.1.1"
+				main:			"3.1.2",
+				villages:		"3.1.2",
+				alert:			"3.1.2",
+				deposit:		"3.1.2",
+				headquarter:	"3.1.2",
+				recon:			"3.1.2",
+				spy:			"3.1.2",
+				attack:			"3.1.2",
+				defense:		"3.1.2",
+				farm:			"3.1.2",
+				recruit:		"3.1.2",
+				medic:			"3.1.2",
+				secondvillage:	"3.1.2",
+				map:			"3.1.2",
+				data:			"3.1.2",
+				logs:			"3.1.2"
 			}
 		});
 
