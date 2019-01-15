@@ -429,8 +429,8 @@ define("robotTW2/services/FarmService", [
 		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
-				console.log("New cicle farm " + new Date(time.convertedTime()).toString())
 				var g = $timeout(function(){
+					console.log("New cicle farm " + new Date(time.convertedTime()).toString())
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 					clear()
 					var commands_for_presets = []
