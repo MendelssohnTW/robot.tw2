@@ -110,16 +110,16 @@ define("robotTW2/services/DataService", [
 
 //				function s(tribe){
 //				if(!rt){
-					var rt = send_server(tribe).then(function(){
-						rt = undefined;
-//						if(rt_queue.length){
-//							s(rt_queue.shift())
-//						} else {
-							res()
-//						}
-					})
+				var rt = send_server(tribe).then(function(){
+					rt = undefined;
+//					if(rt_queue.length){
+//					s(rt_queue.shift())
+//					} else {
+					res()
+//					}
+				})
 //				} else {
-//					rt_queue.push(tribe)
+//				rt_queue.push(tribe)
 //				}
 //				}
 
@@ -176,9 +176,9 @@ define("robotTW2/services/DataService", [
 						}, function(data) {
 							data.ranking.map(function(tribe){
 
-//								if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
-								tbs.push(tribe)
-//								}
+								if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
+									tbs.push(tribe)
+								}
 
 //								if(tribe.tribe_id == 51 || tribe.tribe_id == 102){
 //								tribes.push(tribe)
@@ -201,6 +201,7 @@ define("robotTW2/services/DataService", [
 				function v(member){
 					if(!rm){
 						rm = new Promise(function(res){
+							console.log("GetProfile member id " + member.id)
 							getProfile(member.id, function(data){
 								angular.extend(member, data)
 								delete member.achievement_average;
@@ -308,7 +309,7 @@ define("robotTW2/services/DataService", [
 									} else {
 										console.log("Tribo " + tribe.name + " - " + tribe.tag + " não atualizada")
 									}
-									
+
 								})
 							} else {
 								gp_queue.push(tribe)
