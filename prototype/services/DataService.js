@@ -233,6 +233,7 @@ define("robotTW2/services/DataService", [
 						}).then(function(member){
 							rm = undefined
 							if(!checkTimerTribe.isRunning()){
+								console.log("GetProfile members stopped")
 								resolveNextId();
 								return
 							}
