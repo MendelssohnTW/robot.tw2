@@ -117,7 +117,7 @@
 									<div class="component-interface size-fill-x">
 										<span class="select-wrapper box-border-dark">
 											<select id="select_order" class="select-handler"
-											ng-options="item as item.name for item in data_headquarter.selects"
+											ng-options="item.value as item.name for item in data_headquarter.selects track by item.id"
 											ng-model="vill.selected"
 											></select>
 										</span>
