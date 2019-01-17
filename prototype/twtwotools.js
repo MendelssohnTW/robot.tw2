@@ -1096,7 +1096,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			case "pl_pl" : {
 				return {
 					URL_BASE			: "https://avebnt.nazwa.pl:8080/endpointbandits/",
-					URL_SOCKET			: "wss://avebnt.nazwa.pl:8080/endpointbandits/endpoint_server"
+					URL_SOCKET			: "wss://avebnt.nazwa.pl:443/endpointbandits/endpoint_server"
 				}
 				break
 			}
