@@ -123,10 +123,10 @@ define("robotTW2/controllers/FarmController", [
 				$scope.villageSelected.presets = obj;
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			} else {
-				$scope.presetSelected.max_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)
-				$scope.presetSelected.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units);
+				$scope.presetSelected.max_journey_distance = get_dist($scope.villageSelected.data.villageId, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)
+				$scope.presetSelected.min_journey_distance = get_dist($scope.villageSelected.data.villageId, $scope.presetSelected.min_journey_time, $scope.presetSelected.units);
 				angular.extend($scope.villageSelected.presets[$scope.presetSelected.id], $scope.presetSelected)
-				angular.extend(vills[villSel].presets, $scope.villageSelected.presets)
+				angular.extend($scope.villageSelected.presets, $scope.villageSelected.presets)
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			}
 			
