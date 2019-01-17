@@ -176,7 +176,7 @@ define("robotTW2/services/DataService", [
 						}, function(data) {
 							data.ranking.map(function(tribe){
 
-								if(Object.keys(tribes_permited).find(f=>tribes_permited[f].tribe_id==tribe.tribe_id)){
+								if(tribes_permited.find(f => f == tribe.tribe_id)){
 									tbs.push(tribe)
 								}
 
