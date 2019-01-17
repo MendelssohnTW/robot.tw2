@@ -119,7 +119,7 @@
 											<select id="select_order" class="select-handler"
 											ng-options="item as item.name for item in data_headquarter.selects"
 											ng-model="vill.selected"
-											ng-change="toggleSelect(vill.selected)"></select>
+											></select>
 										</span>
 									</div>
 								</td>
@@ -186,9 +186,9 @@
 																<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
 																<td class="cell-right"><span
 																	class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																	ng-click="levelup(buildingLimit)"></span> <span
+																	ng-click="levelup(vill, buildingLimit)"></span> <span
 																	class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																	ng-click="leveldown(buildingLimit)"></span></td>
+																	ng-click="leveldown(vill, buildingLimit)"></span></td>
 																<td class="cell-right"></td>
 															</tr>
 														</tbody>
