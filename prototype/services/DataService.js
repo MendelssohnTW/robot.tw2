@@ -520,8 +520,11 @@ define("robotTW2/services/DataService", [
 			return new Promise(function(resolve){
 				socketSend.emit(providers.routeProvider.SEARCH_TRIBES_PERMITED, {}, function(msg){
 					if (msg.type == providers.routeProvider.SEARCH_TRIBES_PERMITED.type){
-
-						resolve(msg.data.tribes)
+						if(msg.resp == "noTribe"){
+							resolve([])
+						} else {
+							resolve(msg.data.tribes)
+						}
 					}
 				});
 			})
