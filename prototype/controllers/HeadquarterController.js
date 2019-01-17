@@ -27,7 +27,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
-		$scope.toggleSelect = function(){
+		$scope.toggleSelect = function(selected){
+			console.log(selected)
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
