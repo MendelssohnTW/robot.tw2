@@ -737,6 +737,7 @@ define("robotTW2/services/DataService", [
 					callback()
 				});
 			} else {
+				console.log("Villages já atualizadas")
 				$rootScope.$broadcast("finaly_village")
 				$rootScope.$broadcast("finaly")
 			}
@@ -778,7 +779,7 @@ define("robotTW2/services/DataService", [
 					callback()
 				})
 			} else {
-				console.log("Tribos e membros atualizados")
+				console.log("Tribos e membros já atualizados")
 				$rootScope.$broadcast("finaly_tribe")
 				$rootScope.$broadcast("finaly")
 			}
@@ -823,9 +824,10 @@ define("robotTW2/services/DataService", [
 					callback()
 				})
 			} else {
-				console.log("Membros atualizados")
+				console.log("Membros já atualizados")
 				$rootScope.$broadcast("finaly_member")
 				$rootScope.$broadcast("finaly")
+				callback()
 			}
 			return setInterval(function(){
 				$rootScope.data_logs.data = [];
@@ -856,7 +858,7 @@ define("robotTW2/services/DataService", [
 					callback()
 				})
 			} else {
-				console.log("Logs de tribo atualizados")
+				console.log("Logs de tribo já atualizados")
 			}
 			return setInterval(function(){
 				console.log("Atualizando logs de tribo")
@@ -963,7 +965,6 @@ define("robotTW2/services/DataService", [
 				} else {
 					if($rootScope.data_data.possible){
 						interval_data_village = upIntervalVillages(function(){
-
 							console.log("Terminate Villages")
 						})
 					}
