@@ -1092,18 +1092,18 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/base", function () {
 
-			switch (navigator.language.toLowerCase()) {
-			case "pl" : {
+			switch ($rootScope.loc.ale) {
+			case "pl_pl" : {
 				return {
-					URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
-					URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
+					URL_BASE			: "https://avebnt.nazwa.pl:8080/endpointbandits/",
+					URL_SOCKET			: "wss://avebnt.nazwa.pl:8080/endpointbandits/endpoint_server"
 				}
 				break
 			}
 			default : {
 				return {
-					URL_BASE			: "https://avebnt.nazwa.pl:8080/endpointbandits/",
-					URL_SOCKET			: "wss://avebnt.nazwa.pl:8080/endpointbandits/endpoint_server"
+					URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
+					URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
 				}
 				break
 			}
