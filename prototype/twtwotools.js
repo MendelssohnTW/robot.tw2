@@ -1170,7 +1170,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 			, sendMsg = function sendMsg(type, data, opt_callback){
-				if(!($rootScope.local = robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase())){
+				if(robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data){
 					id = ++id;
 					createTimeout(id, type, opt_callback)
 					var dw = null
@@ -1199,7 +1199,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								'data'		: data,
 								'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
 								'id'		: id,
-								'local'		: $rootScope.local = robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
+								'local'		: robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
 							})
 					)
 				} else {
