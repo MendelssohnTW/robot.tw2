@@ -27,10 +27,10 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
-		$scope.toggleSelect = function(selected){
-			console.log(selected)
-			if (!$scope.$$phase) {$scope.$apply();}
-		}
+//		$scope.toggleSelect = function(selected){
+//			console.log(selected)
+//			if (!$scope.$$phase) {$scope.$apply();}
+//		}
 		
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - time.convertedTime()) : 0;
