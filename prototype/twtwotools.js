@@ -1095,8 +1095,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			switch ($rootScope.loc.ale) {
 			case "pl_pl" : {
 				return {
-					URL_BASE			: "http://avebnt.nazwa.pl:8080/endpointbandits/",
-					URL_SOCKET			: "ws://avebnt.nazwa.pl:8080/endpointbandits/endpoint_server"
+					URL_BASE			: "https://avebnt.nazwa.pl/endpointbandits/",
+					URL_SOCKET			: "wss://avebnt.nazwa.pl/endpointbandits/endpoint_server"
 				}
 				break
 			}
