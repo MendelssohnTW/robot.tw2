@@ -1091,10 +1091,24 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 
 		define("robotTW2/base", function () {
-			return{
-				URL_BASE			: "https://www.ipatapp.com.br/endpointbandits/",
-				URL_SOCKET			: "wss://www.ipatapp.com.br/endpointbandits/endpoint_server"
+
+			switch (navigator.language.toLowerCase()) {
+			case "pl" : {
+				return {
+					URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
+					URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
+				}
+				break
 			}
+			default : {
+				return {
+					URL_BASE			: "https://avebnt.nazwa.pl:8080/endpointbandits/",
+					URL_SOCKET			: "wss://avebnt.nazwa.pl:8080/endpointbandits/endpoint_server"
+				}
+				break
+			}
+			}
+
 		})
 
 		define("robotTW2/socket", ["robotTW2/base"], function(base) {
