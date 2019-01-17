@@ -523,7 +523,7 @@ define("robotTW2/services/DataService", [
 						if(msg.resp == "noTribe"){
 							resolve([])
 						} else {
-							resolve(msg.data.tribes)
+							resolve(msg.tribes_id)
 						}
 					}
 				});
