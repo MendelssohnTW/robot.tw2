@@ -147,7 +147,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingOrder in vill.buildingorder[vill.selected.value]"
+															<tr ng-repeat="buildingOrder in vill.buildingorder[vill.selected]"
 																style="height: 56px">
 																<td
 																	ng-class="{'resource-text' : selected_village_buildingOrder[vill.data.villageId] == buildingOrder}"
@@ -180,7 +180,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingLimit in vill.buildinglimit[vill.selected.value]">
+															<tr ng-repeat="buildingLimit in vill.buildinglimit[vill.selected]">
 																<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
 																	class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
 																<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
