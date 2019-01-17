@@ -1170,36 +1170,43 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 			, sendMsg = function sendMsg(type, data, opt_callback){
-				id = ++id;
-				createTimeout(id, type, opt_callback)
-				var dw = null
-				var dt = null
-				if(data.world_id)
-					dw = data.world.id;
-				if(data.tribe_id)
-					dt = data.tribe_id;
-				if(data){
-					if(data.user){
-						angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
-					} else {
-						data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
+				if(!($rootScope.local = robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase())){
+					id = ++id;
+					createTimeout(id, type, opt_callback)
+					var dw = null
+					var dt = null
+					if(data.world_id)
+						dw = data.world.id;
+					if(data.tribe_id)
+						dt = data.tribe_id;
+					if(data){
+						if(data.user){
+							angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
+						} else {
+							data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
+						}
+						angular.extend(data, {
+							"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
+							"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+							"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
+						});
 					}
-					angular.extend(data, {
-						"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
-						"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-						"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
-					});
+					callbacks[id] = opt_callback;
+
+					service.send(
+							angular.toJson({
+								'type'		: type,
+								'data'		: data,
+								'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+								'id'		: id,
+								'local'		: $rootScope.local = robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
+							})
+					)
+				} else {
+					if(typeof(opt_callback) == "function"){
+						opt_callback({"type": type, "resp": "noTribe"});
+					}
 				}
-				callbacks[id] = opt_callback;
-				service.send(
-						angular.toJson({
-							'type'		: type,
-							'data'		: data,
-							'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-							'id'		: id,
-							'local'		: $rootScope.local
-						})
-				)	
 			}
 
 			service = new WebSocket(base.URL_SOCKET);

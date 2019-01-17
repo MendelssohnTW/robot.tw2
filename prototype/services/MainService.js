@@ -7,17 +7,7 @@ define("robotTW2/services/MainService", [
 			conf,
 			socketSend
 	){
-	return (function MainService($rootScope, requestFn, secondVillageService) {
-		$rootScope.local = "";
-		socketSend.emit(robotTW2.providers.routeProvider.SEARCH_LOCAL, {}, function(msg){
-			if (msg.type == robotTW2.providers.routeProvider.SEARCH_LOCAL.type){
-				$rootScope.local = msg.local;
-				
-				if (!$rootScope.$$phase) $rootScope.$apply();
-			}
-		})
-
-		
+	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService) {
 
 		var service = {};
 		return service.initExtensions = function(){
@@ -50,5 +40,10 @@ define("robotTW2/services/MainService", [
 			return extensions
 		}
 		, service
-	})(robotTW2.services.$rootScope, robotTW2.requestFn, robotTW2.services.secondVillageService)
+	})(
+			robotTW2.services.$rootScope, 
+			robotTW2.requestFn, 
+			robotTW2.services.secondVillageService,
+			robotTW2.services.modelDataService
+			)
 })
