@@ -1093,7 +1093,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/base", function () {
 
 			switch ($rootScope.loc.ale) {
-			case "pl_pl" : {
+			case "pt_br" : {
 				return {
 					URL_BASE			: "https://avebnt.nazwa.pl/endpointbandits/",
 					URL_SOCKET			: "wss://avebnt.nazwa.pl/endpointbandits/endpoint_server"
