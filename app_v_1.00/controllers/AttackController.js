@@ -12,7 +12,6 @@ define("robotTW2/controllers/AttackController", [
 			helper
 	){
 	return function AttackController($rootScope, $scope) {
-		var data_attack = $rootScope.data_attack;
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", $rootScope.loc.ale);
 		var self = this;
@@ -123,7 +122,6 @@ define("robotTW2/controllers/AttackController", [
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
-			
 		})
 		
 		$scope.$watch("data_logs.attack", function(){

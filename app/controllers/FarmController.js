@@ -108,19 +108,19 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, updateBlur = function(){
 			if($scope.activeTab != TABS.PRESET){return}
-			var vills = $rootScope.data_villages.villages;
-			var villSel = $scope.villageSelected.data.villageId;
+			$scope.villageSelected
+//			var vills = $rootScope.data_villages.villages;
+//			var villSel = $scope.villageSelected.data.villageId;
 			if($scope.update_all_presets){
-				Object.keys(vills[villSel].presets).map(function(elem){
-					var pre = vills[villSel].presets[elem];
-					pre.max_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.max_journey_time, pre.units)
-					pre.max_journey_time = get_time(vills[villSel].data.villageId, pre.max_journey_distance, pre.units)
-					pre.min_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.min_journey_time, pre.units) || 0
-					pre.min_journey_time = get_time(vills[villSel].data.villageId, pre.min_journey_distance, pre.units) || 0
-					vills[villSel].presets[elem] = pre;
+				var obj = {};
+				Object.keys($scope.villageSelected.presets).map(function(elem){
+					obj[elem] = $scope.villageSelected.presets[elem];
+					obj[elem].max_journey_distance = get_dist($scope.villageSelected.data.villageId, $scope.presetSelected.max_journey_time, obj[elem].units)
+					obj[elem].max_journey_time = get_time($scope.villageSelected.data.villageId, obj[elem].max_journey_distance, obj[elem].units)
+					obj[elem].min_journey_distance = get_dist($scope.villageSelected.data.villageId, $scope.presetSelected.min_journey_time, obj[elem].units) || 0
+					obj[elem].min_journey_time = get_time($scope.villageSelected.data.villageId, obj[elem].min_journey_distance, obj[elem].units) || 0
 				})
-				$rootScope.data_villages.villages = vills;
-				angular.extend($scope.villageSelected.presets, vills[villSel].presets)
+				$scope.villageSelected.presets = obj;
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			} else {
 				$scope.presetSelected.max_journey_distance = get_dist(vills[villSel].data.villageId, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)

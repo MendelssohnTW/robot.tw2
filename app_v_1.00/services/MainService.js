@@ -1,11 +1,14 @@
 define("robotTW2/services/MainService", [
 	"robotTW2",
 	"robotTW2/conf",
+	"robotTW2/socketSend",
 	], function(
 			robotTW2,
-			conf
+			conf,
+			socketSend
 	){
-	return (function MainService($rootScope, requestFn, secondVillageService) {
+	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService) {
+
 		var service = {};
 		return service.initExtensions = function(){
 			var extensions = $rootScope.data_main.getExtensions();
@@ -37,5 +40,10 @@ define("robotTW2/services/MainService", [
 			return extensions
 		}
 		, service
-	})(robotTW2.services.$rootScope, robotTW2.requestFn, robotTW2.services.secondVillageService)
+	})(
+			robotTW2.services.$rootScope, 
+			robotTW2.requestFn, 
+			robotTW2.services.secondVillageService,
+			robotTW2.services.modelDataService
+			)
 })

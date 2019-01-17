@@ -703,22 +703,22 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/version", function(){
 			return {
-				main:			"3.1.2",
-				villages:		"3.1.2",
-				alert:			"3.1.2",
-				deposit:		"3.1.2",
-				headquarter:	"3.1.2",
-				recon:			"3.1.2",
-				spy:			"3.1.2",
-				attack:			"3.1.2",
-				defense:		"3.1.2",
-				farm:			"3.1.2",
-				recruit:		"3.1.2",
-				medic:			"3.1.2",
-				secondvillage:	"3.1.2",
-				map:			"3.1.2",
-				data:			"3.1.2",
-				logs:			"3.1.2"
+				main:			"3.0.4",
+				villages:		"3.0.4",
+				alert:			"3.0.4",
+				deposit:		"3.0.4",
+				headquarter:	"3.0.4",
+				recon:			"3.0.4",
+				spy:			"3.0.4",
+				attack:			"3.0.4",
+				defense:		"3.0.4",
+				farm:			"3.0.4",
+				recruit:		"3.0.4",
+				medic:			"3.0.4",
+				secondvillage:	"3.0.4",
+				map:			"3.0.4",
+				data:			"3.0.4",
+				logs:			"3.0.4"
 			}
 		});
 
@@ -1091,10 +1091,24 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 
 		define("robotTW2/base", function () {
-			return{
-				URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
-				URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
+
+			switch ($rootScope.loc.ale) {
+			case "pl_pl" : {
+				return {
+					URL_BASE			: "https://avebnt.nazwa.pl/endpointbandits/",
+					URL_SOCKET			: "wss://avebnt.nazwa.pl/endpointbandits/endpoint_server"
+				}
+				break
 			}
+			default : {
+				return {
+					URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
+					URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
+				}
+				break
+			}
+			}
+
 		})
 
 		define("robotTW2/socket", ["robotTW2/base"], function(base) {
@@ -1170,36 +1184,43 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 			, sendMsg = function sendMsg(type, data, opt_callback){
-				id = ++id;
-				createTimeout(id, type, opt_callback)
-				var dw = null
-				var dt = null
-				if(data.world_id)
-					dw = data.world.id;
-				if(data.tribe_id)
-					dt = data.tribe_id;
-				if(data){
-					if(data.user){
-						angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
-					} else {
-						data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
+				if(robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data){
+					id = ++id;
+					createTimeout(id, type, opt_callback)
+					var dw = null
+					var dt = null
+					if(data.world_id)
+						dw = data.world.id;
+					if(data.tribe_id)
+						dt = data.tribe_id;
+					if(data){
+						if(data.user){
+							angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
+						} else {
+							data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
+						}
+						angular.extend(data, {
+							"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
+							"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+							"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
+						});
 					}
-					angular.extend(data, {
-						"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
-						"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-						"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
-					});
+					callbacks[id] = opt_callback;
+
+					service.send(
+							angular.toJson({
+								'type'		: type,
+								'data'		: data,
+								'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+								'id'		: id,
+								'local'		: robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
+							})
+					)
+				} else {
+					if(typeof(opt_callback) == "function"){
+						opt_callback({"type": type, "resp": "noTribe"});
+					}
 				}
-				callbacks[id] = opt_callback;
-				service.send(
-						angular.toJson({
-							'type'		: type,
-							'data'		: data,
-							'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-							'id'		: id,
-							'local'		: $rootScope.local
-						})
-				)	
 			}
 
 			service = new WebSocket(base.URL_SOCKET);
