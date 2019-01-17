@@ -138,7 +138,11 @@ define("robotTW2/databases/data_villages", [
 							buildinglevels 			: conf.BUILDINGLEVELS,
 							farm_activate 			: true,
 							presets					: getPst(m),
-							selected				: elem
+							selected				: {
+								id: 0,
+								name: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
+								value: elem
+							}
 						})
 					}
 					angular.extend(data_villages.villages[m], villagesExtended[m])
