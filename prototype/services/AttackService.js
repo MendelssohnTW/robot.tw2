@@ -28,7 +28,6 @@ define("robotTW2/services/AttackService", [
 	) {
 
 		var isRunning = !1
-		, commands = {}
 		, isPaused = !1
 		, isInitialized = !1
 		, interval_reload = undefined
@@ -86,7 +85,7 @@ define("robotTW2/services/AttackService", [
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendAttack, $rootScope.data_attack, params, function(fns){
-					commands[fns.params.id_command] = fns.fn.apply(this, [fns.params])
+					scope.commands[fns.params.id_command] = fns.fn.apply(this, [fns.params])
 				})
 			} else {
 				removeCommandAttack(params.id_command)
@@ -95,12 +94,14 @@ define("robotTW2/services/AttackService", [
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "attack"){
-				var cmds = Object.keys($event.currentScope.params).map(function(param){
-					if($event.currentScope.params[param].start_village == data.home.id
-							&& $event.currentScope.params[param].target_village == data.target.id
+				var cmds = Object.keys($event.currentScope.commands).map(function(cmd){
+					if($event.currentScope.commands[cmd].start_village == data.home.id
+							&& $event.currentScope.commands[cmd].target_village == data.target.id
 					) {
-						return $event.currentScope.params[param]	
+						console.log($event.currentScope.commands[cmd])
+						return $event.currentScope.commands[cmd]	
 					} else {
+						console.log("no command")
 						return undefined
 					}
 				}).filter(f => f != undefined)
@@ -195,11 +196,11 @@ define("robotTW2/services/AttackService", [
 			addAttack(params);
 		}
 		, removeCommandAttack = function(id_command){
-			if(typeof(commands[id_command]) == "object"){
-				if(commands[id_command].$$state.status == 0){
-					$timeout.cancel(commands[id_command])	
+			if(typeof(scope.commands[id_command]) == "object"){
+				if(scope.commands[id_command].$$state.status == 0){
+					$timeout.cancel(scope.commands[id_command])	
 				}
-				delete commands[id_command];
+				delete scope.commands[id_command];
 			}
 			
 			commandQueue.unbind(id_command, $rootScope.data_attack)
@@ -247,7 +248,8 @@ define("robotTW2/services/AttackService", [
 		}
 
 		angular.extend(scope, {
-			listener : {}, 
+			listener : {},
+			commands : {},
 			params : {}
 		})
 		
