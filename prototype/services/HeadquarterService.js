@@ -57,6 +57,8 @@ define("robotTW2/services/HeadquarterService", [
 										}
 									}
 							)
+						} else {
+							console.log("No building limit for " + vill.name)
 						}
 					}
 			)
