@@ -102,11 +102,11 @@ define("robotTW2/services/AttackService", [
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "attack"){
 				var params = Object.keys($event.currentScope.commands).map(function(cmd){
-					if(cmd.params.start_village == data.home.id
-							&& cmd.params.target_village == data.target.id
+					if($event.currentScope.commands[cmd].params.start_village == data.home.id
+							&& $event.currentScope.commands[cmd].params.target_village == data.target.id
 					) {
-						console.log(cmd.params)
-						return cmd.params	
+						console.log($event.currentScope.commands[cmd].params)
+						return $event.currentScope.commands[cmd].params	
 					} else {
 						console.log("no command")
 						return undefined
