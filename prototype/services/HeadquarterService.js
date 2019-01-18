@@ -44,7 +44,7 @@ define("robotTW2/services/HeadquarterService", [
 		, listener_resume = undefined
 		, checkBuildingOrderLimit = function(vill) {
 			var buildingLevels = vill.buildinglevels
-			, buildingLimit = vill.buildinglimit[vill.selected]
+			, buildingLimit = vill.buildinglimit[vill.selected.value]
 			, builds = [];
 
 			buildingLevels.map(

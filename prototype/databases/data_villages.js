@@ -108,6 +108,9 @@ define("robotTW2/databases/data_villages", [
 				if(!Object.keys(data_villages.villages).map(function(v){
 					return v
 				}).find(f=>f==m)){
+					var elem =  Object.keys(conf.BUILDINGORDER).map(function(elem){
+						return elem
+					})[0];
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
@@ -115,9 +118,11 @@ define("robotTW2/databases/data_villages", [
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
 						presets					: getPst(m),
-						selected				: Object.keys(conf.BUILDINGORDER).map(function(elem){
-							return elem
-						})[0]
+						selected				: {
+							id: 0,
+							name: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
+							value: elem
+						}
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
