@@ -58,7 +58,7 @@ define("robotTW2/services/AttackService", [
 				})
 				
 				commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params, function(fns){
-					scope.commands[fns.params.id_command] = fns.fn.apply(this, [fns.params])
+					scope.commands[fns.params.id_command] = fns.fn.apply(params, [fns.params])
 				})
 //				commandQueue.trigger(id_command, params)
 //				} else {
@@ -86,7 +86,7 @@ define("robotTW2/services/AttackService", [
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendAttack, $rootScope.data_attack, params, function(fns){
-					scope.commands[fns.params.id_command] = fns.fn.apply(this, [fns.params])
+					scope.commands[fns.params.id_command] = fns.fn.apply(params, [fns.params])
 				})
 			} else {
 				removeCommandAttack(params.id_command)
@@ -96,21 +96,21 @@ define("robotTW2/services/AttackService", [
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "attack"){
 				var cmds = Object.keys($event.currentScope.commands).map(function(cmd){
-					if($event.currentScope.commands[cmd].start_village == data.home.id
-							&& $event.currentScope.commands[cmd].target_village == data.target.id
+					if(this.params.start_village == data.home.id
+							&& this.target_village == data.target.id
 					) {
-						console.log($event.currentScope.commands[cmd])
-						return $event.currentScope.commands[cmd]	
+						console.log(this)
+						return this	
 					} else {
 						console.log("no command")
 						return undefined
 					}
 				}).filter(f => f != undefined)
 				
-				var cmd = undefined;
-				if(cmds.length){
-					cmd = cmds.pop();
-					removeCommandAttack(cmd.id_command)
+				var params = undefined;
+				if(params.length){
+					param = params.pop();
+					removeCommandAttack(param.id_command)
 //					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
 				}
 				
