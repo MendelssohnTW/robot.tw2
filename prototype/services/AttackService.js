@@ -95,7 +95,7 @@ define("robotTW2/services/AttackService", [
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "attack"){
-				var cmds = Object.keys($event.currentScope.commands).map(function(cmd){
+				var params = Object.keys($event.currentScope.commands).map(function(cmd){
 					if(this.params.start_village == data.home.id
 							&& this.target_village == data.target.id
 					) {
@@ -107,7 +107,7 @@ define("robotTW2/services/AttackService", [
 					}
 				}).filter(f => f != undefined)
 				
-				var params = undefined;
+				var param = undefined;
 				if(params.length){
 					param = params.pop();
 					removeCommandAttack(param.id_command)
