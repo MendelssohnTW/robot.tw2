@@ -197,10 +197,12 @@ define("robotTW2/services/AttackService", [
 			addAttack(params);
 		}
 		, removeCommandAttack = function(id_command){
-			if(typeof(commands[id_command]) == function(){
-				$timeout.cancel(commands[id_command]);
+			if(typeof(commands[id_command]) == "object"){
+				if(commands[id_command].$$state.status == 0){
+					$timeout.cancel(commands[id_command])	
+				}
 				delete commands[id_command];
-			})
+			}
 			
 			if(scope.listener[id_command] && typeof(scope.listener[id_command]) == "function") {
 				scope.listener[id_command]();
