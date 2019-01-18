@@ -31,6 +31,7 @@ define("robotTW2/services/DefenseService", [
 		var isRunning = !1
 		, isPaused = !1
 		, isInitialized = !1
+		, commands = {}
 		, t = undefined
 		, oldCommand
 		, d = {}
@@ -452,7 +453,9 @@ define("robotTW2/services/DefenseService", [
 //				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
-				resendDefense(params)
+				commandQueue.bind(id_command, resendDefense, "commands_defense", params, function(fns){
+					commands[params.id_command] = fns.fn.apply(this, [fns.params])
+				})
 			} else {
 				removeCommandDefense(params.id_command)
 			}
@@ -460,28 +463,22 @@ define("robotTW2/services/DefenseService", [
 		, sendDefense = function(params){
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
-		, listener_command_returned = function($event, data){
-			var cmds = Object.keys($event.currentScope.params).map(function(param){
-				if($event.currentScope.params[param].id_command == data.command_id) {
-					return $event.currentScope.params[param]	
-				} else {
-					return undefined
-				}
-			}).filter(f => f != undefined)
-			var cmd = undefined;
-			if(cmds.length){
-				cmd = cmds.pop();
-				if(scope.listener_returned[cmd.id_command] && typeof(scope.listener_returned[cmd.id_command]) == "function") {
-					scope.listener_returned[cmd.id_command]();
-					delete scope.listener_returned[cmd.id_command];
-				}
-//				if(scope.params[cmd.id_command]){
-//				delete scope.params[cmd.id_command]
+//		, listener_command_returned = function($event, data){
+//			if(!$event.currentScope){return}
+//			var cmds = Object.keys($event.currentScope.params).map(function(param){
+//				if($event.currentScope.params[param].id_command == data.command_id) {
+//					return $event.currentScope.params[param]	
+//				} else {
+//					return undefined
 //				}
-
-			}
-		}
+//			}).filter(f => f != undefined)
+//			var cmd = undefined;
+//			if(cmds.length){
+//				cmd = cmds.pop();
+//			}
+//		}
 		, listener_command_cancel = function($event, data){
+			if(!$event.currentScope){return}
 			if(data.direction == "backward" && data.type == "support"){
 				var cmds = Object.keys($event.currentScope.params).map(function(param){
 					if($event.currentScope.params[param].start_village == data.home.id
@@ -496,18 +493,16 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					cmd = cmds.pop();
-					if(scope.listener_command_cancel[cmd.id_command] && typeof(scope.listener_command_cancel[cmd.id_command]) == "function") {
-						scope.listener_command_cancel[cmd.id_command]();
-						delete scope.listener_command_cancel[cmd.id_command];
-					}
-					scope.listener_returned[data.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned)
+//					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
 				}
 			}
 		}
 		, listener_command_sent = function($event, data){
+			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "support"){
 				var cmds = Object.keys($event.currentScope.params).map(function(param){
-					if($event.currentScope.params[param].start_village == data.home.id
+					//verificar a origem e alvo do comando
+					if($event.currentScope.params[param].start_village == data.home.id 
 							&& $event.currentScope.params[param].target_village == data.target.id
 					) {
 						return $event.currentScope.params[param]	
@@ -518,10 +513,9 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					cmd = cmds.pop();
-					removeCommandDefense(cmd.id_command)
-//					scope.params[cmd.id_command] = cmd;
+//					removeCommandDefense(cmd.id_command)
 
-					scope.listener_cancel[cmd.command_id] = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel)
+					!scope.listener_cancel ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
 
 					var expires = cmd.data_escolhida + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = ((expires - time.convertedTime()) / 2)
@@ -531,19 +525,13 @@ define("robotTW2/services/DefenseService", [
 					}
 					if(timer_delay >= 0){
 						commandQueue.bind(cmd.id_command, sendCancel, "commands_defense", params, function(fns){
-							fns.fn.apply(this, [fns.params])
+							commands[params.id_command] = fns.fn.apply(this, [fns.params])
 						})
-
-//						commandQueue.trigger(cmd.id_command, params)
-//						} else {
-//						commandQueue.unbind(cmd.id_command)
 					}
-//					delete scope.params[id_command]
 				}
 			}
 		}
 		, send = function(params){
-//			d[id_command] = id_command;
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
 				target_village		: params.target_village,
@@ -553,7 +541,11 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-			scope.listener_sent[params.id_command] = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent)
+
+			removeCommandDefense(params.id_command)
+			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+			
+			!scope.listener_sent ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
@@ -582,11 +574,9 @@ define("robotTW2/services/DefenseService", [
 				})
 
 				commandQueue.bind(id_command, sendDefense, "commands_defense", params, function(fns){
-					fns.fn.apply(this, [fns.params])
+					commands[params.id_command] = fns.fn.apply(this, [fns.params])
 				})
-//				commandQueue.trigger(id_command, params)
-//				} else {
-//				removeCommandDefense(id_command)
+				
 			}
 		}
 		, addDefenseSelector = function(command, i){
@@ -665,10 +655,13 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			if(scope.listener_sent[id_command] && typeof(scope.listener_sent[id_command]) == "function") {
-				scope.listener_sent[id_command]();
-				delete scope.listener_sent[id_command];
+			if(typeof(commands[id_command]) == "object"){
+				if(commands[id_command].$$state.status == 0){
+					$timeout.cancel(commands[id_command])	
+				}
+				delete commands[id_command];
 			}
+			
 			commandQueue.unbind(id_command, "commands_defense")
 		}
 		, removeAll = function(){
@@ -718,16 +711,33 @@ define("robotTW2/services/DefenseService", [
 			listener_verify = undefined;
 			listener_lost = undefined;
 			listener_conquered = undefined;
+			
+			if(scope.listener_sent && typeof(scope.listener_sent) == "function") {
+				scope.listener_sent();
+				delete scope.listener_sent;
+			}
+			
+			if(scope.listener_cancel && typeof(scope.listener_cancel) == "function") {
+				scope.listener_cancel();
+				delete scope.listener_cancel;
+			}
+			
+			if(scope.listener_timeout && typeof(scope.listener_timeout) == "function") {
+				scope.listener_timeout();
+				delete scope.listener_timeout;
+			}
+			
+			if(scope.listener_returned && typeof(scope.listener_returned) == "function") {
+				scope.listener_returned();
+				delete scope.listener_returned;
+			}
+
+			scope[params] = {}
+			
 			returnCommand();
 		}
-
-		angular.extend(scope, {
-			listener_sent 		: {},
-			listener_cancel 	: {},
-			listener_timeout 	: {},
-			listener_returned 	: {},
-			params 				: {}
-		})
+		
+		
 
 		return	{
 			init				: init,
