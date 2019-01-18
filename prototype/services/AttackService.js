@@ -105,10 +105,8 @@ define("robotTW2/services/AttackService", [
 					if($event.currentScope.commands[cmd].params.start_village == data.home.id
 							&& $event.currentScope.commands[cmd].params.target_village == data.target.id
 					) {
-						console.log($event.currentScope.commands[cmd].params)
 						return $event.currentScope.commands[cmd].params	
 					} else {
-						console.log("no command")
 						return undefined
 					}
 				}).filter(f => f != undefined)
