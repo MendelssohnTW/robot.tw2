@@ -92,19 +92,20 @@ define("robotTW2/services/AttackService", [
 				removeCommandAttack(params.id_command)
 			}
 		}
-//		, listener_command_sent = function($event, data){
-//			if(data.direction == "forward" && data.type == "attack"){
-//				var cmds = Object.keys($event.currentScope.params).map(function(param){
-//					if($event.currentScope.params[param].start_village == data.home.id
-//							&& $event.currentScope.params[param].target_village == data.target.id
-//					) {
-//						return $event.currentScope.params[param]	
-//					} else {
-//						return undefined
-//					}
-//				}).filter(f => f != undefined)
-//			}
-//		}
+		, listener_command_sent = function($event, data){
+			if(!$event.currentScope){return}
+			if(data.direction == "forward" && data.type == "attack"){
+				var cmds = Object.keys($event.currentScope.params).map(function(param){
+					if($event.currentScope.params[param].start_village == data.home.id
+							&& $event.currentScope.params[param].target_village == data.target.id
+					) {
+						return $event.currentScope.params[param]	
+					} else {
+						return undefined
+					}
+				}).filter(f => f != undefined)
+			}
+		}
 		, send = function(params){
 			socketService.emit(
 					providers.routeProvider.SEND_CUSTOM_ARMY, {
@@ -121,7 +122,7 @@ define("robotTW2/services/AttackService", [
 			removeCommandAttack(params.id_command)
 			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
-//			!scope.listener ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!scope.listener ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 
 		}
 		, sendAttack = function(params){
