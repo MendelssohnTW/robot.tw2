@@ -464,9 +464,9 @@ define("robotTW2/services/DefenseService", [
 		}
 //		, listener_command_returned = function($event, data){
 //			if(!$event.currentScope){return}
-//			var cmds = Object.keys($event.currentScope.params).map(function(param){
-//				if($event.currentScope.params[param].id_command == data.command_id) {
-//					return $event.currentScope.params[param]	
+//			var cmds = Object.keys($event.currentScope.commands).map(function(param){
+//				if($event.currentScope.commands[param].id_command == data.command_id) {
+//					return $event.currentScope.commands[param]	
 //				} else {
 //					return undefined
 //				}
@@ -479,12 +479,12 @@ define("robotTW2/services/DefenseService", [
 		, listener_command_cancel = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "backward" && data.type == "support"){
-				var cmds = Object.keys($event.currentScope.params).map(function(param){
-					if($event.currentScope.params[param].start_village == data.home.id
-							&& $event.currentScope.params[param].target_village == data.target.id
-							&& $event.currentScope.params[param].id_command == data.command_id
+				var cmds = Object.keys($event.currentScope.commands).map(function(param){
+					if($event.currentScope.commands[param].start_village == data.home.id
+							&& $event.currentScope.commands[param].target_village == data.target.id
+							&& $event.currentScope.commands[param].id_command == data.command_id
 					) {
-						return $event.currentScope.params[param]	
+						return $event.currentScope.commands[param]	
 					} else {
 						return undefined
 					}
@@ -499,12 +499,12 @@ define("robotTW2/services/DefenseService", [
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "support"){
-				var cmds = Object.keys($event.currentScope.params).map(function(param){
+				var cmds = Object.keys($event.currentScope.commands).map(function(param){
 					//verificar a origem e alvo do comando
-					if($event.currentScope.params[param].start_village == data.home.id 
-							&& $event.currentScope.params[param].target_village == data.target.id
+					if($event.currentScope.commands[param].start_village == data.home.id 
+							&& $event.currentScope.commands[param].target_village == data.target.id
 					) {
-						return $event.currentScope.params[param]	
+						return $event.currentScope.commands[param]	
 					} else {
 						return undefined
 					}
@@ -512,9 +512,10 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					cmd = cmds.pop();
-//					removeCommandDefense(cmd.id_command)
+					removeCommandDefense(cmd.id_command)
+					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
-					!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
+					
 
 					var expires = cmd.data_escolhida + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = ((expires - time.convertedTime()) / 2)
@@ -540,11 +541,6 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-
-			removeCommandDefense(params.id_command)
-			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
-			
-			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
@@ -558,6 +554,10 @@ define("robotTW2/services/DefenseService", [
 		}
 		, addDefense = function(params){
 			if(!params){return}
+			
+			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
+			
 			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(params.id_command){
 				id_command = params.id_command
