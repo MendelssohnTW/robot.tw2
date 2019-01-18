@@ -85,7 +85,7 @@ define("robotTW2/services/AttackService", [
 				};
 			};
 			if (lista.length > 0 || !params.enviarFull) {
-				commandQueue.bind(id_command, resendAttack, $rootScope.data_attack, params, function(fns){
+				commandQueue.bind(params.id_command, resendAttack, $rootScope.data_attack, params, function(fns){
 					commands[fns.params.id_command] = fns.fn.apply(this, [fns.params])
 				})
 			} else {

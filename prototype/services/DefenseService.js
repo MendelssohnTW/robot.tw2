@@ -453,7 +453,7 @@ define("robotTW2/services/DefenseService", [
 //				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
-				commandQueue.bind(id_command, resendDefense, "commands_defense", params, function(fns){
+				commandQueue.bind(params.id_command, resendDefense, "commands_defense", params, function(fns){
 					commands[params.id_command] = fns.fn.apply(this, [fns.params])
 				})
 			} else {
@@ -573,7 +573,7 @@ define("robotTW2/services/DefenseService", [
 					"id_command": id_command
 				})
 
-				commandQueue.bind(id_command, sendDefense, "commands_defense", params, function(fns){
+				commandQueue.bind(params.id_command, sendDefense, "commands_defense", params, function(fns){
 					commands[params.id_command] = fns.fn.apply(this, [fns.params])
 				})
 				
