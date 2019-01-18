@@ -28,6 +28,7 @@ define("robotTW2/services/AttackService", [
 	) {
 
 		var isRunning = !1
+		, commands = {}
 		, isPaused = !1
 		, isInitialized = !1
 		, interval_reload = undefined
@@ -55,8 +56,9 @@ define("robotTW2/services/AttackService", [
 					"timer_delay" : timer_delay,
 					"id_command": id_command
 				})
+				
 				commandQueue.bind(id_command, sendAttack, $rootScope.data_attack, params, function(fns){
-					fns.fn.apply(this, [fns.params])
+					commands[fns.params.id_command] = fns.fn.apply(this, [fns.params])
 				})
 //				commandQueue.trigger(id_command, params)
 //				} else {
@@ -126,6 +128,7 @@ define("robotTW2/services/AttackService", [
 
 		}
 		, sendAttack = function(params){
+			var that = this;
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
 		, resendAttack = function(params){
@@ -194,6 +197,11 @@ define("robotTW2/services/AttackService", [
 			addAttack(params);
 		}
 		, removeCommandAttack = function(id_command){
+			if(typeof(commands[id_command]) == function(){
+				$timeout.cancel(commands[id_command]);
+				delete commands[id_command];
+			})
+			
 			if(scope.listener[id_command] && typeof(scope.listener[id_command]) == "function") {
 				scope.listener[id_command]();
 				delete scope.listener[id_command];
