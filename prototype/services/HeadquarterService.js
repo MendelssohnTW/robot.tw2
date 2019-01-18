@@ -191,11 +191,11 @@ define("robotTW2/services/HeadquarterService", [
 					resolve();
 				}
 
-				$rootScope.data_villages.villages[village_id].buildinglevels[$rootScope.data_villages.villages[village_id].selected.value] = buildingLevels;
+				$rootScope.data_villages.villages[village_id].buildinglevels = buildingLevels;
 				if (queues.length) {
 					queues.forEach(
 							function(queue) {
-								$rootScope.data_villages.villages[village_id].buildinglevels[$rootScope.data_villages.villages[village_id].selected.value].map(function(value){
+								$rootScope.data_villages.villages[village_id].buildinglevels.map(function(value){
 									Object.keys(value)[0] == queue.building ? value[queue.building]++ :undefined;
 								})
 							}
