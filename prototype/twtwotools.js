@@ -96,7 +96,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		service.trigger = function(key, params) {
 			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
-				if(!params && !Object.keys(params).length) {
+				if(!params || !Object.keys(params).length) {
 					if(!Object.keys(fs.params).length) {
 						triggered[key] = fs.fn.apply(this, [])
 					} else {
