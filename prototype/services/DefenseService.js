@@ -669,10 +669,7 @@ define("robotTW2/services/DefenseService", [
 				scope.listener_sent[id_command]();
 				delete scope.listener_sent[id_command];
 			}
-//			if(scope.params[id_command]){
-//			delete scope.params[id_command]
-//			}
-			commandQueue.unbind(id_command)
+			commandQueue.unbind(id_command, "commands_defense")
 		}
 		, removeAll = function(){
 			commandQueue.unbindAll("support")
