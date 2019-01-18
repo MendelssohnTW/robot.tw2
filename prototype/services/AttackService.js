@@ -122,7 +122,7 @@ define("robotTW2/services/AttackService", [
 			removeCommandAttack(params.id_command)
 			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 
-			!scope.listener ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 
 		}
 		, sendAttack = function(params){

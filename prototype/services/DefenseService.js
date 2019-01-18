@@ -515,7 +515,7 @@ define("robotTW2/services/DefenseService", [
 					cmd = cmds.pop();
 //					removeCommandDefense(cmd.id_command)
 
-					!scope.listener_cancel ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
+					!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
 
 					var expires = cmd.data_escolhida + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = ((expires - time.convertedTime()) / 2)
@@ -545,7 +545,7 @@ define("robotTW2/services/DefenseService", [
 			removeCommandDefense(params.id_command)
 			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 			
-			!scope.listener_sent ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
