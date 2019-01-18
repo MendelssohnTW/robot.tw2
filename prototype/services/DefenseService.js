@@ -31,7 +31,6 @@ define("robotTW2/services/DefenseService", [
 		var isRunning = !1
 		, isPaused = !1
 		, isInitialized = !1
-		, commands = {}
 		, t = undefined
 		, oldCommand
 		, d = {}
@@ -454,7 +453,7 @@ define("robotTW2/services/DefenseService", [
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendDefense, "commands_defense", params, function(fns){
-					commands[params.id_command] = fns.fn.apply(this, [fns.params])
+					scope.commands[params.id_command] = fns.fn.apply(this, [fns.params])
 				})
 			} else {
 				removeCommandDefense(params.id_command)
@@ -525,7 +524,7 @@ define("robotTW2/services/DefenseService", [
 					}
 					if(timer_delay >= 0){
 						commandQueue.bind(cmd.id_command, sendCancel, "commands_defense", params, function(fns){
-							commands[params.id_command] = fns.fn.apply(this, [fns.params])
+							scope.commands[params.id_command] = fns.fn.apply(this, [fns.params])
 						})
 					}
 				}
@@ -574,7 +573,7 @@ define("robotTW2/services/DefenseService", [
 				})
 
 				commandQueue.bind(params.id_command, sendDefense, "commands_defense", params, function(fns){
-					commands[params.id_command] = fns.fn.apply(this, [fns.params])
+					scope.commands[params.id_command] = fns.fn.apply(this, [fns.params])
 				})
 				
 			}
@@ -655,11 +654,11 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			if(typeof(commands[id_command]) == "object"){
-				if(commands[id_command].$$state.status == 0){
-					$timeout.cancel(commands[id_command])	
+			if(typeof(scope.commands[id_command]) == "object"){
+				if(scope.commands[id_command].$$state.status == 0){
+					$timeout.cancel(scope.commands[id_command])	
 				}
-				delete commands[id_command];
+				delete scope.commands[id_command];
 			}
 			
 			commandQueue.unbind(id_command, "commands_defense")
@@ -740,7 +739,8 @@ define("robotTW2/services/DefenseService", [
 			listener_cancel 	: {},
 //			listener_timeout 	: {},
 //			listener_returned 	: {},
-			params 				: {}
+			params 				: {},
+			commands			: {}
 		})
 
 		return	{
