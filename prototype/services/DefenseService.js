@@ -722,22 +722,26 @@ define("robotTW2/services/DefenseService", [
 				delete scope.listener_cancel;
 			}
 			
-			if(scope.listener_timeout && typeof(scope.listener_timeout) == "function") {
-				scope.listener_timeout();
-				delete scope.listener_timeout;
-			}
+//			if(scope.listener_timeout && typeof(scope.listener_timeout) == "function") {
+//				scope.listener_timeout();
+//				delete scope.listener_timeout;
+//			}
 			
-			if(scope.listener_returned && typeof(scope.listener_returned) == "function") {
-				scope.listener_returned();
-				delete scope.listener_returned;
-			}
+//			if(scope.listener_returned && typeof(scope.listener_returned) == "function") {
+//				scope.listener_returned();
+//				delete scope.listener_returned;
+//			}
 
-			scope[params] = {}
-			
 			returnCommand();
 		}
 		
-		
+		angular.extend(scope, {
+			listener_sent 		: {},
+			listener_cancel 	: {},
+//			listener_timeout 	: {},
+//			listener_returned 	: {},
+			params 				: {}
+		})
 
 		return	{
 			init				: init,

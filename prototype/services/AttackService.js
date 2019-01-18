@@ -239,9 +239,16 @@ define("robotTW2/services/AttackService", [
 			interval_reload = undefined;
 			isRunning = !1;
 			scope[params] = {};
+			if(scope.listener && typeof(scope.listener) == "function") {
+				scope.listener();
+				delete scope.listener;
+			}
 		}
 
-		scope[params] = {};
+		angular.extend(scope, {
+			listener : {}, 
+			params : {}
+		})
 		
 		return	{
 			init				: init,
