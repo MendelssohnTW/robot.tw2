@@ -49,13 +49,15 @@ define("robotTW2/services/HeadquarterService", [
 
 			buildingLevels.map(
 					function(e){
-						buildingLimit.map(
-								function(d){
-									if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] < Object.values(d)[0]){
-										builds.push({[Object.keys(e)[0]] : Object.values(e)[0]})
+						if(buildingLimit.map){
+							buildingLimit.map(
+									function(d){
+										if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] < Object.values(d)[0]){
+											builds.push({[Object.keys(e)[0]] : Object.values(e)[0]})
+										}
 									}
-								}
-						)
+							)
+						}
 					}
 			)
 
