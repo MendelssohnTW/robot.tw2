@@ -42,6 +42,7 @@ define("robotTW2/services/AttackService", [
 		})
 		, addAttack = function(params, opt_id){
 			if(!params){return}
+			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command
 			, timer_delay = expires - time.convertedTime()
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
@@ -105,6 +106,15 @@ define("robotTW2/services/AttackService", [
 						return undefined
 					}
 				}).filter(f => f != undefined)
+				
+				var cmd = undefined;
+				if(cmds.length){
+					cmd = cmds.pop();
+					removeCommandAttack(cmd.id_command)
+//					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
+				}
+				
+				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
 			}
 		}
 		, send = function(params){
@@ -119,12 +129,6 @@ define("robotTW2/services/AttackService", [
 						catapult_target		: params.catapult_target
 					}
 			)
-			
-			removeCommandAttack(params.id_command)
-			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
-
-			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
-
 		}
 		, sendAttack = function(params){
 			var that = this;
@@ -248,9 +252,7 @@ define("robotTW2/services/AttackService", [
 		}
 
 		angular.extend(scope, {
-			listener : {},
-			commands : {},
-			params : {}
+			commands : {}
 		})
 		
 		return	{
