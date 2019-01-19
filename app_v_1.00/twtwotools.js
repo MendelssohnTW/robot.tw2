@@ -79,11 +79,16 @@ var robotTW2 = window.robotTW2 = undefined;
 	}
 	, requestFn = (function(){
 		var fns = {}
+		, triggered = {}
 		, service = {};
 		return service.prefix = "robotTW2/" 
 			, service.bind = function(key, fn, params, callback) {
 			fns.hasOwnProperty(this.prefix + key) || (fns[this.prefix + key] = []),
-			fns[this.prefix + key].push({fn:fn, params:params || {}})
+			fns[this.prefix + key].push(
+					{
+						fn:fn, params:params || {}
+					}
+			)
 			if(typeof(callback)=="function"){
 				callback({fn:fn, params:params || {}})
 			}
@@ -91,21 +96,17 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		service.trigger = function(key, params) {
 			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
-				if(!params) {
+				if(!params || !Object.keys(params).length) {
 					if(!Object.keys(fs.params).length) {
-						fs.fn.apply(this, [])
+						triggered[key] = fs.fn.apply(this, [])
 					} else {
-						fs.fn.apply(this, fs.params)
+						triggered[key] = fs.fn.apply(this, fs.params)
 					}
 				} else {
-					if(!Object.keys(params).length) {
-						if(!Object.keys(fs.params).length) {
-							fs.fn.apply(this, [])
-						} else {
-							fs.fn.apply(this, fs.params)
-						}
+					if(!Object.keys(fs.params).length) {
+						triggered[key] = fs.fn.apply(this, [])
 					} else {
-						fs.fn.apply(this, params)
+						triggered[key] = fs.fn.apply(this, fs.params)
 					}
 				}
 			})
@@ -118,20 +119,43 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		, service.unbind = function(key) {
 			if(fns.hasOwnProperty(key)){
-				delete fns[key];
+				if(triggered[key]){
+					if(typeof(triggered[key]) == "object"){
+						if(triggered[key].$$state.status == 0){
+							$timeout.cancel(triggered[key])	
+						}
+					} else if(typeof(triggered[key]) == "function"){
+						triggered[key]();
+					}
+					delete triggered[key];
+					delete fns[key];
+				} else {
+					delete fns[key];
+				}
 			}
 		}
 		, service.unbindAll = function(type) {
-			Object.keys(fns).map(function(fn){
-				if(!fns[fn].params) {
+			Object.keys(fns).map(function(key){
+				if(!fns[key].params) {
 					return undefined
 				} else {
-					if(!fns[fn].params.type) {
+					if(!fns[key].params.type) {
 						return undefined
 					} else {
-						if(fns[fn].params.type == type){
-							exports.services.$timeout.cancel(fns[fn])
-							delete fns[fn]
+						if(fns[key].params.type == type){
+							if(triggered[key]){
+								if(typeof(triggered[key]) == "object"){
+									if(triggered[key].$$state.status == 0){
+										$timeout.cancel(triggered[key])	
+									}
+								} else if(typeof(triggered[key]) == "function"){
+									triggered[key]();
+								}
+								delete triggered[key];
+								delete fns[key];
+							} else {
+								delete fns[key];
+							}
 						}
 					}
 				}
@@ -176,37 +200,21 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(!key) return;
 			if(opt_db){
 				if(typeof(opt_db.get) == "function"){
-					var r = requestFn.get(key, true)
-					, g;
-					if(r){g = r.fn}
-					if(g){
-						exports.services.$timeout.cancel(g);
-					}
 					delete opt_db.commands[key];
-					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 				} else if(opt_db == "commands_defense"){
 					exports.commands_defense = exports.commands_defense.filter(f => f.id_command != key)
 				}
 			}
+			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 			requestFn.unbind(key);
 		}
 		,
 		service.unbindAll = function(type, opt_db) {
-			if(!opt_db)	{
-				if(type){
-					requestFn.unbindAll(type)
-				}
-				$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
-				return
+			if(!type){return}
+			requestFn.unbindAll(type)
+			if(opt_db)	{
+				opt_db.commands = {};
 			}
-			Object.keys(opt_db.commands).forEach(function(key) {
-				try {
-					exports.services.$timeout.cancel(requestFn.get(key));
-				} catch(err){
-
-				}
-			})
-			opt_db.commands = {}
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 		}
 		,
@@ -1094,11 +1102,11 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			switch ($rootScope.loc.ale) {
 //			case "pl_pl" : {
-//				return {
-//					URL_BASE			: "https://avebnt.nazwa.pl/endpointbandits/",
-//					URL_SOCKET			: "wss://avebnt.nazwa.pl/endpointbandits/endpoint_server"
-//				}
-//				break
+//			return {
+//			URL_BASE			: "https://avebnt.nazwa.pl/endpointbandits/",
+//			URL_SOCKET			: "wss://avebnt.nazwa.pl/endpointbandits/endpoint_server"
+//			}
+//			break
 //			}
 			default : {
 				return {

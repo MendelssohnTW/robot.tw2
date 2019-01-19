@@ -27,9 +27,10 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
-		$scope.toggleSelect = function(){
-			if (!$scope.$$phase) {$scope.$apply();}
-		}
+//		$scope.toggleSelect = function(selected){
+//			console.log(selected)
+//			if (!$scope.$$phase) {$scope.$apply();}
+//		}
 		
 		$scope.getTimeRest = function(){
 			return $rootScope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - time.convertedTime()) : 0;
@@ -63,18 +64,18 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.levelup = function(buildingLimit){
-			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(Object.keys(buildingLimit)[0]).max_level;
-			var level = buildingLimit[Object.keys(buildingLimit)[0]] += 1;
+		$scope.levelup = function(vill, buildingLimit){
+			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(Object.keys(vill.buildingLimit)[0]).max_level;
+			var level = vill.buildingLimit[Object.keys(vill.buildingLimit)[0]] += 1;
 			if(level > max_level){
-				buildingLimit[Object.keys(buildingLimit)[0]] -= 1
+				vill.buildingLimit[Object.keys(vill.buildingLimit)[0]] -= 1
 			}
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.leveldown = function(buildingLimit){
-			buildingLimit[Object.keys(buildingLimit)[0]] -= 1
+		$scope.leveldown = function(vill, buildingLimit){
+			vill.buildingLimit[Object.keys(vill.buildingLimit)[0]] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
