@@ -176,7 +176,10 @@ define("robotTW2/services/HeadquarterService", [
 					resolve(true);
 				}
 
-				list.push(getFinishedForFree(village))
+				var gt = getFinishedForFree(village);
+				if(gt != Infinity && gt != 0){
+					list.push(getFinishedForFree(village) != Infinity)
+				}
 //				setList();
 
 				if (
