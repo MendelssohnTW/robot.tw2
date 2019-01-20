@@ -1149,6 +1149,7 @@ var robotTW2 = window.robotTW2 = undefined;
 //				$event.code == 1006
 			},
 			onerror = function onerror($event){
+				if($event == "Uncaught TypeError: Illegal invocation"){return}
 				if($rootScope.data_data){
 					$rootScope.data_data.possible = false;
 					$rootScope.data_data.activated = false;
