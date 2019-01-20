@@ -685,7 +685,8 @@ define("robotTW2/services/DefenseService", [
 			commandQueue.unbind(id_command)
 		}
 		, removeAll = function(){
-			commandQueue.unbindAll("support")
+			commandQueue.unbindAll()
+			scope.commands = {};
 		}
 		, init = function(){
 			isInitialized = !0
