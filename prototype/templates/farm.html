@@ -167,6 +167,34 @@
 						</colgroup>
 						<tbody>
 							<tr>
+								<td class="cell-right" colspan="2">
+									<div class="checkbox box-border-dark" id="check_all"
+										style="text-align: center;">
+										<label for="check_all" class="with-margin ng-binding"
+											style="position: absolute; top: 8px;">{{text_all_preset}}</label>
+										<div switch-slider="" border="true" enabled="true"
+											value="update_all_presets"
+											ng-click="toggleValueState(update_all_presets)"
+											vertical="false" size="'56x28'"
+											style="width: 60px; text-align: center;">
+											<div ng-class="{'box-border-dark box-filter': border}"
+												audio="{ 'mouseup': 'button_01' }"
+												class="box-border-dark box-filter">
+												<div class="switch switch-56x28 switch-horizontal"
+													ng-click="toggleValue()"
+													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false, 'switch-premium': enabled &amp;&amp; (premium == true)}">
+													<span class="size-26x26 switch-thumb"> <span
+														ng-if="!icon"
+														class="simple ng-scope icon-26x26-switch-off"
+														ng-class="{'icon-26x26-resource-premium': premium, 'icon-26x26-switch-on': value &amp;&amp; !premium, 'icon-26x26-switch-off': !value &amp;&amp; !premium, 'icon-inactive': enabled == false}"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
 								<td rowspan="2">
 									<div class="quadrant">
 										<div class="quadrant-border"
@@ -215,23 +243,7 @@
 									class="input-border inputcreated" type="number" id="min_dist"
 									step="1" min="1" max="180"
 									ng-model="presetSelected.min_journey_distance" disabled></td>
-								<td class="cell-right"><label for="check_all"
-									class="with-margin">{{text_all_preset}}</label>
-									<div class="checkbox box-border-dark" id="check_all">
-										<div switch-slider="" border="true" enabled="true"
-											value="update_all_presets" ng-click="toggleValueState(update_all_presets)" vertical="false" size="'56x28'">
-											<div ng-class="{'box-border-dark box-filter': border}"
-												class="box-border-dark box-filter">
-												<div class="switch switch-56x28 switch-horizontal"
-													ng-class="{'switch-checked': value, 'switch-inactive': !villageSelected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
-													<span class="size-26x26 switch-thumb"> <span
-														class="simple icon-26x26-switch-off"
-														ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div></td>
+
 							</tr>
 							<tr>
 
