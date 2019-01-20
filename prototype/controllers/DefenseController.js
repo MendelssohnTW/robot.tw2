@@ -125,7 +125,7 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.removeCommand = services.DefenseService.removeCommandDefense;
 
-		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
+		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE, function() {
 			update();
 		})
 		

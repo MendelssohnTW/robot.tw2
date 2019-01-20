@@ -530,7 +530,7 @@ define("robotTW2/services/DefenseService", [
 				if(cmds.length){
 					cmd = cmds.pop();
 					removeCommandDefense(cmd.id_command)
-					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 					var expires = cmd.data_escolhida + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = ((expires - time.convertedTime()) / 2)
@@ -687,6 +687,7 @@ define("robotTW2/services/DefenseService", [
 		, removeAll = function(){
 			commandQueue.unbindAll()
 			scope.commands = {};
+			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 		}
 		, init = function(){
 			isInitialized = !0
