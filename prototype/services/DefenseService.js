@@ -644,7 +644,7 @@ define("robotTW2/services/DefenseService", [
 					})
 				} else {
 					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
-					removeCommandDefense(command.id_command)
+					removeCommandDefense(command.command_id)
 				}
 			});
 		}
