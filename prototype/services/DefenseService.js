@@ -361,8 +361,8 @@ define("robotTW2/services/DefenseService", [
 						var list_others = [];
 
 						Object.keys(scope.commands).map(function(key){
-							if(scope.commands[key].preserv){
-								list_others.push(scope.commands[key])
+							if(scope.commands[key].params.preserv){
+								list_others.push(scope.commands[key].params)
 							} else {
 								delete scope.commands[key];
 							}
