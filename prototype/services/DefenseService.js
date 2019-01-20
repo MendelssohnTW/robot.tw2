@@ -771,7 +771,7 @@ define("robotTW2/services/DefenseService", [
 			calibrate_time		: calibrate_time,
 			get_commands		: function (){
 				return Object.keys(scope.commands).map(function(key){
-					return scope.commands[key]
+					return scope.commands[key].params
 				});
 			},
 			removeCommandDefense: removeCommandDefense,
