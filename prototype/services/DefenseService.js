@@ -361,8 +361,13 @@ define("robotTW2/services/DefenseService", [
 						var list_others = [];
 
 						scope.commands = scope.commands.filter(f => !f.preserv)
-
-						list_others = scope.commands;
+						Object.keys(scope.commands).map(function(key){
+							if(scope.commands[key].preserv){
+								list_others.push(scope.commands[key])
+							} else {
+								delete scope.commands[key];
+							}
+						})
 
 						var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
 						var comandos_incoming = cmds.incoming;
@@ -757,7 +762,9 @@ define("robotTW2/services/DefenseService", [
 			stop 				: stop,
 			calibrate_time		: calibrate_time,
 			get_commands		: function (){
-				return scope.commands;
+				return Object.keys(scope.commands).map(function(key){
+					return scope.commands[key]
+				});
 			},
 			removeCommandDefense: removeCommandDefense,
 			removeAll			: removeAll,
