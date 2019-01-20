@@ -160,10 +160,9 @@
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 						<colgroup>
 							<col width="100px">
-							<col width="22%px">
-							<col width="26%px">
-							<col width="26%px">
-							<col width="26%px">
+							<col width="33%">
+							<col width="33%">
+							<col width="34%">
 						</colgroup>
 						<tbody>
 							<tr>
@@ -193,6 +192,13 @@
 										</div>
 									</div>
 								</td>
+								<td></td>
+								<td class="cell-right"><label for="cmd_max"
+									class="with-margin">{{text_cmd_max}}</label><input
+									class="input-border inputcreated" type="number" id="cmd_max"
+									step="1" min="0" max="50"
+									ng-model="presetSelected.max_commands_farm"
+									ng-blur="updateBlur()"></td>
 							</tr>
 							<tr>
 								<td rowspan="2">
@@ -263,15 +269,21 @@
 									class="input-border inputcreated" type="number" id="max_dist"
 									step="1" min="5" max="200"
 									ng-model="presetSelected.max_journey_distance" disabled></td>
-								<td class="cell-right"><label for="cmd_max"
-									class="with-margin">{{text_cmd_max}}</label><input
-									class="input-border inputcreated" type="number" id="cmd_max"
-									step="1" min="0" max="50"
-									ng-model="presetSelected.max_commands_farm"
-									ng-blur="updateBlur()"></td>
+
 
 							</tr>
 
+
+						</tbody>
+					</table>
+
+					<table>
+						<colgroup>
+							<col width="50%">
+							<col width="50%">
+
+						</colgroup>
+						<tbody>
 							<tr>
 								<td class="cell-top cell-right" rowspan="3" colspan="3">
 									<div class="list-collapse">
