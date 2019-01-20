@@ -685,7 +685,7 @@ define("robotTW2/services/DefenseService", [
 			commandQueue.unbind(id_command)
 		}
 		, removeAll = function(){
-			commandQueue.unbindAll()
+			commandQueue.unbindAll("support")
 			scope.commands = {};
 			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 		}
