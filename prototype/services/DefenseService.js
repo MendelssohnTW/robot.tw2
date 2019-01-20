@@ -367,6 +367,7 @@ define("robotTW2/services/DefenseService", [
 								delete scope.commands[key];
 							}
 						})
+						
 
 						var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
 						var comandos_incoming = cmds.incoming;
