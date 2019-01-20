@@ -83,7 +83,7 @@ define("robotTW2/controllers/FarmController", [
 			, travelTime = calculateTravelTime(army, village, "attack", {
 				'barbarian'		: true
 			})
-			
+
 			return services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
 		}
 		, triggerUpdate = function triggerUpdate(callback) {
@@ -119,6 +119,9 @@ define("robotTW2/controllers/FarmController", [
 					obj[elem].max_journey_time = get_time($scope.villageSelected.data.villageId, obj[elem].max_journey_distance, obj[elem].units)
 					obj[elem].min_journey_distance = get_dist($scope.villageSelected.data.villageId, $scope.presetSelected.min_journey_time, obj[elem].units) || 0
 					obj[elem].min_journey_time = get_time($scope.villageSelected.data.villageId, obj[elem].min_journey_distance, obj[elem].units) || 0
+					obj[elem].min_points_farm = $scope.presetSelected.min_points_farm
+					obj[elem].max_points_farm = $scope.presetSelected.max_points_farm
+					obj[elem].max_commands_farm = presetSelected.max_commands_farm
 				})
 				$scope.villageSelected.presets = obj;
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
@@ -129,7 +132,7 @@ define("robotTW2/controllers/FarmController", [
 				angular.extend($scope.villageSelected.presets, $scope.villageSelected.presets)
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
 			}
-			
+
 			if (!$scope.$$phase) {$scope.$apply();}
 			if($scope.update_all_presets){
 				triggerUpdate(function(){
@@ -160,12 +163,29 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, addQuadrant = function(pos){
 			if(!$scope.villageSelected || !$scope.presetSelected) {return}
-			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.push(pos)
-			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.sort(function(a,b){return a-b})
+
+			if($scope.update_all_presets){
+				Object.keys($scope.villageSelected.presets).map(function(elem){
+					obj[elem] = $scope.villageSelected.presets[elem];
+					obj[elem].quadrants.push(pos)
+					obj[elem].quadrants.quadrants.sort(function(a,b){return a-b})
+				})
+			} else {
+				$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.push(pos)
+				$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.sort(function(a,b){return a-b})
+			}
 		}
 		, remQuadrant = function(pos){
 			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
-			$scope.villageSelected.presets[$scope.presetSelected.id].quadrants = $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.filter(f => f != pos);
+
+			if($scope.update_all_presets){
+				Object.keys($scope.villageSelected.presets).map(function(elem){
+					obj[elem] = $scope.villageSelected.presets[elem];
+					obj[elem].quadrants = obj[elem].quadrants.filter(f => f != pos);
+				})
+			} else {
+				$scope.villageSelected.presets[$scope.presetSelected.id].quadrants = $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.filter(f => f != pos);
+			}
 		}
 
 		initTab();
@@ -400,6 +420,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setQuadrant = function (pos) {
 			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
+
 			if($scope.villageSelected.presets[$scope.presetSelected.id].quadrants.includes(pos)){
 				remQuadrant(pos)
 			} else {
