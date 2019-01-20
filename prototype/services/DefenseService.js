@@ -360,7 +360,6 @@ define("robotTW2/services/DefenseService", [
 						var list_ram = [];
 						var list_others = [];
 
-						scope.commands = scope.commands.filter(f => !f.preserv)
 						Object.keys(scope.commands).map(function(key){
 							if(scope.commands[key].preserv){
 								list_others.push(scope.commands[key])
