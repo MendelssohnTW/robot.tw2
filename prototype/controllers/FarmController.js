@@ -121,7 +121,7 @@ define("robotTW2/controllers/FarmController", [
 					obj[elem].min_journey_time = get_time($scope.villageSelected.data.villageId, obj[elem].min_journey_distance, obj[elem].units) || 0
 					obj[elem].min_points_farm = $scope.presetSelected.min_points_farm
 					obj[elem].max_points_farm = $scope.presetSelected.max_points_farm
-					obj[elem].max_commands_farm = presetSelected.max_commands_farm
+					obj[elem].max_commands_farm = $scope.presetSelected.max_commands_farm
 				})
 				$scope.villageSelected.presets = obj;
 				if (!$rootScope.$$phase) {$rootScope.$apply();}
