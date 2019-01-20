@@ -48,7 +48,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
 	var scripts_removed = [];
-	exports.commands_defense = [];
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -174,10 +173,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					if(!opt_db.commands){opt_db["commands"]= {}}
 					!opt_db.commands[key] ? opt_db.commands[key] = params : null;
 					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
-				} else if(opt_db == "commands_defense"){
-					if(!exports.commands_defense.find(f => f.id_command = params.id_command)){
-						exports.commands_defense.push(params)
-					}
 				}
 			}
 			requestFn.bind(key, fn, params, function(fns){
@@ -201,8 +196,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(opt_db){
 				if(typeof(opt_db.get) == "function"){
 					delete opt_db.commands[key];
-				} else if(opt_db == "commands_defense"){
-					exports.commands_defense = exports.commands_defense.filter(f => f.id_command != key)
 				}
 			}
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
