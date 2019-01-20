@@ -166,10 +166,12 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<td class="cell-right" colspan="2">
+								<td class="cell-right" colspan="2"><label for="check_all"
+									class="with-margin"
+									style="position: absolute; top: 21px; left: 100px;">{{text_all_preset}}</label>
 									<div class="checkbox box-border-dark" id="check_all"
 										style="text-align: center;">
-										
+
 										<div switch-slider="" border="true" enabled="true"
 											value="update_all_presets"
 											ng-click="toggleValueState(update_all_presets)"
@@ -189,10 +191,8 @@
 												</div>
 											</div>
 										</div>
-										<label for="check_all" class="with-margin"
-											style="position: absolute; top: 21px; left: 100px;">{{text_all_preset}}</label>
-									</div>
-								</td>
+
+									</div></td>
 								<td></td>
 								<td class="cell-right"><label for="cmd_max"
 									class="with-margin">{{text_cmd_max}}</label><input
