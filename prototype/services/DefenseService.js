@@ -348,6 +348,16 @@ define("robotTW2/services/DefenseService", [
 		, getAtaques = function(){
 			return new Promise(function(resolve){
 				t = $timeout(resolve , 480000);
+				
+				var lt = []
+				
+				Object.keys(scope.commands).map(function(key){
+					if(scope.commands[key].params.preserv){
+						lt.push(scope.commands[key].params)
+					} else {
+						delete scope.commands[key];
+					}
+				})
 
 				var vls = modelDataService.getSelectedCharacter().getVillageList(); 
 				function gt(){
@@ -359,15 +369,13 @@ define("robotTW2/services/DefenseService", [
 						var list_infatary = [];
 						var list_ram = [];
 						var list_others = [];
-
-						Object.keys(scope.commands).map(function(key){
-							if(scope.commands[key].params.preserv){
-								list_others.push(scope.commands[key].params)
-							} else {
-								delete scope.commands[key];
+						
+						lt.forEach(function(cmd){
+							if(cmd.params.start_village == id){
+								list_others.push(cmd.params)
 							}
 						})
-						
+						lt = [];
 
 						var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
 						var comandos_incoming = cmds.incoming;
