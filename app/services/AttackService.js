@@ -114,7 +114,7 @@ define("robotTW2/services/AttackService", [
 				var param = undefined;
 				if(params.length){
 					param = params.pop();
-					removeCommandAttack(param.id_command)
+					
 //					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
 				}
 
@@ -133,6 +133,7 @@ define("robotTW2/services/AttackService", [
 						catapult_target		: params.catapult_target
 					}
 			)
+			removeCommandAttack(params.id_command)
 		}
 		, sendAttack = function(params){
 			var that = this;
