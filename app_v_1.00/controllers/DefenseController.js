@@ -41,7 +41,7 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 		, update = function(){
-			$scope.comandos = robotTW2.commands_defense;
+			$scope.comandos = services.DefenseService.get_commands();
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.time_sniper_ant) - (b.data_escolhida - time.convertedTime() - b.time_sniper_ant)})
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
@@ -125,7 +125,7 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.removeCommand = services.DefenseService.removeCommandDefense;
 
-		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
+		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE, function() {
 			update();
 		})
 		

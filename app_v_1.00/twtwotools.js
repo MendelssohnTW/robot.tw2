@@ -48,7 +48,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
 	var scripts_removed = [];
-	exports.commands_defense = [];
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -174,10 +173,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					if(!opt_db.commands){opt_db["commands"]= {}}
 					!opt_db.commands[key] ? opt_db.commands[key] = params : null;
 					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
-				} else if(opt_db == "commands_defense"){
-					if(!exports.commands_defense.find(f => f.id_command = params.id_command)){
-						exports.commands_defense.push(params)
-					}
 				}
 			}
 			requestFn.bind(key, fn, params, function(fns){
@@ -201,8 +196,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(opt_db){
 				if(typeof(opt_db.get) == "function"){
 					delete opt_db.commands[key];
-				} else if(opt_db == "commands_defense"){
-					exports.commands_defense = exports.commands_defense.filter(f => f.id_command != key)
 				}
 			}
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
@@ -883,7 +876,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAP_CHUNCK_LEN 			: 30 / 2,
 					TIME_CORRECTION_COMMAND : -225,
 					TIME_DELAY_UPDATE		: 30 * seg,
-					TIME_DELAY_FARM			: 1000,
+					TIME_DELAY_FARM			: 2000,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
 					TIME_SNIPER_POST_SNOB	: 3000,
@@ -892,10 +885,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					MAX_TIME_SNIPER_ANT 	: 600,
 					MIN_TIME_SNIPER_POST 	: 0.3,
 					MAX_TIME_SNIPER_POST 	: 600,
-					MAX_JOURNEY_DISTANCE 	: 15,
-					MIN_JOURNEY_DISTANCE 	: 5,
-					MAX_JOURNEY_TIME     	: 3 * h,
-					MIN_JOURNEY_TIME     	: 2 * min,
+					MAX_JOURNEY_DISTANCE 	: 6,
+					MIN_JOURNEY_DISTANCE 	: 1,
+					MAX_JOURNEY_TIME     	: 1 * h,
+					MIN_JOURNEY_TIME     	: 8 * min,
 					VERSION					: {
 						MAIN			: version.main,
 						VILLAGES		: version.villages,
@@ -1149,6 +1142,7 @@ var robotTW2 = window.robotTW2 = undefined;
 //				$event.code == 1006
 			},
 			onerror = function onerror($event){
+				if($event == "Uncaught TypeError: Illegal invocation"){return}
 				if($rootScope.data_data){
 					$rootScope.data_data.possible = false;
 					$rootScope.data_data.activated = false;

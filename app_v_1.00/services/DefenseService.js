@@ -348,6 +348,16 @@ define("robotTW2/services/DefenseService", [
 		, getAtaques = function(){
 			return new Promise(function(resolve){
 				t = $timeout(resolve , 480000);
+				
+				var lt = []
+				
+				Object.keys(scope.commands).map(function(key){
+					if(scope.commands[key].params.preserv){
+						lt.push(scope.commands[key].params)
+					} else {
+						delete scope.commands[key];
+					}
+				})
 
 				var vls = modelDataService.getSelectedCharacter().getVillageList(); 
 				function gt(){
@@ -359,10 +369,13 @@ define("robotTW2/services/DefenseService", [
 						var list_infatary = [];
 						var list_ram = [];
 						var list_others = [];
-
-						robotTW2.commands_defense = robotTW2.commands_defense.filter(f => !f.preserv)
-
-						list_others = robotTW2.commands_defense;
+						
+						lt.forEach(function(cmd){
+							if(cmd.params.start_village == id){
+								list_others.push(cmd.params)
+							}
+						})
+						lt = [];
 
 						var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
 						var comandos_incoming = cmds.incoming;
@@ -452,7 +465,7 @@ define("robotTW2/services/DefenseService", [
 //				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
-				commandQueue.bind(params.id_command, resendDefense, "commands_defense", params, function(fns){
+				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 					scope.commands[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
@@ -517,7 +530,7 @@ define("robotTW2/services/DefenseService", [
 				if(cmds.length){
 					cmd = cmds.pop();
 					removeCommandDefense(cmd.id_command)
-					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
+					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 					var expires = cmd.data_escolhida + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = ((expires - time.convertedTime()) / 2)
@@ -526,7 +539,7 @@ define("robotTW2/services/DefenseService", [
 						"id_command" 	: cmd.id_command
 					}
 					if(timer_delay >= 0){
-						commandQueue.bind(cmd.id_command, sendCancel, "commands_defense", params, function(fns){
+						commandQueue.bind(cmd.id_command, sendCancel, null, params, function(fns){
 							scope.commands[params.id_command] = {
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
 									"params"	: params
@@ -577,7 +590,7 @@ define("robotTW2/services/DefenseService", [
 					"id_command": id_command
 				})
 
-				commandQueue.bind(params.id_command, sendDefense, "commands_defense", params, function(fns){
+				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
 					scope.commands[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
@@ -631,7 +644,7 @@ define("robotTW2/services/DefenseService", [
 					})
 				} else {
 					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
-					removeCommandDefense(command.id_command)
+					removeCommandDefense(command.command_id)
 				}
 			});
 		}
@@ -669,10 +682,12 @@ define("robotTW2/services/DefenseService", [
 				delete scope.commands[id_command];
 			}
 
-			commandQueue.unbind(id_command, "commands_defense")
+			commandQueue.unbind(id_command)
 		}
 		, removeAll = function(){
 			commandQueue.unbindAll("support")
+			scope.commands = {};
+			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 		}
 		, init = function(){
 			isInitialized = !0
@@ -756,6 +771,11 @@ define("robotTW2/services/DefenseService", [
 			start				: start,
 			stop 				: stop,
 			calibrate_time		: calibrate_time,
+			get_commands		: function (){
+				return Object.keys(scope.commands).map(function(key){
+					return scope.commands[key].params;
+				});
+			},
 			removeCommandDefense: removeCommandDefense,
 			removeAll			: removeAll,
 			isRunning			: function () {
