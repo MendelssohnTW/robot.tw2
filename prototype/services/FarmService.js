@@ -216,7 +216,7 @@ define("robotTW2/services/FarmService", [
 							r = $timeout(function(){
 								resolve_send(true)
 							}, conf_conf.LOADING_TIMEOUT);
-//							g = $timeout(function () {
+							g = $timeout(function () {
 								if(!isRunning){return}
 								var params =  {
 										start_village: village_id,
@@ -244,12 +244,12 @@ define("robotTW2/services/FarmService", [
 								} else {
 									resolve_send(true)
 								}
-//							}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
+							}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
 						})
 						.then(function(permited){
 							$timeout.cancel(r);
 							r = undefined;
-//							$timeout.cancel(g);
+							$timeout.cancel(g);
 							g = undefined;
 							promise_send = undefined;
 							if(promise_send_queue.length && permited){
