@@ -48,7 +48,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
 	var scripts_removed = [];
-	exports.commands_defense = [];
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -174,10 +173,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					if(!opt_db.commands){opt_db["commands"]= {}}
 					!opt_db.commands[key] ? opt_db.commands[key] = params : null;
 					$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
-				} else if(opt_db == "commands_defense"){
-					if(!exports.commands_defense.find(f => f.id_command = params.id_command)){
-						exports.commands_defense.push(params)
-					}
 				}
 			}
 			requestFn.bind(key, fn, params, function(fns){
@@ -201,8 +196,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(opt_db){
 				if(typeof(opt_db.get) == "function"){
 					delete opt_db.commands[key];
-				} else if(opt_db == "commands_defense"){
-					exports.commands_defense = exports.commands_defense.filter(f => f.id_command != key)
 				}
 			}
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
@@ -711,22 +704,22 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/version", function(){
 			return {
-				main:			"3.0.5",
-				villages:		"3.0.5",
-				alert:			"3.0.5",
-				deposit:		"3.0.5",
-				headquarter:	"3.0.5",
-				recon:			"3.0.5",
-				spy:			"3.0.5",
-				attack:			"3.0.5",
-				defense:		"3.0.5",
-				farm:			"3.0.5",
-				recruit:		"3.0.5",
-				medic:			"3.0.5",
-				secondvillage:	"3.0.5",
-				map:			"3.0.5",
-				data:			"3.0.5",
-				logs:			"3.0.5"
+				main:			"3.0.4",
+				villages:		"3.0.4",
+				alert:			"3.0.4",
+				deposit:		"3.0.4",
+				headquarter:	"3.0.4",
+				recon:			"3.0.4",
+				spy:			"3.0.4",
+				attack:			"3.0.4",
+				defense:		"3.0.4",
+				farm:			"3.0.4",
+				recruit:		"3.0.4",
+				medic:			"3.0.4",
+				secondvillage:	"3.0.4",
+				map:			"3.0.4",
+				data:			"3.0.4",
+				logs:			"3.0.4"
 			}
 		});
 
@@ -1149,6 +1142,7 @@ var robotTW2 = window.robotTW2 = undefined;
 //				$event.code == 1006
 			},
 			onerror = function onerror($event){
+				if($event == "Uncaught TypeError: Illegal invocation"){return}
 				if($rootScope.data_data){
 					$rootScope.data_data.possible = false;
 					$rootScope.data_data.activated = false;
