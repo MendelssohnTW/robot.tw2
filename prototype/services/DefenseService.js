@@ -548,13 +548,15 @@ define("robotTW2/services/DefenseService", [
 						return undefined
 					}
 				}).filter(f => f != undefined)
+				
+				cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 
 				var cmd = undefined;
 				if(cmds.length){
 					console.log("retirando comando da pilha")
 					cmd = cmds.pop();
-					var expires = cmd.data_escolhida + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
-					, timer_delay = ((expires - time.convertedTime()) / 2)
+					var expires = cmd.data_escolhida - data.time_start + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
+					, timer_delay = expires - time.convertedTime()
 					, params = {
 						"timer_delay" 	: timer_delay,
 						"id_command" 	: cmd.id_command
