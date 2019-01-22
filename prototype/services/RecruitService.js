@@ -324,7 +324,7 @@ define("robotTW2/services/RecruitService", [
 				lt.push(dif);
 				lt.push($rootScope.data_recruit.interval);
 			}
-			var t = $rootScope.data_recruit.interval > 0 ? $rootScope.data_recruit.interval : conf.INTERVAL.RECRUIT;
+			var t = $rootScope.data_recruit.interval > 0 ? $rootScope.data_recruit.interval : $rootScope.data_recruit.interval = conf.INTERVAL.RECRUIT;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
