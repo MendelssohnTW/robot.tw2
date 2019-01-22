@@ -556,7 +556,7 @@ define("robotTW2/services/DefenseService", [
 					console.log("retirando comando da pilha")
 					cmd = cmds.shift();
 					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
-					, timer_delay = expires - time.convertedTime()
+					, timer_delay = expires / 2
 					, params = {
 						"timer_delay" 	: timer_delay,
 						"id_command" 	: cmd.id_command
