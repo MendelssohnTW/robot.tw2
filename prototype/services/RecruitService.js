@@ -328,7 +328,7 @@ define("robotTW2/services/RecruitService", [
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
-			return t;
+			return t || 0;
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.RECRUIT)
@@ -348,7 +348,7 @@ define("robotTW2/services/RecruitService", [
 				var village = villages[village_id]
 				var tam = village.getRecruitingQueue("barracks").length || 0;
 				var gt = getFinishedForFree(village);
-				if(gt != Infinity && gt != 0){
+				if(gt != Infinity && gt != 0 && !isNaN(gt)){
 					list.push(getFinishedForFree(village))
 				}
 				setList();
