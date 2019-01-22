@@ -249,7 +249,7 @@ define("robotTW2/services/AttackService", [
 			interval_reload ? $timeout.cancel(interval_reload): null;
 			interval_reload = undefined;
 			isRunning = !1;
-			scope[params] = {};
+			scope = {};
 			if(scope.listener && typeof(scope.listener) == "function") {
 				scope.listener();
 				delete scope.listener;

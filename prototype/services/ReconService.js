@@ -147,7 +147,7 @@ define("robotTW2/services/ReconService", [
 
 				t++;
 				$timeout(function(){
-				OverviewController = robotTW2.loadController("OverviewController");
+				!OverviewController ? OverviewController = robotTW2.loadController("OverviewController") : OverviewController;
 					if (OverviewController){
 						var elem = undefined;
 						$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;

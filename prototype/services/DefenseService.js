@@ -664,18 +664,18 @@ define("robotTW2/services/DefenseService", [
 			overviewService.formatCommand = function (command) {
 				overviewService.supportFormatCommand(command);
 				$timeout(function(){
-					OverviewController = loadController("OverviewController");
+					!OverviewController ? OverviewController = robotTW2.loadController("OverviewController") : OverviewController;
 					if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 						addDefenseSelector(command, iCount);
 						iCount++
 						if ($('span.type').length <= iCount) 
 							iCount = 0;
 					}
-				}, 200)
+				}, 150)
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			if(typeof(scope.commands[id_command].timeout) == "object"){
+			if(scope.commands[id_command] && typeof(scope.commands[id_command].timeout) == "object"){
 				if(scope.commands[id_command].timeout.$$state.status == 0){
 					$timeout.cancel(scope.commands[id_command].timeout)	
 				}
