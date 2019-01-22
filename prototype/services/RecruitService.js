@@ -293,7 +293,12 @@ define("robotTW2/services/RecruitService", [
 							}
 
 						}, function(data){
+							promise_UnitsAndResources = undefined
 							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: data.message});
+							if(queue_UnitsAndResources.length){
+								village_id = queue_UnitsAndResources.shift()
+								sec_promise(village_id)
+							}
 						})
 					} else {
 						queue_UnitsAndResources.push(village_id);
