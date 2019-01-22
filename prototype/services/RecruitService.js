@@ -324,7 +324,7 @@ define("robotTW2/services/RecruitService", [
 				lt.push(dif);
 				lt.push($rootScope.data_recruit.interval);
 			}
-			var t = $rootScope.data_recruit.interval;
+			var t = $rootScope.data_recruit.interval > 0 ? $rootScope.data_recruit.interval : conf.INTERVAL.RECRUIT;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
@@ -347,7 +347,10 @@ define("robotTW2/services/RecruitService", [
 			Object.keys(villages).map(function(village_id){
 				var village = villages[village_id]
 				var tam = village.getRecruitingQueue("barracks").length || 0;
-				list.push(getFinishedForFree(village));
+				var gt = getFinishedForFree(village);
+				if(gt != Infinity && gt != 0){
+					list.push(getFinishedForFree(village))
+				}
 				setList();
 				if (tam < $rootScope.data_recruit.reserva.slots || tam < 1){
 					list_recruit.push(village_id);
