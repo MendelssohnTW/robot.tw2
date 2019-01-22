@@ -699,7 +699,7 @@ define("robotTW2/services/DefenseService", [
 					if(!isRunning){return}
 					promise_verify = undefined;
 					$timeout.cancel(t);
-					$timeout(verificarAtaques , 5 * 60000);
+					$timeout(verificarAtaques , 10000);
 				});
 			}
 		}

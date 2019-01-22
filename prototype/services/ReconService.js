@@ -159,7 +159,7 @@ define("robotTW2/services/ReconService", [
 								if (unitText != undefined){
 									if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
 										return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
-									}).filter(f=>f!=undefined).length  && $rootScope.data_recon.active_rename){
+									}).filter(f=>f!=undefined).length && $rootScope.data_recon.active_rename){
 										getrenameCmdAtackRecon(command, unitText);
 									}
 								}
@@ -186,7 +186,7 @@ define("robotTW2/services/ReconService", [
 								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
 							})
 						}
-						if (!$rootScope.$$phase) $rootScope.$apply();
+						if (!$scope.$$phase) !$scope.$apply();
 					}
 				}, 100 * t)
 			}
