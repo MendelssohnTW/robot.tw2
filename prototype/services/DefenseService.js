@@ -625,7 +625,6 @@ define("robotTW2/services/DefenseService", [
 							"params"	: params
 					}
 				})
-
 			}
 		}
 		, addDefenseSelector = function(command, i){
