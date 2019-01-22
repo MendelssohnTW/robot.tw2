@@ -316,8 +316,6 @@ define("robotTW2/services/DefenseService", [
 
 			function ct(){
 				if(list_others.length){
-					console.log("list_others length " + list_others.length)
-					console.log(list_others)
 					var cm = list_others.shift()
 					loadVillage(cm, function(aldeia, cmt){
 						if(aldeia){
@@ -352,7 +350,6 @@ define("robotTW2/services/DefenseService", [
 		}
 		, getAtaques = function(){
 			return new Promise(function(resolve){
-				console.log("comando getAtaques")
 				t = $timeout(resolve , 480000);
 				
 				var lt = []
@@ -437,10 +434,8 @@ define("robotTW2/services/DefenseService", [
 		}
 		, verificarAtaques = function (){
 			var renew = false;
-			console.log("comando verificar ataques")
 			if(!isRunning){return}
 			if(!promise_verify){
-				console.log("promise_verify true")
 				promise_verify = getAtaques().then(function(){
 					$timeout(function(){
 						promise_verify = undefined;
@@ -452,7 +447,6 @@ define("robotTW2/services/DefenseService", [
 				})
 			} else {
 				renew = true;
-				console.log("promise verify false")
 			}
 		}
 		, sendCancel = function(params){
@@ -625,7 +619,6 @@ define("robotTW2/services/DefenseService", [
 					"id_command": id_command
 				})
 
-				console.log("bind sendDefense")
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
 					scope.commands[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
