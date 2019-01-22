@@ -110,10 +110,12 @@ define("robotTW2/services/AttackService", [
 						return undefined
 					}
 				}).filter(f => f != undefined)
+				
+				params.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 
 				var param = undefined;
 				if(params.length){
-					param = params.pop();
+					param = params.shift();
 					
 //					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
 				}
