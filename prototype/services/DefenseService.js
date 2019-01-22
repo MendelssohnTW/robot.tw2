@@ -176,7 +176,7 @@ define("robotTW2/services/DefenseService", [
 				callback(true, "");
 			}
 		}
-		, troops_analyze = function(list_snob, list_trebuchet, list_others, callback){
+		, troops_analyze = function(list_snob, list_trebuchet, list_others, list_preserv_others, callback){
 			console.log("comando troops_analyze")
 			var sortearSnob = function(list){
 				list.sort(function (a, b) {
@@ -302,12 +302,14 @@ define("robotTW2/services/DefenseService", [
 				return list
 			};
 
+			list_others = removerItens(list_others, list_preserv_others);
 			list_others = removerItens(list_others, list_snob);
 			list_others = removerItens(list_others, list_trebuchet);
 
 			list_snob = estabSnob(list_snob);
 			list_trebuchet = estabSnob(list_trebuchet);
 
+			list_others = list_others.concat(list_preserv_others)
 			list_others = list_others.concat(list_snob)
 			list_others = list_others.concat(list_trebuchet)
 			list_others = estab(list_others);
@@ -360,6 +362,7 @@ define("robotTW2/services/DefenseService", [
 						lt.push(scope.commands[key].params)
 					} else {
 						delete scope.commands[key];
+						commandQueue.unbind(key)
 					}
 				})
 
@@ -373,10 +376,11 @@ define("robotTW2/services/DefenseService", [
 						var list_infatary = [];
 						var list_ram = [];
 						var list_others = [];
+						var list_preserv_others = [];
 						
 						lt.forEach(function(cmd){
 							if(cmd.params.start_village == id){
-								list_others.push(cmd.params)
+								list_preserv_others.push(cmd.params)
 							}
 						})
 						lt = [];
@@ -421,7 +425,7 @@ define("robotTW2/services/DefenseService", [
 						list_snob.length ? list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
 						list_trebuchet.length ? list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
 						list_others.length ? list_others.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
-						list_snob.length || list_trebuchet.length || list_others.length ? troops_analyze(list_snob, list_trebuchet, list_others, gt) : gt();
+						list_snob.length || list_trebuchet.length || list_others.length ? troops_analyze(list_snob, list_trebuchet, list_others, list_preserv_others,  gt) : gt();
 					} else {
 //						upDateTbodySupport();
 						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
