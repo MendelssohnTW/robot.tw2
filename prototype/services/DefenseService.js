@@ -314,7 +314,7 @@ define("robotTW2/services/DefenseService", [
 
 			function ct(){
 				if(list_others.length){
-					console.log("list_others length " + list_others.lenght)
+					console.log("list_others length " + list_others.length)
 					console.log(list_others)
 					var cm = list_others.shift()
 					loadVillage(cm, function(aldeia, cmt){
