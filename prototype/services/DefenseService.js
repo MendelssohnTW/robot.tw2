@@ -437,7 +437,9 @@ define("robotTW2/services/DefenseService", [
 			if(!promise_verify){
 				console.log("promise_verify true")
 				promise_verify = getAtaques().then(function(){
-					promise_verify = undefined;
+					$timeout(function(){
+						promise_verify = undefined;
+					}, 5 * 60000)
 				})
 			} else {
 				console.log("promise verify false")
