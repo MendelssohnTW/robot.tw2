@@ -146,7 +146,7 @@ define("robotTW2/services/ReconService", [
 				if(isPaused){return}
 
 				OverviewController = robotTW2.loadController("OverviewController");
-
+				
 				t++;
 				$timeout(function(){
 
@@ -186,7 +186,7 @@ define("robotTW2/services/ReconService", [
 								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
 							})
 						}
-						if (!$scope.$$phase) !$scope.$apply();
+						if (!OverviewController.$$phase) !OverviewController.$apply();
 					}
 				}, 100 * t)
 			}
