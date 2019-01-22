@@ -195,7 +195,6 @@ define("robotTW2/services/FarmService", [
 				return !0;
 			}
 
-			var aldeia_commands_lenght = countCommands[village_id].length
 			var cmd_rest = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 			var cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
 			var cmd_ind = Math.min(cmd_rest, cmd_possible)
@@ -224,7 +223,7 @@ define("robotTW2/services/FarmService", [
 										army_preset_id: preset_id,
 										type: "attack"
 								}
-								if (check_village(bb, cmd_preset) && !countCommands[village_id].some(f=>f==bb)) {
+								if (check_village(bb, cmd_preset) && countCommands[village_id] && !countCommands[village_id].some(f=>f==bb)) {
 									countCommands[village_id].push(bb);
 									requestFn.trigger("Farm/sendCmd")
 									result_units = units_subtract(preset_units, aldeia_units)

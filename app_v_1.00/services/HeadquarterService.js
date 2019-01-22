@@ -137,11 +137,11 @@ define("robotTW2/services/HeadquarterService", [
 					lt.push(timer);
 				}
 			}
-			var t = $rootScope.data_headquarter.interval;
+			var t = $rootScope.data_headquarter.interval > 0 ? $rootScope.data_headquarter.interval : $rootScope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
-			return t;
+			return t || 0;
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.HEADQUARTER)
@@ -177,7 +177,7 @@ define("robotTW2/services/HeadquarterService", [
 				}
 
 				var gt = getFinishedForFree(village);
-				if(gt != Infinity && gt != 0){
+				if(gt != Infinity && gt != 0 && !isNaN(gt)){
 					list.push(getFinishedForFree(village))
 				}
 //				setList();

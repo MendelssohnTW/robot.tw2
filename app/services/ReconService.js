@@ -145,11 +145,9 @@ define("robotTW2/services/ReconService", [
 
 				if(isPaused){return}
 
-				OverviewController = robotTW2.loadController("OverviewController");
-
 				t++;
 				$timeout(function(){
-
+				!OverviewController ? OverviewController = robotTW2.loadController("OverviewController") : OverviewController;
 					if (OverviewController){
 						var elem = undefined;
 						$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
@@ -159,7 +157,7 @@ define("robotTW2/services/ReconService", [
 								if (unitText != undefined){
 									if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
 										return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
-									}).filter(f=>f!=undefined).length  && $rootScope.data_recon.active_rename){
+									}).filter(f=>f!=undefined).length && $rootScope.data_recon.active_rename){
 										getrenameCmdAtackRecon(command, unitText);
 									}
 								}
@@ -186,9 +184,9 @@ define("robotTW2/services/ReconService", [
 								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
 							})
 						}
-						if (!$rootScope.$$phase) $rootScope.$apply();
+						if (!OverviewController.$$phase) !OverviewController.$apply();
 					}
-				}, 100 * t)
+				}, 100)
 			}
 		}
 		, start = function (){

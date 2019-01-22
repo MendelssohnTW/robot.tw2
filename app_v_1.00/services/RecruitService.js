@@ -293,7 +293,12 @@ define("robotTW2/services/RecruitService", [
 							}
 
 						}, function(data){
+							promise_UnitsAndResources = undefined
 							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: data.message});
+							if(queue_UnitsAndResources.length){
+								village_id = queue_UnitsAndResources.shift()
+								sec_promise(village_id)
+							}
 						})
 					} else {
 						queue_UnitsAndResources.push(village_id);
@@ -324,11 +329,11 @@ define("robotTW2/services/RecruitService", [
 				lt.push(dif);
 				lt.push($rootScope.data_recruit.interval);
 			}
-			var t = $rootScope.data_recruit.interval;
+			var t = $rootScope.data_recruit.interval > 0 ? $rootScope.data_recruit.interval : $rootScope.data_recruit.interval = conf.INTERVAL.RECRUIT;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
-			return t;
+			return t || 0;
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.RECRUIT)
@@ -347,7 +352,10 @@ define("robotTW2/services/RecruitService", [
 			Object.keys(villages).map(function(village_id){
 				var village = villages[village_id]
 				var tam = village.getRecruitingQueue("barracks").length || 0;
-				list.push(getFinishedForFree(village));
+				var gt = getFinishedForFree(village);
+				if(gt != Infinity && gt != 0 && !isNaN(gt)){
+					list.push(getFinishedForFree(village))
+				}
 				setList();
 				if (tam < $rootScope.data_recruit.reserva.slots || tam < 1){
 					list_recruit.push(village_id);
