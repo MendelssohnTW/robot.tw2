@@ -314,7 +314,8 @@ define("robotTW2/services/DefenseService", [
 
 			function ct(){
 				if(list_others.length){
-					console.log("list_others length " + list_others.lenght) 
+					console.log("list_others length " + list_others.lenght)
+					console.log(list_others)
 					var cm = list_others.shift()
 					loadVillage(cm, function(aldeia, cmt){
 						if(aldeia){
@@ -365,7 +366,6 @@ define("robotTW2/services/DefenseService", [
 				var vls = modelDataService.getSelectedCharacter().getVillageList(); 
 				function gt(){
 					if (vls.length){
-						console.log("vls length " + vls.length)
 						var id = vls.shift().data.villageId;
 						var list_snob = [];
 						var list_trebuchet = [];
@@ -432,6 +432,7 @@ define("robotTW2/services/DefenseService", [
 			})
 		}
 		, verificarAtaques = function (){
+			var renew = false;
 			console.log("comando verificar ataques")
 			if(!isRunning){return}
 			if(!promise_verify){
@@ -439,9 +440,14 @@ define("robotTW2/services/DefenseService", [
 				promise_verify = getAtaques().then(function(){
 					$timeout(function(){
 						promise_verify = undefined;
+						if(renew) {
+							renew = false;
+							verificarAtaques()
+						}
 					}, 5 * 60000)
 				})
 			} else {
+				renew = true;
 				console.log("promise verify false")
 			}
 		}
@@ -449,6 +455,7 @@ define("robotTW2/services/DefenseService", [
 			console.log("comando sendCancel")
 			var timer_delay = params.timer_delay,
 			id = params.id_command;
+			console.log("timer_delay " + timer_delay)
 			return $timeout(function () {
 				console.log("executando comando sendCancel")
 				commandQueue.unbind(id)
@@ -597,12 +604,9 @@ define("robotTW2/services/DefenseService", [
 		}
 		, addDefense = function(params){
 			if(!params){return}
-			console.log("comando addDefense")
 			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
 			
-			console.log("Criado listener sent e cancel")
-
 			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(params.id_command){
 				id_command = params.id_command
