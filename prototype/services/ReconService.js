@@ -145,11 +145,9 @@ define("robotTW2/services/ReconService", [
 
 				if(isPaused){return}
 
-				OverviewController = robotTW2.loadController("OverviewController");
-				
 				t++;
 				$timeout(function(){
-
+				OverviewController = robotTW2.loadController("OverviewController");
 					if (OverviewController){
 						var elem = undefined;
 						$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
@@ -188,7 +186,7 @@ define("robotTW2/services/ReconService", [
 						}
 						if (!OverviewController.$$phase) !OverviewController.$apply();
 					}
-				}, 100 * t)
+				}, 100)
 			}
 		}
 		, start = function (){
