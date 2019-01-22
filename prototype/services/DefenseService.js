@@ -554,8 +554,8 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					console.log("retirando comando da pilha")
-					cmd = cmds.pop();
-					var expires = cmd.data_escolhida - data.time_start + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
+					cmd = cmds.shift();
+					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = expires - time.convertedTime()
 					, params = {
 						"timer_delay" 	: timer_delay,
