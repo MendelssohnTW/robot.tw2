@@ -148,7 +148,7 @@ define("robotTW2/services/DefenseService", [
 
 			var units_ret = [];
 			angular.extend(units_ret, t);
-			var unitType = units_ret.shift()[1];
+			var unitType = units_ret.shift()[1]; 
 
 			switch (unitType) {
 			case "light_cavalry":
