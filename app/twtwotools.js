@@ -25,7 +25,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	"use strict";
 
-	var host = "https://mendelssohntw.github.io/robot.tw2/app";
+	var host = "https://mendelssohntw.github.io/robot.tw2/prototype";
 	var $rootScope				= injector.get('$rootScope');
 	var $templateCache 			= injector.get('$templateCache');
 	var $exceptionHandler 		= injector.get('$exceptionHandler');
@@ -879,7 +879,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					TIME_DELAY_FARM			: 2000,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
-					TIME_SNIPER_POST_SNOB	: 3000,
+					TIME_SNIPER_POST_SNOB	: 1000,
 					MAX_TIME_CORRECTION 	: 5 * seg,
 					MIN_TIME_SNIPER_ANT 	: 5,
 					MAX_TIME_SNIPER_ANT 	: 600,
@@ -1139,20 +1139,28 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			},
 			onclose = function onclose($event){
+				console.log($event)
 //				$event.code == 1006
 			},
 			onerror = function onerror($event){
 				if($event == "Uncaught TypeError: Illegal invocation"){return}
+
+				connect.call = callback;
+				connect.call(false);
+
 				if($rootScope.data_data){
 					$rootScope.data_data.possible = false;
 					$rootScope.data_data.activated = false;
 				}
 				$rootScope.$broadcast("stopAll")
 				console.log("Socket error ... \n");
+				console.log($event);
+				
 			},
 			connect = function connect(callback){
+				connect.call = callback;
 				switch (service.readyState){
-				case 1 :{ //Aberta
+				case 1 : //Aberta
 					if($rootScope.data_data){
 						$rootScope.data_data.possible = true;
 					}
@@ -1160,15 +1168,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						callback(true);
 					};
 					break;
-				}
-				case 3 :{ //Fechada
+				case 3 : //Fechada
 					service = new WebSocket(base.URL_SOCKET);
-					connect.call = callback;
-					break
-				}
-				default:{
-					connect.call = callback;
-				}
+					break;
 				}
 			},
 			disconnect = function disconnect(){
@@ -1247,19 +1249,25 @@ var robotTW2 = window.robotTW2 = undefined;
 					if (connected && route != undefined){
 						socket.sendMsg(route.type, data, opt_callback);
 						return;
-
 					} else {
 						if (count < 10){
-							socket.connect(function(connected){cal(connected)});
+							socket.connect(
+									function(connected){
+										cal(connected)
+									}
+							);
 							return;
-						}else {
+						} else {
 							count = 0;
 							return;
 						}
 					}
-
 				};
-				socket.connect(function(connected){cal(connected)});
+				socket.connect(
+						function(connected){
+							cal(connected)
+						}
+				);
 
 			}
 			, service;

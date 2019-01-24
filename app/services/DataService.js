@@ -1046,87 +1046,105 @@ define("robotTW2/services/DataService", [
 			, socketGetVillages = function (reg, callbackSocket){
 				if(!isRunning) return
 				console.log("Buscando " + reg.x + "/" + reg.y);
-//				$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(time.convertedTime())).toString()})
-				t = $timeout(function(){
-//					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(time.convertedTime())).toString()})
+				!$rootScope.data_data.last_position ? $rootScope.data_data.last_position = {
+						x	: 0,
+						y 	: 0
+				} : $rootScope.data_data.last_position;
+
+				if(reg.x < $rootScope.data_data.last_position.x){
+					console.log("updated in back cicle");
 					callbackSocket();
-				}, conf_conf.LOADING_TIMEOUT);
-
-				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:reg.x, y:reg.y, width: reg.dist_x, height: reg.dist_y}, function(data){
-					var lista_barbaras = [];
-					$timeout.cancel(t);
-					t = undefined;
-
-					if (data.error_code == "INTERNAL_ERROR"){
-						console.log("Error internal");
-//						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
+				} else {
+					$rootScope.data_data.last_position.x = reg.x;
+					$rootScope.data_data.last_position.y = reg.y;
+//					$rootScope.data_logs.data.push({"text":$filter("i18n")("text_search", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(time.convertedTime())).toString()})
+					t = $timeout(function(){
+//						$rootScope.data_logs.data.push({"text":$filter("i18n")("text_timeout", $rootScope.loc.ale, "data") + " " + reg.x + "/" + reg.y, "date": (new Date(time.convertedTime())).toString()})
 						callbackSocket();
-					} else {
-						if (data != undefined && data.villages != undefined && data.villages.length > 0){
-							var villages = data.villages || []
-							, promise_send = undefined
-							, send_queue = []
-							var countVillages = 0;
+					}, conf_conf.LOADING_TIMEOUT);
 
-							villages.forEach(function(village){
-								function s(village){
-									if(!promise_send){
-										promise_send = new Promise(function(res, rej){
-											sendVillage(village).then(function(){
-												countVillages++;
-//												$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
-												res()
-											}, function(){
-												rej()
-											});
-										})
-										.then(function(){
-											promise_send = undefined;
-											if(send_queue.length){
-												s(send_queue.shift())
-											} else {
-												callbackSocket();
-											}
-										}, function(){
-											callbackSocket();
-										})
-									} else {
-										send_queue.push(village)
-									}
-								}
-								s(village)
-							})
-						} else {
+					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:reg.x, y:reg.y, width: reg.dist_x, height: reg.dist_y}, function(data){
+						var lista_barbaras = [];
+						$timeout.cancel(t);
+						t = undefined;
+
+						if (data.error_code == "INTERNAL_ERROR"){
+							console.log("Error internal");
+//							$rootScope.data_logs.data.push({"text":$filter("i18n")("text_err", $rootScope.loc.ale, "data"), "date": (new Date(time.convertedTime())).toString()})
 							callbackSocket();
+						} else {
+							if (data != undefined && data.villages != undefined && data.villages.length > 0){
+								var villages = data.villages || []
+								, promise_send = undefined
+								, send_queue = []
+								var countVillages = 0;
+
+								villages.forEach(function(village){
+									function s(village){
+										if(!promise_send){
+											promise_send = new Promise(function(res, rej){
+												sendVillage(village).then(function(){
+													countVillages++;
+//													$rootScope.data_logs.data.push({"text":countVillages + "-" + $filter("i18n")("text_completed", $rootScope.loc.ale, "data") + " " + village.x + "/" + village.y, "date": (new Date(time.convertedTime())).toString()})
+													res()
+												}, function(){
+													rej()
+												});
+											})
+											.then(function(){
+												promise_send = undefined;
+												if(send_queue.length){
+													s(send_queue.shift())
+												} else {
+													callbackSocket();
+												}
+											}, function(){
+												callbackSocket();
+											})
+										} else {
+											send_queue.push(village)
+										}
+									}
+									s(village)
+								})
+							} else {
+								callbackSocket();
+							}
 						}
-					}
-				});
+					});
+				}
 			};
 
-			var promise_grid = undefined,
-			grid_queue = []
-
-			var exec_promise_grid = function (reg){
-				promise_grid = new Promise(function(resolve){
+			var promise_grid = undefined
+			, grid_queue = []
+			, exec_promise_grid = function (reg){
+				return new Promise(function(resolve){
 					socketGetVillages(reg, resolve);
-				}).then(function(){
-					promise_grid = undefined
-					if(grid_queue.length){
-						var reg = grid_queue.shift();
-						exec_promise_grid(reg)
-					} else {
-						return;
-					}
 				})
-
 			}
 
 			listaGrid.forEach(function(reg){
-				if(promise_grid){
-					grid_queue.push(reg)
-				} else {
-					exec_promise_grid(reg)
+				function nt (rg){
+					if(!promise_grid){
+						promise_grid = exec_promise_grid(rg).then(function(){
+							promise_grid = undefined
+							if(grid_queue.length){
+								nt(grid_queue.shift())
+							} else {
+								$rootScope.data_data.last_position = {
+										x	: 0,
+										y 	: 0
+								}
+								console.log("Terminate data")
+								return;
+							}
+						})
+
+					} else {
+						grid_queue.push(reg)
+					}
 				}
+				nt(reg)
 			})
 
 		}
