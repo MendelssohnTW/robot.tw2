@@ -52,6 +52,10 @@ define("robotTW2/databases/data_data", [
 				tribes 		: time.convertedTime(),
 				members		: time.convertedTime(),
 				logs 		: time.convertedTime()
+			},
+			last_position			: {
+				x	: 0,
+				y 	: 0
 			}
 	}
 
