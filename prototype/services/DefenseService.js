@@ -568,11 +568,13 @@ define("robotTW2/services/DefenseService", [
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
 									"params"	: params
 							}
+							removeCommandDefense(params.id_command)
 						})
 					} else {
 						console.log("no timer_delay - no comando sendCancel")
+						removeCommandDefense(cmd.id_command)
 					}
-					removeCommandDefense(cmd.id_command)
+					
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 				}
 			}
