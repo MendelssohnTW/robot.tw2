@@ -1149,6 +1149,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				$rootScope.$broadcast("stopAll")
 				console.log("Socket error ... \n");
+				console.log($event);
 			},
 			connect = function connect(callback){
 				switch (service.readyState){
