@@ -180,7 +180,7 @@ define("robotTW2/services/DefenseService", [
 			console.log("comando troops_analyze")
 			var sortearSnob = function(list){
 				list.sort(function (a, b) {
-					return b.completedAt - a.completedAt;
+					return a.completedAt - b.completedAt;
 				});
 				return list
 			}
