@@ -1052,7 +1052,7 @@ define("robotTW2/services/DataService", [
 				} : $rootScope.data_data.last_position;
 
 				if(reg.x < $rootScope.data_data.last_position.x){
-					console("updated in back cicle");
+					console.log("updated in back cicle");
 					callbackSocket();
 				} else {
 					$rootScope.data_data.last_position.x = reg.x;
