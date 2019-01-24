@@ -879,7 +879,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					TIME_DELAY_FARM			: 2000,
 					TIME_SNIPER_ANT 		: 30000,
 					TIME_SNIPER_POST 		: 3000,
-					TIME_SNIPER_POST_SNOB	: 3000,
+					TIME_SNIPER_POST_SNOB	: 1000,
 					MAX_TIME_CORRECTION 	: 5 * seg,
 					MIN_TIME_SNIPER_ANT 	: 5,
 					MAX_TIME_SNIPER_ANT 	: 600,
