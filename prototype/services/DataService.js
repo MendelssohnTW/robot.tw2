@@ -1131,6 +1131,10 @@ define("robotTW2/services/DataService", [
 							if(grid_queue.length){
 								nt(grid_queue.shift())
 							} else {
+								$rootScope.data_data.last_position = {
+										x	: 0,
+										y 	: 0
+								}
 								console.log("Terminate data")
 								return;
 							}
