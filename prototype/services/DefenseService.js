@@ -376,7 +376,7 @@ define("robotTW2/services/DefenseService", [
 						var list_preserv_others = [];
 						
 						lt.forEach(function(cmd){
-							if(cmd.params.start_village == id){
+							if(cmd.start_village == id){
 								list_preserv_others.push(cmd.params)
 							}
 						})
