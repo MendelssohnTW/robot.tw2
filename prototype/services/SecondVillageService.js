@@ -65,7 +65,7 @@ define("robotTW2/services/SecondVillageService", [
 			})
 		}
 		, verify_second = function() {
-			get_info(update)
+			get_info(update);
 		}
 		, update = function() {
 			var second_village = modelDataService.getSelectedCharacter().getSecondVillage();
