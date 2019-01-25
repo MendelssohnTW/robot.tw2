@@ -58,6 +58,7 @@ define("robotTW2/services/SecondVillageService", [
 		}
 		, get_info = function(callback) {
 			socketService.emit(providers.routeProvider.SECOND_VILLAGE_GET_INFO, {}, function(b) {
+				if(!SecondVillageModel){return}
 				var second_village = new SecondVillageModel(b);
 				modelDataService.getSelectedCharacter().setSecondVillage(second_village),
 				callback()
