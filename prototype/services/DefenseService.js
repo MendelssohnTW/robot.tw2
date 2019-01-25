@@ -31,7 +31,7 @@ define("robotTW2/services/DefenseService", [
 		var isRunning = !1
 		, isPaused = !1
 		, isInitialized = !1
-		, t = undefined
+		, timeout = undefined
 		, oldCommand
 		, d = {}
 		, scope = $rootScope.$new()
@@ -349,7 +349,6 @@ define("robotTW2/services/DefenseService", [
 		}
 		, getAtaques = function(){
 			return new Promise(function(resolve){
-				t = $timeout(resolve , 480000);
 
 				var lt = []
 
@@ -437,13 +436,11 @@ define("robotTW2/services/DefenseService", [
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
-					$timeout(function(){
-						promise_verify = undefined;
-						if(renew) {
-							renew = false;
-							verificarAtaques()
-						}
-					}, 5 * 60000)
+					promise_verify = undefined;
+					if(renew) {
+						renew = false;
+						verificarAtaques()
+					}
 				})
 			} else {
 				renew = true;
@@ -600,7 +597,7 @@ define("robotTW2/services/DefenseService", [
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
-			
+
 			if(!params){return}
 			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
@@ -736,8 +733,10 @@ define("robotTW2/services/DefenseService", [
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
 					promise_verify = undefined;
-					$timeout.cancel(t);
-					$timeout(verificarAtaques , 5 * 60 * 1000);
+					$timeout.cancel(timeout);
+					if(!timeout.$$state || timeout.$$state.status != 0){
+						timeout = $timeout(verificarAtaques , 5 * 60 * 1000);
+					}
 				});
 			}
 		}
@@ -763,8 +762,8 @@ define("robotTW2/services/DefenseService", [
 			commandQueue.unbindAll("support");
 			promise_verify = undefined
 			queue_verifiy = [];
-			$timeout.cancel(t);
-			t = undefined;
+			$timeout.cancel(timeout);
+			timeout = undefined;
 			typeof(listener_verify) == "function" ? listener_verify(): null;
 			typeof(listener_lost) == "function" ? listener_lost(): null;
 			typeof(listener_conquered) == "function" ? listener_conquered(): null;
