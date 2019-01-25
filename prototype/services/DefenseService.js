@@ -565,6 +565,8 @@ define("robotTW2/services/DefenseService", [
 						})
 					}
 					
+					removeCommandDefense(cmd.id_command);
+					
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 				}
 			}
@@ -579,7 +581,7 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-			removeCommandDefense(params.id_command);
+			
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
