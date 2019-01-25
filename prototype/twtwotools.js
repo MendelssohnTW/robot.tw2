@@ -1155,7 +1155,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				$rootScope.$broadcast("stopAll")
 				console.log("Socket error ... \n");
 				console.log($event);
-				
+
 			},
 			connect = function connect(callback){
 				connect.call = callback;
@@ -1735,15 +1735,9 @@ var robotTW2 = window.robotTW2 = undefined;
 		var count_ready = true;
 
 		$rootScope.$on("ready", function($event, type){
-			
-			var port = chrome.runtime.connect({name: "knockknock"});
-			port.onMessage.addListener(function(msg) {
-				if (msg.question == "Who's there?")
-					port.postMessage({answer: "Madame"});
-				else if (msg.question == "Madame who?")
-					port.postMessage({answer: "Madame... Bovary"});
-			});
-			
+
+
+
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
 				case robotTW2.controllers.MainController : {
@@ -2192,3 +2186,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 	});
 }.call(this)
+
+
+var port = chrome.runtime.connect({name: "knockknock"});
+port.onMessage.addListener(function(msg) {
+	if (msg.question == "Who's there?")
+		port.postMessage({answer: "Madame"});
+	else if (msg.question == "Madame who?")
+		port.postMessage({answer: "Madame... Bovary"});
+});
