@@ -543,11 +543,12 @@ define("robotTW2/services/DefenseService", [
 					}
 				}).filter(f => f != undefined)
 				
-				cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
+				cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
 
 				var cmd = undefined;
 				if(cmds.length){
-					cmd = cmds.shift();
+					console.log(cmds[0])
+					cmd = cmds.pop();
 					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = expires / 2
 					, params = {
