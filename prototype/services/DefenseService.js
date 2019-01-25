@@ -694,7 +694,7 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			console.log("removendo comando")
+			console.log("removendo comando " + id_command)
 			if(scope.commands[id_command] && typeof(scope.commands[id_command].timeout) == "object"){
 				if(scope.commands[id_command].timeout.$$state.status == 0){
 					$timeout.cancel(scope.commands[id_command].timeout)	
