@@ -359,7 +359,7 @@ define("robotTW2/services/DefenseService", [
 						lt.push(scope.commands[key].params)
 					} else {
 						delete scope.commands[key];
-						commandQueue.unbind(key)
+						removeCommandDefense(key)
 					}
 				})
 
@@ -456,7 +456,7 @@ define("robotTW2/services/DefenseService", [
 			console.log("timer_delay " + timer_delay)
 			return $timeout(function () {
 				console.log("executando comando sendCancel")
-				commandQueue.unbind(id)
+				removeCommandDefense(id)
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
 				})
@@ -568,7 +568,7 @@ define("robotTW2/services/DefenseService", [
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
 									"params"	: params
 							}
-							removeCommandDefense(params.id_command)
+							
 						})
 					} else {
 						console.log("no timer_delay - no comando sendCancel")
