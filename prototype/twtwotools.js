@@ -1736,6 +1736,13 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		$rootScope.$on("ready", function($event, type){
 			
+			var port = chrome.runtime.connect({name: "knockknock"});
+			port.onMessage.addListener(function(msg) {
+				if (msg.question == "Who's there?")
+					port.postMessage({answer: "Madame"});
+				else if (msg.question == "Madame who?")
+					port.postMessage({answer: "Madame... Bovary"});
+			});
 			
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
