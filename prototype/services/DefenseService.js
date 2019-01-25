@@ -553,18 +553,16 @@ define("robotTW2/services/DefenseService", [
 					, timer_delay = expires / 2
 					, params = {
 						"timer_delay" 	: timer_delay,
-						"id_command" 	: cmd.id_command
+						"id_command" 	: data.id
 					}
 					if(timer_delay >= 0){
-						commandQueue.bind(cmd.id_command, sendCancel, null, params, function(fns){
+						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 							scope.commands[params.id_command] = {
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
 									"params"	: params
 							}
 							
 						})
-					} else {
-						removeCommandDefense(cmd.id_command)
 					}
 					
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
@@ -581,6 +579,7 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
+			removeCommandDefense(params.id_command);
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
