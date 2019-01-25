@@ -2188,10 +2188,3 @@ var robotTW2 = window.robotTW2 = undefined;
 }.call(this)
 
 
-var port = chrome.runtime.connect({name: "knockknock"});
-port.onMessage.addListener(function(msg) {
-	if (msg.question == "Who's there?")
-		port.postMessage({answer: "Madame"});
-	else if (msg.question == "Madame who?")
-		port.postMessage({answer: "Madame... Bovary"});
-});
