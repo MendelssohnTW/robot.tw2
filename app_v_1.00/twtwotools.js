@@ -725,9 +725,11 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
+			"conf/conf",
 			"robotTW2/version"
 			], function(
 					buildingTypes,
+					confTW,
 					version
 			) {
 
@@ -866,6 +868,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					h						: h,
 					min						: min,
 					seg						: seg,
+					loading_timeout			: confTW.LOADING_TIMEOUT,
 					EXECUTEBUILDINGORDER 	: true,
 					BUILDINGORDER			: orderbuilding,
 					BUILDINGLIMIT			: limitBuilding,
@@ -1112,7 +1115,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		})
 
-		define("robotTW2/socket", ["robotTW2/base"], function(base) {
+		define("robotTW2/socket", ["robotTW2/base", "robotTW2/conf"], function(base, conf) {
 			var service = {},
 			id = 0,
 			timeouts = {}
@@ -1184,7 +1187,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						if(typeof(opt_callback) == "function"){
 							opt_callback({"type" : type, "data": "Timeout"})
 						}
-					}, 15000)
+					}, conf.loading_timeout)
 				}
 			}
 			, sendMsg = function sendMsg(type, data, opt_callback){
