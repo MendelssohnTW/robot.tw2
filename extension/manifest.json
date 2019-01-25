@@ -15,7 +15,8 @@
     "manifest_version": 2,
     "name": "RobotTwTwoTools",
     "permissions": [
-        "https://*.tribalwars2.com/*"
+        "https://*.tribalwars2.com/*",
+        "tabs"
     ],
     "version": "0.1.4",
     "web_accessible_resources": [

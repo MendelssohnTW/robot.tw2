@@ -1,3 +1,4 @@
+
 var robotTW2 = window.robotTW2 = undefined;
 (function(root, factory) {
 	if (typeof define === "function" && define.amd) { 
@@ -1735,6 +1736,8 @@ var robotTW2 = window.robotTW2 = undefined;
 		var count_ready = true;
 
 		$rootScope.$on("ready", function($event, type){
+			create_window("https://pl.tribalwars2.com", function(win){console.log(win.id)})
+			
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
 				case robotTW2.controllers.MainController : {
