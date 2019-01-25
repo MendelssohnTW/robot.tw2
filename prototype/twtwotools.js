@@ -2126,6 +2126,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_main" : {
 					robotTW2.loadScript("/services/MainService.js");
+					robotTW2.loadScript("/services/ExtensionService.js");
 					break
 				}
 				case "data_farm" : {
