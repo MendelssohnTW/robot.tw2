@@ -358,6 +358,7 @@ define("robotTW2/services/DefenseService", [
 						lt.push(scope.commands[key].params)
 					} else {
 						delete scope.commands[key];
+						console.log("removeCommandDefense getAtaques")
 						removeCommandDefense(key)
 					}
 				})
@@ -455,6 +456,7 @@ define("robotTW2/services/DefenseService", [
 			console.log("timer_delay " + timer_delay)
 			return $timeout(function () {
 				console.log("executando comando sendCancel")
+				console.log("removeCommandDefense sendCancel")
 				removeCommandDefense(id)
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
@@ -488,6 +490,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 			} else {
+				console.log("removeCommandDefense units_to_send")
 				removeCommandDefense(params.id_command)
 			}
 		}
@@ -565,6 +568,7 @@ define("robotTW2/services/DefenseService", [
 						})
 					}
 
+					console.log("removeCommandDefense listener_command_sent")
 					removeCommandDefense(cmd.id_command);
 
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
@@ -588,6 +592,7 @@ define("robotTW2/services/DefenseService", [
 			, timer_delay_send = expires_send - time.convertedTime();
 
 			if(timer_delay_send < 0){
+				console.log("removeCommandDefense resendDefense")
 				removeCommandDefense(params.id_command)
 				return 
 			}
@@ -672,6 +677,7 @@ define("robotTW2/services/DefenseService", [
 					})
 				} else {
 					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
+					console.log("removeCommandDefense addDefenseSelector")
 					removeCommandDefense(command.command_id)
 				}
 			});
