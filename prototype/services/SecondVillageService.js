@@ -84,7 +84,7 @@ define("robotTW2/services/SecondVillageService", [
 			, collectedJobs = secondVillageService.getCollectedJobs(second_village.data.jobs)
 			, resources = modelDataService.getSelectedVillage().getResources().getResources()
 			, availableJobs = secondVillageService.getAvailableJobs(currentJobs, collectedJobs, resources, []);
-			if (availableJobs) {
+			if (Object.keys(availableJobs).length) {
 				var job_id = getKey(availableJobs);
 				start_job(job_id, function() {
 					var available_job = availableJobs[job_id];
