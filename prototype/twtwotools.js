@@ -1146,7 +1146,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			onerror = function onerror($event){
 				if($event == "Uncaught TypeError: Illegal invocation"){return}
 
-				connect.call = callback;
 				connect.call(false);
 
 				if($rootScope.data_data){
@@ -1737,6 +1736,13 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		$rootScope.$on("ready", function($event, type){
 			
+			chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+				console.log(sender.tab ?
+						"from a content script:" + sender.tab.url :
+				"from the extension");
+				if (request.greeting == "hello")
+					sendResponse({farewell: "goodbye"});
+			});
 			
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
