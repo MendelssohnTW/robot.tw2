@@ -599,6 +599,7 @@ define("robotTW2/services/DefenseService", [
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
+			
 			if(!params){return}
 			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
@@ -608,6 +609,7 @@ define("robotTW2/services/DefenseService", [
 				id_command = params.id_command
 			}
 
+			console.log("addDefense " + id_command)
 			var expires = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
 			, timer_delay = expires - time.convertedTime();
 
