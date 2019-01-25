@@ -2042,6 +2042,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+				case robotTW2.services.ExtensionService : {
+					robotTW2.services.ExtensionService && typeof(robotTW2.services.ExtensionService.init) == "function" ? robotTW2.requestFn.bind("extension", robotTW2.services.ExtensionService) : null;	
+					break
+				}
 				case robotTW2.services.FarmService : {
 					robotTW2.services.FarmService && typeof(robotTW2.services.FarmService.init) == "function" ? robotTW2.requestFn.bind("farm", robotTW2.services.FarmService) : null;	
 					break
