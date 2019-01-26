@@ -148,32 +148,36 @@ define("robotTW2/services/DefenseService", [
 
 			var units_ret = [];
 			angular.extend(units_ret, t);
-			var unitType = units_ret.shift()[1]; 
+			var unitType = units_ret.shift()[1];
 
-			switch (unitType) {
-			case "light_cavalry":
-				callback(unitTypes.LIGHT_CAVALRY, unitType);
-				break;
-			case "heavy_cavalry":
-				callback(unitTypes.HEAVY_CAVALRY, unitType);
-				break;
-			case "axe":
-				callback(unitTypes.AXE, unitType);
-				break;
-			case "sword":
-				callback(unitTypes.SWORD, unitType);
-				break;
-			case "ram":
-				callback(unitTypes.RAM, unitType);
-				break;
-			case "snob":
-				callback(unitTypes.SNOB, unitType);
-				break;
-			case "trebuchet":
-				callback(unitTypes.TREBUCHET, unitType);
-				break;
-			default : 
-				callback(true, "");
+			if($rootScope.data_defense.recon[unitType]){
+				switch (unitType) {
+				case "light_cavalry":
+					callback(unitTypes.LIGHT_CAVALRY, unitType);
+					break;
+				case "heavy_cavalry":
+					callback(unitTypes.HEAVY_CAVALRY, unitType);
+					break;
+				case "axe":
+					callback(unitTypes.AXE, unitType);
+					break;
+				case "sword":
+					callback(unitTypes.SWORD, unitType);
+					break;
+				case "ram":
+					callback(unitTypes.RAM, unitType);
+					break;
+				case "snob":
+					callback(unitTypes.SNOB, unitType);
+					break;
+				case "trebuchet":
+					callback(unitTypes.TREBUCHET, unitType);
+					break;
+				default : 
+					callback(false, "");
+				}
+			} else {
+				callback(false, "");
 			}
 		}
 		, troops_analyze = function(list_snob, list_trebuchet, list_others, list_preserv_others, callback){
@@ -342,7 +346,7 @@ define("robotTW2/services/DefenseService", [
 						$timeout(function(){
 							ct();
 						}, 3000)
-						
+
 					});
 				} else {
 					callback()
@@ -391,9 +395,9 @@ define("robotTW2/services/DefenseService", [
 
 						var limit = $rootScope.data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
 						var length_incomming = comandos_incoming.length; 
-						
+
 						if(!length_incomming){gt(); return}
-						
+
 						if(length_incomming > limit){
 							comandos_incoming.splice(0, limit);
 						}
@@ -424,8 +428,6 @@ define("robotTW2/services/DefenseService", [
 										case "trebuchet":
 											list_trebuchet.push(cmd);
 											break;
-										default :
-											list_others.push(cmd);
 										}
 									}
 								})

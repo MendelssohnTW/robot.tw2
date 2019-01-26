@@ -242,7 +242,8 @@
 		"schedule": "Programar"
 	},
 	"defense": {
-		"defense": "Defense",
+		"defense": "Defesa",
+		"troops": "Seleção de tropas",
 		"log": "Log",
 		"text_date": "Data",
 		"text_hour": "Hora",

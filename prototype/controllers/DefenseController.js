@@ -20,16 +20,26 @@ define("robotTW2/controllers/DefenseController", [
 
 		var TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", $rootScope.loc.ale, "defense"),
+				TROOPS	: services.$filter("i18n")("troops", $rootScope.loc.ale, "defense"),
 				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "defense")
 		}
 		, TAB_ORDER = [
 			TABS.DEFENSE,
+			TABS.TROOPS,
 			TABS.LOG,
 			]
 
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
+		
+		$scope.getKey = function(unit_name){
+			return services.$filter("i18n")(unit_name, $rootScope.loc.ale, "recon");
+		}
+		
+		$scope.getClass = function(unit_name){
+			return "icon-34x34-unit-" + unit_name;
+		}
 
 		var setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
