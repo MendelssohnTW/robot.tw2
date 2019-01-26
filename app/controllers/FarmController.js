@@ -165,11 +165,13 @@ define("robotTW2/controllers/FarmController", [
 			if(!$scope.villageSelected || !$scope.presetSelected) {return}
 
 			if($scope.update_all_presets){
+				var obj = {};
 				Object.keys($scope.villageSelected.presets).map(function(elem){
 					obj[elem] = $scope.villageSelected.presets[elem];
 					obj[elem].quadrants.push(pos)
 					obj[elem].quadrants.quadrants.sort(function(a,b){return a-b})
 				})
+				$scope.villageSelected.presets = obj;
 			} else {
 				$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.push(pos)
 				$scope.villageSelected.presets[$scope.presetSelected.id].quadrants.sort(function(a,b){return a-b})
@@ -179,10 +181,12 @@ define("robotTW2/controllers/FarmController", [
 			if(!$scope.villageSelected || !$scope.presetSelected || !$scope.villageSelected.presets ||!$scope.villageSelected.presets[$scope.presetSelected.id]) {return}
 
 			if($scope.update_all_presets){
+				var obj = {};
 				Object.keys($scope.villageSelected.presets).map(function(elem){
 					obj[elem] = $scope.villageSelected.presets[elem];
 					obj[elem].quadrants = obj[elem].quadrants.filter(f => f != pos);
 				})
+				$scope.villageSelected.presets = obj;
 			} else {
 				$scope.villageSelected.presets[$scope.presetSelected.id].quadrants = $scope.villageSelected.presets[$scope.presetSelected.id].quadrants.filter(f => f != pos);
 			}
