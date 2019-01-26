@@ -386,11 +386,16 @@ define("robotTW2/services/DefenseService", [
 						comandos_incoming.sort(function (a, b) {
 							return b.completedAt - a.completedAt;
 						})
+
+						var limit = $rootScope.data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
+						if(comandos_incoming.length > limit){
+							comandos_incoming.splice(0, limit);
+						}
+
 						comandos_incoming.forEach(function(cmd){
 							if (cmd.actionType == "attack" && cmd.isCommand && !cmd.returning){
 								troops_measure(cmd, function(push , unitType){
 									if(push){
-										list_others.push(cmd);
 										switch (unitType) {
 										case "light_cavalry":
 											list_calvary.push(cmd);
@@ -413,6 +418,8 @@ define("robotTW2/services/DefenseService", [
 										case "trebuchet":
 											list_trebuchet.push(cmd);
 											break;
+										default :
+											list_others.push(cmd);
 										}
 									}
 								})
