@@ -871,7 +871,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					BUILDINGORDER			: orderbuilding,
 					BUILDINGLIMIT			: limitBuilding,
 					BUILDINGLEVELS			: levelsBuilding,
-					LIMIT_COMMANDS_DEFENSE	: 10,
+					LIMIT_COMMANDS_DEFENSE	: 13,
 					MAX_COMMANDS_FARM		: 42,
 					MIN_POINTS_FARM			: 0,
 					MAX_POINTS_FARM			: 12000,
