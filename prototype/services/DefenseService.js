@@ -339,7 +339,10 @@ define("robotTW2/services/DefenseService", [
 							}
 							addDefense(params);
 						}
-						ct();
+						$timeout(function(){
+							ct();
+						}, 3000)
+						
 					});
 				} else {
 					callback()
