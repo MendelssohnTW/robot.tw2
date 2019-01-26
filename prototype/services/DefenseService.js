@@ -387,8 +387,12 @@ define("robotTW2/services/DefenseService", [
 						})
 
 						var limit = $rootScope.data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
-						if(comandos_incoming.length > limit){
-							comandos_incoming.splice(0, limit);
+						var length_incomming = comandos_incoming.length; 
+						
+						if(!length_incomming){gt(); return}
+						
+						if(length_incomming > limit){
+							comandos_incoming.splice(length_incomming - limit, limit);
 						}
 
 						comandos_incoming.forEach(function(cmd){
