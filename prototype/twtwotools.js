@@ -861,7 +861,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			var seg = 1000 // 1000 milisegundos
 			, min = seg * 60
-			, h = min * 60
+			, h = min * 60;
 
 			var conf = {
 					h						: h,
