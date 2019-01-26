@@ -5,13 +5,15 @@ define("robotTW2/controllers/DefenseController", [
 	"robotTW2/conf",
 	"robotTW2/time",
 	"helper/time",
+	"robotTW2/unitTypesRenameRecon"
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
 			time,
-			helper
+			helper,
+			unitTypesRenameRecon
 	){
 	return function DefenseController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -28,6 +30,10 @@ define("robotTW2/controllers/DefenseController", [
 			TABS.TROOPS,
 			TABS.LOG,
 			]
+		
+		if(!$rootScope.data_defense.recon){
+			$rootScope.data_defense.recon = unitTypesRenameRecon;
+		}
 
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
