@@ -169,7 +169,7 @@ define("robotTW2/controllers/FarmController", [
 				Object.keys($scope.villageSelected.presets).map(function(elem){
 					obj[elem] = $scope.villageSelected.presets[elem];
 					obj[elem].quadrants.push(pos)
-					obj[elem].quadrants.quadrants.sort(function(a,b){return a-b})
+					obj[elem].quadrants.sort(function(a,b){return a-b})
 				})
 				$scope.villageSelected.presets = obj;
 			} else {
