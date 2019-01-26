@@ -58,13 +58,14 @@ define("robotTW2/services/SecondVillageService", [
 		}
 		, get_info = function(callback) {
 			socketService.emit(providers.routeProvider.SECOND_VILLAGE_GET_INFO, {}, function(b) {
+				if(!SecondVillageModel){return}
 				var second_village = new SecondVillageModel(b);
 				modelDataService.getSelectedCharacter().setSecondVillage(second_village),
 				callback()
 			})
 		}
 		, verify_second = function() {
-			get_info(update)
+			get_info(update);
 		}
 		, update = function() {
 			var second_village = modelDataService.getSelectedCharacter().getSecondVillage();
@@ -84,7 +85,7 @@ define("robotTW2/services/SecondVillageService", [
 			, collectedJobs = secondVillageService.getCollectedJobs(second_village.data.jobs)
 			, resources = modelDataService.getSelectedVillage().getResources().getResources()
 			, availableJobs = secondVillageService.getAvailableJobs(currentJobs, collectedJobs, resources, []);
-			if (availableJobs) {
+			if (Object.keys(availableJobs).length) {
 				var job_id = getKey(availableJobs);
 				start_job(job_id, function() {
 					var available_job = availableJobs[job_id];

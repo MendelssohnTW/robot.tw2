@@ -1,3 +1,4 @@
+
 var robotTW2 = window.robotTW2 = undefined;
 (function(root, factory) {
 	if (typeof define === "function" && define.amd) { 
@@ -25,7 +26,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	"use strict";
 
-	var host = "https://mendelssohntw.github.io/robot.tw2/app";
+	var host = "https://mendelssohntw.github.io/robot.tw2/prototype";
 	var $rootScope				= injector.get('$rootScope');
 	var $templateCache 			= injector.get('$templateCache');
 	var $exceptionHandler 		= injector.get('$exceptionHandler');
@@ -725,11 +726,9 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
-			"conf/conf",
 			"robotTW2/version"
 			], function(
 					buildingTypes,
-					confTW,
 					version
 			) {
 
@@ -862,17 +861,17 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			var seg = 1000 // 1000 milisegundos
 			, min = seg * 60
-			, h = min * 60
+			, h = min * 60;
 
 			var conf = {
 					h						: h,
 					min						: min,
 					seg						: seg,
-					loading_timeout			: confTW.LOADING_TIMEOUT,
 					EXECUTEBUILDINGORDER 	: true,
 					BUILDINGORDER			: orderbuilding,
 					BUILDINGLIMIT			: limitBuilding,
 					BUILDINGLEVELS			: levelsBuilding,
+					LIMIT_COMMANDS_DEFENSE	: 13,
 					MAX_COMMANDS_FARM		: 42,
 					MIN_POINTS_FARM			: 0,
 					MAX_POINTS_FARM			: 12000,
@@ -1115,9 +1114,10 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		})
 
-		define("robotTW2/socket", ["robotTW2/base", "robotTW2/conf"], function(base, conf) {
+		define("robotTW2/socket", ["robotTW2/base"], function(base) {
 			var service = {},
 			id = 0,
+			count = 0,
 			timeouts = {}
 			callbacks = {},
 			onopen = function onopen(){
@@ -1147,21 +1147,22 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onerror = function onerror($event){
 				if($event == "Uncaught TypeError: Illegal invocation"){return}
-
-				connect.call = callback;
-				connect.call(false);
-
-				if($rootScope.data_data){
-					$rootScope.data_data.possible = false;
-					$rootScope.data_data.activated = false;
-				}
-				$rootScope.$broadcast("stopAll")
-				console.log("Socket error ... \n");
-				console.log($event);
 				
+				count++;
+				if(count < 10) {
+					service = new WebSocket(base.URL_SOCKET);
+				} else {
+					count = 0
+					if($rootScope.data_data){
+						$rootScope.data_data.possible = false;
+						$rootScope.data_data.activated = false;
+					}
+					$rootScope.$broadcast("stopAll")
+					console.log("Socket error ... \n");
+					console.log($event);
+				}
 			},
 			connect = function connect(callback){
-				connect.call = callback;
 				switch (service.readyState){
 				case 1 : //Aberta
 					if($rootScope.data_data){
@@ -1187,7 +1188,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						if(typeof(opt_callback) == "function"){
 							opt_callback({"type" : type, "data": "Timeout"})
 						}
-					}, conf.loading_timeout)
+					}, 15000)
 				}
 			}
 			, sendMsg = function sendMsg(type, data, opt_callback){
@@ -1738,6 +1739,9 @@ var robotTW2 = window.robotTW2 = undefined;
 		var count_ready = true;
 
 		$rootScope.$on("ready", function($event, type){
+
+
+
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
 				case robotTW2.controllers.MainController : {
@@ -2042,6 +2046,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+				case robotTW2.services.ExtensionService : {
+					robotTW2.services.ExtensionService && typeof(robotTW2.services.ExtensionService.init) == "function" ? robotTW2.requestFn.bind("extension", robotTW2.services.ExtensionService) : null;	
+					break
+				}
 				case robotTW2.services.FarmService : {
 					robotTW2.services.FarmService && typeof(robotTW2.services.FarmService.init) == "function" ? robotTW2.requestFn.bind("farm", robotTW2.services.FarmService) : null;	
 					break
@@ -2126,6 +2134,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_main" : {
 					robotTW2.loadScript("/services/MainService.js");
+					robotTW2.loadScript("/services/ExtensionService.js");
 					break
 				}
 				case "data_farm" : {
@@ -2186,3 +2195,5 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 	});
 }.call(this)
+
+

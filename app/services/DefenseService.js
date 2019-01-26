@@ -31,7 +31,7 @@ define("robotTW2/services/DefenseService", [
 		var isRunning = !1
 		, isPaused = !1
 		, isInitialized = !1
-		, t = undefined
+		, timeout = undefined
 		, oldCommand
 		, d = {}
 		, scope = $rootScope.$new()
@@ -339,7 +339,10 @@ define("robotTW2/services/DefenseService", [
 							}
 							addDefense(params);
 						}
-						ct();
+						$timeout(function(){
+							ct();
+						}, 3000)
+						
 					});
 				} else {
 					callback()
@@ -349,10 +352,9 @@ define("robotTW2/services/DefenseService", [
 		}
 		, getAtaques = function(){
 			return new Promise(function(resolve){
-				t = $timeout(resolve , 480000);
-				
+
 				var lt = []
-				
+
 				Object.keys(scope.commands).map(function(key){
 					if(scope.commands[key].params.preserv){
 						lt.push(scope.commands[key].params)
@@ -373,7 +375,7 @@ define("robotTW2/services/DefenseService", [
 						var list_ram = [];
 						var list_others = [];
 						var list_preserv_others = [];
-						
+
 						lt.forEach(function(cmd){
 							if(cmd.start_village == id){
 								list_preserv_others.push(cmd.params)
@@ -386,11 +388,20 @@ define("robotTW2/services/DefenseService", [
 						comandos_incoming.sort(function (a, b) {
 							return b.completedAt - a.completedAt;
 						})
+
+						var limit = $rootScope.data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
+						var length_incomming = comandos_incoming.length; 
+						
+						if(!length_incomming){gt(); return}
+						
+						if(length_incomming > limit){
+							comandos_incoming.splice(0, limit);
+						}
+
 						comandos_incoming.forEach(function(cmd){
 							if (cmd.actionType == "attack" && cmd.isCommand && !cmd.returning){
 								troops_measure(cmd, function(push , unitType){
 									if(push){
-										list_others.push(cmd);
 										switch (unitType) {
 										case "light_cavalry":
 											list_calvary.push(cmd);
@@ -413,6 +424,8 @@ define("robotTW2/services/DefenseService", [
 										case "trebuchet":
 											list_trebuchet.push(cmd);
 											break;
+										default :
+											list_others.push(cmd);
 										}
 									}
 								})
@@ -436,13 +449,11 @@ define("robotTW2/services/DefenseService", [
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
-					$timeout(function(){
-						promise_verify = undefined;
-						if(renew) {
-							renew = false;
-							verificarAtaques()
-						}
-					}, 5 * 60000)
+					promise_verify = undefined;
+					if(renew) {
+						renew = false;
+						verificarAtaques()
+					}
 				})
 			} else {
 				renew = true;
@@ -455,6 +466,7 @@ define("robotTW2/services/DefenseService", [
 			console.log("timer_delay " + timer_delay)
 			return $timeout(function () {
 				console.log("executando comando sendCancel")
+				console.log("removeCommandDefense sendCancel")
 				removeCommandDefense(id)
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
@@ -511,7 +523,6 @@ define("robotTW2/services/DefenseService", [
 		, listener_command_cancel = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "backward" && data.type == "support"){
-				console.log("listener support backward - command_cancel")
 				var cmds = Object.keys($event.currentScope.commands).map(function(param){
 					if($event.currentScope.commands[param].params.start_village == data.home.id
 							&& $event.currentScope.commands[param].params.target_village == data.target.id
@@ -542,12 +553,11 @@ define("robotTW2/services/DefenseService", [
 						return undefined
 					}
 				}).filter(f => f != undefined)
-				
+
 				cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
 
-				var cmd = undefined;
+				var cmd = undefined; 
 				if(cmds.length){
-					console.log(cmds[0])
 					cmd = cmds.pop();
 					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = expires / 2
@@ -561,12 +571,12 @@ define("robotTW2/services/DefenseService", [
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
 									"params"	: params
 							}
-							
+
 						})
 					}
-					
+
 					removeCommandDefense(cmd.id_command);
-					
+
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 				}
 			}
@@ -581,7 +591,7 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-			
+
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
@@ -594,10 +604,11 @@ define("robotTW2/services/DefenseService", [
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
+
 			if(!params){return}
 			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
-			
+
 			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(params.id_command){
 				id_command = params.id_command
@@ -620,6 +631,7 @@ define("robotTW2/services/DefenseService", [
 				})
 			}
 		}
+		, list_timeout = {}
 		, addDefenseSelector = function(command, i){
 			var opts = ["icon-26x26-dot-red", "icon-26x26-dot-green"];
 
@@ -645,7 +657,13 @@ define("robotTW2/services/DefenseService", [
 					var sniper_post;
 					($(".sniper_ant")[i]).value < conf.MIN_TIME_SNIPE_ANT ? sniper_ant = conf.MIN_TIME_SNIPE_ANT : ($(".sniper_ant")[i]).value > conf.MAX_TIME_SNIPE_ANT ? sniper_ant = conf.MAX_TIME_SNIPE_ANT : sniper_ant = ($(".sniper_ant")[i]).value; 
 					($(".sniper_post")[i]).value < conf.MIN_TIME_SNIPE_POST ? sniper_post = conf.MIN_TIME_SNIPE_POST : ($(".sniper_post")[i]).value > conf.MAX_TIME_SNIPE_POST ? sniper_post = conf.MAX_TIME_SNIPE_POST : sniper_post = ($(".sniper_post")[i]).value;
-					loadVillage(command, function(aldeia, cmt){
+					var r;
+					list_timeout[i] = $timeout(function(){
+						r = undefined;
+						$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
+					}, conf.loading_timeout);
+					r = loadVillage(command, function(aldeia, cmt){
+						$timeout.cancel(list_timeout[i]);	
 						if(aldeia){
 							var params = {
 									start_village		: cmt.target_village_id,
@@ -696,7 +714,6 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			console.log("removendo comando " + id_command)
 			if(scope.commands[id_command] && typeof(scope.commands[id_command].timeout) == "object"){
 				if(scope.commands[id_command].timeout.$$state.status == 0){
 					$timeout.cancel(scope.commands[id_command].timeout)	
@@ -720,8 +737,9 @@ define("robotTW2/services/DefenseService", [
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
 					promise_verify = undefined;
-					$timeout.cancel(t);
-					$timeout(verificarAtaques , 10000);
+					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
+						timeout = $timeout(verificarAtaques , 5 * 60 * 1000);
+					}
 				});
 			}
 		}
@@ -747,8 +765,8 @@ define("robotTW2/services/DefenseService", [
 			commandQueue.unbindAll("support");
 			promise_verify = undefined
 			queue_verifiy = [];
-			$timeout.cancel(t);
-			t = undefined;
+			$timeout.cancel(timeout);
+			timeout = undefined;
 			typeof(listener_verify) == "function" ? listener_verify(): null;
 			typeof(listener_lost) == "function" ? listener_lost(): null;
 			typeof(listener_conquered) == "function" ? listener_conquered(): null;
