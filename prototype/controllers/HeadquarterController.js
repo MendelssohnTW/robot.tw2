@@ -4,12 +4,14 @@ define("robotTW2/controllers/HeadquarterController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
+	"robotTW2/databases/data_villages",
 	], function(
 			helper,
 			time,
 			services,
 			providers,
-			conf
+			conf,
+			data_villages
 	){
 	return function HeadquarterController($rootScope, $scope) {
 		$scope.restore = services.$filter("i18n")("RESTORE", $rootScope.loc.ale);
@@ -101,7 +103,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.restore_headquarter = function(){
 			$rootScope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
-			Object.values($rootScope.data_villages.villages).forEach(function(village){
+			Object.values(data_villages.villages).forEach(function(village){
 				angular.merge(village, {
 					executebuildingorder 		: conf.executebuildingorder,
 					buildingorder 			: $rootScope.data_headquarter.buildingorder,
@@ -109,6 +111,7 @@ define("robotTW2/controllers/HeadquarterController", [
 					buildinglevels 			: $rootScope.data_headquarter.buildinglevels
 				})
 			})
+			data_villages.set();
 			if (!$scope.$$phase) $scope.$apply();
 		}
 

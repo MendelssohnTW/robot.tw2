@@ -125,6 +125,7 @@ define("robotTW2/databases/data_villages", [
 						}
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
+					data_villages.set();
 					callback(true)
 					return m;
 				} else {
@@ -151,6 +152,7 @@ define("robotTW2/databases/data_villages", [
 						})
 					}
 					angular.extend(data_villages.villages[m], villagesExtended[m])
+					data_villages.set();
 					callback(true)
 					return m;
 				}
@@ -186,22 +188,26 @@ define("robotTW2/databases/data_villages", [
 					data_villages.version = conf.VERSION.VILLAGES
 				}
 			} 
-			database.set("data_villages", data_villages, true)	
+			data_villages.set();
+//			database.set("data_villages", data_villages, true)	
 		}, function(){
-			database.set("data_villages", data_villages, true)
+			data_villages.set();
+//			database.set("data_villages", data_villages, true)
 		})
 	}
 
 	db_villages.renameVillage = function($event, data){
 		var id = data.village_id;
-		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name
+		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name;
+		data_villages.set();
 	}
 
 	db_villages.getAssignedPresets = function(){
 		Object.keys(data_villages.villages).map(function(a){
 			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
-		})	
+		})
+		data_villages.set();
 	}
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
@@ -215,10 +221,10 @@ define("robotTW2/databases/data_villages", [
 
 	Object.setPrototypeOf(data_villages, db_villages);
 
-	services.$rootScope.data_villages = data_villages;
+//	services.$rootScope.data_villages = data_villages;
 
-	services.$rootScope.$watch("data_villages", function(){
-		data_villages.set()
-	}, true)
+//	services.$rootScope.$watch("data_villages", function(){
+//		data_villages.set()
+//	}, true)
 	return data_villages;
 })

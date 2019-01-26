@@ -4,12 +4,14 @@ define("robotTW2/services/SpyService", [
 	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/spyTypes",
+	"robotTW2/databases/data_villages",
 	], function(
 			robotTW2,
 			version,
 			time,
 			conf,
-			SPY_TYPES
+			SPY_TYPES,
+			data_villages
 	){
 	return (function SpyService(
 			$rootScope,
@@ -47,7 +49,7 @@ define("robotTW2/services/SpyService", [
 			return level > 0 ? Object.keys(d).length + 1 : 0;
 		}
 		, recruit_spy = function (){
-			Object.keys($rootScope.data_villages.villages).forEach(function(id){
+			Object.keys(data_villages.villages).forEach(function(id){
 				var selectedVillage = modelDataService.getSelectedCharacter().getVillage(id);
 				if(selectedVillage && selectedVillage.data.buildings) {
 					var scoutingInfo = selectedVillage.scoutingInfo;

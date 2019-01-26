@@ -6,6 +6,7 @@ define("robotTW2/services/FarmService", [
 	"conf/conf",
 	"helper/math",
 	"robotTW2/calculateTravelTime",
+	"robotTW2/databases/data_villages",
 	], function(
 			robotTW2,
 			version,
@@ -13,7 +14,8 @@ define("robotTW2/services/FarmService", [
 			conf,
 			conf_conf,
 			math,
-			calculateTravelTime
+			calculateTravelTime,
+			data_villages
 	){
 	return (function FarmService(
 			$rootScope,
@@ -76,7 +78,7 @@ define("robotTW2/services/FarmService", [
 			, preset_id = cmd_preset.preset_id
 			, village_id = cmd_preset.village_id
 
-			var grid = loadMap(x, y, $rootScope.data_villages.villages[village_id].presets[preset_id].max_journey_distance).grid;
+			var grid = loadMap(x, y, data_villages.villages[village_id].presets[preset_id].max_journey_distance).grid;
 			var listaGrid = [];
 			var l = Object.keys(grid).length;
 			for(tx = 0; tx < l; tx++) {
@@ -190,16 +192,16 @@ define("robotTW2/services/FarmService", [
 				return !1;
 			}
 
-			if(!lt_bb.length || aldeia_commands_lenght >= $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm){
+			if(!lt_bb.length || aldeia_commands_lenght >= data_villages.villages[village_id].presets[preset_id].max_commands_farm){
 				callback(true);
 				return !0;
 			}
 
-			var cmd_rest = $rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
+			var cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 			var cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
 			var cmd_ind = Math.min(cmd_rest, cmd_possible)
 			if(cmd_ind > 0){
-				lt_bb.splice($rootScope.data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
+				lt_bb.splice(data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 			} else {
 				lt_bb.splice(0);
 			}
@@ -294,8 +296,8 @@ define("robotTW2/services/FarmService", [
 
 				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
 				var existQuadrant = false;
-				if($rootScope.data_villages.villages[village_id].presets[preset_id].quadrants){
-					existQuadrant = $rootScope.data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
+				if(data_villages.villages[village_id].presets[preset_id].quadrants){
+					existQuadrant = data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
 				} else {
 					existQuadrant = [1, 2, 3, 4].includes(quadrant);
 				}
@@ -365,10 +367,10 @@ define("robotTW2/services/FarmService", [
 						, y2 = cmd_preset.y
 
 						listaVil = listaVil.filter(f => f.affiliation == "barbarian")
-						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
-						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
-						listaVil = listaVil.filter(f => f.points > $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
-						listaVil = listaVil.filter(f => f.points < $rootScope.data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
+						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
+						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
+						listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
+						listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 //						listaVil = listaVil.filter(f => !lt_barbaras.find(g => g == f.id))
 						listaVil = listaVil.filter(f => !$rootScope.data_farm.list_exceptions.find(g => g == f.id))
 
@@ -437,7 +439,7 @@ define("robotTW2/services/FarmService", [
 
 					villages.forEach(function(village){
 						var village_id = village.data.villageId
-						, presets = $rootScope.data_villages.villages[village_id].presets
+						, presets = data_villages.villages[village_id].presets
 						, aldeia_units = angular.copy(village.unitInfo.units)
 
 						if(!isRunning){
@@ -459,7 +461,7 @@ define("robotTW2/services/FarmService", [
 
 						presets_order.forEach(function(preset){
 							if(
-									$rootScope.data_villages.villages[village_id].farm_activate
+									data_villages.villages[village_id].farm_activate
 									&& units_analyze(preset.units, aldeia_units)
 							) {
 								var comando = {
@@ -498,7 +500,7 @@ define("robotTW2/services/FarmService", [
 				}
 
 				$rootScope.data_logs.farm = [];
-				$rootScope.data_villages.getAssignedPresets();
+				data_villages.getAssignedPresets();
 
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
