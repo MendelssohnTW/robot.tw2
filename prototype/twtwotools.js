@@ -1117,6 +1117,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/socket", ["robotTW2/base"], function(base) {
 			var service = {},
 			id = 0,
+			count = 0,
 			timeouts = {}
 			callbacks = {},
 			onopen = function onopen(){
@@ -1146,20 +1147,22 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onerror = function onerror($event){
 				if($event == "Uncaught TypeError: Illegal invocation"){return}
-
-				connect.call(false);
-
-				if($rootScope.data_data){
-					$rootScope.data_data.possible = false;
-					$rootScope.data_data.activated = false;
+				
+				count++;
+				if(count < 10) {
+					service = new WebSocket(base.URL_SOCKET);
+				} else {
+					count = 0
+					if($rootScope.data_data){
+						$rootScope.data_data.possible = false;
+						$rootScope.data_data.activated = false;
+					}
+					$rootScope.$broadcast("stopAll")
+					console.log("Socket error ... \n");
+					console.log($event);
 				}
-				$rootScope.$broadcast("stopAll")
-				console.log("Socket error ... \n");
-				console.log($event);
-
 			},
 			connect = function connect(callback){
-				connect.call = callback;
 				switch (service.readyState){
 				case 1 : //Aberta
 					if($rootScope.data_data){
