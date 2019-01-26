@@ -357,7 +357,6 @@ define("robotTW2/services/DefenseService", [
 						lt.push(scope.commands[key].params)
 					} else {
 						delete scope.commands[key];
-						console.log("removeCommandDefense getAtaques")
 						removeCommandDefense(key)
 					}
 				})
@@ -487,7 +486,6 @@ define("robotTW2/services/DefenseService", [
 //				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
-				console.log("add_resendDefense " + id_command)
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 					scope.commands[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -495,7 +493,6 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 			} else {
-				console.log("removeCommandDefense units_to_send")
 				removeCommandDefense(params.id_command)
 			}
 		}
@@ -519,7 +516,6 @@ define("robotTW2/services/DefenseService", [
 		, listener_command_cancel = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "backward" && data.type == "support"){
-				console.log("listener support backward - command_cancel")
 				var cmds = Object.keys($event.currentScope.commands).map(function(param){
 					if($event.currentScope.commands[param].params.start_village == data.home.id
 							&& $event.currentScope.commands[param].params.target_village == data.target.id
@@ -555,7 +551,6 @@ define("robotTW2/services/DefenseService", [
 
 				var cmd = undefined; 
 				if(cmds.length){
-					console.log(cmds[0])
 					cmd = cmds.pop();
 					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - $rootScope.data_main.time_correction_command
 					, timer_delay = expires / 2
@@ -573,7 +568,6 @@ define("robotTW2/services/DefenseService", [
 						})
 					}
 
-					console.log("removeCommandDefense listener_command_sent")
 					removeCommandDefense(cmd.id_command);
 
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
@@ -597,7 +591,6 @@ define("robotTW2/services/DefenseService", [
 			, timer_delay_send = expires_send - time.convertedTime();
 
 			if(timer_delay_send < 0){
-				console.log("removeCommandDefense resendDefense")
 				removeCommandDefense(params.id_command)
 				return 
 			}
@@ -614,7 +607,6 @@ define("robotTW2/services/DefenseService", [
 				id_command = params.id_command
 			}
 
-			console.log("addDefense " + id_command)
 			var expires = params.data_escolhida - params.time_sniper_ant - $rootScope.data_main.time_correction_command
 			, timer_delay = expires - time.convertedTime();
 
@@ -684,7 +676,6 @@ define("robotTW2/services/DefenseService", [
 					})
 				} else {
 					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
-					console.log("removeCommandDefense addDefenseSelector")
 					removeCommandDefense(command.command_id)
 				}
 			});
@@ -716,7 +707,6 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			console.log("removendo comando " + id_command)
 			if(scope.commands[id_command] && typeof(scope.commands[id_command].timeout) == "object"){
 				if(scope.commands[id_command].timeout.$$state.status == 0){
 					$timeout.cancel(scope.commands[id_command].timeout)	
