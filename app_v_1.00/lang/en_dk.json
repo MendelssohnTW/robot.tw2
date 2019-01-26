@@ -244,6 +244,7 @@
 	},
 	"defense": {
 		"defense": "Defense",
+		"troops": "Select the troops",
 		"log": "Log",
 		"text_date": "Date",
 		"text_hour": "Hour",

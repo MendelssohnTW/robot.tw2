@@ -5,13 +5,15 @@ define("robotTW2/controllers/DefenseController", [
 	"robotTW2/conf",
 	"robotTW2/time",
 	"helper/time",
+	"robotTW2/unitTypesRenameRecon"
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
 			time,
-			helper
+			helper,
+			unitTypesRenameRecon
 	){
 	return function DefenseController($rootScope, $scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
@@ -20,16 +22,30 @@ define("robotTW2/controllers/DefenseController", [
 
 		var TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", $rootScope.loc.ale, "defense"),
+				TROOPS	: services.$filter("i18n")("troops", $rootScope.loc.ale, "defense"),
 				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "defense")
 		}
 		, TAB_ORDER = [
 			TABS.DEFENSE,
+			TABS.TROOPS,
 			TABS.LOG,
 			]
+		
+		if(!$rootScope.data_defense.recon){
+			$rootScope.data_defense.recon = unitTypesRenameRecon;
+		}
 
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
+		
+		$scope.getKey = function(unit_name){
+			return services.$filter("i18n")(unit_name, $rootScope.loc.ale, "recon");
+		}
+		
+		$scope.getClass = function(unit_name){
+			return "icon-34x34-unit-" + unit_name;
+		}
 
 		var setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;

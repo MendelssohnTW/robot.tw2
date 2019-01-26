@@ -1,3 +1,4 @@
+
 <div class="win-content robotTW2">
 	<header class="win-head">
 		<h2>{{title}}</h2>
@@ -124,7 +125,7 @@
 									<span>{{comando.time_sniper_post / 1000}} seg</span>
 								</div>
 							</td>
-							
+
 							<td class="cell-center"><a href="#"
 								class="size-34x34 btn-red icon-26x26-close"
 								ng-click="removeCommand(comando.id_command)" tooltip
@@ -144,6 +145,39 @@
 						<div class="scrollbar-bottom"></div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.TROOPS">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap defense" style="margin-bottom: 100px">
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="*">
+						<col width="56px">
+
+					</colgroup>
+					<tr ng-repeat="(key, value) in data_defense.recon">
+						<td class="cell-right"><span>{{getKey(key)}}</span><span
+							class="span-icon" ng-class="getClass(key)"></span></td>
+						<td>
+							<div id="switch" switch-slider="" border="true"
+								enabled="true" value="value"
+								vertical="false" size="'56x28'">
+								<div ng-class="{'box-border-dark box-filter': border}"
+									class="box-border-dark box-filter">
+									<div class="switch switch-56x28 switch-horizontal"
+										ng-class="{'switch-checked': value}">
+										<span class="size-26x26 switch-thumb"> <span
+											class="simple icon-26x26-switch-off"
+											ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
