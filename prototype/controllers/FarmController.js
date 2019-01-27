@@ -464,8 +464,8 @@ define("robotTW2/controllers/FarmController", [
 		triggerUpdate()
 
 		$scope.$watch("data_villages", function () {
-			if(!data_villages) {return}
-			db_villages = data_villages;
+			if(!$scope.data_villages) {return}
+			db_villages = $scope.data_villages;
 			db_villages.set();
 		}, true)
 
