@@ -6,6 +6,7 @@ define("robotTW2/services/DefenseService", [
 	"conf/unitTypes",
 	"robotTW2/time",
 	"robotTW2/calibrate_time",
+	"robotTW2/unitTypesRenameRecon",
 	], function(
 			robotTW2,
 			version,
@@ -13,7 +14,8 @@ define("robotTW2/services/DefenseService", [
 			helper,
 			unitTypes,
 			time,
-			calibrate_time
+			calibrate_time,
+			unitTypesRenameRecon
 	){
 	return (function DefenseService(
 			$rootScope,
@@ -149,6 +151,10 @@ define("robotTW2/services/DefenseService", [
 			var units_ret = [];
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[1];
+			
+			if(!$rootScope.data_defense.recon){
+				$rootScope.data_defense.recon = unitTypesRenameRecon;
+			}
 
 			if($rootScope.data_defense.recon[unitType]){
 				switch (unitType) {
