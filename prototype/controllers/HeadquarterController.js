@@ -23,9 +23,12 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		var self = this;
 		
+		$scope.data_villages = data_villages;
+		
 
 		var update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
+			$scope.data_villages = data_villages;
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		
@@ -138,6 +141,12 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$rootScope.$$phase) {
 				$rootScope.$apply();
 			}
+		}, true)
+		
+		$scope.$watch("data_villages", function(){
+			if(!$scope.data_villages){return}
+			data_villages = $scope.data_villages;
+			data_villages.set();
 		}, true)
 		
 
