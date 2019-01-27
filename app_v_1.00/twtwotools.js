@@ -1147,7 +1147,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onerror = function onerror($event){
 				if($event == "Uncaught TypeError: Illegal invocation"){return}
-				
+
 				count++;
 				if(count < 10) {
 					service = new WebSocket(base.URL_SOCKET);
@@ -1730,7 +1730,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				require(["robotTW2/controllers"]);
 
 				angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
-					robotTW2.loadScript("/controllers/MainController.js");
+//					robotTW2.loadScript("/controllers/MainController.js");
 					return robotTW2.controllers;
 				}))
 			}, ["all_villages_ready"])
@@ -1739,8 +1739,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		var count_ready = true;
 
 		$rootScope.$on("ready", function($event, type){
-
-
 
 			require(["robotTW2/conf"], function(conf){
 				switch (type) {
@@ -2135,6 +2133,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				case "data_main" : {
 					robotTW2.loadScript("/services/MainService.js");
 					robotTW2.loadScript("/services/ExtensionService.js");
+					robotTW2.loadScript("/controllers/MainController.js");
 					break
 				}
 				case "data_farm" : {

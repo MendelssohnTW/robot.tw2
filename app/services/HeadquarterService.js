@@ -5,13 +5,15 @@ define("robotTW2/services/HeadquarterService", [
 	"robotTW2/conf",
 	"conf/upgradeabilityStates",
 	"conf/locationTypes",
+	"robotTW2/databases/data_villages",
 	], function(
 			robotTW2,
 			version,
 			time,
 			conf,
 			upgradeabilityStates,
-			locationTypes
+			locationTypes,
+			data_villages
 	){
 	return (function HeadquarterService(
 			$rootScope,
@@ -164,7 +166,7 @@ define("robotTW2/services/HeadquarterService", [
 				, buildingLevels = angular.copy(Object.keys(levels).map(function(key){return {[key] : levels[key]}}))
 				, queues = village.buildingQueue.getQueue()
 				, readyState = village.checkReadyState()
-				, buildState = $rootScope.data_villages.villages[village_id].executebuildingorder
+				, buildState = data_villages.villages[village_id].executebuildingorder
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];
@@ -194,30 +196,30 @@ define("robotTW2/services/HeadquarterService", [
 					resolve();
 				}
 
-				$rootScope.data_villages.villages[village_id].buildinglevels = buildingLevels;
+				data_villages.villages[village_id].buildinglevels = buildingLevels;
 				if (queues.length) {
 					queues.forEach(
 							function(queue) {
-								$rootScope.data_villages.villages[village_id].buildinglevels.map(function(value){
+								data_villages.villages[village_id].buildinglevels.map(function(value){
 									Object.keys(value)[0] == queue.building ? value[queue.building]++ :undefined;
 								})
 							}
 					)
 				}
 
-				$rootScope.data_villages.villages[village_id].builds = checkBuildingOrderLimit($rootScope.data_villages.villages[village_id]);
+				data_villages.villages[village_id].builds = checkBuildingOrderLimit(data_villages.villages[village_id]);
 
-				if(!$rootScope.data_villages.villages[village_id].builds.length) {
+				if(!data_villages.villages[village_id].builds.length) {
 					resolve();
 				}
 
-				var reBuilds = $rootScope.data_villages.villages[village_id].buildingorder[$rootScope.data_villages.villages[village_id].selected.value].map(function(key){
-					return $rootScope.data_villages.villages[village_id].builds.map(function(key){return Object.keys(key)[0]}).find(f=>f==Object.keys(key)[0])
+				var reBuilds = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value].map(function(key){
+					return data_villages.villages[village_id].builds.map(function(key){return Object.keys(key)[0]}).find(f=>f==Object.keys(key)[0])
 				}).filter(f => f != undefined)
 				, g = [];
 
 				reBuilds.forEach(function(i){
-					g.push($rootScope.data_villages.villages[village_id].builds.map(
+					g.push(data_villages.villages[village_id].builds.map(
 							function(key){
 								return Object.keys(key)[0] == i ? {[Object.keys(key)[0]] : Object.values(key)[0]} : undefined
 							}
@@ -272,6 +274,7 @@ define("robotTW2/services/HeadquarterService", [
 				if(!promise){
 					promise = new Promise(function(res){
 						upgradeBuilding(vill_id).then(function(repeat){
+							data_villages.set();
 							if(repeat){
 								f(vill_id)
 							} else {
@@ -296,7 +299,7 @@ define("robotTW2/services/HeadquarterService", [
 		, cicle_building = function($event, data){
 			if (!isInitialized)
 				return;
-			Object.keys($rootScope.data_villages.villages).map(function(village_id){seq_cicle(village_id)})
+			Object.keys(data_villages.villages).map(function(village_id){seq_cicle(village_id)})
 		}
 		, wait = function(){
 			setList(function(tm){
@@ -310,11 +313,12 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, init = function(bool){
 			isInitialized = !0
-			Object.keys($rootScope.data_villages.villages).map(function(village){
-				if(!$rootScope.data_villages.villages[village].selected){
-					$rootScope.data_villages.villages[village].selected = $rootScope.data_headquarter.selects[0];
+			Object.keys(data_villages.villages).map(function(village){
+				if(!data_villages.villages[village].selected){
+					data_villages.villages[village].selected = $rootScope.data_headquarter.selects[0];
 				}
 			})
+			data_villages.set();
 			if(bool){return}
 			start();
 		}

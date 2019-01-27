@@ -45,7 +45,6 @@ define("robotTW2/services/RecruitService", [
 			});
 			return prices;
 		})()
-		, data_villages = $rootScope.data_villages
 		, verificarGroups = function (){
 			var game = {}
 			game.Groups = groupService.getGroups();
