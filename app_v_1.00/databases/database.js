@@ -53,11 +53,11 @@ define("robotTW2/databases/database", [
 //			} else{
 //			value = null;
 //			}
-			if(localStorage[keyName]) {
-				value = {[keyName]: localStorage.getItem(keyName)};
-			} else{
+//			if(localStorage[keyName]) {
+//				value = {[keyName]: localStorage.getItem(keyName)};
+//			} else{
 				value = null;
-			}
+//			}
 		}
 		return null === value ? missing : "object" == typeof value && void 0 !== value ? value : missing
 	}
