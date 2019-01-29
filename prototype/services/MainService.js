@@ -11,6 +11,11 @@ define("robotTW2/services/MainService", [
 
 		var service = {};
 		return service.initExtensions = function(){
+			
+			var interval_reload = setInterval(function(){
+				location.reload()	
+			}, 1 * 60 * 60 * 1000)
+			
 			var extensions = $rootScope.data_main.getExtensions();
 			for (var extension in extensions) {
 				var arFn = requestFn.get(extension.toLowerCase(), true);
