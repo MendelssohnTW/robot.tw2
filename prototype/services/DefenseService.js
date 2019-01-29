@@ -380,9 +380,9 @@ define("robotTW2/services/DefenseService", [
 						var id = vls.shift().data.villageId;
 						var list_snob = [];
 						var list_trebuchet = [];
-						var list_calvary = [];
-						var list_infatary = [];
-						var list_ram = [];
+//						var list_calvary = [];
+//						var list_infatary = [];
+//						var list_ram = [];
 						var list_others = [];
 						var list_preserv_others = [];
 
@@ -414,19 +414,19 @@ define("robotTW2/services/DefenseService", [
 									if(push){
 										switch (unitType) {
 										case "light_cavalry":
-											list_calvary.push(cmd);
+											list_others.push(cmd);
 											break;
 										case "heavy_cavalry":
-											list_calvary.push(cmd);
+											list_others.push(cmd);
 											break;
 										case "axe":
-											list_infatary.push(cmd);
+											list_others.push(cmd);
 											break;
 										case "sword":
-											list_infatary.push(cmd);
+											list_others.push(cmd);
 											break;
 										case "ram":
-											list_ram.push(cmd);
+											list_others.push(cmd);
 											break;
 										case "snob":
 											list_snob.push(cmd);
