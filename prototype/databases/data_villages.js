@@ -125,7 +125,7 @@ define("robotTW2/databases/data_villages", [
 						}
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
-					data_villages.set();
+					db_villages.set();
 					callback(true)
 					return m;
 				} else {
@@ -152,7 +152,7 @@ define("robotTW2/databases/data_villages", [
 						})
 					}
 					angular.extend(data_villages.villages[m], villagesExtended[m])
-					data_villages.set();
+					db_villages.set();
 					callback(true)
 					return m;
 				}
@@ -188,10 +188,10 @@ define("robotTW2/databases/data_villages", [
 					data_villages.version = conf.VERSION.VILLAGES
 				}
 			} 
-			data_villages.set();
+			db_villages.set();
 //			database.set("data_villages", data_villages, true)	
 		}, function(){
-			data_villages.set();
+			db_villages.set();
 //			database.set("data_villages", data_villages, true)
 		})
 	}
@@ -199,7 +199,7 @@ define("robotTW2/databases/data_villages", [
 	db_villages.renameVillage = function($event, data){
 		var id = data.village_id;
 		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name;
-		data_villages.set();
+		db_villages.set();
 	}
 
 	db_villages.getAssignedPresets = function(){
@@ -207,7 +207,7 @@ define("robotTW2/databases/data_villages", [
 			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
 		})
-		data_villages.set();
+		db_villages.set();
 	}
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
@@ -224,7 +224,7 @@ define("robotTW2/databases/data_villages", [
 //	services.$rootScope.data_villages = data_villages;
 
 //	services.$rootScope.$watch("data_villages", function(){
-//		data_villages.set()
+//		db_villages.set()
 //	}, true)
 	return data_villages;
 })
