@@ -79,7 +79,7 @@ define("robotTW2/databases/data_main", [
 
 		dbs.forEach(function(db_name){
 			var string = "data_" + db_name.toLowerCase();
-			var db = services.$rootScope[string]
+			var db = data[string]
 			if(db && string != "data_logs"){
 				angular.extend(extensions, {
 					[db_name.toUpperCase()] : {
@@ -120,11 +120,11 @@ define("robotTW2/databases/data_main", [
 
 	Object.setPrototypeOf(data_main, db_main);
 
-	services.$rootScope.data_main = data_main;
-
-	services.$rootScope.$watch("data_main", function(){
-		data_main.set()
-	}, true)
+//	services.$rootScope.data_main = data_main;
+//
+//	services.$rootScope.$watch("data_main", function(){
+//		data_main.set()
+//	}, true)
 
 	return data_main;
 
