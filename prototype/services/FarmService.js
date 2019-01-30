@@ -105,7 +105,6 @@ define("robotTW2/services/FarmService", [
 		}
 		, loadMap = function (x, y, dist) {
 			
-			villages_town.load(x, y, dist)
 			var coordX = x - dist;
 			var coordY = y - dist;
 			var ciclos = 0;
