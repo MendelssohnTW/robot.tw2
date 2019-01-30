@@ -125,7 +125,6 @@ define("robotTW2/databases/data_villages", [
 						}
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
-					db_villages.set();
 					callback(true)
 					return m;
 				} else {
@@ -152,7 +151,6 @@ define("robotTW2/databases/data_villages", [
 						})
 					}
 					angular.extend(data_villages.villages[m], villagesExtended[m])
-					db_villages.set();
 					callback(true)
 					return m;
 				}
