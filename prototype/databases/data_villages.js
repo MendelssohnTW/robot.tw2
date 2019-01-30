@@ -203,8 +203,8 @@ define("robotTW2/databases/data_villages", [
 	}
 
 	db_villages.getAssignedPresets = function(){
+		var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 		Object.keys(data_villages.villages).map(function(a){
-			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
 		})
 		db_villages.set();
