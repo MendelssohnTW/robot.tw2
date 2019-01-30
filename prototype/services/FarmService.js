@@ -141,7 +141,7 @@ define("robotTW2/services/FarmService", [
 					if(grid[i][j] != null){
 						grid[i].splice(0, 1)
 						if(!grid[i].length){
-						grid.splice(0, 1)
+							grid.splice(0, 1)
 						}
 					}
 				};
