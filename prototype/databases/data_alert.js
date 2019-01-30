@@ -46,11 +46,5 @@ define("robotTW2/databases/data_alert", [
 
 	Object.setPrototypeOf(data_alert, db_alert);
 	
-	services.$rootScope.data_alert = data_alert;
-
-	services.$rootScope.$watch("data_alert", function(){
-		data_alert.set()
-	}, true)
-
 	return data_alert;
 })

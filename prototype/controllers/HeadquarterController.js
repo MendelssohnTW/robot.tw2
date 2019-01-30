@@ -5,13 +5,15 @@ define("robotTW2/controllers/HeadquarterController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"robotTW2/databases/data_villages",
+	"robotTW2/databases/data_headquarter",
 	], function(
 			helper,
 			time,
 			services,
 			providers,
 			conf,
-			data_villages
+			data_villages,
+			data_headquarter
 	){
 	return function HeadquarterController($rootScope, $scope) {
 		$scope.restore = services.$filter("i18n")("RESTORE", $rootScope.loc.ale);
@@ -22,9 +24,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
 
 		var self = this;
-		
+		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
-		
 
 		var update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
@@ -38,7 +39,7 @@ define("robotTW2/controllers/HeadquarterController", [
 //		}
 		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_headquarter.complete - time.convertedTime()) : 0;
+			return $scope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
 
 		$scope.getKey = function(buildingOrder){
@@ -105,16 +106,16 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.restore_headquarter = function(){
-			$rootScope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
+			$scope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
 			Object.values(data_villages.villages).forEach(function(village){
 				angular.merge(village, {
-					executebuildingorder 		: conf.executebuildingorder,
-					buildingorder 			: $rootScope.data_headquarter.buildingorder,
-					buildinglimit 			: $rootScope.data_headquarter.buildinglimit,
-					buildinglevels 			: $rootScope.data_headquarter.buildinglevels
+					executebuildingorder 	: conf.executebuildingorder,
+					buildingorder 			: $scope.data_headquarter.buildingorder,
+					buildinglimit 			: $scope.data_headquarter.buildinglimit,
+					buildinglevels 			: $scope.data_headquarter.buildinglevels
 				})
 			})
-			data_villages.set();
+//			data_villages.set();
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
@@ -147,6 +148,12 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_villages){return}
 			data_villages = $scope.data_villages;
 			data_villages.set();
+		}, true)
+		
+		$scope.$watch("data_headquarter", function(){
+			if(!$scope.data_headquarter){return}
+			data_headquarter = $scope.data_headquarter;
+			data_headquarter.set();
 		}, true)
 		
 

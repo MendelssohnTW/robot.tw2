@@ -66,11 +66,5 @@ define("robotTW2/databases/data_headquarter", [
 
 	Object.setPrototypeOf(data_headquarter, db_headquarter);
 
-	services.$rootScope.data_headquarter = data_headquarter;
-
-	services.$rootScope.$watch("data_headquarter", function(){
-		data_headquarter.set()
-	}, true)
-
 	return data_headquarter;
 })

@@ -6,6 +6,7 @@ define("robotTW2/services/HeadquarterService", [
 	"conf/upgradeabilityStates",
 	"conf/locationTypes",
 	"robotTW2/databases/data_villages",
+	"robotTW2/databases/data_headquarter",
 	], function(
 			robotTW2,
 			version,
@@ -13,7 +14,8 @@ define("robotTW2/services/HeadquarterService", [
 			conf,
 			upgradeabilityStates,
 			locationTypes,
-			data_villages
+			data_villages,
+			data_headquarter
 	){
 	return (function HeadquarterService(
 			$rootScope,
@@ -38,6 +40,7 @@ define("robotTW2/services/HeadquarterService", [
 		, list = []
 		, x = {}
 		, y = {}
+		, db_headquarter = data_headquarter.get()
 		, promise = undefined
 		, promise_queue = []	
 		, promise_next = undefined
@@ -90,7 +93,7 @@ define("robotTW2/services/HeadquarterService", [
 						not_enough_resources = true
 					} else {
 						Object.keys(resources).forEach(function(resource_type){
-							if(resources[resource_type] + $rootScope.data_headquarter.reserva[resource_type.toLowerCase()] < nextLevelCosts[resource_type]){
+							if(resources[resource_type] + db_headquarter.reserva[resource_type.toLowerCase()] < nextLevelCosts[resource_type]){
 								not_enough_resources = true;
 							}
 						})
@@ -127,19 +130,19 @@ define("robotTW2/services/HeadquarterService", [
 				var d = modelDataService.getWorldConfig().getFreeSecondsPerBuildingLevel() * village.getBuildingLevel("headquarter")
 				return queue.finishedIn - d;
 			} else {
-				return $rootScope.data_headquarter.interval / 1e3;
+				return db_headquarter.interval / 1e3;
 			}
 		}
 		, getFinishedForFree = function (village){
 			var lt = [];
 			if(village.getBuildingQueue().getQueue().length > 0){
 				var timer = Math.round(canBeFinishedForFree(village) * 1e3) + 5000;
-				if (timer < $rootScope.data_headquarter.interval){
+				if (timer < db_headquarter.interval){
 					timer < 0 ? timer = 0 : timer;
 					lt.push(timer);
 				}
 			}
-			var t = $rootScope.data_headquarter.interval > 0 ? $rootScope.data_headquarter.interval : $rootScope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER;
+			var t = db_headquarter.interval > 0 ? db_headquarter.interval : db_headquarter.interval = conf.INTERVAL.HEADQUARTER;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
@@ -147,10 +150,11 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.HEADQUARTER)
-			$rootScope.data_headquarter.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_headquarter.interval);
+			db_headquarter.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push(db_headquarter.interval);
 			var t = Math.min.apply(null, list);
-			$rootScope.data_headquarter.interval = t
-			$rootScope.data_headquarter.complete = time.convertedTime() + t
+			db_headquarter.interval = t
+			db_headquarter.complete = time.convertedTime() + t
+			db_headquarter.set()
 			list = [];
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 			if(callback && typeof(callback) == "function"){callback(t)}
@@ -188,7 +192,7 @@ define("robotTW2/services/HeadquarterService", [
 						!(
 								buildAmounts !== buildUnlockedSlots
 								&& buildState
-								&& buildAmounts < $rootScope.data_headquarter.reserva.slots
+								&& buildAmounts < db_headquarter.reserva.slots
 								&& (readyState.buildingQueue || readyState.buildings) 
 								&& (village.isInitialized() || villageService.initializeVillage(village))
 						) 
@@ -232,10 +236,10 @@ define("robotTW2/services/HeadquarterService", [
 					function a (build){
 						if(!promise_next){
 							promise_next = new Promise(function(res){
-								if($rootScope.data_headquarter.seq){g = []};
+								if(db_headquarter.seq){g = []};
 								var buildLevel = Object.keys(build)[0]
 								buildingService.compute(village)
-								if(buildAmounts !== buildUnlockedSlots && buildAmounts < $rootScope.data_headquarter.reserva.slots) {
+								if(buildAmounts !== buildUnlockedSlots && buildAmounts < db_headquarter.reserva.slots) {
 									isUpgradeable(village, buildLevel, function(success, data) {
 										if (success) {
 											++buildAmounts;
@@ -315,7 +319,7 @@ define("robotTW2/services/HeadquarterService", [
 			isInitialized = !0
 			Object.keys(data_villages.villages).map(function(village){
 				if(!data_villages.villages[village].selected){
-					data_villages.villages[village].selected = $rootScope.data_headquarter.selects[0];
+					data_villages.villages[village].selected = db_headquarter.selects[0];
 				}
 			})
 			data_villages.set();
@@ -325,7 +329,8 @@ define("robotTW2/services/HeadquarterService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
-				$rootScope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER;
+				db_headquarter.interval = conf.INTERVAL.HEADQUARTER;
+				db_headquarter.set()
 				listener_building_level_change = $rootScope.$on(providers.eventTypeProvider.BUILDING_LEVEL_CHANGED, cicle_building)
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})

@@ -1754,8 +1754,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
 					robotTW2.loadScript("/controllers/DataController.js");
-//					robotTW2.loadScript("/controllers/MapController.js");
-//					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
 				case robotTW2.controllers.AlertController : {
@@ -1795,20 +1793,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "headquarter",
 								classes 		: "fullsize",
 								url		 		: "/controllers/HeadquarterController.js",
-								style 			: null
-						}		
-						robotTW2.build(params)
-					})
-				}
-				case robotTW2.controllers.MedicController : {
-					robotTW2.createScopeLang("medic", function(scopeLang){
-						var params = {
-								controller		: robotTW2.controllers.MedicController,
-								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.MEDIC,
-								templateName 	: "medic",
-								classes 		: "",
-								url		 		: "/controllers/MedicController.js",
 								style 			: null
 						}		
 						robotTW2.build(params)
@@ -1922,21 +1906,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								style 			: {
 									width:"350px"
 								}
-						}		
-						robotTW2.build(params)
-					})
-					break
-				}
-				case robotTW2.controllers.MapController : {
-					robotTW2.createScopeLang("map", function(scopeLang){
-						var params = {
-								controller		: robotTW2.controllers.MapController,
-								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.MAP,
-								templateName 	: "map",
-								classes 		: "",
-								url		 		: "/controllers/MapController.js",
-								style 			: null
 						}		
 						robotTW2.build(params)
 					})
@@ -2114,10 +2083,8 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_defense.js");
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
-//								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
 								robotTW2.loadScript("/databases/data_data.js");
-//								robotTW2.loadScript("/databases/data_map.js");
 								robotTW2.loadScript("/databases/data_logs.js");
 
 								robotTW2.services.$timeout(function(){
@@ -2172,16 +2139,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/services/SpyService.js");
 					break
 				}
-				case "data_medic" : {
-					robotTW2.loadScript("/services/MedicService.js");
-					break
-				}
 				case "data_secondvillage" : {
 					robotTW2.loadScript("/services/SecondVillageService.js");
-					break
-				}
-				case "data_map" : {
-					robotTW2.loadScript("/services/MapService.js");
 					break
 				}
 				case "data_data" : {
