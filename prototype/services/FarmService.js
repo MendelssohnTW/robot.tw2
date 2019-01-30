@@ -441,10 +441,7 @@ define("robotTW2/services/FarmService", [
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT);
 
-
-				if(reg.loaded){
-//					Buscar no town
-				} else {
+				function send_for_socket(reg, t, resolve_grid, cmd_preset){
 					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 						$timeout.cancel(t);
 						t = undefined;
@@ -456,7 +453,7 @@ define("robotTW2/services/FarmService", [
 							listaVil = listaVil.filter(f => f.affiliation == "barbarian")
 
 							for (j = 0; j < listaVil.length; j++) {
-								villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j].id 
+								villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j] 
 							}
 
 							listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
@@ -479,6 +476,45 @@ define("robotTW2/services/FarmService", [
 						}
 						resolve_grid(reg.villages)
 					});
+				}
+
+				function search_for_town(reg, resolve_grid, cmd_preset){
+					var x1 = reg.x
+					, x2 = reg.x + reg.dist
+					, y1 = reg.y
+					, y2 = reg.y + reg.dit
+					, listaVil = []
+
+					for (x = x1; x < x2; x++) {
+						for (y = y1; y < y2; y++) {
+							if(villages_town[x][y] != null){
+								listaVil.push(villages_town[x][y])
+							}
+						}
+					}
+
+					listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
+					listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
+					listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
+					listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
+					listaVil = listaVil.filter(f => !$rootScope.data_farm.list_exceptions.find(g => g == f.id))
+
+					listaVil.sort(function (a, b) {
+						return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
+					});
+
+					for (j = 0; j < listaVil.length; j++) {
+						if (check_village(listaVil[j], cmd_preset)) {
+							reg.villages.push(listaVil[j].id);
+						}
+					}
+					resolve_grid(reg.villages)
+				}
+
+				if(reg.loaded){
+					search_for_town(reg, resolve_grid, cmd_preset);
+				} else {
+					send_for_socket(reg, t, resolve_grid, cmd_preset)
 				}
 			})
 		}
