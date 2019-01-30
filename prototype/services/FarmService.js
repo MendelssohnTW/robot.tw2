@@ -28,11 +28,23 @@ define("robotTW2/services/villages_town", function(){
 	}
 	
 	serv.loaded = function(x1, x2, y1, y2){
+		for (x = 0; x < 1000; x++) {
+			for (y = 0; y < 1000; y++) {
+				g[x][y] = {"id": null, "load":false}
+			}	
+		}
+	}
+	
+	serv.load = function(x1, x2, y1, y2){
+		var list = []
 		for (i = x1; i <= x2; i++){
 			for (j = y1; j <= y2; j++){
-				villages_town[i][j]["load"] = true;
+				if(!grid[i][j]["load"]){
+					return true
+				}
 			}
 		}
+		return false
 	}
 
 	Object.setPrototypeOf(grid, serv);
@@ -92,6 +104,8 @@ define("robotTW2/services/FarmService", [
 			});
 		}
 		, loadMap = function (x, y, dist) {
+			
+			villages_town.load(x, y, dist)
 			var coordX = x - dist;
 			var coordY = y - dist;
 			var ciclos = 0;
@@ -114,8 +128,9 @@ define("robotTW2/services/FarmService", [
 			var grid = setupGrid(t_ciclo);
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
-					grid[i][j] = {"x":coordX + (map_chunk_size * i), "y":coordY + (map_chunk_size * j), "dist": map_chunk_size};
-
+					if(villages_town.load(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))){
+						grid[i][j] = {"x":coordX + (map_chunk_size * i), "y":coordY + (map_chunk_size * j), "dist": map_chunk_size};	
+					}
 				};
 			};
 
