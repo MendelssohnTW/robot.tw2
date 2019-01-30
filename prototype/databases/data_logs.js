@@ -47,11 +47,5 @@ define("robotTW2/databases/data_logs", [
 
 	Object.setPrototypeOf(data_logs, db_logs);
 	
-	services.$rootScope.data_logs = data_logs;
-
-	services.$rootScope.$watch("data_logs", function(){
-		data_logs.set()
-	}, true)
-
 	return data_logs;
 })

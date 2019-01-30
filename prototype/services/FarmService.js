@@ -7,6 +7,7 @@ define("robotTW2/services/FarmService", [
 	"helper/math",
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
+	"robotTW2/databases/data_logs",
 	], function(
 			robotTW2,
 			version,
@@ -15,7 +16,8 @@ define("robotTW2/services/FarmService", [
 			conf_conf,
 			math,
 			calculateTravelTime,
-			data_villages
+			data_villages,
+			data_logs
 	){
 	return (function FarmService(
 			$rootScope,
@@ -238,7 +240,7 @@ define("robotTW2/services/FarmService", [
 										'village_id'		: bb,
 										'num_reports'		: 0
 									}, function (village) {
-										$rootScope.data_logs.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
+//										data_logs.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
 										socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										resolve_send(permit_send)
 									});
@@ -413,7 +415,8 @@ define("robotTW2/services/FarmService", [
 									cmd_preset = promise_preset_queue.shift();
 									t(cmd_preset)
 								} else {
-									$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+									data_logs.farm.push({"text":$filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+									data_logs.set()
 									resol()
 								}
 							})
@@ -499,7 +502,7 @@ define("robotTW2/services/FarmService", [
 					loadScript("/controllers/FarmCompletionController.js");
 				}
 
-				$rootScope.data_logs.farm = [];
+				data_logs.farm = [];
 				data_villages.getAssignedPresets();
 
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
@@ -510,7 +513,8 @@ define("robotTW2/services/FarmService", [
 						tempo_delay = 0
 					} else {
 						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
-						$rootScope.data_logs.farm.push({"text":$filter("i18n")("wait_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+						data_logs.farm.push({"text":$filter("i18n")("wait_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+						data_logs.set()
 					};
 					interval_init = $timeout(function () {
 						var init_first = true;
@@ -523,11 +527,14 @@ define("robotTW2/services/FarmService", [
 								init_first = false;
 								execute_cicle(tempo).then(function(){
 									console.log("Terminate cicle process " + new Date(time.convertedTime()).toString())
+									data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+									data_logs.set()
 									f()
 								})
 							} else {
 								clear()
-								$rootScope.data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+								data_logs.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+								data_logs.set()
 							}
 						}
 						f()
@@ -537,7 +544,8 @@ define("robotTW2/services/FarmService", [
 				} else {
 					isRunning = !1;
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: $filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm")})
-					$rootScope.data_logs.farm.push({"text":$filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+					data_logs.farm.push({"text":$filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+					data_logs.set()
 					return;
 				}
 			}, ["all_villages_ready"])
