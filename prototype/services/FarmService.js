@@ -423,12 +423,12 @@ define("robotTW2/services/FarmService", [
 					}	
 				}
 
-				var v_town = villages_town.filter(function(elem){
-					return elem.filter(function(el){
-						return el != null
-					})
-				})
-
+//				var v_town = villages_town.filter(function(elem){
+//					return elem.filter(function(el){
+//						return el != null
+//					})
+//				})
+//
 
 
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
