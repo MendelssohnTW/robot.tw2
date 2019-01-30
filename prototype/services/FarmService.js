@@ -393,6 +393,12 @@ define("robotTW2/services/FarmService", [
 				, x2 = reg.x + reg.dist
 				, y1 = reg.y
 				, y2 = reg.y + reg.dist;
+				
+				var v_town = villages_town.filter(function(elem){
+					return elem.filter(function(el){
+						return el != null
+					})
+				})
 
 				
 				
