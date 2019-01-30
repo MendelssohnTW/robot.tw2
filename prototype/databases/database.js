@@ -23,7 +23,7 @@ define("robotTW2/databases/database", [
 //		var tb = JSON.parse(localStorage.getItem(this.prefixStandard));
 		try {
 			var tb = JSON.parse(localStorage.getItem(keyName));
-			if(typeof(tb) == "object"){
+			if(tb != null && typeof(tb) == "object"){
 //				angular.extend(tb.data, newValue);
 				angular.extend(tb, value);
 			} else {
