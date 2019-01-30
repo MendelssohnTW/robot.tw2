@@ -1,5 +1,14 @@
 define("robotTW2/services/villages_town", function(){
-	var setupGrid = function () {
+	var loadGrid = function(){
+		var g = setupGrid();
+		for (x = 0; x < 1000; x++) {
+			for (y = 0; y < 1000; y++) {
+				g[x][y] = {"id": null, "load":false}
+			}	
+		}
+		return g
+	}
+	setupGrid = function () {
 		var i, t = 0,
 		arr;
 
@@ -11,10 +20,10 @@ define("robotTW2/services/villages_town", function(){
 		});
 	}
 	, serv = {}
-	, grid = setupGrid();
+	, grid = loadGrid();
 	
 	serv.renew = function(){
-		grid = setupGrid();
+		grid = loadGrid();
 		return grid;
 	}
 	
@@ -85,19 +94,20 @@ define("robotTW2/services/FarmService", [
 			Math.trunc(dist / conf.MAP_CHUNCK_LEN) / (dist / conf.MAP_CHUNCK_LEN) < 1 ? ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN) + 1 : ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN);
 
 			var t_ciclo = 0;
+			
 			if (ciclos % 2 < 1) {
 				t_ciclo = ciclos + 1;
 			} else {
 				t_ciclo = ciclos;
 			}
 
-			var map_chunk_size = Math.round(dist * 2 / t_ciclo);
+			var map_chunk_size = Math.round((dist * 2 + (x - dist - coordX)) / t_ciclo);
 
 			var grid = setupGrid(t_ciclo);
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
 					grid[i][j] = {"x":coordX + (map_chunk_size * i), "y":coordY + (map_chunk_size * j), "dist": map_chunk_size};
-					villages_town[i][j]
+					
 				};
 			};
 			return {
