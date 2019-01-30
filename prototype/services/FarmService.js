@@ -364,7 +364,24 @@ define("robotTW2/services/FarmService", [
 				t = $timeout(function(){
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT);
+				
+//				reg.x ~ reg.dist
+//				reg.y ~ reg.dist
+				
+				var x1 = reg.x
+				, x2 = reg.x = reg.dist
+				, y1 = reg.y
+				, y2 = reg.y + reg.dist;
 
+				var x_town = villages_town.filter(f => f[0] > x1);
+				x_town = x_town.filter(f => f[0] < x2);
+				x_town = x_town.filter(f => f[1] > y1);
+				x_town = x_town.filter(f => f[1] < y2);
+				
+				var x_min = x_town[0]
+				, y_min = x_town[0][0]
+				
+				
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 					$timeout.cancel(t);
 					t = undefined;
