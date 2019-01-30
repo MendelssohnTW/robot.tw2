@@ -381,7 +381,7 @@ define("robotTW2/services/FarmService", [
 //				reg.y ~ reg.dist
 				
 				var x1 = reg.x
-				, x2 = reg.x = reg.dist
+				, x2 = reg.x + reg.dist
 				, y1 = reg.y
 				, y2 = reg.y + reg.dist;
 
