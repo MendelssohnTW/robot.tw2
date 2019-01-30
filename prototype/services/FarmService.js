@@ -140,8 +140,12 @@ define("robotTW2/services/FarmService", [
 
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
-					if(grid[i][j] != null){
+					if(grid[i][j] == null){
 						grid[i].splice(0, 1)
+						if(!grid[i].length){
+							grid.splice(0, 1)
+						}
+					} else {
 						if(!grid[i].length){
 							grid.splice(0, 1)
 						}
@@ -151,8 +155,12 @@ define("robotTW2/services/FarmService", [
 			
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
-					if(grid_loaded[i][j] != null){
+					if(grid_loaded[i][j] == null){
 						grid_loaded[i].splice(0, 1)
+						if(!grid_loaded[i].length){
+							grid_loaded.splice(0, 1)
+						}
+					} else {
 						if(!grid_loaded[i].length){
 							grid_loaded.splice(0, 1)
 						}
