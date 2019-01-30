@@ -153,12 +153,12 @@ define("robotTW2/services/FarmService", [
 				};
 			};
 			
-			for (var i = 0; i < t_ciclo; i++) {
-				for (var j = 0; j < t_ciclo; j++) {
+			for (var i = t_ciclo; i > 0; i--) {
+				for (var j = t_ciclo; j > 0; j--) {
 					if(grid_loaded[i][j] == null){
-						grid_loaded[i].splice(0, 1)
+						grid_loaded[i].splice(j, 1)
 						if(!grid_loaded[i].length){
-							grid_loaded.splice(0, 1)
+							grid_loaded.splice(i, 1)
 						}
 					} else {
 						if(!grid_loaded[i].length){
