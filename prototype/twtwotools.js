@@ -1142,11 +1142,13 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			},
 			onclose = function onclose($event){
-				console.log($event)
-//				$event.code == 1006
+				if($event.code == 1006 && $event.type == "close"){
+					console.log($event)	
+				}
 			},
 			onerror = function onerror($event){
 				if($event == "Uncaught TypeError: Illegal invocation"){return}
+				if($event.code == 1006 && $event.type == "close"){return}
 
 				count++;
 				if(count < 10) {
