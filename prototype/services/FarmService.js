@@ -127,7 +127,7 @@ define("robotTW2/services/FarmService", [
 			var grid = setupGrid(t_ciclo)
 			, grid_loaded = angular.copy(grid)
 			, list_excet = [];
-			
+
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
 					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
@@ -145,24 +145,16 @@ define("robotTW2/services/FarmService", [
 						if(!grid[i].length){
 							grid.splice(0, 1)
 						}
-					} else {
-						if(!grid[i].length){
-							grid.splice(0, 1)
-						}
 					}
 				};
 			};
-			
-			for (var i = t_ciclo; i > 0; i--) {
-				for (var j = t_ciclo; j > 0; j--) {
+
+			for (var i = t_ciclo - 1; i >= 0; i--) {
+				for (var j = t_ciclo - 1; j >= 0; j--) {
 					if(grid_loaded[i][j] == null){
 						grid_loaded[i].splice(j, 1)
 						if(!grid_loaded[i].length){
 							grid_loaded.splice(i, 1)
-						}
-					} else {
-						if(!grid_loaded[i].length){
-							grid_loaded.splice(0, 1)
 						}
 					}
 				};
