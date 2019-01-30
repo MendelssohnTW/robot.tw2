@@ -10,7 +10,16 @@ define("robotTW2/services/villages_town", function(){
 			return arr.concat();
 		});
 	}
+	, serv = {}
 	, grid = setupGrid();
+	
+	serv.renew = function(){
+		grid = setupGrid();
+		return grid;
+	}
+	
+	Object.setPrototypeOf(grid, serv);
+	
 	return grid
 })
 define("robotTW2/services/FarmService", [
