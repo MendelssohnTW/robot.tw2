@@ -483,7 +483,7 @@ define("robotTW2/services/FarmService", [
 					var x1 = reg.x
 					, x2 = reg.x + reg.dist
 					, y1 = reg.y
-					, y2 = reg.y + reg.dit
+					, y2 = reg.y + reg.dist
 					, listaVil = []
 
 					for (x = x1; x < x2; x++) {
