@@ -131,15 +131,7 @@ define("robotTW2/services/FarmService", [
 					if(villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
 						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size};	
 					} else {
-						if(!list_excet.find(f=>f==i)){
-							list_excet.push(i)
-						}
-						if (!list_excet[i]){
-							list_excet[i] = []
-						}
-						if(!list_excet[i].find(f=>f==j)){
-							list_excet[i].push(j)
-						}
+						grid[i][j]= null
 //						grid[i].splice(0, 1)
 //						if(!grid[i].length){
 //						grid.splice(0, 1)
@@ -148,18 +140,16 @@ define("robotTW2/services/FarmService", [
 				};
 			};
 
-			if(list_excet.length){
-				list_excet.forEach(function(reg){
-					for (var i = 0; i < reg[0]; i++) {
-						for (var j = 0; j < reg[1]; j++) {
-							grid[i].splice(0, 1)
-							if(!grid[i].length){
-								grid.splice(0, 1)
-							}
+			for (var i = 0; i < t_ciclo; i++) {
+				for (var j = 0; j < t_ciclo; j++) {
+					if(grid[i][j] != null){
+						grid[i].splice(0, 1)
+						if(!grid[i].length){
+						grid.splice(0, 1)
 						}
 					}
-				})
-			}
+				};
+			};
 
 			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
 
