@@ -26,7 +26,7 @@ define("robotTW2/services/villages_town", function(){
 		grid = loadGrid();
 		return grid;
 	}
-	
+
 	serv.loaded = function(x1, x2, y1, y2){
 		for (i = x1; i <= x2; i++){
 			for (j = y1; j <= y2; j++){
@@ -34,7 +34,7 @@ define("robotTW2/services/villages_town", function(){
 			}	
 		}
 	}
-	
+
 	serv.load = function(x1, x2, y1, y2){
 		var list = []
 		for (i = x1; i <= x2; i++){
@@ -104,7 +104,7 @@ define("robotTW2/services/FarmService", [
 			});
 		}
 		, loadMap = function (x, y, dist) {
-			
+
 			var coordX = x - dist;
 			var coordY = y - dist;
 			var ciclos = 0;
@@ -125,18 +125,33 @@ define("robotTW2/services/FarmService", [
 			var map_chunk_size = Math.round((dist * 2 + (x - dist - coordX)) / t_ciclo);
 
 			var grid = setupGrid(t_ciclo);
+			var list_excet = [];
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
 					if(villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
 						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size};	
 					} else {
-						grid[i].splice(0, 1)
-						if(!grid[i].length){
-							grid.splice(0, 1)
-						}
+						list_excet.push(i, j)
+//						grid[i].splice(0, 1)
+//						if(!grid[i].length){
+//						grid.splice(0, 1)
+//						}
 					}
 				};
 			};
+
+			if(list_excet.length){
+				list_excet.forEach(function(reg){
+					for (var i = 0; i < reg[0]; i++) {
+						for (var j = 0; j < reg[1]; j++) {
+							grid[i].splice(0, 1)
+							if(!grid[i].length){
+								grid.splice(0, 1)
+							}
+						}
+					}
+				})
+			}
 
 			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
 
@@ -447,11 +462,11 @@ define("robotTW2/services/FarmService", [
 				}
 
 //				var v_town = villages_town.filter(function(elem){
-//					return elem.filter(function(el){
-//						return el != null
-//					})
+//				return elem.filter(function(el){
+//				return el != null
 //				})
-//
+//				})
+
 
 
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
