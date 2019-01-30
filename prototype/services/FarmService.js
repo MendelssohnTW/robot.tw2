@@ -80,7 +80,7 @@ define("robotTW2/services/FarmService", [
 			var ciclos = 0;
 			
 			coordX = Math.trunc(coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
-			coordY = Math.trunc(coordy / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
+			coordY = Math.trunc(coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
 			Math.trunc(dist / conf.MAP_CHUNCK_LEN) / (dist / conf.MAP_CHUNCK_LEN) < 1 ? ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN) + 1 : ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN);
 
@@ -97,6 +97,7 @@ define("robotTW2/services/FarmService", [
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
 					grid[i][j] = {"x":coordX + (map_chunk_size * i), "y":coordY + (map_chunk_size * j), "dist": map_chunk_size};
+					villages_town[i][j]
 				};
 			};
 			return {
