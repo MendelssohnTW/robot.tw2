@@ -1,3 +1,6 @@
+define("robotTW2/services/Villages_Town", function(){
+	return {}
+})
 define("robotTW2/services/FarmService", [
 	"robotTW2",
 	"robotTW2/version",
@@ -8,6 +11,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_logs",
+	"Villages_Town",
 	], function(
 			robotTW2,
 			version,
@@ -17,7 +21,8 @@ define("robotTW2/services/FarmService", [
 			math,
 			calculateTravelTime,
 			data_villages,
-			data_logs
+			data_logs,
+			villages_town
 	){
 	return (function FarmService(
 			$rootScope,
@@ -369,6 +374,13 @@ define("robotTW2/services/FarmService", [
 						, y2 = cmd_preset.y
 
 						listaVil = listaVil.filter(f => f.affiliation == "barbarian")
+
+						for (j = 0; j < listaVil.length; j++) {
+							!villages_town[listaVil[j].x] ? villages_town[listaVil[j].x] = [] : villages_town[listaVil[j].x]
+							!villages_town[listaVil[j].x][listaVil[j].y] ? villages_town[listaVil[j].x][listaVil[j].y] = [] : villages_town[listaVil[j].x][listaVil[j].y]
+							villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j].id 
+						}
+
 						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
 						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
 						listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
@@ -562,7 +574,7 @@ define("robotTW2/services/FarmService", [
 			countCommands = {}
 		}
 		, stop = function () {
-
+			villages_town = []
 			if(completion_loaded){
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
