@@ -26,6 +26,14 @@ define("robotTW2/services/villages_town", function(){
 		grid = loadGrid();
 		return grid;
 	}
+	
+	serv.loaded = function(x1, x2, y1, y2){
+		for (i = x1; i <= x2; i++){
+			for (j = y1; j <= y2; j++){
+				villages_town[i][j]["load"] = true;
+			}
+		}
+	}
 
 	Object.setPrototypeOf(grid, serv);
 
@@ -111,11 +119,7 @@ define("robotTW2/services/FarmService", [
 				};
 			};
 
-			for (i = coordX; i < (coordX + (t_ciclo * map_chunk_size)); i++){
-				for (j = coordY; j < (coordY + (t_ciclo * map_chunk_size)); j++){
-					villages_town[i][j]["load"] = true;
-				}
-			}
+			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
 
 			return {
 				grid: grid
