@@ -28,9 +28,9 @@ define("robotTW2/services/villages_town", function(){
 	}
 	
 	serv.loaded = function(x1, x2, y1, y2){
-		for (x = 0; x < 1000; x++) {
-			for (y = 0; y < 1000; y++) {
-				g[x][y] = {"id": null, "load":false}
+		for (i = x1; i <= x2; i++){
+			for (j = y1; j <= y2; j++){
+				grid[x][y]["load"] = true;
 			}	
 		}
 	}
