@@ -72,7 +72,6 @@ define("robotTW2/services/ReconService", [
 
 				var unit = units_ret.shift();
 
-
 				var y = t.map(function(obj, index, array){
 					if(obj[0] == unit[0]) {
 						return $filter("i18n")(obj[1], $rootScope.loc.ale, "recon");

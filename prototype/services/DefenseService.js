@@ -151,28 +151,43 @@ define("robotTW2/services/DefenseService", [
 			var units_ret = [];
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[1];
-			
+
 			if(!$rootScope.data_defense.recon){
 				$rootScope.data_defense.recon = unitTypesRenameRecon;
 			}
 
 			if($rootScope.data_defense.recon[unitType]){
 				switch (unitType) {
-				case "light_cavalry":
-					callback(unitTypes.LIGHT_CAVALRY, unitType);
-					break;
-				case "heavy_cavalry":
-					callback(unitTypes.HEAVY_CAVALRY, unitType);
-					break;
-				case "axe":
-					callback(unitTypes.AXE, unitType);
-					break;
-				case "sword":
-					callback(unitTypes.SWORD, unitType);
-					break;
-				case "ram":
-					callback(unitTypes.RAM, unitType);
-					break;
+//				case "light_cavalry":
+//					callback(unitTypes.LIGHT_CAVALRY, unitType);
+//					break;
+//				case "mounted_archer":
+//					callback(unitTypes.MOUNTED_ARCHER, unitType);
+//					break;
+//				case "heavy_cavalry":
+//					callback(unitTypes.HEAVY_CAVALRY, unitType);
+//					break;
+//				case "axe":
+//					callback(unitTypes.AXE, unitType);
+//					break;
+//				case "spear":
+//					callback(unitTypes.SPEAR, unitType);
+//					break;
+//				case "archer":
+//					callback(unitTypes.ARCHER, unitType);
+//					break;
+//				case "doppelsoldner":
+//					callback(unitTypes.DOPPELSOLDNER, unitType);
+//					break;
+//				case "sword":
+//					callback(unitTypes.SWORD, unitType);
+//					break;
+//				case "ram":
+//					callback(unitTypes.RAM, unitType);
+//					break;
+//				case "catapult":
+//					callback(unitTypes.CATAPULT, unitType);
+//					break;
 				case "snob":
 					callback(unitTypes.SNOB, unitType);
 					break;
@@ -180,7 +195,7 @@ define("robotTW2/services/DefenseService", [
 					callback(unitTypes.TREBUCHET, unitType);
 					break;
 				default : 
-					callback(false, "");
+					callback(true, "");
 				}
 			} else {
 				callback(false, "");
@@ -413,28 +428,31 @@ define("robotTW2/services/DefenseService", [
 								troops_measure(cmd, function(push , unitType){
 									if(push){
 										switch (unitType) {
-										case "light_cavalry":
-											list_others.push(cmd);
-											break;
-										case "heavy_cavalry":
-											list_others.push(cmd);
-											break;
-										case "axe":
-											list_others.push(cmd);
-											break;
-										case "sword":
-											list_others.push(cmd);
-											break;
-										case "ram":
-											list_others.push(cmd);
-											break;
+//										case "light_cavalry":
+//											list_others.push(cmd);
+//											break;
+//										case "heavy_cavalry":
+//											list_others.push(cmd);
+//											break;
+//										case "axe":
+//											list_others.push(cmd);
+//											break;
+//										case "sword":
+//											list_others.push(cmd);
+//											break;
+//										case "ram":
+//											list_others.push(cmd);
+//											break;
 										case "snob":
 											list_snob.push(cmd);
 											break;
 										case "trebuchet":
 											list_trebuchet.push(cmd);
 											break;
+										default:
+											list_others.push(cmd);
 										}
+										
 									}
 								})
 							}
