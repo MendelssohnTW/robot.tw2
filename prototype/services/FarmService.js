@@ -23,7 +23,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_logs",
-	"villages_town",
+	"robotTW2/services/villages_town",
 	], function(
 			robotTW2,
 			version,
