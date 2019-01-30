@@ -130,9 +130,9 @@ define("robotTW2/services/FarmService", [
 					if(villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
 						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size};	
 					} else {
-						grid[i].splice(j, 1)
+						grid[i].splice(0, 1)
 						if(!grid[i].length){
-							grid.splice(i, 1)
+							grid.splice(0, 1)
 						}
 					}
 				};
