@@ -78,6 +78,9 @@ define("robotTW2/services/FarmService", [
 			var coordX = x - dist;
 			var coordY = y - dist;
 			var ciclos = 0;
+			
+			coordX = Math.trunc(coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
+			coordY = Math.trunc(coordy / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
 			Math.trunc(dist / conf.MAP_CHUNCK_LEN) / (dist / conf.MAP_CHUNCK_LEN) < 1 ? ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN) + 1 : ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN);
 
@@ -389,10 +392,18 @@ define("robotTW2/services/FarmService", [
 //				reg.x ~ reg.dist
 //				reg.y ~ reg.dist
 				
-				var x1 = reg.x
+				var x
+				, y
+				, x1 = reg.x
 				, x2 = reg.x + reg.dist
 				, y1 = reg.y
 				, y2 = reg.y + reg.dist;
+				
+				for (x = 0; x < 1000; x++) {
+					for (y = 0; y < 1000; y++) {
+						villages_town[x][y]
+					}	
+				}
 				
 				var v_town = villages_town.filter(function(elem){
 					return elem.filter(function(el){
