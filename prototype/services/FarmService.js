@@ -170,6 +170,7 @@ define("robotTW2/services/FarmService", [
 						y			: grid[tx][ty].y,
 						dist		: grid[tx][ty].dist,
 						village_id	: village_id,
+						villages	: [],
 						loaded		: grid[tx][ty].loaded
 					});
 				}
