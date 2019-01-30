@@ -21,14 +21,14 @@ define("robotTW2/services/villages_town", function(){
 	}
 	, serv = {}
 	, grid = loadGrid();
-	
+
 	serv.renew = function(){
 		grid = loadGrid();
 		return grid;
 	}
-	
+
 	Object.setPrototypeOf(grid, serv);
-	
+
 	return grid
 })
 define("robotTW2/services/FarmService", [
@@ -87,14 +87,14 @@ define("robotTW2/services/FarmService", [
 			var coordX = x - dist;
 			var coordY = y - dist;
 			var ciclos = 0;
-			
+
 			coordX = Math.trunc(coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 			coordY = Math.trunc(coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
 			Math.trunc(dist / conf.MAP_CHUNCK_LEN) / (dist / conf.MAP_CHUNCK_LEN) < 1 ? ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN) + 1 : ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN);
 
 			var t_ciclo = 0;
-			
+
 			if (ciclos % 2 < 1) {
 				t_ciclo = ciclos + 1;
 			} else {
@@ -107,9 +107,16 @@ define("robotTW2/services/FarmService", [
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
 					grid[i][j] = {"x":coordX + (map_chunk_size * i), "y":coordY + (map_chunk_size * j), "dist": map_chunk_size};
-					
+
 				};
 			};
+
+			for (i = coordX; i < (coordX + (t_ciclo * map_chunk_size)); i++){
+				for (j = coordY; j < (coordY + (t_ciclo * map_chunk_size)); j++){
+					villages_town[i][j]["load"] = true;
+				}
+			}
+
 			return {
 				grid: grid
 			};
@@ -399,31 +406,31 @@ define("robotTW2/services/FarmService", [
 				t = $timeout(function(){
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT);
-				
+
 //				reg.x ~ reg.dist
 //				reg.y ~ reg.dist
-				
+
 				var x
 				, y
 				, x1 = reg.x
 				, x2 = reg.x + reg.dist
 				, y1 = reg.y
 				, y2 = reg.y + reg.dist;
-				
+
 				for (x = 0; x < 1000; x++) {
 					for (y = 0; y < 1000; y++) {
 						villages_town[x][y]
 					}	
 				}
-				
+
 				var v_town = villages_town.filter(function(elem){
 					return elem.filter(function(el){
 						return el != null
 					})
 				})
 
-				
-				
+
+
 				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 					$timeout.cancel(t);
 					t = undefined;
