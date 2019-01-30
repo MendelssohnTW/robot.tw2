@@ -603,7 +603,7 @@ define("robotTW2/services/FarmService", [
 			countCommands = {}
 		}
 		, stop = function () {
-			villages_town = []
+			villages_town.renew();
 			if(completion_loaded){
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
