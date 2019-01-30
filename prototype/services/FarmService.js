@@ -1,5 +1,17 @@
-define("robotTW2/services/Villages_Town", function(){
-	return {}
+define("robotTW2/services/villages_town", function(){
+	var setupGrid = function () {
+		var i, t = 0,
+		arr;
+
+		for (i = 0, arr = []; i < 1000; i++) {
+			arr[i] = null;
+		}
+		return arr.concat().map(function (elem) {
+			return arr.concat();
+		});
+	}
+	, grid = setupGrid();
+	return grid
 })
 define("robotTW2/services/FarmService", [
 	"robotTW2",
@@ -11,7 +23,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_logs",
-	"Villages_Town",
+	"villages_town",
 	], function(
 			robotTW2,
 			version,
@@ -393,8 +405,6 @@ define("robotTW2/services/FarmService", [
 						listaVil = listaVil.filter(f => f.affiliation == "barbarian")
 
 						for (j = 0; j < listaVil.length; j++) {
-							!villages_town[listaVil[j].x] ? villages_town[listaVil[j].x] = [] : villages_town[listaVil[j].x]
-							!villages_town[listaVil[j].x][listaVil[j].y] ? villages_town[listaVil[j].x][listaVil[j].y] = [] : villages_town[listaVil[j].x][listaVil[j].y]
 							villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j].id 
 						}
 
