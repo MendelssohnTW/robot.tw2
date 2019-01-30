@@ -125,21 +125,20 @@ define("robotTW2/services/FarmService", [
 			var map_chunk_size = Math.round((dist * 2 + (x - dist - coordX)) / t_ciclo);
 
 			var grid = setupGrid(t_ciclo)
-			, grid_loaded = angular.copy(grid)
 			, list_excet = [];
 
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
 					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
-						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size};	
+						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": false};	
 					} else {
-						grid_loaded[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size};
+						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": true};
 					}
 				};
 			};
 
-			for (var i = 0; i < t_ciclo; i++) {
-				for (var j = 0; j < t_ciclo; j++) {
+			for (var i = t_ciclo - 1; i >= 0; i--){
+				for (var j = t_ciclo - 1; j >= 0 ; j--){
 					if(grid[i][j] == null){
 						grid[i].splice(0, 1)
 						if(!grid[i].length){
@@ -149,23 +148,9 @@ define("robotTW2/services/FarmService", [
 				};
 			};
 
-			for (var i = t_ciclo - 1; i >= 0; i--) {
-				for (var j = t_ciclo - 1; j >= 0; j--) {
-					if(grid_loaded[i][j] == null){
-						grid_loaded[i].splice(j, 1)
-						if(!grid_loaded[i].length){
-							grid_loaded.splice(i, 1)
-						}
-					}
-				};
-			};
-
 			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
 
-			return {
-				grid		: grid,
-				grid_loaded	: grid_loaded
-			};
+			return {grid: grid};
 		}
 		, exec = function (cmd_preset) {
 			var x = cmd_preset.x
@@ -173,9 +158,11 @@ define("robotTW2/services/FarmService", [
 			, preset_id = cmd_preset.preset_id
 			, village_id = cmd_preset.village_id
 
-			var grid = loadMap(x, y, data_villages.villages[village_id].presets[preset_id].max_journey_distance).grid;
-			var listaGrid = [];
-			var l = Object.keys(grid).length;
+			var load_map = loadMap(x, y, data_villages.villages[village_id].presets[preset_id].max_journey_distance)
+			, grid = load_map.grid
+			, listaGrid = []
+			, l = Object.keys(grid).length
+
 			for(tx = 0; tx < l; tx++) {
 				for(ty = 0; ty < l; ty++) {
 					listaGrid.push({
@@ -183,7 +170,7 @@ define("robotTW2/services/FarmService", [
 						y			: grid[tx][ty].y,
 						dist		: grid[tx][ty].dist,
 						village_id	: village_id,
-						villages	: []
+						loaded		: grid[tx][ty].loaded
 					});
 				}
 			};
@@ -206,9 +193,9 @@ define("robotTW2/services/FarmService", [
 				} else {
 					return 0;	
 				}
-
 			});
-			return  listaGrid;
+
+			return {listaGrid: listaGrid};
 		}
 		, units_has_unit_search = function (unit_search, units) {
 			for(unit in units) {
@@ -453,64 +440,45 @@ define("robotTW2/services/FarmService", [
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT);
 
-//				reg.x ~ reg.dist
-//				reg.y ~ reg.dist
 
-				var x
-				, y
-				, x1 = reg.x
-				, x2 = reg.x + reg.dist
-				, y1 = reg.y
-				, y2 = reg.y + reg.dist;
+				if(reg.loaded){
+//					Buscar no town
+				} else {
+					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+						$timeout.cancel(t);
+						t = undefined;
+						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
+							var listaVil = angular.copy(data.villages)
+							, x2 = cmd_preset.x
+							, y2 = cmd_preset.y
 
-				for (x = 0; x < 1000; x++) {
-					for (y = 0; y < 1000; y++) {
-						villages_town[x][y]
-					}	
-				}
+							listaVil = listaVil.filter(f => f.affiliation == "barbarian")
 
-//				var v_town = villages_town.filter(function(elem){
-//				return elem.filter(function(el){
-//				return el != null
-//				})
-//				})
+							for (j = 0; j < listaVil.length; j++) {
+								villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j].id 
+							}
 
+							listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
+							listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
+							listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
+							listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
+//							listaVil = listaVil.filter(f => !lt_barbaras.find(g => g == f.id))
+							listaVil = listaVil.filter(f => !$rootScope.data_farm.list_exceptions.find(g => g == f.id))
 
+							listaVil.sort(function (a, b) {
+//								Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
+								return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
+							});
 
-				socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
-					$timeout.cancel(t);
-					t = undefined;
-					if (data != undefined && data.villages != undefined && data.villages.length > 0) {
-						var listaVil = angular.copy(data.villages)
-						, x2 = cmd_preset.x
-						, y2 = cmd_preset.y
-
-						listaVil = listaVil.filter(f => f.affiliation == "barbarian")
-
-						for (j = 0; j < listaVil.length; j++) {
-							villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j].id 
-						}
-
-						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
-						listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
-						listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
-						listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
-//						listaVil = listaVil.filter(f => !lt_barbaras.find(g => g == f.id))
-						listaVil = listaVil.filter(f => !$rootScope.data_farm.list_exceptions.find(g => g == f.id))
-
-						listaVil.sort(function (a, b) {
-//							Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
-							return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
-						});
-
-						for (j = 0; j < listaVil.length; j++) {
-							if (check_village(listaVil[j], cmd_preset)) {
-								reg.villages.push(listaVil[j].id);
+							for (j = 0; j < listaVil.length; j++) {
+								if (check_village(listaVil[j], cmd_preset)) {
+									reg.villages.push(listaVil[j].id);
+								}
 							}
 						}
-					}
-					resolve_grid(reg.villages)
-				});
+						resolve_grid(reg.villages)
+					});
+				}
 			})
 		}
 		, execute_presets = function(commands_for_presets, resolve_cicle){
@@ -527,7 +495,9 @@ define("robotTW2/services/FarmService", [
 					var t = function(cmd_preset){
 						if(!promise_preset){
 							promise_preset = new Promise(function(resolve_presets){
-								var listaGrid = exec(cmd_preset)
+								var load_exec = exec(cmd_preset)
+								, listaGrid = load_exec.listaGrid
+
 								if(!listaGrid.length){return}
 								loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 							})
