@@ -3,7 +3,7 @@ define("robotTW2/services/DepositService", [
 	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
-	"robotTW2/databases/data_deposit",
+	"robotTW2/databases/data_deposit"
 	], function(
 			robotTW2,
 			version,
