@@ -3,7 +3,7 @@ define("robotTW2/services/villages_town", function(){
 		var g = setupGrid();
 		for (x = 0; x < 1000; x++) {
 			for (y = 0; y < 1000; y++) {
-				g[x][y] = {"id": null, "load":false}
+				g[x][y] = {"id": null, "loaded":false}
 			}	
 		}
 		return g
@@ -30,7 +30,7 @@ define("robotTW2/services/villages_town", function(){
 	serv.loaded = function(x1, x2, y1, y2){
 		for (i = x1; i <= x2; i++){
 			for (j = y1; j <= y2; j++){
-				grid[i][j]["load"] = true;
+				grid[i][j]["loaded"] = true;
 			}	
 		}
 	}
@@ -39,7 +39,7 @@ define("robotTW2/services/villages_town", function(){
 		var list = []
 		for (i = x1; i <= x2; i++){
 			for (j = y1; j <= y2; j++){
-				if(!grid[i][j]["load"]){
+				if(!grid[i][j]["loaded"]){
 					return false
 				}
 			}
@@ -453,7 +453,8 @@ define("robotTW2/services/FarmService", [
 							listaVil = listaVil.filter(f => f.affiliation == "barbarian")
 
 							for (j = 0; j < listaVil.length; j++) {
-								villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j] 
+//								villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j]
+								angular.extend(villages_town[listaVil[j].x][listaVil[j].y], listaVil[j])
 							}
 
 							listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
