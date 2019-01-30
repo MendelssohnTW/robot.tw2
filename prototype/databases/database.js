@@ -21,16 +21,17 @@ define("robotTW2/databases/database", [
 		var newValue = {[keyName]: value}
 		//var keyValue = JSON.stringify({"data": value});
 //		var tb = JSON.parse(localStorage.getItem(this.prefixStandard));
-		var tb = JSON.parse(localStorage.getItem(keyName));
-		if(tb){
-//			angular.extend(tb.data, newValue);
-			angular.extend(tb, value);
-		} else {
-//			tb = {"data":newValue}
-			tb = value
-		}
-		var keyValue = JSON.stringify(tb);
 		try {
+			var tb = JSON.parse(localStorage.getItem(keyName));
+			if(typeof(tb) == "object"){
+//				angular.extend(tb.data, newValue);
+				angular.extend(tb, value);
+			} else {
+//				tb = {"data":newValue}
+				tb = value
+			}
+			var keyValue = JSON.stringify(tb);
+
 			//localStorage.setItem(keyName, keyValue);
 			localStorage.setItem(keyName, keyValue);
 //			localStorage.setItem(this.prefixStandard, keyValue);
@@ -54,9 +55,9 @@ define("robotTW2/databases/database", [
 //			value = null;
 //			}
 //			if(localStorage[keyName]) {
-//				value = {[keyName]: localStorage.getItem(keyName)};
+//			value = {[keyName]: localStorage.getItem(keyName)};
 //			} else{
-				value = null;
+			value = null;
 //			}
 		}
 		return null === value ? missing : "object" == typeof value && void 0 !== value ? value : missing
