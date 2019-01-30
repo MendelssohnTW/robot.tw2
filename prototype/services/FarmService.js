@@ -30,7 +30,7 @@ define("robotTW2/services/villages_town", function(){
 	serv.loaded = function(x1, x2, y1, y2){
 		for (i = x1; i <= x2; i++){
 			for (j = y1; j <= y2; j++){
-				grid[x][y]["load"] = true;
+				grid[i][j]["load"] = true;
 			}	
 		}
 	}
