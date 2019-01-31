@@ -3,13 +3,15 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"robotTW2/databases/data_main"
+	"robotTW2/databases/data_main",
+	"robotTW2/databases/data_data"
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
-			data_main
+			data_main,
+			data_data
 	){
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -26,7 +28,7 @@ define("robotTW2/controllers/MainController", [
 					continue
 				} else {
 					if(extension == "DATA"){
-						if(services.$rootScope.data_data.possible){
+						if(data_data.possible){
 							$scope.extensions[extension].activated = true;
 						} else {
 							$scope.extensions[extension].activated = false;
@@ -69,7 +71,7 @@ define("robotTW2/controllers/MainController", [
 			} else {
 				var fn = arFn.fn;
 				if(ext.name == "DATA"){
-					if(services.$rootScope.data_data.possible){
+					if(data_data.possible){
 						$scope.extensions[ext.name].activated = true;
 					} else {
 						$scope.extensions[ext.name].activated = false;
