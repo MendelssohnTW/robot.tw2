@@ -70,6 +70,7 @@ define("robotTW2/databases/data_main", [
 				db.auto_initialize = extensions[extension].auto_initialize
 				db.activated = extensions[extension].activated
 				db.status = extensions[extension].status
+				extensions[extension].set();
 			}
 		}
 	}
