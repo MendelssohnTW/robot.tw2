@@ -563,7 +563,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				})
 			}
 			angular.extend(data.scope, self)
-			self.controller.apply(self.controller, [$rootScope, data.scope])
+			self.controller.apply(self.controller, [data.scope])
 		});
 	}
 	,
