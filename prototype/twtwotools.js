@@ -1619,7 +1619,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			var promise_calibrate = undefined
 			, listener_completed = undefined
 			return function(){
-				function calibrate (data_main) {
+				function calibrate () {
 					return new Promise (function(resolve){
 						var villages = robotTW2.services.modelDataService.getVillages()
 						, village = villages[Object.keys(villages).shift()]
@@ -1713,7 +1713,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 				if(!this.promise_calibrate){
-					this.promise_calibrate = calibrate(data_main).then(function(){
+					this.promise_calibrate = calibrate().then(function(){
 						robotTW2.services.$timeout(function(){
 							this.promise_calibrate = undefined;
 						}, 10 * conf.min)
