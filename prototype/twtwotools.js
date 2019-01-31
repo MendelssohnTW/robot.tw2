@@ -486,7 +486,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		if(self.templateName != "main"){
 			var arFn = exports.requestFn.get(self.templateName.toLowerCase(), true);
 			if(!arFn){return}
-				if(robotTW2.databases.data_main.pages_excludes.includes(self.templateName)){
+				if(exports.databases.data_main.pages_excludes.includes(self.templateName)){
 					if(!arFn.fn.isInitialized()){return}
 				} else{
 					if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
