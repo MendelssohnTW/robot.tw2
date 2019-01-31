@@ -7,7 +7,6 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/time",
 	"robotTW2/calibrate_time",
 	"robotTW2/unitTypesRenameRecon",
-	"robotTW2/databases/data_main",
 	], function(
 			robotTW2,
 			version,
@@ -16,8 +15,7 @@ define("robotTW2/services/DefenseService", [
 			unitTypes,
 			time,
 			calibrate_time,
-			unitTypesRenameRecon,
-			data_main
+			unitTypesRenameRecon
 	){
 	return (function DefenseService(
 			$rootScope,
@@ -587,7 +585,7 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined; 
 				if(cmds.length){
 					cmd = cmds.pop();
-					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - data_main.time_correction_command
+					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - robotTW2.databases.data_main.time_correction_command
 					, timer_delay = expires / 2
 					, params = {
 						"timer_delay" 	: timer_delay,
@@ -622,7 +620,7 @@ define("robotTW2/services/DefenseService", [
 
 		}
 		, resendDefense = function(params){
-			var expires_send = params.data_escolhida - params.time_sniper_ant - data_main.time_correction_command
+			var expires_send = params.data_escolhida - params.time_sniper_ant - robotTW2.databases.data_main.time_correction_command
 			, timer_delay_send = expires_send - time.convertedTime();
 
 			if(timer_delay_send < 0){
@@ -642,7 +640,7 @@ define("robotTW2/services/DefenseService", [
 				id_command = params.id_command
 			}
 
-			var expires = params.data_escolhida - params.time_sniper_ant - data_main.time_correction_command
+			var expires = params.data_escolhida - params.time_sniper_ant - robotTW2.databases.data_main.time_correction_command
 			, timer_delay = expires - time.convertedTime();
 
 			if(timer_delay >= 0){
