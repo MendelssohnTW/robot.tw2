@@ -1230,7 +1230,11 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 
-			service = new WebSocket(base.URL_SOCKET);
+			try{
+				service = new WebSocket(base.URL_SOCKET);
+			} catch(error){
+				console.log(error)
+			}
 			service.onopen = onopen;
 			service.onmessage = onmessage;
 			service.onclose = onclose;
