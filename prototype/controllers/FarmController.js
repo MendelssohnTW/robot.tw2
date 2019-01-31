@@ -14,7 +14,7 @@ define("robotTW2/controllers/FarmController", [
 			providers,
 			conf_conf,
 			calculateTravelTime,
-			data_farm,
+			data_villages,
 			data_farm
 	){
 	return function FarmController($scope) {
