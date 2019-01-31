@@ -1608,15 +1608,13 @@ var robotTW2 = window.robotTW2 = undefined;
 			"robotTW2/time",
 			"robotTW2/conf",
 			"helper/math",
-			"robotTW2/calculateTravelTime",
-			"robotTW2/databases/data_main"
+			"robotTW2/calculateTravelTime"
 			], function(
 					helper, 
 					time,
 					conf,
 					math,
-					calculateTravelTime,
-					data_main
+					calculateTravelTime
 			) {
 			var promise_calibrate = undefined
 			, listener_completed = undefined
