@@ -53,7 +53,7 @@ define("robotTW2/controllers/AlertController", [
 //		}
 		, upDate = function(){
 			$scope.members = $scope.members.map(function(member){
-				if(db_alert.friends.find(f => f === member.name)){
+				if($scope.data_alert.friends.find(f => f === member.name)){
 					member.isFriend = true;
 				} else {
 					member.isFriend = false;
@@ -61,9 +61,8 @@ define("robotTW2/controllers/AlertController", [
 				return member
 			})
 			$scope.underattack = $scope.members.map(function(member){
-				return member.under_attack && db_alert.friends.some(s => s === member.name) ? member : undefined;
+				return member.under_attack && $scope.data_alert.friends.some(s => s === member.name) ? member : undefined;
 			}).filter(f=>f!=undefined)
-			db_alert.set()
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
@@ -78,17 +77,16 @@ define("robotTW2/controllers/AlertController", [
 				interval_alert = interval_alert + ":00"
 			}
 			if (helper.unreadableSeconds(interval_alert) * 1e3 > 30*60*1000){
-				db_alert.interval = 30*60*1000
+				$scope.data_alert.interval = 30*60*1000
 				$scope.interval_alert = 30*60*1000;
 			} else if (helper.unreadableSeconds(interval_alert) * 1e3 < 5*60*1000){
-				db_alert.interval = 5*60*1000
+				$scope.data_alert.interval = 5*60*1000
 				$scope.interval_alert = 5*60*1000;
 			} else {
-				db_alert.interval = helper.unreadableSeconds(interval_alert) * 1e3
+				$scope.data_alert.interval = helper.unreadableSeconds(interval_alert) * 1e3
 				$scope.interval_alert = interval_alert;
 			}
 			document.getElementById("input-text-time-interval").value = $scope.interval_alert;
-			db_alert.set()
 			if (!$scope.$$phase) $scope.$apply();
 
 		}
@@ -96,8 +94,8 @@ define("robotTW2/controllers/AlertController", [
 		$scope.selectAll = function(){
 			$scope.members.forEach(function(member){
 				member.isFriend = true;
-				if(!db_alert.friends.find(f=>f==member.name)){
-					db_alert.friends.push(member.name)
+				if(!$scope.data_alert.friends.find(f=>f==member.name)){
+					$scope.data_alert.friends.push(member.name)
 				}
 			})
 			
@@ -108,21 +106,21 @@ define("robotTW2/controllers/AlertController", [
 			$scope.members.forEach(function(member){
 				member.isFriend = false;
 			})
-			db_alert.friends = [];
+			$scope.data_alert.friends = [];
 			upDate()
 		}
 
 		$scope.remove = function(name){
-			db_alert.friends = db_alert.friends.filter(f => f != name);
+			$scope.data_alert.friends = $scope.data_alert.friends.filter(f => f != name);
 			upDate()
 		}
 
 		$scope.toggleValue = function(member){
 			if(member.isFriend){
-				db_alert.friends.push(member.name)
+				$scope.data_alert.friends.push(member.name)
 				
 			} else {
-				db_alert.friends = db_alert.friends.filter(f => f !== member.name);
+				$scope.data_alert.friends = $scope.data_alert.friends.filter(f => f !== member.name);
 			}
 			upDate()
 		}
@@ -140,7 +138,7 @@ define("robotTW2/controllers/AlertController", [
 			data_alert.set();
 		}, true)
 
-		$scope.interval_alert = helper.readableMilliseconds(db_alert.interval)
+		$scope.interval_alert = helper.readableMilliseconds($scope.data_alert.interval)
 		
 		$scope.setCollapse();
 		$scope.recalcScrollbar();
