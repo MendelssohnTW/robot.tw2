@@ -42,7 +42,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
 		
-		$scope.data_villages = data_farm;
+		$scope.data_villages = data_villages;
 
 		var setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
