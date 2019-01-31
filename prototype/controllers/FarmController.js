@@ -43,6 +43,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.TAB_ORDER = TAB_ORDER;
 		
 		$scope.data_villages = data_villages;
+		$scope.data_farm = data_farm;
 
 		var setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
@@ -57,11 +58,11 @@ define("robotTW2/controllers/FarmController", [
 		, presetIds = []
 		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, update = function () {
-			if(data_farm.farm_time_start < time.convertedTime()) {
-				data_farm.farm_time_start = time.convertedTime();
+			if($scope.data_farm.farm_time_start < time.convertedTime()) {
+				$scope.data_farm.farm_time_start = time.convertedTime();
 			}
-			if(data_farm.farm_time_stop < data_farm.farm_time_start) {
-				data_farm.farm_time_stop = data_farm.farm_time_start + 86400000;
+			if($scope.data_farm.farm_time_stop < $scope.data_farm.farm_time_start) {
+				$scope.data_farm.farm_time_stop = $scope.data_farm.farm_time_start + 86400000;
 			}
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
@@ -235,9 +236,9 @@ define("robotTW2/controllers/FarmController", [
 				document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
 				document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
-				data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
-				data_farm.farm_time_start = tempo_escolhido_inicio
-				data_farm.farm_time_stop = tempo_escolhido_termino
+				$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
+				$scope.data_farm.farm_time_start = tempo_escolhido_inicio
+				$scope.data_farm.farm_time_stop = tempo_escolhido_termino
 
 				update()
 			}
@@ -330,7 +331,7 @@ define("robotTW2/controllers/FarmController", [
 					r = r + ":00"
 				}
 
-				data_farm.farm_time
+				$scope.data_farm.farm_time
 
 				$scope.presetSelected.max_journey_time = helper.unreadableSeconds(r) * 1000
 				$scope.presetSelected.max_journey_distance = get_dist($scope.data_villages.villages[$scope.villageSelected.data.villageId].data.villageId, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)
@@ -381,14 +382,14 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.deleteException = function (id_village) {
-			data_farm.list_exceptions = data_farm.list_exceptions.filter(f => f != id_village)
+			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
 			getDetailsExceptions();
 		}
 
 		function getDetailsExceptions() {
 			var my_village_id = services.modelDataService.getSelectedVillage().getId();
 			$scope.list_exceptions = {};
-			data_farm.list_exceptions.forEach(function (vid) {
+			$scope.data_farm.list_exceptions.forEach(function (vid) {
 				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 					'village_id'	: vid,
 					'my_village_id'	: my_village_id,
@@ -449,7 +450,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.getFarmTime = function () {
 
-			var tm = helper.readableMilliseconds(data_farm.farm_time);
+			var tm = helper.readableMilliseconds($scope.data_farm.farm_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
 			}
@@ -467,8 +468,8 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages) {return}
-			data_farm = $scope.data_villages;
-			data_farm.set();
+			data_villages = $scope.data_villages;
+			data_villages.set();
 		}, true)
 		
 		$scope.$watch("data_farm", function () {
