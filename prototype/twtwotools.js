@@ -486,11 +486,13 @@ var robotTW2 = window.robotTW2 = undefined;
 		if(self.templateName != "main"){
 			var arFn = exports.requestFn.get(self.templateName.toLowerCase(), true);
 			if(!arFn){return}
-			if($rootScope.data_main.pages_excludes.includes(self.templateName)){
-				if(!arFn.fn.isInitialized()){return}
-			} else{
-				if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
-			}
+			require(["robotTW2/databases/data_main"], function(data_main){
+				if(data_main.pages_excludes.includes(self.templateName)){
+					if(!arFn.fn.isInitialized()){return}
+				} else{
+					if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
+				}
+			})
 		}
 		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
 		new Promise(function(res){
@@ -1609,12 +1611,14 @@ var robotTW2 = window.robotTW2 = undefined;
 			"robotTW2/conf",
 			"helper/math",
 			"robotTW2/calculateTravelTime",
+			"robotTW2/databases/data_main",
 			], function(
 					helper, 
 					time,
 					conf,
 					math,
-					calculateTravelTime
+					calculateTravelTime,
+					data_main
 			) {
 			var promise_calibrate = undefined
 			, listener_completed = undefined
@@ -1681,8 +1685,9 @@ var robotTW2 = window.robotTW2 = undefined;
 											var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
 											var dif = gTime - time.convertMStoUTC(completedAt - (duration*1000));
-											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
-												$rootScope.data_main.time_correction_command = dif
+											if(!data_main.max_time_correction || (dif > -data_main.max_time_correction && dif < data_main.max_time_correction)) {
+												data_main.time_correction_command = dif
+												data_main.set();
 												$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 											}
 											this.listener_completed();
