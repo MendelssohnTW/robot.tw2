@@ -98,15 +98,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
 				if(!params || !Object.keys(params).length) {
 					if(!Object.keys(fs.params).length) {
-						triggered[key] = fs.fn.apply(this, [])
+						triggered[this.prefix + key] = fs.fn.apply(this, [])
 					} else {
-						triggered[key] = fs.fn.apply(this, fs.params)
+						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
 					}
 				} else {
 					if(!Object.keys(fs.params).length) {
-						triggered[key] = fs.fn.apply(this, [])
+						triggered[this.prefix + key] = fs.fn.apply(this, [])
 					} else {
-						triggered[key] = fs.fn.apply(this, fs.params)
+						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
 					}
 				}
 			})
@@ -118,19 +118,19 @@ var robotTW2 = window.robotTW2 = undefined;
 			return opt_prefix && fns[this.prefix + key] ? fns[this.prefix + key][index] : fns[key] ? fns[key][index] : null 
 		}
 		, service.unbind = function(key) {
-			if(fns.hasOwnProperty(key)){
+			if(fns.hasOwnProperty(this.prefix + key)){
 				if(triggered[key]){
-					if(typeof(triggered[key]) == "object"){
-						if(triggered[key].$$state.status == 0){
-							$timeout.cancel(triggered[key])	
+					if(typeof(triggered[this.prefix + key]) == "object"){
+						if(triggered[this.prefix + key].$$state.status == 0){
+							$timeout.cancel(triggered[this.prefix + key])	
 						}
-					} else if(typeof(triggered[key]) == "function"){
-						triggered[key]();
+					} else if(typeof(triggered[this.prefix + key]) == "function"){
+						triggered[this.prefix + key]();
 					}
-					delete triggered[key];
-					delete fns[key];
+					delete triggered[this.prefix + key];
+					delete fns[this.prefix + key];
 				} else {
-					delete fns[key];
+					delete fns[this.prefix + key];
 				}
 			}
 		}
@@ -472,7 +472,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				filho.append(clonedElement);
 			});
 
-			self.controller.apply(self.controller, [$rootScope, scope])
+			self.controller.apply(self.controller, [scope])
 
 		}, function(data) {
 			//console.log(reason); // Error!
@@ -1143,13 +1143,11 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 			onclose = function onclose($event){
 				if($event.code == 1006 && $event.type == "close"){
-					console.log($event)	
+					console.log($event)
+					$rootScope.$broadcast("stopAll")
 				}
 			},
 			onerror = function onerror($event){
-				if($event == "Uncaught TypeError: Illegal invocation"){return}
-				if($event.code == 1006 && $event.type == "close"){return}
-
 				count++;
 				if(count < 10) {
 					service = new WebSocket(base.URL_SOCKET);
@@ -1159,7 +1157,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						$rootScope.data_data.possible = false;
 						$rootScope.data_data.activated = false;
 					}
-					$rootScope.$broadcast("stopAll")
 					console.log("Socket error ... \n");
 					console.log($event);
 				}

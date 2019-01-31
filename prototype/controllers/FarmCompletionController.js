@@ -5,15 +5,15 @@ define("robotTW2/controllers/FarmCompletionController", [
 			services,
 			helper
 	){
-	return function FarmCompletionController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+	return function FarmCompletionController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		
 		var self = this
 		, addExcept = function (id) {
-			!$rootScope.data_farm.list_exceptions.find(f => f == id) ? $rootScope.data_farm.list_exceptions.push(id) : null;
+			!services.$rootScope.data_farm.list_exceptions.find(f => f == id) ? services.$rootScope.data_farm.list_exceptions.push(id) : null;
 		}
 		, removeExcept = function (id) {
-			$rootScope.data_farm.list_exceptions = $rootScope.data_farm.list_exceptions.filter(f => f != id)
+			services.$rootScope.data_farm.list_exceptions = services.$rootScope.data_farm.list_exceptions.filter(f => f != id)
 		}
 		
 		$scope.checked = false;
@@ -28,7 +28,7 @@ define("robotTW2/controllers/FarmCompletionController", [
 		
 		$scope.$watch('reportData', function () {
 			if(!$scope.reportData || !$scope.reportData.defVillageId) {return}
-			if($rootScope.data_farm.list_exceptions.find(f => f == $scope.reportData.defVillageId)){
+			if(services.$rootScope.data_farm.list_exceptions.find(f => f == $scope.reportData.defVillageId)){
 				$scope.checked = true;
 			} else {
 				$scope.checked = false;

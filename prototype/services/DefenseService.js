@@ -298,12 +298,12 @@ define("robotTW2/services/DefenseService", [
 						return elem.id != cm.id
 					})
 				})
-				g.forEach(function(cm){
-					var cg = list.find(function(elem, index, array){
-						return elem.id != cm.id
-					})
-					cg ? angular.merge(cg, {"nob":true}): null
-				})
+//				g.forEach(function(cm){
+//					var cg = list.find(function(elem, index, array){
+//						return elem.id != cm.id
+//					})
+//					cg ? angular.merge(cg, {"nob":true}): null
+//				})
 				return list;
 			}
 			, estab = function(list){

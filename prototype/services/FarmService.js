@@ -61,6 +61,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_logs",
+	"robotTW2/databases/data_farm",
 	"robotTW2/services/villages_town",
 	], function(
 			robotTW2,
@@ -72,6 +73,7 @@ define("robotTW2/services/FarmService", [
 			calculateTravelTime,
 			data_villages,
 			data_logs,
+			data_farm,
 			villages_town
 	){
 	return (function FarmService(
@@ -213,7 +215,7 @@ define("robotTW2/services/FarmService", [
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
 					if(preset_units[unit_preset] > 0) {
-						if($rootScope.data_farm.troops_not.some(elem => elem == unit_preset)) {
+						if(data_farm.troops_not.some(elem => elem == unit_preset)) {
 							return !1;
 						} else {
 							if (units_has_unit_search(unit_preset, aldeia_units)) {
@@ -238,7 +240,7 @@ define("robotTW2/services/FarmService", [
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
 					if(preset_units[unit_preset] > 0) {
-						if(!($rootScope.data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
+						if(!(data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
 							aldeia_units[unit_preset].available = aldeia_units[unit_preset].available - preset_units[unit_preset];
 							if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
 								f.push([{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available])
@@ -328,7 +330,7 @@ define("robotTW2/services/FarmService", [
 								} else {
 									resolve_send(true)
 								}
-							}, Math.round(($rootScope.data_farm.time_delay_farm / 2) + ($rootScope.data_farm.time_delay_farm * Math.random())))
+							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
 						.then(function(permited){
 							$timeout.cancel(r);
@@ -462,7 +464,7 @@ define("robotTW2/services/FarmService", [
 							listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 							listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 //							listaVil = listaVil.filter(f => !lt_barbaras.find(g => g == f.id))
-							listaVil = listaVil.filter(f => !$rootScope.data_farm.list_exceptions.find(g => g == f.id))
+							listaVil = listaVil.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
 
 							listaVil.sort(function (a, b) {
 //								Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
@@ -498,7 +500,7 @@ define("robotTW2/services/FarmService", [
 					listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
 					listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 					listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
-					listaVil = listaVil.filter(f => !$rootScope.data_farm.list_exceptions.find(g => g == f.id))
+					listaVil = listaVil.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
 
 					listaVil.sort(function (a, b) {
 						return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
@@ -637,8 +639,8 @@ define("robotTW2/services/FarmService", [
 
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
-				if (($rootScope.data_farm.farm_time_stop - time.convertedTime()) - $rootScope.data_farm.farm_time > 0) {
-					var tempo_delay = $rootScope.data_farm.farm_time_start - time.convertedTime();
+				if ((data_farm.farm_time_stop - time.convertedTime()) - data_farm.farm_time > 0) {
+					var tempo_delay = data_farm.farm_time_start - time.convertedTime();
 					if(tempo_delay < 0) {
 						tempo_delay = 0
 					} else {
@@ -649,10 +651,10 @@ define("robotTW2/services/FarmService", [
 					interval_init = $timeout(function () {
 						var init_first = true;
 						var f = function(){
-							if(time.convertedTime() + $rootScope.data_farm.farm_time < $rootScope.data_farm.farm_time_stop){
+							if(time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop){
 								var tempo = 0;
 								if(!init_first){
-									tempo = Math.round(($rootScope.data_farm.farm_time / 2) + ($rootScope.data_farm.farm_time * Math.random()));
+									tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()));
 								}
 								init_first = false;
 								execute_cicle(tempo).then(function(){

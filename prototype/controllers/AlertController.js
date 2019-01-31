@@ -9,8 +9,8 @@ define("robotTW2/controllers/AlertController", [
 			helper,
 			data_alert
 	){
-	return function AlertController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+	return function AlertController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.data_alert = data_alert;
 		var self = this;
 
@@ -41,7 +41,7 @@ define("robotTW2/controllers/AlertController", [
 
 				upDate()
 			}, function(reason) {
-				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Erro ao carregar dados dos membros da tribo"})
+				services.$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Erro ao carregar dados dos membros da tribo"})
 				!$scope.members ? $scope.members = {} : $scope.members;
 				upDate()
 				//console.log(reason); // Error!

@@ -13,9 +13,9 @@ define("robotTW2/controllers/DepositController", [
 			helper,
 			data_deposit
 	){
-	return function DepositController($rootScope, $scope) {
+	return function DepositController($scope) {
 		$scope.data_deposit = data_deposit;
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 
 		$scope.getTimeRest = function(){
@@ -29,16 +29,16 @@ define("robotTW2/controllers/DepositController", [
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function($event, data) {
 			if(document.getElementById("input-ms")){
 				document.getElementById("input-ms").value = helper.readableMilliseconds($scope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_deposit.interval) : helper.readableMilliseconds($scope.data_deposit.interval);
-				if (!$rootScope.$$phase) {
-					$rootScope.$apply();
+				if (!$scope.$$phase) {
+					$scope.$apply();
 				}
 			}
 		})
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.DepositService.isRunning();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		})
 		

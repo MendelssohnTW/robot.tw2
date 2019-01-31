@@ -2,10 +2,12 @@ define("robotTW2/services/MainService", [
 	"robotTW2",
 	"robotTW2/conf",
 	"robotTW2/socketSend",
+	"robotTW2/databases/data_main",
 	], function(
 			robotTW2,
 			conf,
-			socketSend
+			socketSend,
+			data_main
 	){
 	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService) {
 
@@ -16,7 +18,7 @@ define("robotTW2/services/MainService", [
 				location.reload()	
 			}, 1 * 60 * 60 * 1000)
 			
-			var extensions = $rootScope.data_main.getExtensions();
+			var extensions = data_main.getExtensions();
 			for (var extension in extensions) {
 				var arFn = requestFn.get(extension.toLowerCase(), true);
 				if(!arFn 
@@ -41,7 +43,7 @@ define("robotTW2/services/MainService", [
 					}
 				}
 			}
-			$rootScope.data_main.setExtensions(extensions);
+			data_main.setExtensions(extensions);
 			return extensions
 		}
 		, service

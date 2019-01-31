@@ -15,13 +15,13 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_villages,
 			data_headquarter
 	){
-	return function HeadquarterController($rootScope, $scope) {
-		$scope.restore = services.$filter("i18n")("RESTORE", $rootScope.loc.ale);
-		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.start = services.$filter("i18n")("START", $rootScope.loc.ale);
-		$scope.pause = services.$filter("i18n")("PAUSE", $rootScope.loc.ale);
-		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
-		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
+	return function HeadquarterController($scope) {
+		$scope.restore = services.$filter("i18n")("RESTORE", services.$rootScope.loc.ale);
+		$scope.close = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.start = services.$filter("i18n")("START", services.$rootScope.loc.ale);
+		$scope.pause = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
+		$scope.resume = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
+		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 
 		var self = this;
 		$scope.data_headquarter = data_headquarter
@@ -43,7 +43,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.getKey = function(buildingOrder){
-			return services.$filter("i18n")(Object.keys(buildingOrder)[0], $rootScope.loc.ale, "headquarter");
+			return services.$filter("i18n")(Object.keys(buildingOrder)[0], services.$rootScope.loc.ale, "headquarter");
 		}
 
 		$scope.getClass = function(buildingOrder){
@@ -139,8 +139,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.$watch("data_logs.headquarter", function(){
 			$scope.recalcScrollbar();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		}, true)
 		

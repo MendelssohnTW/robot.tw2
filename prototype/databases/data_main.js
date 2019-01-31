@@ -120,12 +120,6 @@ define("robotTW2/databases/data_main", [
 
 	Object.setPrototypeOf(data_main, db_main);
 
-	services.$rootScope.data_main = data_main;
-
-	services.$rootScope.$watch("data_main", function(){
-		data_main.set()
-	}, true)
-
 	return data_main;
 
 })
