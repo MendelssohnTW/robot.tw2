@@ -490,7 +490,7 @@ define("robotTW2/services/FarmService", [
 
 					for (x = x1; x < x2; x++) {
 						for (y = y1; y < y2; y++) {
-							if(villages_town[x][y] != null){
+							if(villages_town[x][y].id != null){
 								listaVil.push(villages_town[x][y])
 							}
 						}
