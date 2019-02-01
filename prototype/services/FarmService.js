@@ -407,7 +407,7 @@ define("robotTW2/services/FarmService", [
 							promise_grid = exec_promise_grid(r, c_preset).then(function(lst_bb){
 								promise_grid = undefined
 								if(!lst_bb || !lst_bb.length){
-									if(promise_grid_queue.length && permited){
+									if(promise_grid_queue.length){
 										var j = promise_grid_queue.shift();
 										r = j[0];
 										c_preset = j[1];
