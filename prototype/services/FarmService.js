@@ -37,14 +37,15 @@ define("robotTW2/services/villages_town", function(){
 
 	serv.load = function(x1, x2, y1, y2){
 		var list = []
+		, loaded = true;
 		for (i = x1; i <= x2; i++){
 			for (j = y1; j <= y2; j++){
-				if(grid[i][j].loaded){
-					return true
+				if(!grid[i][j].loaded){
+					loaded = false
 				}
 			}
 		}
-		return false
+		return loaded
 	}
 
 	Object.setPrototypeOf(grid, serv);
