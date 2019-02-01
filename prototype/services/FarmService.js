@@ -405,23 +405,28 @@ define("robotTW2/services/FarmService", [
 							promise_grid_queue.push([r, c_preset])
 						} else {
 							promise_grid = exec_promise_grid(r, c_preset).then(function(lst_bb){
+								promise_grid = undefined
 								if(!lst_bb || !lst_bb.length){
-									promise_grid = undefined
-									resol();
-									return
-								}
-								sendCmd(c_preset, lst_bb, function (permited) {
-									promise_grid = undefined	
 									if(promise_grid_queue.length && permited){
 										var j = promise_grid_queue.shift();
 										r = j[0];
 										c_preset = j[1];
-//										res = t[2];
 										t(c_preset, r)
 									} else {
 										resol()
 									}
-								});
+								} else {
+									sendCmd(c_preset, lst_bb, function (permited) {
+										if(promise_grid_queue.length && permited){
+											var j = promise_grid_queue.shift();
+											r = j[0];
+											c_preset = j[1];
+											t(c_preset, r)
+										} else {
+											resol()
+										}
+									});
+								}
 							})
 						}
 					}
