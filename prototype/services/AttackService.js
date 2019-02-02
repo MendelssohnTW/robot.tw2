@@ -43,7 +43,7 @@ define("robotTW2/services/AttackService", [
 		, addAttack = function(params, opt_id){
 			if(!params){return}
 			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
-			var expires = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command
+			var expires = params.data_escolhida - params.duration - robotTW2.databases.data_main.time_correction_command
 			, timer_delay = expires - time.convertedTime()
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 
@@ -142,7 +142,7 @@ define("robotTW2/services/AttackService", [
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
 		, resendAttack = function(params){
-			var expires_send = params.data_escolhida - params.duration - $rootScope.data_main.time_correction_command
+			var expires_send = params.data_escolhida - params.duration - robotTW2.databases.data_main.time_correction_command
 			, timer_delay_send = expires_send - time.convertedTime();
 
 			if(timer_delay_send < 0){
