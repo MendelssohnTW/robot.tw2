@@ -720,7 +720,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				secondvillage:	"3.0.4",
 				map:			"3.0.4",
 				data:			"3.0.4",
-				logs:			"3.0.4"
+				log:			"3.0.4"
 			}
 		});
 
@@ -907,7 +907,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						SECONDVILLAGE	: version.secondvillage,
 						MAP				: version.map,
 						DATA			: version.data,
-						LOGS			: version.logs
+						LOG				: version.log
 					},
 					FARM_TIME		      	: 30 * min,
 					MIN_INTERVAL	     	: 5 * min,
@@ -921,7 +921,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						DATA		: {
 							villages	: 6 * h,
 							tribes		: 2 * h,
-							logs		: 1 * h,
+							log			: 1 * h,
 							members		: 3 * h
 						},
 						SPY			: 30 * min
@@ -940,7 +940,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"secondvillage",
 						"map",
 						"data",
-						"logs"
+						"log"
 						]
 					,
 					HOTKEY					: {
@@ -2085,7 +2085,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_recruit.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
 								robotTW2.loadScript("/databases/data_data.js");
-								robotTW2.loadScript("/databases/data_logs.js");
+								robotTW2.loadScript("/databases/data_log.js");
 
 								robotTW2.services.$timeout(function(){
 									robotTW2.loadScript("/databases/data_main.js");

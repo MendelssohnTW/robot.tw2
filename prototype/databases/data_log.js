@@ -1,4 +1,4 @@
-define("robotTW2/databases/data_logs", [
+define("robotTW2/databases/data_log", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
@@ -9,15 +9,15 @@ define("robotTW2/databases/data_logs", [
 			services,
 			notify
 	) {
-	var data_logs = database.get("data_logs")
-	, db_logs = {};
+	var data_log = database.get("data_log")
+	, db_log = {};
 	
-	db_logs.set = function(){
-			database.set("data_logs", data_logs, true)
+	db_log.set = function(){
+			database.set("data_log", data_log, true)
 	}
 
-	db_logs.get = function(){
-		return database.get("data_logs")
+	db_log.get = function(){
+		return database.get("data_log")
 	}
 
 	var dataNew = {
@@ -28,24 +28,24 @@ define("robotTW2/databases/data_logs", [
 			data		: [],
 			recruit		: [],
 			spy			: [],
-			version		: conf.VERSION.LOGS,
+			version		: conf.VERSION.LOG,
 	}
 
-	if(!data_logs){
-		data_logs = dataNew
-		database.set("data_logs", data_logs, true)
+	if(!data_log){
+		data_log = dataNew
+		database.set("data_log", data_log, true)
 	} else {
-		if(!data_logs.version || (typeof(data_logs.version) == "number" ? data_logs.version.toString() : data_logs.version) < conf.VERSION.ALERT){
-			data_logs = dataNew
-			notify("data_logs");
+		if(!data_log.version || (typeof(data_log.version) == "number" ? data_log.version.toString() : data_log.version) < conf.VERSION.ALERT){
+			data_log = dataNew
+			notify("data_log");
 		} else {
-			if(!data_logs.auto_initialize) data_logs.initialized = !1;
-			if(data_logs.auto_initialize) data_logs.initialized = !0;
+			if(!data_log.auto_initialize) data_log.initialized = !1;
+			if(data_log.auto_initialize) data_log.initialized = !0;
 		}
-		database.set("data_logs", data_logs, true)
+		database.set("data_log", data_log, true)
 	}
 
-	Object.setPrototypeOf(data_logs, db_logs);
+	Object.setPrototypeOf(data_log, db_log);
 	
-	return data_logs;
+	return data_log;
 })

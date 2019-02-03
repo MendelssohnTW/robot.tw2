@@ -1,4 +1,4 @@
-define("robotTW2/services/LService", [
+define("robotTW2/services/LogService", [
 	"robotTW2",
 	"robotTW2/version",
 	"robotTW2/time",
@@ -21,7 +21,7 @@ define("robotTW2/services/LService", [
 			$timeout,
 			ready
 	){
-	return (function SpyService() {
+	return (function LogService() {
 
 		var isInitialized = !1
 		, isRunning = !1
