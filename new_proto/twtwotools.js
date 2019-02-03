@@ -1,7 +1,274 @@
-define("ready", [], function () {
+function ready(opt_callback, array_keys) {
+	array_keys = array_keys || ["map"];
+	var callback = function(key){
+		array_keys = array_keys.filter(function(opt_key) {
+			return opt_key !== key
+		}),
+		array_keys.length || opt_callback()
+	};
 
-})
-define("scripts", ["$timeout", "base"], function ($timeout, base) {
+	var obj_keys = {
+			map: function() {
+				var src = document.querySelector("#map");
+				if (angular.element(src).scope().isInitialized)
+					return callback("map");
+				exports.services.$rootScope.$on(exports.providers.eventTypeProvider.MAP_INITIALIZED, function() {
+					callback("map")
+				})
+			},
+			tribe_relations: function() {
+				var character = exports.services.modelDataService.getSelectedCharacter();
+				if (character) {
+					var tribe_relations = character.getTribeRelations();
+					if (!character.getTribeId() || tribe_relations)
+						return callback("tribe_relations")
+				}
+				var listener_tribe_relations = exports.services.$rootScope.$on(exports.providers.eventTypeProvider.TRIBE_RELATION_LIST, function() {
+					listener_tribe_relations(),
+					callback("tribe_relations")
+				})
+			},
+			initial_village: function() {
+				require(["conf/gameStates"], function(gameStates){
+					if (exports.services.modelDataService.getGameState().getGameState(gameStates.INITIAL_VILLAGE_READY))
+						return callback("initial_village");
+					exports.services.$rootScope.$on(exports.providers.eventTypeProvider.GAME_STATE_INITIAL_VILLAGE_READY, function() {
+						callback("initial_village")
+					})
+				})
+			},
+			all_villages_ready: function() {
+				require(["conf/gameStates"], function(gameStates){
+					if (exports.services.modelDataService.getGameState().getGameState(gameStates.ALL_VILLAGES_READY))
+						return callback("all_villages_ready");
+					exports.services.$rootScope.$on(exports.providers.eventTypeProvider.GAME_STATE_ALL_VILLAGES_READY, function() {
+						callback("all_villages_ready")
+					})
+				})
+			}
+	};
+	array_keys.forEach(function(key) {
+		obj_keys[key]()
+	})
+}
+
+function getScope(elem){
+	var selector = angular.element(elem[0]);
+	return selector.scope();
+}
+
+function loadController(controller){
+	return window[controller] || getScope($('[ng-controller=' + controller + ']'));
+}
+
+function builderWindow($rootScope, httpService, windowManagerService, $templateCache, $compile, conf, scripts, hotkeys, loadController, requestFn, data_main) {
+//	this.included_controller 	= params.included_controller;
+//	this.controller 			= params.controller;
+//	this.get_son	 			= params.get_son;
+//	this.provider_listener 		= params.provider_listener;
+//	this.scopeLang 				= params.scopeLang;
+//	this.url	 				= params.url;
+//	this.style 					= params.style;
+//	this.hotkey 				= params.hotkey;
+//	this.classes 				= params.classes;
+//	this.templateName 			= params.templateName;
+//	this.listener_layout 			= undefined;
+//	params.hotkey ? this.addhotkey() : null;
+//	params.provider_listener ? this.addlistener() : null;
+//	return this
+
+	var load = function load(templateName, onSuccess, opt_onError) {
+		var success = function success(data, status, headers, config) {
+			$templateCache.put(path.substr(1), data);
+
+			if (angular.isFunction(onSuccess)) {
+				onSuccess(data, status, headers, config);
+			}
+
+			if (!$rootScope.$$phase) {
+				$rootScope.$apply();
+			}
+		},
+		error = function error(data, status, headers, config) {
+			if (angular.isFunction(opt_onError)) {
+				opt_onError(data, status, headers, config);
+			}
+		},
+		path;
+
+		if (0 !== templateName.indexOf('!')) {
+			path = conf.TEMPLATE_PATH_EXT.join(templateName);
+		} else {
+			path = templateName.substr(1);
+		}
+
+		if ($templateCache.get(path.substr(1))) {
+			success($templateCache.get(path.substr(1)), 304);
+		} else {
+			httpService.get(path, success, error);
+		}
+	}
+
+	var win = function win(params){
+		this.params = params;
+		this.params.hotkey ? this.addhotkey() : null;
+		this.params.provider_listener ? this.addlistener() : null;
+	}
+
+	win.prototype.addhotkey = function() {
+		var fnThis = this.buildWin;
+		var that = this;
+		hotkeys.add(this.params.hotkey, function(){
+			fnThis.apply(that, null)
+		}, ["INPUT", "SELECT", "TEXTAREA"])
+	}
+
+	win.prototype.addlistener = function() {
+		var fnThis = this.addWin;
+		var that = this;
+		this.params.listener_layout = $rootScope.$on(this.params.provider_listener, function(){
+			if(scripts_loaded.some(f => f == that.params.url)){
+				fnThis.apply(that, null)
+			}
+		})
+	}
+
+//	win.prototype.newWindow = function newWindow(params){
+//	this.params = params;
+//	this.params.hotkey ? this.addhotkey() : null;
+//	this.params.provider_listener ? this.addlistener() : null;
+//	}
+
+	win.prototype.addWin = function addWin(){
+		var that = this;
+
+		new Promise(function(res, rej){
+			var opt_onSucess = function opt_onSucess(data, status, headers, config){
+				res(data)
+			};
+
+			var opt_onError = function opt_onError(data, status, headers, config){
+				rej(data)
+			};
+
+			load(that.params.templateName, opt_onSucess, opt_onError)
+		})
+		.then(function(data){
+			var scope = loadController(that.params.included_controller) || $rootScope.$new();
+			that.params.scopeLang ? angular.extend(scope, that.params.scopeLang) : null;
+
+			var filho = that.params.get_son();
+
+			var templateHTML = angular.element(data)
+			var compiledTemplate = $compile(templateHTML);
+
+			compiledTemplate(scope, function(clonedElement, scope) {
+				if(!filho){return}
+				filho.append(clonedElement);
+			});
+
+			that.params.controller.apply(that.params.controller, [scope])
+
+		}, function(data) {
+			//console.log(reason); // Error!
+		});
+	}
+
+	win.prototype.buildWin = function() {
+		var scope = $rootScope.$new();
+		var that = this;
+		if(that.params.templateName != "main"){
+			var arFn = requestFn.get(that.params.templateName.toLowerCase(), true);
+			if(!arFn){return}
+			if(data_main.pages_excludes.includes(that.params.templateName)){
+				if(!arFn.fn.isInitialized()){return}
+			} else{
+				if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
+			}
+		}
+		that.params.scopeLang ? angular.extend(scope, that.params.scopeLang) : null;
+		new Promise(function(res){
+			var opt_loadCallback = function(data){
+				res(data)
+			};
+
+			var opt_destroyCallback = undefined;
+			var opt_toggle = undefined;
+
+			windowManagerService.getScreenWithInjectedScope(that.params.templateName, scope, opt_loadCallback, opt_destroyCallback, opt_toggle)
+		})
+		.then(function(data){
+			var rootnode = data.rootnode;
+			var tempName = that.params.templateName;
+			var tempUpperCase = tempName.charAt(0).toUpperCase() + tempName.slice(1);
+
+			if(that.params.style){
+				Object.keys(that.params.style).forEach(function(key){
+					$(rootnode, "section")[0].setAttribute("style", key + ":" + that.params.style[key] + ";");
+					window.dispatchEvent(new Event('resize'));
+				})
+			}
+
+			if(that.params.classes){
+				if(typeof(that.params.classes) == "string"){
+					that.params.classes = [that.params.classes]
+				}
+				var cls = that.params.classes.join(" ");
+				$(rootnode).addClass(cls);
+			}
+
+			data.scope.$on('$destroy', function() {
+				$("#map")[0].setAttribute("style", "left:0px;")
+				window.dispatchEvent(new Event('resize'));
+			});
+
+			that.$window = rootnode;
+			$(".win-main").removeClass("jssb-focus")
+			$(".win-main").removeClass("jssb-applied")
+			!that.$scrollbar ? that.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
+			that.recalcScrollbar = function() {
+				if(!that.$scrollbar) return;
+				if(!that.$scrollbar.recalc) return;
+				that.$scrollbar.recalc()
+			};
+			that.disableScrollbar = function() {
+				if(!that.$scrollbar) return;
+				if(!that.$scrollbar.disable) return;
+				that.$scrollbar.disable()
+			};
+			that.setCollapse = function() {
+				that.$window.querySelectorAll(".twx-section.collapse").forEach(function(b) {
+					var c = !b.classList.contains("hidden-content")
+					, d = document.createElement("span");
+					d.className = "min-max-btn";
+					var e = document.createElement("a");
+					e.className = "btn-orange icon-26x26-" + (c ? "minus" : "plus"),
+					c || (b.nextSibling.style.display = "none"),
+					d.appendChild(e),
+					b.appendChild(d),
+					d.addEventListener("click", function() {
+						"none" === b.nextElementSibling.style.display ? (b.nextElementSibling.style.display = "",
+								e.className = e.className.replace("plus", "minus"),
+								c = !0) : (b.nextElementSibling.style.display = "none",
+										e.className = e.className.replace("minus", "plus"),
+										c = !1),
+										that.recalcScrollbar()
+					})
+				})
+			}
+			angular.extend(data.scope, that)
+			that.params.controller.apply(that.params.controller, [data.scope])
+		});
+	}
+
+	return win
+}
+
+function build($rootScope, httpService, windowManagerService, $templateCache, $compile, conf, scripts, hotkeys, loadController, requestFn, data_main) {
+	return new builderWindow($rootScope, httpService, windowManagerService, $templateCache, $compile, conf, scripts, hotkeys, loadController, requestFn, data_main)
+}
+
+function scripts($timeout, base) {
 	var script_queue = []
 	, scripts_loaded = []
 	, scripts_removed = []
@@ -20,7 +287,7 @@ define("scripts", ["$timeout", "base"], function ($timeout, base) {
 		scripts_loaded = scripts_loaded.filter(f => f != script)
 	}
 
-	var scripts = function scripts(){
+	var scripts_var = function scripts_var(){
 		this.load = function load(url){
 			var t = undefined;
 			if(!promise){
@@ -86,13 +353,12 @@ define("scripts", ["$timeout", "base"], function ($timeout, base) {
 		};
 		this.remove = function remove(script){
 			removeScript(script)
-		}
+		};
+		this.scripts_loaded = scripts_loaded;
 	}
-	return new scripts();
-})
-
-define("base", function () {
-
+	return new scripts_var();
+}
+function base($rootScope) {
 	switch ($rootScope.loc.ale) {
 //	case "pl_pl" : {
 //	return {
@@ -111,40 +377,164 @@ define("base", function () {
 	}
 	}
 
-})
-
-
+}
+function $compile(){
+	return injector.get('$compile');
+}
+function $exceptionHandler(){
+	return injector.get('$exceptionHandler');
+}
+function $filter(){
+	return injector.get('$filter');
+}
 function $rootScope(){
 	return injector.get('$rootScope');
-}
-function $timeout(){
-	return injector.get('$timeout');
 }
 function $templateCache(){
 	return injector.get('$templateCache');
 }
+function $timeout(){
+	return injector.get('$timeout');
+}
+
+function armyService(){
+	return injector.get('armyService');
+}
+function buildingService(){
+	return injector.get('buildingService');
+}
+function effectService(){
+	return injector.get('effectService');
+}
+function eventTypeProvider(){
+	var eventTypeProvider = injector.get('eventTypeProvider');
+	angular.extend(eventTypeProvider, {
+		"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
+		"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
+		"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
+		"INTERVAL_CHANGE_RECRUIT"		: "Internal/robotTW2/interval_change_recruit",
+		"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
+		"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
+		"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
+		"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
+		"CHANGE_COMMANDS_DEFENSE"		: "Internal/robotTW2/change_commands_defense",
+		"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
+		"CMD_SENT"						: "Internal/robotTW2/cmd_sent",
+		"SOCKET_EMIT_COMMAND"			: "Internal/robotTW2/secket_emit_command",
+		"SOCKET_RECEPT_COMMAND"			: "Internal/robotTW2/socket_recept_command",
+		"OPEN_REPORT"					: "Internal/robotTW2/open_report"
+	})
+	return eventTypeProvider;
+}
+function groupService(){
+	return injector.get('groupService');
+}
+function hotkeys(){
+	return injector.get('hotkeys');
+}
 function httpService(){
 	return injector.get('httpService');
 }
+function overviewService(){
+	return injector.get('overviewService');
+}
+function premiumActionService(){
+	return injector.get('premiumActionService');
+}
+function presetListService(){
+	return injector.get('presetListService');
+}
+function presetService(){
+	return injector.get('presetService');
+}
+function recruitingService(){
+	return injector.get('recruitingService');
+}
 function reportService(){
-	var reportService = injector.get('reportService');
-	this.extendScopeWithReportData = reportService.extendScopeWithReportData;
-	reportService.extendScopeWithReportData = function ($scope, report) {
-		$rootScope.$broadcast(eventTypeProvider.OPEN_REPORT);
-		this.extendScopeWithReportData($scope, report)
-	}
-	return reportService;
+	return injector.get('reportService');
 }
-function socketService(){
-	var socketService = injector.get('socketService');
-	this.createTimeoutErrorCaptureFunction = socketService.createTimeoutErrorCaptureFunction; 
-	socketService.createTimeoutErrorCaptureFunction = function (route, data, emitCallback) {
-		this.createTimeoutErrorCaptureFunction(route, data, emitCallback)
-//		$exceptionHandler(new Error('RobotTW2 timeout: ' + route.type), null, {
-//		'route': route.type
-//		});
-	}
+function resourceService(){
+	return injector.get('resourceService');
 }
+function routeProvider(){
+	var routeProvider = injector.get('routeProvider');
+	angular.extend(routeProvider, {
+		'UPDATE_WORLD':{
+			type:"update_world",
+			data:["world"],
+		},
+		'UPDATE_TRIBE':{
+			type:"update_tribe",
+			data:["tribe"],
+		},
+		'SEARCH_CHARACTER':{
+			type:"search_character",
+			data:["character_id"]
+		},
+		'SEARCH_CHARACTERS':{
+			type:"search_characters",
+			data:[""]
+		},
+		'UPDATE_CHARACTER':{
+			type:"update_character",
+			data:["character"]
+		},
+		'UPDATE_VILLAGE_CHARACTER':{
+			type:"update_village_character",
+			data:["village_character"]
+		},
+		'UPDATE_VILLAGE_LOST_CHARACTER':{
+			type:"update_village_lost_character",
+			data:["village_character"]
+		},
+		'SEARCH_VILLAGES_FOR_CHARACTER':{
+			type:"search_villages_for_character",
+			data:["id"]
+		},
+		'DELETE_CHARACTER':{
+			type:"delete_member",
+			data:["character_id"]
+		},
+		'SEARCH_WORLD':{
+			type:"search_world",
+			data:["world"]
+		},
+		'SEARCH_TRIBES_PERMITED':{
+			type:"search_tribes_permited",
+			data:[]
+		},
+		'UPDATE_VILLAGE':{
+			type:"update_village",
+			data:["village"]
+		},
+		'UPT_VILLAGE':{
+			type:"upt_village",
+			data:["village"]
+		},
+		'VERIFY_RESERVATION':{
+			type:"verify_reservation",
+			data:["verify_reservation"]
+		},
+		'SEARCH_LOCAL':{
+			type:"search_local",
+			data:[""]
+		}
+	})
+	return routeProvider;
+}
+function secondVillageService(){
+	return injector.get('secondVillageService');
+}
+function storageService(){
+	return injector.get('storageService');
+}
+function villageService(){
+	return injector.get('villageService');
+}
+function windowManagerService(){
+	return injector.get('windowManagerService');
+}
+
 function httpService(battlecat, cdn, cdnConf, base){
 	function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
@@ -167,6 +557,25 @@ function httpService(battlecat, cdn, cdnConf, base){
 				battlecat.get(cdn.getPath(uri), onLoadWrapper, cdnConf.ENABLED);
 			}
 		}
+	}
+}
+function reportService(){
+	var reportService = injector.get('reportService');
+	this.extendScopeWithReportData = reportService.extendScopeWithReportData;
+	reportService.extendScopeWithReportData = function ($scope, report) {
+		$rootScope.$broadcast(eventTypeProvider.OPEN_REPORT);
+		this.extendScopeWithReportData($scope, report)
+	}
+	return reportService;
+}
+function socketService(){
+	var socketService = injector.get('socketService');
+	this.createTimeoutErrorCaptureFunction = socketService.createTimeoutErrorCaptureFunction; 
+	socketService.createTimeoutErrorCaptureFunction = function (route, data, emitCallback) {
+		this.createTimeoutErrorCaptureFunction(route, data, emitCallback)
+//		$exceptionHandler(new Error('RobotTW2 timeout: ' + route.type), null, {
+//		'route': route.type
+//		});
 	}
 }
 function templateManagerService($rootScope, $templateCache, conf, httpService){
@@ -208,7 +617,7 @@ function templateManagerService($rootScope, $templateCache, conf, httpService){
 		}
 	}
 }
-function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready){
+function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready, build){
 	var that = this
 	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
 		var I18N_PATH_EXT = ['/lang/', '.json'];
@@ -459,7 +868,7 @@ function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvid
 		, tm = $timeout(function tm(){
 			if(!lded){
 				lded = true;
-				$rootScope.$broadcast("ready_init")
+				scripts.load("/databases/database.js")
 			}
 		}, 10000);
 
@@ -467,7 +876,7 @@ function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvid
 			if(!lded){
 				lded = true;
 				$timeout.cancel(tm)
-				$rootScope.$broadcast("ready_init")
+				scripts.load("/databases/database.js")
 			}
 		}, function error(data, status, headers, config){});
 
@@ -490,19 +899,45 @@ function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvid
 	}
 }
 
+define("ready", ready)
 define("$rootScope", $rootScope);
 define("$timeout", $timeout);
 define("$templateCache", $templateCache);
-define("httpService", httpService);
+define("$compile", $compile);
+define("hotkeys", hotkeys);
+define("loadController", loadController);
+define("scripts", ["$timeout", "base"], scripts)
+define("base", ["$rootScope"], base)
+define("windowManagerService", windowManagerService);
 define("reportService", reportService);
+define("$exceptionHandler", $exceptionHandler);
+define("storageService", storageService);
+define("buildingService", buildingService);
+define("resourceService", resourceService);
+define("recruitingService", recruitingService);
+define("villageService", villageService);
+define("eventTypeProvider", eventTypeProvider);
+define("premiumActionService", premiumActionService);
+define("secondVillageService", secondVillageService);
+define("overviewService", overviewService);
+define("$filter", $filter);
+define("presetListService", presetListService);
+define("presetService", presetService);
+define("groupService", groupService);
+define("effectService", effectService);
+define("armyService", armyService);
+define("routeProvider", routeProvider);
 define("socketService", socketService);
 define("httpService", ["battlecat", "cdn", "conf/cdn", "base"], httpService);
 define("templateManagerService", ["$rootScope", "$templateCache", "conf/conf", "httpService"], templateManagerService);
+define("build" ["$rootScope", "httpService", "windowManagerService", "$templateCache", "$compile", "conf/conf", "scripts", "hotkeys", "loadController", "requestFn", "robotTW2/databases/data_main"], build)
 
-define("robot", ["$rootScope", "$timeout", "httpService", "helper/i18n", "scripts", "eventTypeProvider", "requestFn", "ready"], function($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready){
-	return new robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready)
+define("robot", ["$rootScope", "$timeout", "httpService", "helper/i18n", "scripts", "eventTypeProvider", "requestFn", "ready", "build"], function($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready, build){
+	return new robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready, build)
 });
 
-require(["robot"], function(robot){
-	robot.init()
+require(["robot", "ready"], function(robot, ready){
+	ready(function(){
+		robot.init()
+	}, ["all_villages_ready"])
 })

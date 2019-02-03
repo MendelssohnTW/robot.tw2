@@ -34,7 +34,7 @@ define("robotTW2/services/ReconService", [
 			, y1 = command.origin_y 
 			, x2 = command.target_x 
 			, y2 = command.target_y 
-			, seconds_duration = helper.unreadableSeconds(helper.readableMilliseconds((command.model.completedAt - command.model.startedAt), null, true))
+			, seconds_duration = (command.model.completedAt - command.model.startedAt) / 1000
 			, minutes_duration = seconds_duration / 60
 			, cmdname = command.command_name 
 			, cmdType = command.command_type 
