@@ -146,45 +146,47 @@ define("robotTW2/services/ReconService", [
 
 				t++;
 				$timeout(function(){
-				!OverviewController ? OverviewController = robotTW2.loadController("OverviewController") : OverviewController;
-					if (OverviewController){
-						var elem = undefined;
-						$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
-						if(elem){
-							if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
-								var unitText = getAttackTypeAtackRecon(command, i);
-								if (unitText != undefined){
-									if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
-										return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
-									}).filter(f=>f!=undefined).length && $rootScope.data_recon.active_rename){
-										getrenameCmdAtackRecon(command, unitText);
-									}
-								}
-								elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
-								i++;
-								if ($('span.type').length === i) {
-									i = 0;
-									t = 0;
-								}
-
-							} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
-								elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
-								i++;
-								if ($('span.type').length === i) {
-									i = 0;
-									t = 0;
-								}
-
-							}
-							elem.addEventListener("mouseenter", function(a) {
-								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
-							}),
-							elem.addEventListener("mouseleave", function() {
-								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
-							})
-						}
-						if (!OverviewController.$$phase) !OverviewController.$apply();
+					if(!OverviewController){
+						OverviewController = robotTW2.loadController("OverviewController")
+					} else if(t <= 1){
+						OverviewController = robotTW2.loadController("OverviewController")
 					}
+					var elem = undefined;
+					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
+					if(elem){
+						if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
+							var unitText = getAttackTypeAtackRecon(command, i);
+							if (unitText != undefined){
+								if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
+									return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
+								}).filter(f=>f!=undefined).length && $rootScope.data_recon.active_rename){
+									getrenameCmdAtackRecon(command, unitText);
+								}
+							}
+							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
+							i++;
+							if ($('span.type').length === i) {
+								i = 0;
+								t = 0;
+							}
+
+						} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
+							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
+							i++;
+							if ($('span.type').length === i) {
+								i = 0;
+								t = 0;
+							}
+
+						}
+						elem.addEventListener("mouseenter", function(a) {
+							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
+						}),
+						elem.addEventListener("mouseleave", function() {
+							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
+						})
+					}
+					if (!OverviewController.$$phase) !OverviewController.$apply();
 				}, 100)
 			}
 		}
