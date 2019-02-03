@@ -181,7 +181,7 @@ define("robotTW2/services/ReconService", [
 							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
 						})
 					}
-					if (!OverviewController.$$phase) !OverviewController.$apply();
+					if (!OverviewController.$$phase) OverviewController.$apply();
 				}, 100)
 			}
 		}
