@@ -1,3 +1,6 @@
+define("ready", [], function () {
+
+})
 define("scripts", ["$timeout", "base"], function ($timeout, base) {
 	var script_queue = []
 	, scripts_loaded = []
@@ -205,7 +208,7 @@ function templateManagerService($rootScope, $templateCache, conf, httpService){
 		}
 	}
 }
-function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider){
+function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready){
 	var that = this
 	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
 		var I18N_PATH_EXT = ['/lang/', '.json'];
@@ -229,7 +232,7 @@ function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvid
 			}
 		}, true);
 	}
-	, createScopeLang = function(module, obj, callback){
+	, createScopeLang = function createScopeLang(module, obj, callback){
 		var scope = {};
 		var jsont = window.getTextObject(module);
 		if(!jsont) {
@@ -246,13 +249,21 @@ function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvid
 		callback(module, obj, scope)
 		return
 	}
+	, createBind = function createBind(obj){
+		obj && typeof(obj.init) == "function" ? requestFn.bind(obj.name, obj) : null;
+	}
 	, switch_services = function switch_services(data){
-		var type = data.type
-		, name = data.name
-		, obj = data.obj;
-		switch (name) {
-		case "":
-			break;
+		this.type = data.type
+		this.name = data.name
+		this.obj = data.obj;
+		var that = this;
+
+		if(this.name == "MainService"){
+			this.obj && typeof(this.obj.initExtensions) == "function" 
+				? this.obj.initExtensions() 
+						: null;
+		} else {
+			createBind(this.obj)
 		}
 	}
 	, switch_controllers = function switch_controllers(data){
@@ -273,7 +284,7 @@ function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvid
 			return build(params);
 		}
 
-		switch (name) {
+		switch (this.name) {
 		case "AlertController":
 			createScopeLang("alert", {
 				classes	: "", 
@@ -394,12 +405,52 @@ function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvid
 		}
 	}
 	, switch_databases = function switch_databases(data){
-		var type = data.type
-		, name = data.name
-		, obj = data.obj;
-		switch (name) {
-		case "":
-			break;
+		this.type = data.type
+		this.name = data.name
+		this.obj = data.obj;
+		var that = this;
+
+		var dat = {
+				"data_attack" 		: "AttackService",
+				"data_data" 		: "DataService",
+				"data_defense" 		: "DefenseService",
+				"data_deposit" 		: "DepositService",
+				"data_farm" 		: "FarmService",
+				"data_headquarter" 	: "HeadquarterService",
+				"data_main" 		: "MainsService",
+				"data_recon" 		: "ReconService",
+				"data_recruit" 		: "RecruitService",
+				"data_secondvillage": "SeconVillageService",
+				"data_spy" 			: "SpyService"
+		}
+
+		if(this.name == "database"){
+			ready(function(){
+				$timeout(function(){
+					scripts.load("/databases/data_villages.js")
+					$timeout(function(){
+						scripts.load("/databases/data_farm.js");
+						scripts.load("/databases/data_deposit.js");
+						scripts.load("/databases/data_spy.js");
+						scripts.load("/databases/data_alert.js");
+						scripts.load("/databases/data_attack.js");
+						scripts.load("/databases/data_recon.js");
+						scripts.load("/databases/data_defense.js");
+						scripts.load("/databases/data_headquarter.js");
+						scripts.load("/databases/data_recruit.js");
+						scripts.load("/databases/data_secondvillage.js");
+						scripts.load("/databases/data_data.js");
+						scripts.load("/databases/data_log.js");
+
+						$timeout(function(){
+							scripts.load("/databases/data_main.js");
+						}, 3000)
+					}, 3000)
+				}, 1000)
+
+			},  ["all_villages_ready", "tribe_relations"])
+		} else {
+			scripts.load("/services/" + dat[name] + ".js");
 		}
 	}
 
@@ -448,8 +499,8 @@ define("socketService", socketService);
 define("httpService", ["battlecat", "cdn", "conf/cdn", "base"], httpService);
 define("templateManagerService", ["$rootScope", "$templateCache", "conf/conf", "httpService"], templateManagerService);
 
-define("robot", ["$rootScope", "$timeout", "httpService", "helper/i18n", "scripts", "eventTypeProvider"], function($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider){
-	return new robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider)
+define("robot", ["$rootScope", "$timeout", "httpService", "helper/i18n", "scripts", "eventTypeProvider", "requestFn", "ready"], function($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready){
+	return new robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready)
 });
 
 require(["robot"], function(robot){
