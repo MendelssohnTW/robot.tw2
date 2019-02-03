@@ -10,7 +10,7 @@ define("robotTW2/databases/data_main", [
 	"robotTW2/databases/data_deposit",
 	"robotTW2/databases/data_farm",
 	"robotTW2/databases/data_headquarter",
-	"robotTW2/databases/data_logs",
+	"robotTW2/databases/data_log",
 	"robotTW2/databases/data_recon",
 	"robotTW2/databases/data_recruit",
 	"robotTW2/databases/data_secondvillage",
@@ -28,7 +28,7 @@ define("robotTW2/databases/data_main", [
 			data_deposit,
 			data_farm,
 			data_headquarter,
-			data_logs,
+			data_log,
 			data_recon,
 			data_recruit,
 			data_secondvillage,
@@ -44,7 +44,7 @@ define("robotTW2/databases/data_main", [
 			data_deposit: 		data_deposit,
 			data_farm: 			data_farm,
 			data_headquarter: 	data_headquarter,
-			data_logs: 			data_logs,
+			data_log: 			data_log,
 			data_recon: 		data_recon,
 			data_recruit: 		data_recruit,
 			data_secondvillage: data_secondvillage,
@@ -81,7 +81,7 @@ define("robotTW2/databases/data_main", [
 		dbs.forEach(function(db_name){
 			var string = "data_" + db_name.toLowerCase();
 			var db = data[string]
-			if(db && string != "data_logs"){
+			if(db && string != "data_log"){
 				angular.extend(extensions, {
 					[db_name.toUpperCase()] : {
 						initialized 		: db.initialized,
