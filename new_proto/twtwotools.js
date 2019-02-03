@@ -43,10 +43,10 @@ define("scripts", ["$timeout", "base"], function ($timeout, base) {
 						h.push(type);
 						h.push(name);	
 						var i = h.join("/")
-						require([i], function(type){
+						require([i], function(obj){
 							addScript(url)
-							exports[type][name] = type
-							$rootScope.$broadcast("script_ready", {"type": type, "name": name});
+//							exports[type][name] = obj
+							$rootScope.$broadcast("script_ready", {"type": type, "name": name, "obj": obj});
 //							if(f == "databases"){
 //							$rootScope.$broadcast("script_ready", g);
 //							} else {
@@ -205,7 +205,7 @@ function templateManagerService($rootScope, $templateCache, conf, httpService){
 		}
 	}
 }
-function robot($rootScope, $timeout, httpService, i18n){
+function robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider){
 	var that = this
 	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
 		var I18N_PATH_EXT = ['/lang/', '.json'];
@@ -229,15 +229,128 @@ function robot($rootScope, $timeout, httpService, i18n){
 			}
 		}, true);
 	}
-	, switch_services = function switch_services(name){
+	, createScopeLang = function(module, obj, callback){
+		var scope = {};
+		var jsont = window.getTextObject(module);
+		if(!jsont) {
+			callback(scope)
+			return
+		}
+		Object.keys(jsont).map(function(elem, index, array){
+			if(typeof(jsont[elem]) == "string") {
+				Object.keys(jsont).map(function(e, i, a){
+					scope[e] = jsont[e];
+				})
+			}
+		})
+		callback(module, obj, scope)
+		return
+	}
+	, switch_services = function switch_services(data){
+		var type = data.type
+		, name = data.name
+		, obj = data.obj;
 		switch (name) {
 		case "":
 			break;
 		}
 	}
-	, switch_controllers = function switch_controllers(name){
+	, switch_controllers = function switch_controllers(data){
+		this.type = data.type
+		this.name = data.name
+		this.obj = data.obj;
+		var that = this;
+
+		function scopeLang(module, opt_obj, scope){
+			var params = {
+					controller		: that.obj,
+					scopeLang 		: scope,
+					hotkey 			: conf.HOTKEY[module.toUpperCase()],
+					templateName 	: module.toLowerCase(),
+					url		 		: "/" + type + "/" + name + ".js",
+			}
+			angular.extend(params, opt_obj);
+			return build(params);
+		}
+
 		switch (name) {
+		case "AlertController":
+			createScopeLang("alert", {
+				classes	: "", 
+				style	: null
+			}, scopeLang)
+			break;
+		case "AttackCompletionController": 
+			createScopeLang("attack", {
+				get_son					: function(){
+					return $('[ng-controller=ModalCustomArmyController]').children("div").children(".box-paper").children(".scroll-wrap")						
+				},
+				provider_listener		: eventTypeProvider.PREMIUM_SHOP_OFFERS,
+				included_controller		: "ModalCustomArmyController"
+			}, scopeLang)
+			break;
+		case "AttackController": 
+			createScopeLang("attack", {
+				classes	: "fullsize", 
+				style	: null
+			}, scopeLang)
+			break;
+		case "DataController": 
+			createScopeLang("data", {
+				classes	: "", 
+				style	: null
+			}, scopeLang)
+			break;
+		case "DefenseController": 
+			createScopeLang("defense", {
+				classes	: "", 
+				style	: null
+			}, scopeLang)
+			break;
+		case "DepositController": 
+			createScopeLang("deposit", {
+				classes	: "fullsize", 
+				style 	: {
+					width:"350px"
+				}
+			}, scopeLang)
+			break;
+		case "FarmCompletionController": 
+			createScopeLang("farm", {
+				get_son					: function(){
+					return $('[ng-controller=BattleReportController]').find(".tbl-result") && !$('[ng-controller=BattleReportController]').find("#checkboxFull").length ? $('[ng-controller=BattleReportController]').find(".tbl-result") : false						
+				},
+				provider_listener		: eventTypeProvider.OPEN_REPORT,
+				included_controller		: "BattleReportController"
+			}, scopeLang)
+			break;
+		case "FarmController": 
+			createScopeLang("farm", {
+				classes	: "", 
+				style 	: {
+					width:"950px"
+				}
+			}, scopeLang)
+			break;
+		case "HeadquarterController": 
+			createScopeLang("headquarter", {
+				classes	: "", 
+				style	: null
+			}, scopeLang)
+			break;
+		case "HeadquarterController": 
+			createScopeLang("headquarter", {
+				classes	: "fullsize", 
+				style	: null
+			}, scopeLang)
+			break;
 		case "MainController":
+			createScopeLang("main", {
+				classes		: "", 
+				style 		: {
+					width : "850px"
+				}
+			}, scopeLang)
 			scripts.load("/controllers/FarmController.js");
 			scripts.load("/controllers/AttackController.js");
 			scripts.load("/controllers/HeadquarterController.js");
@@ -250,15 +363,46 @@ function robot($rootScope, $timeout, httpService, i18n){
 			scripts.load("/controllers/SecondVillageController.js");
 			scripts.load("/controllers/DataController.js");
 			break;
+		case "ReconController": 
+			createScopeLang("recon", {
+				classes: "fullsize", 
+				style 	: {
+					width:"350px"
+				}
+			}, scopeLang)
+			break;
+		case "RecruitController": 
+			createScopeLang("recruit",  {
+				classes	: "fullsize", 
+				style	: null
+			}, scopeLang)
+			break;
+		case "SecondVillageController": 
+			createScopeLang("secondvillage",  {
+				classes	: "", 
+				style 	: {
+					width:"350px"
+				}
+			}, scopeLang)
+			break;
+		case "SpyController": 
+			createScopeLang("spy",  {
+				classes	: "fullsize", 
+				style	: null
+			}, scopeLang)
+			break;
 		}
 	}
-	, switch_databases = function switch_databases(name){
+	, switch_databases = function switch_databases(data){
+		var type = data.type
+		, name = data.name
+		, obj = data.obj;
 		switch (name) {
 		case "":
 			break;
 		}
 	}
-	
+
 	this.init = function init(){
 		var lded = false
 		, tm = $timeout(function tm(){
@@ -278,16 +422,17 @@ function robot($rootScope, $timeout, httpService, i18n){
 
 		$rootScope.$on("ready", function($event, data){
 			var type = data.type
-			, name = data.name;
+			, name = data.name
+			, obj = data.obj;
 			switch (type) {
 			case "services":
-				switch_services(name)
+				switch_services(data)
 				break;
 			case "controllers" :
-				switch_controllers(name)
+				switch_controllers(data)
 				break;
 			case "databases" :
-				switch_databases(name)
+				switch_databases(data)
 				break;
 			}
 		})
@@ -303,8 +448,8 @@ define("socketService", socketService);
 define("httpService", ["battlecat", "cdn", "conf/cdn", "base"], httpService);
 define("templateManagerService", ["$rootScope", "$templateCache", "conf/conf", "httpService"], templateManagerService);
 
-define("robot", ["$rootScope", "$timeout", "httpService", "helper/i18n"], function($rootScope, $timeout, httpService, i18n){
-	return new robot($rootScope, $timeout, httpService, i18n)
+define("robot", ["$rootScope", "$timeout", "httpService", "helper/i18n", "scripts", "eventTypeProvider"], function($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider){
+	return new robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider)
 });
 
 require(["robot"], function(robot){
