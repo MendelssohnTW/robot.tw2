@@ -7,7 +7,7 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_farm",
-	], function(
+	], function FarmController(
 			helper,
 			time,
 			services,
@@ -17,7 +17,7 @@ define("robotTW2/controllers/FarmController", [
 			data_villages,
 			data_farm
 	){
-	return function FarmController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);

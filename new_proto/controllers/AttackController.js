@@ -4,14 +4,14 @@ define("robotTW2/controllers/AttackController", [
 	"robotTW2/conf",
 	"robotTW2/time",
 	"helper/time"
-	], function(
+	], function AttackController(
 			services,
 			providers,
 			conf,
 			time,
 			helper
 	){
-	return function AttackController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		var self = this;

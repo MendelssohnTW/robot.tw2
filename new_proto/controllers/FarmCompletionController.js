@@ -2,12 +2,12 @@ define("robotTW2/controllers/FarmCompletionController", [
 	"robotTW2/services",
 	"helper/time",
 	"robotTW2/databases/data_farm",
-	], function(
+	], function FarmCompletionController(
 			services,
 			helper,
 			data_farm
 	){
-	return function FarmCompletionController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		
 		var self = this

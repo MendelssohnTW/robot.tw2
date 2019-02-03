@@ -432,9 +432,6 @@ function groupService(){
 function hotkeys(){
 	return injector.get('hotkeys');
 }
-function httpService(){
-	return injector.get('httpService');
-}
 function overviewService(){
 	return injector.get('overviewService');
 }
@@ -936,8 +933,8 @@ define("robot", ["$rootScope", "$timeout", "httpService", "helper/i18n", "script
 	return new robot($rootScope, $timeout, httpService, i18n, scripts, eventTypeProvider, requestFn, ready, build)
 });
 
-require(["robot", "ready"], function(robot, ready){
-	ready(function(){
+require(["robot", "ready"], function (robot, ready){
+	ready(function callback(){
 		robot.init()
 	}, ["all_villages_ready"])
 })

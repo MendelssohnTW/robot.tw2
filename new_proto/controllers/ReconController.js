@@ -2,12 +2,12 @@ define("robotTW2/controllers/ReconController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
-	], function(
+	], function ReconController(
 			services,
 			providers,
 			helper
 	){
-	return function ReconController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 		

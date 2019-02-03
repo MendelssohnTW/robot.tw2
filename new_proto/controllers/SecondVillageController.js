@@ -3,13 +3,13 @@ define("robotTW2/controllers/SecondVillageController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"helper/time",
-	], function(
+	], function SecondVillageController(
 			services,
 			providers,
 			conf,
 			helper
 	){
-	return function SecondVillageController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 

@@ -1,0 +1,219 @@
+
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="tabs tabs-bg">
+		<div class="tabs-two-col">
+			<div ng-repeat="tabName in TAB_ORDER" class="tab"
+				ng-click="userSetActiveTab(tabName)"
+				ng-class="{'tab-active': activeTab === tabName}">
+				<div class="tab-inner">
+					<div
+						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
+						<a href="#"
+							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.DEFENSE">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap defense" style="margin-bottom: 100px">
+				<h5 class="twx-section collapse">{{command_list}}</h5>
+				<div>
+					<table class="tbl-border-light tbl-striped">
+						<colgroup>
+							<col width="*">
+							<col width="235px">
+							<col width="235px">
+							<col width="45px">
+							<col width="60px">
+							<col width="100px">
+							<col width="100px">
+
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+
+							<col width="34px">
+						</colgroup>
+						<tr>
+							<td class="cell-center"><span>{{ident_cmd}}</span></td>
+							<td class="cell-center"><span
+								class="icon icon-34x34-units-outgoing"></span></td>
+							<td class="cell-center"><span
+								class="icon icon-34x34-village"></span></td>
+							<td class="cell-center"><span
+								class="icon icon-34x34-time-remaining"></span></td>
+							<td class="cell-center"><span class="icon icon-26x26-time"></span></td>
+							<td class="cell-center"><span>Envio</span></td>
+							<td class="cell-center"><span>Comando</span></td>
+							<td class="cell-center"><span>Retorno</span></td>
+							<td class="cell-center"><span>Tempo anterior</span></td>
+							<td class="cell-center"><span>Tempo posterior</span></td>
+							<td class="cell-center"></td>
+						</tr>
+						<tr ng-repeat="comando in comandos">
+							<td class="cell-center"><span>{{comando.id_command}}</span></td>
+							<td class="cell-center">
+								<div>
+									<span>{{getVstart(comando)}}</span>
+								</div>
+								<div>
+									<span>{{getVcoordStart(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.target_name}}</span>
+								</div>
+								<div>
+									<span>{{getVcoordTarget(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span class="type" ng-class="getClass(comando.type)"></span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{getTimeRest(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{getHoraSend(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{getDataAlvo(comando)}}</span>
+								</div>
+								<div>
+									<span>{{getHoraAlvo(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{getHoraRetorno(comando)}}</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.time_sniper_ant / 1000}} seg</span>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<span>{{comando.time_sniper_post / 1000}} seg</span>
+								</div>
+							</td>
+
+							<td class="cell-center"><a href="#"
+								class="size-34x34 btn-red icon-26x26-close"
+								ng-click="removeCommand(comando.id_command)" tooltip
+								tooltip-content="{{exclude_button}}"></a></td>
+
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.TROOPS">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap defense" style="margin-bottom: 100px">
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="*">
+						<col width="56px">
+
+					</colgroup>
+					<tr ng-repeat="(key, value) in data_defense.recon">
+						<td class="cell-right"><span>{{getKey(key)}}</span><span
+							class="span-icon" ng-class="getClass(key)"></span></td>
+						<td>
+							<div id="switch" switch-slider="" border="true"
+								enabled="true" value="value"
+								vertical="false" size="'56x28'">
+								<div ng-class="{'box-border-dark box-filter': border}"
+									class="box-border-dark box-filter">
+									<div class="switch switch-56x28 switch-horizontal"
+										ng-class="{'switch-checked': value}">
+										<span class="size-26x26 switch-thumb"> <span
+											class="simple icon-26x26-switch-off"
+											ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap logs" style="margin-bottom: 100px">
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="50%">
+						<col width="50%">
+					</colgroup>
+					<tr ng-repeat="log in data_logs.defense">
+						<td class="cell-right">{{log.text}}</td>
+						<td class="cell-right">{{log.date}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li ng-if="activeTab == TABS.DEFENSE"><a
+				class="btn-orange btn-border clear" ng-click="clear_defense()">{{CLEAR}}</a></li>
+			<li><a class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+</div>

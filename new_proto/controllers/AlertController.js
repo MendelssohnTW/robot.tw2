@@ -3,13 +3,13 @@ define("robotTW2/controllers/AlertController", [
 	"robotTW2/providers",
 	"helper/time",
 	"robotTW2/databases/data_alert",
-	], function(
+	], function AlertController(
 			services,
 			providers,
 			helper,
 			data_alert
 	){
-	return function AlertController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.data_alert = data_alert;
 		var self = this;

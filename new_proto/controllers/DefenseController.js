@@ -6,7 +6,7 @@ define("robotTW2/controllers/DefenseController", [
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/unitTypesRenameRecon"
-	], function(
+	], function DefenseController(
 			robotTW2,
 			services,
 			providers,
@@ -15,7 +15,7 @@ define("robotTW2/controllers/DefenseController", [
 			helper,
 			unitTypesRenameRecon
 	){
-	return function DefenseController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		var self = this;

@@ -7,7 +7,7 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2/databases/data_data",
 	"robotTW2/databases/data_deposit",
 	"robotTW2/databases/data_recon"
-	], function(
+	], function MainController(
 			robotTW2,
 			services,
 			providers,
@@ -17,7 +17,7 @@ define("robotTW2/controllers/MainController", [
 			data_deposit,
 			data_recon
 	){
-	return function MainController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 		var toggle = false;

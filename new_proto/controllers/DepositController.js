@@ -5,7 +5,7 @@ define("robotTW2/controllers/DepositController", [
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/databases/data_deposit",
-	], function(
+	], function DepositController(
 			services,
 			providers,
 			conf,
@@ -13,7 +13,7 @@ define("robotTW2/controllers/DepositController", [
 			helper,
 			data_deposit
 	){
-	return function DepositController($scope) {
+	return function ($scope) {
 		$scope.data_deposit = data_deposit;
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;

@@ -5,7 +5,7 @@ define("robotTW2/controllers/RecruitController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"conf/unitTypes"
-	], function(
+	], function RecruitController(
 			helper,
 			time,
 			services,
@@ -13,7 +13,7 @@ define("robotTW2/controllers/RecruitController", [
 			conf,
 			unitTypes
 	){
-	return function RecruitController($scope) {
+	return function ($scope) {
 		$scope.save = services.$filter("i18n")("SAVE", services.$rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.start = services.$filter("i18n")("START", services.$rootScope.loc.ale);

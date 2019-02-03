@@ -6,7 +6,7 @@ define("robotTW2/controllers/HeadquarterController", [
 	"robotTW2/conf",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_headquarter",
-	], function(
+	], function HeadquarterController(
 			helper,
 			time,
 			services,
@@ -15,7 +15,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_villages,
 			data_headquarter
 	){
-	return function HeadquarterController($scope) {
+	return function ($scope) {
 		$scope.restore = services.$filter("i18n")("RESTORE", services.$rootScope.loc.ale);
 		$scope.close = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.start = services.$filter("i18n")("START", services.$rootScope.loc.ale);

@@ -5,7 +5,7 @@ define("robotTW2/controllers/DataController", [
 	"robotTW2/conf",
 	"robotTW2/time",
 	"robotTW2/databases/data_data",
-	], function(
+	], function DataController(
 			services,
 			providers,
 			helper,
@@ -13,7 +13,7 @@ define("robotTW2/controllers/DataController", [
 			time,
 			data_data
 	){
-	return function DataController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);

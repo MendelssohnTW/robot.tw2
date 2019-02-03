@@ -3,13 +3,13 @@ define("robotTW2/controllers/SpyController", [
 	"robotTW2/providers",
 	"helper/time",
 	"robotTW2/time",
-	], function(
+	], function SpyController(
 			services,
 			providers,
 			helper,
 			time
 	){
-	return function SpyController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 		

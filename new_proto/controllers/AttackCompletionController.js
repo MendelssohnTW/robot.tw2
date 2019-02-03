@@ -1,11 +1,11 @@
 define("robotTW2/controllers/AttackCompletionController", [
 	"robotTW2/services",
 	"robotTW2/time"
-	], function(
+	], function AttackCompletionController(
 			services,
 			time
 	){
-	return function AttackCompletionController($scope) {
+	return function ($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.SCHEDULE = services.$filter("i18n")("SCHEDULE", services.$rootScope.loc.ale);
 		
