@@ -136,7 +136,6 @@ define("robotTW2/services/ReconService", [
 		, setNewHandlersAtackRecon = function(){
 			overviewService.gameFormatCommand = overviewService.formatCommand;
 			var i = 0
-			, t = 0
 			, OverviewController = undefined
 
 			overviewService.formatCommand = function (command) {
@@ -144,11 +143,10 @@ define("robotTW2/services/ReconService", [
 
 				if(isPaused){return}
 
-				t++;
 				$timeout(function(){
 					if(!OverviewController){
 						OverviewController = robotTW2.loadController("OverviewController")
-					} else if(t <= 1){
+					} else if(i < 1 ){
 						OverviewController = robotTW2.loadController("OverviewController")
 					}
 					var elem = undefined;
@@ -167,7 +165,6 @@ define("robotTW2/services/ReconService", [
 							i++;
 							if ($('span.type').length === i) {
 								i = 0;
-								t = 0;
 							}
 
 						} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
@@ -175,9 +172,7 @@ define("robotTW2/services/ReconService", [
 							i++;
 							if ($('span.type').length === i) {
 								i = 0;
-								t = 0;
 							}
-
 						}
 						elem.addEventListener("mouseenter", function(a) {
 							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
