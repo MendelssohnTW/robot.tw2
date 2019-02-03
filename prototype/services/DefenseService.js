@@ -129,7 +129,7 @@ define("robotTW2/services/DefenseService", [
 			y1 = command.startY, 
 			x2 = command.targetX, 
 			y2 = command.targetY,
-			seconds_duration = helper.unreadableSeconds(helper.readableMilliseconds((command.completedAt - command.startedAt), null, true))
+			seconds_duration = (command.completedAt - command.startedAt) / 1000;
 			if (y1 % 2)
 				x1 += .5;
 			if (y2 % 2)
