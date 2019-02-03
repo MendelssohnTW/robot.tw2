@@ -16,7 +16,7 @@ define("robotTW2/services/MainService", [
 			
 			var interval_reload = setInterval(function(){
 				location.reload()	
-			}, 1 * 60 * 60 * 1000)
+			}, 3 * 60 * 60 * 1000)
 			
 			var extensions = data_main.getExtensions();
 			for (var extension in extensions) {
