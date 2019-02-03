@@ -729,14 +729,18 @@ define("robotTW2/services/DefenseService", [
 			overviewService.formatCommand = function (command) {
 				overviewService.supportFormatCommand(command);
 				$timeout(function(){
-					!OverviewController ? OverviewController = robotTW2.loadController("OverviewController") : OverviewController;
+					if(!OverviewController){
+						OverviewController = robotTW2.loadController("OverviewController")
+					} else if(iCount < 1){
+						OverviewController = robotTW2.loadController("OverviewController")
+					}
 					if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 						addDefenseSelector(command, iCount);
 						iCount++
 						if ($('span.type').length <= iCount) 
 							iCount = 0;
 					}
-				}, 150)
+				}, 100)
 			};
 		}
 		, removeCommandDefense = function(id_command){

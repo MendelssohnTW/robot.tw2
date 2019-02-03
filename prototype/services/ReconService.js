@@ -152,7 +152,7 @@ define("robotTW2/services/ReconService", [
 					var elem = undefined;
 					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
 					if(elem){
-						if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
+						if(OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 							var unitText = getAttackTypeAtackRecon(command, i);
 							if (unitText != undefined){
 								if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
