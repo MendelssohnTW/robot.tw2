@@ -944,20 +944,20 @@ var robotTW2 = window.robotTW2 = undefined;
 						]
 					,
 					HOTKEY					: {
-						ALERT		 	: "ctrl+alt+l",
-						ATTACK		 	: "ctrl+alt+a",
-						DEFENSE		 	: "ctrl+alt+d",
-						DEPOSIT		 	: "ctrl+alt+t",
-						FARM		 	: "ctrl+alt+f",
-						HEADQUARTER 	: "ctrl+alt+h",
-						MAIN 			: "ctrl+alt+p",
-						MEDIC		 	: "ctrl+alt+i",
-						RECON		 	: "ctrl+alt+r",
-						RECRUIT		 	: "ctrl+alt+e",
-						SPY			 	: "ctrl+alt+s",
-						SECONDVILLAGE	: "ctrl+alt+q",
-						MAP			 	: "ctrl+alt+m",
-						DATA			: "ctrl+alt+j"
+						ALERT		 	: "shift+l",
+						ATTACK		 	: "shift+a",
+						DEFENSE		 	: "shift+d",
+						DEPOSIT		 	: "shift+t",
+						FARM		 	: "shift+f",
+						HEADQUARTER 	: "shift+h",
+						MAIN 			: "shift+p",
+						MEDIC		 	: "shift+i",
+						RECON		 	: "shift+r",
+						RECRUIT		 	: "shift+e",
+						SPY			 	: "shift+s",
+						SECONDVILLAGE	: "shift+q",
+						MAP			 	: "shift+m",
+						DATA			: "shift+j"
 					},
 					RESERVA				: {
 						RECRUIT : {
