@@ -585,12 +585,15 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined; 
 				if(cmds.length){
 					cmd = cmds.pop();
-					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - robotTW2.databases.data_main.time_correction_command;
-					, timer_delay = (expires / 2)
+//					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - robotTW2.databases.data_main.time_correction_command
+					var expires = (data.time_start * 1000) - robotTW2.databases.data_main.time_correction_command + (cmd.time_sniper_ant + cmd.time_sniper_post)
+					, timer_delay = expires / 2
 					, params = {
 						"timer_delay" 	: timer_delay,
 						"id_command" 	: data.id
 					}
+					
+//					- time.convertedTime()
 					if(timer_delay >= 0){
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 							scope.commands[params.id_command] = {
