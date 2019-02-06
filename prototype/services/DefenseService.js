@@ -586,6 +586,8 @@ define("robotTW2/services/DefenseService", [
 				console.log("No event comand_cancel")
 				return
 			}
+			console.log("event comand_cancel")
+			console.log(data)
 			if(data.direction == "backward" && data.type == "support"){
 				console.log("listener command_cancel")
 				var cmds = Object.keys($event.currentScope.commands).map(function(param){
