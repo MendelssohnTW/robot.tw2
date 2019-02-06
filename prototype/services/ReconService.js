@@ -146,12 +146,13 @@ define("robotTW2/services/ReconService", [
 
 				if(isPaused){return}
 
+				if(!OverviewController){
+					OverviewController = robotTW2.loadController("OverviewController")
+				} else if(i < 1 ){
+					OverviewController = robotTW2.loadController("OverviewController")
+				}
+				
 				$timeout(function(){
-					if(!OverviewController){
-						OverviewController = robotTW2.loadController("OverviewController")
-					} else if(i < 1 ){
-						OverviewController = robotTW2.loadController("OverviewController")
-					}
 					var elem = undefined;
 					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
 					if(elem){
@@ -185,7 +186,7 @@ define("robotTW2/services/ReconService", [
 						})
 					}
 					if (!OverviewController.$$phase) OverviewController.$apply();
-				}, 100)
+				}, 200)
 			}
 		}
 		, start = function (){
