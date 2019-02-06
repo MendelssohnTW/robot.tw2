@@ -64,6 +64,8 @@ define("robotTW2/services/DefenseService", [
 				var lista_aldeias = [];
 				var lista_barbaras = [];
 				return socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
+					$timeout.cancel(r);
+					r = undefined;
 					lista_barbaras = [];
 					lista_aldeias = [];
 					lista_aldeiasY = [];
