@@ -27,7 +27,7 @@ define("robotTW2/databases/data_farm", [
 	}
 
 	var dataNew = {
-			auto_initialize			: true, 
+			auto_initialize			: false, 
 			initialized				: true, 
 			activated				: true,
 			hotkey					: conf.HOTKEY.FARM,
