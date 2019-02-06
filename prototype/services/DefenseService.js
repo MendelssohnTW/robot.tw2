@@ -362,15 +362,6 @@ define("robotTW2/services/DefenseService", [
 							promise = undefined;
 							$timeout.cancel(rt);
 							var timeSniperPost = conf.TIME_SNIPER_POST_SNOB;
-							if(!cmd){
-								console.log("sem comando")
-								if(promise_queue.length){
-									ct(promise_queue.shift())
-								} else {
-									callback();
-								}
-								return
-							}
 							if(!cmd.nob) {
 								timeSniperPost = $rootScope.data_defense.time_sniper_post;	
 							} else {
@@ -627,16 +618,15 @@ define("robotTW2/services/DefenseService", [
 					) {
 						return $event.currentScope.commands[param].params
 					} else {
-						console.log("não encontrou comando na lista para sendCancel")
 						return undefined
 					}
 				}).filter(f => f != undefined)
 
-				cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
-
-				var cmd = undefined; 
 				if(cmds.length){
-					cmd = cmds.pop();
+					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
+					var cmd = cmds.pop();
+					console.log("encontrou comando para command_sent")
+					console.log(cmd)
 					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post
 					, timer_delay = ((expires - time.convertedTime()) / 2) + robotTW2.databases.data_main.time_correction_command
 					, params = {
@@ -661,10 +651,14 @@ define("robotTW2/services/DefenseService", [
 					removeCommandDefense(cmd.id_command);
 
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
+				} else {
+					console.log("não encontrou o comando para sendCancel")
 				}
 			}
 		}
 		, send = function(params){
+			console.log("enviando comando")
+			console.log(params)
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
 				target_village		: params.target_village,
