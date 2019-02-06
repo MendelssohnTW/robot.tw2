@@ -159,35 +159,35 @@ define("robotTW2/services/DefenseService", [
 			if($rootScope.data_defense.recon[unitType]){
 				switch (unitType) {
 //				case "light_cavalry":
-//					callback(unitTypes.LIGHT_CAVALRY, unitType);
-//					break;
+//				callback(unitTypes.LIGHT_CAVALRY, unitType);
+//				break;
 //				case "mounted_archer":
-//					callback(unitTypes.MOUNTED_ARCHER, unitType);
-//					break;
+//				callback(unitTypes.MOUNTED_ARCHER, unitType);
+//				break;
 //				case "heavy_cavalry":
-//					callback(unitTypes.HEAVY_CAVALRY, unitType);
-//					break;
+//				callback(unitTypes.HEAVY_CAVALRY, unitType);
+//				break;
 //				case "axe":
-//					callback(unitTypes.AXE, unitType);
-//					break;
+//				callback(unitTypes.AXE, unitType);
+//				break;
 //				case "spear":
-//					callback(unitTypes.SPEAR, unitType);
-//					break;
+//				callback(unitTypes.SPEAR, unitType);
+//				break;
 //				case "archer":
-//					callback(unitTypes.ARCHER, unitType);
-//					break;
+//				callback(unitTypes.ARCHER, unitType);
+//				break;
 //				case "doppelsoldner":
-//					callback(unitTypes.DOPPELSOLDNER, unitType);
-//					break;
+//				callback(unitTypes.DOPPELSOLDNER, unitType);
+//				break;
 //				case "sword":
-//					callback(unitTypes.SWORD, unitType);
-//					break;
+//				callback(unitTypes.SWORD, unitType);
+//				break;
 //				case "ram":
-//					callback(unitTypes.RAM, unitType);
-//					break;
+//				callback(unitTypes.RAM, unitType);
+//				break;
 //				case "catapult":
-//					callback(unitTypes.CATAPULT, unitType);
-//					break;
+//				callback(unitTypes.CATAPULT, unitType);
+//				break;
 				case "snob":
 					callback(unitTypes.SNOB, unitType);
 					break;
@@ -299,10 +299,10 @@ define("robotTW2/services/DefenseService", [
 					})
 				})
 //				g.forEach(function(cm){
-//					var cg = list.find(function(elem, index, array){
-//						return elem.id != cm.id
-//					})
-//					cg ? angular.merge(cg, {"nob":true}): null
+//				var cg = list.find(function(elem, index, array){
+//				return elem.id != cm.id
+//				})
+//				cg ? angular.merge(cg, {"nob":true}): null
 //				})
 				return list;
 			}
@@ -429,20 +429,20 @@ define("robotTW2/services/DefenseService", [
 									if(push){
 										switch (unitType) {
 //										case "light_cavalry":
-//											list_others.push(cmd);
-//											break;
+//										list_others.push(cmd);
+//										break;
 //										case "heavy_cavalry":
-//											list_others.push(cmd);
-//											break;
+//										list_others.push(cmd);
+//										break;
 //										case "axe":
-//											list_others.push(cmd);
-//											break;
+//										list_others.push(cmd);
+//										break;
 //										case "sword":
-//											list_others.push(cmd);
-//											break;
+//										list_others.push(cmd);
+//										break;
 //										case "ram":
-//											list_others.push(cmd);
-//											break;
+//										list_others.push(cmd);
+//										break;
 										case "snob":
 											list_snob.push(cmd);
 											break;
@@ -452,7 +452,7 @@ define("robotTW2/services/DefenseService", [
 										default:
 											list_others.push(cmd);
 										}
-										
+
 									}
 								})
 							}
@@ -547,7 +547,10 @@ define("robotTW2/services/DefenseService", [
 //		}
 //		}
 		, listener_command_cancel = function($event, data){
-			if(!$event.currentScope){return}
+			if(!$event.currentScope){
+				console.log("No event comand_cancel")
+				return
+			}
 			if(data.direction == "backward" && data.type == "support"){
 				var cmds = Object.keys($event.currentScope.commands).map(function(param){
 					if($event.currentScope.commands[param].params.start_village == data.home.id
@@ -567,7 +570,10 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, listener_command_sent = function($event, data){
-			if(!$event.currentScope){return}
+			if(!$event.currentScope){
+				console.log("No event comand_sent")
+				return
+			}
 			if(data.direction == "forward" && data.type == "support"){
 				var cmds = Object.keys($event.currentScope.commands).map(function(param){
 					//verificar a origem e alvo do comando
@@ -591,7 +597,7 @@ define("robotTW2/services/DefenseService", [
 						"timer_delay" 	: timer_delay,
 						"id_command" 	: data.id
 					}
-					
+
 //					- time.convertedTime()
 					if(timer_delay >= 0){
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
@@ -601,6 +607,8 @@ define("robotTW2/services/DefenseService", [
 							}
 
 						})
+					} else {
+						console.log("timer_delay < 0")
 					}
 
 					removeCommandDefense(cmd.id_command);
@@ -626,6 +634,7 @@ define("robotTW2/services/DefenseService", [
 			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 
 			if(timer_delay_send < 0){
+				console.log("timer_delay < 0")
 				removeCommandDefense(params.id_command)
 				return 
 			}
@@ -657,6 +666,8 @@ define("robotTW2/services/DefenseService", [
 							"params"	: params
 					}
 				})
+			} else {
+				console.log("timer_delay < 0")
 			}
 		}
 		, list_timeout = {}
