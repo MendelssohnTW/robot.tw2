@@ -50,14 +50,15 @@ define("robotTW2/services/DefenseService", [
 		, promise = undefined
 		, promise_queue = []
 		, loadVillage = function(cmd){
+			this.cmd = cmd;
 			return new Promise(function(res, rej){
 				r = $timeout(function(){
-					rej(cmd)
+					rej(this.cmd)
 				}, conf_conf.LOADING_TIMEOUT);
 				var g = 20;
-				var x = cmd.targetX || cmd.target_x;
-				var y = cmd.targetY || cmd.target_y;
-				var id = cmd.id || cmd.command_id;
+				var x = this.cmd.targetX || this.cmd.target_x;
+				var y = this.cmd.targetY || this.cmd.target_y;
+				var id = this.cmd.id || this.cmd.command_id;
 				loadIsRunning = !1
 				var lista_aldeiasY = [];
 				var lista_aldeias = [];
@@ -130,11 +131,11 @@ define("robotTW2/services/DefenseService", [
 						(aldeiaY ? Math.abs(aldeiaY.x - x) : 0) + 
 						(aldeiaY ? Math.abs(aldeiaY.y - y) : 0) ? aldeia = aldeiaX : aldeia = aldeiaY;
 
-//					typeof(callback) == "function" ? callback(aldeia, cmd): null;
+//					typeof(callback) == "function" ? callback(aldeia, this.cmd): null;
 					if(aldeia){
-						res(aldeia, cmd)
+						res(aldeia, this.cmd)
 					} else {
-						rej(cmd)
+						rej(this.cmd)
 					}
 				})
 			});
@@ -360,6 +361,15 @@ define("robotTW2/services/DefenseService", [
 						promise = loadVillage(cmd).then(function(aldeia, cmt){
 							promise = undefined;
 							var timeSniperPost = conf.TIME_SNIPER_POST_SNOB;
+							if(!cmt){
+								console.log("sem comando")
+								if(promise_queue.length){
+									ct(promise_queue.shift())
+								} else {
+									callback();
+								}
+								return
+							}
 							if(!cmt.nob) {
 								timeSniperPost = $rootScope.data_defense.time_sniper_post;	
 							} else {
