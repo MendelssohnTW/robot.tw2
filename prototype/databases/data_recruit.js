@@ -30,9 +30,9 @@ define("robotTW2/databases/data_recruit", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: false,
+			auto_initialize			: true,
+			initialized 			: true,
+			activated 				: true,
 			hotkey					: conf.HOTKEY.RECRUIT,
 			version					: conf.VERSION.RECRUIT,
 			interval				: conf.INTERVAL.RECRUIT,

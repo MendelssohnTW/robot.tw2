@@ -23,9 +23,9 @@ define("robotTW2/databases/data_attack", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: false,
+			auto_initialize			: true,
+			initialized 			: true,
+			activated 				: true,
 			hotkey					: conf.HOTKEY.ATTACK,
 			interval				: conf.INTERVAL.ATTACK,
 			version					: conf.VERSION.ATTACK,
