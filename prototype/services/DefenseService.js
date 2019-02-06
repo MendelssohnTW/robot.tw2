@@ -585,9 +585,8 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined; 
 				if(cmds.length){
 					cmd = cmds.pop();
-//					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post - robotTW2.databases.data_main.time_correction_command
-					var expires = (data.time_start * 1000) - robotTW2.databases.data_main.time_correction_command + (cmd.time_sniper_ant + cmd.time_sniper_post)
-					, timer_delay = (expires - time.convertedTime()) / 2
+					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post
+					, timer_delay = ((expires - time.convertedTime()) / 2) + robotTW2.databases.data_main.time_correction_command
 					, params = {
 						"timer_delay" 	: timer_delay,
 						"id_command" 	: data.id
@@ -623,8 +622,8 @@ define("robotTW2/services/DefenseService", [
 
 		}
 		, resendDefense = function(params){
-			var expires_send = params.data_escolhida - params.time_sniper_ant - robotTW2.databases.data_main.time_correction_command
-			, timer_delay_send = expires_send - time.convertedTime();
+			var expires_send = params.data_escolhida - params.time_sniper_ant
+			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 
 			if(timer_delay_send < 0){
 				removeCommandDefense(params.id_command)
@@ -643,8 +642,8 @@ define("robotTW2/services/DefenseService", [
 				id_command = params.id_command
 			}
 
-			var expires = params.data_escolhida - params.time_sniper_ant - robotTW2.databases.data_main.time_correction_command
-			, timer_delay = expires - time.convertedTime();
+			var expires = params.data_escolhida - params.time_sniper_ant
+			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 
 			if(timer_delay >= 0){
 				angular.extend(params, {
