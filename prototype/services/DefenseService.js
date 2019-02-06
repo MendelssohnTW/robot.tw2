@@ -354,7 +354,7 @@ define("robotTW2/services/DefenseService", [
 			list_others = estab(list_others);
 
 
-			list.others.forEach(function(cm){
+			list_others.forEach(function(cm){
 				function ct(cmd){
 					if(!promise){
 						promise = loadVillage(cmd).then(function(aldeia, cmt){
