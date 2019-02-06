@@ -3,6 +3,7 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/version",
 	"robotTW2/conf",
 	"helper/time",
+	"conf/conf",
 	"conf/unitTypes",
 	"robotTW2/time",
 	"robotTW2/calibrate_time",
@@ -12,6 +13,7 @@ define("robotTW2/services/DefenseService", [
 			version,
 			conf,
 			helper,
+			conf_conf,
 			unitTypes,
 			time,
 			calibrate_time,
@@ -44,84 +46,97 @@ define("robotTW2/services/DefenseService", [
 		, promise_verify = undefined
 		, queue_verifiy = []
 		, that = this
-		, loadVillage = function(cmd, callback){
-			var g = 20;
-			var x = cmd.targetX || cmd.target_x;
-			var y = cmd.targetY || cmd.target_y;
-			var id = cmd.id || cmd.command_id;
-			loadIsRunning = !1
-			var lista_aldeiasY = [];
-			var lista_aldeias = [];
-			var lista_barbaras = [];
-			return socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
-				lista_barbaras = [];
-				lista_aldeias = [];
-				lista_aldeiasY = [];
-				if (data != undefined && data.villages != undefined && data.villages.length > 0){
-					var listaVil = angular.copy(data.villages);
-					var p = 0;
-					for (j = 0; j < listaVil.length; j++){
-						if (listaVil[j].affiliation == "own" ){
-							lista_aldeias.push(listaVil[j]);
-							p++;
-						}
-					}
-					angular.extend(lista_aldeiasY, lista_aldeias);
-					lista_aldeias.sort(function (a, b) {
-						if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
-							if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
-								return 1;
-							};
-							if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
-								return -1;
-							};
-						} else if (Math.abs(a.y - y) != Math.abs(b.y - y)) {
-							if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
-								return 1;
-							};
-							if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
-								return -1;
-							};
-						} else {
-							return 0;
-						}
-					});
-
-					lista_aldeiasY.sort(function (a, b) {
-
-						if (Math.abs(a.y - y) != Math.abs(b.y - y)) {
-							if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
-								return 1;
-							};
-							if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
-								return -1;
-							};
-						} else if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
-							if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
-								return 1;
-							};
-							if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
-								return -1;
-							};
-						} else {
-							return 0;
-						}
-					});
-
-				} 
+		, r = undefined
+		, promise = undefined
+		, promise_queue = []
+		, loadVillage = function(cmd){
+			return new Promise(function(res, rej){
+				r = $timeout(function(){
+					rej(cmd)
+				}, conf_conf.LOADING_TIMEOUT);
+				var g = 20;
+				var x = cmd.targetX || cmd.target_x;
+				var y = cmd.targetY || cmd.target_y;
+				var id = cmd.id || cmd.command_id;
 				loadIsRunning = !1
-				lista_aldeias && lista_aldeias.length ? lista_aldeias.pop() : null;
-				lista_aldeias && lista_aldeias.length ? aldeiaX = lista_aldeias.pop() : aldeiaX = null;
+				var lista_aldeiasY = [];
+				var lista_aldeias = [];
+				var lista_barbaras = [];
+				return socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
+					lista_barbaras = [];
+					lista_aldeias = [];
+					lista_aldeiasY = [];
+					if (data != undefined && data.villages != undefined && data.villages.length > 0){
+						var listaVil = angular.copy(data.villages);
+						var p = 0;
+						for (j = 0; j < listaVil.length; j++){
+							if (listaVil[j].affiliation == "own" ){
+								lista_aldeias.push(listaVil[j]);
+								p++;
+							}
+						}
+						angular.extend(lista_aldeiasY, lista_aldeias);
+						lista_aldeias.sort(function (a, b) {
+							if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
+								if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
+									return 1;
+								};
+								if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
+									return -1;
+								};
+							} else if (Math.abs(a.y - y) != Math.abs(b.y - y)) {
+								if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
+									return 1;
+								};
+								if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
+									return -1;
+								};
+							} else {
+								return 0;
+							}
+						});
 
-				lista_aldeiasY && lista_aldeiasY.length ? lista_aldeiasY.pop() : null;
-				lista_aldeiasY && lista_aldeiasY.length ? aldeiaY = lista_aldeiasY.pop() : aldeiaY = null;
+						lista_aldeiasY.sort(function (a, b) {
 
-				(aldeiaX ? Math.abs(aldeiaX.x - x) : 0) + 
-				(aldeiaX ? Math.abs(aldeiaX.y - y) : 0) <= 
-					(aldeiaY ? Math.abs(aldeiaY.x - x) : 0) + 
-					(aldeiaY ? Math.abs(aldeiaY.y - y) : 0) ? aldeia = aldeiaX : aldeia = aldeiaY;
+							if (Math.abs(a.y - y) != Math.abs(b.y - y)) {
+								if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
+									return 1;
+								};
+								if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
+									return -1;
+								};
+							} else if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
+								if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
+									return 1;
+								};
+								if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
+									return -1;
+								};
+							} else {
+								return 0;
+							}
+						});
 
-				typeof(callback) == "function" ? callback(aldeia, cmd): null;
+					} 
+					loadIsRunning = !1
+					lista_aldeias && lista_aldeias.length ? lista_aldeias.pop() : null;
+					lista_aldeias && lista_aldeias.length ? aldeiaX = lista_aldeias.pop() : aldeiaX = null;
+
+					lista_aldeiasY && lista_aldeiasY.length ? lista_aldeiasY.pop() : null;
+					lista_aldeiasY && lista_aldeiasY.length ? aldeiaY = lista_aldeiasY.pop() : aldeiaY = null;
+
+					(aldeiaX ? Math.abs(aldeiaX.x - x) : 0) + 
+					(aldeiaX ? Math.abs(aldeiaX.y - y) : 0) <= 
+						(aldeiaY ? Math.abs(aldeiaY.x - x) : 0) + 
+						(aldeiaY ? Math.abs(aldeiaY.y - y) : 0) ? aldeia = aldeiaX : aldeia = aldeiaY;
+
+//					typeof(callback) == "function" ? callback(aldeia, cmd): null;
+					if(aldeia){
+						res(aldeia, cmd)
+					} else {
+						rej(cmd)
+					}
+				})
 			});
 		}
 		, troops_measure = function(command, callback){
@@ -338,11 +353,12 @@ define("robotTW2/services/DefenseService", [
 			list_others = list_others.concat(list_trebuchet)
 			list_others = estab(list_others);
 
-			function ct(){
-				if(list_others.length){
-					var cm = list_others.shift()
-					loadVillage(cm, function(aldeia, cmt){
-						if(aldeia){
+
+			list.others.forEach(function(cm){
+				function ct(cmd){
+					if(!promise){
+						promise = loadVillage(cmd).then(function(aldeia, cmt){
+							promise = undefined;
 							var timeSniperPost = conf.TIME_SNIPER_POST_SNOB;
 							if(!cmt.nob) {
 								timeSniperPost = $rootScope.data_defense.time_sniper_post;	
@@ -363,17 +379,33 @@ define("robotTW2/services/DefenseService", [
 									id_command 			: cmt.id
 							}
 							addDefense(params);
-						}
-						$timeout(function(){
-							ct();
-						}, 3000)
-
-					});
-				} else {
-					callback()
+							if(promise_queue.length){
+								ct(promise_queue.shift())
+							} else {
+								callback();
+							}
+						}, function(cmt){
+							promise = undefined;
+							console.log("nova tentavita após erro")
+							if(time.convertMStoUTC(cmt.completedAt) < (time.convertedTime() - ($rootScope.data_defense.time_sniper_ant + 5000))){
+								console.log("enviando para o fim da pilha")
+								promise_queue.push(cmt);
+								ct(promise_queue.shift())
+							} else {
+								console.log("timeout das tentativas")
+								if(promise_queue.length){
+									ct(promise_queue.shift())
+								} else {
+									callback();
+								}
+							}
+						})
+					} else {
+						promise_queue.push(cm)
+					}
 				}
-			}
-			ct()
+				ct(cm)
+			})
 		}
 		, getAtaques = function(){
 			return new Promise(function(resolve){
