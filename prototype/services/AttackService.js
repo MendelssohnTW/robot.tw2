@@ -142,8 +142,8 @@ define("robotTW2/services/AttackService", [
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
 		, resendAttack = function(params){
-			var expires_send = params.data_escolhida - params.duration - robotTW2.databases.data_main.time_correction_command
-			, timer_delay_send = expires_send - time.convertedTime();
+			var expires_send = params.data_escolhida - params.duration
+			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command;
 
 			if(timer_delay_send < 0){
 				removeCommandAttack(params.id_command)
