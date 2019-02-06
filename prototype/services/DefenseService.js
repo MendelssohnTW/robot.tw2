@@ -627,6 +627,8 @@ define("robotTW2/services/DefenseService", [
 					var cmd = cmds.pop();
 					console.log("encontrou comando para command_sent")
 					console.log(cmd)
+					console.log("data")
+					console.log(data)
 					var expires = cmd.data_escolhida - (data.time_start * 1000) + cmd.time_sniper_post
 					, timer_delay = ((expires - time.convertedTime()) / 2) + robotTW2.databases.data_main.time_correction_command
 					, params = {
