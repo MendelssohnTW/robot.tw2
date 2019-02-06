@@ -53,7 +53,7 @@ define("robotTW2/services/DefenseService", [
 			this.cmd = cmd;
 			return new Promise(function(res, rej){
 				rt = $timeout(function(){
-					rej(this.cmd)
+					rej()
 				}, conf_conf.LOADING_TIMEOUT);
 				var g = 20;
 				var x = this.cmd.targetX || this.cmd.target_x;
@@ -133,9 +133,9 @@ define("robotTW2/services/DefenseService", [
 
 //					typeof(callback) == "function" ? callback(aldeia, this.cmd): null;
 					if(aldeia){
-						res(aldeia, this.cmd)
+						res(aldeia)
 					} else {
-						rej(this.cmd)
+						rej()
 					}
 				})
 			});
@@ -358,11 +358,11 @@ define("robotTW2/services/DefenseService", [
 			list_others.forEach(function(cm){
 				function ct(cmd){
 					if(!promise){
-						promise = loadVillage(cmd).then(function(aldeia, cmt){
+						promise = loadVillage(cmd).then(function(aldeia){
 							promise = undefined;
 							$timeout.cancel(rt);
 							var timeSniperPost = conf.TIME_SNIPER_POST_SNOB;
-							if(!cmt){
+							if(!cmd){
 								console.log("sem comando")
 								if(promise_queue.length){
 									ct(promise_queue.shift())
@@ -371,7 +371,7 @@ define("robotTW2/services/DefenseService", [
 								}
 								return
 							}
-							if(!cmt.nob) {
+							if(!cmd.nob) {
 								timeSniperPost = $rootScope.data_defense.time_sniper_post;	
 							} else {
 								timeSniperPost = $rootScope.data_defense.time_sniper_post_snob;
@@ -395,12 +395,12 @@ define("robotTW2/services/DefenseService", [
 							} else {
 								callback();
 							}
-						}, function(cmt){
+						}, function(){
 							promise = undefined;
 							console.log("nova tentavita após erro")
-							if(time.convertMStoUTC(cmt.completedAt) < (time.convertedTime() - ($rootScope.data_defense.time_sniper_ant + 5000))){
+							if(time.convertMStoUTC(cmd.completedAt) < (time.convertedTime() - ($rootScope.data_defense.time_sniper_ant + 5000))){
 								console.log("enviando para o fim da pilha")
-								promise_queue.push(cmt);
+								promise_queue.push(cmd);
 								ct(promise_queue.shift())
 							} else {
 								console.log("timeout das tentativas")
