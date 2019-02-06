@@ -134,6 +134,9 @@ define("robotTW2/services/ReconService", [
 			}
 		}
 		, setNewHandlersAtackRecon = function(){
+			if(!overviewService){
+				overviewService	= injector.get("overviewService");
+			}
 			overviewService.gameFormatCommand = overviewService.formatCommand;
 			var i = 0
 			, OverviewController = undefined
