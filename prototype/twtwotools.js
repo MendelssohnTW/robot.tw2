@@ -1670,6 +1670,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 
 								robotTW2.services.$timeout(function(){
+									gTime = time.convertedTime();
 									this.listener_completed ? this.listener_completed() : this.listener_completed;
 									this.listener_completed = undefined;
 									this.listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
@@ -1696,7 +1697,6 @@ var robotTW2 = window.robotTW2 = undefined;
 											}, 5000)
 										}
 									})
-									gTime = time.convertedTime();
 									robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SEND_CUSTOM_ARMY, {
 										start_village: village.getId(),
 										target_village: bb.id,
