@@ -1681,7 +1681,8 @@ var robotTW2 = window.robotTW2 = undefined;
 										if(data.direction =="forward" && data.origin.id == village.data.villageId){
 											var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
-											var dif = (gTime - time.convertMStoUTC(completedAt - (duration*1000))) - conf.TIME_CORRECTION_COMMAND;
+//											var dif = (gTime - time.convertMStoUTC(completedAt - (duration*1000))) - conf.TIME_CORRECTION_COMMAND;
+											var dif = (gTime - time.convertMStoUTC(startedAt )) - conf.TIME_CORRECTION_COMMAND;
 											if(!robotTW2.databases.data_main.max_time_correction || (dif > -robotTW2.databases.data_main.max_time_correction && dif < robotTW2.databases.data_main.max_time_correction)) {
 												robotTW2.databases.data_main.time_correction_command = dif
 												robotTW2.databases.data_main.set();
