@@ -46,13 +46,13 @@ define("robotTW2/services/DefenseService", [
 		, promise_verify = undefined
 		, queue_verifiy = []
 		, that = this
-		, r = undefined
+		, rt = undefined
 		, promise = undefined
 		, promise_queue = []
 		, loadVillage = function(cmd){
 			this.cmd = cmd;
 			return new Promise(function(res, rej){
-				r = $timeout(function(){
+				rt = $timeout(function(){
 					rej(this.cmd)
 				}, conf_conf.LOADING_TIMEOUT);
 				var g = 20;
@@ -64,8 +64,6 @@ define("robotTW2/services/DefenseService", [
 				var lista_aldeias = [];
 				var lista_barbaras = [];
 				return socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
-					$timeout.cancel(r);
-					r = undefined;
 					lista_barbaras = [];
 					lista_aldeias = [];
 					lista_aldeiasY = [];
@@ -362,6 +360,7 @@ define("robotTW2/services/DefenseService", [
 					if(!promise){
 						promise = loadVillage(cmd).then(function(aldeia, cmt){
 							promise = undefined;
+							$timeout.cancel(rt);
 							var timeSniperPost = conf.TIME_SNIPER_POST_SNOB;
 							if(!cmt){
 								console.log("sem comando")
@@ -749,25 +748,27 @@ define("robotTW2/services/DefenseService", [
 						r = undefined;
 						$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
 					}, conf.loading_timeout);
-					r = loadVillage(command, function(aldeia, cmt){
+
+					r = loadVillage(command).then(function(aldeia, cmt){
 						$timeout.cancel(list_timeout[i]);	
-						if(aldeia){
-							var params = {
-									start_village		: cmt.target_village_id,
-									target_village		: aldeia.id,
-									target_name			: aldeia.name,
-									target_x			: aldeia.x,
-									target_y			: aldeia.y,
-									type				: "support",
-									data_escolhida		: time.convertMStoUTC(cmt.model.completedAt),
-									time_sniper_ant		: sniper_ant * 1000,
-									time_sniper_post	: sniper_post * 1000,
-									preserv				: true,
-									id_command			: cmt.command_id
-							}
-							addDefense(params);
+						var params = {
+								start_village		: cmt.target_village_id,
+								target_village		: aldeia.id,
+								target_name			: aldeia.name,
+								target_x			: aldeia.x,
+								target_y			: aldeia.y,
+								type				: "support",
+								data_escolhida		: time.convertMStoUTC(cmt.model.completedAt),
+								time_sniper_ant		: sniper_ant * 1000,
+								time_sniper_post	: sniper_post * 1000,
+								preserv				: true,
+								id_command			: cmt.command_id
 						}
+						addDefense(params);
+					}, function(cmt){
+						consolo.log("parametros das aldeias não encontrado")
 					})
+
 				} else {
 					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
 					removeCommandDefense(command.command_id)
