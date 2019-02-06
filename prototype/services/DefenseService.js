@@ -584,6 +584,7 @@ define("robotTW2/services/DefenseService", [
 				return
 			}
 			if(data.direction == "backward" && data.type == "support"){
+				console.log("listener command_cancel")
 				var cmds = Object.keys($event.currentScope.commands).map(function(param){
 					if($event.currentScope.commands[param].params.start_village == data.home.id
 							&& $event.currentScope.commands[param].params.target_village == data.target.id
@@ -607,6 +608,7 @@ define("robotTW2/services/DefenseService", [
 				return
 			}
 			if(data.direction == "forward" && data.type == "support"){
+				console.log("listener command_sent")
 				var cmds = Object.keys($event.currentScope.commands).map(function(param){
 					//verificar a origem e alvo do comando
 					if($event.currentScope.commands[param].params.start_village == data.home.id 
@@ -614,6 +616,7 @@ define("robotTW2/services/DefenseService", [
 					) {
 						return $event.currentScope.commands[param].params
 					} else {
+						console.log("não encontrou comando na lista para sendCancel")
 						return undefined
 					}
 				}).filter(f => f != undefined)
@@ -632,6 +635,7 @@ define("robotTW2/services/DefenseService", [
 
 //					- time.convertedTime()
 					if(timer_delay >= 0){
+						console.log("sendCancel bind")
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 							scope.commands[params.id_command] = {
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
