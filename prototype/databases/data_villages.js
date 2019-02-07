@@ -168,11 +168,13 @@ define("robotTW2/databases/data_villages", [
 	db_villages.updateVillages = function($event){
 		var updated = false;
 		var villages = services.modelDataService.getVillages();
+		var villagesExtended = {};
 		Object.keys(villages).map(function(village_id){
-			var vill = services.villageService.getInitializedVillage(village_id)	
+			var vill = services.villageService.getInitializedVillage(village_id)
+			villagesExtended[village_id] = {}
 		})
 
-		var villagesExtended = angular.merge({}, villages)
+//		var villagesExtended = angular.merge({}, villages)
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){
 				updated ? res() : rej()
