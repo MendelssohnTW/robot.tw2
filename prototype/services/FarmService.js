@@ -452,7 +452,7 @@ define("robotTW2/services/FarmService", [
 				}, conf_conf.LOADING_TIMEOUT);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
-					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(regx), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
