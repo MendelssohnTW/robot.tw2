@@ -54,7 +54,7 @@ define("robotTW2/controllers/FarmController", [
 				setActiveTab($scope.requestedTab);
 			}
 		}
-		, presetListModel	= services.modelDataService.getPresetList()
+		, presetListModel = services.modelDataService.getPresetList()
 		, presetIds = []
 		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, update = function () {
@@ -374,13 +374,13 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.getVillageInfo = function(villageId){
-			var village = modelDataService.getVillage(villageId);
+			var village = services.modelDataService.getVillage(villageId);
 			return village.data.name + " - (" + village.data.x + "|" + village.data.x + ")"
 		}
 		
 		$scope.setVillage = function (villageId) {
 			$scope.data.assignedPresetList = {};
-			var village = modelDataService.getVillage(villageId);
+			var village = services.modelDataService.getVillage(villageId);
 			$scope.villageSelected = village;
 		}
 
