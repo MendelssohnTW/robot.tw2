@@ -112,7 +112,7 @@
 												<tr ng-repeat="(key, value) in data_villages.villages">
 													<td
 														ng-class="{'selected': villageSelected.data.villageId == key}"
-														ng-click="setVillage(key)" class="cell-right"><span>{{getVillageInfo(key)}}</span></td>
+														ng-click="setVillage(value)" class="cell-right"><span>{{getVillageInfo(key)}}</span></td>
 													<td class="cell-space">
 														<div class="checkbox box-border-dark">
 															<div switch-slider="" border="true" enabled="true"
