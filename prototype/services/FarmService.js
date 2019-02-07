@@ -300,10 +300,10 @@ define("robotTW2/services/FarmService", [
 				var f = function(bb){
 					if(!promise_send){
 						promise_send = new Promise(function(resolve_send){
-							r = $timeout(function(){
-								resolve_send(true)
-							}, conf_conf.LOADING_TIMEOUT);
 							g = $timeout(function () {
+								r = $timeout(function(){
+									resolve_send(true)
+								}, conf_conf.LOADING_TIMEOUT);
 								if(!isRunning){return}
 								var params =  {
 										start_village: village_id,
@@ -319,15 +319,15 @@ define("robotTW2/services/FarmService", [
 									var permit_send = result_units[0];
 									var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
 									var selectedVillage = modelDataService.getSelectedVillage();
-									socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-										'my_village_id'		: selectedVillage.getId(),					
-										'village_id'		: bb,
-										'num_reports'		: 0
-									}, function (village) {
+//									socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+//										'my_village_id'		: selectedVillage.getId(),					
+//										'village_id'		: bb,
+//										'num_reports'		: 0
+//									}, function (village) {
 //										data_log.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
 										socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										resolve_send(permit_send)
-									});
+//									});
 								} else {
 									resolve_send(true)
 								}
@@ -432,6 +432,8 @@ define("robotTW2/services/FarmService", [
 					}
 					t(cmd_preset, reg)
 				})
+				
+				listaGrid = null;
 			})
 		}
 		, t = undefined
@@ -527,7 +529,7 @@ define("robotTW2/services/FarmService", [
 				}
 			})
 		}
-		, execute_presets = function(commands_for_presets, resolve_cicle){
+		, execute_presets = function(commands_for_presets){
 			return new Promise(function(resol){
 				if(!isRunning || !commands_for_presets.length){
 					resol()
@@ -543,7 +545,6 @@ define("robotTW2/services/FarmService", [
 							promise_preset = new Promise(function(resolve_presets){
 								var load_exec = exec(cmd_preset)
 								, listaGrid = load_exec.listaGrid
-
 								if(!listaGrid.length){return}
 								loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 							})
@@ -564,6 +565,7 @@ define("robotTW2/services/FarmService", [
 					}
 					t(cmd_preset)
 				})
+				commands_for_presets = null;
 			})
 		}
 		, clear = function(){
@@ -619,11 +621,10 @@ define("robotTW2/services/FarmService", [
 							};
 						})
 					})
-
+					villages = null;
 					execute_presets(commands_for_presets).then(resol)
 					$timeout.cancel(g);
-					g= undefined;
-
+					g = undefined;
 				}, tempo)
 			})
 		}
