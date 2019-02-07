@@ -391,7 +391,7 @@ define("robotTW2/services/DefenseService", [
 							promise = undefined;
 							console.log("nova tentavita após erro")
 							count_tent++;
-							if(count_tent++ <= 3){
+							if(count_tent <= 3){
 								console.log("enviando para o fim da pilha")
 								promise_queue.push(cmd);
 								ct(promise_queue.shift())
