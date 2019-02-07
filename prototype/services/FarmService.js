@@ -182,17 +182,17 @@ define("robotTW2/services/FarmService", [
 			listaGrid.sort(function (a, b) {
 				if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
 					if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
-						return 1;
+						return -1;
 					};
 					if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
-						return -1;
+						return 1;
 					};
 				} else if(Math.abs(a.y - y) != Math.abs(b.y - y)) {
 					if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
-						return 1;
+						return -1;
 					};
 					if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
-						return -1;
+						return 1;
 					};
 				} else {
 					return 0;	
@@ -476,8 +476,7 @@ define("robotTW2/services/FarmService", [
 
 							listaVil.sort(function (a, b) {
 //								Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
-//								return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
-								return get_dist(reg.village_id, b) - get_dist(reg.village_id, a)
+								return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
 							});
 
 							for (j = 0; j < listaVil.length; j++) {
