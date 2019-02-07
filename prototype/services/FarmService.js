@@ -180,18 +180,18 @@ define("robotTW2/services/FarmService", [
 			};
 
 			listaGrid.sort(function (a, b) {
-				if (Math.abs((a.x - a.dist) - x) != Math.abs((b.x - b.dist) - x)) {
-					if (Math.abs((a.x - a.dist) - x) < Math.abs((b.x - b.dist) - x)) {
+				if (a.x != b.x) {
+					if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
 						return -1;
 					};
-					if (Math.abs((a.x - a.dist) - x) > Math.abs((b.x - b.dist) - x)) {
+					if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
 						return 1;
 					};
-				} else if(Math.abs((a.y - a.dist) - y) != Math.abs((b.y - b.dist) - y)) {
-					if (Math.abs((a.y - a.dist) - y) < Math.abs((b.y - b.dist) - y)) {
+				} else if(a.y != b.y) {
+					if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
 						return -1;
 					};
-					if (Math.abs((a.y - a.dist) - y) > Math.abs((b.y - b.dist) - y)) {
+					if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
 						return 1;
 					};
 				} else {
@@ -452,7 +452,7 @@ define("robotTW2/services/FarmService", [
 				}, conf_conf.LOADING_TIMEOUT);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
-					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(regx), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
