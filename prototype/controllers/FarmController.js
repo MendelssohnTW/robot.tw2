@@ -98,7 +98,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data.assignedPresetList = {}
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
-				if($scope.villageSelected === villageId){
+				if($scope.villageSelected == villageId){
 					$scope.data.assignedPresetList[+presetId] = true
 					!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
 				}
