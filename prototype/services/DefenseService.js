@@ -396,6 +396,7 @@ define("robotTW2/services/DefenseService", [
 								promise_queue.push(cmd);
 								ct(promise_queue.shift())
 							} else {
+								count_tent = 0;
 								console.log("timeout das tentativas")
 								if(promise_queue.length){
 									ct(promise_queue.shift())
