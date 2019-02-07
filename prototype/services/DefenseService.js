@@ -356,6 +356,7 @@ define("robotTW2/services/DefenseService", [
 
 
 			list_others.forEach(function(cm){
+				var count_tent = 0;
 				function ct(cmd){
 					if(!promise){
 						promise = loadVillage(cmd).then(function(aldeia){
@@ -389,7 +390,8 @@ define("robotTW2/services/DefenseService", [
 						}, function(){
 							promise = undefined;
 							console.log("nova tentavita após erro")
-							if(time.convertMStoUTC(cmd.completedAt) < (time.convertedTime() - ($rootScope.data_defense.time_sniper_ant + 5000))){
+							count_tent++;
+							if(count_tent++ <= 3){
 								console.log("enviando para o fim da pilha")
 								promise_queue.push(cmd);
 								ct(promise_queue.shift())
