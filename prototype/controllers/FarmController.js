@@ -41,7 +41,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.requestedTab = TABS.FARM;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-
+		
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
 
@@ -356,9 +356,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("presetSelected", function(){
 			if(!$scope.presetSelected || !blurPreset){return}
-			if (!$scope.$$phase) {
-				blurPreset();
-			}
+			blurPreset();
 		}, true)
 
 //		$scope.$watch("villageSelected", function(){
@@ -378,7 +376,7 @@ define("robotTW2/controllers/FarmController", [
 			var village = services.modelDataService.getVillage(villageId);
 			return village.data.name + " - (" + village.data.x + "|" + village.data.x + ")"
 		}
-
+		
 		$scope.setVillage = function (villageId) {
 			$scope.data.assignedPresetList = {};
 			$scope.villageSelected = villageId;
@@ -445,8 +443,8 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				addQuadrant(pos)
 			}
-
-
+			
+			
 		}
 
 		$scope.getQuadrant = function (pos) {
@@ -481,7 +479,7 @@ define("robotTW2/controllers/FarmController", [
 			data_villages = $scope.data_villages;
 			data_villages.set();
 		}, true)
-
+		
 		$scope.$watch("data_farm", function () {
 			if(!$scope.data_farm) {return}
 			data_farm = $scope.data_farm;
