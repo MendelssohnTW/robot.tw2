@@ -180,18 +180,18 @@ define("robotTW2/services/FarmService", [
 			};
 
 			listaGrid.sort(function (a, b) {
-				if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
-					if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
+				if (Math.abs((a.x - a.dist) - x) != Math.abs((b.x - b.dist) - x)) {
+					if (Math.abs((a.x - a.dist) - x) < Math.abs((b.x - b.dist) - x)) {
 						return -1;
 					};
-					if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
+					if (Math.abs((a.x - a.dist) - x) > Math.abs((b.x - b.dist) - x)) {
 						return 1;
 					};
-				} else if(Math.abs(a.y - y) != Math.abs(b.y - y)) {
-					if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
+				} else if(Math.abs((a.y - a.dist) - y) != Math.abs((b.y - b.dist) - y)) {
+					if (Math.abs((a.y - a.dist) - y) < Math.abs((b.y - b.dist) - y)) {
 						return -1;
 					};
-					if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
+					if (Math.abs((a.y - a.dist) - y) > Math.abs((b.y - b.dist) - y)) {
 						return 1;
 					};
 				} else {
