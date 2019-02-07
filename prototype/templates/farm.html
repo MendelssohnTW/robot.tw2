@@ -109,15 +109,14 @@
 											</colgroup>
 
 											<tbody>
-												<tr ng-repeat="village in data_villages.villages">
+												<tr ng-repeat="(key, value) in data_villages.villages">
 													<td
-														ng-class="{'selected': villageSelected.data.villageId == village.data.villageId}"
-														ng-click="setVillage(village)" class="cell-right"><span>{{village.data.name
-															+ " - (" + village.data.x + "|" + village.data.x + ")"}}</span></td>
+														ng-class="{'selected': villageSelected.data.villageId == key}"
+														ng-click="setVillage(key)" class="cell-right"><span>{{getVillageInfo(key)}}</span></td>
 													<td class="cell-space">
 														<div class="checkbox box-border-dark">
 															<div switch-slider="" border="true" enabled="true"
-																value="village.farm_activate" vertical="false"
+																value="value.farm_activate" vertical="false"
 																size="'56x28'">
 																<div ng-class="{'box-border-dark box-filter': border}"
 																	class="box-border-dark box-filter">

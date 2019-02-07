@@ -200,6 +200,8 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		initTab();
+		
+		
 
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
@@ -371,8 +373,14 @@ define("robotTW2/controllers/FarmController", [
 		 * Villages
 		 */
 
-		$scope.setVillage = function (village) {
+		$scope.getVillageInfo = function(villageId){
+			var village = modelDataService.getVillage(villageId);
+			return village.data.name + " - (" + village.data.x + "|" + village.data.x + ")"
+		}
+		
+		$scope.setVillage = function (villageId) {
 			$scope.data.assignedPresetList = {};
+			var village = modelDataService.getVillage(villageId);
 			$scope.villageSelected = village;
 		}
 
