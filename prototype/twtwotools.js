@@ -55,8 +55,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		return host + origPath;
 	}
-	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
-		var I18N_PATH_EXT = ['/lang/', '.json'];
+	, requestFile = function requestFile(fileName, path, onLoad, opt_onError) {
+		//path = "/json/filename"
+		var I18N_PATH_EXT = [path, '.json'];
+		if(!path){
+			I18N_PATH_EXT = ['/lang/', '.json'];
+		}
 		var uri	= I18N_PATH_EXT.join(fileName)
 		, onFileLoaded = function onFileLoaded() {
 			$timeout = $timeout || window.injector.get('$timeout');
@@ -679,6 +683,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.loadController		= loadController;
 	exports.createScopeLang 	= createScopeLang;
 	exports.requestFn 			= requestFn;
+	exports.requestFile 		= requestFile;
 	exports.commandQueue 		= commandQueue;
 
 	(function ($rootScope){
@@ -689,7 +694,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				$rootScope.$broadcast("ready_init")
 			}
 		}, 15000)
-		requestFile($rootScope.loc.ale, function(){
+		requestFile($rootScope.loc.ale, null, function(){
 			if(!lded){
 				lded = true;
 				$timeout.cancel(tm)
@@ -723,13 +728,19 @@ var robotTW2 = window.robotTW2 = undefined;
 				log:			"3.0.4"
 			}
 		});
+		
+		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
+			return robotTW2.requestFile;
+		})
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
-			"robotTW2/version"
+			"robotTW2/version",
+			"robotTW2/requestFile"
 			], function(
 					buildingTypes,
-					version
+					version,
+					requestFile
 			) {
 
 			var levelsBuilding = [];
@@ -739,125 +750,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 
-			var orderbuilding= {
-					academy : [
-						{"warehouse": 1}, //Armazém
-						{"headquarter": 2}, //Principal
-						{"academy": 3}, //Academia
-						{"farm": 4}, //Fazenda
-						{"barracks": 5}, //Quartel
-						{"rally_point": 6}, //Ponto de encontro
-						{"timber_camp": 7}, //Bosque
-						{"iron_mine": 8}, //Mina de Ferro
-						{"clay_pit": 9}, //Poço de Argila
-						{"wall": 10}, //Muralha
-						{"statue": 11}, //Estátua
-						{"tavern": 12}, //Taverna
-						{"market": 13}, //Mercado
-						{"hospital": 14}, //Hospital
-						{"preceptory": 15}, //Salão das ordens
-						{"church": 16}, //Igreja
-						{"chapel": 17} //Caplea
-						],
-						production : [
-							{"timber_camp": 1}, //Bosque
-							{"iron_mine": 2}, //Mina de Ferro
-							{"clay_pit": 3}, //Poço de Argila
-							{"rally_point": 4}, //Ponto de encontro
-							{"academy": 5}, //Academia
-							{"headquarter": 6}, //Principal
-							{"farm": 7}, //Fazenda
-							{"warehouse": 8}, //Armazém
-							{"barracks": 9}, //Quartel
-							{"wall": 10}, //Muralha
-							{"statue": 11}, //Estátua
-							{"tavern": 12}, //Taverna
-							{"market": 13}, //Mercado
-							{"hospital": 14}, //Hospital
-							{"preceptory": 15}, //Salão das ordens
-							{"church": 16}, //Igreja
-							{"chapel": 17} //Caplea
-							],
-							base : [
-								{"academy": 1}, //Academia
-								{"barracks": 2}, //Quartel
-								{"farm": 3}, //Fazenda
-								{"headquarter": 4}, //Principal
-								{"warehouse": 5}, //Armazém
-								{"rally_point": 6}, //Ponto de encontro
-								{"wall": 7}, //Muralha
-								{"statue": 8}, //Estátua
-								{"tavern": 9}, //Taverna
-								{"timber_camp": 10}, //Bosque
-								{"iron_mine": 11}, //Mina de Ferro
-								{"clay_pit": 12}, //Poço de Argila
-								{"market": 13}, //Mercado
-								{"hospital": 14}, //Hospital
-								{"preceptory": 15}, //Salão das ordens
-								{"church": 16}, //Igreja
-								{"chapel": 17} //Caplea
-								]
-			}
-
-			var limitBuilding = {
-					academy : [
-						{"headquarter": 20},
-						{"barracks": 10},
-						{"tavern": 7},
-						{"hospital": 1},  
-						{"preceptory": 0},  
-						{"church": 0},
-						{"chapel": 0},
-						{"academy": 1},  
-						{"rally_point": 5},  
-						{"statue": 5},
-						{"market": 5},
-						{"timber_camp": 18},  
-						{"clay_pit": 18},
-						{"iron_mine": 18},  
-						{"farm": 25},
-						{"warehouse": 23},  
-						{"wall": 10}
-						],
-						production : [
-							{"headquarter": 20},
-							{"barracks": 21},
-							{"tavern": 7},
-							{"hospital": 1},  
-							{"preceptory": 0},  
-							{"church": 0},
-							{"chapel": 0},
-							{"academy": 1},  
-							{"rally_point": 5},  
-							{"statue": 5},
-							{"market": 15},
-							{"timber_camp": 30},  
-							{"clay_pit": 30},
-							{"iron_mine": 30},  
-							{"farm": 30},
-							{"warehouse": 27},  
-							{"wall": 15}
-							],
-							base : [
-								{"headquarter": 20},
-								{"barracks": 23},
-								{"tavern": 13},
-								{"hospital": 5},  
-								{"preceptory": 0},  
-								{"church": 0},
-								{"chapel": 0},
-								{"academy": 1},  
-								{"rally_point": 5},  
-								{"statue": 5},
-								{"market": 5},
-								{"timber_camp": 15},  
-								{"clay_pit": 15},
-								{"iron_mine": 15},  
-								{"farm": 30},
-								{"warehouse": 25},  
-								{"wall": 20}
-								]
-			}
+			var orderBuilding = requestFile("/json/orderBuilding")
+			var limitBuilding = requestFile("/json/limitBuilding")
 
 			var seg = 1000 // 1000 milisegundos
 			, min = seg * 60
@@ -868,7 +762,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					min						: min,
 					seg						: seg,
 					EXECUTEBUILDINGORDER 	: true,
-					BUILDINGORDER			: orderbuilding,
+					BUILDINGORDER			: orderBuilding,
 					BUILDINGLIMIT			: limitBuilding,
 					BUILDINGLEVELS			: levelsBuilding,
 					LIMIT_COMMANDS_DEFENSE	: 13,
