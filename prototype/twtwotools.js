@@ -62,7 +62,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			I18N_PATH_EXT = ['/lang/', '.json'];
 		}
 		var uri	= I18N_PATH_EXT.join(fileName)
-		, onFileLoaded = function onFileLoaded() {
+		, onFileLoadedLang = function onFileLoadedLang() {
 			$timeout = $timeout || window.injector.get('$timeout');
 			$timeout(function () {
 				i18n.updateLocAle(true)
@@ -70,14 +70,22 @@ var robotTW2 = window.robotTW2 = undefined;
 					onLoad();
 				}
 			});
+		}
+		, onFileLoadedJson = function onFileLoadedJson(jsont) {
+			$timeout = $timeout || window.injector.get('$timeout');
+			$timeout(function () {
+				if (onLoad) {
+					onLoad(jsont);
+				}
+			});
 		};
 
 		httpService.get(uri, function(jsont) {
 			if(path == "/lang/"){
 				i18n.setJSON(jsont);
-				onFileLoaded();
+				onFileLoadedLang();
 			} else {
-				return jsont;
+				onFileLoadedJson(jsont);
 			}
 		}, function error(data, status, headers, config) {
 			if (angular.isFunction(opt_onError)) {
@@ -754,21 +762,17 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 
-			var orderBuilding = requestFile("orderBuilding", "/json/")
-			var limitBuilding = requestFile("limitBuilding", "/json/")
-
 			var seg = 1000 // 1000 milisegundos
 			, min = seg * 60
 			, h = min * 60;
 
 			var conf = {
+					get						: function(){
+						return conf;
+					},
 					h						: h,
 					min						: min,
 					seg						: seg,
-					EXECUTEBUILDINGORDER 	: true,
-					BUILDINGORDER			: orderBuilding,
-					BUILDINGLIMIT			: limitBuilding,
-					BUILDINGLEVELS			: levelsBuilding,
 					LIMIT_COMMANDS_DEFENSE	: 13,
 					MAX_COMMANDS_FARM		: 42,
 					MIN_POINTS_FARM			: 0,
@@ -879,7 +883,22 @@ var robotTW2 = window.robotTW2 = undefined;
 						FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
 
 			}
-			return conf;
+
+			requestFile("orderBuilding", "/json/", function(jsont_order){
+				var orderBuilding = jsont_order;
+				requestFile("limitBuilding", "/json/", function(jsont_limit){
+					var limitBuilding = jsont_limit;
+					angular.extend(conf, {
+						EXECUTEBUILDINGORDER 	: true,
+						BUILDINGORDER			: orderBuilding,
+						BUILDINGLIMIT			: limitBuilding,
+						BUILDINGLEVELS			: levelsBuilding
+					})
+
+				})
+			})
+
+			return conf.get();
 		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
