@@ -768,7 +768,25 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			var conf = {
 					get						: function(){
-						return conf;
+						return new Promise(function(res){
+							requestFile("orderBuilding", "/json/", function(jsont_order){
+								var orderBuilding = jsont_order;
+								requestFile("limitBuilding", "/json/", function(jsont_limit){
+									var limitBuilding = jsont_limit;
+									angular.extend(conf, {
+										EXECUTEBUILDINGORDER 	: true,
+										BUILDINGORDER			: orderBuilding,
+										BUILDINGLIMIT			: limitBuilding,
+										BUILDINGLEVELS			: levelsBuilding
+									})
+									res(conf)
+								})
+							})
+						}, then(function(conf){
+							return conf;
+						}, function(){
+							return conf;
+						}))
 					},
 					h						: h,
 					min						: min,
@@ -884,19 +902,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			}
 
-			requestFile("orderBuilding", "/json/", function(jsont_order){
-				var orderBuilding = jsont_order;
-				requestFile("limitBuilding", "/json/", function(jsont_limit){
-					var limitBuilding = jsont_limit;
-					angular.extend(conf, {
-						EXECUTEBUILDINGORDER 	: true,
-						BUILDINGORDER			: orderBuilding,
-						BUILDINGLIMIT			: limitBuilding,
-						BUILDINGLEVELS			: levelsBuilding
-					})
-
-				})
-			})
+			
 
 			return conf.get();
 		})
