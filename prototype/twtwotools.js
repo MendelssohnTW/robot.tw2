@@ -65,7 +65,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		, onFileLoaded = function onFileLoaded() {
 			$timeout = $timeout || window.injector.get('$timeout');
 			$timeout(function () {
-				i18n.updateLocAle(true);
+				i18n.updateLocAle(true)
 				if (onLoad) {
 					onLoad();
 				}
@@ -73,8 +73,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		};
 
 		httpService.get(uri, function(jsont) {
-			i18n.setJSON(jsont);
-			onFileLoaded();
+			if(path == "/lang/"){
+				i18n.setJSON(jsont);
+				onFileLoaded();
+			} else {
+				return jsont;
+			}
 		}, function error(data, status, headers, config) {
 			if (angular.isFunction(opt_onError)) {
 				opt_onError(data, status, headers, config);
@@ -490,11 +494,11 @@ var robotTW2 = window.robotTW2 = undefined;
 		if(self.templateName != "main"){
 			var arFn = exports.requestFn.get(self.templateName.toLowerCase(), true);
 			if(!arFn){return}
-				if(exports.databases.data_main.pages_excludes.includes(self.templateName)){
-					if(!arFn.fn.isInitialized()){return}
-				} else{
-					if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
-				}
+			if(exports.databases.data_main.pages_excludes.includes(self.templateName)){
+				if(!arFn.fn.isInitialized()){return}
+			} else{
+				if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
+			}
 		}
 		self.scopeLang ? angular.extend(scope, self.scopeLang) : null;
 		new Promise(function(res){
@@ -694,7 +698,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				$rootScope.$broadcast("ready_init")
 			}
 		}, 15000)
-		requestFile($rootScope.loc.ale, null, function(){
+		requestFile($rootScope.loc.ale, "/lang/", function(){
 			if(!lded){
 				lded = true;
 				$timeout.cancel(tm)
@@ -728,7 +732,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				log:			"3.0.4"
 			}
 		});
-		
+
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
 		})
