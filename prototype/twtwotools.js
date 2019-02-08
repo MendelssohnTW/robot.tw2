@@ -750,8 +750,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 
-			var orderBuilding = requestFile("/json/orderBuilding")
-			var limitBuilding = requestFile("/json/limitBuilding")
+			var orderBuilding = requestFile("orderBuilding", "/json/")
+			var limitBuilding = requestFile("limitBuilding", "/json/")
 
 			var seg = 1000 // 1000 milisegundos
 			, min = seg * 60
