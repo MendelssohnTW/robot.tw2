@@ -16,7 +16,7 @@
 			"barracks": 5
 		},
 		{
-			"rally_point": 6
+			"wall": 6
 		},
 		{
 			"timber_camp": 7
@@ -28,7 +28,7 @@
 			"clay_pit": 9
 		},
 		{
-			"wall": 10
+			"rally_point": 10
 		},
 		{
 			"statue": 11
