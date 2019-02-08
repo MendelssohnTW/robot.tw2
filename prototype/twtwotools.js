@@ -782,11 +782,11 @@ var robotTW2 = window.robotTW2 = undefined;
 									res(conf)
 								})
 							})
-						}, then(function(conf){
+						}).then(function(conf){
 							return conf;
 						}, function(){
 							return conf;
-						}))
+						})
 					},
 					h						: h,
 					min						: min,
