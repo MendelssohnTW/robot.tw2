@@ -892,7 +892,6 @@ var robotTW2 = window.robotTW2 = undefined;
 							BUILDINGLIMIT			: limitBuilding,
 							BUILDINGLEVELS			: levelsBuilding
 						})
-						res(conf)
 					})
 				})
 
