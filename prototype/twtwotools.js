@@ -767,6 +767,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			, h = min * 60;
 
 			var conf = function(){
+				"use strict";
 				this.promise = function(){
 					return new Promise(function(res){
 						requestFile("orderBuilding", "/json/", function(jsont_order){
