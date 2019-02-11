@@ -11,9 +11,6 @@ define("robotTW2/services/MainService", [
 	){
 	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService, providers) {
 
-		var connectionAttemptThreshold	= 5,
-		connectionAttempts			= 0;
-		
 		function onError (){
 			location.reload()
 		}
@@ -52,10 +49,9 @@ define("robotTW2/services/MainService", [
 			}
 			data_main.setExtensions(extensions);
 			
-			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECTING,			onSocketReconnecting);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_ERROR,		onError);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
-			$rootScope.$on(providers.eventTypeProvider.SOCKET_ERROR, 		onError);
+			$rootScope.$on(providers.eventTypeProvider.SOCKET_ERROR, 				onError);
 			
 			return extensions
 		}
