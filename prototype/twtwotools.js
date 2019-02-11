@@ -1059,19 +1059,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			onclose = function onclose($event){
 				if($event.code == 1006 && $event.type == "close"){
 					console.log($event)
-//					robotTW2.services.$filter('i18n')('title', $rootScope.loc.ale, 'notify');
-					if (window.confirm("Para acessar o servidor Ipatapp você deve liberar acesso sem certificado e se popup estiver bloqueado para este servidor deverá ser liberado para concluir o acesso. Ou se desejar pode acessar diretamento o site 'https://www.ipatapp.com.br'. Deseja abrir uma nova guia para liberar?")) { 
-						window.open('https://www.ipatapp.com.br', '_blank');
-						if (window.confirm("Faz-se necessário o regarregamento da página atualizaçao do acesso. Deseja regarregar esta página")) {
-							location.reload()
-						} else {
-							$rootScope.$broadcast("stopAll")
-							return service = null;
-						}
-					} else {
-						$rootScope.$broadcast("stopAll")
-						return service = null;
-					}
+
+					robotTW2.createScopeLang("confirm_https", function(scopeLang){
+						robotTW2.build({
+							controller		: robotTW2.controllers.ConfirmController,
+							scopeLang 		: scopeLang,
+							templateName 	: "confirm_https",
+							url		 		: "/controllers/ConfirmController.js"
+						})
+					})
 				}
 			},
 			onerror = function onerror($event){

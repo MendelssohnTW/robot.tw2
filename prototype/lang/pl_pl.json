@@ -264,5 +264,11 @@
 		"text_timeout": "Timeout ",
 		"text_err": "Internal error ",
 		"text_completed": "Sent data "
+	},
+	"confirm_https": {
+		"title": "Confirm https access",
+		"text_show": "To access the Ipatapp server you must release access without a certificate and if the popup on this page is blocked then it must be released to complete. Or you can directly access the site ",
+		"text_confirm": "Do you want to open a new tab to free?",
+		"text_reload": "It is necessary the regarregamento of the page to update the access. You want to reload this page"
 	}
 }

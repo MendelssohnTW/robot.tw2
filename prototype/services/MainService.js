@@ -9,8 +9,15 @@ define("robotTW2/services/MainService", [
 			socketSend,
 			data_main
 	){
-	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService) {
+	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService, providers) {
 
+		var connectionAttemptThreshold	= 5,
+		connectionAttempts			= 0;
+		
+		function onError (){
+			location.reload()
+		}
+		
 		var service = {};
 		return service.initExtensions = function(){
 			
@@ -44,6 +51,12 @@ define("robotTW2/services/MainService", [
 				}
 			}
 			data_main.setExtensions(extensions);
+			
+			$rootScope.$on(eventTypeProvider.SOCKET_RECONNECTING,			onSocketReconnecting);
+			$rootScope.$on(eventTypeProvider.SOCKET_RECONNECT_ERROR,		onError);
+			$rootScope.$on(eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
+			$rootScope.$on(providers.eventTypeProvider.SOCKET_ERROR, 		onError);
+			
 			return extensions
 		}
 		, service
@@ -51,6 +64,7 @@ define("robotTW2/services/MainService", [
 			robotTW2.services.$rootScope, 
 			robotTW2.requestFn, 
 			robotTW2.services.secondVillageService,
-			robotTW2.services.modelDataService
+			robotTW2.services.modelDataService,
+			robotTW2.providers
 			)
 })
