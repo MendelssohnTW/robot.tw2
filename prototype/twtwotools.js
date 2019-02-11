@@ -586,9 +586,13 @@ var robotTW2 = window.robotTW2 = undefined;
 	builderWindow.prototype.addhotkey = function() {
 		var fnThis = this.buildWin;
 		var self = this;
-		exports.services.hotkeys.add(this.hotkey, function(){
+		if(this.hotkey == "open"){
 			fnThis.apply(self, null)
-		}, ["INPUT", "SELECT", "TEXTAREA"])
+		} else {
+			exports.services.hotkeys.add(this.hotkey, function(){
+				fnThis.apply(self, null)
+			}, ["INPUT", "SELECT", "TEXTAREA"])
+		}
 	}
 	, builderWindow.prototype.addlistener = function() {
 		var fnThis = this.addWin;
@@ -1059,15 +1063,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			onclose = function onclose($event){
 				if($event.code == 1006 && $event.type == "close"){
 					console.log($event)
-
-					robotTW2.createScopeLang("confirm_https", function(scopeLang){
-						robotTW2.build({
-							controller		: robotTW2.controllers.ConfirmController,
-							scopeLang 		: scopeLang,
-							templateName 	: "confirm_https",
-							url		 		: "/controllers/ConfirmController.js"
-						})
-					})
+					robotTW2.loadScript("/controllers/ConfirmController.js");
 				}
 			},
 			onerror = function onerror($event){
@@ -1691,6 +1687,18 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 		: "",
 								url		 		: "/controllers/AlertController.js",
 								style 			: null
+						}		
+						robotTW2.build(params)
+					})
+				}
+				case robotTW2.controllers.ConfirmController : {
+					robotTW2.createScopeLang("confirm_https", function(scopeLang){
+						var params = {
+								controller		: robotTW2.controllers.ConfirmController,
+								scopeLang 		: scopeLang,
+								hotkey 			: "open",
+								templateName 	: "confirm_https",
+								url		 		: "/controllers/ConfirmController.js",
 						}		
 						robotTW2.build(params)
 					})
