@@ -1924,7 +1924,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									}
 							)
 							require(["robotTW2/notify"], function(notify){
-								notify("RobotTW2", true)
+								notify("Shift + P = Main Menu", true)
 							})
 						}, 3000)
 					})
