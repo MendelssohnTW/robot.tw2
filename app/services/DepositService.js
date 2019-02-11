@@ -2,12 +2,14 @@ define("robotTW2/services/DepositService", [
 	"robotTW2",
 	"robotTW2/version",
 	"robotTW2/time",
-	"robotTW2/conf"
+	"robotTW2/conf",
+	"robotTW2/databases/data_deposit"
 	], function(
 			robotTW2,
 			version,
 			time,
-			conf
+			conf,
+			data_deposit
 	){
 	return (function DepositService(
 			$rootScope,
@@ -27,7 +29,8 @@ define("robotTW2/services/DepositService", [
 		, listener_job_collectible = undefined
 		, listener_job_info = undefined
 		, startJob = function(job) {
-			$rootScope.data_deposit.interval = job.duration
+			data_deposit.interval = job.duration
+			data_deposit.set()
 			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_START_JOB, {
 				job_id: job.id
 			})
@@ -46,7 +49,7 @@ define("robotTW2/services/DepositService", [
 		, verify_deposit = function() {
 			if(!isRunning) return !1;
 			var resourceDepositModel = modelDataService.getSelectedCharacter().getResourceDeposit();
-			if(!resourceDepositModel || !$rootScope.data_deposit.activated) 
+			if(!resourceDepositModel || !data_deposit.activated) 
 				return !1;
 			if(resourceDepositModel.getCurrentJob())
 				return !1;
@@ -57,7 +60,7 @@ define("robotTW2/services/DepositService", [
 				return startJob(sortJobs(readyJobs));
 			
 			var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
-			if (reroll && reroll.amount > 0 && $rootScope.data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
+			if (reroll && reroll.amount > 0 && data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
 				socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
 					village_id: modelDataService.getSelectedVillage().getId(),
 					item_id: reroll.id
@@ -74,8 +77,9 @@ define("robotTW2/services/DepositService", [
 			var time_rest = 1e3 * job.time_next_reset - Date.now() + 1e3;
 			$timeout.cancel(interval_deposit),
 			interval_deposit = $timeout(getInfo, time_rest)
-			$rootScope.data_deposit.interval = time_rest
-			$rootScope.data_deposit.complete = time.convertedTime() + time_rest
+			data_deposit.interval = time_rest
+			data_deposit.complete = time.convertedTime() + time_rest
+			data_deposit.set()
 		}
 		, init = function (){
 			isInitialized = !0

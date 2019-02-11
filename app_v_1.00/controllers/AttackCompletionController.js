@@ -5,9 +5,9 @@ define("robotTW2/controllers/AttackCompletionController", [
 			services,
 			time
 	){
-	return function AttackCompletionController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.SCHEDULE = services.$filter("i18n")("SCHEDULE", $rootScope.loc.ale);
+	return function AttackCompletionController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.SCHEDULE = services.$filter("i18n")("SCHEDULE", services.$rootScope.loc.ale);
 		
 		var self = this;
 

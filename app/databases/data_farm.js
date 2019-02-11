@@ -28,8 +28,8 @@ define("robotTW2/databases/data_farm", [
 
 	var dataNew = {
 			auto_initialize			: false, 
-			initialized				: false, 
-			activated				: false,
+			initialized				: true, 
+			activated				: true,
 			hotkey					: conf.HOTKEY.FARM,
 			version					: conf.VERSION.FARM,
 			farm_time				: conf.FARM_TIME,
@@ -57,12 +57,6 @@ define("robotTW2/databases/data_farm", [
 
 
 	Object.setPrototypeOf(data_farm, db_farm);
-
-	services.$rootScope.data_farm = data_farm;
-
-	services.$rootScope.$watch("data_farm", function(){
-		data_farm.set()
-	}, true)
 
 	return data_farm;
 })

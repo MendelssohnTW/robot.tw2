@@ -2,20 +2,33 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2",
 	"robotTW2/services",
 	"robotTW2/providers",
-	"robotTW2/conf"
+	"robotTW2/conf",
+	"robotTW2/databases/data_main",
+	"robotTW2/databases/data_data",
+	"robotTW2/databases/data_deposit",
+	"robotTW2/databases/data_recon"
 	], function(
 			robotTW2,
 			services,
 			providers,
-			conf
+			conf,
+			data_main,
+			data_data,
+			data_deposit,
+			data_recon
 	){
-	return function MainController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+	return function MainController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 		var toggle = false;
+		
+		$scope.data_main = data_main;
+		$scope.data_data = data_data;
+		$scope.data_deposit = data_deposit;
+		$scope.data_recon = data_recon;
 
 		var update = function(){
-			$scope.extensions = $rootScope.data_main.getExtensions();
+			$scope.extensions = $scope.data_main.getExtensions();
 			for (var extension in $scope.extensions) {
 				$scope.extensions[extension.toUpperCase()].hotkey ? $scope.extensions[extension.toUpperCase()].hotkey = conf.HOTKEY[extension.toUpperCase()].toUpperCase() : null;
 				var arFn = robotTW2.requestFn.get(extension.toLowerCase(), true);
@@ -24,7 +37,7 @@ define("robotTW2/controllers/MainController", [
 					continue
 				} else {
 					if(extension == "DATA"){
-						if($rootScope.data_data.possible){
+						if($scope.data_data.possible){
 							$scope.extensions[extension].activated = true;
 						} else {
 							$scope.extensions[extension].activated = false;
@@ -39,7 +52,7 @@ define("robotTW2/controllers/MainController", [
 					}
 				}
 			}
-			$rootScope.data_main.setExtensions($scope.extensions);
+			$scope.data_main.setExtensions($scope.extensions);
 
 			if (!$scope.$$phase) $scope.$apply();
 
@@ -67,7 +80,7 @@ define("robotTW2/controllers/MainController", [
 			} else {
 				var fn = arFn.fn;
 				if(ext.name == "DATA"){
-					if($rootScope.data_data.possible){
+					if($scope.data_data.possible){
 						$scope.extensions[ext.name].activated = true;
 					} else {
 						$scope.extensions[ext.name].activated = false;
@@ -79,7 +92,7 @@ define("robotTW2/controllers/MainController", [
 				if(ext.initialized){
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
-							if($rootScope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
+							if($scope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
 								$scope.extensions[ext.name].status = $scope.stopped;
 								fn.init(true)
 							} else {
@@ -90,7 +103,7 @@ define("robotTW2/controllers/MainController", [
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
 						if(typeof(fn.start) == "function"){
-							if(!$rootScope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
+							if(!$scope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
 								$scope.extensions[ext.name].status = $scope.running;
 								fn.start()
 							} else {
@@ -106,7 +119,7 @@ define("robotTW2/controllers/MainController", [
 
 			toggle = false;
 
-			$rootScope.data_main.setExtensions($scope.extensions);
+			$scope.data_main.setExtensions($scope.extensions);
 
 			services.$timeout(function(){
 				update()	
@@ -123,10 +136,29 @@ define("robotTW2/controllers/MainController", [
 				}
 			}
 		})
+		
+		$scope.$watch("data_data", function () {
+			if(!$scope.data_data) {return}
+			data_data = $scope.data_data;
+			data_data.set();
+		}, true)
+
+		$scope.$watch("data_deposit", function () {
+			if(!$scope.data_deposit) {return}
+			data_deposit = $scope.data_deposit;
+			data_deposit.set();
+		}, true)
+
+		$scope.$watch("data_recon", function () {
+			if(!$scope.data_recon) {return}
+			data_recon = $scope.data_recon;
+			data_recon.set();
+		}, true)
+
 
 		$scope.toggleValueInit = function(ext) {
 			$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
-			$rootScope.data_main.setExtensions($scope.extensions);
+			$scope.data_main.setExtensions($scope.extensions);
 			update()
 		};
 

@@ -125,7 +125,6 @@ define("robotTW2/databases/data_villages", [
 						}
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
-					db_villages.set();
 					callback(true)
 					return m;
 				} else {
@@ -152,7 +151,6 @@ define("robotTW2/databases/data_villages", [
 						})
 					}
 					angular.extend(data_villages.villages[m], villagesExtended[m])
-					db_villages.set();
 					callback(true)
 					return m;
 				}
@@ -170,11 +168,13 @@ define("robotTW2/databases/data_villages", [
 	db_villages.updateVillages = function($event){
 		var updated = false;
 		var villages = services.modelDataService.getVillages();
+		var villagesExtended = {};
 		Object.keys(villages).map(function(village_id){
-			var vill = services.villageService.getInitializedVillage(village_id)	
+			var vill = services.villageService.getInitializedVillage(village_id)
+			villagesExtended[village_id] = {}
 		})
 
-		var villagesExtended = angular.merge({}, villages)
+//		var villagesExtended = angular.merge({}, villages)
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){
 				updated ? res() : rej()
@@ -203,8 +203,8 @@ define("robotTW2/databases/data_villages", [
 	}
 
 	db_villages.getAssignedPresets = function(){
+		var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 		Object.keys(data_villages.villages).map(function(a){
-			var presetsByVillage = services.modelDataService.getPresetList().presetsByVillage;
 			data_villages.villages[a].assigned_presets = presetsByVillage[a] ? Object.keys(presetsByVillage[a]) : [];
 		})
 		db_villages.set();

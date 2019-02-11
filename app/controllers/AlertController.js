@@ -2,13 +2,16 @@ define("robotTW2/controllers/AlertController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
+	"robotTW2/databases/data_alert",
 	], function(
 			services,
 			providers,
-			helper
+			helper,
+			data_alert
 	){
-	return function AlertController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+	return function AlertController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.data_alert = data_alert;
 		var self = this;
 
 		var getMembers = function(callback){
@@ -38,7 +41,7 @@ define("robotTW2/controllers/AlertController", [
 
 				upDate()
 			}, function(reason) {
-				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Erro ao carregar dados dos membros da tribo"})
+				services.$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Erro ao carregar dados dos membros da tribo"})
 				!$scope.members ? $scope.members = {} : $scope.members;
 				upDate()
 				//console.log(reason); // Error!
@@ -50,7 +53,7 @@ define("robotTW2/controllers/AlertController", [
 //		}
 		, upDate = function(){
 			$scope.members = $scope.members.map(function(member){
-				if($rootScope.data_alert.friends.find(f => f === member.name)){
+				if($scope.data_alert.friends.find(f => f === member.name)){
 					member.isFriend = true;
 				} else {
 					member.isFriend = false;
@@ -58,9 +61,9 @@ define("robotTW2/controllers/AlertController", [
 				return member
 			})
 			$scope.underattack = $scope.members.map(function(member){
-				return member.under_attack && $rootScope.data_alert.friends.some(s => s === member.name) ? member : undefined;
+				return member.under_attack && $scope.data_alert.friends.some(s => s === member.name) ? member : undefined;
 			}).filter(f=>f!=undefined)
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			if (!$scope.$$phase) $scope.$apply();
 		}
 
 		$scope.underattack = [];
@@ -74,25 +77,25 @@ define("robotTW2/controllers/AlertController", [
 				interval_alert = interval_alert + ":00"
 			}
 			if (helper.unreadableSeconds(interval_alert) * 1e3 > 30*60*1000){
-				$rootScope.data_alert.interval = 30*60*1000
+				$scope.data_alert.interval = 30*60*1000
 				$scope.interval_alert = 30*60*1000;
 			} else if (helper.unreadableSeconds(interval_alert) * 1e3 < 5*60*1000){
-				$rootScope.data_alert.interval = 5*60*1000
+				$scope.data_alert.interval = 5*60*1000
 				$scope.interval_alert = 5*60*1000;
 			} else {
-				$rootScope.data_alert.interval = helper.unreadableSeconds(interval_alert) * 1e3
+				$scope.data_alert.interval = helper.unreadableSeconds(interval_alert) * 1e3
 				$scope.interval_alert = interval_alert;
 			}
-			document.getElementById("input-text-time-interval").value = $scope.interval_alert; 
-			if (!$rootScope.$$phase) $rootScope.$apply();
+			document.getElementById("input-text-time-interval").value = $scope.interval_alert;
+			if (!$scope.$$phase) $scope.$apply();
 
 		}
 
 		$scope.selectAll = function(){
 			$scope.members.forEach(function(member){
 				member.isFriend = true;
-				if(!$rootScope.data_alert.friends.find(f=>f==member.name)){
-					$rootScope.data_alert.friends.push(member.name)
+				if(!$scope.data_alert.friends.find(f=>f==member.name)){
+					$scope.data_alert.friends.push(member.name)
 				}
 			})
 			
@@ -103,33 +106,39 @@ define("robotTW2/controllers/AlertController", [
 			$scope.members.forEach(function(member){
 				member.isFriend = false;
 			})
-			$rootScope.data_alert.friends = [];
+			$scope.data_alert.friends = [];
 			upDate()
 		}
 
 		$scope.remove = function(name){
-			$rootScope.data_alert.friends = $rootScope.data_alert.friends.filter(f => f != name);
+			$scope.data_alert.friends = $scope.data_alert.friends.filter(f => f != name);
 			upDate()
 		}
 
 		$scope.toggleValue = function(member){
 			if(member.isFriend){
-				$rootScope.data_alert.friends.push(member.name)
+				$scope.data_alert.friends.push(member.name)
 				
 			} else {
-				$rootScope.data_alert.friends = $rootScope.data_alert.friends.filter(f => f !== member.name);
+				$scope.data_alert.friends = $scope.data_alert.friends.filter(f => f !== member.name);
 			}
 			upDate()
 		}
 		
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.AlertService.isRunning();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		})
+		
+		$scope.$watch("data_alert", function(){
+			if(!$scope.data_alert){return}
+			data_alert = $scope.data_alert;
+			data_alert.set();
+		}, true)
 
-		$scope.interval_alert = helper.readableMilliseconds($rootScope.data_alert.interval)
+		$scope.interval_alert = helper.readableMilliseconds($scope.data_alert.interval)
 		
 		$scope.setCollapse();
 		$scope.recalcScrollbar();

@@ -21,9 +21,9 @@ define("robotTW2/databases/data_spy", [
 	}
 	
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: false,
+			auto_initialize			: true,
+			initialized 			: true,
+			activated 				: true,
 			complete				: 0,
 			hotkey					: conf.HOTKEY.SPY,
 			version					: conf.VERSION.SPY,

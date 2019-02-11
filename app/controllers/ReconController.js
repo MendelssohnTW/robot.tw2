@@ -7,12 +7,12 @@ define("robotTW2/controllers/ReconController", [
 			providers,
 			helper
 	){
-	return function ReconController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
+	return function ReconController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 		
 		$scope.getKey = function(unit_name){
-			return services.$filter("i18n")(unit_name, $rootScope.loc.ale, "recon");
+			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "recon");
 		}
 		
 		$scope.getClass = function(unit_name){

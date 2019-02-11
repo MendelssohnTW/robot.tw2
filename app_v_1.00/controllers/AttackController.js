@@ -11,14 +11,14 @@ define("robotTW2/controllers/AttackController", [
 			time,
 			helper
 	){
-	return function AttackController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.CLEAR = services.$filter("i18n")("CLEAR", $rootScope.loc.ale);
+	return function AttackController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		var self = this;
 
 		var TABS = {
-				ATTACK 	: services.$filter("i18n")("attack", $rootScope.loc.ale, "attack"),
-				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "attack")
+				ATTACK 	: services.$filter("i18n")("attack", services.$rootScope.loc.ale, "attack"),
+				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "attack")
 		}
 		, TAB_ORDER = [
 			TABS.ATTACK,
@@ -39,12 +39,12 @@ define("robotTW2/controllers/AttackController", [
 			}
 		}
 		, update = function(){
-			$scope.comandos = Object.keys($rootScope.data_attack.commands).map(function(elem, index, array){
-				return $rootScope.data_attack.commands[elem]
+			$scope.comandos = Object.keys(services.$rootScope.data_attack.commands).map(function(elem, index, array){
+				return services.$rootScope.data_attack.commands[elem]
 			});
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		}
 
@@ -126,8 +126,8 @@ define("robotTW2/controllers/AttackController", [
 		
 		$scope.$watch("data_logs.attack", function(){
 			$scope.recalcScrollbar();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		}, true)
 

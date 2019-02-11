@@ -21,9 +21,9 @@ define("robotTW2/databases/data_alert", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: false,
+			auto_initialize			: true,
+			initialized 			: true,
+			activated 				: true,
 			hotkey					: conf.HOTKEY.ALERT,
 			interval	 			: conf.INTERVAL.ALERT,
 			version					: conf.VERSION.ALERT,
@@ -46,11 +46,5 @@ define("robotTW2/databases/data_alert", [
 
 	Object.setPrototypeOf(data_alert, db_alert);
 	
-	services.$rootScope.data_alert = data_alert;
-
-	services.$rootScope.$watch("data_alert", function(){
-		data_alert.set()
-	}, true)
-
 	return data_alert;
 })

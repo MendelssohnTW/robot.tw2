@@ -4,31 +4,33 @@ define("robotTW2/controllers/DataController", [
 	"helper/time",
 	"robotTW2/conf",
 	"robotTW2/time",
+	"robotTW2/databases/data_data",
 	], function(
 			services,
 			providers,
 			helper,
 			conf,
-			time
+			time,
+			data_data
 	){
-	return function DataController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.START = services.$filter("i18n")("START", $rootScope.loc.ale);
-		$scope.STOP = services.$filter("i18n")("STOP", $rootScope.loc.ale);
+	return function DataController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
+		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		
 		var self = this;
 
 		$scope.getTimeRestVillages = function(){
-			if($rootScope.data_data.complete_villages > time.convertedTime()){
-				return helper.readableMilliseconds($rootScope.data_data.complete_villages - time.convertedTime())
+			if(data_data.complete_villages > time.convertedTime()){
+				return helper.readableMilliseconds(data_data.complete_villages - time.convertedTime())
 			} else {
 				return 0;
 			}
 		}
 
 		$scope.getTimeRestTribes = function(){
-			if($rootScope.data_data.complete_tribes > time.convertedTime()){
-				return helper.readableMilliseconds($rootScope.data_data.complete_tribes - time.convertedTime())
+			if(data_data.complete_tribes > time.convertedTime()){
+				return helper.readableMilliseconds(data_data.complete_tribes - time.convertedTime())
 			} else {
 				return 0;
 			}
@@ -36,10 +38,10 @@ define("robotTW2/controllers/DataController", [
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DATA, function($event, data) {
 			if(document.getElementById("input-ms-villages")){
-				document.getElementById("input-ms-villages").value = helper.readableMilliseconds($rootScope.data_data.interval.villages).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_data.interval.villages) : helper.readableMilliseconds($rootScope.data_data.interval.villages);
+				document.getElementById("input-ms-villages").value = helper.readableMilliseconds(data_data.interval.villages).length == 7 ? "0" + helper.readableMilliseconds(data_data.interval.villages) : helper.readableMilliseconds(data_data.interval.villages);
 			}
 			if(document.getElementById("input-ms-tribes")){
-				document.getElementById("input-ms-tribes").value = helper.readableMilliseconds($rootScope.data_data.interval.tribes).length == 7 ? "0" + helper.readableMilliseconds($rootScope.data_data.interval.tribes) : helper.readableMilliseconds($rootScope.data_data.interval.tribes);
+				document.getElementById("input-ms-tribes").value = helper.readableMilliseconds(data_data.interval.tribes).length == 7 ? "0" + helper.readableMilliseconds(data_data.interval.tribes) : helper.readableMilliseconds(data_data.interval.tribes);
 			}
 			if (!$scope.$$phase) {
 				$scope.$apply();

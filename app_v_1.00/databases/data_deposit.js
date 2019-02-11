@@ -21,9 +21,9 @@ define("robotTW2/databases/data_deposit", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: false,
+			auto_initialize			: true,
+			initialized 			: true,
+			activated 				: true,
 			hotkey					: conf.HOTKEY.DEPOSIT,
 			use_reroll				: false,
 			complete				: 0,
@@ -46,12 +46,6 @@ define("robotTW2/databases/data_deposit", [
 	}
 
 	Object.setPrototypeOf(data_deposit, db_deposit);
-
-	services.$rootScope.data_deposit = data_deposit;
-
-	services.$rootScope.$watch("data_deposit", function(){
-		data_deposit.set()
-	}, true)
 
 	return data_deposit;
 })

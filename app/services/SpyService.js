@@ -72,7 +72,7 @@ define("robotTW2/services/SpyService", [
 									}
 								}
 						).filter(elem => elem != undefined).some(elem => elem == false)
-						if(spy.type == SPY_TYPES.RECRUITING){
+						if(spy.type == SPY_TYPES.RECRUITING && spy.timeCompleted != null){
 							list.push(spy.timeCompleted);
 						}
 						if ((spy.type === SPY_TYPES.NO_SPY) && spy.affordable) {

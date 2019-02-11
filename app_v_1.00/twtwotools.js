@@ -55,22 +55,38 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		return host + origPath;
 	}
-	, requestFile = function requestFile(fileName, onLoad, opt_onError) {
-		var I18N_PATH_EXT = ['/lang/', '.json'];
+	, requestFile = function requestFile(fileName, path, onLoad, opt_onError) {
+		//path = "/json/filename"
+		var I18N_PATH_EXT = [path, '.json'];
+		if(!path){
+			I18N_PATH_EXT = ['/lang/', '.json'];
+		}
 		var uri	= I18N_PATH_EXT.join(fileName)
-		, onFileLoaded = function onFileLoaded() {
+		, onFileLoadedLang = function onFileLoadedLang() {
 			$timeout = $timeout || window.injector.get('$timeout');
 			$timeout(function () {
-				i18n.updateLocAle(true);
+				i18n.updateLocAle(true)
 				if (onLoad) {
 					onLoad();
+				}
+			});
+		}
+		, onFileLoadedJson = function onFileLoadedJson(jsont) {
+			$timeout = $timeout || window.injector.get('$timeout');
+			$timeout(function () {
+				if (onLoad) {
+					onLoad(jsont);
 				}
 			});
 		};
 
 		httpService.get(uri, function(jsont) {
-			i18n.setJSON(jsont);
-			onFileLoaded();
+			if(path == "/lang/"){
+				i18n.setJSON(jsont);
+				onFileLoadedLang();
+			} else {
+				onFileLoadedJson(jsont);
+			}
 		}, function error(data, status, headers, config) {
 			if (angular.isFunction(opt_onError)) {
 				opt_onError(data, status, headers, config);
@@ -98,15 +114,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
 				if(!params || !Object.keys(params).length) {
 					if(!Object.keys(fs.params).length) {
-						triggered[key] = fs.fn.apply(this, [])
+						triggered[this.prefix + key] = fs.fn.apply(this, [])
 					} else {
-						triggered[key] = fs.fn.apply(this, fs.params)
+						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
 					}
 				} else {
 					if(!Object.keys(fs.params).length) {
-						triggered[key] = fs.fn.apply(this, [])
+						triggered[this.prefix + key] = fs.fn.apply(this, [])
 					} else {
-						triggered[key] = fs.fn.apply(this, fs.params)
+						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
 					}
 				}
 			})
@@ -118,19 +134,19 @@ var robotTW2 = window.robotTW2 = undefined;
 			return opt_prefix && fns[this.prefix + key] ? fns[this.prefix + key][index] : fns[key] ? fns[key][index] : null 
 		}
 		, service.unbind = function(key) {
-			if(fns.hasOwnProperty(key)){
+			if(fns.hasOwnProperty(this.prefix + key)){
 				if(triggered[key]){
-					if(typeof(triggered[key]) == "object"){
-						if(triggered[key].$$state.status == 0){
-							$timeout.cancel(triggered[key])	
+					if(typeof(triggered[this.prefix + key]) == "object"){
+						if(triggered[this.prefix + key].$$state.status == 0){
+							$timeout.cancel(triggered[this.prefix + key])	
 						}
-					} else if(typeof(triggered[key]) == "function"){
-						triggered[key]();
+					} else if(typeof(triggered[this.prefix + key]) == "function"){
+						triggered[this.prefix + key]();
 					}
-					delete triggered[key];
-					delete fns[key];
+					delete triggered[this.prefix + key];
+					delete fns[this.prefix + key];
 				} else {
-					delete fns[key];
+					delete fns[this.prefix + key];
 				}
 			}
 		}
@@ -407,7 +423,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.hotkey 				= params.hotkey;
 		this.classes 				= params.classes;
 		this.templateName 			= params.templateName;
-		this.listener_layout 			= undefined;
+		this.listener_layout 		= undefined;
 		params.hotkey ? this.addhotkey() : null;
 		params.provider_listener ? this.addlistener() : null;
 		return this
@@ -472,7 +488,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				filho.append(clonedElement);
 			});
 
-			self.controller.apply(self.controller, [$rootScope, scope])
+			self.controller.apply(self.controller, [scope])
 
 		}, function(data) {
 			//console.log(reason); // Error!
@@ -486,7 +502,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		if(self.templateName != "main"){
 			var arFn = exports.requestFn.get(self.templateName.toLowerCase(), true);
 			if(!arFn){return}
-			if($rootScope.data_main.pages_excludes.includes(self.templateName)){
+			if(exports.databases.data_main.pages_excludes.includes(self.templateName)){
 				if(!arFn.fn.isInitialized()){return}
 			} else{
 				if(!arFn.fn.isInitialized() || !arFn.fn.isRunning()) {return}
@@ -563,7 +579,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				})
 			}
 			angular.extend(data.scope, self)
-			self.controller.apply(self.controller, [$rootScope, data.scope])
+			self.controller.apply(self.controller, [data.scope])
 		});
 	}
 	,
@@ -679,6 +695,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.loadController		= loadController;
 	exports.createScopeLang 	= createScopeLang;
 	exports.requestFn 			= requestFn;
+	exports.requestFile 		= requestFile;
 	exports.commandQueue 		= commandQueue;
 
 	(function ($rootScope){
@@ -689,7 +706,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				$rootScope.$broadcast("ready_init")
 			}
 		}, 15000)
-		requestFile($rootScope.loc.ale, function(){
+		requestFile($rootScope.loc.ale, "/lang/", function(){
 			if(!lded){
 				lded = true;
 				$timeout.cancel(tm)
@@ -720,268 +737,166 @@ var robotTW2 = window.robotTW2 = undefined;
 				secondvillage:	"3.0.4",
 				map:			"3.0.4",
 				data:			"3.0.4",
-				logs:			"3.0.4"
+				log:			"3.0.4"
 			}
 		});
 
+		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
+			return robotTW2.requestFile;
+		})
+
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
-			"robotTW2/version"
+			"robotTW2/version",
+			"robotTW2/requestFile"
 			], function(
 					buildingTypes,
-					version
+					version,
+					requestFile
 			) {
 
-			var levelsBuilding = [];
-			for (var type in buildingTypes){
-				if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
-					levelsBuilding.push({[buildingTypes[type]] : 0})
+			return (function(){
+				var levelsBuilding = [];
+				for (var type in buildingTypes){
+					if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
+						levelsBuilding.push({[buildingTypes[type]] : 0})
+					}
 				}
-			}
 
-			var orderbuilding= {
-					academy : [
-						{"warehouse": 1}, //Armazém
-						{"headquarter": 2}, //Principal
-						{"academy": 3}, //Academia
-						{"farm": 4}, //Fazenda
-						{"barracks": 5}, //Quartel
-						{"rally_point": 6}, //Ponto de encontro
-						{"timber_camp": 7}, //Bosque
-						{"iron_mine": 8}, //Mina de Ferro
-						{"clay_pit": 9}, //Poço de Argila
-						{"wall": 10}, //Muralha
-						{"statue": 11}, //Estátua
-						{"tavern": 12}, //Taverna
-						{"market": 13}, //Mercado
-						{"hospital": 14}, //Hospital
-						{"preceptory": 15}, //Salão das ordens
-						{"church": 16}, //Igreja
-						{"chapel": 17} //Caplea
-						],
-						production : [
-							{"timber_camp": 1}, //Bosque
-							{"iron_mine": 2}, //Mina de Ferro
-							{"clay_pit": 3}, //Poço de Argila
-							{"rally_point": 4}, //Ponto de encontro
-							{"academy": 5}, //Academia
-							{"headquarter": 6}, //Principal
-							{"farm": 7}, //Fazenda
-							{"warehouse": 8}, //Armazém
-							{"barracks": 9}, //Quartel
-							{"wall": 10}, //Muralha
-							{"statue": 11}, //Estátua
-							{"tavern": 12}, //Taverna
-							{"market": 13}, //Mercado
-							{"hospital": 14}, //Hospital
-							{"preceptory": 15}, //Salão das ordens
-							{"church": 16}, //Igreja
-							{"chapel": 17} //Caplea
-							],
-							base : [
-								{"academy": 1}, //Academia
-								{"barracks": 2}, //Quartel
-								{"farm": 3}, //Fazenda
-								{"headquarter": 4}, //Principal
-								{"warehouse": 5}, //Armazém
-								{"rally_point": 6}, //Ponto de encontro
-								{"wall": 7}, //Muralha
-								{"statue": 8}, //Estátua
-								{"tavern": 9}, //Taverna
-								{"timber_camp": 10}, //Bosque
-								{"iron_mine": 11}, //Mina de Ferro
-								{"clay_pit": 12}, //Poço de Argila
-								{"market": 13}, //Mercado
-								{"hospital": 14}, //Hospital
-								{"preceptory": 15}, //Salão das ordens
-								{"church": 16}, //Igreja
-								{"chapel": 17} //Caplea
-								]
-			}
+				var seg = 1000 // 1000 milisegundos
+				, min = seg * 60
+				, h = min * 60;
 
-			var limitBuilding = {
-					academy : [
-						{"headquarter": 20},
-						{"barracks": 10},
-						{"tavern": 7},
-						{"hospital": 1},  
-						{"preceptory": 0},  
-						{"church": 0},
-						{"chapel": 0},
-						{"academy": 1},  
-						{"rally_point": 5},  
-						{"statue": 5},
-						{"market": 5},
-						{"timber_camp": 18},  
-						{"clay_pit": 18},
-						{"iron_mine": 18},  
-						{"farm": 25},
-						{"warehouse": 23},  
-						{"wall": 10}
-						],
-						production : [
-							{"headquarter": 20},
-							{"barracks": 21},
-							{"tavern": 7},
-							{"hospital": 1},  
-							{"preceptory": 0},  
-							{"church": 0},
-							{"chapel": 0},
-							{"academy": 1},  
-							{"rally_point": 5},  
-							{"statue": 5},
-							{"market": 15},
-							{"timber_camp": 30},  
-							{"clay_pit": 30},
-							{"iron_mine": 30},  
-							{"farm": 30},
-							{"warehouse": 27},  
-							{"wall": 15}
-							],
-							base : [
-								{"headquarter": 20},
-								{"barracks": 23},
-								{"tavern": 13},
-								{"hospital": 5},  
-								{"preceptory": 0},  
-								{"church": 0},
-								{"chapel": 0},
-								{"academy": 1},  
-								{"rally_point": 5},  
-								{"statue": 5},
-								{"market": 5},
-								{"timber_camp": 15},  
-								{"clay_pit": 15},
-								{"iron_mine": 15},  
-								{"farm": 30},
-								{"warehouse": 25},  
-								{"wall": 20}
-								]
-			}
-
-			var seg = 1000 // 1000 milisegundos
-			, min = seg * 60
-			, h = min * 60;
-
-			var conf = {
-					h						: h,
-					min						: min,
-					seg						: seg,
-					EXECUTEBUILDINGORDER 	: true,
-					BUILDINGORDER			: orderbuilding,
-					BUILDINGLIMIT			: limitBuilding,
-					BUILDINGLEVELS			: levelsBuilding,
-					LIMIT_COMMANDS_DEFENSE	: 13,
-					MAX_COMMANDS_FARM		: 42,
-					MIN_POINTS_FARM			: 0,
-					MAX_POINTS_FARM			: 12000,
-					MAP_CHUNCK_LEN 			: 30 / 2,
-					TIME_CORRECTION_COMMAND : -225,
-					TIME_DELAY_UPDATE		: 30 * seg,
-					TIME_DELAY_FARM			: 2000,
-					TIME_SNIPER_ANT 		: 30000,
-					TIME_SNIPER_POST 		: 3000,
-					TIME_SNIPER_POST_SNOB	: 1000,
-					MAX_TIME_CORRECTION 	: 5 * seg,
-					MIN_TIME_SNIPER_ANT 	: 5,
-					MAX_TIME_SNIPER_ANT 	: 600,
-					MIN_TIME_SNIPER_POST 	: 0.3,
-					MAX_TIME_SNIPER_POST 	: 600,
-					MAX_JOURNEY_DISTANCE 	: 6,
-					MIN_JOURNEY_DISTANCE 	: 1,
-					MAX_JOURNEY_TIME     	: 1 * h,
-					MIN_JOURNEY_TIME     	: 8 * min,
-					VERSION					: {
-						MAIN			: version.main,
-						VILLAGES		: version.villages,
-						HEADQUARTER		: version.headquarter,
-						ALERT			: version.alert,
-						RECON			: version.recon,
-						SPY				: version.spy,
-						ATTACK			: version.attack,
-						DEFENSE			: version.defense,
-						FARM			: version.farm,
-						RECRUIT			: version.recruit,
-						DEPOSIT			: version.deposit,
-						MEDIC			: version.medic,
-						SECONDVILLAGE	: version.secondvillage,
-						MAP				: version.map,
-						DATA			: version.data,
-						LOGS			: version.logs
-					},
-					FARM_TIME		      	: 30 * min,
-					MIN_INTERVAL	     	: 5 * min,
-					INTERVAL				: {
-						HEADQUARTER	: h,
-						RECRUIT		: h,
-						DEPOSIT		: 15 * min,
-						ALERT		: 5 * min,
-						ATTACK		: h,
-						MEDIC		: h,
-						DATA		: {
-							villages	: 6 * h,
-							tribes		: 2 * h,
-							logs		: 1 * h,
-							members		: 3 * h
+				var conf = {
+						h						: h,
+						min						: min,
+						seg						: seg,
+						LIMIT_COMMANDS_DEFENSE	: 13,
+						MAX_COMMANDS_FARM		: 42,
+						MIN_POINTS_FARM			: 0,
+						MAX_POINTS_FARM			: 12000,
+						MAP_CHUNCK_LEN 			: 30 / 2,
+						TIME_CORRECTION_COMMAND : 1275,
+						TIME_DELAY_UPDATE		: 30 * seg,
+						TIME_DELAY_FARM			: 1000,
+						TIME_SNIPER_ANT 		: 30000,
+						TIME_SNIPER_POST 		: 3000,
+						TIME_SNIPER_POST_SNOB	: 1000,
+						MAX_TIME_CORRECTION 	: 5 * seg,
+						MIN_TIME_SNIPER_ANT 	: 5,
+						MAX_TIME_SNIPER_ANT 	: 600,
+						MIN_TIME_SNIPER_POST 	: 0.3,
+						MAX_TIME_SNIPER_POST 	: 600,
+						MAX_JOURNEY_DISTANCE 	: 6,
+						MIN_JOURNEY_DISTANCE 	: 1,
+						MAX_JOURNEY_TIME     	: 1 * h,
+						MIN_JOURNEY_TIME     	: 8 * min,
+						VERSION					: {
+							MAIN			: version.main,
+							VILLAGES		: version.villages,
+							HEADQUARTER		: version.headquarter,
+							ALERT			: version.alert,
+							RECON			: version.recon,
+							SPY				: version.spy,
+							ATTACK			: version.attack,
+							DEFENSE			: version.defense,
+							FARM			: version.farm,
+							RECRUIT			: version.recruit,
+							DEPOSIT			: version.deposit,
+							MEDIC			: version.medic,
+							SECONDVILLAGE	: version.secondvillage,
+							MAP				: version.map,
+							DATA			: version.data,
+							LOGS			: version.logs
 						},
-						SPY			: 30 * min
-					},
-					DBS : [
-						"alert",
-						"attack",
-						"defense",
-						"deposit",
-						"farm",
-						"headquarter",
-						"medic",
-						"recon",
-						"recruit",
-						"spy",
-						"secondvillage",
-						"map",
-						"data",
-						"logs"
-						]
-					,
-					HOTKEY					: {
-						ALERT		 	: "ctrl+alt+l",
-						ATTACK		 	: "ctrl+alt+a",
-						DEFENSE		 	: "ctrl+alt+d",
-						DEPOSIT		 	: "ctrl+alt+t",
-						FARM		 	: "ctrl+alt+f",
-						HEADQUARTER 	: "ctrl+alt+h",
-						MAIN 			: "ctrl+alt+p",
-						MEDIC		 	: "ctrl+alt+i",
-						RECON		 	: "ctrl+alt+r",
-						RECRUIT		 	: "ctrl+alt+e",
-						SPY			 	: "ctrl+alt+s",
-						SECONDVILLAGE	: "ctrl+alt+q",
-						MAP			 	: "ctrl+alt+m",
-						DATA			: "ctrl+alt+j"
-					},
-					RESERVA				: {
-						RECRUIT : {
-							FOOD			: 500,
-							WOOD			: 2000,
-							CLAY			: 2000,
-							IRON			: 2000,
-							SLOTS			: 2
+						FARM_TIME		      	: 30 * min,
+						MIN_INTERVAL	     	: 5 * min,
+						INTERVAL				: {
+							HEADQUARTER	: h,
+							RECRUIT		: h,
+							DEPOSIT		: 15 * min,
+							ALERT		: 5 * min,
+							ATTACK		: h,
+							MEDIC		: h,
+							DATA		: {
+								villages	: 6 * h,
+								tribes		: 2 * h,
+								logs		: 1 * h,
+								members		: 3 * h
+							},
+							SPY			: 30 * min
 						},
-						HEADQUARTER : {
-							FOOD			: 500,
-							WOOD			: 2000,
-							CLAY			: 2000,
-							IRON			: 2000,
-							SLOTS			: 2
-						}
+						DBS : [
+							"alert",
+							"attack",
+							"defense",
+							"deposit",
+							"farm",
+							"headquarter",
+							"medic",
+							"recon",
+							"recruit",
+							"spy",
+							"secondvillage",
+							"map",
+							"data",
+							"logs"
+							]
+						,
+						HOTKEY					: {
+							ALERT		 	: "shift+l",
+							ATTACK		 	: "shift+a",
+							DEFENSE		 	: "shift+d",
+							DEPOSIT		 	: "shift+t",
+							FARM		 	: "shift+f",
+							HEADQUARTER 	: "shift+h",
+							MAIN 			: "shift+p",
+							MEDIC		 	: "shift+i",
+							RECON		 	: "shift+r",
+							RECRUIT		 	: "shift+e",
+							SPY			 	: "shift+s",
+							SECONDVILLAGE	: "shift+q",
+							MAP			 	: "shift+m",
+							DATA			: "shift+j"
+						},
+						RESERVA				: {
+							RECRUIT : {
+								FOOD			: 500,
+								WOOD			: 2000,
+								CLAY			: 2000,
+								IRON			: 2000,
+								SLOTS			: 2
+							},
+							HEADQUARTER : {
+								FOOD			: 500,
+								WOOD			: 2000,
+								CLAY			: 2000,
+								IRON			: 2000,
+								SLOTS			: 2
+							}
 
-					},
-					TROOPS_NOT				: {
-						RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
-						FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
+						},
+						TROOPS_NOT				: {
+							RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
+							FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
 
-			}
-			return conf;
+				}
+
+				requestFile("orderBuilding", "/json/", function(jsont_order){
+					var orderBuilding = jsont_order;
+					requestFile("limitBuilding", "/json/", function(jsont_limit){
+						var limitBuilding = jsont_limit;
+						angular.extend(conf, {
+							EXECUTEBUILDINGORDER 	: true,
+							BUILDINGORDER			: orderBuilding,
+							BUILDINGLIMIT			: limitBuilding,
+							BUILDINGLEVELS			: levelsBuilding
+						})
+					})
+				})
+
+				return conf;
+			})()
 		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
@@ -1142,12 +1057,12 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			},
 			onclose = function onclose($event){
-				console.log($event)
-//				$event.code == 1006
+				if($event.code == 1006 && $event.type == "close"){
+					console.log($event)
+					$rootScope.$broadcast("stopAll")
+				}
 			},
 			onerror = function onerror($event){
-				if($event == "Uncaught TypeError: Illegal invocation"){return}
-
 				count++;
 				if(count < 10) {
 					service = new WebSocket(base.URL_SOCKET);
@@ -1157,7 +1072,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						$rootScope.data_data.possible = false;
 						$rootScope.data_data.activated = false;
 					}
-					$rootScope.$broadcast("stopAll")
 					console.log("Socket error ... \n");
 					console.log($event);
 				}
@@ -1609,7 +1523,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			"robotTW2/time",
 			"robotTW2/conf",
 			"helper/math",
-			"robotTW2/calculateTravelTime",
+			"robotTW2/calculateTravelTime"
 			], function(
 					helper, 
 					time,
@@ -1671,6 +1585,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 
 								robotTW2.services.$timeout(function(){
+									gTime = time.convertedTime();
 									this.listener_completed ? this.listener_completed() : this.listener_completed;
 									this.listener_completed = undefined;
 									this.listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
@@ -1681,9 +1596,12 @@ var robotTW2 = window.robotTW2 = undefined;
 										if(data.direction =="forward" && data.origin.id == village.data.villageId){
 											var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
-											var dif = gTime - time.convertMStoUTC(completedAt - (duration*1000));
-											if(!$rootScope.data_main.max_time_correction || (dif > -$rootScope.data_main.max_time_correction && dif < $rootScope.data_main.max_time_correction)) {
-												$rootScope.data_main.time_correction_command = dif
+											var startedAt = outgoing[Object.keys(outgoing).pop()].startedAt;
+//											var dif = (gTime - time.convertMStoUTC(completedAt - (duration*1000))) - conf.TIME_CORRECTION_COMMAND;
+											var dif = (gTime - time.convertMStoUTC(startedAt)) - conf.TIME_CORRECTION_COMMAND;
+											if(!robotTW2.databases.data_main.max_time_correction || (dif > -robotTW2.databases.data_main.max_time_correction && dif < robotTW2.databases.data_main.max_time_correction)) {
+												robotTW2.databases.data_main.time_correction_command = dif
+												robotTW2.databases.data_main.set();
 												$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
 											}
 											this.listener_completed();
@@ -1696,7 +1614,6 @@ var robotTW2 = window.robotTW2 = undefined;
 											}, 5000)
 										}
 									})
-									gTime = time.convertedTime();
 									robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SEND_CUSTOM_ARMY, {
 										start_village: village.getId(),
 										target_village: bb.id,
@@ -1754,8 +1671,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
 					robotTW2.loadScript("/controllers/DataController.js");
-//					robotTW2.loadScript("/controllers/MapController.js");
-//					robotTW2.loadScript("/controllers/MedicController.js");
 					break
 				}
 				case robotTW2.controllers.AlertController : {
@@ -1795,20 +1710,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 	: "headquarter",
 								classes 		: "fullsize",
 								url		 		: "/controllers/HeadquarterController.js",
-								style 			: null
-						}		
-						robotTW2.build(params)
-					})
-				}
-				case robotTW2.controllers.MedicController : {
-					robotTW2.createScopeLang("medic", function(scopeLang){
-						var params = {
-								controller		: robotTW2.controllers.MedicController,
-								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.MEDIC,
-								templateName 	: "medic",
-								classes 		: "",
-								url		 		: "/controllers/MedicController.js",
 								style 			: null
 						}		
 						robotTW2.build(params)
@@ -1922,21 +1823,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								style 			: {
 									width:"350px"
 								}
-						}		
-						robotTW2.build(params)
-					})
-					break
-				}
-				case robotTW2.controllers.MapController : {
-					robotTW2.createScopeLang("map", function(scopeLang){
-						var params = {
-								controller		: robotTW2.controllers.MapController,
-								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.MAP,
-								templateName 	: "map",
-								classes 		: "",
-								url		 		: "/controllers/MapController.js",
-								style 			: null
 						}		
 						robotTW2.build(params)
 					})
@@ -2114,11 +2000,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_defense.js");
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
-//								robotTW2.loadScript("/databases/data_medic.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
 								robotTW2.loadScript("/databases/data_data.js");
-//								robotTW2.loadScript("/databases/data_map.js");
-								robotTW2.loadScript("/databases/data_logs.js");
+								robotTW2.loadScript("/databases/data_log.js");
 
 								robotTW2.services.$timeout(function(){
 									robotTW2.loadScript("/databases/data_main.js");
@@ -2172,16 +2056,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/services/SpyService.js");
 					break
 				}
-				case "data_medic" : {
-					robotTW2.loadScript("/services/MedicService.js");
-					break
-				}
 				case "data_secondvillage" : {
 					robotTW2.loadScript("/services/SecondVillageService.js");
-					break
-				}
-				case "data_map" : {
-					robotTW2.loadScript("/services/MapService.js");
 					break
 				}
 				case "data_data" : {

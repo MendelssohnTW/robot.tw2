@@ -23,9 +23,9 @@ define("robotTW2/databases/data_headquarter", [
 	var id = 1;
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: false,
+			auto_initialize			: true,
+			initialized 			: true,
+			activated 				: true,
 			hotkey					: conf.HOTKEY.HEADQUARTER,
 			interval				: conf.INTERVAL.HEADQUARTER,
 			time_complete			: 0,
@@ -65,12 +65,6 @@ define("robotTW2/databases/data_headquarter", [
 	}
 
 	Object.setPrototypeOf(data_headquarter, db_headquarter);
-
-	services.$rootScope.data_headquarter = data_headquarter;
-
-	services.$rootScope.$watch("data_headquarter", function(){
-		data_headquarter.set()
-	}, true)
 
 	return data_headquarter;
 })

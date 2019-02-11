@@ -13,18 +13,18 @@ define("robotTW2/controllers/RecruitController", [
 			conf,
 			unitTypes
 	){
-	return function RecruitController($rootScope, $scope) {
-		$scope.save = services.$filter("i18n")("SAVE", $rootScope.loc.ale);
-		$scope.close = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.start = services.$filter("i18n")("START", $rootScope.loc.ale);
-		$scope.pause = services.$filter("i18n")("PAUSE", $rootScope.loc.ale);
-		$scope.resume = services.$filter("i18n")("RESUME", $rootScope.loc.ale);
-		$scope.stop = services.$filter("i18n")("STOP", $rootScope.loc.ale);
+	return function RecruitController($scope) {
+		$scope.save = services.$filter("i18n")("SAVE", services.$rootScope.loc.ale);
+		$scope.close = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.start = services.$filter("i18n")("START", services.$rootScope.loc.ale);
+		$scope.pause = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
+		$scope.resume = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
+		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		var self = this;
 		
 		var TABS = {
-				RECRUIT	: services.$filter("i18n")("recruit", $rootScope.loc.ale, "recruit"),
-				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "recruit")
+				RECRUIT	: services.$filter("i18n")("recruit", services.$rootScope.loc.ale, "recruit"),
+				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "recruit")
 		}
 		, TAB_ORDER = [
 			TABS.RECRUIT,
@@ -49,7 +49,7 @@ define("robotTW2/controllers/RecruitController", [
 		, return_units = function (){
 			var units = {};
 			Object.keys(unitTypes).map(function(key){
-				if($rootScope.data_recruit.troops_not.some(elem => elem == unitTypes[key])){
+				if(services.$rootScope.data_recruit.troops_not.some(elem => elem == unitTypes[key])){
 					delete units[unitTypes[key]]
 				} else {
 					units[unitTypes[key]] = 0
@@ -63,11 +63,11 @@ define("robotTW2/controllers/RecruitController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return $rootScope.data_recruit.complete > time.convertedTime() ? helper.readableMilliseconds($rootScope.data_recruit.complete - time.convertedTime()) : 0; 
+			return services.$rootScope.data_recruit.complete > time.convertedTime() ? helper.readableMilliseconds(services.$rootScope.data_recruit.complete - time.convertedTime()) : 0; 
 		}
 
 		$scope.getText = function(key){
-			return services.$filter("i18n")("text_" + key, $rootScope.loc.ale, "recruit");
+			return services.$filter("i18n")("text_" + key, services.$rootScope.loc.ale, "recruit");
 		}
 
 		$scope.getClass = function(key){
@@ -101,28 +101,28 @@ define("robotTW2/controllers/RecruitController", [
 		})
 		
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT, function($event, data) {
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		})
 		
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.RecruitService.isRunning();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		})
 		
 		$scope.isRunning = services.RecruitService.isRunning();
 		$scope.isPaused = services.RecruitService.isPaused();
-		$scope.grupoSelected = $rootScope.data_recruit.Groups[Object.keys($rootScope.data_recruit.Groups)[0]]
+		$scope.grupoSelected = services.$rootScope.data_recruit.Groups[Object.keys(services.$rootScope.data_recruit.Groups)[0]]
 
 //		$scope.setGroup($scope.grupo)
 		
 		$scope.$watch("data_logs.recruit", function(){
 			$scope.recalcScrollbar();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		}, true)
 		

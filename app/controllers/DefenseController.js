@@ -15,15 +15,15 @@ define("robotTW2/controllers/DefenseController", [
 			helper,
 			unitTypesRenameRecon
 	){
-	return function DefenseController($rootScope, $scope) {
-		$scope.CLOSE = services.$filter("i18n")("CLOSE", $rootScope.loc.ale);
-		$scope.CLEAR = services.$filter("i18n")("CLEAR", $rootScope.loc.ale);
+	return function DefenseController($scope) {
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		var self = this;
 
 		var TABS = {
-				DEFENSE	: services.$filter("i18n")("defense", $rootScope.loc.ale, "defense"),
-				TROOPS	: services.$filter("i18n")("troops", $rootScope.loc.ale, "defense"),
-				LOG		: services.$filter("i18n")("log", $rootScope.loc.ale, "defense")
+				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
+				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense"),
+				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "defense")
 		}
 		, TAB_ORDER = [
 			TABS.DEFENSE,
@@ -31,8 +31,8 @@ define("robotTW2/controllers/DefenseController", [
 			TABS.LOG,
 			]
 		
-		if(!$rootScope.data_defense.recon){
-			$rootScope.data_defense.recon = unitTypesRenameRecon;
+		if(!services.$rootScope.data_defense.recon){
+			services.$rootScope.data_defense.recon = unitTypesRenameRecon;
 		}
 
 		$scope.requestedTab = TABS.DEFENSE;
@@ -40,7 +40,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.TAB_ORDER = TAB_ORDER;
 		
 		$scope.getKey = function(unit_name){
-			return services.$filter("i18n")(unit_name, $rootScope.loc.ale, "recon");
+			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "recon");
 		}
 		
 		$scope.getClass = function(unit_name){
@@ -59,8 +59,8 @@ define("robotTW2/controllers/DefenseController", [
 		, update = function(){
 			$scope.comandos = services.DefenseService.get_commands();
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.time_sniper_ant) - (b.data_escolhida - time.convertedTime() - b.time_sniper_ant)})
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		}
 
@@ -147,8 +147,8 @@ define("robotTW2/controllers/DefenseController", [
 		
 		$scope.$watch("data_logs.defense", function(){
 			$scope.recalcScrollbar();
-			if (!$rootScope.$$phase) {
-				$rootScope.$apply();
+			if (!$scope.$$phase) {
+				$scope.$apply();
 			}
 		}, true)
 

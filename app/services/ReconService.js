@@ -34,7 +34,7 @@ define("robotTW2/services/ReconService", [
 			, y1 = command.origin_y 
 			, x2 = command.target_x 
 			, y2 = command.target_y 
-			, seconds_duration = helper.unreadableSeconds(helper.readableMilliseconds((command.model.completedAt - command.model.startedAt), null, true))
+			, seconds_duration = (command.model.completedAt - command.model.startedAt) / 1000
 			, minutes_duration = seconds_duration / 60
 			, cmdname = command.command_name 
 			, cmdType = command.command_type 
@@ -71,7 +71,6 @@ define("robotTW2/services/ReconService", [
 				angular.extend(units_ret, t);
 
 				var unit = units_ret.shift();
-
 
 				var y = t.map(function(obj, index, array){
 					if(obj[0] == unit[0]) {
@@ -135,9 +134,11 @@ define("robotTW2/services/ReconService", [
 			}
 		}
 		, setNewHandlersAtackRecon = function(){
+			if(!overviewService){
+				overviewService	= injector.get("overviewService");
+			}
 			overviewService.gameFormatCommand = overviewService.formatCommand;
 			var i = 0
-			, t = 0
 			, OverviewController = undefined
 
 			overviewService.formatCommand = function (command) {
@@ -145,48 +146,47 @@ define("robotTW2/services/ReconService", [
 
 				if(isPaused){return}
 
-				t++;
+				if(!OverviewController){
+					OverviewController = robotTW2.loadController("OverviewController")
+				} else if(i < 1 ){
+					OverviewController = robotTW2.loadController("OverviewController")
+				}
+				
 				$timeout(function(){
-				!OverviewController ? OverviewController = robotTW2.loadController("OverviewController") : OverviewController;
-					if (OverviewController){
-						var elem = undefined;
-						$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
-						if(elem){
-							if(OverviewController.activeTab == OverviewController.TABS.INCOMING){
-								var unitText = getAttackTypeAtackRecon(command, i);
-								if (unitText != undefined){
-									if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
-										return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
-									}).filter(f=>f!=undefined).length && $rootScope.data_recon.active_rename){
-										getrenameCmdAtackRecon(command, unitText);
-									}
+					var elem = undefined;
+					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
+					if(elem){
+						if(OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
+							var unitText = getAttackTypeAtackRecon(command, i);
+							if (unitText != undefined){
+								if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
+									return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
+								}).filter(f=>f!=undefined).length && $rootScope.data_recon.active_rename){
+									getrenameCmdAtackRecon(command, unitText);
 								}
-								elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
-								i++;
-								if ($('span.type').length === i) {
-									i = 0;
-									t = 0;
-								}
-
-							} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
-								elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
-								i++;
-								if ($('span.type').length === i) {
-									i = 0;
-									t = 0;
-								}
-
 							}
-							elem.addEventListener("mouseenter", function(a) {
-								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
-							}),
-							elem.addEventListener("mouseleave", function() {
-								$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
-							})
+							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
+							i++;
+							if ($('span.type').length === i) {
+								i = 0;
+							}
+
+						} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
+							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
+							i++;
+							if ($('span.type').length === i) {
+								i = 0;
+							}
 						}
-						if (!OverviewController.$$phase) !OverviewController.$apply();
+						elem.addEventListener("mouseenter", function(a) {
+							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_SHOW, "tooltip", elem.innerText, true, elem)
+						}),
+						elem.addEventListener("mouseleave", function() {
+							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
+						})
 					}
-				}, 100)
+					if (!OverviewController.$$phase) OverviewController.$apply();
+				}, 200)
 			}
 		}
 		, start = function (){

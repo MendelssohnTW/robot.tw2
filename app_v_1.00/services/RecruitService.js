@@ -143,6 +143,7 @@ define("robotTW2/services/RecruitService", [
 					, copia_res = angular.extend({}, resp.data.resources)
 					, villageUnits = resp.data.villageUnits
 					, keys_listGroups = Object.keys(copia_listGroups)
+					, village_id = resp.data.village_id;
 
 					var groupLoop = function (){
 						if(keys_listGroups.length){

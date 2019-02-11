@@ -1,9 +1,11 @@
 define("robotTW2/services/AlertService", [
 	"robotTW2",
-	"robotTW2/version"
+	"robotTW2/version",
+	"robotTW2/databases/data_alert",
 	], function(
 			robotTW2,
-			version
+			version,
+			data_alert
 	){
 	return (function AlertService(
 			$rootScope,
@@ -17,6 +19,7 @@ define("robotTW2/services/AlertService", [
 		var isInitialized = !1
 		, isRunning = !1
 		, interval_alert = null
+		, db_alert = data_alert.get()
 		, listener_alert_ready = undefined
 		, listener_tab_alert = undefined
 		, notifyAttacks = function() {
@@ -26,7 +29,7 @@ define("robotTW2/services/AlertService", [
 			try {
 				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
 					$timeout(_ => {
-						var friends = $rootScope.data_alert.friends;
+						var friends = db_alert.friends;
 						if (o.members != undefined){
 							if (o.members.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
 								notifyAttacks();
@@ -40,7 +43,7 @@ define("robotTW2/services/AlertService", [
 		}
 		, wait = function(){
 			if(!interval_alert){
-				interval_alert = setInterval(verify_alert, $rootScope.data_alert.interval)
+				interval_alert = setInterval(verify_alert, db_alert.interval)
 			}
 		}
 		, init = function (){

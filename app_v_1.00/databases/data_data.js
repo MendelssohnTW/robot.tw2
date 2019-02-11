@@ -75,11 +75,5 @@ define("robotTW2/databases/data_data", [
 
 	Object.setPrototypeOf(data_data, db_data);
 
-	services.$rootScope.data_data = data_data;
-
-	services.$rootScope.$watch("data_data", function(){
-		data_data.set()
-	}, true)
-
 	return data_data;
 })
