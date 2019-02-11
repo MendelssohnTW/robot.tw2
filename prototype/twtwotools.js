@@ -1059,6 +1059,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			onclose = function onclose($event){
 				if($event.code == 1006 && $event.type == "close"){
 					console.log($event)
+					if (window.confirm("Para acessar o servidor Ipatapp você deve liberar acesso sem certificado. Deseja liberar?")) { 
+						window.open('https://www.ipatapp.com.br', '_blank');
+					}
 					$rootScope.$broadcast("stopAll")
 				}
 			},
