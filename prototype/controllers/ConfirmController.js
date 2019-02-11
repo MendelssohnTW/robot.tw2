@@ -18,6 +18,10 @@ define("robotTW2/controllers/ConfirmController", [
 		
 		$scope.inConfirm = true;
 		$scope.inReload = false;
+		services.$timeout(function(){
+			$rootScope.$broadcast("stopAll")
+			$scope.closeWindow();
+		}, 5000)
 		
 		$scope.Confirm = function(){
 			if(inConfirm){
