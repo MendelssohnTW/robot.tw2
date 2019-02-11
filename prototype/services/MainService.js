@@ -51,7 +51,6 @@ define("robotTW2/services/MainService", [
 			
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_ERROR,		onError);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
-			$rootScope.$on(providers.eventTypeProvider.SOCKET_ERROR, 				onError);
 			
 			return extensions
 		}
