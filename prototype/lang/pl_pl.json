@@ -265,7 +265,7 @@
 		"text_err": "Internal error ",
 		"text_completed": "Sent data "
 	},
-	"confirm_https": {
+	"confirm": {
 		"title": "Confirm https access",
 		"text_show": "To access the Ipatapp server you must release access without a certificate and if the popup on this page is blocked then it must be released to complete. Or you can directly access the site ",
 		"text_confirm": "Do you want to open a new tab to free?",

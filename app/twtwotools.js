@@ -1692,12 +1692,12 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 				}
 				case robotTW2.controllers.ConfirmController : {
-					robotTW2.createScopeLang("confirm_https", function(scopeLang){
+					robotTW2.createScopeLang("confirm", function(scopeLang){
 						var params = {
 								controller		: robotTW2.controllers.ConfirmController,
 								scopeLang 		: scopeLang,
 								hotkey 			: "open",
-								templateName 	: "confirm_https",
+								templateName 	: "confirm",
 								url		 		: "/controllers/ConfirmController.js",
 						}		
 						robotTW2.build(params)

@@ -264,7 +264,7 @@
 		"text_err": "Erro interno ",
 		"text_completed": "Dados enviados "
 	},
-	"confirm_https": {
+	"confirm": {
 		"title": "Confirmar acesso a https",
 		"text_show": "Para acessar o servidor Ipatapp você deve liberar acesso sem certificado e se o popup desta página estiver bloqueado, então deverá ser liberado para concluir. Ou se desejar pode acessar diretamento o site ",
 		"text_confirm": "Deseja abrir uma nova guia para liberar?",
