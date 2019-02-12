@@ -726,22 +726,22 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/version", function(){
 			return {
-				main:			"3.1",
-				villages:		"3.1",
-				alert:			"3.1",
-				deposit:		"3.1",
-				headquarter:	"3.1",
-				recon:			"3.1",
-				spy:			"3.1",
-				attack:			"3.1",
-				defense:		"3.1",
-				farm:			"3.1",
-				recruit:		"3.1",
-				medic:			"3.1",
-				secondvillage:	"3.1",
-				map:			"3.1",
-				data:			"3.1",
-				log:			"3.1"
+				main:			"3.0.4",
+				villages:		"3.0.4",
+				alert:			"3.0.4",
+				deposit:		"3.0.4",
+				headquarter:	"3.0.4",
+				recon:			"3.0.4",
+				spy:			"3.0.4",
+				attack:			"3.0.4",
+				defense:		"3.0.4",
+				farm:			"3.0.4",
+				recruit:		"3.0.4",
+				medic:			"3.0.4",
+				secondvillage:	"3.0.4",
+				map:			"3.0.4",
+				data:			"3.0.4",
+				log:			"3.0.4"
 			}
 		});
 
@@ -1690,6 +1690,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.ConfirmController : {
 					robotTW2.createScopeLang("confirm", function(scopeLang){
@@ -1702,6 +1703,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.RecruitController : {
 					robotTW2.createScopeLang("recruit", function(scopeLang){
@@ -1716,6 +1718,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.HeadquarterController : {
 					robotTW2.createScopeLang("headquarter", function(scopeLang){
@@ -1730,6 +1733,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.SpyController : {
 					robotTW2.createScopeLang("spy", function(scopeLang){
@@ -1746,6 +1750,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.FarmController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
@@ -1762,6 +1767,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.DefenseController : {
 					robotTW2.createScopeLang("defense", function(scopeLang){

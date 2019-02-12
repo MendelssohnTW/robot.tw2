@@ -1690,6 +1690,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.ConfirmController : {
 					robotTW2.createScopeLang("confirm", function(scopeLang){
@@ -1702,6 +1703,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.RecruitController : {
 					robotTW2.createScopeLang("recruit", function(scopeLang){
@@ -1716,6 +1718,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.HeadquarterController : {
 					robotTW2.createScopeLang("headquarter", function(scopeLang){
@@ -1730,6 +1733,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.SpyController : {
 					robotTW2.createScopeLang("spy", function(scopeLang){
@@ -1746,6 +1750,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.FarmController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
@@ -1762,6 +1767,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}		
 						robotTW2.build(params)
 					})
+					break
 				}
 				case robotTW2.controllers.DefenseController : {
 					robotTW2.createScopeLang("defense", function(scopeLang){
