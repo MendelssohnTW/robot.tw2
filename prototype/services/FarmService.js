@@ -179,19 +179,40 @@ define("robotTW2/services/FarmService", [
 				}
 			};
 
+//			listaGrid.sort(function (a, b) {
+//				if (a.x != b.x) {
+//					if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
+//						return -1;
+//					};
+//					if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
+//						return 1;
+//					};
+//				} else if(a.y != b.y) {
+//					if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
+//						return -1;
+//					};
+//					if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
+//						return 1;
+//					};
+//				} else {
+//					return 0;	
+//				}
+//			});
+			
+			
 			listaGrid.sort(function (a, b) {
 				if (a.x != b.x) {
-					if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
+					if (a.x - x < b.x - x) {
 						return -1;
 					};
-					if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
+					if (a.x - x > b.x - x) {
 						return 1;
 					};
 				} else if(a.y != b.y) {
-					if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
+					if (a.y - y < b.y - y) {
 						return -1;
 					};
-					if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
+					if (a.y - y > b.y - y) {
 						return 1;
 					};
 				} else {
