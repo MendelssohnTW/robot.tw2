@@ -19,7 +19,7 @@ define("robotTW2/controllers/ConfirmController", [
 		$scope.inConfirm = true;
 		$scope.inReload = false;
 		services.$timeout(function(){
-			$rootScope.$broadcast("stopAll")
+			services.$rootScope.$broadcast("stopAll")
 			$scope.closeWindow();
 		}, 5000)
 		
@@ -31,12 +31,12 @@ define("robotTW2/controllers/ConfirmController", [
 			} else if(inReload){
 				location.reload()	
 			} else {
-				$rootScope.$broadcast("stopAll")
+				services.$rootScope.$broadcast("stopAll")
 			}
 		}
 		
 		$scope.Cancel = function(){
-			$rootScope.$broadcast("stopAll")
+			services.$rootScope.$broadcast("stopAll")
 			$scope.closeWindow();
 		}
 
