@@ -499,7 +499,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	builderWindow.prototype.buildWin = function() {
 		var scope = $rootScope.$new();
 		var self = this;
-		if(self.templateName != "main"){
+		if(self.templateName != "main" && self.hotkey != "open"){
 			var arFn = exports.requestFn.get(self.templateName.toLowerCase(), true);
 			if(!arFn){return}
 			if(exports.databases.data_main.pages_excludes.includes(self.templateName)){
