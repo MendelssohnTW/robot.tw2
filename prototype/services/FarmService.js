@@ -651,7 +651,8 @@ define("robotTW2/services/FarmService", [
 								};
 							} else {
 								console.log("farm_activate " + data_villages.villages[village_id].farm_activate)
-								console.log("aldeia units " + aldeia_units + " preset units " + preset.units)
+								console.log(aldeia_units)
+								console.log(preset.units)
 							};
 						})
 					})
