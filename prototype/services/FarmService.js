@@ -645,6 +645,8 @@ define("robotTW2/services/FarmService", [
 								if (!commands_for_presets.find(f => f === comando)) {
 									commands_for_presets.push(comando);
 								};
+							} else {
+								console.log("no farm_activate or no units")
 							};
 						})
 					})
