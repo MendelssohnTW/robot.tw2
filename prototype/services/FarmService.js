@@ -142,7 +142,7 @@ define("robotTW2/services/FarmService", [
 //					} else {
 //					loaded_d = true;
 //					}
-					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": true};
+					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": false};
 				};
 			};
 
