@@ -558,6 +558,8 @@ define("robotTW2/services/FarmService", [
 				}
 
 				if(reg.loaded){
+					$timeout.cancel(t);
+					t = undefined;
 					console.log("reg loaded")
 					search_for_town(reg, resolve_grid, cmd_preset);
 				} else {
