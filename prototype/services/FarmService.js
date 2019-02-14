@@ -108,21 +108,24 @@ define("robotTW2/services/FarmService", [
 		}
 		, loadMap = function (x, y, dist) {
 
-			var coordX = x - dist;
-			var coordY = y - dist;
+			var old_coordX = x - dist;
+			var old_coordY = y - dist;
 			var ciclos = 0;
 
-			coordX = Math.trunc(coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
-			coordY = Math.trunc(coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
+			var coordX = Math.trunc(old_coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
+			var coordY = Math.trunc(old_coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
 			Math.trunc(dist / conf.MAP_CHUNCK_LEN) / (dist / conf.MAP_CHUNCK_LEN) < 1 ? ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN) + 1 : ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN);
 
 			var t_ciclo = 0;
+			if(dist < conf.MAP_CHUNCK_LEN){
+				t_ciclo = 1;
+			}
 
 			if (ciclos % 2 < 1) {
-				t_ciclo = ciclos + 1;
+				t_ciclo = t_ciclo + ciclos + 1;
 			} else {
-				t_ciclo = ciclos;
+				t_ciclo = t_ciclo + ciclos;
 			}
 
 			var map_chunk_size = Math.round((dist * 2 + (x - dist - coordX)) / t_ciclo);
