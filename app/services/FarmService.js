@@ -108,21 +108,24 @@ define("robotTW2/services/FarmService", [
 		}
 		, loadMap = function (x, y, dist) {
 
-			var coordX = x - dist;
-			var coordY = y - dist;
+			var old_coordX = x - dist;
+			var old_coordY = y - dist;
 			var ciclos = 0;
 
-			coordX = Math.trunc(coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
-			coordY = Math.trunc(coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
+			var coordX = Math.trunc(old_coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
+			var coordY = Math.trunc(old_coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
 			Math.trunc(dist / conf.MAP_CHUNCK_LEN) / (dist / conf.MAP_CHUNCK_LEN) < 1 ? ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN) + 1 : ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN);
 
 			var t_ciclo = 0;
+			if(dist < conf.MAP_CHUNCK_LEN){
+				t_ciclo = 1;
+			}
 
 			if (ciclos % 2 < 1) {
-				t_ciclo = ciclos + 1;
+				t_ciclo = t_ciclo + ciclos + 1;
 			} else {
-				t_ciclo = ciclos;
+				t_ciclo = t_ciclo + ciclos;
 			}
 
 			var map_chunk_size = Math.round((dist * 2 + (x - dist - coordX)) / t_ciclo);
@@ -132,11 +135,14 @@ define("robotTW2/services/FarmService", [
 
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
-					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
-						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": false};	
-					} else {
-						grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": true};
-					}
+					villages_town.loaded(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))
+//					let loaded_d = false;
+//					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
+//					loaded_d = false;
+//					} else {
+//					loaded_d = true;
+//					}
+					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": false};
 				};
 			};
 
@@ -151,7 +157,7 @@ define("robotTW2/services/FarmService", [
 				};
 			};
 
-			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
+//			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
 
 			return {grid: grid};
 		}
@@ -179,19 +185,40 @@ define("robotTW2/services/FarmService", [
 				}
 			};
 
+//			listaGrid.sort(function (a, b) {
+//			if (a.x != b.x) {
+//			if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
+//			return -1;
+//			};
+//			if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
+//			return 1;
+//			};
+//			} else if(a.y != b.y) {
+//			if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
+//			return -1;
+//			};
+//			if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
+//			return 1;
+//			};
+//			} else {
+//			return 0;	
+//			}
+//			});
+
+
 			listaGrid.sort(function (a, b) {
 				if (a.x != b.x) {
-					if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
+					if (a.x - x < b.x - x) {
 						return -1;
 					};
-					if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
+					if (a.x - x > b.x - x) {
 						return 1;
 					};
 				} else if(a.y != b.y) {
-					if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
+					if (a.y - y < b.y - y) {
 						return -1;
 					};
-					if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
+					if (a.y - y > b.y - y) {
 						return 1;
 					};
 				} else {
@@ -205,17 +232,19 @@ define("robotTW2/services/FarmService", [
 			for(unit in units) {
 				if (units.hasOwnProperty(unit)) {
 					if (unit_search == unit) {
-						return units[unit].available != undefined && units[unit].available > 0 ?  true : false;
+						if(units[unit].available != undefined && units[unit].available >= 5){
+							return true;
+						}
 					}
 				}
 			}
 			return false;
 		}
-		, units_analyze = function (preset_units, aldeia_units) {
+		, units_analyze = function (preset_units, aldeia_units, opt) {
 			var f = []
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
-					if(preset_units[unit_preset] > 0) {
+					if(preset_units[unit_preset] >= 5) {
 						if(data_farm.troops_not.some(elem => elem == unit_preset)) {
 							return !1;
 						} else {
@@ -230,8 +259,12 @@ define("robotTW2/services/FarmService", [
 				}
 			}
 			if(f.length){
-				f.sort(function(a,b){return a[1] - b[1]})
-				return f.shift()[0]
+				if(opt){
+					return !0;
+				} else {
+					f.sort(function(a,b){return a[1] - b[1]})
+					return f.shift()[0]
+				}
 			} else {
 				return !1;
 			}
@@ -320,13 +353,13 @@ define("robotTW2/services/FarmService", [
 									var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
 									var selectedVillage = modelDataService.getSelectedVillage();
 //									socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-//										'my_village_id'		: selectedVillage.getId(),					
-//										'village_id'		: bb,
-//										'num_reports'		: 0
+//									'my_village_id'		: selectedVillage.getId(),					
+//									'village_id'		: bb,
+//									'num_reports'		: 0
 //									}, function (village) {
-//										data_log.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
-										socketService.emit(providers.routeProvider.SEND_PRESET, params);
-										resolve_send(permit_send)
+//									data_log.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
+									socketService.emit(providers.routeProvider.SEND_PRESET, params);
+									resolve_send(permit_send)
 //									});
 								} else {
 									resolve_send(true)
@@ -432,7 +465,7 @@ define("robotTW2/services/FarmService", [
 					}
 					t(cmd_preset, reg)
 				})
-				
+
 				listaGrid = null;
 			})
 		}
@@ -448,11 +481,13 @@ define("robotTW2/services/FarmService", [
 
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
+					console.log("timeout grid map search villages")
 					resolve_grid();
-				}, conf_conf.LOADING_TIMEOUT);
+				}, conf_conf.LOADING_TIMEOUT + 20000);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
 					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+						reg.loaded = true;
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
@@ -523,8 +558,12 @@ define("robotTW2/services/FarmService", [
 				}
 
 				if(reg.loaded){
+					$timeout.cancel(t);
+					t = undefined;
+					console.log("reg loaded")
 					search_for_town(reg, resolve_grid, cmd_preset);
 				} else {
+					console.log("reg not loaded")
 					send_for_socket(reg, t, resolve_grid, cmd_preset)
 				}
 			})
@@ -545,7 +584,10 @@ define("robotTW2/services/FarmService", [
 							promise_preset = new Promise(function(resolve_presets){
 								var load_exec = exec(cmd_preset)
 								, listaGrid = load_exec.listaGrid
-								if(!listaGrid.length){return}
+								if(!listaGrid.length){
+									console.log("sem listaGrid para " + JSON.stringify(cmd_preset))
+									return
+								}
 								loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 							})
 							.then(function(c_preset){
@@ -605,7 +647,7 @@ define("robotTW2/services/FarmService", [
 						presets_order.forEach(function(preset){
 							if(
 									data_villages.villages[village_id].farm_activate
-									&& units_analyze(preset.units, aldeia_units)
+									&& units_analyze(preset.units, aldeia_units, true)
 							) {
 								var comando = {
 										village_id				: village_id,

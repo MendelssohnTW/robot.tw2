@@ -10,10 +10,10 @@ define("robotTW2/controllers/ConfirmController", [
 	return function ConfirmController($scope) {
 		$scope.CONFIRM = services.$filter("i18n")("CONFIRM", services.$rootScope.loc.ale);
 		$scope.CANCEL = services.$filter("i18n")("CANCEL", services.$rootScope.loc.ale);
-		$scope.title = services.$filter("i18n")("title", services.$rootScope.loc.ale, "confirm_https")
-		$scope.text_show = services.$filter("i18n")("text_show", services.$rootScope.loc.ale, "confirm_https")
-		$scope.text_confirm = services.$filter("i18n")("text_show", services.$rootScope.loc.ale, "confirm_https")
-		$scope.text_reload = services.$filter("i18n")("text_reload", services.$rootScope.loc.ale, "confirm_https")
+		$scope.title = services.$filter("i18n")("title", services.$rootScope.loc.ale, "confirm")
+		$scope.text_show = services.$filter("i18n")("text_show", services.$rootScope.loc.ale, "confirm")
+		$scope.text_confirm = services.$filter("i18n")("text_confirm", services.$rootScope.loc.ale, "confirm")
+		$scope.text_reload = services.$filter("i18n")("text_reload", services.$rootScope.loc.ale, "confirm")
 		var self = this;
 		
 		$scope.inConfirm = true;
