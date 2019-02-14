@@ -480,7 +480,7 @@ define("robotTW2/services/FarmService", [
 				t = $timeout(function(){
 					console.log("timeout grid map search villages")
 					resolve_grid();
-				}, conf_conf.LOADING_TIMEOUT + 10000);
+				}, conf_conf.LOADING_TIMEOUT + 20000);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
 					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
@@ -587,7 +587,6 @@ define("robotTW2/services/FarmService", [
 							.then(function(c_preset){
 								promise_preset = undefined
 								if(promise_preset_queue.length){
-									console.log("próximo preset")
 									cmd_preset = promise_preset_queue.shift();
 									t(cmd_preset)
 								} else {
@@ -655,10 +654,6 @@ define("robotTW2/services/FarmService", [
 								if (!commands_for_presets.find(f => f === comando)) {
 									commands_for_presets.push(comando);
 								};
-							} else {
-								console.log("farm_activate " + data_villages.villages[village_id].farm_activate)
-								console.log(aldeia_units)
-								console.log(preset.units)
 							};
 						})
 					})
