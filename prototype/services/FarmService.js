@@ -252,7 +252,7 @@ define("robotTW2/services/FarmService", [
 					}
 				}
 			}
-			if(f.length && opt){
+			if(f.length){
 				if(opt){
 					return !0;
 				} else {
