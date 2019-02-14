@@ -477,7 +477,7 @@ define("robotTW2/services/FarmService", [
 				t = $timeout(function(){
 					console.log("timeout grid map search villages")
 					resolve_grid();
-				}, conf_conf.LOADING_TIMEOUT);
+				}, conf_conf.LOADING_TIMEOUT + 10000);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
 					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
