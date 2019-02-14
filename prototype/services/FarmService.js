@@ -180,26 +180,26 @@ define("robotTW2/services/FarmService", [
 			};
 
 //			listaGrid.sort(function (a, b) {
-//				if (a.x != b.x) {
-//					if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
-//						return -1;
-//					};
-//					if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
-//						return 1;
-//					};
-//				} else if(a.y != b.y) {
-//					if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
-//						return -1;
-//					};
-//					if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
-//						return 1;
-//					};
-//				} else {
-//					return 0;	
-//				}
+//			if (a.x != b.x) {
+//			if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
+//			return -1;
+//			};
+//			if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
+//			return 1;
+//			};
+//			} else if(a.y != b.y) {
+//			if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
+//			return -1;
+//			};
+//			if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
+//			return 1;
+//			};
+//			} else {
+//			return 0;	
+//			}
 //			});
-			
-			
+
+
 			listaGrid.sort(function (a, b) {
 				if (a.x != b.x) {
 					if (a.x - x < b.x - x) {
@@ -226,13 +226,15 @@ define("robotTW2/services/FarmService", [
 			for(unit in units) {
 				if (units.hasOwnProperty(unit)) {
 					if (unit_search == unit) {
-						return units[unit].available != undefined && units[unit].available > 0 ?  true : false;
+						if(units[unit].available != undefined && units[unit].available > 0){
+							return true;
+						}
 					}
 				}
 			}
 			return false;
 		}
-		, units_analyze = function (preset_units, aldeia_units) {
+		, units_analyze = function (preset_units, aldeia_units, opt) {
 			var f = []
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
@@ -250,9 +252,13 @@ define("robotTW2/services/FarmService", [
 					}
 				}
 			}
-			if(f.length){
-				f.sort(function(a,b){return a[1] - b[1]})
-				return f.shift()[0]
+			if(f.length && opt){
+				if(opt){
+					return !0;
+				} else {
+					f.sort(function(a,b){return a[1] - b[1]})
+					return f.shift()[0]
+				}
 			} else {
 				return !1;
 			}
@@ -341,13 +347,13 @@ define("robotTW2/services/FarmService", [
 									var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
 									var selectedVillage = modelDataService.getSelectedVillage();
 //									socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-//										'my_village_id'		: selectedVillage.getId(),					
-//										'village_id'		: bb,
-//										'num_reports'		: 0
+//									'my_village_id'		: selectedVillage.getId(),					
+//									'village_id'		: bb,
+//									'num_reports'		: 0
 //									}, function (village) {
-//										data_log.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
-										socketService.emit(providers.routeProvider.SEND_PRESET, params);
-										resolve_send(permit_send)
+//									data_log.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
+									socketService.emit(providers.routeProvider.SEND_PRESET, params);
+									resolve_send(permit_send)
 //									});
 								} else {
 									resolve_send(true)
@@ -453,7 +459,7 @@ define("robotTW2/services/FarmService", [
 					}
 					t(cmd_preset, reg)
 				})
-				
+
 				listaGrid = null;
 			})
 		}
@@ -626,7 +632,7 @@ define("robotTW2/services/FarmService", [
 						presets_order.forEach(function(preset){
 							if(
 									data_villages.villages[village_id].farm_activate
-									&& units_analyze(preset.units, aldeia_units)
+									&& units_analyze(preset.units, aldeia_units, true)
 							) {
 								var comando = {
 										village_id				: village_id,

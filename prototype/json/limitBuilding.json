@@ -7,7 +7,7 @@
 			"barracks": 10
 		},
 		{
-			"tavern": 7
+			"tavern": 5
 		},
 		{
 			"hospital": 1
@@ -25,10 +25,10 @@
 			"academy": 1
 		},
 		{
-			"rally_point": 5
+			"rally_point": 3
 		},
 		{
-			"statue": 5
+			"statue": 3
 		},
 		{
 			"market": 5
@@ -49,7 +49,7 @@
 			"warehouse": 23
 		},
 		{
-			"wall": 10
+			"wall": 5
 		}
 	],
 	"production": [
@@ -60,7 +60,7 @@
 			"barracks": 21
 		},
 		{
-			"tavern": 7
+			"tavern": 5
 		},
 		{
 			"hospital": 1
@@ -75,13 +75,13 @@
 			"chapel": 0
 		},
 		{
-			"academy": 1
+			"academy": 0
 		},
 		{
-			"rally_point": 5
+			"rally_point": 3
 		},
 		{
-			"statue": 5
+			"statue": 3
 		},
 		{
 			"market": 15
@@ -102,7 +102,7 @@
 			"warehouse": 27
 		},
 		{
-			"wall": 15
+			"wall": 5
 		}
 	],
 	"base": [
@@ -131,10 +131,10 @@
 			"academy": 1
 		},
 		{
-			"rally_point": 5
+			"rally_point": 3
 		},
 		{
-			"statue": 5
+			"statue": 3
 		},
 		{
 			"market": 5
@@ -155,7 +155,7 @@
 			"warehouse": 25
 		},
 		{
-			"wall": 20
+			"wall": 18
 		}
 	]
 }
