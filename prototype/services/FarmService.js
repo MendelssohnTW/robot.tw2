@@ -572,12 +572,16 @@ define("robotTW2/services/FarmService", [
 							promise_preset = new Promise(function(resolve_presets){
 								var load_exec = exec(cmd_preset)
 								, listaGrid = load_exec.listaGrid
-								if(!listaGrid.length){return}
+								if(!listaGrid.length){
+									console.log("sem listaGrid para " + JSON.stringify(cmd_preset))
+									return
+								}
 								loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 							})
 							.then(function(c_preset){
 								promise_preset = undefined
 								if(promise_preset_queue.length){
+									console.log("próximo preset")
 									cmd_preset = promise_preset_queue.shift();
 									t(cmd_preset)
 								} else {
