@@ -138,11 +138,11 @@ define("robotTW2/services/FarmService", [
 					villages_town.loaded(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))
 //					let loaded_d = false;
 //					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
-//						loaded_d = false;
+//					loaded_d = false;
 //					} else {
-//						loaded_d = true;
+//					loaded_d = true;
 //					}
-//					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": loaded_d};
+					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": true};
 				};
 			};
 
@@ -487,6 +487,7 @@ define("robotTW2/services/FarmService", [
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
 					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+						reg.loaded = true;
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
