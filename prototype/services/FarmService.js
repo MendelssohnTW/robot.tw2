@@ -475,6 +475,7 @@ define("robotTW2/services/FarmService", [
 
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
+					console.log("timeout grid map search villages")
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT);
 
@@ -550,8 +551,10 @@ define("robotTW2/services/FarmService", [
 				}
 
 				if(reg.loaded){
+					console.log("reg loaded")
 					search_for_town(reg, resolve_grid, cmd_preset);
 				} else {
+					console.log("reg not loaded")
 					send_for_socket(reg, t, resolve_grid, cmd_preset)
 				}
 			})
