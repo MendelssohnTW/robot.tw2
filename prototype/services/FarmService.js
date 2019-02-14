@@ -226,7 +226,7 @@ define("robotTW2/services/FarmService", [
 			for(unit in units) {
 				if (units.hasOwnProperty(unit)) {
 					if (unit_search == unit) {
-						if(units[unit].available != undefined && units[unit].available > 0){
+						if(units[unit].available != undefined && units[unit].available >= 5){
 							return true;
 						}
 					}
@@ -238,7 +238,7 @@ define("robotTW2/services/FarmService", [
 			var f = []
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
-					if(preset_units[unit_preset] > 0) {
+					if(preset_units[unit_preset] >= 5) {
 						if(data_farm.troops_not.some(elem => elem == unit_preset)) {
 							return !1;
 						} else {
