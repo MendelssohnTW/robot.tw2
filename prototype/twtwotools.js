@@ -714,7 +714,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(!lded){
 				lded = true;
 				$timeout.cancel(tm)
-				$rootScope.$broadcast("ready_init")
+				$rootScope.$broadcast("ready_init", {"load_loc" : true})
 			}
 		});
 	})($rootScope);
@@ -762,6 +762,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								if(files.length){
 									next(files.shift())
 								} else {
+									$rootScope.$broadcast("ready_init", {"load_json" : true})
 									return conf;
 								}
 							})
@@ -1511,18 +1512,27 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 
+		var load_loc = false;
+		var load_json = false;
+		$rootScope.$on("ready_init", function($event, data){
+			if(data.load_loc){
+				load_loc = true
+			}
+			if(data.load_json){
+				load_json = true
+			}
+			if(load_loc && load_json) {
+				robotTW2.ready(function(){
+					require(["robotTW2/services"]);
+					require(["robotTW2/databases"]);
+					require(["robotTW2/controllers"]);
 
-		$rootScope.$on("ready_init", function($event){
-			robotTW2.ready(function(){
-				require(["robotTW2/services"]);
-				require(["robotTW2/databases"]);
-				require(["robotTW2/controllers"]);
-
-				angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
-//					robotTW2.loadScript("/controllers/MainController.js");
-					return robotTW2.controllers;
-				}))
-			}, ["all_villages_ready"])
+					angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
+//						robotTW2.loadScript("/controllers/MainController.js");
+						return robotTW2.controllers;
+					}))
+				}, ["all_villages_ready"])
+			}
 		})
 
 		var count_ready = true;
