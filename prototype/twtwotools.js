@@ -765,16 +765,15 @@ var robotTW2 = window.robotTW2 = undefined;
 									tr = undefined;
 									if(files_queue.length){
 										next(files_queue.shift())
+									} else {
+										return conf;
 									}
 								})
 							}
 						}
-
 						next(files.shift())
 					})
 				})
-
-				return conf;
 			})()
 		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
