@@ -771,9 +771,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			})()
 		})
 
-		require(["robotTW2/conf", function(conf){
+		require(["robotTW2/conf"], function(conf){
 			return conf
-		}])
+		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "premiumActionService");
