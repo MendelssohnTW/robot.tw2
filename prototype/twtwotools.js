@@ -724,6 +724,7 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 		var conf;
+		var requestFile = robotTW2.requestFile;
 		requestFile("files", "/json/", function(files){
 			requestFile("conf", "/json/", function(conf){
 				conf = conf;
@@ -740,8 +741,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						tr = undefined;
 						if(files.length){
 							next(files.shift())
-						} else {
-							return conf;
 						}
 					})
 				}
