@@ -714,7 +714,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			if(!lded){
 				lded = true;
 				$timeout.cancel(tm)
-				$rootScope.$broadcast("ready_init", {"load_loc" : true})
+				$rootScope.$broadcast("ready_init")
 			}
 		});
 	})($rootScope);
@@ -723,6 +723,31 @@ var robotTW2 = window.robotTW2 = undefined;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
+		var conf;
+		requestFile("files", "/json/", function(files){
+			requestFile("conf", "/json/", function(conf){
+				conf = conf;
+				let tr = undefined;
+				function next(file){
+					new Promise(function(res){
+						requestFile(file, "/json/", function(json){
+							angular.extend(conf, {
+								[file.toUpperCase()] : json
+							})
+							res()
+						})
+					}).then(function(){
+						tr = undefined;
+						if(files.length){
+							next(files.shift())
+						} else {
+							return conf;
+						}
+					})
+				}
+				next(files.shift())
+			})
+		})
 
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
@@ -743,33 +768,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						levelsBuilding.push({[buildingTypes[type]] : 0})
 					}
 				}
-				var conf;
-
-				requestFile("files", "/json/", function(files){
-					requestFile("conf", "/json/", function(conf){
-						conf = conf;
-						let tr = undefined;
-						function next(file){
-							new Promise(function(res){
-								requestFile(file, "/json/", function(json){
-									angular.extend(conf, {
-										[file.toUpperCase()] : json
-									})
-									res()
-								})
-							}).then(function(){
-								tr = undefined;
-								if(files.length){
-									next(files.shift())
-								} else {
-									$rootScope.$broadcast("ready_init", {"load_json" : true})
-									return conf;
-								}
-							})
-						}
-						next(files.shift())
-					})
-				})
+				return conf;
 			})()
 		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
@@ -1514,14 +1513,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		var load_loc = false;
 		var load_json = false;
-		$rootScope.$on("ready_init", function($event, data){
-			if(data.load_loc){
-				load_loc = true
-			}
-			if(data.load_json){
-				load_json = true
-			}
-			if(load_loc && load_json) {
+		$rootScope.$on("ready_init", function($event){
 				robotTW2.ready(function(){
 					require(["robotTW2/services"]);
 					require(["robotTW2/databases"]);
@@ -1532,7 +1524,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						return robotTW2.controllers;
 					}))
 				}, ["all_villages_ready"])
-			}
 		})
 
 		var count_ready = true;
