@@ -771,8 +771,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				})
 			})()
 		})
-		
-		require["robotTW2/conf", function(conf){return conf}]
+
+		require(["robotTW2/conf", function(conf){
+			return conf
+		}])
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "premiumActionService");
@@ -1516,16 +1518,16 @@ var robotTW2 = window.robotTW2 = undefined;
 		var load_loc = false;
 		var load_json = false;
 		$rootScope.$on("ready_init", function($event){
-				robotTW2.ready(function(){
-					require(["robotTW2/services"]);
-					require(["robotTW2/databases"]);
-					require(["robotTW2/controllers"]);
+			robotTW2.ready(function(){
+				require(["robotTW2/services"]);
+				require(["robotTW2/databases"]);
+				require(["robotTW2/controllers"]);
 
-					angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
-//						robotTW2.loadScript("/controllers/MainController.js");
-						return robotTW2.controllers;
-					}))
-				}, ["all_villages_ready"])
+				angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
+//					robotTW2.loadScript("/controllers/MainController.js");
+					return robotTW2.controllers;
+				}))
+			}, ["all_villages_ready"])
 		})
 
 		var count_ready = true;
