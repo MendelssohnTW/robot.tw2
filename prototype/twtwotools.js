@@ -766,136 +766,18 @@ var robotTW2 = window.robotTW2 = undefined;
 						levelsBuilding.push({[buildingTypes[type]] : 0})
 					}
 				}
+				var conf;
 
-				var seg = 1000 // 1000 milisegundos
-				, min = seg * 60
-				, h = min * 60;
-
-				var conf = {
-						h						: h,
-						min						: min,
-						seg						: seg,
-						LIMIT_COMMANDS_DEFENSE	: 13,
-						MAX_COMMANDS_FARM		: 42,
-						MIN_POINTS_FARM			: 0,
-						MAX_POINTS_FARM			: 12000,
-						MAP_CHUNCK_LEN 			: 30 / 2,
-						TIME_CORRECTION_COMMAND : 1275,
-						TIME_DELAY_UPDATE		: 30 * seg,
-						TIME_DELAY_FARM			: 1000,
-						TIME_SNIPER_ANT 		: 30000,
-						TIME_SNIPER_POST 		: 3000,
-						TIME_SNIPER_POST_SNOB	: 1000,
-						MAX_TIME_CORRECTION 	: 5 * seg,
-						MIN_TIME_SNIPER_ANT 	: 5,
-						MAX_TIME_SNIPER_ANT 	: 600,
-						MIN_TIME_SNIPER_POST 	: 0.3,
-						MAX_TIME_SNIPER_POST 	: 600,
-						MAX_JOURNEY_DISTANCE 	: 6,
-						MIN_JOURNEY_DISTANCE 	: 1,
-						MAX_JOURNEY_TIME     	: 1 * h,
-						MIN_JOURNEY_TIME     	: 8 * min,
-						VERSION					: {
-							MAIN			: version.main,
-							VILLAGES		: version.villages,
-							HEADQUARTER		: version.headquarter,
-							ALERT			: version.alert,
-							RECON			: version.recon,
-							SPY				: version.spy,
-							ATTACK			: version.attack,
-							DEFENSE			: version.defense,
-							FARM			: version.farm,
-							RECRUIT			: version.recruit,
-							DEPOSIT			: version.deposit,
-							MEDIC			: version.medic,
-							SECONDVILLAGE	: version.secondvillage,
-							MAP				: version.map,
-							DATA			: version.data,
-							LOGS			: version.logs
-						},
-						FARM_TIME		      	: 30 * min,
-						MIN_INTERVAL	     	: 5 * min,
-						INTERVAL				: {
-							HEADQUARTER	: h,
-							RECRUIT		: h,
-							DEPOSIT		: 15 * min,
-							ALERT		: 5 * min,
-							ATTACK		: h,
-							MEDIC		: h,
-							DATA		: {
-								villages	: 6 * h,
-								tribes		: 2 * h,
-								logs		: 1 * h,
-								members		: 3 * h
-							},
-							SPY			: 30 * min
-						},
-						DBS : [
-							"alert",
-							"attack",
-							"defense",
-							"deposit",
-							"farm",
-							"headquarter",
-							"medic",
-							"recon",
-							"recruit",
-							"spy",
-							"secondvillage",
-							"map",
-							"data",
-							"logs"
-							]
-						,
-						HOTKEY					: {
-							ALERT		 	: "shift+l",
-							ATTACK		 	: "shift+a",
-							DEFENSE		 	: "shift+d",
-							DEPOSIT		 	: "shift+t",
-							FARM		 	: "shift+f",
-							HEADQUARTER 	: "shift+h",
-							MAIN 			: "shift+p",
-							MEDIC		 	: "shift+i",
-							RECON		 	: "shift+r",
-							RECRUIT		 	: "shift+e",
-							SPY			 	: "shift+s",
-							SECONDVILLAGE	: "shift+q",
-							MAP			 	: "shift+m",
-							DATA			: "shift+j"
-						},
-						RESERVA				: {
-							RECRUIT : {
-								FOOD			: 500,
-								WOOD			: 2000,
-								CLAY			: 2000,
-								IRON			: 2000,
-								SLOTS			: 2
-							},
-							HEADQUARTER : {
-								FOOD			: 500,
-								WOOD			: 2000,
-								CLAY			: 2000,
-								IRON			: 2000,
-								SLOTS			: 2
-							}
-
-						},
-						TROOPS_NOT				: {
-							RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
-							FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
-
-				}
-
-				requestFile("orderBuilding", "/json/", function(jsont_order){
-					var orderBuilding = jsont_order;
-					requestFile("limitBuilding", "/json/", function(jsont_limit){
-						var limitBuilding = jsont_limit;
-						angular.extend(conf, {
-							EXECUTEBUILDINGORDER 	: true,
-							BUILDINGORDER			: orderBuilding,
-							BUILDINGLIMIT			: limitBuilding,
-							BUILDINGLEVELS			: levelsBuilding
-						})
+				requestFile("files", "/json/", function(files){
+					requestFile("conf", "/json/", function(conf){
+						conf = conf;
+						for (i = 0; i < files.length; i++) {
+							requestFile(files[i], function(json){
+								angular.extend(conf, {
+									[files[i].toUpperCase()] : json
+								})
+							})
+						}
 					})
 				})
 
