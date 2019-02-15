@@ -21,7 +21,7 @@ define("robotTW2/databases/data_alert", [
 	}
 
 	var dataNew = {
-			auto_initialize			: true,
+			auto_initialize			: false,
 			initialized 			: true,
 			activated 				: true,
 			hotkey					: conf.HOTKEY.ALERT,

@@ -21,7 +21,7 @@ define("robotTW2/databases/data_deposit", [
 	}
 
 	var dataNew = {
-			auto_initialize			: true,
+			auto_initialize			: false,
 			initialized 			: true,
 			activated 				: true,
 			hotkey					: conf.HOTKEY.DEPOSIT,
