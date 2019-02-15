@@ -979,7 +979,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					type:"verify_reservation",
 					data:["verify_reservation"]
 				},
-				'SEARCH_LOCAL':{					type:"search_local",
+				'SEARCH_LOCAL':{
+					type:"search_local",
 					data:[""]
 				}
 			});
@@ -1642,8 +1643,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 
-		var load_loc = false;
-		var load_json = false;
+
 		$rootScope.$on("ready_init", function($event){
 			robotTW2.ready(function(){
 				require(["robotTW2/services"]);
