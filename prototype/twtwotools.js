@@ -723,30 +723,6 @@ var robotTW2 = window.robotTW2 = undefined;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
-		var conf;
-		var requestFile = robotTW2.requestFile;
-		requestFile("files", "/json/", function(files){
-			requestFile("conf", "/json/", function(conf){
-				conf = conf;
-				let tr = undefined;
-				function next(file){
-					new Promise(function(res){
-						requestFile(file, "/json/", function(json){
-							angular.extend(conf, {
-								[file.toUpperCase()] : json
-							})
-							res()
-						})
-					}).then(function(){
-						tr = undefined;
-						if(files.length){
-							next(files.shift())
-						}
-					})
-				}
-				next(files.shift())
-			})
-		})
 
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
@@ -767,9 +743,36 @@ var robotTW2 = window.robotTW2 = undefined;
 						levelsBuilding.push({[buildingTypes[type]] : 0})
 					}
 				}
-				return conf;
+				var conf;
+
+				requestFile("files", "/json/", function(files){
+					requestFile("conf", "/json/", function(conf){
+						conf = conf;
+						let tr = undefined;
+						function next(file){
+							new Promise(function(res){
+								requestFile(file, "/json/", function(json){
+									angular.extend(conf, {
+										[file.toUpperCase()] : json
+									})
+									res()
+								})
+							}).then(function(){
+								tr = undefined;
+								if(files.length){
+									next(files.shift())
+								} else {
+									return conf;
+								}
+							})
+						}
+						next(files.shift())
+					})
+				})
 			})()
 		})
+		
+		require["robotTW2/conf", function(){}]
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
 			robotTW2.register("services", "premiumActionService");
