@@ -724,38 +724,15 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 
-		define("robotTW2/version", function(){
-			return {
-				main:			"3.0.4",
-				villages:		"3.0.4",
-				alert:			"3.0.4",
-				deposit:		"3.0.4",
-				headquarter:	"3.0.4",
-				recon:			"3.0.4",
-				spy:			"3.0.4",
-				attack:			"3.0.4",
-				defense:		"3.0.4",
-				farm:			"3.0.4",
-				recruit:		"3.0.4",
-				medic:			"3.0.4",
-				secondvillage:	"3.0.4",
-				map:			"3.0.4",
-				data:			"3.0.4",
-				log:			"3.0.4"
-			}
-		});
-
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
 		})
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
-			"robotTW2/version",
 			"robotTW2/requestFile"
 			], function(
 					buildingTypes,
-					version,
 					requestFile
 			) {
 
@@ -861,8 +838,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					type:"verify_reservation",
 					data:["verify_reservation"]
 				},
-				'SEARCH_LOCAL':{
-					type:"search_local",
+				'SEARCH_LOCAL':{					type:"search_local",
 					data:[""]
 				}
 			});
