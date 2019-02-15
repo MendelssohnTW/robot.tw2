@@ -755,7 +755,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								files_queue.push(file)
 							} else{
 								tr = new Promise(function(res){
-									requestFile(file, function(json){
+									requestFile(file, "/json/", function(json){
 										angular.extend(conf, {
 											[file.toUpperCase()] : json
 										})
