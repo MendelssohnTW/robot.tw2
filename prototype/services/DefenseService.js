@@ -54,7 +54,7 @@ define("robotTW2/services/DefenseService", [
 			return new Promise(function(res, rej){
 				rt = $timeout(function(){
 					rej()
-				}, conf_conf.LOADING_TIMEOUT);
+				}, conf_conf.LOADING_TIMEOUT + 15000);
 				var g = 20;
 				var x = this.cmd.targetX || this.cmd.target_x;
 				var y = this.cmd.targetY || this.cmd.target_y;
