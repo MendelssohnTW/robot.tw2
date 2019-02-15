@@ -761,14 +761,13 @@ var robotTW2 = window.robotTW2 = undefined;
 								tr = undefined;
 								if(files.length){
 									next(files.shift())
-								} else {
-									return conf;
 								}
 							})
 						}
 						next(files.shift())
 					})
 				})
+				return conf
 			})()
 		})
 
