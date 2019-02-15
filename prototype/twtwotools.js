@@ -749,27 +749,22 @@ var robotTW2 = window.robotTW2 = undefined;
 					requestFile("conf", "/json/", function(conf){
 						conf = conf;
 						let tr = undefined;
-						let files_queue = [];
 						function next(file){
-							if(tr){
-								files_queue.push(file)
-							} else{
-								tr = new Promise(function(res){
-									requestFile(file, "/json/", function(json){
-										angular.extend(conf, {
-											[file.toUpperCase()] : json
-										})
-										res()
+							new Promise(function(res){
+								requestFile(file, "/json/", function(json){
+									angular.extend(conf, {
+										[file.toUpperCase()] : json
 									})
-								}).then(function(){
-									tr = undefined;
-									if(files_queue.length){
-										next(files_queue.shift())
-									} else {
-										return conf;
-									}
+									res()
 								})
-							}
+							}).then(function(){
+								tr = undefined;
+								if(files.length){
+									next(files.shift())
+								} else {
+									return conf;
+								}
+							})
 						}
 						next(files.shift())
 					})
