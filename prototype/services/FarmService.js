@@ -617,7 +617,14 @@ define("robotTW2/services/FarmService", [
 								, listaGrid = load_exec.listaGrid
 								if(!listaGrid.length){
 									console.log("sem listaGrid para " + JSON.stringify(cmd_preset))
-									return
+									if(promise_preset_queue.length){
+										cmd_preset = promise_preset_queue.shift();
+										t(cmd_preset)
+									} else {
+										data_log.farm.push({"text":$filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+										data_log.set()
+										resol()
+									}
 								}
 								loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 							})
