@@ -1,5 +1,5 @@
 function loadGrid(limit){
-	var g = setupGrid();
+	var g = setupGrid(limit);
 	for (x = 0; x < limit; x++) {
 		for (y = 0; y < limit; y++) {
 			g[x][y] = {"loaded": false}
