@@ -26,6 +26,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		var self = this;
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
+		
+		$scope.status = "stopped";
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var elem = $scope.data_villages.villages[key]
