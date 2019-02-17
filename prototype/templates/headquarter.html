@@ -97,11 +97,9 @@
 								<td class="cell-top">
 									<div class="village">
 										<div class="name" ng-click="openVillageInfo(key)">
-											{{getName(key)}}
-										</div>
+											{{getName(key)}}</div>
 										<div class="coordinates" ng-click="jumpToVillage(key)">
-											{{getVcoordStart(key)}}
-										</div>
+											{{getVcoordStart(key)}}</div>
 									</div>
 								</td>
 								<td class="cell-top">
@@ -124,12 +122,10 @@
 									</div>
 								</td>
 								<td class="cell-top cell-center">
-									<div class="component-interface size-fill-x">
-										<span class="select-wrapper box-border-dark"> <select
-											id="select_order" class="select-handler"
+									<div class="select-wrapper box-border-dark">
+										<select id="select_order" class="select-handler"
 											ng-options="item as item.name for item in data_headquarter.selects track by item.id"
 											ng-model="obj.selected"></select>
-										</span>
 									</div>
 								</td>
 								<td class="cell-space">
