@@ -154,13 +154,13 @@
 															<tr
 																ng-repeat="buildingOrder in obj.buildingorder[obj.selected.value]"
 																style="height: 56px">
-																<td class="cell-rigth"
-																	ng-class="{'resource-text' : selected_village_buildingOrder[obj.data.villageId] == buildingOrder}"
-																	class="cell-right">
-																	<div>
-																		<div class="span-icon"
-																			ng-class="getClass(buildingOrder)">{{getKey(buildingOrder)}}</div>
+																<td class="content"
+																	ng-class="{'resource-text' : selected_village_buildingOrder[obj.data.villageId] == buildingOrder}">
+																	<div class="name-wrapper">
+																		<span class="name">{{getKey(buildingOrder)}}</span>
 																	</div>
+																	<div class="span-icon"
+																		ng-class="getClass(buildingOrder)"></div>
 																</td>
 																<td class="cell-right"><div>{{getValue(buildingOrder)}}</div></td>
 																<td class="cell-right"><div
@@ -194,7 +194,9 @@
 															<tr
 																ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]">
 																<td class="content">
-																	<div class="name-wrapper">{{getKey(buildingLimit)}}</div>
+																	<div class="name-wrapper">
+																		<span class="name">{{getKey(buildingLimit)}}</span>
+																	</div>
 																	<div class="span-icon"
 																		ng-class="getClass(buildingLimit)"></div>
 																</td>
