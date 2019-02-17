@@ -1,3 +1,25 @@
+function loadGrid(limit){
+	var g = setupGrid();
+	for (x = 0; x < limit; x++) {
+		for (y = 0; y < limit; y++) {
+			g[x][y] = {"loaded": false}
+		}	
+	}
+	return g
+}
+
+function setupGrid(limit){
+	var i, t = 0,
+	arr;
+
+	for (i = 0, arr = []; i < limit; i++) {
+		arr[i] = null;
+	}
+	return arr.concat().map(function (elem) {
+		return arr.concat();
+	});
+}
+
 define("robotTW2/services/grid_town", ["robotTW2/conf"], function(conf){
 	var limit = 0;
 	if(1000 % conf.MAP_CHUNCK_LEN > 0){
@@ -5,74 +27,33 @@ define("robotTW2/services/grid_town", ["robotTW2/conf"], function(conf){
 	} else {
 		limit = 1000 / conf.MAP_CHUNCK_LEN
 	}
-	var loadGrid = function(){
-		var g = setupGrid();
-
-		for (x = 0; x < limit; x++) {
-			for (y = 0; y < limit; y++) {
-				g[x][y] = {"loaded": false}
-			}	
-		}
-		return g
-	}
-	setupGrid = function () {
-		var i, t = 0,
-		arr;
-
-		for (i = 0, arr = []; i < limit; i++) {
-			arr[i] = null;
-		}
-		return arr.concat().map(function (elem) {
-			return arr.concat();
-		});
-	}
-	, serv = {}
-	, grid = loadGrid();
+	var serv = {}
+	, grad = loadGrid(limit);
 
 	serv.renew = function(){
-		grid = loadGrid();
-		return grid;
+		grad = loadGrid(limit);
+		return grad;
 	}
 
 	serv.loaded = function(i, j){
-		grid[i][j].loaded = true;
+		grad[i][j].loaded = true;
 	}
 
 	serv.load = function(i, j){
-		return grid[i][j].loaded;
+		return grad[i][j].loaded;
 	}
 
-	Object.setPrototypeOf(grid, serv);
+	Object.setPrototypeOf(grad, serv);
 
-	return grid
+	return grad
 })
 
 define("robotTW2/services/villages_town", function(){
-	var loadGrid = function(){
-		var g = setupGrid();
-		for (x = 0; x < 1000; x++) {
-			for (y = 0; y < 1000; y++) {
-				g[x][y] = {"id": null, "loaded":false}
-			}	
-		}
-		return g
-	}
-	setupGrid = function () {
-		var i, t = 0,
-		arr;
-
-		for (i = 0, arr = []; i < 1000; i++) {
-			arr[i] = null;
-		}
-		return arr.concat().map(function (elem) {
-			return arr.concat();
-		});
-	}
-	, serv = {}
-	, grid = loadGrid();
+	var serv = {}
+	, grid = loadGrid(1000);
 
 	serv.renew = function(){
-		grid = loadGrid();
+		grid = loadGrid(1000);
 		return grid;
 	}
 
