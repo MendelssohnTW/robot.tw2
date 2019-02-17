@@ -143,8 +143,7 @@
 												<td></td>
 												<td class="cell-rigth cell-top">
 													<h5 class="twx-section">{{priority}}</h5>
-													<table
-														id="preset-list">
+													<table id="preset-list">
 														<colgroup>
 															<col width="*">
 															<col width="20">
@@ -159,21 +158,25 @@
 																	ng-class="{'resource-text' : selected_village_buildingOrder[obj.data.villageId] == buildingOrder}"
 																	class="cell-right">
 																	<div>
-																		<span class="span-icon"
-																			ng-class="getClass(buildingOrder)"> </span>{{getKey(buildingOrder)}}
-																	</div></td>
+																		<div class="span-icon"
+																			ng-class="getClass(buildingOrder)">{{getKey(buildingOrder)}}</div>
+																	</div>
+																</td>
 																<td class="cell-right"><div>{{getValue(buildingOrder)}}</div></td>
 																<td class="cell-right"><div
-																	class="size-12x12 btn-orange icon-26x26-rte-building"
-																	ng-click="selectvillagebuildingOrder(obj.data.villageId, buildingOrder)"></div></td>
-																<td class="cell-right"><div
+																		class="size-12x12 btn-orange icon-26x26-rte-building"
+																		ng-click="selectvillagebuildingOrder(obj.data.villageId, buildingOrder)"></div></td>
+																<td class="cell-right">
+																	<div
 																		ng-show="selected_village_buildingOrder[obj.data.villageId] == buildingOrder">
-																		<span
+																		<div
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																			ng-click="up(obj, buildingOrder)"></span> <span
+																			ng-click="up(obj, buildingOrder)"></div>
+																		<div
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																			ng-click="down(obj, buildingOrder)"></span>
-																	</div></td>
+																			ng-click="down(obj, buildingOrder)"></div>
+																	</div>
+																</td>
 															</tr>
 														</tbody>
 													</table>
@@ -181,8 +184,7 @@
 												<td></td>
 												<td class="cell-right cell-top">
 													<h5 class="twx-section">{{levels}}</h5>
-													<table
-														id="preset-list">
+													<table id="preset-list">
 														<colgroup>
 															<col width="*">
 															<col width="20">
