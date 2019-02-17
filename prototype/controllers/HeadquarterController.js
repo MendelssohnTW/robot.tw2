@@ -27,7 +27,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 
-		$scope.data_villages.villages.map(function(key, elem){
+		Object.keys($scope.data_villages.villages).map(function(key){
+			var elem = $scope.data_villages.villages[key]
 			var data = getVillageData(key);
 			angular.extend(elem, {"data": data})
 			return elem;
