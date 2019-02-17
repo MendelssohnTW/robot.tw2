@@ -1,6 +1,11 @@
 define("robotTW2/services/grid_town", ["robotTW2/conf"], function(conf){
-	var limit = Math.trunc(1000 / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
-	, loadGrid = function(){
+	var limit = 0;
+	if(1000 % conf.MAP_CHUNCK_LEN > 0){
+		limit = (Math.trunc(1000 / conf.MAP_CHUNCK_LEN) + 1) * conf.MAP_CHUNCK_LEN
+	} else {
+		limit = 1000 / conf.MAP_CHUNCK_LEN
+	}
+	var loadGrid = function(){
 		var g = setupGrid();
 
 		for (x = 0; x < limit; x++) {
@@ -174,21 +179,22 @@ define("robotTW2/services/FarmService", [
 				t_ciclo = t_ciclo + ciclos;
 			}
 
-			var map_chunk_size = Math.round((dist * 2 + (x - dist - coordX)) / t_ciclo);
+			var map_chunk_size_x = Math.round((dist * 2 + (old_coordX - coordX)) / t_ciclo);
+			var map_chunk_size_y = Math.round((dist * 2 + (old_coordY - coordY)) / t_ciclo);
 
 			var grid = setupGrid(t_ciclo)
 			, list_excet = [];
 
 			for (var i = 0; i < t_ciclo; i++) {
 				for (var j = 0; j < t_ciclo; j++) {
-					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
-						villages_town.loaded(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))
+					if(!villages_town.load(coordX + (map_chunk_size_x * i), coordX + (map_chunk_size_x * (i + 1)), coordY + (map_chunk_size_y * j), coordY + (map_chunk_size_y * (j + 1)))){
+						villages_town.loaded(coordX + (map_chunk_size_x * i), coordX + (map_chunk_size_x * (i + 1)), coordY + (map_chunk_size_y * j), coordY + (map_chunk_size_y * (j + 1)))
 					}
 					
-					if(!grid_town.load(coordX + (map_chunk_size * i) / conf.MAP_CHUNCK_LEN, coordY + (map_chunk_size * j) / conf.MAP_CHUNCK_LEN)){
-						grid_town.loaded(coordX + (map_chunk_size * i) / conf.MAP_CHUNCK_LEN, coordY + (map_chunk_size * j) / conf.MAP_CHUNCK_LEN);
+					if(!grid_town.load(coordX + (map_chunk_size_x * i) / conf.MAP_CHUNCK_LEN, coordY + (map_chunk_size_y * j) / conf.MAP_CHUNCK_LEN)){
+						grid_town.loaded(coordX + (map_chunk_size_x * i) / conf.MAP_CHUNCK_LEN, coordY + (map_chunk_size_y * j) / conf.MAP_CHUNCK_LEN);
 					}
-					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size};
+					grid[i][j] = {"x": coordX + (map_chunk_size_x * i), "y": coordY + (map_chunk_size_y * j), "dist": map_chunk_size};
 				};
 			};
 
