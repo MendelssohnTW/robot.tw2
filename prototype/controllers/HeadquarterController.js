@@ -186,7 +186,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 
 		$scope.recalcScrollbar();
-		$scope.setCollapse();
+//		$scope.setCollapse();
 
 		return $scope;
 	}
