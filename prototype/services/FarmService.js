@@ -1,7 +1,7 @@
 define("robotTW2/services/grid_town", ["robotTW2/conf"], function(conf){
 	var limit = 0;
 	if(1000 % conf.MAP_CHUNCK_LEN > 0){
-		limit = (Math.trunc(1000 / conf.MAP_CHUNCK_LEN) + 1) * conf.MAP_CHUNCK_LEN
+		limit = (Math.trunc(1000 / conf.MAP_CHUNCK_LEN) + 1)
 	} else {
 		limit = 1000 / conf.MAP_CHUNCK_LEN
 	}
