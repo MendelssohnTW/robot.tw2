@@ -10,7 +10,8 @@
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap headquarter" style="margin-bottom: 100px">
 				<div>
-				<span ng-class="{'icon-26x26-dot-green' : status == running, 'icon-26x26-dot-red' : status ==stopped , 'icon-26x26-dot-blue' : status == paused, 'icon-26x26-dot-yellow' : status == disabled}"></span>
+					<span
+						ng-class="{'icon-26x26-dot-green' : status == running, 'icon-26x26-dot-red' : status ==stopped , 'icon-26x26-dot-blue' : status == paused, 'icon-26x26-dot-yellow' : status == disabled}"></span>
 				</div>
 				<h5 class="twx-section collapse">{{settings}}</h5>
 				<div>
@@ -87,12 +88,19 @@
 						<colgroup>
 							<col width="20%">
 							<col width="64px">
-							<col width="150px">	
+							<col width="150px">
 							<col width="*">
 						</colgroup>
 						<tbody>
 							<tr ng-repeat="(key, obj) in data_villages.villages">
-								<td class="cell-top"><span>{{getVcoordStart(key)}}</span></td>
+								<td class="cell-top">
+									<div class="coordinates" ng-click="jumpToVillage(key)">
+										<span>{{getVcoordStart(key)}}</span>
+									</div>
+									<div>
+										<span>{{getName(key)}}</span>
+									</div>
+								</td>
 								<td class="cell-top">
 									<div class="checkbox box-border-dark">
 										<div tooltip tooltip-content="{{text_executebuildingorder}}"
@@ -114,11 +122,10 @@
 								</td>
 								<td class="cell-top cell-center">
 									<div class="component-interface size-fill-x">
-										<span class="select-wrapper box-border-dark">
-											<select id="select_order" class="select-handler"
+										<span class="select-wrapper box-border-dark"> <select
+											id="select_order" class="select-handler"
 											ng-options="item as item.name for item in data_headquarter.selects track by item.id"
-											ng-model="obj.selected"
-											></select>
+											ng-model="obj.selected"></select>
 										</span>
 									</div>
 								</td>
@@ -146,7 +153,8 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingOrder in obj.buildingorder[obj.selected.value]"
+															<tr
+																ng-repeat="buildingOrder in obj.buildingorder[obj.selected.value]"
 																style="height: 56px">
 																<td
 																	ng-class="{'resource-text' : selected_village_buildingOrder[obj.data.villageId] == buildingOrder}"
@@ -179,7 +187,8 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]">
+															<tr
+																ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]">
 																<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
 																	class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
 																<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>

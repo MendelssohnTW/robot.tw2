@@ -43,12 +43,18 @@ define("robotTW2/controllers/HeadquarterController", [
 			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
 		
+		$scope.jumpToVillage = function(vid){
+			var x = getVillageData(vid).x
+			var y = getVillageData(vid).y
+			mapService.jumpToVillage(x, y);
+		}
+		
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
 			var x = getVillageData(vid).x
 			var y = getVillageData(vid).y
 			var name = getVillageData(vid).name
-			return name + " (" + x + "/" + y + ")"
+			return "(" + x + "/" + y + ")"
 		}
 		
 		$scope.getName = function(vid){
