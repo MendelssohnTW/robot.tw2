@@ -197,18 +197,19 @@ define("robotTW2/services/FarmService", [
 			var load_map = loadMap(x, y, data_villages.villages[village_id].presets[preset_id].max_journey_distance, data_villages.villages[village_id].presets[preset_id].max_journey_distance)
 			, grid = load_map.grid
 			, listaGrid = []
-			, l = Object.keys(grid).length
+			, lx = Object.keys(grid).length
+			, ly = Object.keys(Object.keys(grid)).length
 
-			for(tx = 0; tx < l; tx++) {
-				for(ty = 0; ty < l; ty++) {
+			for(tx = 0; tx < xl; tx++) {
+				for(ty = 0; ty < ly; ty++) {
 					listaGrid.push({
 						x			: grid[tx][ty].x,
 						y			: grid[tx][ty].y,
 						distX		: grid[tx][ty].distX,
 						distY		: grid[tx][ty].distY,
 						village_id	: village_id,
-						villages	: [],
-						loaded		: grid[tx][ty].loaded
+						villages	: []
+//						loaded		: grid[tx][ty].loaded
 					});
 				}
 			};
