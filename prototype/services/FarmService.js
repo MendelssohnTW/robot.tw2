@@ -200,7 +200,7 @@ define("robotTW2/services/FarmService", [
 			, lx = Object.keys(grid).length
 			, ly = Object.keys(Object.keys(grid)).length
 
-			for(tx = 0; tx < xl; tx++) {
+			for(tx = 0; tx < lx; tx++) {
 				for(ty = 0; ty < ly; ty++) {
 					listaGrid.push({
 						x			: grid[tx][ty].x,
