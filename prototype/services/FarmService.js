@@ -1,3 +1,47 @@
+define("robotTW2/services/grid_town", ["robotTW2/conf"], function(conf){
+	var limit = Math.trunc(1000 / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
+	, loadGrid = function(){
+		var g = setupGrid();
+
+		for (x = 0; x < limit; x++) {
+			for (y = 0; y < limit; y++) {
+				g[x][y] = {"loaded": false}
+			}	
+		}
+		return g
+	}
+	setupGrid = function () {
+		var i, t = 0,
+		arr;
+
+		for (i = 0, arr = []; i < limit; i++) {
+			arr[i] = null;
+		}
+		return arr.concat().map(function (elem) {
+			return arr.concat();
+		});
+	}
+	, serv = {}
+	, grid = loadGrid();
+
+	serv.renew = function(){
+		grid = loadGrid();
+		return grid;
+	}
+
+	serv.loaded = function(i, j){
+		grid[i][j].loaded = true;
+	}
+
+	serv.load = function(i, j){
+		return grid[i][j].loaded;
+	}
+
+	Object.setPrototypeOf(grid, serv);
+
+	return grid
+})
+
 define("robotTW2/services/villages_town", function(){
 	var loadGrid = function(){
 		var g = setupGrid();
@@ -64,6 +108,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/databases/data_log",
 	"robotTW2/databases/data_farm",
 	"robotTW2/services/villages_town",
+	"robotTW2/services/grid_town",
 	], function(
 			robotTW2,
 			version,
@@ -75,7 +120,8 @@ define("robotTW2/services/FarmService", [
 			data_villages,
 			data_log,
 			data_farm,
-			villages_town
+			villages_town,
+			grid_town
 	){
 	return (function FarmService(
 			$rootScope,
@@ -137,6 +183,10 @@ define("robotTW2/services/FarmService", [
 				for (var j = 0; j < t_ciclo; j++) {
 					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
 						villages_town.loaded(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))
+					}
+					
+					if(!grid_town.load(coordX + (map_chunk_size * i) / conf.MAP_CHUNCK_LEN, coordY + (map_chunk_size * j) / conf.MAP_CHUNCK_LEN)){
+						grid_town.loaded(coordX + (map_chunk_size * i) / conf.MAP_CHUNCK_LEN, coordY + (map_chunk_size * j) / conf.MAP_CHUNCK_LEN);
 					}
 					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size};
 				};
@@ -553,7 +603,7 @@ define("robotTW2/services/FarmService", [
 					resolve_grid(reg.villages)
 				}
 
-				if(reg.loaded){
+				if(grid_town.load(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN)){
 					$timeout.cancel(t);
 					t = undefined;
 					console.log("reg loaded")
