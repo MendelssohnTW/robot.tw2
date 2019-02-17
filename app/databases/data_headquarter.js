@@ -24,7 +24,7 @@ define("robotTW2/databases/data_headquarter", [
 
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 			: true,
+			initialized 			: false,
 			activated 				: true,
 			hotkey					: conf.HOTKEY.HEADQUARTER,
 			interval				: conf.INTERVAL.HEADQUARTER,
