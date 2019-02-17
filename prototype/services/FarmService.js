@@ -155,16 +155,8 @@ define("robotTW2/services/FarmService", [
 			var coordX = Math.trunc(old_coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 			var coordY = Math.trunc(old_coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
-			var cicx = 0;
-			if(Math.trunc(distX / conf.MAP_CHUNCK_LEN) / (distX / conf.MAP_CHUNCK_LEN) < 1){
-				cicx = 1;
-			}
-			var cicy = 0;
-			if(Math.trunc(distY / conf.MAP_CHUNCK_LEN) / (distY / conf.MAP_CHUNCK_LEN) < 1){
-				cicy = 1;
-			}
-			var t_cicloX = (Math.trunc((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.trunc((x - distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN + cicx
-			var t_cicloY = (Math.trunc((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.trunc((y - distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN + cicy
+			var t_cicloX = (Math.round((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((x - distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN
+			var t_cicloY = (Math.round((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((y - distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN
 
 			var map_chunk_size_x = Math.round((distX * 2 + (old_coordX - coordX)) / t_cicloX);
 			var map_chunk_size_y = Math.round((distY * 2 + (old_coordY - coordY)) / t_cicloY);
