@@ -35,6 +35,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var httpService 			= injector.get("httpService");
 	var windowManagerService 	= injector.get("windowManagerService");
 	var modelDataService	 	= injector.get("modelDataService");
+	var mapService	 			= injector.get("mapService");
 	var socketService		 	= injector.get("socketService");
 	var storageService		 	= injector.get("storageService")
 	var buildingService		 	= injector.get("buildingService");
@@ -565,7 +566,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					d.className = "min-max-btn";
 					var e = document.createElement("a");
 					e.className = "btn-orange icon-26x26-" + (c ? "minus" : "plus"),
-					c || (b.nextSibling.style.display = "none"),
+					!c ? (b.nextElementSibling.style.display = "none") : (b.nextElementSibling.style.display = ""),
 					d.appendChild(e),
 					b.appendChild(d),
 					d.addEventListener("click", function() {
@@ -913,6 +914,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "groupService");
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
+			robotTW2.register("services", "windowDisplayService");
 
 
 			return robotTW2.services;
@@ -2023,7 +2025,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-								robotTW2.loadScript("/databases/data_data.js");
+//								robotTW2.loadScript("/databases/data_data.js");
 								robotTW2.loadScript("/databases/data_log.js");
 
 								robotTW2.services.$timeout(function(){

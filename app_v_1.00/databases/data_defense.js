@@ -24,7 +24,7 @@ define("robotTW2/databases/data_defense", [
 	}
 
 	var dataNew = {
-			auto_initialize			: true,
+			auto_initialize			: false,
 			initialized 			: true,
 			activated 				: true,
 			recon		 			: unitTypesRenameRecon,

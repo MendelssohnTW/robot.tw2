@@ -24,7 +24,7 @@ define("robotTW2/databases/data_recon", [
 
 
 	var dataNew = {
-			auto_initialize			: true,
+			auto_initialize			: false,
 			initialized 			: true,
 			activated 				: true,
 			hotkey					: conf.HOTKEY.RECON,
