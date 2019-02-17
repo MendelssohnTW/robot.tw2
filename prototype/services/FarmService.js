@@ -202,10 +202,10 @@ define("robotTW2/services/FarmService", [
 			if(lx > 0) {
 				ly = Object.keys(grid[0]).length
 				if(ly <= 0) {
-					return [];
+					return listaGrid;
 				}
 			} else {
-				return [];
+				return listaGrid;
 			}
 
 			for(tx = 0; tx < lx; tx++) {
