@@ -185,7 +185,6 @@ define("robotTW2/services/FarmService", [
 			};
 
 //			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
-
 			return {grid: grid};
 		}
 		, exec = function (cmd_preset) {
