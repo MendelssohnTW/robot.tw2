@@ -132,15 +132,11 @@
 									<h5 class="twx-section collapse">{{getName(key)}}</h5>
 									<table id="preset-list">
 										<colgroup>
-											<col width="2%">
-											<col width="46%">
-											<col width="4%">
-											<col width="46%">
-											<col width="2%">
+											<col width="50%">
+											<col width="50%">
 										</colgroup>
 										<tbody>
 											<tr>
-												<td></td>
 												<td class="cell-rigth cell-top">
 													<h5 class="twx-section">{{priority}}</h5>
 													<table id="preset-list">
@@ -153,7 +149,7 @@
 														<tbody>
 															<tr
 																ng-repeat="buildingOrder in obj.buildingorder[obj.selected.value]"
-																style="height: 64px">
+																style="height: 68px">
 																<td class="content"
 																	ng-class="{'resource-text' : selected_village_buildingOrder[obj.data.villageId] == buildingOrder}">
 																	<div class="name-wrapper">
@@ -181,7 +177,6 @@
 														</tbody>
 													</table>
 												</td>
-												<td></td>
 												<td class="cell-right cell-top">
 													<h5 class="twx-section">{{levels}}</h5>
 													<table id="preset-list">
@@ -193,7 +188,7 @@
 														<tbody>
 															<tr
 																ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]"
-																style="height: 64px">
+																style="height: 68px">
 																<td class="content">
 																	<div class="name-wrapper">
 																		<span class="name">{{getKey(buildingLimit)}}</span>
@@ -212,7 +207,6 @@
 														</tbody>
 													</table>
 												</td>
-												<td></td>
 											</tr>
 										</tbody>
 									</table>
