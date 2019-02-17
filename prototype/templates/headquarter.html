@@ -11,10 +11,7 @@
 			<div class="scroll-wrap headquarter" style="margin-bottom: 100px">
 				<h5 class="twx-section collapse">{{settings}}</h5>
 				<div>
-					<div>
-						<span
-							ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span>{{headquarter_running}}
-					</div>
+
 					<table class="tbl-border-light tbl-striped tbl-content">
 						<colgroup>
 							<col width="33%">
@@ -49,7 +46,7 @@
 								ng-model="data_headquarter.reserva.iron"></td>
 						</tr>
 						<tr>
-							<td>
+							<td rowspan=2>
 								<table>
 									<colgroup>
 										<col width="50%">
@@ -75,6 +72,10 @@
 										<td class="cell-left"><span>{{seq_int}}</span></td>
 									</tr>
 								</table>
+								<div>
+									<span
+										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span>{{headquarter_running}}
+								</div>
 							</td>
 							<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
 						</tr>
