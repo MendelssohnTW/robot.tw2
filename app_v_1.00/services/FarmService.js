@@ -1,52 +1,82 @@
-define("robotTW2/services/villages_town", function(){
-	var loadGrid = function(){
-		var g = setupGrid();
-		for (x = 0; x < 1000; x++) {
-			for (y = 0; y < 1000; y++) {
-				g[x][y] = {"id": null, "loaded":false}
-			}	
-		}
-		return g
+function loadGrid(limit){
+	var g = setupGrid(limit);
+	for (x = 0; x < limit; x++) {
+		for (y = 0; y < limit; y++) {
+			g[x][y] = {"loaded": false}
+		}	
 	}
-	setupGrid = function () {
-		var i, t = 0,
-		arr;
+	return g
+}
 
-		for (i = 0, arr = []; i < 1000; i++) {
-			arr[i] = null;
-		}
-		return arr.concat().map(function (elem) {
-			return arr.concat();
-		});
+function setupGrid(limit){
+	var i, t = 0,
+	arr;
+
+	for (i = 0, arr = []; i < limit; i++) {
+		arr[i] = null;
 	}
-	, serv = {}
-	, grid = loadGrid();
+	return arr.concat().map(function (elem) {
+		return arr.concat();
+	});
+}
+
+define("robotTW2/services/grid_town", ["robotTW2/conf"], function(conf){
+	var limit = 0;
+	if(1000 % conf.MAP_CHUNCK_LEN > 0){
+		limit = (Math.trunc(1000 / conf.MAP_CHUNCK_LEN) + 1)
+	} else {
+		limit = 1000 / conf.MAP_CHUNCK_LEN
+	}
+	var serv = {}
+	, grad = loadGrid(limit);
 
 	serv.renew = function(){
-		grid = loadGrid();
+		grad = loadGrid(limit);
+		return grad;
+	}
+
+	serv.loaded = function(i, j){
+		grad[i][j].loaded = true;
+	}
+
+	serv.load = function(i, j){
+		return grad[i][j].loaded;
+	}
+
+	Object.setPrototypeOf(grad, serv);
+
+	return grad
+})
+
+define("robotTW2/services/villages_town", function(){
+	var serv = {}
+	, grid = loadGrid(1000);
+
+	serv.renew = function(){
+		grid = loadGrid(1000);
 		return grid;
 	}
 
-	serv.loaded = function(x1, x2, y1, y2){
-		for (i = x1; i <= x2; i++){
-			for (j = y1; j <= y2; j++){
-				grid[i][j].loaded = true;
-			}	
-		}
-	}
-
-	serv.load = function(x1, x2, y1, y2){
-		var list = []
-		, loaded = true;
-		for (i = x1; i <= x2; i++){
-			for (j = y1; j <= y2; j++){
-				if(!grid[i][j].loaded){
-					loaded = false
-				}
-			}
-		}
-		return loaded
-	}
+//	serv.loaded = function(x1, x2, y1, y2){
+//		for (i = x1; i <= x2; i++){
+//			for (j = y1; j <= y2; j++){
+//				grid[i][j].loaded = true;
+//			}	
+//		}
+//	}
+//
+//	serv.load = function(x1, x2, y1, y2){
+//		var list = []
+//		, loaded = true;
+//		for (i = x1; i <= x2; i++){
+//			for (j = y1; j <= y2; j++){
+//				if(!grid[i][j].loaded){
+//					loaded = false
+//				}
+//			}
+//		}
+//		return loaded
+//	}
 
 	Object.setPrototypeOf(grid, serv);
 
@@ -64,6 +94,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/databases/data_log",
 	"robotTW2/databases/data_farm",
 	"robotTW2/services/villages_town",
+	"robotTW2/services/grid_town",
 	], function(
 			robotTW2,
 			version,
@@ -75,7 +106,8 @@ define("robotTW2/services/FarmService", [
 			data_villages,
 			data_log,
 			data_farm,
-			villages_town
+			villages_town,
+			grid_town
 	){
 	return (function FarmService(
 			$rootScope,
@@ -95,59 +127,54 @@ define("robotTW2/services/FarmService", [
 		, interval_init = null
 		, countCommands = {}
 		, completion_loaded = !1
-		, setupGrid = function (len) {
-			var i, t = 0,
-			arr;
+		setupGrid = function (t_ciclo_x, t_ciclo_y) {
+			var i
+			, t = 0
+			, arr_x = []
+			, arr_y = [];
 
-			for (i = 0, arr = []; i < len; i++) {
-				arr[i] = null;
+			for (i = 0; i < t_ciclo_x; i++) {
+				arr_x[i] = null
 			}
-			return arr.concat().map(function (elem) {
-				return arr.concat();
+
+			for (i = 0; i < t_ciclo_y; i++) {
+				arr_y[i] = null
+			}
+
+			return arr_x.concat().map(function (elem) {
+				return arr_y.concat()
 			});
 		}
-		, loadMap = function (x, y, dist) {
+		, loadMap = function (x, y, distX, distY) {
 
-			var old_coordX = x - dist;
-			var old_coordY = y - dist;
-			var ciclos = 0;
+			var old_coordX = x - distX;
+			var old_coordY = y - distY;
+			var ciclosX = 0;
+			var ciclosY = 0;
 
 			var coordX = Math.trunc(old_coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 			var coordY = Math.trunc(old_coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
-			Math.trunc(dist / conf.MAP_CHUNCK_LEN) / (dist / conf.MAP_CHUNCK_LEN) < 1 ? ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN) + 1 : ciclos = Math.trunc(dist / conf.MAP_CHUNCK_LEN);
+			var t_cicloX = (Math.round((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((x - distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN
+			var t_cicloY = (Math.round((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((y - distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN
 
-			var t_ciclo = 0;
-			if(dist < conf.MAP_CHUNCK_LEN){
-				t_ciclo = 1;
-			}
+			var grid = setupGrid(t_cicloX, t_cicloY)
 
-			if (ciclos % 2 < 1) {
-				t_ciclo = t_ciclo + ciclos + 1;
-			} else {
-				t_ciclo = t_ciclo + ciclos;
-			}
-
-			var map_chunk_size = Math.round((dist * 2 + (x - dist - coordX)) / t_ciclo);
-
-			var grid = setupGrid(t_ciclo)
-			, list_excet = [];
-
-			for (var i = 0; i < t_ciclo; i++) {
-				for (var j = 0; j < t_ciclo; j++) {
-					villages_town.loaded(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))
-//					let loaded_d = false;
-//					if(!villages_town.load(coordX + (map_chunk_size * i), coordX + (map_chunk_size * (i + 1)), coordY + (map_chunk_size * j), coordY + (map_chunk_size * (j + 1)))){
-//					loaded_d = false;
-//					} else {
-//					loaded_d = true;
+			for (var i = 0; i < t_cicloX; i++) {
+				for (var j = 0; j < t_cicloY; j++) {
+//					if(!villages_town.load(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))){
+//						villages_town.loaded(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))
 //					}
-					grid[i][j] = {"x": coordX + (map_chunk_size * i), "y": coordY + (map_chunk_size * j), "dist": map_chunk_size, "loaded": false};
+					
+//					if(!grid_town.load((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN)){
+//						grid_town.loaded((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN);
+//					}
+					grid[i][j] = {"x": coordX + (conf.MAP_CHUNCK_LEN * i), "y": coordY + (conf.MAP_CHUNCK_LEN * j), "distX": conf.MAP_CHUNCK_LEN, "distY": conf.MAP_CHUNCK_LEN};
 				};
 			};
 
-			for (var i = t_ciclo - 1; i >= 0; i--){
-				for (var j = t_ciclo - 1; j >= 0 ; j--){
+			for (var i = t_cicloX - 1; i >= 0; i--){
+				for (var j = t_cicloY - 1; j >= 0 ; j--){
 					if(grid[i][j] == null){
 						grid[i].splice(0, 1)
 						if(!grid[i].length){
@@ -158,7 +185,7 @@ define("robotTW2/services/FarmService", [
 			};
 
 //			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
-
+			
 			return {grid: grid};
 		}
 		, exec = function (cmd_preset) {
@@ -167,20 +194,30 @@ define("robotTW2/services/FarmService", [
 			, preset_id = cmd_preset.preset_id
 			, village_id = cmd_preset.village_id
 
-			var load_map = loadMap(x, y, data_villages.villages[village_id].presets[preset_id].max_journey_distance)
+			var load_map = loadMap(x, y, data_villages.villages[village_id].presets[preset_id].max_journey_distance, data_villages.villages[village_id].presets[preset_id].max_journey_distance)
 			, grid = load_map.grid
 			, listaGrid = []
-			, l = Object.keys(grid).length
+			, lx = Object.keys(grid).length
+			, ly = 0
+			if(lx > 0) {
+				ly = Object.keys(grid[0]).length
+				if(ly <= 0) {
+					return {listaGrid: listaGrid};
+				}
+			} else {
+				return {listaGrid: listaGrid};
+			}
 
-			for(tx = 0; tx < l; tx++) {
-				for(ty = 0; ty < l; ty++) {
+			for(tx = 0; tx < lx; tx++) {
+				for(ty = 0; ty < ly; ty++) {
 					listaGrid.push({
 						x			: grid[tx][ty].x,
 						y			: grid[tx][ty].y,
-						dist		: grid[tx][ty].dist,
+						distX		: grid[tx][ty].distX,
+						distY		: grid[tx][ty].distY,
 						village_id	: village_id,
-						villages	: [],
-						loaded		: grid[tx][ty].loaded
+						villages	: []
+//						loaded		: grid[tx][ty].loaded
 					});
 				}
 			};
@@ -486,11 +523,14 @@ define("robotTW2/services/FarmService", [
 				}, conf_conf.LOADING_TIMEOUT + 20000);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
-					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
-						reg.loaded = true;
+					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.distX, height: reg.distY}, function (data) {
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
+							if(!grid_town.load(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN)){
+								grid_town.loaded(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN);
+							}
+							reg.loaded = true;
 							var listaVil = angular.copy(data.villages)
 							, x2 = cmd_preset.x
 							, y2 = cmd_preset.y
@@ -526,9 +566,9 @@ define("robotTW2/services/FarmService", [
 
 				function search_for_town(reg, resolve_grid, cmd_preset){
 					var x1 = reg.x
-					, x2 = reg.x + reg.dist
+					, x2 = reg.x + reg.distX
 					, y1 = reg.y
-					, y2 = reg.y + reg.dist
+					, y2 = reg.y + reg.distY
 					, listaVil = []
 
 					for (x = x1; x < x2; x++) {
@@ -557,7 +597,7 @@ define("robotTW2/services/FarmService", [
 					resolve_grid(reg.villages)
 				}
 
-				if(reg.loaded){
+				if(grid_town.load(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN)){
 					$timeout.cancel(t);
 					t = undefined;
 					console.log("reg loaded")
@@ -586,7 +626,14 @@ define("robotTW2/services/FarmService", [
 								, listaGrid = load_exec.listaGrid
 								if(!listaGrid.length){
 									console.log("sem listaGrid para " + JSON.stringify(cmd_preset))
-									return
+									if(promise_preset_queue.length){
+										cmd_preset = promise_preset_queue.shift();
+										t(cmd_preset)
+									} else {
+										data_log.farm.push({"text":$filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+										data_log.set()
+										resol()
+									}
 								}
 								loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 							})
