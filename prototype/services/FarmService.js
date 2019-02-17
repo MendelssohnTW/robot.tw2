@@ -57,26 +57,26 @@ define("robotTW2/services/villages_town", function(){
 		return grid;
 	}
 
-	serv.loaded = function(x1, x2, y1, y2){
-		for (i = x1; i <= x2; i++){
-			for (j = y1; j <= y2; j++){
-				grid[i][j].loaded = true;
-			}	
-		}
-	}
-
-	serv.load = function(x1, x2, y1, y2){
-		var list = []
-		, loaded = true;
-		for (i = x1; i <= x2; i++){
-			for (j = y1; j <= y2; j++){
-				if(!grid[i][j].loaded){
-					loaded = false
-				}
-			}
-		}
-		return loaded
-	}
+//	serv.loaded = function(x1, x2, y1, y2){
+//		for (i = x1; i <= x2; i++){
+//			for (j = y1; j <= y2; j++){
+//				grid[i][j].loaded = true;
+//			}	
+//		}
+//	}
+//
+//	serv.load = function(x1, x2, y1, y2){
+//		var list = []
+//		, loaded = true;
+//		for (i = x1; i <= x2; i++){
+//			for (j = y1; j <= y2; j++){
+//				if(!grid[i][j].loaded){
+//					loaded = false
+//				}
+//			}
+//		}
+//		return loaded
+//	}
 
 	Object.setPrototypeOf(grid, serv);
 
@@ -162,13 +162,13 @@ define("robotTW2/services/FarmService", [
 
 			for (var i = 0; i < t_cicloX; i++) {
 				for (var j = 0; j < t_cicloY; j++) {
-					if(!villages_town.load(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))){
-						villages_town.loaded(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))
-					}
+//					if(!villages_town.load(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))){
+//						villages_town.loaded(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))
+//					}
 					
-					if(!grid_town.load((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN)){
-						grid_town.loaded((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN);
-					}
+//					if(!grid_town.load((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN)){
+//						grid_town.loaded((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN);
+//					}
 					grid[i][j] = {"x": coordX + (conf.MAP_CHUNCK_LEN * i), "y": coordY + (conf.MAP_CHUNCK_LEN * j), "distX": conf.MAP_CHUNCK_LEN, "distY": conf.MAP_CHUNCK_LEN};
 				};
 			};
@@ -518,6 +518,9 @@ define("robotTW2/services/FarmService", [
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
+							if(!grid_town.load(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN)){
+								grid_town.loaded(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN);
+							}
 							reg.loaded = true;
 							var listaVil = angular.copy(data.villages)
 							, x2 = cmd_preset.x
