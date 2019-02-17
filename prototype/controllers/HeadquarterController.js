@@ -27,6 +27,12 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 
+		$scope.data_villages.map(function(key, elem){
+			var data = getVillageData(key);
+			angular.extend(elem, data)
+			return {[key] : elem};
+		})
+
 		var update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			$scope.data_villages = data_villages;
@@ -55,19 +61,17 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
-			if (!$scope.$$phase) {
-				var x = getVillageData(vid).x
-				var y = getVillageData(vid).y
-				var name = getVillageData(vid).name
-				return "(" + x + "/" + y + ")"
-			} else {
-				return ""
-			}
+//			var x = getVillageData(vid).x
+//			var y = getVillageData(vid).y
+//			var name = getVillageData(vid).name
+//			return "(" + x + "/" + y + ")"
+			return "(" + $scope.data_villages[vid].x + "/" + $scope.data_villages[vid].y + ")"
 		}
 
 		$scope.getName = function(vid){
 			if(!vid){return}
-			return getVillageData(vid).name
+//			return getVillageData(vid).name
+			return $scope.data_villages[vid].name
 		}
 
 		$scope.getTimeRest = function(){
