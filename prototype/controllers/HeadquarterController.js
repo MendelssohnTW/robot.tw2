@@ -184,9 +184,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_headquarter.set();
 		}, true)
 
-
-		$scope.recalcScrollbar();
-//		$scope.setCollapse();
+		$scope.setCollapse();
 
 		return $scope;
 	}
