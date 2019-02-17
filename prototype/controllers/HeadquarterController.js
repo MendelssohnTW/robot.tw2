@@ -43,6 +43,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
 		
+		$scope.openVillageInfo = services.windowDisplayService.openVillageInfo;
+		
 		$scope.jumpToVillage = function(vid){
 			var x = getVillageData(vid).x
 			var y = getVillageData(vid).y
