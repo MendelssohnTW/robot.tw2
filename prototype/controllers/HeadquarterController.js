@@ -38,16 +38,22 @@ define("robotTW2/controllers/HeadquarterController", [
 //			if (!$scope.$$phase) {$scope.$apply();}
 //		}
 		
+		function getVillageData(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
+		}
+		
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
-			var x = services.modelDataService.getSelectedCharacter().getVillage(vid).data.x
-			var y = services.modelDataService.getSelectedCharacter().getVillage(vid).data.y
-			return "(" + x + "/" + y + ")"
+			var x = getVillageData(vid).x
+			var y = getVillageData(vid).y
+			var name = getVillageData(vid).name
+			return name + " (" + x + "/" + y + ")"
 		}
 		
 		$scope.getName = function(vid){
 			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid).data.name
+			return getVillageData(vid).name
 		}
 		
 		$scope.getTimeRest = function(){
