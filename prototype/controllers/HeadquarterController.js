@@ -55,10 +55,14 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
-			var name = getVillageData(vid).name
-			return "(" + x + "/" + y + ")"
+			if (!$scope.$$phase) {
+				var x = getVillageData(vid).x
+				var y = getVillageData(vid).y
+				var name = getVillageData(vid).name
+				return "(" + x + "/" + y + ")"
+			} else {
+				return ""
+			}
 		}
 
 		$scope.getName = function(vid){
