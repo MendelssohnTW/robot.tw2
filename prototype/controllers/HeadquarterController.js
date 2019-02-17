@@ -32,25 +32,27 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_villages = data_villages;
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-		
+
 //		$scope.toggleSelect = function(selected){
-//			console.log(selected)
-//			if (!$scope.$$phase) {$scope.$apply();}
+//		console.log(selected)
+//		if (!$scope.$$phase) {$scope.$apply();}
 //		}
-		
+
 		function getVillageData(vid){
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
-		
-		$scope.openVillageInfo = services.windowDisplayService.openVillageInfo;
-		
+
+		$scope.openVillageInfo = function(vid){
+			services.windowDisplayService.openVillageInfo(vid);
+		}
+
 		$scope.jumpToVillage = function(vid){
 			var x = getVillageData(vid).x
 			var y = getVillageData(vid).y
 			mapService.jumpToVillage(x, y);
 		}
-		
+
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
 			var x = getVillageData(vid).x
@@ -58,12 +60,12 @@ define("robotTW2/controllers/HeadquarterController", [
 			var name = getVillageData(vid).name
 			return "(" + x + "/" + y + ")"
 		}
-		
+
 		$scope.getName = function(vid){
 			if(!vid){return}
 			return getVillageData(vid).name
 		}
-		
+
 		$scope.getTimeRest = function(){
 			return $scope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
@@ -157,31 +159,31 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!data) {return} 
 			update();
 		})
-		
+
 		update();
 
 
 //		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
-		
+
 		$scope.$watch("data_logs.headquarter", function(){
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
 		}, true)
-		
+
 		$scope.$watch("data_villages", function(){
 			if(!$scope.data_villages){return}
 			data_villages = $scope.data_villages;
 			data_villages.set();
 		}, true)
-		
+
 		$scope.$watch("data_headquarter", function(){
 			if(!$scope.data_headquarter){return}
 			data_headquarter = $scope.data_headquarter;
 			data_headquarter.set();
 		}, true)
-		
+
 
 		$scope.recalcScrollbar();
 		$scope.setCollapse();
