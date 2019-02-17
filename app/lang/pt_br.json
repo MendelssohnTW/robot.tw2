@@ -25,11 +25,11 @@
 		"add": "Adicionar marcação",
 		"misc": "Diversos",
 		"colors": "Cores",
-		"right" : "Clique botão direito na aldeia",
+		"right": "Clique botão direito na aldeia",
 		"highlight_village": "Destaque de aldeia",
 		"highlight_player": "Destaque de jogador",
 		"highlight_tribe": "Destaque de tribo",
-		"floating_minimap" : "Mostrar mini mapa flutuante"
+		"floating_minimap": "Mostrar mini mapa flutuante"
 	},
 	"main": {
 		"title": "Configurações principais",
@@ -265,8 +265,7 @@
 		"text_timeout": "Tempo esgotado ",
 		"text_err": "Erro interno ",
 		"text_completed": "Dados enviados "
-	}
-	,
+	},
 	"confirm": {
 		"title": "Confirmar acesso a https",
 		"text_show": "Para acessar o servidor Ipatapp você deve liberar acesso sem certificado e se o popup desta página estiver bloqueado, então deverá ser liberado para concluir. Ou se desejar pode acessar diretamento o site ",

@@ -4,7 +4,6 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"robotTW2/databases/data_main",
-	"robotTW2/databases/data_data",
 	"robotTW2/databases/data_deposit",
 	"robotTW2/databases/data_recon"
 	], function(
@@ -13,7 +12,6 @@ define("robotTW2/controllers/MainController", [
 			providers,
 			conf,
 			data_main,
-			data_data,
 			data_deposit,
 			data_recon
 	){
@@ -23,7 +21,6 @@ define("robotTW2/controllers/MainController", [
 		var toggle = false;
 		
 		$scope.data_main = data_main;
-		$scope.data_data = data_data;
 		$scope.data_deposit = data_deposit;
 		$scope.data_recon = data_recon;
 
@@ -36,13 +33,13 @@ define("robotTW2/controllers/MainController", [
 					$scope.extensions[extension].activated = false;
 					continue
 				} else {
-					if(extension == "DATA"){
-						if($scope.data_data.possible){
-							$scope.extensions[extension].activated = true;
-						} else {
-							$scope.extensions[extension].activated = false;
-						}
-					}
+//					if(extension == "DATA"){
+//						if($scope.data_data.possible){
+//							$scope.extensions[extension].activated = true;
+//						} else {
+//							$scope.extensions[extension].activated = false;
+//						}
+//					}
 					var fn = arFn.fn;
 
 					if(typeof(fn.isPaused) == "function"){
@@ -79,15 +76,15 @@ define("robotTW2/controllers/MainController", [
 				$scope.extensions[ext.name].status = $scope.disabled;
 			} else {
 				var fn = arFn.fn;
-				if(ext.name == "DATA"){
-					if($scope.data_data.possible){
-						$scope.extensions[ext.name].activated = true;
-					} else {
-						$scope.extensions[ext.name].activated = false;
-					}
-				} else {
+//				if(ext.name == "DATA"){
+//					if($scope.data_data.possible){
+//						$scope.extensions[ext.name].activated = true;
+//					} else {
+//						$scope.extensions[ext.name].activated = false;
+//					}
+//				} else {
 					$scope.extensions[ext.name].activated = true;
-				}
+//				}
 				
 				if(ext.initialized){
 					if(!fn.isInitialized()){
@@ -137,11 +134,11 @@ define("robotTW2/controllers/MainController", [
 			}
 		})
 		
-		$scope.$watch("data_data", function () {
-			if(!$scope.data_data) {return}
-			data_data = $scope.data_data;
-			data_data.set();
-		}, true)
+//		$scope.$watch("data_data", function () {
+//			if(!$scope.data_data) {return}
+//			data_data = $scope.data_data;
+//			data_data.set();
+//		}, true)
 
 		$scope.$watch("data_deposit", function () {
 			if(!$scope.data_deposit) {return}

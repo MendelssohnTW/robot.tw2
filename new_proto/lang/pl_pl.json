@@ -25,11 +25,11 @@
 		"add": "Adicionar marcação",
 		"misc": "Miscellaneous",
 		"colors": "Colors",
-		"right" : "Villages right click action",
+		"right": "Villages right click action",
 		"highlight_village": "Village highlight",
 		"highlight_player": "Player highlight",
 		"highlight_tribe": "Tribe highlight",
-		"floating_minimap" : "Show floating mini map"
+		"floating_minimap": "Show floating mini map"
 	},
 	"main": {
 		"title": "Core Settings",

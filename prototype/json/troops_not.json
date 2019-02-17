@@ -1,15 +1,15 @@
 {
-  "RECRUIT": [
-    "knight",
-    "snob",
-    "doppelsoldner",
-    "trebuchet"
-  ],
-  "FARM": [
-    "knight",
-    "snob",
-    "doppelsoldner",
-    "trebuchet",
-    "ram"
-  ]
+	"RECRUIT": [
+		"knight",
+		"snob",
+		"doppelsoldner",
+		"trebuchet"
+	],
+	"FARM": [
+		"knight",
+		"snob",
+		"doppelsoldner",
+		"trebuchet",
+		"ram"
+	]
 }

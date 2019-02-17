@@ -25,11 +25,11 @@
 		"add": "Adicionar marcação",
 		"misc": "Diversos",
 		"colors": "Cores",
-		"right" : "Clique botão direito na aldeia",
+		"right": "Clique botão direito na aldeia",
 		"highlight_village": "Destaque de aldeia",
 		"highlight_player": "Destaque de jogador",
 		"highlight_tribe": "Destaque de tribo",
-		"floating_minimap" : "Mostrar mini mapa flutuante"
+		"floating_minimap": "Mostrar mini mapa flutuante"
 	},
 	"main": {
 		"title": "Configurações principais",

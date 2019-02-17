@@ -18,14 +18,15 @@
 						</colgroup>
 						<tr>
 							<td class="cell-right">{{text_interval_village}}</td>
-							<td><input id="input-ms" class="input-border inpt" type="time"
-								step="1" min="00:00:00" max="23:59:59"
+							<td><input id="input-ms" class="input-border inpt"
+								type="time" step="1" min="00:00:00" max="23:59:59"
 								value="{{data_secondvillage.interval | date : 'HH:mm:ss' : 'UTC'}}"
 								disable></td>
 						</tr>
 						<tr>
 							<td class="cell-right">{{text_interval}}</td>
-							<td><input id="input-ms" class="input-border inpt disabled" type=text value="{{getTimeRest()}}" disabled></td>
+							<td><input id="input-ms" class="input-border inpt disabled"
+								type=text value="{{getTimeRest()}}" disabled></td>
 						</tr>
 					</table>
 
