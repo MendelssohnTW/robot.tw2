@@ -193,14 +193,17 @@
 														<tbody>
 															<tr
 																ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]">
-																<td class="cell-right"><span>{{getKey(buildingLimit)}}</span><span
-																	class="span-icon" ng-class="getClass(buildingLimit)"></span></td>
-																<td class="cell-right"><span>{{getValue(buildingLimit)}}</span></td>
-																<td class="cell-right"><span
-																	class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																	ng-click="levelup(obj, buildingLimit)"></span> <span
-																	class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																	ng-click="leveldown(obj, buildingLimit)"></span></td>
+																<td class="cell-right">
+																	<div class="span-icon"
+																		ng-class="getClass(buildingLimit)">{{getKey(buildingLimit)}}</div>
+																</td>
+																<td class="cell-right"><div>{{getValue(buildingLimit)}}</div></td>
+																<td class="cell-right"><div
+																		class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																		ng-click="levelup(obj, buildingLimit)"></div>
+																	<div
+																		class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																		ng-click="leveldown(obj, buildingLimit)"></div></td>
 															</tr>
 														</tbody>
 													</table>
