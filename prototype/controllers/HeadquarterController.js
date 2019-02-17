@@ -38,6 +38,13 @@ define("robotTW2/controllers/HeadquarterController", [
 //			if (!$scope.$$phase) {$scope.$apply();}
 //		}
 		
+		$scope.getVcoordStart = function(vid){
+			if(!vid){return}
+			var x = services.modelDataService.getSelectedCharacter().getVillage(vid).data.x
+			var y = services.modelDataService.getSelectedCharacter().getVillage(vid).data.y
+			return "(" + x + "/" + y + ")"
+		}
+		
 		$scope.getTimeRest = function(){
 			return $scope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}

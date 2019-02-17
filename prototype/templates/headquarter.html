@@ -92,8 +92,7 @@
 						</colgroup>
 						<tbody>
 							<tr ng-repeat="vill in data_villages.villages">
-								<td class="cell-top"><span>{{vill.data.name}}
-										({{vill.data.x}}|{{vill.data.y}})</span></td>
+								<td class="cell-top"><span>{{getVcoordStart(vill)}}</span></td>
 								<td class="cell-top">
 									<div class="checkbox box-border-dark">
 										<div tooltip tooltip-content="{{text_executebuildingorder}}"
