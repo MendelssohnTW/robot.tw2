@@ -198,7 +198,7 @@ define("robotTW2/services/FarmService", [
 			, grid = load_map.grid
 			, listaGrid = []
 			, lx = Object.keys(grid).length
-			, ly = Object.keys(Object.keys(grid)).length
+			, ly = Object.keys(grid[0]).length
 
 			for(tx = 0; tx < lx; tx++) {
 				for(ty = 0; ty < ly; ty++) {
