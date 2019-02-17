@@ -193,9 +193,10 @@
 														<tbody>
 															<tr
 																ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]">
-																<td class="cell-right">
+																<td class="content">
+																	<div class="name-wrapper">{{getKey(buildingLimit)}}</div>
 																	<div class="span-icon"
-																		ng-class="getClass(buildingLimit)">{{getKey(buildingLimit)}}</div>
+																		ng-class="getClass(buildingLimit)"></div>
 																</td>
 																<td class="cell-right"><div>{{getValue(buildingLimit)}}</div></td>
 																<td class="cell-right"><div
