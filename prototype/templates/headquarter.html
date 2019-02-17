@@ -7,14 +7,14 @@
 		</ul>
 	</header>
 	<div class="win-main" scrollbar="">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings screen-overview">
 			<div class="scroll-wrap headquarter" style="margin-bottom: 100px">
-				<div>
-					<span
-						ng-class="{'icon-26x26-dot-green' : status == running, 'icon-26x26-dot-red' : status ==stopped , 'icon-26x26-dot-blue' : status == paused, 'icon-26x26-dot-yellow' : status == disabled}"></span>
-				</div>
 				<h5 class="twx-section collapse">{{settings}}</h5>
-				<div class="screen-overview">
+				<div>
+					<div>
+						<span
+							ng-class="{'icon-26x26-dot-green' : status == running, 'icon-26x26-dot-red' : status ==stopped , 'icon-26x26-dot-blue' : status == paused, 'icon-26x26-dot-yellow' : status == disabled}"></span>
+					</div>
 					<table class="tbl-border-light tbl-striped">
 						<colgroup>
 							<col width="33%">
@@ -84,7 +84,8 @@
 
 				<h5 class="twx-section collapse">{{settings_for_villages}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-striped tbl-content" id="preset-list">
+					<table class="tbl-border-light tbl-striped tbl-content"
+						id="preset-list">
 						<colgroup>
 							<col width="20%">
 							<col width="64px">
