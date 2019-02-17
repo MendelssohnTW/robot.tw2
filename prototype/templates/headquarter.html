@@ -6,7 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main screen-overview" scrollbar="">
+	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
 			<div class="scroll-wrap headquarter" style="margin-bottom: 100px">
 				<div>
@@ -14,7 +14,7 @@
 						ng-class="{'icon-26x26-dot-green' : status == running, 'icon-26x26-dot-red' : status ==stopped , 'icon-26x26-dot-blue' : status == paused, 'icon-26x26-dot-yellow' : status == disabled}"></span>
 				</div>
 				<h5 class="twx-section collapse">{{settings}}</h5>
-				<div>
+				<div class="screen-overview">
 					<table class="tbl-border-light tbl-striped">
 						<colgroup>
 							<col width="33%">
