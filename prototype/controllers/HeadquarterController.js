@@ -45,6 +45,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			return "(" + x + "/" + y + ")"
 		}
 		
+		$scope.getName = function(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid).data.name
+		}
+		
 		$scope.getTimeRest = function(){
 			return $scope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
