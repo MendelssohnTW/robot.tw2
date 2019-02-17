@@ -140,8 +140,8 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<td class="cell-space"></td>
-												<td class="cell-space">
+												<td></td>
+												<td class="cell-rigth cell-top">
 													<h5 class="twx-section">{{priority}}</h5>
 													<table class="tbl-border-light tbl-striped"
 														id="preset-list">
@@ -157,12 +157,14 @@
 																style="height: 56px">
 																<td
 																	ng-class="{'resource-text' : selected_village_buildingOrder[obj.data.villageId] == buildingOrder}"
-																	class="cell-right"><span>{{getKey(buildingOrder)}}</span><span
-																	class="span-icon" ng-class="getClass(buildingOrder)"></span></td>
-																<td class="cell-right"><span>{{getValue(buildingOrder)}}</span></td>
-																<td class="cell-right"><span
+																	class="cell-right"><div>
+																		<span class="span-icon"
+																			ng-class="getClass(buildingOrder)"> </span>{{getKey(buildingOrder)}}
+																	</div></td>
+																<td class="cell-right"><div>{{getValue(buildingOrder)}}</div></td>
+																<td class="cell-right"><div
 																	class="size-12x12 btn-orange icon-26x26-rte-building"
-																	ng-click="selectvillagebuildingOrder(obj.data.villageId, buildingOrder)"></span></td>
+																	ng-click="selectvillagebuildingOrder(obj.data.villageId, buildingOrder)"></div></td>
 																<td class="cell-right"><div
 																		ng-show="selected_village_buildingOrder[obj.data.villageId] == buildingOrder">
 																		<span
@@ -175,8 +177,8 @@
 														</tbody>
 													</table>
 												</td>
-												<td class="cell-right"></td>
-												<td class="cell-right">
+												<td></td>
+												<td class="cell-right cell-top">
 													<h5 class="twx-section">{{levels}}</h5>
 													<table class="tbl-border-light tbl-striped"
 														id="preset-list">
