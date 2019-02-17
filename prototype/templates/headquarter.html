@@ -94,11 +94,13 @@
 						<tbody>
 							<tr ng-repeat="(key, obj) in data_villages.villages">
 								<td class="cell-top">
-									<div class="name" ng-click="openVillageInfo(key)">
-										<span>{{getName(key)}}</span>
-									</div>
-									<div class="coordinates" ng-click="jumpToVillage(key)">
-										<span>{{getVcoordStart(key)}}</span>
+									<div class="village">
+										<div class="name" ng-click="openVillageInfo(key)">
+											<span>{{getName(key)}}</span>
+										</div>
+										<div class="coordinates" ng-click="jumpToVillage(key)">
+											<span>{{getVcoordStart(key)}}</span>
+										</div>
 									</div>
 								</td>
 								<td class="cell-top">
