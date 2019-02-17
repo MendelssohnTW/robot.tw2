@@ -8,6 +8,10 @@
 	margin-right: 6px;
 }
 
+.robotTW2 .hidden-content {
+	display: none;
+}
+
 .robotTW2 .center {
 	display: flex;
 	justify-content: center
