@@ -153,7 +153,7 @@
 														<tbody>
 															<tr
 																ng-repeat="buildingOrder in obj.buildingorder[obj.selected.value]"
-																style="height: 56px">
+																style="height: 64px">
 																<td class="content"
 																	ng-class="{'resource-text' : selected_village_buildingOrder[obj.data.villageId] == buildingOrder}">
 																	<div class="name-wrapper">
@@ -192,7 +192,8 @@
 														</colgroup>
 														<tbody>
 															<tr
-																ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]">
+																ng-repeat="buildingLimit in obj.buildinglimit[obj.selected.value]"
+																style="height: 64px">
 																<td class="content">
 																	<div class="name-wrapper">
 																		<span class="name">{{getKey(buildingLimit)}}</span>
