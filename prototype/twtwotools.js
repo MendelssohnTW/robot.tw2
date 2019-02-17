@@ -34,7 +34,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var $compile 				= injector.get('$compile');
 	var httpService 			= injector.get("httpService");
 	var windowManagerService 	= injector.get("windowManagerService");
-	var windowDisplayService 	= injector.get("windowDisplayService");
 	var modelDataService	 	= injector.get("modelDataService");
 	var mapService	 			= injector.get("mapService");
 	var socketService		 	= injector.get("socketService");
@@ -915,6 +914,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "groupService");
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
+			robotTW2.register("services", "windowDisplayService");
 
 
 			return robotTW2.services;
