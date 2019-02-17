@@ -37,7 +37,6 @@ define("robotTW2/databases/data_main", [
 	var data = {
 			data_alert: 		data_alert,
 			data_attack: 		data_attack,
-			data_data: 			data_data,
 			data_defense: 		data_defense,
 			data_deposit: 		data_deposit,
 			data_farm: 			data_farm,
