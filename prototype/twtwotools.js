@@ -566,7 +566,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					d.className = "min-max-btn";
 					var e = document.createElement("a");
 					e.className = "btn-orange icon-26x26-" + (c ? "minus" : "plus"),
-					!c ? (b.nextSibling.style.display = "none") : (b.nextSibling.style.display = ""),
+					!c ? (b.nextElementSibling.style.display = "none") : (b.nextElementSibling.style.display = ""),
 					d.appendChild(e),
 					b.appendChild(d),
 					d.addEventListener("click", function() {
