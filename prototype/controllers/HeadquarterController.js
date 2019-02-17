@@ -50,7 +50,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.jumpToVillage = function(vid){
 			var x = getVillageData(vid).x
 			var y = getVillageData(vid).y
-			mapService.jumpToVillage(x, y);
+			services.mapService.jumpToVillage(x, y);
 		}
 
 		$scope.getVcoordStart = function(vid){
