@@ -567,16 +567,16 @@ var robotTW2 = window.robotTW2 = undefined;
 					var e = document.createElement("a");
 					e.className = "btn-orange icon-26x26-" + (c ? "minus" : "plus"),
 					!c ? (b.nextElementSibling.style.display = "none") : (b.nextElementSibling.style.display = ""),
-					d.appendChild(e),
-					b.appendChild(d),
-					d.addEventListener("click", function() {
-						"none" === b.nextElementSibling.style.display ? (b.nextElementSibling.style.display = "",
-								e.className = e.className.replace("plus", "minus"),
-								c = !0) : (b.nextElementSibling.style.display = "none",
-										e.className = e.className.replace("minus", "plus"),
-										c = !1),
-										self.recalcScrollbar()
-					})
+							d.appendChild(e),
+							b.appendChild(d),
+							d.addEventListener("click", function() {
+								"none" === b.nextElementSibling.style.display ? (b.nextElementSibling.style.display = "",
+										e.className = e.className.replace("plus", "minus"),
+										c = !0) : (b.nextElementSibling.style.display = "none",
+												e.className = e.className.replace("minus", "plus"),
+												c = !1),
+												self.recalcScrollbar()
+							})
 				})
 			}
 			angular.extend(data.scope, self)
@@ -1068,7 +1068,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/ConfirmController.js");
 				}
 			},
-			onerror = function onerror($event){
+			onerror = function onerror($event, data){
+				if($event == "Uncaught TypeError: Illegal invocation") {
+					return
+				}
 				count++;
 				if(count < 10) {
 					service = new WebSocket(base.URL_SOCKET);
