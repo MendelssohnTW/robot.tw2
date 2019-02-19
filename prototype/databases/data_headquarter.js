@@ -41,8 +41,8 @@ define("robotTW2/databases/data_headquarter", [
 			selects			    	: Object.keys(conf.BUILDINGORDER).map(function(elem){
 				return {
 					id		: ++id,
-					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter")
-//					value	: elem
+					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
+					value	: elem
 				}
 			}),
 			standard				: {
