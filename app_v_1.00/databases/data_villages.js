@@ -98,6 +98,9 @@ define("robotTW2/databases/data_villages", [
 		})
 		return updated;
 	}
+	
+	var id = 0;
+	
 	db_villages.verifyVillages = function (villagesExtended, callback){
 
 		if(services.modelDataService.getPresetList().isLoadedValue){
@@ -108,9 +111,13 @@ define("robotTW2/databases/data_villages", [
 				if(!Object.keys(data_villages.villages).map(function(v){
 					return v
 				}).find(f=>f==m)){
-					var elem =  Object.keys(conf.BUILDINGORDER).map(function(elem){
-						return elem
-					})[0];
+					var selects = Object.keys(conf.BUILDINGORDER).map(function(elem){
+						return {
+							id		: ++id,
+							name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
+							value	: elem
+						}
+					})
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
@@ -118,11 +125,7 @@ define("robotTW2/databases/data_villages", [
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
 						presets					: getPst(m),
-						selected				: {
-							id: 0,
-							name: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
-							value: elem
-						}
+						selected				: selects.find(f=>f.name=="standard")
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
 					callback(true)
@@ -133,9 +136,6 @@ define("robotTW2/databases/data_villages", [
 							presets					: getPst(m)
 						})
 					} else {
-						var elem =  Object.keys(conf.BUILDINGORDER).map(function(elem){
-							return elem
-						})[0];
 						angular.extend(villagesExtended[m], {
 							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 							buildingorder 			: conf.BUILDINGORDER,
@@ -145,8 +145,8 @@ define("robotTW2/databases/data_villages", [
 							presets					: getPst(m),
 							selected				: {
 								id: 0,
-								name: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
-								value: elem
+								name: services.$filter("i18n")("standard", services.$rootScope.loc.ale, "headquarter"),
+								value: "standard"
 							}
 						})
 					}

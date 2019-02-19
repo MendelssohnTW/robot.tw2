@@ -20,7 +20,7 @@ define("robotTW2/databases/data_headquarter", [
 		return database.get("data_headquarter")
 	}
 	
-	var id = 1;
+	var id = 0;
 
 	var dataNew = {
 			auto_initialize			: false,
@@ -40,7 +40,7 @@ define("robotTW2/databases/data_headquarter", [
 			},
 			selects			    	: Object.keys(conf.BUILDINGORDER).map(function(elem){
 				return {
-					id		: id++,
+					id		: ++id,
 					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
 					value	: elem
 				}

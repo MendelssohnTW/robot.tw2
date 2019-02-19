@@ -31,7 +31,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var elem = $scope.data_villages.villages[key]
-			var data = getVillageData(key);
+			var data = getVillage(key);
 			angular.extend(elem, {"data": data})
 			return elem;
 		})
@@ -47,10 +47,14 @@ define("robotTW2/controllers/HeadquarterController", [
 //		if (!$scope.$$phase) {$scope.$apply();}
 //		}
 
+		function getVillage(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
+		}
+		
 		function getVillageData(vid){
 			if(!vid){return}
 			return $scope.data_villages.villages[vid].data;
-//			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
 
 		$scope.openVillageInfo = function(vid){
@@ -58,22 +62,29 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.jumpToVillage = function(vid){
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
+			if(!vid){return}
+			var data = getVillageData(vid);
+			if(!data){return}
+			var x = data.x
+			var y = data.y
 			services.mapService.jumpToVillage(x, y);
 		}
 
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
-			var name = getVillageData(vid).name
+			var data = getVillageData(vid);
+			if(!data){return "(.../...)"}
+			var x = data.x
+			var y = data.y
+			var name = data.name
 			return "(" + x + "/" + y + ")"
 		}
 
 		$scope.getName = function(vid){
 			if(!vid){return}
-			return getVillageData(vid).name
+			var data = getVillageData(vid);
+			if(!data){return}
+			return data.name
 		}
 
 		$scope.getTimeRest = function(){
