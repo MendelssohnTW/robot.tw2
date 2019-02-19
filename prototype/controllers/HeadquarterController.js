@@ -96,14 +96,17 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.getKey = function(buildingOrder){
+			if(!buildingOrder){return}
 			return services.$filter("i18n")(Object.keys(buildingOrder)[0], services.$rootScope.loc.ale, "headquarter");
 		}
 
 		$scope.getClass = function(buildingOrder){
+			if(!buildingOrder){return}
 			return "icon-20x20-building-" + Object.keys(buildingOrder)[0];
 		}
 
 		$scope.getValue = function(buildingOrder){
+			if(!buildingOrder){return}
 			return Object.values(buildingOrder)[0];
 		}
 		
