@@ -78,7 +78,9 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.getName = function(vid){
 			if(!vid){return}
-			return getVillageData(vid).name
+			var data = getVillageData(vid);
+			if(!data){return}
+			return data.name
 		}
 
 		$scope.getTimeRest = function(){
