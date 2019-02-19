@@ -89,9 +89,7 @@ define("robotTW2/databases/data_villages", [
 		Object.keys(data_villages.villages).map(function(m){
 			return m
 		}).forEach(function(v){
-			if(!Object.keys(villagesExtended).map(function(m){
-				return m
-			}).find(f=>f==v)){
+			if(!villagesExtended[m]){
 				delete data_villages.villages[v]
 				updated = true;
 			}
