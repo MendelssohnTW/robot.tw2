@@ -95,33 +95,33 @@ define("robotTW2/controllers/HeadquarterController", [
 			return $scope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
 
-		$scope.getKey = function(buildingOrder){
-			if(!buildingOrder){return}
-			return services.$filter("i18n")(Object.keys(buildingOrder)[0], services.$rootScope.loc.ale, "headquarter");
+		$scope.getKey = function(buildingorder){
+			if(!buildingorder){return}
+			return services.$filter("i18n")(Object.keys(buildingorder)[0], services.$rootScope.loc.ale, "headquarter");
 		}
 
-		$scope.getClass = function(buildingOrder){
-			if(!buildingOrder){return}
-			return "icon-20x20-building-" + Object.keys(buildingOrder)[0];
+		$scope.getClass = function(buildingorder){
+			if(!buildingorder){return}
+			return "icon-20x20-building-" + Object.keys(buildingorder)[0];
 		}
 
-		$scope.getValue = function(buildingOrder){
-			if(!buildingOrder){return}
-			return Object.values(buildingOrder)[0];
+		$scope.getValue = function(buildingorder){
+			if(!buildingorder){return}
+			return Object.values(buildingorder)[0];
 		}
 
-		$scope.up = function(vill, buildingOrder){
-			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]-1})
+		$scope.up = function(vill, buildingorder){
+			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingorder)[0]-1})
 			ant[Object.keys(ant)[0]] += 1
-			buildingOrder[Object.keys(buildingOrder)[0]] -= 1
+			buildingorder[Object.keys(buildingorder)[0]] -= 1
 			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.down = function(vill, buildingOrder){
-			var prox = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]+1})
+		$scope.down = function(vill, buildingorder){
+			var prox = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingorder)[0]+1})
 			prox[Object.keys(prox)[0]] -= 1
-			buildingOrder[Object.keys(buildingOrder)[0]] += 1
+			buildingorder[Object.keys(buildingorder)[0]] += 1
 			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
@@ -174,11 +174,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
-		$scope.selectvillagebuildingOrder = function(villageId, buildingOrder){
-			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
+		$scope.selectvillagebuildingorder = function(villageId, buildingorder){
+			$scope.selected_village_buildingorder[villageId] = buildingorder;
 		}
 
-		$scope.selected_village_buildingOrder = {};
+		$scope.selected_village_buildingorder = {};
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, update)
 
@@ -216,7 +216,6 @@ define("robotTW2/controllers/HeadquarterController", [
 				}
 			})
 			$scope.data_headquarter.standard = $scope.obj_standard;
-			$scope.data_headquarter.set();
 		}, true)
 
 		$scope.$watch("data_headquarter", function(){
