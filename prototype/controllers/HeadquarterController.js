@@ -28,6 +28,10 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.data_villages = data_villages;
 		
 		$scope.status = "stopped";
+		var td = $scope.data_headquarter.selects.find(f=>f.name ="standard");
+		if(td){
+			$scope.obj_standard = td.elem;	
+		}
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var elem = $scope.data_villages.villages[key]
@@ -160,8 +164,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				angular.merge(village, {
 					executebuildingorder 	: conf.executebuildingorder,
 					buildingorder 			: $scope.data_headquarter.buildingorder,
-					buildinglimit 			: $scope.data_headquarter.buildinglimit,
-					buildinglevels 			: $scope.data_headquarter.buildinglevels
+					buildinglimit 			: $scope.data_headquarter.buildinglimit
 				})
 			})
 //			data_villages.set();
@@ -197,6 +200,18 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_villages){return}
 			data_villages = $scope.data_villages;
 			data_villages.set();
+		}, true)
+		
+		$scope.$watch("obj_standard", function(){
+			if(!$scope.obj_standard){return}
+			Object.values(data_villages.villages).forEach(function(village){
+				village.buildingorder["standard"]
+				village.buildinglimit["standard"]
+				angular.merge(village, {
+					buildingorder 			: $scope.data_headquarter.buildingorder,
+					buildinglimit 			: $scope.data_headquarter.buildinglimit
+				})
+			})
 		}, true)
 
 		$scope.$watch("data_headquarter", function(){
