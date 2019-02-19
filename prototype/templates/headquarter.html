@@ -54,7 +54,7 @@
 										<col width="50%">
 									</colgroup>
 									<tr>
-										<td class="cell-right"><span>{{seq_flex}}</span></td>
+										<td class="cell-right"><div>{{seq_flex}}</div></td>
 										<td class="cell-center"><div switch-slider=""
 												border="true" enabled="true" value="data_headquarter.seq"
 												vertical="false" size="'56x28'">
@@ -69,12 +69,13 @@
 													</div>
 												</div>
 											</div></td>
-										<td class="cell-left"><span>{{seq_int}}</span></td>
+										<td class="cell-left"><div>{{seq_int}}</div></td>
 									</tr>
 								</table>
 								<div>
-									<span
-										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span>{{headquarter_running}}
+									<div
+										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
+									{{headquarter_running}}
 								</div>
 							</td>
 							<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
