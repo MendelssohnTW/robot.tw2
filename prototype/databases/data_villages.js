@@ -111,7 +111,7 @@ define("robotTW2/databases/data_villages", [
 			Object.keys(villagesExtended).map(function(m){
 				if(!Object.keys(data_villages.villages).map(function(v){
 					return v
-				}).find(f=>f==m)){
+				}).find(f=>f==m && f.buildingorder != undefined && f.buildinglimit != undefined && f.buildinglevels != undefined)){
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
