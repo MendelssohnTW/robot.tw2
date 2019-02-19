@@ -1068,7 +1068,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/ConfirmController.js");
 				}
 			},
-			onerror = function onerror($event, data){
+			onerror = function onerror($event, url, data){
 				if($event == "Uncaught TypeError: Illegal invocation") {
 					return
 				}
