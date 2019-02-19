@@ -31,7 +31,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var elem = $scope.data_villages.villages[key]
-			var data = getVillageData(key);
+			var data = getVillage(key);
 			angular.extend(elem, {"data": data})
 			return elem;
 		})
@@ -47,10 +47,14 @@ define("robotTW2/controllers/HeadquarterController", [
 //		if (!$scope.$$phase) {$scope.$apply();}
 //		}
 
+		function getVillage(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
+		}
+		
 		function getVillageData(vid){
 			if(!vid){return}
 			return $scope.data_villages.villages[vid].data;
-//			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
 
 		$scope.openVillageInfo = function(vid){
