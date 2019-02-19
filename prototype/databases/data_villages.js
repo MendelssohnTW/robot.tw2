@@ -98,9 +98,9 @@ define("robotTW2/databases/data_villages", [
 		})
 		return updated;
 	}
-	
+
 	var id = 0;
-	
+
 	db_villages.verifyVillages = function (villagesExtended, callback){
 
 		if(services.modelDataService.getPresetList().isLoadedValue){
@@ -109,9 +109,13 @@ define("robotTW2/databases/data_villages", [
 			let update = false;
 			if(data_villages.villages == undefined){data_villages.villages = {}}
 			Object.keys(villagesExtended).map(function(m){
-				if(!Object.keys(data_villages.villages).map(function(v){
-					return v
-				}).find(f=>f == m && data_villages.villages[f].buildingorder != undefined && data_villages.villages[f].buildinglimit != undefined && data_villages.villages[f].buildinglevels != undefined)){
+				if(!Object.keys(data_villages.villages).map(
+						function(v){
+							return v
+						}
+				).find(f=>f == m)
+				&& data_villages.villages[m].buildingorder != undefined && data_villages.villages[m].buildinglimit != undefined && data_villages.villages[m].buildinglevels != undefined
+				){
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
@@ -202,7 +206,7 @@ define("robotTW2/databases/data_villages", [
 //	services.$rootScope.data_villages = data_villages;
 
 //	services.$rootScope.$watch("data_villages", function(){
-//		db_villages.set()
+//	db_villages.set()
 //	}, true)
 	return data_villages;
 })
