@@ -106,18 +106,12 @@ define("robotTW2/databases/data_villages", [
 		if(services.modelDataService.getPresetList().isLoadedValue){
 			if(!data_villages){data_villages = {}}
 			if(!villagesExtended){villagesExtended = {}}
+			let update = false;
 			if(data_villages.villages == undefined){data_villages.villages = {}}
 			Object.keys(villagesExtended).map(function(m){
 				if(!Object.keys(data_villages.villages).map(function(v){
 					return v
 				}).find(f=>f==m)){
-//					var selects = Object.keys(conf.BUILDINGORDER).map(function(elem){
-//						return {
-//							id		: ++id,
-//							name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter")
-////							value	: elem
-//						}
-//					})
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
@@ -128,34 +122,20 @@ define("robotTW2/databases/data_villages", [
 						selected				: null//selects.find(f=>f.name=="standard")
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
-					callback(true)
+					update = true;
 					return m;
 				} else {
 					if(data_villages.villages[m].presets){
 						angular.merge(villagesExtended[m], {
 							presets					: getPst(m)
 						})
-					} else {
-						angular.extend(villagesExtended[m], {
-							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-							buildingorder 			: conf.BUILDINGORDER,
-							buildinglimit 			: conf.BUILDINGLIMIT,
-							buildinglevels 			: conf.BUILDINGLEVELS,
-							farm_activate 			: true,
-							presets					: getPst(m),
-							selected				: null//{
-//								id: 0,
-//								name: services.$filter("i18n")("standard", services.$rootScope.loc.ale, "headquarter"),
-//								value: "standard"
-//							}
-						})
+						angular.extend(data_villages.villages[m], villagesExtended[m])
+						update = true;
 					}
-					angular.extend(data_villages.villages[m], villagesExtended[m])
-					callback(true)
 					return m;
 				}
 			})
-			callback(false)
+			callback(update)
 			return;
 		} else {
 			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){return db_villages.verifyVillages(villagesExtended, callback)});
@@ -183,16 +163,14 @@ define("robotTW2/databases/data_villages", [
 			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
 				db_villages.set();
-			} else {
-				if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
-					data_villages = {};
-					data_villages.version = conf.VERSION.VILLAGES
-					db_villages.set();
-					db_villages.updateVillages();
-				}
 			} 
 		}, function(){
-			db_villages.set();
+			if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
+				data_villages = {};
+				data_villages.version = conf.VERSION.VILLAGES
+				db_villages.set();
+				db_villages.updateVillages();
+			}
 		})
 	}
 
