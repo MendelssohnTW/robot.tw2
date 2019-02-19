@@ -19,7 +19,7 @@ define("robotTW2/databases/data_headquarter", [
 	db_headquarter.get = function(){
 		return database.get("data_headquarter")
 	}
-	
+
 	var id = 0;
 
 	var dataNew = {
@@ -41,10 +41,14 @@ define("robotTW2/databases/data_headquarter", [
 			selects			    	: Object.keys(conf.BUILDINGORDER).map(function(elem){
 				return {
 					id		: ++id,
-					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
-					value	: elem
+					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter")
+//					value	: elem
 				}
-			})
+			}),
+			standard				: {
+				"buildingorder": conf.BUILDINGORDER["standard"],
+				"buildinglimit": conf.BUILDINGLIMIT["standard"]
+			}
 
 	}
 
