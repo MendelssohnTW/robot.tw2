@@ -162,8 +162,8 @@ define("robotTW2/databases/data_villages", [
 		.then(function(){
 			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
-				db_villages.set();
-			} 
+			}
+			db_villages.set();
 		}, function(){
 			if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
 				data_villages = {};
