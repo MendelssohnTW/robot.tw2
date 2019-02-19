@@ -174,7 +174,6 @@ define("robotTW2/databases/data_villages", [
 			villagesExtended[village_id] = {}
 		})
 
-//		var villagesExtended = angular.merge({}, villages)
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){
 				updated ? res() : rej()
@@ -183,16 +182,17 @@ define("robotTW2/databases/data_villages", [
 		.then(function(){
 			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
+				db_villages.set();
 			} else {
 				if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
+					data_villages = {};
 					data_villages.version = conf.VERSION.VILLAGES
+					db_villages.set();
+					db_villages.updateVillages();
 				}
 			} 
-			db_villages.set();
-//			database.set("data_villages", data_villages, true)	
 		}, function(){
 			db_villages.set();
-//			database.set("data_villages", data_villages, true)
 		})
 	}
 
