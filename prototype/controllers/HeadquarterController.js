@@ -103,7 +103,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			return "icon-20x20-building-" + Object.keys(buildingOrder)[0];
 		}
 
-		$scope.getValue = function(){
+		$scope.getValue = function(buildingOrder){
 			return Object.values(buildingOrder)[0];
 		}
 		
