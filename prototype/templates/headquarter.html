@@ -119,10 +119,10 @@
 														<div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="up(obj_standard, buildingOrder)"></div>
+																ng-click="up(obj_standard.buildingOrder, buildingOrder)"></div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="down(obj_standard, buildingOrder)"></div>
+																ng-click="down(obj_standard.buildingOrder, buildingOrder)"></div>
 														</div>
 													</td>
 												</tr>
@@ -142,17 +142,17 @@
 													style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey(buildingLimit)}}</span>
+															<span class="name">{{getKey(obj_standard.buildingLimit)}}</span>
 														</div>
 														<div class="span-icon" ng-class="getClass(buildingLimit)"></div>
 													</td>
-													<td class="cell-right"><div>{{getValue(buildingLimit)}}</div></td>
+													<td class="cell-right"><div>{{getValue(obj_standard.buildingLimit)}}</div></td>
 													<td class="cell-right"><div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-															ng-click="levelup(obj_standard, buildingLimit)"></div>
+															ng-click="levelup(obj_standard.buildingLimit, buildingLimit)"></div>
 														<div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-															ng-click="leveldown(obj_standard, buildingLimit)"></div></td>
+															ng-click="leveldown(obj_standard.buildingLimit, buildingLimit)"></div></td>
 												</tr>
 											</tbody>
 										</table>

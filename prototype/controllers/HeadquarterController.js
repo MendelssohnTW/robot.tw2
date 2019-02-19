@@ -28,12 +28,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.data_villages = data_villages;
 		
 		$scope.status = "stopped";
-		$scope.obj_standard = {};
-		var td = $scope.data_headquarter.selects.find(f=>f.name ="standard");
-		if(td){
-			$scope.obj_standard["buildingorder"] = td.elem || conf.BUILDINGLIMIT["standard"]
-			$scope.obj_standard["buildinglimit"] = td.elem || conf.BUILDINGLIMIT["standard"];
-		}
+		$scope.obj_standard = $scope.data_headquarter.standard;
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = $scope.data_villages.villages[key]
