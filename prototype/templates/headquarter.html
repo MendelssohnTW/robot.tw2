@@ -103,25 +103,25 @@
 												<col width="26">
 											</colgroup>
 											<tbody>
-												<tr
+												<tr ng-repeat="buildingOrder_standard in obj_standard.buildingorder"
 													style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey_standard()}}</span>
+															<span class="name">{{getKey(buildingOrder_standard)}}</span>
 														</div>
-														<div class="span-icon" ng-class="getClass_standard()"></div>
+														<div class="span-icon" ng-class="getClass(buildingOrder_standard)"></div>
 													</td>
-													<td class="cell-right"><div>{{getValue_standard()}}</div></td>
+													<td class="cell-right"><div>{{getValue(buildingOrder_standard)}}</div></td>
 													<td class="cell-right"><div
 															class="size-12x12 btn-orange icon-26x26-rte-building"></div></td>
 													<td class="cell-right">
 														<div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="up_standard(obj_standard.buildingOrder, buildingOrder)"></div>
+																ng-click="up(buildingOrder_standard, buildingOrder)"></div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="down_standard(obj_standard.buildingOrder, buildingOrder)"></div>
+																ng-click="down(buildingOrder_standard, buildingOrder)"></div>
 														</div>
 													</td>
 												</tr>

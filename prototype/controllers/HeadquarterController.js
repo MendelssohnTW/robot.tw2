@@ -107,18 +107,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			return Object.values(buildingOrder)[0];
 		}
 		
-		$scope.getKey_standard = function(){
-			return services.$filter("i18n")(Object.keys($scope.obj_standard.buildingOrder)[0], services.$rootScope.loc.ale, "headquarter");
-		}
-
-		$scope.getClass_standard = function(){
-			return "icon-20x20-building-" + Object.keys($scope.obj_standard.buildingOrder)[0];
-		}
-
-		$scope.getValue_standard = function(){
-			return Object.values($scope.obj_standard.buildingOrder)[0];
-		}
-
 		$scope.up = function(vill, buildingOrder){
 			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]-1})
 			ant[Object.keys(ant)[0]] += 1
