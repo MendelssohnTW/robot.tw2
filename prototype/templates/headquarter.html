@@ -107,22 +107,21 @@
 													style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey(obj_standard.buildingOrder)}}</span>
+															<span class="name">{{getKey_standard()}}</span>
 														</div>
-														<div class="span-icon" ng-class="getClass(buildingOrder)"></div>
+														<div class="span-icon" ng-class="getClass_standard()"></div>
 													</td>
-													<td class="cell-right"><div>{{getValue(obj_standard.buildingOrder)}}</div></td>
+													<td class="cell-right"><div>{{getValue_standard()}}</div></td>
 													<td class="cell-right"><div
-															class="size-12x12 btn-orange icon-26x26-rte-building"
-															ng-click="selectvillagebuildingOrder(obj_standard.data.villageId, buildingOrder)"></div></td>
+															class="size-12x12 btn-orange icon-26x26-rte-building"></div></td>
 													<td class="cell-right">
 														<div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="up(obj_standard.buildingOrder, buildingOrder)"></div>
+																ng-click="up_standard(obj_standard.buildingOrder, buildingOrder)"></div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="down(obj_standard.buildingOrder, buildingOrder)"></div>
+																ng-click="down_standard(obj_standard.buildingOrder, buildingOrder)"></div>
 														</div>
 													</td>
 												</tr>
