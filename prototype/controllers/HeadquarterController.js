@@ -26,7 +26,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		var self = this;
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
-		
+
 		$scope.status = "stopped";
 		$scope.obj_standard = $scope.data_headquarter.standard;
 
@@ -55,7 +55,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
-		
+
 		function getVillageData(vid){
 			if(!vid){return}
 			return $scope.data_villages.villages[vid].data;
@@ -109,7 +109,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!buildingOrder){return}
 			return Object.values(buildingOrder)[0];
 		}
-		
+
 		$scope.up = function(vill, buildingOrder){
 			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]-1})
 			ant[Object.keys(ant)[0]] += 1
@@ -204,16 +204,16 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_villages = $scope.data_villages;
 			data_villages.set();
 		}, true)
-		
+
 		$scope.$watch("obj_standard", function(){
 			if(!$scope.obj_standard){return}
 			Object.values(data_villages.villages).forEach(function(village){
-				village.buildingorder["standard"]
-				village.buildinglimit["standard"]
-				angular.merge(village, {
-					buildingorder 			: $scope.data_headquarter.buildingorder,
-					buildinglimit 			: $scope.data_headquarter.buildinglimit
-				})
+				if(village.value == "standard"){
+					angular.merge(village, {
+						buildingorder 			: $scope.obj_standard.buildingorder,
+						buildinglimit 			: $scope.obj_standard.buildinglimit
+					})
+				}
 			})
 		}, true)
 
