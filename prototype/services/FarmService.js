@@ -623,7 +623,6 @@ define("robotTW2/services/FarmService", [
 								var load_exec = exec(cmd_preset)
 								, listaGrid = load_exec.listaGrid
 								if(!listaGrid.length){
-									console.log("sem listaGrid para " + JSON.stringify(cmd_preset))
 									if(promise_preset_queue.length){
 										cmd_preset = promise_preset_queue.shift();
 										t(cmd_preset)
