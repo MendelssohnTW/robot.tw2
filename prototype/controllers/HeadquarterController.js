@@ -208,13 +208,15 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.$watch("obj_standard", function(){
 			if(!$scope.obj_standard){return}
 			Object.values(data_villages.villages).forEach(function(village){
-				if(village.value == "standard"){
+				if(village.selected.value == "standard"){
 					angular.merge(village, {
 						buildingorder 			: $scope.obj_standard.buildingorder,
 						buildinglimit 			: $scope.obj_standard.buildinglimit
 					})
 				}
 			})
+			$scope.data_headquarter.standard = $scope.obj_standard;
+			$scope.data_headquarter.set();
 		}, true)
 
 		$scope.$watch("data_headquarter", function(){
