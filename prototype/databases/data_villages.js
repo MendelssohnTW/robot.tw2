@@ -108,9 +108,6 @@ define("robotTW2/databases/data_villages", [
 				if(!Object.keys(data_villages.villages).map(function(v){
 					return v
 				}).find(f=>f==m)){
-					var elem =  Object.keys(conf.BUILDINGORDER).map(function(elem){
-						return elem
-					})[0];
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
@@ -120,8 +117,8 @@ define("robotTW2/databases/data_villages", [
 						presets					: getPst(m),
 						selected				: {
 							id: 0,
-							name: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
-							value: elem
+							name: services.$filter("i18n")("standard", services.$rootScope.loc.ale, "headquarter"),
+							value: "standard"
 						}
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
@@ -133,9 +130,6 @@ define("robotTW2/databases/data_villages", [
 							presets					: getPst(m)
 						})
 					} else {
-						var elem =  Object.keys(conf.BUILDINGORDER).map(function(elem){
-							return elem
-						})[0];
 						angular.extend(villagesExtended[m], {
 							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 							buildingorder 			: conf.BUILDINGORDER,
@@ -145,8 +139,8 @@ define("robotTW2/databases/data_villages", [
 							presets					: getPst(m),
 							selected				: {
 								id: 0,
-								name: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
-								value: elem
+								name: services.$filter("i18n")("standard", services.$rootScope.loc.ale, "headquarter"),
+								value: "standard"
 							}
 						})
 					}

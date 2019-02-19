@@ -58,16 +58,21 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.jumpToVillage = function(vid){
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
+			if(!vid){return}
+			var data = getVillageData(vid);
+			if(!data){return}
+			var x = data.x
+			var y = data.y
 			services.mapService.jumpToVillage(x, y);
 		}
 
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
-			var name = getVillageData(vid).name
+			var data = getVillageData(vid);
+			if(!data){return "(.../...)"}
+			var x = data.x
+			var y = data.y
+			var name = data.name
 			return "(" + x + "/" + y + ")"
 		}
 
