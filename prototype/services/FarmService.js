@@ -600,10 +600,8 @@ define("robotTW2/services/FarmService", [
 				if(grid_town.load(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN)){
 					$timeout.cancel(t);
 					t = undefined;
-					console.log("reg loaded")
 					search_for_town(reg, resolve_grid, cmd_preset);
 				} else {
-					console.log("reg not loaded")
 					send_for_socket(reg, t, resolve_grid, cmd_preset)
 				}
 			})

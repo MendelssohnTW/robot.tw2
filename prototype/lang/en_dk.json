@@ -56,6 +56,7 @@
 		"title": "Automation of the Barracks",
 		"settings": "Global settings",
 		"settings_for_villages": "Settings per village",
+		"settings_standard": "Settings standard",
 		"init_standard": "Automatic startup",
 		"seq_int": "Integral sequence",
 		"seq_flex": "Flexible Sequence",

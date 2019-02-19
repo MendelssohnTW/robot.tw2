@@ -56,6 +56,7 @@
 		"title": "Automatização do Quartel",
 		"settings": "Configuração global",
 		"settings_for_villages": "Configurações por aldeia",
+		"settings_standard": "Configurações padrão",
 		"init_standard": "Inicialização automática",
 		"seq_int": "Sequência íntegra",
 		"seq_flex": "Sequência flexível",
