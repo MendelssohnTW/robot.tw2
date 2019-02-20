@@ -150,15 +150,19 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.upstandard = function(vill, buildingorder){
-			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingorder)[0]-1})
+		$scope.upstandard = function(key){
+			var ant = Object.keys($scope.obj_standard.buildingorder).map(
+					function(elem){
+						return {[elem]: $scope.obj_standard.buildingorder[elem]}
+					}
+			).find(f => Object.values(f)[0] == Object.values($scope.obj_standard.buildingorder[key])[0]-1)
 			ant[Object.keys(ant)[0]] += 1
 			buildingorder[Object.keys(buildingorder)[0]] -= 1
 			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.downstandard = function(vill, buildingorder){
+		$scope.downstandard = function(key){
 			var prox = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingorder)[0]+1})
 			prox[Object.keys(prox)[0]] -= 1
 			buildingorder[Object.keys(buildingorder)[0]] += 1
