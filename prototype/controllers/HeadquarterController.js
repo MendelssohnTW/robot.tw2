@@ -124,7 +124,8 @@ define("robotTW2/controllers/HeadquarterController", [
 //		return Object.values(key)[0];
 //		}
 
-		$scope.up = function(vill, key, value){
+		$scope.up = function(key_vill, vill, key, value){
+			$scope.selected_village_buildingorder[key_vill] = value;
 			var ant = vill.buildingorder[key].find(function(a,b){return Object.values(a)[0] == value - 1})
 			ant[Object.keys(ant)[0]] += 1
 			buildingorder[Object.keys(buildingorder)[0]] -= 1
@@ -132,7 +133,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.down = function(vill, key, value){
+		$scope.down = function(key_vill, vill, key, value){
+			$scope.selected_village_buildingorder[key_vill] = value;
 			var prox = vill.buildingorder[key].find(function(a,b){return Object.values(a)[0] == value + 1})
 			prox[Object.keys(prox)[0]] -= 1
 			buildingorder[Object.keys(buildingorder)[0]] += 1
@@ -228,8 +230,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
-		$scope.selectvillagebuildingorder = function(villageId, buildingorder){
-			$scope.selected_village_buildingorder[villageId] = buildingorder;
+		$scope.selectvillagebuildingorder = function(villageId, value){
+			$scope.selected_village_buildingorder[villageId] = value;
 		}
 
 		$scope.selected_village_buildingorder = {};
