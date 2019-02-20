@@ -116,10 +116,10 @@
 													<td class="cell-right"><div>{{value}}</div></td>
 													<td class="cell-right">
 														<div>
-															<div ng-show="value < 17"
+															<div ng-show="value > 0"
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																ng-click="upstandard(key)">{{$index}}</div>
-															<div ng-show="value > 0"
+															<div ng-show="value < 17"
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 																ng-click="downstandard(key)">{{$index}}</div>
 														</div>
@@ -243,10 +243,10 @@
 																		<td class="cell-right">
 																			<div
 																				ng-show="selected_village_buildingorder[key] == value">
-																				<div ng-show="value < 17"
+																				<div ng-show="value > 0 "
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																					ng-click="up(key_vill, value_vill, key, value)"></div>
-																				<div ng-show="value > 0"
+																				<div ng-show="value < 17"
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 																					ng-click="down(key_vill, value_vill, key, value)"></div>
 																			</div>
