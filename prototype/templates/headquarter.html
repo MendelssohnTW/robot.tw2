@@ -145,10 +145,10 @@
 														<div class="span-icon" ng-class="getClass(key)"></div>
 													</td>
 													<td class="cell-right"><div>{{value}}</div></td>
-													<td class="cell-right"><div
+													<td class="cell-right"><div ng-show="getMax(key, value)"
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 															ng-click="levelupstandard(key)"></div>
-														<div
+														<div ng-show="value > 0"
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 															ng-click="leveldownstandard(key)"></div></td>
 												</tr>

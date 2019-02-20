@@ -108,6 +108,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!key){return}
 			return services.$filter("i18n")(key, services.$rootScope.loc.ale, "headquarter");
 		}
+		
+		$scope.getMax = function(key, value){
+			if(!key || !value){return}
+			return value < limit_max_buildings[key].max_level ? true: false;
+		}
 
 		$scope.getClass = function(key){
 			if(!key){return}
