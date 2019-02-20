@@ -204,6 +204,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.stop_headquarter = function(){
 			services.HeadquarterService.stop();
+			$scope.data_headquarter.complete = 0
 			update()
 		}
 
