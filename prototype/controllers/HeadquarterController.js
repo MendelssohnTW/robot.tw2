@@ -111,7 +111,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.getMax = function(key, value){
 			if(!key || !value){return}
-			return value < limit_max_buildings[key].max_level ? true: false;
+			return value < limit_max_buildings[key] ? true: false;
 		}
 
 		$scope.getClass = function(key){
