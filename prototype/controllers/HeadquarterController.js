@@ -39,9 +39,6 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.status = "stopped";
 		$scope.obj_standard = $scope.data_headquarter.standard;
 
-		$scope.obj_standard.buildinglimit = convert_array_object($scope.obj_standard.buildinglimit)
-		$scope.obj_standard.buildingorder = convert_array_object($scope.obj_standard.buildingorder)
-
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = $scope.data_villages.villages[key]
 			if(!vill.selected){
