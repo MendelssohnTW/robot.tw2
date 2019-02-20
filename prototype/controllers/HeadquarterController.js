@@ -40,11 +40,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			return vill;
 		})
 
-		var buildingTypes = modelDataService.getGameData().getBuildingTypes();
-		var buildings = modelDataService.getGameData().getBuildings();
+		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes();
+		var buildings = services.modelDataService.getGameData().getBuildings();
 
 		var limit_max_buildings = {};
-		Object.values(modelDataService.getGameData().getBuildingTypes()).map(function(type){
+		Object.values(services.modelDataService.getGameData().getBuildingTypes()).map(function(type){
 			limit_max_buildings[type] = buildings[type].max_level
 			return
 		})
