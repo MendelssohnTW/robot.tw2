@@ -243,10 +243,10 @@
 																		<td class="cell-right">
 																			<div
 																				ng-show="selected_village_buildingorder[value_vill.data.villageId] == key">
-																				<div
+																				<div ng-show="value < 17"
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																					ng-click="up(value_vill, key, value)"></div>
-																				<div
+																				<div ng-show="value > 0"
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 																					ng-click="down(value_vill, key, value)"></div>
 																			</div>
@@ -265,7 +265,7 @@
 																</colgroup>
 																<tbody>
 																	<tr
-																		ng-repeat="(key, value) in obj.buildinglimit[obj.selected.value]"
+																		ng-repeat="(key, value) in value_vill.buildinglimit[value_vill.selected.value]"
 																		style="height: 68px">
 																		<td class="content">
 																			<div class="name-wrapper">
@@ -275,10 +275,10 @@
 																				ng-class="getClass(key)"></div>
 																		</td>
 																		<td class="cell-right"><div>{{value}}</div></td>
-																		<td class="cell-right"><div
+																		<td class="cell-right"><div div ng-show="getMax(key, value)"
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																				ng-click="levelup(value_vill, key)"></div>
-																			<div
+																			<div ng-show="value > 0"
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 																				ng-click="leveldown(value_vill, key)"></div></td>
 																	</tr>
