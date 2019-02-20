@@ -23,15 +23,6 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.resume = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 
-		function convert_array_object(obj) {
-			obj = obj.reduce(function(result, item) {
-				var key = Object.keys(item)[0];
-				result[key] = item[key];
-				return result;
-			}, {});
-			return obj
-		}
-
 		var self = this;
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
@@ -46,11 +37,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 			var data = getVillage(key);
 			angular.extend(vill, {"data": data})
-
-			vill.buildinglimit = convert_array_object(buildinglimit);
-			vill.buildingorder = convert_array_object(buildingorder);
-			vill.buildinglevels = convert_array_object(buildinglevels);
-
 			return vill;
 		})
 
