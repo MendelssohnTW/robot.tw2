@@ -109,7 +109,7 @@
 													style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey(value[key])}}</span>
+															<span class="name">{{getKey(key)}}</span>
 														</div>
 														<div class="span-icon"
 															ng-class="getClass(key)"></div>
@@ -121,10 +121,10 @@
 														<div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="upstandard(value[key])"></div>
+																ng-click="upstandard(key)"></div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="downstandard(value[key])"></div>
+																ng-click="downstandard(key)"></div>
 														</div>
 													</td>
 												</tr>
@@ -143,17 +143,17 @@
 												<tr ng-repeat="(key, value) in obj_standard.buildinglimit" style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey(value[key])}}</span>
+															<span class="name">{{getKey(key)}}</span>
 														</div>
-														<div class="span-icon" ng-class="getClass(value[key])"></div>
+														<div class="span-icon" ng-class="getClass(key)"></div>
 													</td>
 													<td class="cell-right"><div>{{value}}</div></td>
 													<td class="cell-right"><div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-															ng-click="levelupstandard(value[key])"></div>
+															ng-click="levelupstandard(key)"></div>
 														<div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-															ng-click="leveldownstandard(value[key])"></div></td>
+															ng-click="leveldownstandard(key)"></div></td>
 												</tr>
 											</tbody>
 										</table>
@@ -234,24 +234,24 @@
 																		<td class="content"
 																			ng-class="{'resource-text' : selected_village_buildingorder[value_vill.data.villageId] == buildingorder}">
 																			<div class="name-wrapper">
-																				<span class="name">{{getKey(value[key])}}</span>
+																				<span class="name">{{getKey(key)}}</span>
 																			</div>
 																			<div class="span-icon"
-																				ng-class="getClass(value[key])"></div>
+																				ng-class="getClass(key)"></div>
 																		</td>
 																		<td class="cell-right"><div>{{value}}</div></td>
 																		<td class="cell-right"><div
 																				class="size-12x12 btn-orange icon-26x26-rte-building"
-																				ng-click="selectvillagebuildingorder(value_vill.data.villageId, value[key])"></div></td>
+																				ng-click="selectvillagebuildingorder(value_vill.data.villageId, key)"></div></td>
 																		<td class="cell-right">
 																			<div
-																				ng-show="selected_village_buildingorder[value_vill.data.villageId] == value[key]">
+																				ng-show="selected_village_buildingorder[value_vill.data.villageId] == key">
 																				<div
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																					ng-click="up(value_vill, value[key], value)"></div>
+																					ng-click="up(value_vill, key, value)"></div>
 																				<div
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																					ng-click="down(value_vill, value[key], value)"></div>
+																					ng-click="down(value_vill, key, value)"></div>
 																			</div>
 																		</td>
 																	</tr>
@@ -272,18 +272,18 @@
 																		style="height: 68px">
 																		<td class="content">
 																			<div class="name-wrapper">
-																				<span class="name">{{getKey(value[key])}}</span>
+																				<span class="name">{{getKey(key)}}</span>
 																			</div>
 																			<div class="span-icon"
-																				ng-class="getClass(value[key])"></div>
+																				ng-class="getClass(key)"></div>
 																		</td>
 																		<td class="cell-right"><div>{{value}}</div></td>
 																		<td class="cell-right"><div
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																				ng-click="levelup(value_vill, value[key])"></div>
+																				ng-click="levelup(value_vill, key)"></div>
 																			<div
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																				ng-click="leveldown(value_vill, value[key])"></div></td>
+																				ng-click="leveldown(value_vill, key)"></div></td>
 																	</tr>
 																</tbody>
 															</table>

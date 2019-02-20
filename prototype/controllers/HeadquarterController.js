@@ -23,12 +23,24 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.resume = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 
+		function convert_array_object(obj) {
+			obj = obj.reduce(function(result, item) {
+				var key = Object.keys(item)[0];
+				result[key] = item[key];
+				return result;
+			}, {});
+			return obj
+		}
+
 		var self = this;
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 
 		$scope.status = "stopped";
 		$scope.obj_standard = $scope.data_headquarter.standard;
+
+		$scope.obj_standard.buildinglimit = convert_array_object($scope.obj_standard.buildinglimit)
+		$scope.obj_standard.buildingorder = convert_array_object($scope.obj_standard.buildingorder)
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = $scope.data_villages.villages[key]
@@ -37,6 +49,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 			var data = getVillage(key);
 			angular.extend(vill, {"data": data})
+
+			vill.buildinglimit = convert_array_object(buildinglimit);
+			vill.buildingorder = convert_array_object(buildingorder);
+			vill.buildinglevels = convert_array_object(buildinglevels);
+
 			return vill;
 		})
 
@@ -115,8 +132,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 //		$scope.getValue = function(key){
-//			if(!key){return}
-//			return Object.values(key)[0];
+//		if(!key){return}
+//		return Object.values(key)[0];
 //		}
 
 		$scope.up = function(vill, key, value){
@@ -149,7 +166,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			vill.buildinglimit[buildinglimit] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-		
+
 		$scope.upstandard = function(vill, buildingorder){
 			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingorder)[0]-1})
 			ant[Object.keys(ant)[0]] += 1
@@ -166,7 +183,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		
+
 		$scope.levelupstandard = function(buildinglimit){
 			var max_level = limit_max_buildings[buildinglimit].max_level;
 			var level = $scope.obj_standard.buildinglimit[buildinglimit] += 1;
