@@ -116,7 +116,7 @@
 													<td class="cell-right"><div>{{value}}</div></td>
 													<td class="cell-right">
 														<div>
-															<div ng-show="value > 0"
+															<div ng-show="value > 1"
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																ng-click="upstandard(key)">{{$index}}</div>
 															<div ng-show="value < 17"
@@ -148,7 +148,7 @@
 													<td class="cell-right"><div ng-show="getMax(key, value)"
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 															ng-click="levelupstandard(key)"></div>
-														<div ng-show="value > 0"
+														<div ng-show="value > 1"
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 															ng-click="leveldownstandard(key)"></div></td>
 												</tr>
@@ -238,7 +238,7 @@
 																		<td class="cell-right"><div>{{value}}</div></td>
 																		<td class="cell-right">
 																			<div>
-																				<div ng-show="value > 0 "
+																				<div ng-show="value > 1 "
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																					ng-click="up(key_vill, value_vill, key, value)"></div>
 																				<div ng-show="value < 17"
@@ -273,7 +273,7 @@
 																		<td class="cell-right"><div div ng-show="getMax(key, value)"
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																				ng-click="levelup(value_vill, key)"></div>
-																			<div ng-show="value > 0"
+																			<div ng-show="value > 1"
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 																				ng-click="leveldown(value_vill, key)"></div></td>
 																	</tr>
