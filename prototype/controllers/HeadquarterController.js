@@ -43,12 +43,6 @@ define("robotTW2/controllers/HeadquarterController", [
 		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes();
 		var buildings = services.modelDataService.getGameData().getBuildings();
 
-		var limit_max_buildings = {};
-		Object.values(services.modelDataService.getGameData().getBuildingTypes()).map(function(type){
-			limit_max_buildings[type] = buildings[type].max_level
-			return
-		})
-
 		var update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			$scope.data_villages = data_villages;
@@ -111,7 +105,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.getMax = function(key, value){
 			if(!key){return}
-			return value < limit_max_buildings[key] ? true: false;
+			return value < services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
 		}
 
 		$scope.getClass = function(key){
@@ -126,34 +120,42 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.up = function(key_vill, vill, key, value){
 			$scope.selected_village_buildingorder[key_vill] = value;
-			var ant = vill.buildingorder[key].find(function(a,b){return Object.values(a)[0] == value - 1})
-			ant[Object.keys(ant)[0]] += 1
-			buildingorder[Object.keys(buildingorder)[0]] -= 1
-			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			var ant = Object.keys(vill.buildingorder).map(
+					function(elem){
+						return {[elem]: vill.buildingorder[elem]}
+					}
+			).find(f => Object.values(f)[0] == vill.buildingorder[key] - 1)
+			vill.buildingorder[Object.keys(ant)[0]] += 1
+			vill.buildingorder[key] -= 1
+//			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
 		$scope.down = function(key_vill, vill, key, value){
 			$scope.selected_village_buildingorder[key_vill] = value;
-			var prox = vill.buildingorder[key].find(function(a,b){return Object.values(a)[0] == value + 1})
-			prox[Object.keys(prox)[0]] -= 1
-			buildingorder[Object.keys(buildingorder)[0]] += 1
-			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			var prox = Object.keys(vill.buildingorder).map(
+					function(elem){
+						return {[elem]: vill.buildingorder[elem]}
+					}
+			).find(f => Object.values(f)[0] == vill.buildingorder[key] + 1)
+			vill.buildingorder[Object.keys(ant)[0]] -= 1
+			vill.buildingorder[key] += 1
+//			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.levelup = function(vill, buildinglimit){
-			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(buildinglimit).max_level;
-			var level = vill.buildinglimit[buildinglimit] += 1;
+		$scope.levelup = function(vill, key){
+			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
+			var level = vill.buildinglimit[key] += 1;
 			if(level > max_level){
-				vill.buildinglimit[buildinglimit] -= 1
+				vill.buildinglimit[key] -= 1
 			}
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.leveldown = function(vill, buildinglimit){
-			vill.buildinglimit[buildinglimit] -= 1
+		$scope.leveldown = function(vill, key){
+			vill.buildinglimit[key] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
@@ -182,18 +184,17 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 
-		$scope.levelupstandard = function(buildinglimit){
-			var max_level = limit_max_buildings[buildinglimit].max_level;
-			var level = $scope.obj_standard.buildinglimit[buildinglimit] += 1;
+		$scope.levelupstandard = function(key){
+			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
+			var level = $scope.obj_standard.buildinglimit[key] += 1;
 			if(level > max_level){
-				$scope.obj_standard.buildinglimit[buildinglimit] -= 1
+				$scope.obj_standard.buildinglimit[key] -= 1
 			}
-
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.leveldownstandard = function(buildinglimit){
-			$scope.obj_standard.buildinglimit[buildinglimit] -= 1
+		$scope.leveldownstandard = function(key){
+			$scope.obj_standard.buildinglimit[key] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
