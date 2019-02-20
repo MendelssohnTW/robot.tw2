@@ -761,10 +761,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			) {
 
 			return (function(){
-				var levelsBuilding = [];
+				var levelsBuilding = {};
 				for (var type in buildingTypes){
 					if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
-						levelsBuilding.push({[buildingTypes[type]] : 0})
+						levelsBuilding[buildingTypes[type]] = 0;
 					}
 				}
 
