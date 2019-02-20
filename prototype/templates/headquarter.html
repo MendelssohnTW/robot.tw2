@@ -143,11 +143,11 @@
 												<tr ng-repeat="(obj, value) in obj_standard.buildinglimit" style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey(obj)}}</span>
+															<span class="name">{{getKey(value)}}</span>
 														</div>
-														<div class="span-icon" ng-class="getClass(buildinglimit_standard)"></div>
+														<div class="span-icon" ng-class="getClass(value)"></div>
 													</td>
-													<td class="cell-right"><div>{{getValue(obj)}}</div></td>
+													<td class="cell-right"><div>{{getValue(value)}}</div></td>
 													<td class="cell-right"><div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 															ng-click="levelupstandard(obj)"></div>
