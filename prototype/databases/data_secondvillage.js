@@ -22,8 +22,8 @@ define("robotTW2/databases/data_secondvillage", [
 
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 			: true,
-			activated 				: true,
+			initialized 			: false,
+			activated 				: false,
 			hotkey					: conf.HOTKEY.SECONDVILLAGE,
 			use_reroll				: false,
 			complete				: 0,

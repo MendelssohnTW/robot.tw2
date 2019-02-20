@@ -25,8 +25,8 @@ define("robotTW2/databases/data_defense", [
 
 	var dataNew = {
 			auto_initialize			: false,
-			initialized 			: true,
-			activated 				: true,
+			initialized 			: false,
+			activated 				: false,
 			recon		 			: unitTypesRenameRecon,
 			hotkey					: conf.HOTKEY.DEFENSE,
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
