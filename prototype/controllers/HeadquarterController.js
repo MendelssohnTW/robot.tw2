@@ -104,22 +104,53 @@ define("robotTW2/controllers/HeadquarterController", [
 			return $scope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
 
-		$scope.getKey = function(buildingorder){
-			if(!buildingorder){return}
-			return services.$filter("i18n")(Object.keys(buildingorder)[0], services.$rootScope.loc.ale, "headquarter");
+		$scope.getKey = function(key){
+			if(!key){return}
+			return services.$filter("i18n")(key, services.$rootScope.loc.ale, "headquarter");
 		}
 
-		$scope.getClass = function(buildingorder){
-			if(!buildingorder){return}
-			return "icon-20x20-building-" + Object.keys(buildingorder)[0];
+		$scope.getClass = function(key){
+			if(!key){return}
+			return "icon-20x20-building-" + key;
 		}
 
-		$scope.getValue = function(buildingorder){
-			if(!buildingorder){return}
-			return Object.values(buildingorder)[0];
+//		$scope.getValue = function(key){
+//			if(!key){return}
+//			return Object.values(key)[0];
+//		}
+
+		$scope.up = function(vill, key, value){
+			var ant = vill.buildingorder[key].find(function(a,b){return Object.values(a)[0] == value - 1})
+			ant[Object.keys(ant)[0]] += 1
+			buildingorder[Object.keys(buildingorder)[0]] -= 1
+			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.up = function(vill, buildingorder){
+		$scope.down = function(vill, key, value){
+			var prox = vill.buildingorder[key].find(function(a,b){return Object.values(a)[0] == value + 1})
+			prox[Object.keys(prox)[0]] -= 1
+			buildingorder[Object.keys(buildingorder)[0]] += 1
+			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+		$scope.levelup = function(vill, buildinglimit){
+			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(buildinglimit).max_level;
+			var level = vill.buildinglimit[buildinglimit] += 1;
+			if(level > max_level){
+				vill.buildinglimit[buildinglimit] -= 1
+			}
+
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+		$scope.leveldown = function(vill, buildinglimit){
+			vill.buildinglimit[buildinglimit] -= 1
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+		
+		$scope.upstandard = function(vill, buildingorder){
 			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingorder)[0]-1})
 			ant[Object.keys(ant)[0]] += 1
 			buildingorder[Object.keys(buildingorder)[0]] -= 1
@@ -127,7 +158,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.down = function(vill, buildingorder){
+		$scope.downstandard = function(vill, buildingorder){
 			var prox = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingorder)[0]+1})
 			prox[Object.keys(prox)[0]] -= 1
 			buildingorder[Object.keys(buildingorder)[0]] += 1
@@ -135,20 +166,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.levelup = function(vill, buildinglimit){
-			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(Object.keys(vill.buildinglimit)[0]).max_level;
-			var level = vill.buildinglimit[Object.keys(vill.buildinglimit)[0]] += 1;
-			if(level > max_level){
-				vill.buildinglimit[Object.keys(vill.buildinglimit)[0]] -= 1
-			}
-
-			if (!$scope.$$phase) {$scope.$apply();}
-		}
-
-		$scope.leveldown = function(vill, buildinglimit){
-			vill.buildinglimit[Object.keys(vill.buildinglimit)[0]] -= 1
-			if (!$scope.$$phase) {$scope.$apply();}
-		}
 		
 		$scope.levelupstandard = function(buildinglimit){
 			var max_level = limit_max_buildings[buildinglimit].max_level;

@@ -105,26 +105,26 @@
 											</colgroup>
 											<tbody>
 												<tr
-													ng-repeat="buildingorder_standard in obj_standard.buildingorder"
+													ng-repeat="(key, value) in obj_standard.buildingorder"
 													style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey(buildingorder_standard)}}</span>
+															<span class="name">{{getKey(key)}}</span>
 														</div>
 														<div class="span-icon"
-															ng-class="getClass(buildingorder_standard)"></div>
+															ng-class="getClass(key)"></div>
 													</td>
-													<td class="cell-right"><div>{{getValue(buildingorder_standard)}}</div></td>
+													<td class="cell-right"><div>{{value}}</div></td>
 													<td class="cell-right"><div
 															class="size-12x12 btn-orange icon-26x26-rte-building"></div></td>
 													<td class="cell-right">
 														<div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="up(buildingorder_standard, buildingorder)"></div>
+																ng-click="upstandard(key)"></div>
 															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="down(buildingorder_standard, buildingorder)"></div>
+																ng-click="downstandard(key)"></div>
 														</div>
 													</td>
 												</tr>
@@ -147,7 +147,7 @@
 														</div>
 														<div class="span-icon" ng-class="getClass(value)"></div>
 													</td>
-													<td class="cell-right"><div>{{getValue(value)}}</div></td>
+													<td class="cell-right"><div>{{value}}</div></td>
 													<td class="cell-right"><div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 															ng-click="levelupstandard(obj)"></div>
@@ -173,20 +173,20 @@
 								<col width="*">
 							</colgroup>
 							<tbody>
-								<tr ng-repeat="(key, obj) in data_villages.villages">
+								<tr ng-repeat="(key_vill, value_vill) in data_villages.villages">
 									<td class="cell-top">
 										<div class="village">
-											<div class="name" ng-click="openVillageInfo(key)">
-												{{getName(key)}}</div>
-											<div class="coordinates" ng-click="jumpToVillage(key)">
-												{{getVcoordStart(key)}}</div>
+											<div class="name" ng-click="openVillageInfo(key_vill)">
+												{{getName(key_vill)}}</div>
+											<div class="coordinates" ng-click="jumpToVillage(key_vill)">
+												{{getVcoordStart(key_vill)}}</div>
 										</div>
 									</td>
 									<td class="cell-top">
 										<div class="checkbox box-border-dark">
 											<div tooltip tooltip-content="{{text_executebuildingorder}}"
 												switch-slider="" border="true" enabled="true"
-												value="obj.executebuildingorder" vertical="false"
+												value="value_vill.executebuildingorder" vertical="false"
 												size="'56x28'">
 												<div ng-class="{'box-border-dark box-filter': border}"
 													class="box-border-dark box-filter">
@@ -205,7 +205,7 @@
 										<div class="select-wrapper box-border-dark">
 											<select id="select_order" class="select-handler"
 												ng-options="item as item.name for item in data_headquarter.selects track by item.id"
-												ng-model="obj.selected"></select>
+												ng-model="value_vill.selected"></select>
 										</div>
 									</td>
 									<td class="cell-space">
@@ -229,29 +229,29 @@
 																</colgroup>
 																<tbody>
 																	<tr
-																		ng-repeat="buildingorder in obj.buildingorder[obj.selected.value]"
+																		ng-repeat="buildingorder (key, value) in value_vill.buildingorder[value_vill.selected.value]"
 																		style="height: 68px">
 																		<td class="content"
-																			ng-class="{'resource-text' : selected_village_buildingorder[obj.data.villageId] == buildingorder}">
+																			ng-class="{'resource-text' : selected_village_buildingorder[value_vill.data.villageId] == buildingorder}">
 																			<div class="name-wrapper">
-																				<span class="name">{{getKey(buildingorder)}}</span>
+																				<span class="name">{{getKey(key)}}</span>
 																			</div>
 																			<div class="span-icon"
 																				ng-class="getClass(buildingorder)"></div>
 																		</td>
-																		<td class="cell-right"><div>{{getValue(buildingorder)}}</div></td>
+																		<td class="cell-right"><div>{{value}}</div></td>
 																		<td class="cell-right"><div
 																				class="size-12x12 btn-orange icon-26x26-rte-building"
-																				ng-click="selectvillagebuildingorder(obj.data.villageId, buildingorder)"></div></td>
+																				ng-click="selectvillagebuildingorder(value_vill.data.villageId, buildingorder)"></div></td>
 																		<td class="cell-right">
 																			<div
-																				ng-show="selected_village_buildingorder[obj.data.villageId] == buildingorder">
+																				ng-show="selected_village_buildingorder[value_vill.data.villageId] == buildingorder">
 																				<div
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																					ng-click="up(obj, buildingorder)"></div>
+																					ng-click="up(value_vill, key, value)"></div>
 																				<div
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																					ng-click="down(obj, buildingorder)"></div>
+																					ng-click="down(value_vill, key, value)"></div>
 																			</div>
 																		</td>
 																	</tr>
@@ -268,22 +268,22 @@
 																</colgroup>
 																<tbody>
 																	<tr
-																		ng-repeat="buildinglimit in obj.buildinglimit[obj.selected.value]"
+																		ng-repeat="(key, value) in obj.buildinglimit[obj.selected.value]"
 																		style="height: 68px">
 																		<td class="content">
 																			<div class="name-wrapper">
-																				<span class="name">{{getKey(buildinglimit)}}</span>
+																				<span class="name">{{getKey(key)}}</span>
 																			</div>
 																			<div class="span-icon"
 																				ng-class="getClass(buildinglimit)"></div>
 																		</td>
-																		<td class="cell-right"><div>{{getValue(buildinglimit)}}</div></td>
+																		<td class="cell-right"><div>{{value}}</div></td>
 																		<td class="cell-right"><div
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																				ng-click="levelup(obj, buildinglimit)"></div>
+																				ng-click="levelup(obj, key)"></div>
 																			<div
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																				ng-click="leveldown(obj, buildinglimit)"></div></td>
+																				ng-click="leveldown(obj, key)"></div></td>
 																	</tr>
 																</tbody>
 															</table>
