@@ -40,6 +40,15 @@ define("robotTW2/controllers/HeadquarterController", [
 			return vill;
 		})
 
+		var buildingTypes = modelDataService.getGameData().getBuildingTypes();
+		var buildings = modelDataService.getGameData().getBuildings();
+
+		var limit_max_buildings = {};
+		Object.values(modelDataService.getGameData().getBuildingTypes()).map(function(type){
+			limit_max_buildings[type] = buildings[type].max_level
+			return
+		})
+
 		var update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			$scope.data_villages = data_villages;
@@ -138,6 +147,21 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.leveldown = function(vill, buildinglimit){
 			vill.buildinglimit[Object.keys(vill.buildinglimit)[0]] -= 1
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+		
+		$scope.levelupstandard = function(buildinglimit){
+			var max_level = limit_max_buildings[buildinglimit].max_level;
+			var level = $scope.obj_standard.buildinglimit[buildinglimit] += 1;
+			if(level > max_level){
+				$scope.obj_standard.buildinglimit[buildinglimit] -= 1
+			}
+
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+		$scope.leveldownstandard = function(buildinglimit){
+			$scope.obj_standard.buildinglimit[buildinglimit] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 

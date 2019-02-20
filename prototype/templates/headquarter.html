@@ -140,20 +140,20 @@
 												<col width="26">
 											</colgroup>
 											<tbody>
-												<tr ng-repeat="buildinglimit_standard in obj_standard.buildinglimit" style="height: 68px">
+												<tr ng-repeat="(obj, value) in obj_standard.buildinglimit" style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
-															<span class="name">{{getKey(buildinglimit_standard )}}</span>
+															<span class="name">{{getKey(obj)}}</span>
 														</div>
-														<div class="span-icon" ng-class="getClass(buildinglimit)"></div>
+														<div class="span-icon" ng-class="getClass(buildinglimit_standard)"></div>
 													</td>
-													<td class="cell-right"><div>{{getValue(buildinglimit_standard )}}</div></td>
+													<td class="cell-right"><div>{{getValue(obj)}}</div></td>
 													<td class="cell-right"><div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-															ng-click="levelup(buildinglimit_standard, buildinglimit)"></div>
+															ng-click="levelupstandard(obj)"></div>
 														<div
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-															ng-click="leveldown(buildinglimit_standard , buildinglimit)"></div></td>
+															ng-click="leveldownstandard(obj)"></div></td>
 												</tr>
 											</tbody>
 										</table>
