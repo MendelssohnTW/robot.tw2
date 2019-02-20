@@ -229,10 +229,10 @@
 																</colgroup>
 																<tbody>
 																	<tr
-																		ng-repeat="buildingorder (key, value) in value_vill.buildingorder[value_vill.selected.value]"
+																		ng-repeat="(key, value) in value_vill.buildingorder[value_vill.selected.value]"
 																		style="height: 68px">
 																		<td class="content"
-																			ng-class="{'resource-text' : selected_village_buildingorder[value_vill.data.villageId] == buildingorder}">
+																			ng-class="{'resource-text' : selected_village_buildingorder[key] == value}">
 																			<div class="name-wrapper">
 																				<span class="name">{{getKey(key)}}</span>
 																			</div>
