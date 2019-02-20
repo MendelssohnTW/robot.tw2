@@ -51,21 +51,17 @@ define("robotTW2/services/HeadquarterService", [
 			, buildingLimit = vill.buildinglimit[vill.selected.value]
 			, builds = [];
 
-			buildingLevels.map(
-					function(e){
-						if(buildingLimit){
-							buildingLimit.map(
-									function(d){
-										if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] < Object.values(d)[0]){
-											builds.push({[Object.keys(e)[0]] : Object.values(e)[0]})
-										}
-									}
-							)
-						} else {
-							console.log("No building limit for " + vill.data.name)
+			Object.keys(buildingLevels).forEach(function(key_level){
+				if(buildingLimit){
+					Object.keys(buildingLimit).forEach(function(key_limit){
+						if(Object.keys(buildingLevels[key_level])[0] == Object.keys(buildingLimit[key_limit])[0] && Object.values(buildingLevels[key_level])[0] < Object.values(buildingLimit[key_limit])[0]){
+							builds.push({[Object.keys(e)[0]] : Object.values(e)[0]})
 						}
-					}
-			)
+					})
+				} else {
+					console.log("No building limit for " + vill.data.name)
+				}
+			})
 
 			return builds
 
