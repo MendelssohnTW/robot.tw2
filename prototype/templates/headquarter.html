@@ -116,12 +116,12 @@
 													<td class="cell-right"><div>{{value}}</div></td>
 													<td class="cell-right">
 														<div>
-															<div ng-show = "$index < 17"
+															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="upstandard(key)"></div>
-															<div ng-show="$index > 1"
+																ng-click="upstandard(key)">{{$index}}</div>
+															<div
 																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="downstandard(key)"></div>
+																ng-click="downstandard(key)">{{$index}}</div>
 														</div>
 													</td>
 												</tr>
