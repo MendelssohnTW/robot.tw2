@@ -1065,7 +1065,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			onclose = function onclose($event){
 				if($event.code == 1006 && $event.type == "close"){
 					console.log($event)
-					robotTW2.loadScript("/controllers/ConfirmController.js");
+//					robotTW2.loadScript("/controllers/ConfirmController.js");
 				}
 			},
 			onerror = function onerror($event, url, data){
