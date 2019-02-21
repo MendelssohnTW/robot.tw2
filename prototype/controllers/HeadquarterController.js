@@ -105,7 +105,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.getMax = function(key, value){
 			if(!key){return}
-			return value < services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
+			return value <= services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
 		}
 
 		$scope.getClass = function(key){
@@ -257,7 +257,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 		}, true)
 
-		$scope.$watch("data_villages", function(){
+		$scope.$watch("data_villages", function($event){
 			if(!$scope.data_villages){return}
 			data_villages = $scope.data_villages;
 			data_villages.set();
