@@ -68,6 +68,7 @@ define("robotTW2/databases/data_recruit", [
 	}
 	
 	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, db_recruit.update);
+	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, db_recruit.update);
 	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, db_recruit.update);
 
 	Object.setPrototypeOf(data_recruit, db_recruit);
