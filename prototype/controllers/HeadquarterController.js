@@ -39,7 +39,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			angular.extend(vill, {"data": data})
 			return vill;
 		})
-		
+
 		$scope.data_villages.set();
 
 		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes();
@@ -104,7 +104,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!key){return}
 			return services.$filter("i18n")(key, services.$rootScope.loc.ale, "headquarter");
 		}
-		
+
 		$scope.getMax = function(key, value){
 			if(!key){return}
 			return value < services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
@@ -260,9 +260,9 @@ define("robotTW2/controllers/HeadquarterController", [
 		}, true)
 
 //		$scope.$watch("data_villages", function($event, data){
-//			if(!$scope.data_villages){return}
-//			data_villages = $scope.data_villages;
-//			data_villages.set();
+//		if(!$scope.data_villages){return}
+//		data_villages = $scope.data_villages;
+//		data_villages.set();
 //		}, true)
 
 		$scope.$watch("obj_standard", function(){
@@ -284,6 +284,10 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_headquarter = $scope.data_headquarter;
 			data_headquarter.set();
 		}, true)
+
+		$scope.$on("$destroy", function() {
+			$scope.data_villages.set();
+		});
 
 		$scope.setCollapse();
 
