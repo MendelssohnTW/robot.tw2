@@ -63,7 +63,7 @@ define("robotTW2/controllers/RecruitController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return services.$rootScope.data_recruit.complete > time.convertedTime() ? helper.readableMilliseconds(services.$rootScope.data_recruit.complete - time.convertedTime()) : 0; 
+			return services.$rootScope.data_recruit.complete > time.convertedTime() && $scope.isRunning ? helper.readableMilliseconds(services.$rootScope.data_recruit.complete - time.convertedTime()) : 0; 
 		}
 
 		$scope.getText = function(key){
@@ -82,6 +82,7 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.stop_recruit = function(){
 			services.RecruitService.stop();
 			$scope.isRunning = services.RecruitService.isRunning();
+			$scope.data_recruit.complete = 0
 		}
 
 		$scope.pause_recruit = function(){
@@ -125,6 +126,11 @@ define("robotTW2/controllers/RecruitController", [
 				$scope.$apply();
 			}
 		}, true)
+		
+		$scope.$on("$destroy", function() {
+			$scope.data_recruit.set();
+		});
+
 		
 		initTab();
 
