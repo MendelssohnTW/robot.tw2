@@ -39,6 +39,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			angular.extend(vill, {"data": data})
 			return vill;
 		})
+		
+		$scope.data_villages.set();
 
 		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes();
 		var buildings = services.modelDataService.getGameData().getBuildings();
@@ -221,14 +223,14 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.restore_headquarter = function(){
 			$scope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
-			Object.values(data_villages.villages).forEach(function(village){
+			Object.values($scope.data_villages.villages).forEach(function(village){
 				angular.merge(village, {
 					executebuildingorder 	: conf.executebuildingorder,
 					buildingorder 			: $scope.data_headquarter.buildingorder,
 					buildinglimit 			: $scope.data_headquarter.buildinglimit
 				})
 			})
-//			data_villages.set();
+			$scope.data_villages.set();
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
@@ -257,15 +259,15 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 		}, true)
 
-		$scope.$watch("data_villages", function($event, data){
-			if(!$scope.data_villages){return}
-			data_villages = $scope.data_villages;
-			data_villages.set();
-		}, true)
+//		$scope.$watch("data_villages", function($event, data){
+//			if(!$scope.data_villages){return}
+//			data_villages = $scope.data_villages;
+//			data_villages.set();
+//		}, true)
 
 		$scope.$watch("obj_standard", function(){
 			if(!$scope.obj_standard){return}
-			Object.values(data_villages.villages).forEach(function(village){
+			Object.values($scope.data_villages.villages).forEach(function(village){
 				if(village.selected.value == "standard"){
 					angular.merge(village, {
 						buildingorder 			: $scope.obj_standard.buildingorder,
@@ -274,6 +276,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				}
 			})
 			$scope.data_headquarter.standard = $scope.obj_standard;
+			$scope.data_villages.set();
 		}, true)
 
 		$scope.$watch("data_headquarter", function(){
