@@ -257,7 +257,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 		}, true)
 
-		$scope.$watch("data_villages", function($event){
+		$scope.$watch("data_villages", function($event, data){
 			if(!$scope.data_villages){return}
 			data_villages = $scope.data_villages;
 			data_villages.set();
