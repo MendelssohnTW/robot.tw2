@@ -105,7 +105,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.getMax = function(key, value){
 			if(!key){return}
-			return value <= services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
+			return value < services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
 		}
 
 		$scope.getClass = function(key){
