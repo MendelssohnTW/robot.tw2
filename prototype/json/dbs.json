@@ -1,6 +1,4 @@
-[
-	"alert"
-,
+["alert",
   "attack",
   "defense",
   "deposit",
@@ -13,5 +11,5 @@
   "secondvillage",
   "map",
   "data",
-  "logs"
+  "log"
 ]

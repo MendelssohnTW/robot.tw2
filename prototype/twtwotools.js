@@ -812,7 +812,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							SECONDVILLAGE	: version.secondvillage,
 							MAP				: version.map,
 							DATA			: version.data,
-							LOGS			: version.logs
+							LOG				: version.log
 						},
 						FARM_TIME		      	: 30 * min,
 						MIN_INTERVAL	     	: 5 * min,
@@ -826,7 +826,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							DATA		: {
 								villages	: 6 * h,
 								tribes		: 2 * h,
-								logs		: 1 * h,
+								log			: 1 * h,
 								members		: 3 * h
 							},
 							SPY			: 30 * min
@@ -845,7 +845,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							"secondvillage",
 							"map",
 							"data",
-							"logs"
+							"log"
 							]
 						,
 						HOTKEY					: {
