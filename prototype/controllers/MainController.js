@@ -102,8 +102,6 @@ define("robotTW2/controllers/MainController", [
 			$scope.data_main.setExtensions($scope.extensions);
 		});
 
-		update()
-
 		return $scope;
 	}
 })
