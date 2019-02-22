@@ -22,7 +22,6 @@ define("robotTW2/databases/data_recon", [
 		return database.get("data_recon")
 	}
 
-
 	var dataNew = {
 			auto_initialize			: false,
 			initialized 			: false,

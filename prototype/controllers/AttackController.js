@@ -38,7 +38,7 @@ define("robotTW2/controllers/AttackController", [
 		
 		function getVillage(vid){
 			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
+			return services.modelDataService.getSelectedCharacter().getVillage(vid)
 		}
 
 		function getVillageData(vid){
@@ -47,7 +47,7 @@ define("robotTW2/controllers/AttackController", [
 		}
 		
 		Object.keys(data_villages).map(function(key){
-			let data = getVillage(key);
+			let data = getVillage(key).data;
 			angular.extend(local_data_villages, {[key] : {"data": data}})
 			return local_data_villages;
 		})
@@ -160,9 +160,7 @@ define("robotTW2/controllers/AttackController", [
 			$scope.data_attack.set();
 		});
 
-
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 
 		return $scope;
 	}

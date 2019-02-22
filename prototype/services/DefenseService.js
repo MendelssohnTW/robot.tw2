@@ -170,43 +170,8 @@ define("robotTW2/services/DefenseService", [
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[1];
 
-			if(!data_defense.recon){
-				data_defense.recon = unitTypesRenameRecon;
-				date_defense.set();
-			}
-
-			if(data_defense.recon[unitType]){
+			if(unitTypesRenameRecon[unitType]){
 				switch (unitType) {
-//				case "light_cavalry":
-//				callback(unitTypes.LIGHT_CAVALRY, unitType);
-//				break;
-//				case "mounted_archer":
-//				callback(unitTypes.MOUNTED_ARCHER, unitType);
-//				break;
-//				case "heavy_cavalry":
-//				callback(unitTypes.HEAVY_CAVALRY, unitType);
-//				break;
-//				case "axe":
-//				callback(unitTypes.AXE, unitType);
-//				break;
-//				case "spear":
-//				callback(unitTypes.SPEAR, unitType);
-//				break;
-//				case "archer":
-//				callback(unitTypes.ARCHER, unitType);
-//				break;
-//				case "doppelsoldner":
-//				callback(unitTypes.DOPPELSOLDNER, unitType);
-//				break;
-//				case "sword":
-//				callback(unitTypes.SWORD, unitType);
-//				break;
-//				case "ram":
-//				callback(unitTypes.RAM, unitType);
-//				break;
-//				case "catapult":
-//				callback(unitTypes.CATAPULT, unitType);
-//				break;
 				case "snob":
 					callback(unitTypes.SNOB, unitType);
 					break;

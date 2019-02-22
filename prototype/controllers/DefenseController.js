@@ -129,22 +129,18 @@ define("robotTW2/controllers/DefenseController", [
 		}
 
 		$scope.getHoraSend = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
 		}
 
 		$scope.getHoraAlvo = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
 		}
 
 		$scope.getDataAlvo = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
 		}
 
 		$scope.getHoraRetorno = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "HH:mm:ss.sss");
 		}
 
@@ -154,7 +150,6 @@ define("robotTW2/controllers/DefenseController", [
 		}
 
 		$scope.getVcoordTarget = function(param){
-
 			return "(" + param.target_x + "/" + param.target_y + ")"
 		}
 
@@ -181,13 +176,7 @@ define("robotTW2/controllers/DefenseController", [
 			data_defense.set();
 		}, true)
 
-		$scope.$on("$destroy", function() {
-			$scope.data_villages.set();
-		});
-
-
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 
 		return $scope;
 	}

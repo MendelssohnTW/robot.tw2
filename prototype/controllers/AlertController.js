@@ -12,7 +12,7 @@ define("robotTW2/controllers/AlertController", [
 	return function AlertController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.data_alert = data_alert;
-		$scope.text_version = $scope.version + " " + data_alert.version;
+		$scope.text_version = $scope.version + " " + $scope.data_alert.version;
 		var self = this;
 
 		var getMembers = function(callback){
@@ -142,7 +142,6 @@ define("robotTW2/controllers/AlertController", [
 		$scope.interval_alert = helper.readableMilliseconds($scope.data_alert.interval)
 		
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 
 		return $scope;
 	}

@@ -65,9 +65,6 @@ define("robotTW2/services/AttackService", [
 						"params"	: params
 					}
 				})
-//				commandQueue.trigger(id_command, params)
-//				} else {
-//				removeCommandAttack(id_command)
 			}
 		}
 		, units_to_send = function (params) {
@@ -86,7 +83,6 @@ define("robotTW2/services/AttackService", [
 						}
 					}
 					params.units = units;
-//					scope.params[params.id_command].units = units
 				};
 			};
 			if (lista.length > 0 || !params.enviarFull) {
@@ -119,7 +115,6 @@ define("robotTW2/services/AttackService", [
 				if(params.length){
 					param = params.shift();
 					
-//					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
 				}
 
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
