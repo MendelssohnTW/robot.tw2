@@ -25,7 +25,11 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.extensions = $scope.data_main.getExtensions();
 		
-		$scope.getStatus = function getStatus(fn){
+		$scope.getStatusFN = function getStatus(name){
+			return getStatus(list_extensions[name].fn)
+		}
+		
+		function getStatus(fn){
 			var status;
 			if(typeof(fn.isPaused) == "function"){
 				fn.isRunning() && fn.isPaused() ? status = $scope.paused : fn.isRunning() && !fn.isPaused() ? status = $scope.running : status = $scope.stopped;						
@@ -41,7 +45,7 @@ define("robotTW2/controllers/MainController", [
 			var fn = arFn.fn;
 			list_extensions[name] = {
 					"fn" 		: fn,
-					"status"	: $scope.getStatus(fn)
+					"status"	: getStatus(fn)
 			}
 		}
 
