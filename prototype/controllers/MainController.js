@@ -91,7 +91,6 @@ define("robotTW2/controllers/MainController", [
 		$scope.toggleValueInit = function(ext) {
 			$scope.extensions[ext.name].auto_start = ext.auto_start
 			$scope.data_main.setExtensions($scope.extensions);
-			update()
 		};
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
