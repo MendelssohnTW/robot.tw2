@@ -31,8 +31,10 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.status = "stopped";
 		$scope.obj_standard = $scope.data_headquarter.standard;
 
+		var tt = false;
 		Object.keys($scope.data_villages.villages).map(function(key){
 			if(!$scope.data_villages.villages[key].selected){
+				tt = true;
 				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="standard");
 			}
 			let data = getVillage(key);
@@ -40,7 +42,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			return local_data_villages;
 		})
 
-		$scope.data_villages.set();
+		tt ? $scope.data_villages.set(): null;
 
 		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes();
 		var buildings = services.modelDataService.getGameData().getBuildings();
