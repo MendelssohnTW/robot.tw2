@@ -21,8 +21,8 @@ define("robotTW2/databases/data_secondvillage", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
+			auto_start				: false,
+			init_initialized 		: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.SECONDVILLAGE,
 			use_reroll				: false,
@@ -39,8 +39,8 @@ define("robotTW2/databases/data_secondvillage", [
 			data_secondvillage = dataNew
 			notify("data_secondvillage");
 		} else {
-			if(!data_secondvillage.auto_initialize) data_secondvillage.initialized = !1;
-			if(data_secondvillage.auto_initialize) data_secondvillage.initialized = !0;
+			if(!data_secondvillage.auto_start) data_secondvillage.init_initialized = !1;
+			if(data_secondvillage.auto_start) data_secondvillage.init_initialized = !0;
 		}
 		database.set("data_secondvillage", data_secondvillage, true)
 	}

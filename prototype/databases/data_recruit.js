@@ -30,8 +30,8 @@ define("robotTW2/databases/data_recruit", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
+			auto_start				: false,
+			init_initialized 		: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.RECRUIT,
 			version					: conf.VERSION.RECRUIT,
@@ -61,8 +61,8 @@ define("robotTW2/databases/data_recruit", [
 			database.set("data_recruit", data_recruit, true)
 			notify("data_recruit");
 		} else {
-			if(!data_recruit.auto_initialize) data_recruit.initialized = !1;
-			if(data_recruit.auto_initialize) data_recruit.initialized = !0;
+			if(!data_recruit.auto_start) data_recruit.init_initialized = !1;
+			if(data_recruit.auto_start) data_recruit.init_initialized = !0;
 			database.set("data_recruit", data_recruit, true)		
 		}
 	}

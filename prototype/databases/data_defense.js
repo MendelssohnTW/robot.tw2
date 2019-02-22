@@ -24,8 +24,8 @@ define("robotTW2/databases/data_defense", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
+			auto_start				: false,
+			init_initialized 		: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.DEFENSE,
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
@@ -48,8 +48,8 @@ define("robotTW2/databases/data_defense", [
 			database.set("data_defense", data_defense, true)
 			notify("data_defense");
 		} else {
-			if(!data_defense.auto_initialize) data_defense.initialized = !1;
-			if(data_defense.auto_initialize) data_defense.initialized = !0;
+			if(!data_defense.auto_start) data_defense.init_initialized = !1;
+			if(data_defense.auto_start) data_defense.init_initialized = !0;
 			database.set("data_defense", data_defense, true)		
 		}
 	}

@@ -27,8 +27,8 @@ define("robotTW2/databases/data_farm", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false, 
-			initialized				: false, 
+			auto_start				: false, 
+			init_initialized		: false, 
 			activated				: false,
 			hotkey					: conf.HOTKEY.FARM,
 			version					: conf.VERSION.FARM,
@@ -49,8 +49,8 @@ define("robotTW2/databases/data_farm", [
 			data_farm = dataNew
 			notify("data_farm");
 		} else {
-			if(!data_farm.auto_initialize) data_farm.initialized = !1;
-			if(data_farm.auto_initialize) data_farm.initialized = !0;
+			if(!data_farm.auto_start) data_farm.init_initialized = !1;
+			if(data_farm.auto_start) data_farm.init_initialized = !0;
 			database.set("data_farm", data_farm, true)		
 		}
 	}

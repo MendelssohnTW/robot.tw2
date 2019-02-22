@@ -21,8 +21,8 @@ define("robotTW2/databases/data_spy", [
 	}
 	
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
+			auto_start				: false,
+			init_initialized 		: false,
 			activated 				: false,
 			complete				: 0,
 			hotkey					: conf.HOTKEY.SPY,
@@ -41,8 +41,8 @@ define("robotTW2/databases/data_spy", [
 			database.set("data_spy", data_spy, true)
 			notify("data_spy");
 		} else {
-			if(!data_spy.auto_initialize) data_spy.initialized = !1;
-			if(data_spy.auto_initialize) data_spy.initialized = !0;
+			if(!data_spy.auto_start) data_spy.init_initialized = !1;
+			if(data_spy.auto_start) data_spy.init_initialized = !0;
 			database.set("data_spy", data_spy, true)		
 		}
 	}

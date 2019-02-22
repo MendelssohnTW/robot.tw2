@@ -23,8 +23,8 @@ define("robotTW2/databases/data_attack", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
+			auto_start				: false,
+			init_initialized 		: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.ATTACK,
 			interval				: conf.INTERVAL.ATTACK,
@@ -41,8 +41,8 @@ define("robotTW2/databases/data_attack", [
 			database.set("data_attack", data_attack, true)
 			notify("data_attack");
 		} else {
-			if(!data_attack.auto_initialize) data_attack.initialized = !1;
-			if(data_attack.auto_initialize) data_attack.initialized = !0;
+			if(!data_attack.auto_start) data_attack.init_initialized = !1;
+			if(data_attack.auto_start) data_attack.init_initialized = !0;
 			database.set("data_attack", data_attack, true)		
 		}
 	}

@@ -39,8 +39,8 @@ define("robotTW2/databases/data_log", [
 			data_log = dataNew
 			notify("data_log");
 		} else {
-			if(!data_log.auto_initialize) data_log.initialized = !1;
-			if(data_log.auto_initialize) data_log.initialized = !0;
+			if(!data_log.auto_start) data_log.init_initialized = !1;
+			if(data_log.auto_initialize) data_log.init_initialized = !0;
 		}
 		database.set("data_log", data_log, true)
 	}

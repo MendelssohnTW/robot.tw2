@@ -23,8 +23,8 @@ define("robotTW2/databases/data_headquarter", [
 	var id = 0;
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
+			auto_start				: false,
+			init_initialized 		: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.HEADQUARTER,
 			interval				: conf.INTERVAL.HEADQUARTER,
@@ -61,8 +61,8 @@ define("robotTW2/databases/data_headquarter", [
 			database.set("data_headquarter", data_headquarter, true)
 			notify("data_headquarter");
 		} else {
-			if(!data_headquarter.auto_initialize) data_headquarter.initialized = !1;
-			if(data_headquarter.auto_initialize) data_headquarter.initialized = !0;
+			if(!data_headquarter.auto_start) data_headquarter.init_initialized = !1;
+			if(data_headquarter.auto_start) data_headquarter.init_initialized = !0;
 			database.set("data_headquarter", data_headquarter, true)		
 		}
 	}
