@@ -14,6 +14,7 @@ define("robotTW2/controllers/MainController", [
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
+		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		var self = this
 		, toggle = false
 		, list_extensions = {}
