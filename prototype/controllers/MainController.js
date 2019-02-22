@@ -25,9 +25,15 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.extensions = $scope.data_main.getExtensions();
 		
-		var update_status = function(){
-			for (var extension in $scope.extensions) {
-				
+		var update_status = function($event){
+			for (var name in $scope.extensions) {
+				$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
+				var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+				var fn = arFn.fn;
+				list_extensions[name] = {
+						"fn" 		: fn,
+						"status"	: getStatus(fn)
+				}
 			}
 		}
 		
@@ -43,15 +49,7 @@ define("robotTW2/controllers/MainController", [
 			return list_extensions[fn.name.toUpperCase()].status
 		}
 		
-		for (var name in $scope.extensions) {
-			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
-			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
-			var fn = arFn.fn;
-			list_extensions[name] = {
-					"fn" 		: fn,
-					"status"	: getStatus(fn)
-			}
-		}
+		update_status();
 
 		var update = function(){
 			$scope.extensions = $scope.data_main.getExtensions();
@@ -106,7 +104,7 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
-			services.$timeout(function(){update()}, 3000)
+			services.$timeout(function(){update_status()}, 3000)
 		})
 
 		$scope.toggleValueInit = function(ext) {
