@@ -25,10 +25,6 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.extensions = $scope.data_main.getExtensions();
 		
-		$scope.getStatusFN = function getStatus(name){
-			return getStatus(list_extensions[name].fn)
-		}
-		
 		function getStatus(fn){
 			var status;
 			if(typeof(fn.isPaused) == "function"){
@@ -37,6 +33,10 @@ define("robotTW2/controllers/MainController", [
 				fn.isRunning() ? status = $scope.running : status = $scope.stopped;
 			}
 			return status
+		}
+		
+		$scope.getStatusFN = function getStatus(name){
+			return getStatus(list_extensions[name].fn)
 		}
 		
 		for (var name in $scope.extensions) {
