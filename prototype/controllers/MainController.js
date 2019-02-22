@@ -25,6 +25,15 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.extensions = $scope.data_main.getExtensions();
 
+		$scope.getStatus = function getStatus(fn){
+			if(typeof(fn.isPaused) == "function"){
+				fn.isRunning() && fn.isPaused() ? list_extensions[fn.name.toUpperCase()].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? list_extensions[fn.name.toUpperCase()].status = $scope.running : status = $scope.stopped;						
+			} else {
+				fn.isRunning() ? list_extensions[fn.name.toUpperCase()].status = $scope.running : list_extensions[fn.name.toUpperCase()].status = $scope.stopped;
+			}
+			return Object.keys(list_extensions).length ? list_extensions[fn.name.toUpperCase()].status: $scope.extensions[fn];
+		}
+		
 		for (var name in $scope.extensions) {
 			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
@@ -37,15 +46,6 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.getStatusFN = function(name){
 			return getStatus(list_extensions[name].fn)
-		}
-
-		$scope.getStatus = function getStatus(fn){
-			if(typeof(fn.isPaused) == "function"){
-				fn.isRunning() && fn.isPaused() ? list_extensions[fn.name.toUpperCase()].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? list_extensions[fn.name.toUpperCase()].status = $scope.running : status = $scope.stopped;						
-			} else {
-				fn.isRunning() ? list_extensions[fn.name.toUpperCase()].status = $scope.running : list_extensions[fn.name.toUpperCase()].status = $scope.stopped;
-			}
-			return Object.keys(list_extensions).length ? list_extensions[fn.name.toUpperCase()].status: $scope.extensions[fn];
 		}
 
 		var update_status = function($event){
