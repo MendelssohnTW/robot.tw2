@@ -24,7 +24,7 @@ define("robotTW2/controllers/MainController", [
 			$scope.extensions = $scope.data_main.getExtensions();
 			for (var extension in $scope.extensions) {
 				$scope.extensions[extension.toUpperCase()].hotkey ? $scope.extensions[extension.toUpperCase()].hotkey = conf.HOTKEY[extension.toUpperCase()].toUpperCase() : null;
-				$scope.toggleValueState(extension)
+				$scope.toggleValueState(extension, true)
 			}
 			if (!$scope.$$phase) $scope.$apply();
 
@@ -37,7 +37,7 @@ define("robotTW2/controllers/MainController", [
 			services.AttackService.calibrate_time();
 		}
 
-		$scope.toggleValueState = function(name) {
+		$scope.toggleValueState = function(name, opt) {
 			let ext = $scope.extensions[name]
 			if(!ext.initialized){
 				ext.auto_initialize = false;
@@ -62,7 +62,7 @@ define("robotTW2/controllers/MainController", [
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
 						if(typeof(fn.start) == "function"){
-							if(!$scope.data_main.pages_excludes.includes(name.toLowerCase())){
+							if(!$scope.data_main.pages_excludes.includes(name.toLowerCase()) && !opt){
 								ext.status = $scope.running;
 								fn.start()
 							} else {
