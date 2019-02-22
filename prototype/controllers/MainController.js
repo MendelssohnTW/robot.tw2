@@ -23,9 +23,9 @@ define("robotTW2/controllers/MainController", [
 		var toggle = false;
 		
 		$scope.data_main = data_main;
-		$scope.data_data = data_data;
-		$scope.data_deposit = data_deposit;
-		$scope.data_recon = data_recon;
+//		$scope.data_data = data_data;
+//		$scope.data_deposit = data_deposit;
+//		$scope.data_recon = data_recon;
 
 		var update = function(){
 			$scope.extensions = $scope.data_main.getExtensions();
