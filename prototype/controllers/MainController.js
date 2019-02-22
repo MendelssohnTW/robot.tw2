@@ -55,7 +55,7 @@ define("robotTW2/controllers/MainController", [
 //					}
 //				}
 				
-				$scope.toggleValueState(extension)
+				$scope.toggleValueState($scope.extensions[extension])
 			}
 //			$scope.data_main.setExtensions($scope.extensions);
 			if (!$scope.$$phase) $scope.$apply();
