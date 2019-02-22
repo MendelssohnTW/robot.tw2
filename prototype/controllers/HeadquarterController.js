@@ -23,7 +23,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.resume = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 
-		var self = this;
+		var self = this,
+		data_villages = {};
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 
@@ -31,13 +32,12 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.obj_standard = $scope.data_headquarter.standard;
 
 		Object.keys($scope.data_villages.villages).map(function(key){
-			var vill = $scope.data_villages.villages[key]
-			if(!vill.selected){
-				vill.selected = $scope.data_headquarter.selects.find(f=>f.name ="standard");
+			if(!$scope.data_villages.villages[key].selected){
+				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="standard");
 			}
-			var data = getVillage(key);
-			angular.extend(vill, {"data": data})
-			return vill;
+			let data = getVillage(key);
+			angular.extend(data_villages, {[key] : {"data": data}})
+			return data_villages;
 		})
 
 		$scope.data_villages.set();
@@ -63,7 +63,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		function getVillageData(vid){
 			if(!vid){return}
-			return $scope.data_villages.villages[vid].data;
+			return data_villages[vid].data;
 		}
 
 		$scope.openVillageInfo = function(vid){
