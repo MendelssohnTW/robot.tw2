@@ -20,7 +20,6 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.text_version = $scope.version + " " + data_main.version; 
 
-
 		var update = function(){
 			$scope.extensions = $scope.data_main.getExtensions();
 			for (var extension in $scope.extensions) {

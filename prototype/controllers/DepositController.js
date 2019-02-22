@@ -15,6 +15,7 @@ define("robotTW2/controllers/DepositController", [
 	){
 	return function DepositController($scope) {
 		$scope.data_deposit = data_deposit;
+		$scope.text_version = $scope.version + " " + data_deposit.version;
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 
@@ -47,6 +48,10 @@ define("robotTW2/controllers/DepositController", [
 			data_deposit = $scope.data_deposit;
 			data_deposit.set();
 		}, true)
+
+		$scope.$on("$destroy", function() {
+			$scope.data_villages.set();
+		});
 
 		document.getElementById("input-ms").value = helper.readableMilliseconds($scope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_deposit.interval) : helper.readableMilliseconds($scope.data_deposit.interval);
 

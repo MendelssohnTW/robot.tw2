@@ -47,11 +47,5 @@ define("robotTW2/databases/data_secondvillage", [
 
 	Object.setPrototypeOf(data_secondvillage, db_deposit);
 
-	services.$rootScope.data_secondvillage = data_secondvillage;
-
-	services.$rootScope.$watch("data_secondvillage", function(){
-		data_secondvillage.set()
-	}, true)
-
 	return data_secondvillage;
 })

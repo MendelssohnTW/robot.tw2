@@ -8,6 +8,7 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/time",
 	"robotTW2/calibrate_time",
 	"robotTW2/unitTypesRenameRecon",
+	"robotTW2/databases/data_defense"
 	], function(
 			robotTW2,
 			version,
@@ -17,7 +18,8 @@ define("robotTW2/services/DefenseService", [
 			unitTypes,
 			time,
 			calibrate_time,
-			unitTypesRenameRecon
+			unitTypesRenameRecon,
+			data_defense
 	){
 	return (function DefenseService(
 			$rootScope,
@@ -168,11 +170,12 @@ define("robotTW2/services/DefenseService", [
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[1];
 
-			if(!$rootScope.data_defense.recon){
-				$rootScope.data_defense.recon = unitTypesRenameRecon;
+			if(!data_defense.recon){
+				data_defense.recon = unitTypesRenameRecon;
+				date_defense.set();
 			}
 
-			if($rootScope.data_defense.recon[unitType]){
+			if(data_defense.recon[unitType]){
 				switch (unitType) {
 //				case "light_cavalry":
 //				callback(unitTypes.LIGHT_CAVALRY, unitType);
@@ -364,9 +367,9 @@ define("robotTW2/services/DefenseService", [
 							$timeout.cancel(rt);
 							var timeSniperPost = conf.TIME_SNIPER_POST_SNOB;
 							if(!cmd.nob) {
-								timeSniperPost = $rootScope.data_defense.time_sniper_post;	
+								timeSniperPost = data_defense.time_sniper_post;	
 							} else {
-								timeSniperPost = $rootScope.data_defense.time_sniper_post_snob;
+								timeSniperPost = data_defense.time_sniper_post_snob;
 							}
 							var params = {
 									start_village		: cmd.targetVillageId,
@@ -376,7 +379,7 @@ define("robotTW2/services/DefenseService", [
 									target_y			: aldeia.y,
 									type				: "support",
 									data_escolhida		: time.convertMStoUTC(cmd.completedAt),
-									time_sniper_ant		: $rootScope.data_defense.time_sniper_ant,
+									time_sniper_ant		: data_defense.time_sniper_ant,
 									time_sniper_post	: timeSniperPost,
 									preserv				: false,
 									id_command 			: cmd.id
@@ -448,7 +451,7 @@ define("robotTW2/services/DefenseService", [
 							return b.completedAt - a.completedAt;
 						})
 
-						var limit = $rootScope.data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
+						var limit = data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
 						var length_incomming = comandos_incoming.length; 
 
 						if(!length_incomming){gt(); return}
@@ -711,10 +714,10 @@ define("robotTW2/services/DefenseService", [
 			}
 			$($(".content.incoming td.column-time_completed")[i]).prepend('<div style="float: right;"><input id="sniper_ant" class="sniper_ant" type="number" style="width: 40px; color: white;" step="1" min="5" max"600"><input id="sniper_post" class="sniper_post" type="number" style="width: 40px; color: white;"  step="1" min="1" max"600"></div><div class="' + opts[(isMark) ? 1 : 0] + ' indicatorSelected"></div>');
 			if (($(".sniper_ant")[i]) != undefined){
-				($(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : $rootScope.data_defense.time_sniper_ant / 1000;
+				($(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : data_defense.time_sniper_ant / 1000;
 			}
 			if (($(".sniper_post")[i]) != undefined){
-				($(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : $rootScope.data_defense.time_sniper_post / 1000;
+				($(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : data_defense.time_sniper_post / 1000;
 			}
 			$(".indicatorSelected").css("float", "right");
 			$($(".indicatorSelected")[i]).click(function () {

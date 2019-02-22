@@ -49,11 +49,5 @@ define("robotTW2/databases/data_attack", [
 
 	Object.setPrototypeOf(data_attack, db_attack);
 
-	services.$rootScope.data_attack = data_attack;
-
-	services.$rootScope.$watch("data_attack", function(){
-		data_attack.set()
-	}, true)
-
 	return data_attack;
 })

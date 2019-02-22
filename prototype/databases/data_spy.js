@@ -49,11 +49,5 @@ define("robotTW2/databases/data_spy", [
 
 	Object.setPrototypeOf(data_spy, db_spy);
 	
-	services.$rootScope.data_spy = data_spy;
-
-	services.$rootScope.$watch("data_spy", function(){
-		data_spy.set()
-	}, true)
-
 	return data_spy;
 })

@@ -73,11 +73,5 @@ define("robotTW2/databases/data_recruit", [
 
 	Object.setPrototypeOf(data_recruit, db_recruit);
 	
-	services.$rootScope.data_recruit = data_recruit;
-
-	services.$rootScope.$watch("data_recruit", function(){
-		data_recruit.set()
-	}, true)
-
 	return data_recruit;
 })

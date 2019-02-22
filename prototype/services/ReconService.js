@@ -1,11 +1,13 @@
 define("robotTW2/services/ReconService", [
 	"robotTW2",
 	"robotTW2/version",
-	"helper/time"
+	"helper/time",
+	"robotTW2/databases/data_recon"
 	], function(
 			robotTW2,
 			version,
-			helper
+			helper,
+			data_recon
 	){
 	return (function ReconService(
 			$rootScope,
@@ -159,9 +161,9 @@ define("robotTW2/services/ReconService", [
 						if(OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 							var unitText = getAttackTypeAtackRecon(command, i);
 							if (unitText != undefined){
-								if(Object.keys($rootScope.data_recon.rename).map(function(elem, index, array){
+								if(Object.keys(data_recon.rename).map(function(elem, index, array){
 									return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
-								}).filter(f=>f!=undefined).length && $rootScope.data_recon.active_rename){
+								}).filter(f=>f!=undefined).length && data_recon.active_rename){
 									getrenameCmdAtackRecon(command, unitText);
 								}
 							}

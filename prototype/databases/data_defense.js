@@ -56,11 +56,5 @@ define("robotTW2/databases/data_defense", [
 
 	Object.setPrototypeOf(data_defense, db_defense);
 
-	services.$rootScope.data_defense = data_defense;
-
-	services.$rootScope.$watch("data_defense", function(){
-		data_defense.set()
-	}, true)
-
 	return data_defense;
 })

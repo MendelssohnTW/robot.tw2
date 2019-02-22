@@ -24,7 +24,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		var self = this,
-		data_villages = {};
+		local_data_villages = {};
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", services.$rootScope.loc.ale, "farm"),
 				PRESET 	: services.$filter("i18n")("preset", services.$rootScope.loc.ale, "farm"),
@@ -44,6 +44,7 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
+		$scope.text_version = $scope.version + " " + data_farm.version;
 		
 		function getVillage(vid){
 			if(!vid){return}
@@ -52,13 +53,13 @@ define("robotTW2/controllers/FarmController", [
 		
 		function getVillageData(vid){
 			if(!vid){return}
-			return data_villages[vid];
+			return local_data_villages[vid];
 		}
 		
 		Object.keys($scope.data_villages.villages).map(function(key){
 			let village = getVillage(key);
-			angular.extend(data_villages, {[key] : {"village": village}})
-			return data_villages;
+			angular.extend(local_data_villages, {[key] : {"village": village}})
+			return local_data_villages;
 		})
 		
 		var setActiveTab = function setActiveTab(tab) {
@@ -490,12 +491,6 @@ define("robotTW2/controllers/FarmController", [
 			data_villages.set();
 		}, true)
 		
-		$scope.$watch("data_farm", function () {
-			if(!$scope.data_farm) {return}
-			data_farm = $scope.data_farm;
-			data_farm.set();
-		}, true)
-
 
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
@@ -507,6 +502,16 @@ define("robotTW2/controllers/FarmController", [
 				$scope.$apply();
 			}
 		}, true)
+		
+		$scope.$watch("data_farm", function(){
+			if(!$scope.data_farm){return}
+			data_farm = $scope.data_farm;
+			data_farm.set();
+		}, true)
+
+		$scope.$on("$destroy", function() {
+			$scope.data_villages.set();
+		});
 
 
 		$scope.recalcScrollbar();

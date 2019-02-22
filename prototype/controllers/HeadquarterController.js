@@ -27,6 +27,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		local_data_villages = {};
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
+		
+		$scope.text_version = $scope.version + " " + data_headquarter.version;
 
 		$scope.status = "stopped";
 		$scope.obj_standard = $scope.data_headquarter.standard;

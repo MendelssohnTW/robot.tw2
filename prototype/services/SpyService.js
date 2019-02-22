@@ -5,13 +5,15 @@ define("robotTW2/services/SpyService", [
 	"robotTW2/conf",
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
+	"robotTW2/databases/data_spy"
 	], function(
 			robotTW2,
 			version,
 			time,
 			conf,
 			SPY_TYPES,
-			data_villages
+			data_villages,
+			data_spy
 	){
 	return (function SpyService(
 			$rootScope,
@@ -90,11 +92,12 @@ define("robotTW2/services/SpyService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.SPY)
-			$rootScope.data_spy.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_spy.interval)
+			data_spy.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push(data_spy.interval)
 			var t = Math.min.apply(null, list)
-			$rootScope.data_spy.interval = t
-			$rootScope.data_spy.complete = time.convertedTime() + t
+			data_spy.interval = t
+			data_spy.complete = time.convertedTime() + t
 			list = [];
+			data_spy.set();
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_SPY)
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
@@ -116,7 +119,7 @@ define("robotTW2/services/SpyService", [
 		, start = function (){
 			if(isRunning){return}
 			robotTW2.ready(function(){
-				$rootScope.data_spy.interval = conf.INTERVAL.SPY;
+				data_spy.interval = conf.INTERVAL.SPY;
 				isRunning = !0;
 				!listener_spy ? listener_spy = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
