@@ -23,6 +23,9 @@ define("robotTW2/controllers/MainController", [
 		var toggle = false;
 		
 		$scope.data_main = data_main;
+		
+		$scope.version = "version " + data_main.version; 
+		
 //		$scope.data_data = data_data;
 //		$scope.data_deposit = data_deposit;
 //		$scope.data_recon = data_recon;
@@ -52,7 +55,7 @@ define("robotTW2/controllers/MainController", [
 //					}
 //				}
 				
-				toggleValueState(extension)
+				$scope.toggleValueState(extension)
 			}
 //			$scope.data_main.setExtensions($scope.extensions);
 			if (!$scope.$$phase) $scope.$apply();
