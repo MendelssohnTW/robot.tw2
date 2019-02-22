@@ -32,7 +32,7 @@ define("robotTW2/controllers/MainController", [
 				var fn = arFn.fn;
 				list_extensions[name] = {
 						"fn" 		: fn,
-						"status"	: getStatus(fn)
+						"status"	: $scope.getStatus(fn)
 				}
 			}
 		}
@@ -51,16 +51,7 @@ define("robotTW2/controllers/MainController", [
 		
 		update_status();
 
-		var update = function(){
-			$scope.extensions = $scope.data_main.getExtensions();
-			for (var extension in $scope.extensions) {
-				$scope.extensions[extension.toUpperCase()].hotkey ? $scope.extensions[extension.toUpperCase()].hotkey = conf.HOTKEY[extension.toUpperCase()].toUpperCase() : null;
-				$scope.toggleValueState(extension, true)
-			}
-			if (!$scope.$$phase) $scope.$apply();
-
-		}
-		, updateCorrection = function(){
+		var updateCorrection = function(){
 			if (!$scope.$$phase) $scope.$apply();
 		}
 

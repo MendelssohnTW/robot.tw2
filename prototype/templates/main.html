@@ -87,9 +87,9 @@
 														<td class="cell-center">{{ext.hotkey}}</td>
 														<td class="cell-center">
 															<div class="icon-26x26-dot-bg" tooltip
-																tooltip-content="{{ext.status}}">
+																tooltip-content="{{getStatus(ext.name)}}">
 																<span
-																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status ==stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
+																	ng-class="{'icon-26x26-dot-green' : getStatus(ext.name) == running, 'icon-26x26-dot-red' : getStatus(ext.name) ==stopped , 'icon-26x26-dot-blue' : getStatus(ext.name) == paused, 'icon-26x26-dot-yellow' : getStatus(ext.name) == disabled}"></span>
 															</div>
 														</td>
 														<td><a href="#"
