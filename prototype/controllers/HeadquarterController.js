@@ -24,7 +24,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 
 		var self = this,
-		data_villages = {};
+		local_data_villages = {};
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 
@@ -36,8 +36,8 @@ define("robotTW2/controllers/HeadquarterController", [
 				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="standard");
 			}
 			let data = getVillage(key);
-			angular.extend(data_villages, {[key] : {"data": data}})
-			return data_villages;
+			angular.extend(local_data_villages, {[key] : {"data": data}})
+			return local_data_villages;
 		})
 
 		$scope.data_villages.set();
@@ -63,7 +63,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		function getVillageData(vid){
 			if(!vid){return}
-			return data_villages[vid].data;
+			return local_data_villages[vid].data;
 		}
 
 		$scope.openVillageInfo = function(vid){
