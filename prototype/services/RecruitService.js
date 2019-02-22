@@ -18,11 +18,9 @@ define("robotTW2/services/RecruitService", [
 			groupService,
 			modelDataService,
 			$timeout,
+			$filter,
 			ready
 	) {
-		
-		
-
 		var isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
@@ -446,6 +444,7 @@ define("robotTW2/services/RecruitService", [
 			robotTW2.services.groupService,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
+			robotTW2.services.$filter,
 			robotTW2.ready
 	)
 })
