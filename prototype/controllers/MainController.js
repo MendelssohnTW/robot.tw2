@@ -79,9 +79,9 @@ define("robotTW2/controllers/MainController", [
 
 			services.$timeout(function(){
 				if(typeof(fn.isPaused) == "function"){
-					fn.isRunning() && fn.isPaused() ? $scope.extensions[extension].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[extension].status = $scope.running : $scope.extensions[extension].status = $scope.stopped;						
+					fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
 				} else {
-					fn.isRunning() ? $scope.extensions[extension].status = $scope.running : $scope.extensions[extension].status = $scope.stopped;
+					fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
 				}	
 			}, 3000)
 		};
