@@ -23,8 +23,8 @@ define("robotTW2/controllers/FarmController", [
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
-		var self = this;
-
+		var self = this,
+		data_villages = {};
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", services.$rootScope.loc.ale, "farm"),
 				PRESET 	: services.$filter("i18n")("preset", services.$rootScope.loc.ale, "farm"),
@@ -44,7 +44,23 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
-
+		
+		function getVillage(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid)
+		}
+		
+		function getVillageData(vid){
+			if(!vid){return}
+			return data_villages[vid];
+		}
+		
+		Object.keys($scope.data_villages.villages).map(function(key){
+			let village = getVillage(key);
+			angular.extend(data_villages, {[key] : {"village": village}})
+			return data_villages;
+		})
+		
 		var setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
 			$scope.requestedTab								= null;
@@ -68,7 +84,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function (villageId, journey_time, units) {
-			var village = services.modelDataService.getVillage(villageId)
+			var village = getVillageData(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
@@ -81,7 +97,7 @@ define("robotTW2/controllers/FarmController", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function (villageId, distance, units) {
-			var village = services.modelDataService.getVillage(villageId)
+			var village = getVillageData(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
