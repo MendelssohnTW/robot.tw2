@@ -8,7 +8,9 @@
 	</header>
 	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
 			<div class="scroll-wrap main" style="margin-bottom: 100px">
 				<div>
 					<table class="tbl-border-light tbl-striped" id="preset-list">
@@ -45,7 +47,7 @@
 																<div tooltip
 																	tooltip-content="{{ext.activated ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
 																	switch-slider="" border="true" enabled="ext.activated"
-																	value="ext.initialized"
+																	value="ext.init_initialized"
 																	ng-click="toggleValueState(ext.name)" vertical="false"
 																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
@@ -64,8 +66,8 @@
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div switch-slider="" border="true"
-																	enabled="ext.activated && ext.initialized"
-																	value="ext.auto_initialize"
+																	enabled="ext.activated && ext.init_initialized"
+																	value="ext.auto_start"
 																	ng-click="toggleValueInit(ext)" vertical="false"
 																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
@@ -89,6 +91,16 @@
 																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status ==stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
 															</div>
 														</td>
+														<td><a href="#" 
+															class="btn-orange btn-form btn-border no-padding btn-grey"
+															ng-click="startExt(ext.name)" ng-class="{'btn-grey': !ext.init_initialized && !ext.activated && !ext.isRunning()}"><span
+																class="icon"><span
+																	id="span-text" class="text">{{START}}</span></td>
+																	<td><a href="#" 
+															class="btn-orange btn-form btn-border no-padding btn-grey"
+															ng-click="stopExt(ext.name)" ng-class="{'btn-grey': !ext.init_initialized && !ext.activated && !ext.isRunning()}"><span
+																class="icon"><span
+																	id="span-text" class="text">{{STOP}}</span></td>
 													</tr>
 												</tbody>
 											</table>

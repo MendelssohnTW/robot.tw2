@@ -13,6 +13,7 @@ define("robotTW2/controllers/MainController", [
 	){
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
 		var self = this;
 		var toggle = false;
 
@@ -37,18 +38,49 @@ define("robotTW2/controllers/MainController", [
 			services.AttackService.calibrate_time();
 		}
 
+		$scope.startExt = function(name){
+			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+			if(!fn.isInitialized()){
+				if(typeof(fn.init) == "function"){
+					if(!fn.isRunning()){
+						ext.status = $scope.running;
+						fn.init()
+					}
+				}
+				if(typeof(fn.analytics) == "function"){fn.analytics()}
+			} else {
+				if(typeof(fn.start) == "function"){
+					if(!fn.isRunning()){
+						ext.status = $scope.running;
+						fn.start()
+					}
+				}
+			}
+		}
+
+		$scope.stopExt = function(name){
+			let ext = $scope.extensions[name]
+			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+			if(typeof(fn.stop) == "function"){
+				if(fn.isRunning()){
+					ext.status = $scope.stopped;
+					fn.stop()
+				}
+			}
+		}
+
 		$scope.toggleValueState = function(name, opt) {
 			let ext = $scope.extensions[name]
-			if(!ext.initialized){
-				ext.auto_initialize = false;
-			}
+//			if(!ext.init_initialized){
+//			ext.auto_start = false;
+//			}
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			if(!arFn) {
 				ext.activated = false;
 				ext.status = $scope.disabled;
 			} else {
 				var fn = arFn.fn;
-				if(ext.initialized){
+				if(ext.init_initialized){
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
 							if($scope.data_main.pages_excludes.includes(name.toLowerCase())){
@@ -60,34 +92,26 @@ define("robotTW2/controllers/MainController", [
 							}
 						}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
+					}
+					if(typeof(fn.isPaused) == "function"){
+						fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
 					} else {
-						if(typeof(fn.start) == "function"){
-							if(!$scope.data_main.pages_excludes.includes(name.toLowerCase()) && !opt){
-								ext.status = $scope.running;
-								fn.start()
-							} else {
-								if(typeof(fn.isPaused) == "function"){
-									fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
-								} else {
-									fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
-								}
-							}
-						}
+						fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
 					}
 				} else {
 					ext.status = $scope.stopped
-					if(ext.activated && fn.isRunning()){
-						fn.stop();
-					}
+//					if(ext.activated && fn.isRunning()){
+//					fn.stop();
+//					}
 				}
 			}
 
 //			services.$timeout(function(){
-//				if(typeof(fn.isPaused) == "function"){
-//					fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
-//				} else {
-//					fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
-//				}
+//			if(typeof(fn.isPaused) == "function"){
+//			fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
+//			} else {
+//			fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
+//			}
 //			}, 3000)
 		};
 
@@ -97,7 +121,7 @@ define("robotTW2/controllers/MainController", [
 		})
 
 		$scope.toggleValueInit = function(ext) {
-			$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
+			$scope.extensions[ext.name].auto_start = ext.auto_start
 			$scope.data_main.setExtensions($scope.extensions);
 			update()
 		};
