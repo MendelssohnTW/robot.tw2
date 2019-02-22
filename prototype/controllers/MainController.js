@@ -14,12 +14,35 @@ define("robotTW2/controllers/MainController", [
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
-		var self = this;
-		var toggle = false;
+		var self = this
+		, toggle = false
+		, list_extensions = {}
 
 		$scope.data_main = data_main;
 
 		$scope.text_version = $scope.version + " " + data_main.version; 
+
+		$scope.extensions = $scope.data_main.getExtensions();
+		
+		function getStatus (fn){
+			var status;
+			if(typeof(fn.isPaused) == "function"){
+				fn.isRunning() && fn.isPaused() ? status = $scope.paused : fn.isRunning() && !fn.isPaused() ? status = $scope.running : status = $scope.stopped;						
+			} else {
+				fn.isRunning() ? status = $scope.running : status = $scope.stopped;
+			}
+			return status
+		}
+		
+		for (var name in $scope.extensions) {
+			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
+			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+			var fn = arFn.fn;
+			list_extensions[name] = {
+					"fn" 		: fn,
+					"status"	: getStatus(fn)
+			}
+		}
 
 		var update = function(){
 			$scope.extensions = $scope.data_main.getExtensions();
@@ -39,20 +62,17 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.startExt = function(name){
-			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
-			if(!fn.isInitialized()){
-				if(typeof(fn.init) == "function"){
-					if(!fn.isRunning()){
-						ext.status = $scope.running;
-						fn.init()
+			if(!list_extensions[name].fn.isInitialized()){
+				if(typeof(list_extensions[name].fn.init) == "function"){
+					if(!list_extensions[name].fn.isRunning()){
+						list_extensions[name].fn.init()
 					}
 				}
-				if(typeof(fn.analytics) == "function"){fn.analytics()}
+				if(typeof(list_extensions[name].fn.analytics) == "function"){list_extensions[name].fn.analytics()}
 			} else {
-				if(typeof(fn.start) == "function"){
-					if(!fn.isRunning()){
-						ext.status = $scope.running;
-						fn.start()
+				if(typeof(list_extensions[name].fn.start) == "function"){
+					if(!list_extensions[name].fn.isRunning()){
+						list_extensions[name].fn.start()
 					}
 				}
 			}
@@ -60,11 +80,9 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.stopExt = function(name){
 			let ext = $scope.extensions[name]
-			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
-			if(typeof(fn.stop) == "function"){
-				if(fn.isRunning()){
-					ext.status = $scope.stopped;
-					fn.stop()
+			if(typeof(list_extensions[name].fn.stop) == "function"){
+				if(list_extensions[name].fn.isRunning()){
+					list_extensions[name].fn.stop()
 				}
 			}
 		}
@@ -75,44 +93,6 @@ define("robotTW2/controllers/MainController", [
 //			ext.auto_start = false;
 //			}
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
-			if(!arFn) {
-				ext.activated = false;
-				ext.status = $scope.disabled;
-			} else {
-				var fn = arFn.fn;
-				if(ext.init_initialized){
-					if(!fn.isInitialized()){
-						if(typeof(fn.init) == "function"){
-							if($scope.data_main.pages_excludes.includes(name.toLowerCase())){
-								ext.status = $scope.stopped;
-								fn.init(true)
-							} else {
-								ext.status = $scope.running;
-								fn.init()
-							}
-						}
-						if(typeof(fn.analytics) == "function"){fn.analytics()}
-					}
-					if(typeof(fn.isPaused) == "function"){
-						fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
-					} else {
-						fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
-					}
-				} else {
-					ext.status = $scope.stopped
-//					if(ext.activated && fn.isRunning()){
-//					fn.stop();
-//					}
-				}
-			}
-
-//			services.$timeout(function(){
-//			if(typeof(fn.isPaused) == "function"){
-//			fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
-//			} else {
-//			fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
-//			}
-//			}, 3000)
 		};
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
