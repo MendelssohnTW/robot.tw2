@@ -3,11 +3,13 @@ define("robotTW2/services/RecruitService", [
 	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
+	"robotTW2/databases/data_log",
 	], function(
 			robotTW2,
 			version,
 			time,
-			conf
+			conf,
+			data_log
 	){
 	return (function FarmService(
 			$rootScope,
@@ -18,6 +20,8 @@ define("robotTW2/services/RecruitService", [
 			$timeout,
 			ready
 	) {
+		
+		
 
 		var isInitialized = !1
 		, isRunning = !1
@@ -220,6 +224,7 @@ define("robotTW2/services/RecruitService", [
 											if(!promise_recruitRequest){
 												promise_recruitRequest = new Promise(function(res, rej){
 													if (village_id && unit_type){
+														data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
 														socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
 															res()
 														});
@@ -230,6 +235,8 @@ define("robotTW2/services/RecruitService", [
 													if(queue_recruitRequest.length){
 														data_rec = queue_recruitRequest.shift()
 														recruit_promise(data_rec)
+													} else {
+														data_log.recruit.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 													}
 												})
 											} else {
@@ -346,6 +353,7 @@ define("robotTW2/services/RecruitService", [
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
 		, recruit = function(){
+			data_log.recruit.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 			var villages = modelDataService.getSelectedCharacter().getVillages()
 			, list_recruit = [];
 

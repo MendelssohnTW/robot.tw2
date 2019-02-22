@@ -518,7 +518,6 @@ define("robotTW2/services/FarmService", [
 
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
-					console.log("timeout grid map search villages")
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT + 20000);
 
@@ -660,7 +659,7 @@ define("robotTW2/services/FarmService", [
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
 				var g = $timeout(function(){
-					console.log("New cicle farm " + new Date(time.convertedTime()).toString())
+					data_log.farm.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 					clear()
 					var commands_for_presets = []
@@ -751,7 +750,6 @@ define("robotTW2/services/FarmService", [
 								}
 								init_first = false;
 								execute_cicle(tempo).then(function(){
-									console.log("Terminate cicle process " + new Date(time.convertedTime()).toString())
 									data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 									data_log.set()
 									f()
