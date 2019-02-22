@@ -15,11 +15,11 @@ define("robotTW2/controllers/MainController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		var self = this;
 		var toggle = false;
-		
+
 		$scope.data_main = data_main;
-		
-		$scope.text_version = $scope.version + " " + data_main.version; 
-		
+
+		$scope.text_version = "-" + $scope.version + " " + data_main.version; 
+
 
 		var update = function(){
 			$scope.extensions = $scope.data_main.getExtensions();
@@ -88,33 +88,8 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
-//			if(data.name == "ALERT"){
-//				if(!toggle){
-//					update();
-//				} else {
-					services.$timeout(function(){update()}, 3000)
-//				}
-//			}
+			services.$timeout(function(){update()}, 3000)
 		})
-		
-//		$scope.$watch("data_data", function () {
-//			if(!$scope.data_data) {return}
-//			data_data = $scope.data_data;
-//			data_data.set();
-//		}, true)
-
-//		$scope.$watch("data_deposit", function () {
-//			if(!$scope.data_deposit) {return}
-//			data_deposit = $scope.data_deposit;
-//			data_deposit.set();
-//		}, true)
-//
-//		$scope.$watch("data_recon", function () {
-//			if(!$scope.data_recon) {return}
-//			data_recon = $scope.data_recon;
-//			data_recon.set();
-//		}, true)
-
 
 		$scope.toggleValueInit = function(ext) {
 			$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
@@ -125,7 +100,7 @@ define("robotTW2/controllers/MainController", [
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			updateCorrection()
 		})
-		
+
 		$scope.$on("$destroy", function() {
 			$scope.data_main.setExtensions($scope.extensions);
 		});
