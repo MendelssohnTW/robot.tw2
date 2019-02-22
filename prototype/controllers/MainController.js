@@ -3,19 +3,19 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"robotTW2/databases/data_main",
+	"robotTW2/databases/data_main"
 //	"robotTW2/databases/data_data",
-	"robotTW2/databases/data_deposit",
-	"robotTW2/databases/data_recon"
+//	"robotTW2/databases/data_deposit",
+//	"robotTW2/databases/data_recon"
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
-			data_main,
+			data_main
 //			data_data,
-			data_deposit,
-			data_recon
+//			data_deposit,
+//			data_recon
 	){
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -135,32 +135,32 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
-			if(data.name == "ALERT"){
-				if(!toggle){
-					update();
-				} else {
+//			if(data.name == "ALERT"){
+//				if(!toggle){
+//					update();
+//				} else {
 					services.$timeout(function(){update()}, 3000)
-				}
-			}
+//				}
+//			}
 		})
 		
-		$scope.$watch("data_data", function () {
-			if(!$scope.data_data) {return}
-			data_data = $scope.data_data;
-			data_data.set();
-		}, true)
+//		$scope.$watch("data_data", function () {
+//			if(!$scope.data_data) {return}
+//			data_data = $scope.data_data;
+//			data_data.set();
+//		}, true)
 
-		$scope.$watch("data_deposit", function () {
-			if(!$scope.data_deposit) {return}
-			data_deposit = $scope.data_deposit;
-			data_deposit.set();
-		}, true)
-
-		$scope.$watch("data_recon", function () {
-			if(!$scope.data_recon) {return}
-			data_recon = $scope.data_recon;
-			data_recon.set();
-		}, true)
+//		$scope.$watch("data_deposit", function () {
+//			if(!$scope.data_deposit) {return}
+//			data_deposit = $scope.data_deposit;
+//			data_deposit.set();
+//		}, true)
+//
+//		$scope.$watch("data_recon", function () {
+//			if(!$scope.data_recon) {return}
+//			data_recon = $scope.data_recon;
+//			data_recon.set();
+//		}, true)
 
 
 		$scope.toggleValueInit = function(ext) {
