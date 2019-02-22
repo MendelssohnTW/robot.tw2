@@ -25,18 +25,22 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.extensions = $scope.data_main.getExtensions();
 		
-		function getStatus(fn){
-			var status;
-			if(typeof(fn.isPaused) == "function"){
-				fn.isRunning() && fn.isPaused() ? status = $scope.paused : fn.isRunning() && !fn.isPaused() ? status = $scope.running : status = $scope.stopped;						
-			} else {
-				fn.isRunning() ? status = $scope.running : status = $scope.stopped;
+		var update_status = function(){
+			for (var extension in $scope.extensions) {
+				
 			}
-			return status
 		}
 		
-		$scope.getStatusFN = function getStatus(name){
-			return getStatus(list_extensions[name].fn)
+		$scope.getStatus = function getStatus(fn){
+			if(typeof(fn) == "string"){
+				fn = list_extensions[fn].fn
+			}
+			if(typeof(fn.isPaused) == "function"){
+				fn.isRunning() && fn.isPaused() ? list_extensions[name].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? list_extensions[name].status = $scope.running : status = $scope.stopped;						
+			} else {
+				fn.isRunning() ? list_extensions[name].status = $scope.running : list_extensions[name].status = $scope.stopped;
+			}
+			return list_extensions[fn.name.toUpperCase()].status
 		}
 		
 		for (var name in $scope.extensions) {
