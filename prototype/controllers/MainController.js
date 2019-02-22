@@ -4,7 +4,7 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"robotTW2/databases/data_main",
-	"robotTW2/databases/data_data",
+//	"robotTW2/databases/data_data",
 	"robotTW2/databases/data_deposit",
 	"robotTW2/databases/data_recon"
 	], function(
@@ -13,7 +13,7 @@ define("robotTW2/controllers/MainController", [
 			providers,
 			conf,
 			data_main,
-			data_data,
+//			data_data,
 			data_deposit,
 			data_recon
 	){
