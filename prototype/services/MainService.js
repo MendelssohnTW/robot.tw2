@@ -1,12 +1,10 @@
 define("robotTW2/services/MainService", [
 	"robotTW2",
 	"robotTW2/conf",
-	"robotTW2/socketSend",
 	"robotTW2/databases/data_main",
 	], function(
 			robotTW2,
 			conf,
-			socketSend,
 			data_main
 	){
 	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService, providers) {
