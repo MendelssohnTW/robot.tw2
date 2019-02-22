@@ -73,7 +73,9 @@ define("robotTW2/controllers/MainController", [
 					}
 				} else {
 					ext.status = $scope.stopped
-					fn.stop();
+					if(ext.activated){
+						fn.stop();
+					}
 				}
 			}
 
