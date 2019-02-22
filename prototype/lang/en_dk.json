@@ -33,6 +33,7 @@
 	},
 	"main": {
 		"title": "Core Settings",
+		"version": "Version",
 		"introducing": "Activating and deactivating modules",
 		"settings": "Default settings",
 		"settings_module": "Module Settings",

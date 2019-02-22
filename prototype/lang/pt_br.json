@@ -33,6 +33,7 @@
 	},
 	"main": {
 		"title": "Configurações principais",
+		"version": "Versão",
 		"introducing": "Ativação e desativação dos módulos",
 		"settings": "Configurações padrões",
 		"settings_module": "Configurações dos módulos",

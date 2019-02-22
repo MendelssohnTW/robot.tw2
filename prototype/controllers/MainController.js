@@ -24,7 +24,7 @@ define("robotTW2/controllers/MainController", [
 		
 		$scope.data_main = data_main;
 		
-		$scope.version = "version " + data_main.version; 
+		$scope.text_version = $scope.version + " " + data_main.version; 
 		
 //		$scope.data_data = data_data;
 //		$scope.data_deposit = data_deposit;
