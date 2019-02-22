@@ -4,18 +4,12 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"robotTW2/databases/data_main"
-//	"robotTW2/databases/data_data",
-//	"robotTW2/databases/data_deposit",
-//	"robotTW2/databases/data_recon"
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
 			data_main
-//			data_data,
-//			data_deposit,
-//			data_recon
 	){
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -26,38 +20,13 @@ define("robotTW2/controllers/MainController", [
 		
 		$scope.text_version = $scope.version + " " + data_main.version; 
 		
-//		$scope.data_data = data_data;
-//		$scope.data_deposit = data_deposit;
-//		$scope.data_recon = data_recon;
 
 		var update = function(){
 			$scope.extensions = $scope.data_main.getExtensions();
 			for (var extension in $scope.extensions) {
 				$scope.extensions[extension.toUpperCase()].hotkey ? $scope.extensions[extension.toUpperCase()].hotkey = conf.HOTKEY[extension.toUpperCase()].toUpperCase() : null;
-//				var arFn = robotTW2.requestFn.get(extension.toLowerCase(), true);
-//				if(!arFn) {
-//					$scope.extensions[extension].activated = false;
-//					continue
-//				} else {
-////					if(extension == "DATA"){
-////						if($scope.data_data.possible){
-////							$scope.extensions[extension].activated = true;
-////						} else {
-////							$scope.extensions[extension].activated = false;
-////						}
-////					}
-//					var fn = arFn.fn;
-//
-//					if(typeof(fn.isPaused) == "function"){
-//						fn.isRunning() && fn.isPaused() ? $scope.extensions[extension].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? $scope.extensions[extension].status = $scope.running : $scope.extensions[extension].status = $scope.stopped;						
-//					} else {
-//						fn.isRunning() ? $scope.extensions[extension].status = $scope.running : $scope.extensions[extension].status = $scope.stopped;
-//					}
-//				}
-				
-				$scope.toggleValueState($scope.extensions[extension])
+				$scope.toggleValueState(extension)
 			}
-//			$scope.data_main.setExtensions($scope.extensions);
 			if (!$scope.$$phase) $scope.$apply();
 
 		}
@@ -69,63 +38,44 @@ define("robotTW2/controllers/MainController", [
 			services.AttackService.calibrate_time();
 		}
 
-		$scope.toggleValueState = function(ext) {
-//			toggle = true;
+		$scope.toggleValueState = function(name) {
+			let ext = $scope.extensions[name]
 			if(!ext.initialized){
 				ext.auto_initialize = false;
-				$scope.extensions[ext.name].auto_initialize = ext.auto_initialize
 			}
-			$scope.extensions[ext.name].initialized = ext.initialized
-
-			var arFn = robotTW2.requestFn.get(ext.name.toLowerCase(), true);
+			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			if(!arFn) {
-				$scope.extensions[ext.name].activated = false;
-				$scope.extensions[ext.name].status = $scope.disabled;
+				ext.activated = false;
+				ext.status = $scope.disabled;
 			} else {
 				var fn = arFn.fn;
-//				if(ext.name == "DATA"){
-//					if($scope.data_data.possible){
-//						$scope.extensions[ext.name].activated = true;
-//					} else {
-//						$scope.extensions[ext.name].activated = false;
-//					}
-//				} else {
-					$scope.extensions[ext.name].activated = true;
-//				}
-				
 				if(ext.initialized){
 					if(!fn.isInitialized()){
 						if(typeof(fn.init) == "function"){
-							if($scope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
-								$scope.extensions[ext.name].status = $scope.stopped;
+							if($scope.data_main.pages_excludes.includes(name.toLowerCase())){
+								ext.status = $scope.stopped;
 								fn.init(true)
 							} else {
-								$scope.extensions[ext.name].status = $scope.running;
+								ext.status = $scope.running;
 								fn.init()
 							}
 						}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
 					} else {
 						if(typeof(fn.start) == "function"){
-							if(!$scope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
-								$scope.extensions[ext.name].status = $scope.running;
+							if(!$scope.data_main.pages_excludes.includes(name.toLowerCase())){
+								ext.status = $scope.running;
 								fn.start()
 							} else {
-								$scope.extensions[ext.name].status = $scope.stopped;
+								ext.status = $scope.stopped;
 							}
 						}
 					}
 				} else {
-					$scope.extensions[ext.name].status = $scope.stopped
+					ext.status = $scope.stopped
 					fn.stop();
 				}
-				
-				
 			}
-
-//			toggle = false;
-
-//			$scope.data_main.setExtensions($scope.extensions);
 
 			services.$timeout(function(){
 				if(typeof(fn.isPaused) == "function"){
