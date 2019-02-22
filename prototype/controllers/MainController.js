@@ -18,7 +18,7 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.data_main = data_main;
 
-		$scope.text_version = "-" + $scope.version + " " + data_main.version; 
+		$scope.text_version = $scope.version + " " + data_main.version; 
 
 
 		var update = function(){
