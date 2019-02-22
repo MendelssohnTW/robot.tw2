@@ -27,7 +27,7 @@ define("robotTW2/services/MainService", [
 				var arFn = requestFn.get(extension.toLowerCase(), true);
 				if(!arFn 
 						|| (extension.toLowerCase() == "secondvillage" && !secondVillageService.isFeatureActive())
-						|| (extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible))
+//						|| (extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible))
 				) {
 					extensions[extension].activated = false;
 					continue
