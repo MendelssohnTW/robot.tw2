@@ -63,13 +63,10 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_spy.set();
 		});
-
-
 		
 		document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
 		
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 		
 		return $scope;
 	}

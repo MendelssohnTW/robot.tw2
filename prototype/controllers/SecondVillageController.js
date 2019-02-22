@@ -54,6 +54,8 @@ define("robotTW2/controllers/SecondVillageController", [
 
 		document.getElementById("input-ms").value = helper.readableMilliseconds(data_secondvillage.interval).length == 7 ? "0" + helper.readableMilliseconds(data_secondvillage.interval) : helper.readableMilliseconds(data_secondvillage.interval);
 
+		$scope.setCollapse();
+		
 		return $scope;
 	}
 })

@@ -50,11 +50,5 @@ define("robotTW2/databases/data_recon", [
 
 	Object.setPrototypeOf(data_recon, db_recon);
 
-	services.$rootScope.data_recon = data_recon;
-
-	services.$rootScope.$watch("data_recon", function(){
-		data_recon.set()
-	}, true)
-
 	return data_recon;
 })

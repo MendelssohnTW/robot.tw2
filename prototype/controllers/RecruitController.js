@@ -138,16 +138,10 @@ define("robotTW2/controllers/RecruitController", [
 			data_recruit.set();
 		}, true)
 		
-		$scope.$on("$destroy", function() {
-			$scope.data_recruit.set();
-		});
-
 		
 		initTab();
-
 		
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 
 		return $scope;
 	}

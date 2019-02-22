@@ -511,10 +511,9 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();
+			$scope.data_farm.set();
 		});
 
-
-		$scope.recalcScrollbar();
 		$scope.setCollapse();
 
 		return $scope;

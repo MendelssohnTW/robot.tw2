@@ -54,10 +54,6 @@ define("robotTW2/controllers/DefenseController", [
 			return local_data_villages;
 		})
 		
-		if(!data_defense.recon){
-			data_defense.recon = unitTypesRenameRecon;
-		}
-
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;

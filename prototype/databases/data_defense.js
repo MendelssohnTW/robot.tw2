@@ -2,12 +2,14 @@ define("robotTW2/databases/data_defense", [
 	"robotTW2/databases/database",
 	"robotTW2/conf",
 	"robotTW2/services",
-	"robotTW2/notify"
+	"robotTW2/notify",
+	"robotTW2/unitTypesRenameRecon"
 	], function(
 			database,
 			conf,
 			services,
-			notify
+			notify,
+			unitTypesRenameRecon
 	) {
 
 	var data_defense = database.get("data_defense")
@@ -28,6 +30,7 @@ define("robotTW2/databases/data_defense", [
 			hotkey					: conf.HOTKEY.DEFENSE,
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
 			interval				: conf.INTERVAL.DEFENSE,
+			list_defense 			: unitTypesRenameRecon,
 			version					: conf.VERSION.DEFENSE,
 			time_sniper_ant			: conf.TIME_SNIPER_ANT,
 			time_sniper_post		: conf.TIME_SNIPER_POST,

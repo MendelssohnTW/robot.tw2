@@ -49,12 +49,10 @@ define("robotTW2/controllers/DepositController", [
 			data_deposit.set();
 		}, true)
 
-		$scope.$on("$destroy", function() {
-			$scope.data_villages.set();
-		});
-
 		document.getElementById("input-ms").value = helper.readableMilliseconds($scope.data_deposit.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_deposit.interval) : helper.readableMilliseconds($scope.data_deposit.interval);
 
+		$scope.setCollapse();
+		
 		return $scope;
 	}
 })

@@ -30,12 +30,6 @@ define("robotTW2/controllers/ReconController", [
 			data_recon.set();
 		}, true)
 		
-		$scope.$on("$destroy", function() {
-			$scope.data_recon.set();
-		});
-
-
-		$scope.recalcScrollbar();
 		$scope.setCollapse();
 		return $scope;
 	}
