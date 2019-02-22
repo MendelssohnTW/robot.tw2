@@ -17,7 +17,6 @@ define("robotTW2/controllers/MainController", [
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		var self = this
 		, toggle = false
-		, list_extensions = {}
 
 		$scope.data_main = data_main;
 
@@ -26,40 +25,23 @@ define("robotTW2/controllers/MainController", [
 		$scope.extensions = $scope.data_main.getExtensions();
 
 		$scope.getStatus = function getStatus(fn){
+			var status;
 			if(typeof(fn.isPaused) == "function"){
-				fn.isRunning() && fn.isPaused() ? list_extensions[fn.name.toUpperCase()].status = $scope.paused : fn.isRunning() && !fn.isPaused() ? list_extensions[fn.name.toUpperCase()].status = $scope.running : status = $scope.stopped;						
+				fn.isRunning() && fn.isPaused() ? status = $scope.paused : fn.isRunning() && !fn.isPaused() ? status = $scope.running : status = $scope.stopped;						
 			} else {
-				fn.isRunning() ? list_extensions[fn.name.toUpperCase()].status = $scope.running : list_extensions[fn.name.toUpperCase()].status = $scope.stopped;
+				fn.isRunning() ? status = $scope.running : status = $scope.stopped;
 			}
-			return Object.keys(list_extensions).length ? list_extensions[fn.name.toUpperCase()].status: $scope.extensions[fn];
+			return status;
 		}
 		
 		for (var name in $scope.extensions) {
 			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			var fn = arFn.fn;
-			list_extensions[name] = {
-					"fn" 		: fn,
-					"status"	: $scope.getStatus(fn)
-			}
+			$scope.extensions[name].status = $scope.getStatus(fn);
 		}
 
-		$scope.getStatusFN = function(name){
-			return getStatus(list_extensions[name].fn)
-		}
-
-		var update_status = function($event){
-			for (var name in $scope.extensions) {
-				$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
-				var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
-				var fn = arFn.fn;
-				list_extensions[name] = {
-						"fn" 		: fn,
-						"status"	: $scope.getStatus(fn)
-				}
-			}
-		}
-		, updateCorrection = function(){
+		var updateCorrection = function(){
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
@@ -68,17 +50,17 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.startExt = function(name){
-			if(!list_extensions[name].fn.isInitialized()){
-				if(typeof(list_extensions[name].fn.init) == "function"){
-					if(!list_extensions[name].fn.isRunning()){
-						list_extensions[name].fn.init()
+			if(!$scope.extensions[name].fn.isInitialized()){
+				if(typeof($scope.extensions[name].fn.init) == "function"){
+					if(!$scope.extensions[name].fn.isRunning()){
+						$scope.extensions[name].fn.init()
 					}
 				}
-				if(typeof(list_extensions[name].fn.analytics) == "function"){list_extensions[name].fn.analytics()}
+				if(typeof($scope.extensions[name].fn.analytics) == "function"){$scope.extensions[name].fn.analytics()}
 			} else {
-				if(typeof(list_extensions[name].fn.start) == "function"){
-					if(!list_extensions[name].fn.isRunning()){
-						list_extensions[name].fn.start()
+				if(typeof($scope.extensions[name].fn.start) == "function"){
+					if(!$scope.extensions[name].fn.isRunning()){
+						$scope.extensions[name].fn.start()
 					}
 				}
 			}
@@ -86,9 +68,9 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.stopExt = function(name){
 			let ext = $scope.extensions[name]
-			if(typeof(list_extensions[name].fn.stop) == "function"){
-				if(list_extensions[name].fn.isRunning()){
-					list_extensions[name].fn.stop()
+			if(typeof($scope.extensions[name].fn.stop) == "function"){
+				if($scope.extensions[name].fn.isRunning()){
+					$scope.extensions[name].fn.stop()
 				}
 			}
 		}
