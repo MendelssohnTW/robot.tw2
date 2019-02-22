@@ -66,7 +66,11 @@ define("robotTW2/controllers/MainController", [
 								ext.status = $scope.running;
 								fn.start()
 							} else {
-								ext.status = $scope.stopped;
+								if(typeof(fn.isPaused) == "function"){
+									fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
+								} else {
+									fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
+								}
 							}
 						}
 					}
@@ -78,13 +82,13 @@ define("robotTW2/controllers/MainController", [
 				}
 			}
 
-			services.$timeout(function(){
-				if(typeof(fn.isPaused) == "function"){
-					fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
-				} else {
-					fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
-				}	
-			}, 3000)
+//			services.$timeout(function(){
+//				if(typeof(fn.isPaused) == "function"){
+//					fn.isRunning() && fn.isPaused() ? ext.status = $scope.paused : fn.isRunning() && !fn.isPaused() ? ext.status = $scope.running : ext.status = $scope.stopped;						
+//				} else {
+//					fn.isRunning() ? ext.status = $scope.running : ext.status = $scope.stopped;
+//				}
+//			}, 3000)
 		};
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
