@@ -40,8 +40,6 @@ define("robotTW2/services/MainService", [
 							return !1;
 						if(typeof(fn.init) == "function"){fn.init()}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
-					} else {
-						extensions[extension].auto_start = false
 					}
 				}
 			}

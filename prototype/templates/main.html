@@ -42,7 +42,7 @@
 														<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
 														<td class="cell-center"><h5>{{text_status}}</h5></td>
 													</tr>
-													<tr ng-repeat="ext in extensions">
+													<tr ng-repeat="ext in extensions" ng-show="ext.activated">
 														<td class="cell-right"><span>{{ext.name}}</span></td>
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
@@ -50,7 +50,7 @@
 																	tooltip-content="{{ext.activated ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
 																	switch-slider="" border="true" enabled="ext.activated"
 																	value="ext.init_initialized"
-																	ng-click="toggleValueState(ext.name)" vertical="false"
+																	vertical="false"
 																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
 																		class="box-border-dark box-filter">

@@ -46,7 +46,7 @@ define("robotTW2/controllers/MainController", [
 		}
 		, update_status = function(){
 			for (var name in $scope.extensions) {
-				$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
+//				$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
 				var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 				var fn = arFn.fn;
 				$scope.extensions[name].status = $scope.getStatus(fn);
@@ -71,6 +71,11 @@ define("robotTW2/controllers/MainController", [
 			} else {
 				if(typeof(fn.start) == "function"){
 					if(!fn.isRunning()){
+						if($scope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
+							fn.init(true)
+						} else {
+							fn.init()
+						}
 						fn.start()
 					}
 				}
@@ -88,13 +93,10 @@ define("robotTW2/controllers/MainController", [
 			}
 		}
 
-		$scope.toggleValueState = function(name, opt) {
-			let ext = $scope.extensions[name]
-//			if(!ext.init_initialized){
-//			ext.auto_start = false;
-//			}
-			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
-		};
+//		$scope.toggleValueState = function(name, opt) {
+//			let ext = $scope.extensions[name]
+//			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+//		};
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
