@@ -50,27 +50,31 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.startExt = function(name){
-			if(!$scope.extensions[name].fn.isInitialized()){
-				if(typeof($scope.extensions[name].fn.init) == "function"){
-					if(!$scope.extensions[name].fn.isRunning()){
-						$scope.extensions[name].fn.init()
+			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+			var fn = arFn.fn;
+			if(!fn.isInitialized()){
+				if(typeof(fn.init) == "function"){
+					if(!fn.isRunning()){
+						fn.init()
 					}
 				}
-				if(typeof($scope.extensions[name].fn.analytics) == "function"){$scope.extensions[name].fn.analytics()}
+				if(typeof(fn.analytics) == "function"){fn.analytics()}
 			} else {
-				if(typeof($scope.extensions[name].fn.start) == "function"){
-					if(!$scope.extensions[name].fn.isRunning()){
-						$scope.extensions[name].fn.start()
+				if(typeof(fn.start) == "function"){
+					if(!fn.isRunning()){
+						fn.start()
 					}
 				}
 			}
 		}
 
 		$scope.stopExt = function(name){
+			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+			var fn = arFn.fn;
 			let ext = $scope.extensions[name]
-			if(typeof($scope.extensions[name].fn.stop) == "function"){
-				if($scope.extensions[name].fn.isRunning()){
-					$scope.extensions[name].fn.stop()
+			if(typeof(fn.stop) == "function"){
+				if(fn.isRunning()){
+					fn.stop()
 				}
 			}
 		}
