@@ -101,7 +101,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.getTimeRest = function(){
-			return $scope.data_headquarter.complete > time.convertedTime() && $scope.isRunning ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
+			return $scope.data_headquarter.complete > time.convertedTime() && services.HeadquarterService.isRunning() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
 
 		$scope.getKey = function(key){
