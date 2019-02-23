@@ -44,6 +44,14 @@ define("robotTW2/controllers/MainController", [
 		var updateCorrection = function(){
 			if (!$scope.$$phase) $scope.$apply();
 		}
+		, update_status = function(){
+			for (var name in $scope.extensions) {
+				$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
+				var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
+				var fn = arFn.fn;
+				$scope.extensions[name].status = $scope.getStatus(fn);
+			}
+		}
 
 		$scope.recalibrate = function(){
 			services.AttackService.calibrate_time();
