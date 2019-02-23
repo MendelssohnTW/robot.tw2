@@ -98,7 +98,7 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
-			services.$timeout(function(){update_status()}, 3000)
+			services.$timeout(function(){update_status()}, 1500)
 		})
 
 		$scope.toggleValueInit = function(ext) {
