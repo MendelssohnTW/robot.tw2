@@ -93,15 +93,15 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getVstart = function(param){
 			var vid = param.start_village;
 			if(!vid){return}
-			return getVillageData(vid).data.name
+			return getVillageData(vid).name
 		}
 
 		$scope.getVcoordStart = function(param){
 
 			var vid = param.start_village;
 			if(!vid){return}
-			var x = getVillageData(vid).data.x
-			var y = getVillageData(vid).data.y
+			var x = getVillageData(vid).x
+			var y = getVillageData(vid).y
 			return "(" + x + "/" + y + ")"
 		}
 
