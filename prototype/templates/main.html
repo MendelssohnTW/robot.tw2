@@ -89,13 +89,13 @@
 															<div class="icon-26x26-dot-bg" tooltip
 																tooltip-content="{{ext.status}}">
 																<span
-																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status ==stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
+																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status == stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
 															</div>
 														</td>
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="startExt(ext.name)"
-															ng-class="{'btn-grey': ext.status == running}"><span><span
+															ng-class="{'btn-grey': ext.status == running && !ext.activated}"><span><span
 																	id="span-text" class="text">{{START}}</span></td>
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
