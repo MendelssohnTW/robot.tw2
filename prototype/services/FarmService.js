@@ -193,8 +193,8 @@ define("robotTW2/services/FarmService", [
 
 			listaGrid.sort(function (a, b) {
 				
-				var aa = Math.abs(Math.sqrt(Math.pow(a.x - x) + (Math.pow(a.y - y) * 0.75)))
-				var bb = Math.abs(Math.sqrt(Math.pow(b.x - x) + (Math.pow(b.y - y) * 0.75)))
+				var aa = Math.abs(Math.sqrt(Math.pow((a.x + (a.dist / 2)) - x, 2) + (Math.pow((a.y + (a.dist / 2)) - y, 2) * 0.75)))
+				var bb = Math.abs(Math.sqrt(Math.pow((b.x + (b.dist / 2)) - x, 2) + (Math.pow((b.y + (b.dist / 2)) - y, 2) * 0.75)))
 				return aa - bb;
 //				if (a.x != b.x) {
 //					if (a.x - x < b.x - x) {
