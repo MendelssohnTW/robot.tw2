@@ -175,6 +175,7 @@ define("robotTW2/services/HeadquarterService", [
 				if(firstQueue && firstQueue.canBeFinishedForFree){
 					premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 					resolve(true);
+					return;
 				}
 
 				var gt = getFinishedForFree(village);
@@ -193,6 +194,7 @@ define("robotTW2/services/HeadquarterService", [
 						) 
 				) {
 					resolve();
+					return;
 				}
 
 				data_villages.villages[village_id].buildinglevels = buildingLevels;
@@ -210,6 +212,7 @@ define("robotTW2/services/HeadquarterService", [
 
 				if(!data_villages.villages[village_id].builds.length) {
 					resolve();
+					return;
 				}
 
 				var reBuilds = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value].map(function(key){
@@ -252,7 +255,6 @@ define("robotTW2/services/HeadquarterService", [
 								if(repeat){
 									resolve();
 									next_queue = [];
-									return !1;
 								} else if(g.length && isRunning){
 									build = g.shift()
 									a(build)
