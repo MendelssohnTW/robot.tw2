@@ -114,8 +114,8 @@ define("robotTW2/databases/data_villages", [
 				){
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-						buildingorder 			: conf.BUILDINGORDER["standard"],
-						buildinglimit 			: conf.BUILDINGLIMIT["standard"],
+						buildingorder 			: conf.BUILDINGORDER,
+						buildinglimit 			: conf.BUILDINGLIMIT,
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
 						presets					: getPst(m),
