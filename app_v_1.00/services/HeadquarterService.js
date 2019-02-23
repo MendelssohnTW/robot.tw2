@@ -215,6 +215,7 @@ define("robotTW2/services/HeadquarterService", [
 
 				if(!data_villages.villages[village_id].builds.length) {
 					resolve();
+					return
 				}
 
 				var reBuilds = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value].map(function(key){
