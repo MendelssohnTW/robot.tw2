@@ -46,7 +46,7 @@ define("robotTW2/controllers/AttackController", [
 			return local_data_villages[vid].data;
 		}
 		
-		Object.keys(data_villages).map(function(key){
+		Object.keys(data_villages.villages).map(function(key){
 			let data = getVillage(key).data;
 			angular.extend(local_data_villages, {[key] : {"data": data}})
 			return local_data_villages;
