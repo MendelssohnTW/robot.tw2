@@ -17,6 +17,7 @@
 	"NO": "Não",
 	"map": {
 		"title": "Mini mapa",
+		"version": "Versão",
 		"minimap": "Mini mapa",
 		"highlights": "Destaques",
 		"settings": "Configurações",
@@ -25,11 +26,11 @@
 		"add": "Adicionar marcação",
 		"misc": "Diversos",
 		"colors": "Cores",
-		"right" : "Clique botão direito na aldeia",
+		"right": "Clique botão direito na aldeia",
 		"highlight_village": "Destaque de aldeia",
 		"highlight_player": "Destaque de jogador",
 		"highlight_tribe": "Destaque de tribo",
-		"floating_minimap" : "Mostrar mini mapa flutuante"
+		"floating_minimap": "Mostrar mini mapa flutuante"
 	},
 	"main": {
 		"title": "Configurações principais",
@@ -55,6 +56,7 @@
 	},
 	"headquarter": {
 		"title": "Automatização do Quartel",
+		"version": "Versão",
 		"settings": "Configuração global",
 		"settings_for_villages": "Configurações por aldeia",
 		"settings_standard": "Configurações padrão",
@@ -102,6 +104,7 @@
 	},
 	"alert": {
 		"title": "Alerta de ataques a membros",
+		"version": "Versão",
 		"introducing": "Ativar/Desativar alerta de ataques para membros",
 		"time_interval_alert": "Intervalo de verificação",
 		"select_all": "Selecionar todos",
@@ -119,6 +122,7 @@
 	},
 	"recon": {
 		"title": "Reconhecimento de unidades",
+		"version": "Versão",
 		"text_active": "Ativar renomeação",
 		"archer": "Arqueiro",
 		"doppelsoldner": "Berserker",
@@ -140,8 +144,9 @@
 		"preset": "Predefinições",
 		"log": "Log",
 		"title": "Coleta de recursos",
+		"version": "Versão",
 		"wait_init": "Aguardando início do ciclo de Farm",
-		"farm_init": "Novo ciclo de Farm iniciado",
+		"farm_init": "Ciclo de Farm iniciado",
 		"terminate_cicles": "Terminado todos os Ciclos de Farm",
 		"init_cicles": "Iniciado ciclos de Farm",
 		"farm_no_init": "Ciclo de Farm não iniciado. Término de farm inferior ao tempo mínimo do ciclo",
@@ -161,7 +166,7 @@
 		"text_min_dist": "Distância mínima",
 		"text_max_dist": "Distância máxima",
 		"text_preset": "Predefinições",
-		"text_all_preset": "Select all the presets of the selected village",
+		"text_all_preset": "Selecionar todas as predefinições da aldeia selecionada",
 		"text_name_preset": "Nome da predefinição",
 		"text_name_state": "Estado",
 		"text_name_action": "Ação",
@@ -178,6 +183,7 @@
 		"recruit": "Configurações de recrutamento",
 		"log": "Log",
 		"title": "Recrutamento de tropas",
+		"version": "Versão",
 		"settings": "Configurações para recrutamento de tropas",
 		"recruit_running": "Estado atual do recrutamento",
 		"init_cicles": "Iniciado ciclo recruit",
@@ -202,6 +208,7 @@
 	},
 	"deposit": {
 		"title": "Coleta de depósito",
+		"version": "Versão",
 		"settings": "Configurações para coleta do depósito",
 		"text_interval_deposit": "Intervalo de verificação",
 		"text_interval": "Próximo ciclo em ",
@@ -209,6 +216,7 @@
 	},
 	"secondvillage": {
 		"title": "Missões da segunda aldeia",
+		"version": "Versão",
 		"settings": "Configurações para coleta da segunda aldeia",
 		"text_interval_village": "Intervalo de verificação",
 		"text_interval": "Próximo ciclo em "
@@ -221,7 +229,8 @@
 	},
 	"notify": {
 		"title": "Notícias",
-		"data_main": "Robot TW2 - Banco de dados (MAIN) atualizado - reative os módulos e configure parâmetros necessários",
+		"version": "Versão",
+		"data_main": "Robot TW2 - Updated (MAIN) database - reactivate the modules and configure required parameters",
 		"data_alert": "Robot TW2 - Banco de dados (ALERT) atualizado, reative o módulo ALERT",
 		"data_recon": "Robot TW2 - Banco de dados (RECON) atualizado, reative o módulo RECON",
 		"data_headquarter": "Robot TW2 - Banco de dados (HEADQUARTER) atualizado, reative o módulo HEADQUARTER",
@@ -236,6 +245,7 @@
 	},
 	"attack": {
 		"attack": "Ataque",
+		"version": "Versão",
 		"log": "Log",
 		"text_date": "Data",
 		"text_hour": "Hora",
@@ -252,6 +262,7 @@
 	},
 	"defense": {
 		"defense": "Defesa",
+		"version": "Versão",
 		"troops": "Seleção de tropas",
 		"log": "Log",
 		"text_date": "Data",
@@ -265,6 +276,7 @@
 	},
 	"data": {
 		"title": "Atualização de dados",
+		"version": "Versão",
 		"text_interval_data_villages": "Intervalo de nova atualização das aldeias",
 		"text_interval": "Próximo ciclo em ",
 		"text_interval_data_tribes": "Intervalo de nova atualização das tribos",
@@ -272,10 +284,10 @@
 		"text_timeout": "Tempo esgotado ",
 		"text_err": "Erro interno ",
 		"text_completed": "Dados enviados "
-	}
-	,
+	},
 	"confirm": {
 		"title": "Confirmar acesso a https",
+		"version": "Versão",
 		"text_show": "Para acessar o servidor Ipatapp você deve liberar acesso sem certificado e se o popup desta página estiver bloqueado, então deverá ser liberado para concluir. Ou se desejar pode acessar diretamento o site ",
 		"text_confirm": "Deseja abrir uma nova guia para liberar?",
 		"text_reload": "Faz-se necessário o regarregamento da página para atualizaçao do acesso. Deseja regarregar esta página"

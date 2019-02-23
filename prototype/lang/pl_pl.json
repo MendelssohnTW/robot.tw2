@@ -17,6 +17,7 @@
 	"NO": "No",
 	"map": {
 		"title": "Mini map",
+		"version": "Version",
 		"minimap": "Mini map",
 		"highlights": "Highlights",
 		"settings": "Settings",
@@ -55,6 +56,7 @@
 	},
 	"headquarter": {
 		"title": "Automation of the Barracks",
+		"version": "Version",
 		"settings": "Global settings",
 		"settings_for_villages": "Settings per village",
 		"settings_standard": "Settings standard",
@@ -102,6 +104,7 @@
 	},
 	"alert": {
 		"title": "Membership attack alert",
+		"version": "Version",
 		"introducing": "Enable / Disable attack alert for members",
 		"time_interval_alert": "Check interval",
 		"select_all": "Select all",
@@ -119,6 +122,7 @@
 	},
 	"recon": {
 		"title": "Unit recognition",
+		"version": "Version",
 		"text_active": "Enable renaming",
 		"archer": "Archer",
 		"doppelsoldner": "Berserker",
@@ -137,6 +141,7 @@
 	},
 	"farm": {
 		"farm": "Collection settings",
+		"version": "Version",
 		"preset": "Presets",
 		"log": "Log",
 		"title": "Collection of resources",
@@ -176,6 +181,7 @@
 	},
 	"recruit": {
 		"recruit": "Recruit settings",
+		"version": "Version",
 		"log": "Log",
 		"title": "Recruitment of troops",
 		"settings": "Settings for troop recruitment",
@@ -202,6 +208,7 @@
 	},
 	"deposit": {
 		"title": "Deposit collection",
+		"version": "Version",
 		"settings": "Settings for collecting the deposit",
 		"text_interval_deposit": "Check interval",
 		"text_interval": "Next cycle in",
@@ -209,18 +216,21 @@
 	},
 	"secondvillage": {
 		"title": "Missions of the second village",
+		"version": "Version",
 		"settings": "Settings for collecting the second village",
 		"text_interval_village": "Check Interval",
 		"text_interval": "Next cycle in "
 	},
 	"spy": {
 		"title": "Recruitment of spies",
+		"version": "Version",
 		"settings": "Settings",
 		"text_interval": "Next cycle in",
 		"text_interval_spy": "Check interval"
 	},
 	"notify": {
 		"title": "News",
+		"version": "Version",
 		"init_ready": "Robot TW2 - Loaded",
 		"data_main": "Robot TW2 - Database (MAIN) updated ",
 		"data_alert": "Robot TW2 - Database (ALERT) updated, reactivate the ALERT module",
@@ -237,6 +247,7 @@
 	},
 	"attack": {
 		"attack": "attack",
+		"version": "Version",
 		"log": "Log",
 		"text_date": "Data",
 		"text_hour": "Time",
@@ -253,6 +264,7 @@
 	},
 	"defense": {
 		"defense": "Defense",
+		"version": "Version",
 		"troops": "Select the troops",
 		"log": "Log",
 		"text_date": "Date",
@@ -266,6 +278,7 @@
 	},
 	"data": {
 		"title": "Data update",
+		"version": "Version",
 		"text_interval_data_villages": "Check interval villages",
 		"text_interval": "Next cycle in",
 		"text_interval_data_tribes": "Check interval tribes",
@@ -276,6 +289,7 @@
 	},
 	"confirm": {
 		"title": "Confirm https access",
+		"version": "Version",
 		"text_show": "To access the Ipatapp server you must release access without a certificate and if the popup on this page is blocked then it must be released to complete. Or you can directly access the site ",
 		"text_confirm": "Do you want to open a new tab to free?",
 		"text_reload": "It is necessary the regarregamento of the page to update the access. You want to reload this page"
