@@ -197,6 +197,7 @@ define("robotTW2/services/HeadquarterService", [
 						) 
 				) {
 					resolve();
+					return
 				}
 
 				data_villages.villages[village_id].buildinglevels = buildingLevels;
