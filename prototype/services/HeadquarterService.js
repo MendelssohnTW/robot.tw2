@@ -215,7 +215,8 @@ define("robotTW2/services/HeadquarterService", [
 					return;
 				}
 
-				var reBuilds = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value].map(function(key){
+				var bd = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value]
+				var reBuilds = Object.keys(bd).map(function(key){
 					return data_villages.villages[village_id].builds.map(function(key){return Object.keys(key)[0]}).find(f=>f==Object.keys(key)[0])
 				}).filter(f => f != undefined)
 				, g = [];
