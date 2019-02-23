@@ -58,7 +58,7 @@ define("robotTW2/controllers/FarmController", [
 		
 		Object.keys($scope.data_villages.villages).map(function(key){
 			let village = getVillage(key);
-			angular.extend(local_data_villages, {[key] : {"village": village}})
+			angular.extend(local_data_villages, {[key] : village})
 			return local_data_villages;
 		})
 		
