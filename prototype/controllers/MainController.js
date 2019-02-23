@@ -51,6 +51,7 @@ define("robotTW2/controllers/MainController", [
 				var fn = arFn.fn;
 				$scope.extensions[name].status = $scope.getStatus(fn);
 			}
+			if (!$scope.$$phase) {$scope.$apply()}
 		}
 
 		$scope.recalibrate = function(){
