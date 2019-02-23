@@ -95,12 +95,12 @@
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="startExt(ext.name)"
-															ng-class="{'btn-grey': ext.status == running || !ext.activated}"><span
+															ng-class="{'btn-grey': (ext.status == running || !ext.activated)}"><span
 																id="span-text" class="text">{{START}}</span></a></td>
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="stopExt(ext.name)"
-															ng-class="{'btn-grey': ext.status == stopped}"><span
+															ng-class="{'btn-grey': ext.status == stopped || !ext.activated}"><span
 																id="span-text" class="text">{{STOP}}</span></a></td>
 													</tr>
 												</tbody>
