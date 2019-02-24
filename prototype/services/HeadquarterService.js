@@ -77,6 +77,8 @@ define("robotTW2/services/HeadquarterService", [
 			, nextLevelCosts = buildingData.nextLevelCosts
 			, not_enough_resources = false
 			, firstQueue = village.getBuildingQueue().getQueue()[0];
+			
+			console.log({[village.data.name] : build})
 
 			if(firstQueue && firstQueue.canBeFinishedForFree){
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
