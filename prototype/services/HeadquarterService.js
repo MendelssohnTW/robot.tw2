@@ -78,7 +78,7 @@ define("robotTW2/services/HeadquarterService", [
 			, not_enough_resources = false
 			, firstQueue = village.getBuildingQueue().getQueue()[0];
 			
-			console.log({[village.data.name] : build})
+			
 
 			if(firstQueue && firstQueue.canBeFinishedForFree){
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
@@ -172,11 +172,14 @@ define("robotTW2/services/HeadquarterService", [
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];
+				
+				console.log(village.data.name)
 
 				var premiumActionService = injector.get("premiumActionService");
 
 				if(firstQueue && firstQueue.canBeFinishedForFree){
 					premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
+					console.log(village.data.name + " canBeFinishedForFree")
 					resolve(true);
 					return;
 				}
@@ -195,6 +198,7 @@ define("robotTW2/services/HeadquarterService", [
 								&& (village.isInitialized() || villageService.initializeVillage(village))
 						) 
 				) {
+					console.log(village.data.name + " no slots")
 					resolve();
 					return;
 				}
@@ -213,6 +217,7 @@ define("robotTW2/services/HeadquarterService", [
 				data_villages.villages[village_id].builds = checkBuildingOrderLimit(data_villages.villages[village_id]);
 
 				if(!data_villages.villages[village_id].builds.length) {
+					console.log(village.data.name + " no builds for evolute")
 					resolve();
 					return;
 				}
