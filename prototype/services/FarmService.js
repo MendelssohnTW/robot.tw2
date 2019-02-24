@@ -599,16 +599,15 @@ define("robotTW2/services/FarmService", [
 
 					villages.forEach(function(village){
 						var village_id = village.data.villageId
-						, presets = data_villages.villages[village_id].presets
-						, aldeia_units = angular.copy(village.unitInfo.units)
-
-						if(!isRunning){
+						, presets
+						, aldeia_units;
+						
+						if(!village_id || !isRunning || !data_villages.villages[village_id]) {
 							resol();
-							return !1;
-						}
-						if(!presets || !aldeia_units || !village_id) {
-							resol();
-							return !0;
+							return;
+						} else {
+							presets = data_villages.villages[village_id].presets
+							aldeia_units = angular.copy(village.unitInfo.units)
 						}
 
 						var presets_order = Object.keys(presets).map(function(preset){
