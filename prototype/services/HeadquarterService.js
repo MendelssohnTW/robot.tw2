@@ -109,6 +109,7 @@ define("robotTW2/services/HeadquarterService", [
 								if(data.code == "Route/notPublic") {
 									callback(!1)
 								} else {
+									console.log({[village.data.name] : "evolute " + build})
 									callback(!0, data)	
 								}
 							}) 
