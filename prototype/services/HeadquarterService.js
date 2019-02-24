@@ -58,8 +58,6 @@ define("robotTW2/services/HeadquarterService", [
 							builds.push({[Object.keys(buildingLevels[key_level])[0]] : Object.values(buildingLevels[key_level])[0]})
 						}
 					})
-				} else {
-					console.log("No building limit for " + vill.data.name)
 				}
 			})
 
@@ -111,7 +109,6 @@ define("robotTW2/services/HeadquarterService", [
 								if(data.code == "Route/notPublic") {
 									callback(!1)
 								} else {
-									console.log({[village.data.name] : "evolute " + build})
 									callback(!0, data)	
 								}
 							}) 
@@ -173,13 +170,10 @@ define("robotTW2/services/HeadquarterService", [
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];
 				
-				console.log(village.data.name)
-
 				var premiumActionService = injector.get("premiumActionService");
 
 				if(firstQueue && firstQueue.canBeFinishedForFree){
 					premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
-					console.log(village.data.name + " canBeFinishedForFree")
 					resolve(true);
 					return;
 				}
@@ -198,7 +192,6 @@ define("robotTW2/services/HeadquarterService", [
 								&& (village.isInitialized() || villageService.initializeVillage(village))
 						) 
 				) {
-					console.log(village.data.name + " no slots")
 					resolve();
 					return;
 				}
@@ -217,7 +210,6 @@ define("robotTW2/services/HeadquarterService", [
 				data_villages.villages[village_id].builds = checkBuildingOrderLimit(data_villages.villages[village_id]);
 
 				if(!data_villages.villages[village_id].builds.length) {
-					console.log(village.data.name + " no builds for evolute")
 					resolve();
 					return;
 				}
@@ -254,7 +246,6 @@ define("robotTW2/services/HeadquarterService", [
 										} else if(data == "instant"){
 											res(true);
 										}
-										console.log(data)
 										res()
 									})
 								} else {
