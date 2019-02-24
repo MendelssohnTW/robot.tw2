@@ -95,7 +95,7 @@ define("robotTW2/services/HeadquarterService", [
 					}
 
 					if(not_enough_resources){
-						callback(!1, {[village.data.name] : "not_enough_resources"})
+						callback(!1, {[village.data.name] : "not_enough_resources for " + build})
 					} else{
 
 						if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
@@ -113,7 +113,7 @@ define("robotTW2/services/HeadquarterService", [
 								}
 							}) 
 						} else {
-							callback(!1, {[village.data.name] : buildingData.upgradeability})
+							callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
 						}
 					}
 				})
@@ -246,6 +246,7 @@ define("robotTW2/services/HeadquarterService", [
 										} else if(data == "instant"){
 											res(true);
 										}
+										console.log(data)
 										res()
 									})
 								} else {
