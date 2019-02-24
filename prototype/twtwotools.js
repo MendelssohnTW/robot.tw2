@@ -578,6 +578,7 @@ var robotTW2 = window.robotTW2 = undefined;
 												self.recalcScrollbar()
 							})
 				})
+				self.recalcScrollbar()
 			}
 			angular.extend(data.scope, self)
 			self.controller.apply(self.controller, [data.scope])
