@@ -179,10 +179,9 @@ define("robotTW2/services/HeadquarterService", [
 				}
 
 				var gt = getFinishedForFree(village);
-				if(gt != Infinity && gt != 0 && !isNaN(gt)){
-					list.push(getFinishedForFree(village))
+				if(gt != Infinity && gt != 0 && !isNaN(gt) && gt > conf.MIN_INTERVAL){
+					list.push(gt)
 				}
-//				setList();
 
 				if (
 						!(
@@ -307,11 +306,13 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, wait = function(){
 			setList(function(tm){
-				if(!interval_builder){
-					interval_builder = $timeout(function(){cicle_building()}, tm)
-				} else {
-					$timeout.cancel(interval_builder);
-					interval_builder = $timeout(function(){cicle_building()}, tm)
+				if(isRunning){
+					if(!interval_builder){
+						interval_builder = $timeout(function(){cicle_building()}, tm)
+					} else {
+						$timeout.cancel(interval_builder);
+						interval_builder = $timeout(function(){cicle_building()}, tm)
+					}
 				}
 			});
 		}
@@ -339,6 +340,7 @@ define("robotTW2/services/HeadquarterService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
+			$timeout.cancel(interval_builder);
 			promise = undefined
 			promise_queue = []	
 			promise_next = undefined
