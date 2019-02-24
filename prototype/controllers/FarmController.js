@@ -384,7 +384,7 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.getVillageInfo = function(villageId){
-			var village = services.modelDataService.getVillage(villageId);
+			var village = getVillageData(villageId)
 			return village.data.name + " - (" + village.data.x + "|" + village.data.y + ")"
 		}
 		
