@@ -4,6 +4,7 @@ define("robotTW2/services/SpyService", [
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/conf",
+	"robotTW2/notify",
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_spy"
@@ -13,6 +14,7 @@ define("robotTW2/services/SpyService", [
 			time,
 			helper,
 			conf,
+			notify,
 			SPY_TYPES,
 			data_villages,
 			data_spy
