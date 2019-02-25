@@ -180,7 +180,7 @@ define("robotTW2/services/SpyService", [
 			}
 		}
 		, send = function(params){
-			socketService.emit(routeProvider.SCOUTING_SEND_COMMAND, {
+			socketService.emit(providers.routeProvider.SCOUTING_SEND_COMMAND, {
 				'startVillage': params.startVillage,
 				'targetVillage': params.targetVillage,
 				'spys': params.spys,
