@@ -50,6 +50,14 @@ var robotTW2 = window.robotTW2 = undefined;
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
 	var scripts_removed = [];
+
+	var robot_getSelectedVillage = modelDataService.getSelectedVillage;
+	modelDataService.getSelectedVillage = function(){
+		$rootScope.$broadcast("get_selected_village")
+		return robot_getSelectedVillage
+	}
+
+
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -80,12 +88,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			});
 		};
-		
-		var robot_getSelectedVillage = modelDataService.getSelectedVillage;
-		modelDataService.getSelectedVillage = function(){
-			$rootScope.$broadcast("get_selected_village")
-			return robot_getSelectedVillage
-		}
+
 
 		httpService.get(uri, function(jsont) {
 			if(path == "/lang/"){
@@ -619,8 +622,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			'route': route.type
 		});
 	}
-	
-	
+
+
 
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
@@ -733,29 +736,29 @@ var robotTW2 = window.robotTW2 = undefined;
 }))
 , function(){
 	require(["robotTW2"], function(robotTW2){
-		
+
 		var version = "3.1.0"
 
-		define("robotTW2/version", function(){
-			return {
-				main:			version,
-				villages:		version,
-				alert:			version,
-				deposit:		version,
-				headquarter:	version,
-				recon:			version,
-				spy:			version,
-				attack:			version,
-				defense:		version,
-				farm:			version,
-				recruit:		version,
-				medic:			version,
-				secondvillage:	version,
-				map:			version,
-				data:			version,
-				log:			version
-			}
-		});
+			define("robotTW2/version", function(){
+				return {
+					main:			version,
+					villages:		version,
+					alert:			version,
+					deposit:		version,
+					headquarter:	version,
+					recon:			version,
+					spy:			version,
+					attack:			version,
+					defense:		version,
+					farm:			version,
+					recruit:		version,
+					medic:			version,
+					secondvillage:	version,
+					map:			version,
+					data:			version,
+					log:			version
+				}
+			});
 
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
@@ -835,10 +838,10 @@ var robotTW2 = window.robotTW2 = undefined;
 							ATTACK		: h,
 							MEDIC		: h,
 //							DATA		: {
-//								villages	: 6 * h,
-//								tribes		: 2 * h,
-//								log			: 1 * h,
-//								members		: 3 * h
+//							villages	: 6 * h,
+//							tribes		: 2 * h,
+//							log			: 1 * h,
+//							members		: 3 * h
 //							},
 							SPY			: 30 * min
 						},
@@ -1047,168 +1050,168 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 
 //		define("robotTW2/socket", ["robotTW2/base"], function(base) {
-//			var service = {},
-//			id = 0,
-//			count = 0,
-//			timeouts = {}
-//			callbacks = {},
-//			onopen = function onopen(){
-//				connect.call(true);
-//			},
-//			onmessage = function onmessage(message){
-//				var msg;
-//				try {
-//					msg = angular.fromJson(message.data);
-//				} catch (err) {
-//					msg = message.data;
-//				}
-//
-//				var id_return = msg.id
-//				if(timeouts[id_return]){
-//					robotTW2.services.$timeout.cancel(timeouts[id_return])
-//					delete timeouts[id_return];
-//				}
-//				var opt_callback = callbacks[id_return];
-//				if(typeof(opt_callback) == "function"){
-//					opt_callback(msg);
-//				}
-//			},
-//			onclose = function onclose($event){
-//				if($event.code == 1006 && $event.type == "close"){
-//					console.log($event)
-////					robotTW2.loadScript("/controllers/ConfirmController.js");
-//				}
-//			},
-//			onerror = function onerror($event, url, data){
-//				if($event == "Uncaught TypeError: Illegal invocation") {
-//					return
-//				}
-//				count++;
-//				if(count < 10) {
-//					service = new WebSocket(base.URL_SOCKET);
-//				} else {
-//					count = 0
-//					if($rootScope.data_data){
-//						$rootScope.data_data.possible = false;
-//						$rootScope.data_data.activated = false;
-//					}
-//					console.log("Socket error ... \n");
-//					console.log($event);
-//				}
-//			},
-//			connect = function connect(callback){
-//				switch (service.readyState){
-//				case 1 : //Aberta
-//					if($rootScope.data_data){
-//						$rootScope.data_data.possible = true;
-//					}
-//					if (typeof callback === "function") {
-//						callback(true);
-//					};
-//					break;
-//				case 3 : //Fechada
-//					service = new WebSocket(base.URL_SOCKET);
-//					break;
-//				}
-//			},
-//			disconnect = function disconnect(){
-//				if (service) {
-//					service.close();
-//				}
-//			}
-//			, createTimeout = function (id, type, opt_callback){
-//				if(!timeouts[id]){
-//					timeouts[id] = robotTW2.services.$timeout(function(){
-//						if(typeof(opt_callback) == "function"){
-//							opt_callback({"type" : type, "data": "Timeout"})
-//						}
-//					}, 15000)
-//				}
-//			}
-//			, sendMsg = function sendMsg(type, data, opt_callback){
-//				if(robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data){
-//					id = ++id;
-//					createTimeout(id, type, opt_callback)
-//					var dw = null
-//					var dt = null
-//					if(data.world_id)
-//						dw = data.world.id;
-//					if(data.tribe_id)
-//						dt = data.tribe_id;
-//					if(data){
-//						if(data.user){
-//							angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
-//						} else {
-//							data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
-//						}
-//						angular.extend(data, {
-//							"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
-//							"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-//							"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
-//						});
-//					}
-//					callbacks[id] = opt_callback;
-//
-//					service.send(
-//							angular.toJson({
-//								'type'		: type,
-//								'data'		: data,
-//								'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-//								'id'		: id,
-//								'local'		: robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
-//							})
-//					)
-//				} else {
-//					if(typeof(opt_callback) == "function"){
-//						opt_callback({"type": type, "resp": "noTribe"});
-//					}
-//				}
-//			}
-//
-//			service = new WebSocket(base.URL_SOCKET);
-//			service.onopen = onopen;
-//			service.onmessage = onmessage;
-//			service.onclose = onclose;
-//			service.onerror = onerror;
-//			service.connect = connect;
-//			service.sendMsg = sendMsg;
-//
-//			return service;
-//
+//		var service = {},
+//		id = 0,
+//		count = 0,
+//		timeouts = {}
+//		callbacks = {},
+//		onopen = function onopen(){
+//		connect.call(true);
+//		},
+//		onmessage = function onmessage(message){
+//		var msg;
+//		try {
+//		msg = angular.fromJson(message.data);
+//		} catch (err) {
+//		msg = message.data;
+//		}
+
+//		var id_return = msg.id
+//		if(timeouts[id_return]){
+//		robotTW2.services.$timeout.cancel(timeouts[id_return])
+//		delete timeouts[id_return];
+//		}
+//		var opt_callback = callbacks[id_return];
+//		if(typeof(opt_callback) == "function"){
+//		opt_callback(msg);
+//		}
+//		},
+//		onclose = function onclose($event){
+//		if($event.code == 1006 && $event.type == "close"){
+//		console.log($event)
+////		robotTW2.loadScript("/controllers/ConfirmController.js");
+//		}
+//		},
+//		onerror = function onerror($event, url, data){
+//		if($event == "Uncaught TypeError: Illegal invocation") {
+//		return
+//		}
+//		count++;
+//		if(count < 10) {
+//		service = new WebSocket(base.URL_SOCKET);
+//		} else {
+//		count = 0
+//		if($rootScope.data_data){
+//		$rootScope.data_data.possible = false;
+//		$rootScope.data_data.activated = false;
+//		}
+//		console.log("Socket error ... \n");
+//		console.log($event);
+//		}
+//		},
+//		connect = function connect(callback){
+//		switch (service.readyState){
+//		case 1 : //Aberta
+//		if($rootScope.data_data){
+//		$rootScope.data_data.possible = true;
+//		}
+//		if (typeof callback === "function") {
+//		callback(true);
+//		};
+//		break;
+//		case 3 : //Fechada
+//		service = new WebSocket(base.URL_SOCKET);
+//		break;
+//		}
+//		},
+//		disconnect = function disconnect(){
+//		if (service) {
+//		service.close();
+//		}
+//		}
+//		, createTimeout = function (id, type, opt_callback){
+//		if(!timeouts[id]){
+//		timeouts[id] = robotTW2.services.$timeout(function(){
+//		if(typeof(opt_callback) == "function"){
+//		opt_callback({"type" : type, "data": "Timeout"})
+//		}
+//		}, 15000)
+//		}
+//		}
+//		, sendMsg = function sendMsg(type, data, opt_callback){
+//		if(robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data){
+//		id = ++id;
+//		createTimeout(id, type, opt_callback)
+//		var dw = null
+//		var dt = null
+//		if(data.world_id)
+//		dw = data.world.id;
+//		if(data.tribe_id)
+//		dt = data.tribe_id;
+//		if(data){
+//		if(data.user){
+//		angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
+//		} else {
+//		data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
+//		}
+//		angular.extend(data, {
+//		"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
+//		"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+//		"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
+//		});
+//		}
+//		callbacks[id] = opt_callback;
+
+//		service.send(
+//		angular.toJson({
+//		'type'		: type,
+//		'data'		: data,
+//		'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+//		'id'		: id,
+//		'local'		: robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
+//		})
+//		)
+//		} else {
+//		if(typeof(opt_callback) == "function"){
+//		opt_callback({"type": type, "resp": "noTribe"});
+//		}
+//		}
+//		}
+
+//		service = new WebSocket(base.URL_SOCKET);
+//		service.onopen = onopen;
+//		service.onmessage = onmessage;
+//		service.onclose = onclose;
+//		service.onerror = onerror;
+//		service.connect = connect;
+//		service.sendMsg = sendMsg;
+
+//		return service;
+
 //		})
 
 //		define("robotTW2/socketSend", ["robotTW2/socket"], function(socket) {
-//
-//			var service = {},
-//			count = 0;
-//			return service.emit = function (route, data, opt_callback){
-//				var cal = function cal(connected){
-//					count++;
-//					if (connected && route != undefined){
-//						socket.sendMsg(route.type, data, opt_callback);
-//						return;
-//					} else {
-//						if (count < 10){
-//							socket.connect(
-//									function(connected){
-//										cal(connected)
-//									}
-//							);
-//							return;
-//						} else {
-//							count = 0;
-//							return;
-//						}
-//					}
-//				};
-//				socket.connect(
-//						function(connected){
-//							cal(connected)
-//						}
-//				);
-//
-//			}
-//			, service;
+
+//		var service = {},
+//		count = 0;
+//		return service.emit = function (route, data, opt_callback){
+//		var cal = function cal(connected){
+//		count++;
+//		if (connected && route != undefined){
+//		socket.sendMsg(route.type, data, opt_callback);
+//		return;
+//		} else {
+//		if (count < 10){
+//		socket.connect(
+//		function(connected){
+//		cal(connected)
+//		}
+//		);
+//		return;
+//		} else {
+//		count = 0;
+//		return;
+//		}
+//		}
+//		};
+//		socket.connect(
+//		function(connected){
+//		cal(connected)
+//		}
+//		);
+
+//		}
+//		, service;
 //		})
 
 		define("robotTW2/zerofill", function(){
@@ -1867,19 +1870,19 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 //				case robotTW2.controllers.DataController : {
-//					robotTW2.createScopeLang("data", function(scopeLang){
-//						var params = {
-//								controller		: robotTW2.controllers.DataController,
-//								scopeLang 		: scopeLang,
-//								hotkey 			: conf.HOTKEY.DATA,
-//								templateName 	: "data",
-//								classes 		: "",
-//								url		 		: "/controllers/DataController.js",
-//								style 			: null
-//						}		
-//						robotTW2.build(params)
-//					})
-//					break
+//				robotTW2.createScopeLang("data", function(scopeLang){
+//				var params = {
+//				controller		: robotTW2.controllers.DataController,
+//				scopeLang 		: scopeLang,
+//				hotkey 			: conf.HOTKEY.DATA,
+//				templateName 	: "data",
+//				classes 		: "",
+//				url		 		: "/controllers/DataController.js",
+//				style 			: null
+//				}		
+//				robotTW2.build(params)
+//				})
+//				break
 //				}
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
@@ -2021,8 +2024,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 //				case robotTW2.services.DataService : {
-//					robotTW2.services.DataService && typeof(robotTW2.services.DataService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.DataService) : null;	
-//					break
+//				robotTW2.services.DataService && typeof(robotTW2.services.DataService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.DataService) : null;	
+//				break
 //				}
 				case "database" : {
 					robotTW2.ready(function(){
@@ -2099,8 +2102,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 //				case "data_data" : {
-//					robotTW2.loadScript("/services/DataService.js");
-//					break
+//				robotTW2.loadScript("/services/DataService.js");
+//				break
 //				}
 				}
 
