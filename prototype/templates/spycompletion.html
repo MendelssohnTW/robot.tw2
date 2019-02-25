@@ -26,9 +26,8 @@
 			<td class="cell-center"><div>
 					<a href="#" id="button-prog"
 						class="btn-orange btn-form btn-border no-padding btn-grey"
-						ng-click="sendAttack()" tooltip
-						tooltip-content="{{enviarFull ? text_prog_full : text_prog}}"
-						ng-class="{'btn-grey': (armyEmpty || targetIsNoobProtected || officerOffersVisible) && !enviarFull}"><span
+						ng-click="sendAttackSpy()" 
+						ng-class="{'btn-grey': rangeSlider.value === 0 || availableSpies === 0 || option.length === 0}"><span
 						class="icon"> <span
 							class="icon-26x26-domination icon-btn-fix"></span><span
 							id="span-text" class="text">{{schedule}}</span>
