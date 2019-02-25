@@ -71,7 +71,7 @@ define("robotTW2/controllers/MainController", [
 			} else {
 				if(typeof(fn.start) == "function"){
 					if(!fn.isRunning()){
-						if($scope.data_main.pages_excludes.includes(ext.name.toLowerCase())){
+						if($scope.data_main.pages_excludes.includes(name.toLowerCase())){
 							fn.init(true)
 						} else {
 							fn.init()
@@ -85,7 +85,7 @@ define("robotTW2/controllers/MainController", [
 		$scope.stopExt = function(name){
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			var fn = arFn.fn;
-			let ext = $scope.extensions[name]
+//			let ext = $scope.extensions[name]
 			if(typeof(fn.stop) == "function"){
 				if(fn.isRunning()){
 					fn.stop()
