@@ -30,6 +30,7 @@ define("robotTW2/services/SpyService", [
 		, isRunning = !1
 		, interval_spy = null
 		, listener_spy = undefined
+		, interval_handler = undefined
 		, list = []
 		, counterMeasureTypes = {
 				CAMOUFLAGE: "camouflage",
@@ -259,6 +260,9 @@ define("robotTW2/services/SpyService", [
 			if(isRunning){return}
 			ready(function(){
 				loadScript("/controllers/SpyCompletionController.js");
+				interval_handler = setInterval(function(){
+					$rootScope.$broadcast("get_selected_village")
+				}, 1000);
 				data_spy.interval = conf.INTERVAL.SPY;
 				isRunning = !0;
 				!listener_spy ? listener_spy = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
@@ -276,6 +280,7 @@ define("robotTW2/services/SpyService", [
 		, stop = function (){
 			typeof(listener_spy) == "function" ? listener_spy(): null;
 			listener_spy = undefined;
+			interval_handler = undefined;
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
 			$timeout.cancel(interval_spy);
