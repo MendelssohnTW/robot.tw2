@@ -51,8 +51,8 @@ var robotTW2 = window.robotTW2 = undefined;
 	var scripts_loaded = [];
 	var scripts_removed = [];
 
-	var robot_getSelectedVillage = modelDataService.getSelectedVillage;
-	modelDataService.getSelectedVillage = function(){
+	var robot_getSelectedVillage = modelDataService.getSelectedVillage().getScoutingInfo;
+	modelDataService.getSelectedVillage().getScoutingInfo = function(){
 		$rootScope.$broadcast("get_selected_village")
 		return robot_getSelectedVillage()
 	}
