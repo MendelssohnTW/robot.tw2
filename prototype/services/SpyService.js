@@ -31,6 +31,7 @@ define("robotTW2/services/SpyService", [
 
 		var isInitialized = !1
 		, isRunning = !1
+		, scope = $rootScope.$new()
 		, interval_spy = null
 		, listener_spy = undefined
 		, listener_open = undefined
@@ -279,6 +280,7 @@ define("robotTW2/services/SpyService", [
 				!listener_spy ? listener_spy = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SPY_PRODUCED, recruit_spy) : listener_spy;
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
 				recruit_spy();
+				if(!data_spy.commands){data_spy.commands = {}}
 				Object.values(data_spy.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
 						commandQueue.unbind(param.id_command, data_spy)
