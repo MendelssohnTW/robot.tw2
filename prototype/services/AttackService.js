@@ -6,6 +6,7 @@ define("robotTW2/services/AttackService", [
 	"robotTW2/notify",
 	"robotTW2/time",
 	"robotTW2/calibrate_time",
+	"robotTW2/databases/data_main",
 	"robotTW2/databases/data_attack"
 	], function(
 			robotTW2,
@@ -15,6 +16,7 @@ define("robotTW2/services/AttackService", [
 			notify,
 			time,
 			calibrate_time,
+			data_main,
 			data_attack
 	){
 	return (function AttackService(
@@ -46,7 +48,7 @@ define("robotTW2/services/AttackService", [
 			if(!params){return}
 			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
-			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
+			, timer_delay = (expires - time.convertedTime()) + data_main.time_correction_command
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 
 			if(opt_id){
@@ -140,7 +142,7 @@ define("robotTW2/services/AttackService", [
 		}
 		, resendAttack = function(params){
 			var expires_send = params.data_escolhida - params.duration
-			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command;
+			, timer_delay_send = (expires_send - time.convertedTime()) + data_main.time_correction_command;
 
 			if(timer_delay_send < 0){
 				removeCommandAttack(params.id_command)

@@ -1894,27 +1894,27 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
-//				case robotTW2.controllers.AttackDefenseController : {
-//				robotTW2.createScopeLang("attack", function(scopeLang){
-//				var get_father = function(){
-//				return $('[ng-controller=OverviewController]');
-//				}
-//				, get_son = function(){
-//				return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
-//				}
-//				, params = {
-//				included_controller		: "OverviewController",
-//				controller				: robotTW2.controllers.AttackCompletionController,
-//				get_son					: get_son,
-//				provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
-//				scopeLang 				: scopeLang,
-//				templateName 			: "defensecompletion",
-//				url		 				: "/controllers/DefenseCompletionController.js"
-//				}	
-//				robotTW2.build(params)
-//				})
-//				break
-//				}
+				case robotTW2.controllers.SpyCompletionController : {
+					robotTW2.createScopeLang("spy", function(scopeLang){
+						var get_father = function(){
+							return $('[ng-controller=ModalSendSpiesController]');
+						}
+						, get_son = function(){
+							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+						}
+						, params = {
+								included_controller		: "ModalSendSpiesController",
+								controller				: robotTW2.controllers.SpyCompletionController,
+								get_son					: get_son,
+								provider_listener		: robotTW2.providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED,
+								scopeLang 				: scopeLang,
+								templateName 			: "spycompletion",
+								url		 				: "/controllers/SpyCompletionController.js"
+						}	
+						robotTW2.build(params)
+					})
+					break
+				}
 				case robotTW2.controllers.FarmCompletionController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
 						var get_father = function(){

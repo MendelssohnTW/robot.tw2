@@ -226,7 +226,11 @@
 		"version": "Version",
 		"settings": "Settings",
 		"text_interval": "Next cycle in",
-		"text_interval_spy": "Check interval"
+		"text_interval_spy": "Check interval",
+		"text_date": "Date",
+		"text_hour": "Time",
+		"text_ms": "Milliseconds",
+		"schedule": "Schedule"
 	},
 	"notify": {
 		"title": "News",

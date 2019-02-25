@@ -225,7 +225,11 @@
 		"title": "Recrutamento de espiões",
 		"settings": "Configurações",
 		"text_interval": "Próximo ciclo em ",
-		"text_interval_spy": "Intervalo de verificação"
+		"text_interval_spy": "Intervalo de verificação",
+		"text_date": "Data",
+		"text_hour": "Hora",
+		"text_ms": "Milisegundos",
+		"schedule": "Programar"
 	},
 	"notify": {
 		"title": "Notícias",
