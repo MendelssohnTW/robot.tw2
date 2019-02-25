@@ -37,7 +37,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		Object.keys($scope.data_villages.villages).map(function(key){
 			if(!$scope.data_villages.villages[key].selected){
 				tt = true;
-				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="standard");
+				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="Standard");
 			}
 			let data = getVillage(key);
 			angular.extend(local_data_villages, {[key] : {"data": data}})
