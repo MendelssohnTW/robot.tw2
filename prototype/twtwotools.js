@@ -80,6 +80,12 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			});
 		};
+		
+		var robot_getSelectedVillage = modelDataService.getSelectedVillage;
+		modelDataService.getSelectedVillage = function(){
+			$rootScope.$broadcast("get_selected_village")
+			return robot_getSelectedVillage
+		}
 
 		httpService.get(uri, function(jsont) {
 			if(path == "/lang/"){
@@ -613,6 +619,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			'route': route.type
 		});
 	}
+	
+	
 
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
@@ -1906,7 +1914,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								included_controller		: "ModalSendSpiesController",
 								controller				: robotTW2.controllers.SpyCompletionController,
 								get_son					: get_son,
-								provider_listener		: robotTW2.providers.eventTypeProvider.SCOUTING_INFO,
+								provider_listener		: "get_selected_village",
 								scopeLang 				: scopeLang,
 								templateName 			: "spycompletion",
 								url		 				: "/controllers/SpyCompletionController.js"
