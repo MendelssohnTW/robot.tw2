@@ -22,7 +22,10 @@ define("robotTW2/services/SpyService", [
 			socketService,
 			providers,
 			modelDataService,
-			$timeout
+			$timeout,
+			commandQueue,
+			ready,
+			loadScript
 	) {
 
 		var isInitialized = !1
@@ -256,7 +259,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, start = function (){
 			if(isRunning){return}
-			robotTW2.ready(function(){
+			ready(function(){
 				loadScript("/controllers/SpyCompletionController.js");
 				data_spy.interval = conf.INTERVAL.SPY;
 				isRunning = !0;
@@ -302,6 +305,9 @@ define("robotTW2/services/SpyService", [
 			robotTW2.services.socketService,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
-			robotTW2.services.$timeout
+			robotTW2.services.$timeout,
+			robotTW2.commandQueue,
+			robotTW2.ready,
+			robotTW2.loadScript
 	)
 })

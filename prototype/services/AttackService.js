@@ -21,7 +21,6 @@ define("robotTW2/services/AttackService", [
 	){
 	return (function AttackService(
 			$rootScope,
-			databases,
 			providers,
 			modelDataService,
 			$timeout,
@@ -280,7 +279,6 @@ define("robotTW2/services/AttackService", [
 		}
 	})(
 			robotTW2.services.$rootScope,
-			robotTW2.databases,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
