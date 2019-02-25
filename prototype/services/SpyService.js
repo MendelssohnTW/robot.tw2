@@ -117,7 +117,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, addAttackSpy = function(params, opt_id){
 			if(!params){return}
-			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.SCOUTING_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
 			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
