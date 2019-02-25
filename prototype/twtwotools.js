@@ -1906,7 +1906,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								included_controller		: "ModalSendSpiesController",
 								controller				: robotTW2.controllers.SpyCompletionController,
 								get_son					: get_son,
-								provider_listener		: robotTW2.providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED,
+								provider_listener		: robotTW2.providers.eventTypeProvider.SCOUTING_INFO,
 								scopeLang 				: scopeLang,
 								templateName 			: "spycompletion",
 								url		 				: "/controllers/SpyCompletionController.js"
