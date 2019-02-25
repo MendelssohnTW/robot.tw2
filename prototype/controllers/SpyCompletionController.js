@@ -17,8 +17,8 @@ define("robotTW2/controllers/SpyCompletionController", [
 		$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
 		$scope.ms_init = 0;
 
-		$scope.sendAttackSpy = function(vill){
-			$scope.startVillage = vill.getId();
+		$scope.sendAttackSpy = function(){
+			$scope.startVillage = services.modelDataService.getSelectedVillage();
 			services.SpyService.sendCommandAttackSpy($scope)
 		}
 		
