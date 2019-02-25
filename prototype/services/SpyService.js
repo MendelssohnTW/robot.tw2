@@ -23,7 +23,8 @@ define("robotTW2/services/SpyService", [
 			$timeout,
 			commandQueue,
 			ready,
-			loadScript
+			loadScript,
+			loadController
 	) {
 
 		var isInitialized = !1
@@ -266,7 +267,8 @@ define("robotTW2/services/SpyService", [
 				listener_open = $rootScope.$on("open_get_selected_village", function(){open = true})
 				listener_close = $rootScope.$on("close_get_selected_village", function(){open = false})
 				interval_handler = setInterval(function(){
-					if(!open){
+					var ModalSendSpiesController = loadController("ModalSendSpiesController")
+					if(!open && ModalSendSpiesController){
 						$rootScope.$broadcast("get_selected_village")
 					}
 				}, 1000);
@@ -285,6 +287,7 @@ define("robotTW2/services/SpyService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function (){
+			robotTW2.removeScript("/controllers/SpyCompletionController.js");
 			typeof(listener_spy) == "function" ? listener_spy(): null;
 			listener_spy = undefined;
 			listener_open = undefined;
@@ -320,6 +323,7 @@ define("robotTW2/services/SpyService", [
 			robotTW2.services.$timeout,
 			robotTW2.commandQueue,
 			robotTW2.ready,
-			robotTW2.loadScript
+			robotTW2.loadScript,
+			robotTW2.loadController
 	)
 })
