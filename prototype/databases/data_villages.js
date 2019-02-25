@@ -150,8 +150,12 @@ define("robotTW2/databases/data_villages", [
 		var villages = services.modelDataService.getVillages();
 		var villagesExtended = {};
 		Object.keys(villages).map(function(village_id){
-			var vill = services.villageService.getInitializedVillage(village_id)
-			villagesExtended[village_id] = {}
+			try{
+				villagesExtended[village_id] = {}
+				var vill = services.villageService.getInitializedVillage(village_id)
+			} catch (err){
+				continue
+			}
 		})
 
 		var promise = new Promise(function(res, rej){
@@ -184,7 +188,7 @@ define("robotTW2/databases/data_villages", [
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
-	
+
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, db_villages.updateVillages);
