@@ -149,14 +149,15 @@ define("robotTW2/databases/data_villages", [
 		var updated = false;
 		var villages = services.modelDataService.getVillages();
 		var villagesExtended = {};
-		Object.keys(villages).map(function(village_id){
-			try{
+		try{
+			Object.keys(villages).map(function(village_id){
+
 				villagesExtended[village_id] = {}
 				var vill = services.villageService.getInitializedVillage(village_id)
-			} catch (err){
-				continue
-			}
-		})
+			})
+		} catch (err){
+			return
+		}
 
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){
