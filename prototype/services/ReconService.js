@@ -154,6 +154,8 @@ define("robotTW2/services/ReconService", [
 					OverviewController = robotTW2.loadController("OverviewController")
 				}
 				
+				if(!OverviewController){return}
+				
 				$timeout(function(){
 					var elem = undefined;
 					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
@@ -187,6 +189,7 @@ define("robotTW2/services/ReconService", [
 							$rootScope.$broadcast(providers.eventTypeProvider.TOOLTIP_HIDE, "tooltip")
 						})
 					}
+					if(!OverviewController){return}
 					if (!OverviewController.$$phase) OverviewController.$apply();
 				}, 200)
 			}
