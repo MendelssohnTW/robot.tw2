@@ -266,6 +266,7 @@ define("robotTW2/services/SpyService", [
 			if(isRunning){return}
 			ready(function(){
 				var open = false;
+				scope.commands = {};
 				loadScript("/controllers/SpyCompletionController.js");
 				listener_open = $rootScope.$on("open_get_selected_village", function(){open = true})
 				listener_close = $rootScope.$on("close_get_selected_village", function(){open = false})

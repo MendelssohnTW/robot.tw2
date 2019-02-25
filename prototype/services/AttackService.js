@@ -229,6 +229,7 @@ define("robotTW2/services/AttackService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
+				scope.commands = {};
 				loadScript("/controllers/AttackCompletionController.js");
 				calibrate_time()
 				isRunning = !0

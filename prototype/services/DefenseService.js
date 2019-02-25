@@ -787,6 +787,7 @@ define("robotTW2/services/DefenseService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
+				scope.commands = {};
 				calibrate_time()
 				isRunning = !0;
 				reformatCommand();
