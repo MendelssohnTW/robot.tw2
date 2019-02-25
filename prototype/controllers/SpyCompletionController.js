@@ -18,7 +18,7 @@ define("robotTW2/controllers/SpyCompletionController", [
 		$scope.ms_init = 0;
 
 		$scope.sendAttackSpy = function(){
-			$scope.startVillage = services.modelDataService.getSelectedVillage();
+			$scope.startVillage = services.modelDataService.getSelectedVillage().data.villageId;
 			services.SpyService.sendCommandAttackSpy($scope)
 		}
 		
