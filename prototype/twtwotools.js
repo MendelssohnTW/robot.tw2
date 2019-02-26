@@ -1774,7 +1774,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 		: "",
 								url		 		: "/controllers/FarmController.js",
 								style 			: {
-									width:"950px"
+									width:"1080px"
 								}
 						}		
 						robotTW2.build(params)

@@ -144,7 +144,7 @@ define("robotTW2/controllers/HeadquarterController", [
 						return {[elem]: vill.buildingorder[elem]}
 					}
 			).find(f => Object.values(f)[0] == vill.buildingorder[key] + 1)
-			vill.buildingorder[vill.selected.value][Object.keys(ant)[0]] -= 1
+			vill.buildingorder[vill.selected.value][Object.keys(prox)[0]] -= 1
 			vill.buildingorder[vill.selected.value][key] += 1
 //			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
