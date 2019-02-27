@@ -101,6 +101,25 @@ define("robotTW2/controllers/SpyController", [
 			return "(" + x + "/" + y + ")"
 		}
 		
+		$scope.getClass = function(type){
+			var className = "";
+			switch (type) {
+			case "support": {
+				className = "icon-26x26-support";
+				break;
+			}
+			case "attack": {
+				className = "icon-26x26-attack-red";
+				break;
+			}
+			case "relocate": {
+				className = "icon-26x26-relocate";
+				break;
+			}
+			}
+			return className
+		}
+		
 		$scope.getHoraSend = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
 		}
