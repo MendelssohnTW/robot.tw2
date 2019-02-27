@@ -93,7 +93,6 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.getVcoord = function(param){
-
 			var vid = param.start_village;
 			if(!vid){return}
 			var x = getVillageData(vid).x
@@ -103,13 +102,13 @@ define("robotTW2/controllers/SpyController", [
 		
 		$scope.getVtarget = function(param){
 			if(!param){return}
-			return param.targetVillage
+			return param.target_name
 		}
 
 		$scope.getVcoordTarget = function(param){
 			if(!param){return}
-			var x = param.targetX
-			var y = param.targetY
+			var x = param.target_x
+			var y = param.target_y
 			return "(" + x + "/" + y + ")"
 		}
 

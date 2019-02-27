@@ -233,6 +233,9 @@ define("robotTW2/services/SpyService", [
 			var params = {
 					start_village		: scp.startId,
 					target_village		: scp.targetId,
+					target_x			: scp.targetX,
+					target_y			: scp.targetY,
+					target_name			: scp.targetVillage,
 					spys				: scp.rangeSlider.value,
 					duration			: scp.milisegundos_duracao,
 					type				: scp.option,
