@@ -18,8 +18,8 @@ define("robotTW2/controllers/AttackController", [
 	return function AttackController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
-		var self = this,
-		local_data_villages = {};
+		var self = this
+		, local_data_villages = {}
 		$scope.data_attack = data_attack;
 		$scope.text_version = $scope.version + " " + data_attack.version;
 
