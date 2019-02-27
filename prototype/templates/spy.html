@@ -61,7 +61,6 @@
 							<col width="60px">
 							<col width="100px">
 							<col width="100px">
-							<col width="34px">
 							<col width="48px">
 						</colgroup>
 						<tr>
@@ -77,7 +76,6 @@
 							<td class="cell-center"><span
 								class="icon icon-34x34-time-completed"></span></td>
 							<td class="cell-center"><span>Qtd</span></td>
-							<td class="cell-center"><span>Type</span></td>
 						</tr>
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center"><span>{{comando.id_command}}</span></td>
@@ -118,11 +116,6 @@
 								</div>
 								<div>
 									<span>{{getHoraAlvo(comando)}}</span>
-								</div>
-							</td>
-							<td class="cell-center">
-								<div>
-									<span>{{comando.units.spear || 0}}</span>
 								</div>
 							</td>
 							<td class="cell-center"><a href="#"
