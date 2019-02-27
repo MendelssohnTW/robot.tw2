@@ -41,27 +41,27 @@ define("robotTW2/controllers/FarmController", [
 		$scope.requestedTab = TABS.FARM;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-		
+
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
 		$scope.text_version = $scope.version + " " + data_farm.version;
-		
+
 		function getVillage(vid){
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid)
 		}
-		
+
 		function getVillageData(vid){
 			if(!vid){return}
 			return local_data_villages[vid];
 		}
-		
+
 		Object.keys($scope.data_villages.villages).map(function(key){
 			let village = getVillage(key);
 			angular.extend(local_data_villages, {[key] : village})
 			return local_data_villages;
 		})
-		
+
 		var setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
 			$scope.requestedTab								= null;
@@ -78,8 +78,12 @@ define("robotTW2/controllers/FarmController", [
 			if($scope.data_farm.farm_time_start < time.convertedTime()) {
 				$scope.data_farm.farm_time_start = time.convertedTime();
 			}
-			if($scope.data_farm.farm_time_stop < $scope.data_farm.farm_time_start) {
-				$scope.data_farm.farm_time_stop = $scope.data_farm.farm_time_start + 86400000;
+			if(!$scope.data_farm.farm_time_stop){
+				$scope.blur()
+			} else {
+				if($scope.data_farm.farm_time_stop < $scope.data_farm.farm_time_start) {
+					$scope.data_farm.farm_time_stop = $scope.data_farm.farm_time_start + 86400000;
+				}
 			}
 			services.FarmService.isRunning() && services.FarmService.isPaused() ? $scope.status = "paused" : services.FarmService.isRunning() && (typeof(services.FarmService.isPaused) == "function" && !services.FarmService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
@@ -387,7 +391,7 @@ define("robotTW2/controllers/FarmController", [
 			var village = getVillageData(villageId)
 			return village.data.name + " - (" + village.data.x + "|" + village.data.y + ")"
 		}
-		
+
 		$scope.setVillage = function (villageId) {
 			$scope.data.assignedPresetList = {};
 			$scope.villageSelected = villageId;
@@ -454,8 +458,8 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				addQuadrant(pos)
 			}
-			
-			
+
+
 		}
 
 		$scope.getQuadrant = function (pos) {
@@ -490,7 +494,7 @@ define("robotTW2/controllers/FarmController", [
 			data_villages = $scope.data_villages;
 			data_villages.set();
 		}, true)
-		
+
 
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
@@ -502,7 +506,7 @@ define("robotTW2/controllers/FarmController", [
 				$scope.$apply();
 			}
 		}, true)
-		
+
 		$scope.$watch("data_farm", function(){
 			if(!$scope.data_farm){return}
 			data_farm = $scope.data_farm;
