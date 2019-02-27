@@ -222,6 +222,7 @@
 		"text_interval": "Next cycle in "
 	},
 	"spy": {
+		"spy": "Spy",
 		"title": "Recruitment of spies",
 		"version": "Version",
 		"settings": "Settings",

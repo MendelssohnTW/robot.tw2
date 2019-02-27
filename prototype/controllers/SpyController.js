@@ -13,12 +13,116 @@ define("robotTW2/controllers/SpyController", [
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		var self = this;
+		
+//		data_escolhida: 1551304200000
+//		duration: 900000
+//		id_command: "3102607103727"
+//		spys: 2
+//		startVillage: 2833
+//		targetVillage: 2949
+//		timer_delay: 395462
+//		type: "units"
 		
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 		
+		var TABS = {
+				SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
+				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "spy")
+		}
+		, TAB_ORDER = [
+			TABS.SPY,
+			TABS.LOG,
+			]
+
+		$scope.requestedTab = TABS.SPY;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
+		
+		function getVillage(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid)
+		}
+
+		function getVillageData(vid){
+			if(!vid){return}
+			return local_data_villages[vid].data;
+		}
+		
+		Object.keys(data_villages.villages).map(function(key){
+			let data = getVillage(key).data;
+			angular.extend(local_data_villages, {[key] : {"data": data}})
+			return local_data_villages;
+		})
+
+		var setActiveTab = function setActiveTab(tab) {
+			$scope.activeTab								= tab;
+			$scope.requestedTab								= null;
+		}
+		, initTab = function initTab() {
+			if (!$scope.activeTab) {
+				setActiveTab($scope.requestedTab);
+			}
+		}
+		, update = function(){
+			$scope.comandos = Object.keys(data_spy.commands).map(function(elem, index, array){
+				return data_spy.commands[elem]
+			});
+			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
+			if (!$scope.$$phase) {
+				$scope.$apply();
+			}
+		}
+		
 		$scope.isRunning = services.SpyService.isRunning();
+		
+		$scope.getVstart = function(param){
+			var vid = param.start_village;
+			if(!vid){return}
+			return getVillageData(vid).name
+		}
+
+		$scope.getVcoordStart = function(param){
+
+			var vid = param.start_village;
+			if(!vid){return}
+			var x = getVillageData(vid).x
+			var y = getVillageData(vid).y
+			return "(" + x + "/" + y + ")"
+		}
+		
+		$scope.getHoraSend = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
+		}
+
+		$scope.getHoraAlvo = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
+		}
+
+		$scope.getDataAlvo = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
+		}
+
+		$scope.getTimeRest = function(param){
+			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
+			return helper.readableMilliseconds(difTime)
+		}
+
+		$scope.getVcoordTarget = function(param){
+			return "(" + param.target_x + "/" + param.target_y + ")"
+		}
+		
+		$scope.clear_spy = function(){
+			services.SpyService.removeAll();
+		}
+
+		$scope.removeCommand = services.SpyService.removeCommandSpy;
+
+		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
+			update();
+		})
 		
 		$scope.blur = function(){
 			var t = $("#input-ms").val();
