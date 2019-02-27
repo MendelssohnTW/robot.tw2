@@ -79,6 +79,9 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		
+		initTab();
+		update();
+		
 		$scope.isRunning = services.SpyService.isRunning();
 		
 		$scope.getVstart = function(param){

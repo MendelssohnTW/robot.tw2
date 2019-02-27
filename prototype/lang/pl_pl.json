@@ -223,6 +223,7 @@
 	},
 	"spy": {
 		"spy": "Spy",
+		"log": "Log",
 		"title": "Recruitment of spies",
 		"version": "Version",
 		"settings": "Settings",
