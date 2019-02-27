@@ -1757,7 +1757,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 		: "",
 								url		 		: "/controllers/SpyController.js",
 								style 			: {
-									width:"350px"
+									width:"1080px"
 								}
 						}		
 						robotTW2.build(params)
