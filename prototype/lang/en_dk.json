@@ -218,6 +218,7 @@
 		"log": "Log",
 		"title": "Recrutamento de espiões",
 		"settings": "Configurações",
+		"command_list": "Lista de comandos",
 		"text_interval": "Próximo ciclo em ",
 		"text_interval_spy": "Intervalo de verificação",
 		"text_date": "Data",
