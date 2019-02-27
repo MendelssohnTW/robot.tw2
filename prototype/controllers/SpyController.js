@@ -92,9 +92,23 @@ define("robotTW2/controllers/SpyController", [
 			return getVillageData(vid).name
 		}
 
-		$scope.getVcoordStart = function(param){
+		$scope.getVcoord = function(param){
 
 			var vid = param.start_village;
+			if(!vid){return}
+			var x = getVillageData(vid).x
+			var y = getVillageData(vid).y
+			return "(" + x + "/" + y + ")"
+		}
+		
+		$scope.getVtarget = function(param){
+			var vid = param.target_village;
+			if(!vid){return}
+			return getVillageData(vid).name
+		}
+
+		$scope.getVcoordTarget = function(param){
+			var vid = param.target_village;
 			if(!vid){return}
 			var x = getVillageData(vid).x
 			var y = getVillageData(vid).y
@@ -130,16 +144,13 @@ define("robotTW2/controllers/SpyController", [
 			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
 			return helper.readableMilliseconds(difTime)
 		}
-
-		$scope.getVcoordTarget = function(param){
-			return "(" + param.target_x + "/" + param.target_y + ")"
-		}
+		
 
 		$scope.clear_spy = function(){
 			services.SpyService.removeAll();
 		}
 
-		$scope.removeCommand = services.SpyService.removeCommandSpy;
+		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
