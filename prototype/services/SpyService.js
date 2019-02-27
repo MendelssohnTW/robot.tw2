@@ -183,8 +183,8 @@ define("robotTW2/services/SpyService", [
 		}
 		, send = function(params){
 			socketService.emit(providers.routeProvider.SCOUTING_SEND_COMMAND, {
-				'startVillage': params.startVillage,
-				'targetVillage': params.targetVillage,
+				'startVillage': params.start_village,
+				'targetVillage': params.target_village,
 				'spys': params.spys,
 				'type': params.type
 			});
@@ -231,8 +231,8 @@ define("robotTW2/services/SpyService", [
 		}
 		, addScopeAttackSpy = function(scp){
 			var params = {
-					startVillage		: scp.startId,
-					targetVillage		: scp.targetId,
+					start_village		: scp.startId,
+					target_village		: scp.targetId,
 					spys				: scp.rangeSlider.value,
 					duration			: scp.milisegundos_duracao,
 					type				: scp.option,

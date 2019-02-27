@@ -143,6 +143,7 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.getTimeRest = function(param){
 			var difTime = param.data_escolhida - time.convertedTime() - param.time_sniper_ant; 
+			if(!difTime){return}
 			return helper.readableMilliseconds(difTime)
 		}
 
