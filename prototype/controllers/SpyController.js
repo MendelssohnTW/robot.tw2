@@ -105,10 +105,10 @@ define("robotTW2/controllers/SpyController", [
 			var className = "";
 			switch (type) {
 			case "units": 
-				className = "icon-26x26-units";
+				className = "icon-34x34-units";
 				break;
 			default: 
-				className = "icon-26x26-village";
+				className = "icon-34x34-village";
 			break;
 			}
 			return className
