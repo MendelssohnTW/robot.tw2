@@ -3,13 +3,15 @@ define("robotTW2/services/SecondVillageService", [
 	"robotTW2/version",
 	"helper/time",
 	"models/SecondVillageModel",
-	"robotTW2/conf"
+	"robotTW2/conf",
+	"robotTW2/databases/data_deposit"
 	], function(
 			robotTW2,
 			version,
 			helper,
 			SecondVillageModel,
-			conf
+			conf,
+			data_deposit
 	){
 	return (function SecondVillageService(
 			$rootScope,
@@ -102,7 +104,8 @@ define("robotTW2/services/SecondVillageService", [
 		, start = function() {
 			if(isRunning){return}
 			ready(function(){
-				$rootScope.data_deposit.interval = conf.INTERVAL.DEPOSIT;
+				data_deposit.interval = conf.INTERVAL.DEPOSIT;
+				data_deposit.set();
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
 				!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.SECOND_VILLAGE_JOB_COLLECTED, function(){$timeout(function(){verify_second()}, 3000)}) : listener_job_collect;
