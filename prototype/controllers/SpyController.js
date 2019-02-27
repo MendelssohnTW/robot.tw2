@@ -17,10 +17,10 @@ define("robotTW2/controllers/SpyController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		
+
 		var self = this
 		, local_data_villages = {}
-		
+
 //		data_escolhida: 1551304200000
 //		duration: 900000
 //		id_command: "3102607103727"
@@ -29,10 +29,10 @@ define("robotTW2/controllers/SpyController", [
 //		targetVillage: 2949
 //		timer_delay: 395462
 //		type: "units"
-		
+
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
-		
+
 		var TABS = {
 				SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
 				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "spy")
@@ -45,7 +45,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.requestedTab = TABS.SPY;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-		
+
 		function getVillage(vid){
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid)
@@ -55,7 +55,7 @@ define("robotTW2/controllers/SpyController", [
 			if(!vid){return}
 			return local_data_villages[vid].data;
 		}
-		
+
 		Object.keys(data_villages.villages).map(function(key){
 			let data = getVillage(key).data;
 			angular.extend(local_data_villages, {[key] : {"data": data}})
@@ -80,12 +80,12 @@ define("robotTW2/controllers/SpyController", [
 				$scope.$apply();
 			}
 		}
-		
+
 		initTab();
 		update();
-		
+
 		$scope.isRunning = services.SpyService.isRunning();
-		
+
 		$scope.getVstart = function(param){
 			var vid = param.start_village;
 			if(!vid){return}
@@ -100,26 +100,20 @@ define("robotTW2/controllers/SpyController", [
 			var y = getVillageData(vid).y
 			return "(" + x + "/" + y + ")"
 		}
-		
+
 		$scope.getClass = function(type){
 			var className = "";
 			switch (type) {
-			case "support": {
-				className = "icon-26x26-support";
+			case "units": 
+				className = "icon-26x26-units";
 				break;
-			}
-			case "attack": {
-				className = "icon-26x26-attack-red";
-				break;
-			}
-			case "relocate": {
-				className = "icon-26x26-relocate";
-				break;
-			}
+			default: 
+				className = "icon-26x26-village";
+			break;
 			}
 			return className
 		}
-		
+
 		$scope.getHoraSend = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
 		}
@@ -140,7 +134,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.getVcoordTarget = function(param){
 			return "(" + param.target_x + "/" + param.target_y + ")"
 		}
-		
+
 		$scope.clear_spy = function(){
 			services.SpyService.removeAll();
 		}
@@ -150,7 +144,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
 		})
-		
+
 		$scope.blur = function(){
 			var t = $("#input-ms").val();
 			if(t.length <= 5) {
@@ -158,47 +152,47 @@ define("robotTW2/controllers/SpyController", [
 			}
 			data_spy.interval = helper.unreadableSeconds(t) * 1000;
 		}
-		
+
 		$scope.getTimeRest = function(){
 			return data_spy.complete > time.convertedTime() ? helper.readableMilliseconds(data_spy.complete - time.convertedTime()) : 0;
 		}
 
-		
+
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
 			document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
 		})
-		
+
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.SpyService.isRunning();
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
 		})
-		
+
 		$scope.$watch("data_logs.spy", function(){
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
 		}, true)
-		
+
 		$scope.$watch("data_spy", function(){
 			if(!$scope.data_spy){return}
 			data_spy = $scope.data_spy;
 			data_spy.set();
 		}, true)
-		
+
 		$scope.$on("$destroy", function() {
 			$scope.data_spy.set();
 		});
-		
+
 		document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
-		
+
 		$scope.setCollapse();
-		
+
 		return $scope;
 	}
 })
