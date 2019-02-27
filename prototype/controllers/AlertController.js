@@ -11,6 +11,7 @@ define("robotTW2/controllers/AlertController", [
 	){
 	return function AlertController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		$scope.data_alert = data_alert;
 		$scope.text_version = $scope.version + " " + $scope.data_alert.version;
 		var self = this;

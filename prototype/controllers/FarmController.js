@@ -23,6 +23,8 @@ define("robotTW2/controllers/FarmController", [
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
+		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
+		
 		var self = this,
 		local_data_villages = {};
 		var TABS = {

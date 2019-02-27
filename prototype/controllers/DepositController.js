@@ -14,11 +14,14 @@ define("robotTW2/controllers/DepositController", [
 			data_deposit
 	){
 	return function DepositController($scope) {
-		$scope.data_deposit = data_deposit;
-		$scope.text_version = $scope.version + " " + data_deposit.version;
+		
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		var self = this;
 
+		$scope.data_deposit = data_deposit;
+		$scope.text_version = $scope.version + " " + data_deposit.version;
+		
 		$scope.getTimeRest = function(){
 			if($scope.data_deposit.complete > time.convertedTime()){
 				return helper.readableMilliseconds($scope.data_deposit.complete - time.convertedTime())
