@@ -1554,6 +1554,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				releaseDelay();
 				// stop dots indicator
 				robotTW2.services.$timeout(stopIncreseInterval);
+				
+				list = newList;
 
 				list = list.map(extendItemProperties);
 
