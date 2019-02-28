@@ -34,7 +34,7 @@ define("robotTW2/controllers/SpyController", [
 //		type: "units"
 
 		
-		
+		$scope.village_selected;
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
