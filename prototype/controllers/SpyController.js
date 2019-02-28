@@ -53,7 +53,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
 
-		$scope.local_data_villages = {}
+		$scope.local_data_villages = []
 
 		function getVillage(vid){
 			if(!vid){return}
@@ -67,7 +67,7 @@ define("robotTW2/controllers/SpyController", [
 
 		Object.keys(data_villages.villages).map(function(key){
 			let data = getVillage(key).data;
-			angular.extend($scope.local_data_villages, {
+			$scope.local_data_villages.push({
 				id : key,
 				name : data.name,
 				value : data
