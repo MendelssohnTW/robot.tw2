@@ -32,7 +32,6 @@ define("robotTW2/controllers/SpyController", [
 //		type: "units"
 
 
-		$scope.inputValue;
 		
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
@@ -106,7 +105,6 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.autoCompleteKeyUp = function(event){
 			var scope = angular.element($("[ng-keyup]")).scope()
-			scope.inputValue = $scope.inputValue;
 			scope.autoCompleteKeyUp(event)
 		}
 
