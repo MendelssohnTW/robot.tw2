@@ -1558,7 +1558,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				list = list.map(extendItemProperties);
 
 				// filter only tribe members if there was option for that
-//				if ($scope.autoComplete.members) {
+//				if (element.members) {
 //					list = list.filter(selectTribeMembers);
 //				}
 
@@ -1665,11 +1665,11 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 				// Callback defined in the creator scopes.
-				if ($scope.autoComplete.onEnter) {
-					$scope.autoComplete.onEnter(item);
+				if (element.onEnter) {
+					element.onEnter(item);
 				}
 
-				if ($scope.autoComplete.keepSelected) {
+				if (element.keepSelected) {
 					updateInputValue(item.name);
 				} else {
 					// Clear also uses .updateInputValue
@@ -1710,7 +1710,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				} catch (err) {
 					// Creating global message error, to show something's happening.
 					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.MESSAGE_ERROR, {
-						'message': 'No such ' + $scope.autoComplete.type + '.'
+						'message': 'No such ' + element.type + '.'
 					});
 				}
 
