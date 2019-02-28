@@ -35,6 +35,7 @@ define("robotTW2/controllers/SpyController", [
 		
 		
 		$scope.data_spy = data_spy
+		$scope.data_villages = data_villages
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
 		var TABS = {
