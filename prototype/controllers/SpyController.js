@@ -35,10 +35,12 @@ define("robotTW2/controllers/SpyController", [
 
 		var TABS = {
 				SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
+				COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy"),
 				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "spy")
 		}
 		, TAB_ORDER = [
 			TABS.SPY,
+			TABS.COMP,
 			TABS.LOG,
 			]
 
@@ -92,7 +94,7 @@ define("robotTW2/controllers/SpyController", [
 			return getVillageData(vid).name
 		}
 
-		$scope.getVcoord = function(param){
+		$scope.getVcoordStart = function(param){
 			var vid = param.start_village;
 			if(!vid){return}
 			var x = getVillageData(vid).x

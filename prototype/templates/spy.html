@@ -146,15 +146,45 @@
 			</div>
 		</div>
 	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.COMP">
+		<div class="box-paper content-settings">
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
+			<div>
+				<table class="tbl-border-light tbl-striped tbl-content"
+					id="preset-list">
+					<colgroup>
+						<col width="20%">
+						<col width="75px">
+						<col width="150px">
+						<col width="*">
+					</colgroup>
+					<tbody>
+						<tr>
+							<td>
+								<div class="select-wrapper box-border-dark">
+									<select id="select_order" class="select-handler"
+										ng-options="item as item.name for item in data_headquarter.selects track by item.id"
+										ng-model="value_vill.selected"></select>
+								</div>
+							</td>
+							<td><span></span></td>
+							<td><input></input></td>
+							<td><button></button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
+		</div>
+		<footer class="win-foot">
+			<ul class="list-btn list-center buttons">
+				<li ng-if="activeTab == TABS.ATTACK"><a
+					class="btn-orange btn-border clear" ng-click="clear_spy()">{{CLEAR}}</a></li>
+				<li><a class="btn-orange btn-border close"
+					ng-click="closeWindow()">{{CLOSE}}</a></li>
+			</ul>
+		</footer>
 	</div>
-	<footer class="win-foot">
-		<ul class="list-btn list-center buttons">
-			<li ng-if="activeTab == TABS.ATTACK"><a
-				class="btn-orange btn-border clear" ng-click="clear_spy()">{{CLEAR}}</a></li>
-			<li><a class="btn-orange btn-border close"
-				ng-click="closeWindow()">{{CLOSE}}</a></li>
-		</ul>
-	</footer>
-</div>
-
