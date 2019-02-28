@@ -22,7 +22,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this
-		
+
 
 //		data_escolhida: 1551304200000
 //		duration: 900000
@@ -33,8 +33,8 @@ define("robotTW2/controllers/SpyController", [
 //		timer_delay: 395462
 //		type: "units"
 
+
 		
-		$scope.village_selected;
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
@@ -52,7 +52,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.requestedTab = TABS.SPY;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-		
+
 		$scope.local_data_villages = {}
 
 		function getVillage(vid){
@@ -67,9 +67,15 @@ define("robotTW2/controllers/SpyController", [
 
 		Object.keys(data_villages.villages).map(function(key){
 			let data = getVillage(key).data;
-			angular.extend($scope.local_data_villages, {[key] : data})
+			angular.extend($scope.local_data_villages, {
+				id : key,
+				name : data.name,
+				value : data
+			})
 			return $scope.local_data_villages;
 		})
+		
+		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 		
 		if (!$scope.$$phase) {$scope.$apply()}
 
@@ -92,13 +98,13 @@ define("robotTW2/controllers/SpyController", [
 
 		initTab();
 		update();
-		
+
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
 
 		$scope.isRunning = services.SpyService.isRunning();
-		
+
 		$scope.autoCompleteKeyUp = function(event){
 			autocomplete(event)
 		}
@@ -116,7 +122,7 @@ define("robotTW2/controllers/SpyController", [
 			var y = getVillageData(vid).y
 			return "(" + x + "/" + y + ")"
 		}
-		
+
 		$scope.getVtarget = function(param){
 			if(!param){return}
 			return param.target_name
@@ -158,7 +164,7 @@ define("robotTW2/controllers/SpyController", [
 			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
 			return helper.readableMilliseconds(difTime)
 		}
-		
+
 
 		$scope.clear_spy = function(){
 			services.SpyService.removeAll();
