@@ -46,6 +46,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	var villageService 			= injector.get("villageService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
 	var routeProvider 			= injector.get("routeProvider");
+	var autoCompleteService		= injector.get("autoCompleteService");
 	var CONTENT_CLASS			= 'win-content';
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
@@ -686,7 +687,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			recruitingService			: recruitingService,
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService,
-			villageService				: villageService
+			villageService				: villageService,
+			autoCompleteService			: autoCompleteService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
@@ -1700,7 +1702,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
 						if (!elemListener) {
-							elemListener = element.on('blur', stopIncreseInterval);
+							elemListener = element.onblur = stopIncreseInterval;
 						}
 						// If requesting data is possible.
 						requestData(requestDataParam);
