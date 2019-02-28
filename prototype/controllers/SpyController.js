@@ -53,9 +53,9 @@ define("robotTW2/controllers/SpyController", [
 		$scope.TAB_ORDER = TAB_ORDER;
 		
 		var scope = angular.element($("[ng-keyup]")).scope()
-		angular.extend($scope["inputValue"], scope.inputValue);
-		angular.extend($scope["autoComplete"], scope.autoComplete);
-		angular.extend($scope["autoCompleteKeyUp"], scope.autoCompleteKeyUp);
+		$scope["inputValue"] = angular.extend({}, scope.inputValue);
+		$scope["autoComplete"] = angular.extend({}, scope.autoComplete);
+		$scope["autoCompleteKeyUp"] = angular.extend({}, scope.autoCompleteKeyUp);
 
 		$scope.local_data_villages = []
 
