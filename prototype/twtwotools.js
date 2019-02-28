@@ -1536,26 +1536,220 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 		,
-		define("robotTW2/autocomplete", ['conf/conf', 'helper/dom', 'helper/format', 'generators/generate'], function(conf, domHelper, formatHelper, generate){
-			var lastRequestDelay
-			, lastRequestDelayTimeout
-			, dataRequestTimeout
-			, inputValue
-			, element
-			, elemListener
-			, noResultTranslation
-			, clickHandler
-			, inputValueReadOnly
-			, list
-			, id = generate.hex()
-			, $scope = $rootScope.$new()
-			, onData = function onData(data) {
+		define("robotTW2/autocomplete", ['conf/conf', 'helper/dom', 'helper/format', 'helper/parse', 'generators/generate'], function(conf, domHelper, formatHelper, parseHelper, generate){
+			var clickHandler,
+			lastRequestedParam,
+			lastRequestDelay,
+            lastRequestDelayTimeout,
+			dataRequestTimeout,
+            elemListener,
+			list,
+			selectIndex,
+			ITERATION_LIMIT			= 4,
+			LIST_LENGTH_INCREMENT	= 5,
+			iterations				= 0,
+			id						= generate.hex(),
+			element					= $(elm[0]),
+
+			/**
+			 * Wrapper for updating the scopes inputValue.
+			 *
+			 * Also updates the parameter autoComplete objects
+			 * .inputValueReadOnly property, so outer scopes can
+			 * use not only values on select, but the current value
+			 * inside the input field. See TribeMemberListCtrl
+			 *
+			 * @param {string} opt_newInputValue to set the inputValue
+			 */
+			updateInputValue = function updateInputValue(opt_newInputValue) {
+				if (opt_newInputValue !== undefined) {
+					$scope.inputValue = opt_newInputValue;
+				}
+
+				$scope.autoComplete.inputValueReadOnly = $scope.inputValue;
+			},
+
+			/**
+			 * Clears the autocomplete input field and resets local variables
+			 * related to the autocomplete list.
+			 */
+			clear = function clear() {
+				list		= [];
+				selectIndex	= -1;
+
+				updateInputValue('');
+			},
+
+			/**
+			 * Return participant names of a message.
+			 */
+			getMessageParticipantsName = function getMessageParticipantsName(message) {
+				var i,
+					names = [];
+
+				if (message.participants) {
+					for (i = 0; i < message.participants.length; i++) {
+						names.push(message.participants[i].character_name);
+					}
+				}
+
+				return names;
+			},
+
+			/**
+			 * Extends a loaded item by its type to be ablo to show
+			 * icons and properties which have unconventional names.
+			 */
+			extendItemProperties = function extendItemProperties(item) {
+
+				if (item.message_id) {
+					// Messages use a different API for autocomplete.
+					item.name	= item.title;
+					item.smalls	= getMessageParticipantsName(item);
+				}
+
+				if (item.type === 'village') {
+					item.displayedName = formatHelper.villageNameWithCoordinates(item);
+				}
+
+				if (item.type) {
+					item.leftIcon = 'size-34x34';
+					// If type is defined, use its icon.
+					item.leftIcon += ' icon-26x26-rte-' + item.type;
+				}
+
+				return item;
+			},
+
+            /**
+             * Filter only tribe members from response data
+             */
+
+            selectTribeMembers = function selectTribeMembers(character) {
+                var selectedCharacter = robotTW2.services.modelDataService.getSelectedCharacter(),
+                tribeMemberModel = selectedCharacter.getTribeMemberModel(),
+					members = [],
+					m;
+
+                if (tribeMemberModel) {
+                    members = robotTW2.services.tribeMemberModel.getMembers();
+                }
+
+                for (m = 0; m < members.length; m += 1) {
+					if (members[m].id === character.id) {
+						return true;
+					}
+				}
+
+				return false;
+			},
+
+			/**
+			 * Triggers an event for the select element directive to
+			 * hide itself.
+			 */
+			hideSelect = function hideSelect() {
+				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
+				$(window).off('click', clickHandler);
+			},
+
+			/**
+			 * Calls the onEnter()-function and clears the input element
+			 *
+			 * @param {Object.<string, *>} item
+			 */
+			onSelect = function onSelect(item) {
+				if (!item) {
+					return;
+				}
+
+				// Callback defined in the creator scopes.
+				if ($scope.autoComplete.onEnter) {
+					$scope.autoComplete.onEnter(item);
+				}
+
+				if ($scope.autoComplete.keepSelected) {
+					updateInputValue(item.name);
+				} else {
+					// Clear also uses .updateInputValue
+					clear();
+				}
+
+				hideSelect();
+			},
+
+			/**
+			 * Triggers an event for the select element directive to
+			 * show the found elements of the autocompletion.
+			 */
+			showSelect = function showSelect() {
+				if (!noResultTranslation) {
+					noResultTranslation = robotTW2.services.$filter('i18n')('no_results', $rootScope.loc.ale, 'directive_autocomplete');
+				}
+
+				$rootScope.$broadcast(
+					robotTW2.providers.eventTypeProvider.SELECT_SHOW,
+					id,
+					list,
+					undefined,
+					onSelect,
+					element,
+					$scope.autoComplete.dropDown,
+					undefined,
+					noResultTranslation
+				);
+
+				$(window).off('click', clickHandler).on('click', clickHandler);
+			},
+
+            /**
+             * Cancel blocking user input
+             */
+
+            releaseDelay = function() {
+                lastRequestDelay = false;
+                robotTW2.services.$timeout.cancel(lastRequestDelayTimeout);
+			},
+
+            /**
+             * Stop the interval for dots
+             */
+
+			stopIncreseInterval = function() {
+                if (dataRequestTimeout) {
+                	robotTW2.services.$timeout.cancel(dataRequestTimeout);
+                    element.off('blur', stopIncreseInterval);
+                    dataRequestTimeout = null;
+                }
+			},
+
+            /**
+             * Starts the interval for dots
+             */
+
+            increaseDelayDots = function () {
+				//cancel any previous interval so we don't have unreferenced intervals running
+				if (dataRequestTimeout) {
+					robotTW2.services.$timeout.cancel(dataRequestTimeout);
+				}
+                updateInputValue();
+				dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots, 1000);
+			},
+			/**
+			 * Callback for request data.
+			 * if an exclude filter is used & it did exclude something, another request (same parameter,
+			 * greater amount) is sent to the server.
+			 * @param {{result: <Array>}} data
+			 */
+			onData = function onData(data) {
 				var newList = data.result;
 				// as data received give user access to change value
-				releaseDelay();
-				// stop dots indicator
-				robotTW2.services.$timeout(stopIncreseInterval);
-				
+                releaseDelay();
+                // stop dots indicator
+                robotTW2.services.$timeout(stopIncreseInterval);
+
+				// With exclude you can define some obj, which will not be shown on
+				// the selectable found item list.
 				if ($scope.autoComplete.exclude) {
 					list = newList.filter($scope.autoComplete.exclude);
 					if (iterations < ITERATION_LIMIT && list.length < newList.length && list.length < conf.AUTOCOMPLETE_AMOUNT) {
@@ -1571,9 +1765,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				list = list.map(extendItemProperties);
 
 				// filter only tribe members if there was option for that
-//				if (element.members) {
-//					list = list.filter(selectTribeMembers);
-//				}
+				if ($scope.autoComplete.members) {
+                    list = list.filter(selectTribeMembers);
+				}
 
 				// avoid showing empty lists
 				iterations = 0;
@@ -1583,146 +1777,130 @@ var robotTW2 = window.robotTW2 = undefined;
 					hideSelect();
 				}
 				selectIndex = -1;
-			}
-			, hideSelect = function hideSelect() {
-				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
-				$(window).off('click', clickHandler);
-			}
-			, showSelect = function showSelect() {
-				if (!noResultTranslation) {
-					noResultTranslation = robotTW2.services.$filter('i18n')('no_results', $rootScope.loc.ale, 'directive_autocomplete');
+			},
+
+			/**
+			 * Callback for the special case, when map data was requested by coordinates.
+			 */
+			onMapData = function onMapData(data) {
+				var village	= data && data.villages && data.villages[0],
+					result	= [];
+
+				if (!village && data.id) {
+					// in case that the village is not added to an array of villages (using coordinate search)
+					village = data;
 				}
 
-				$rootScope.$broadcast(
-					robotTW2.providers.eventTypeProvider.SELECT_SHOW,
-					id,
-					list,
-					undefined,
-					onSelect,
-					element,
-					undefined,
-					undefined,
-					noResultTranslation
-				);
-
-				$(window).off('click', clickHandler).on('click', clickHandler);
-			}
-			, getMessageParticipantsName = function getMessageParticipantsName(message) {
-				var i,
-				names = [];
-
-				if (message.participants) {
-					for (i = 0; i < message.participants.length; i++) {
-						names.push(message.participants[i].character_name);
-					}
+				if (village) {
+					result.push({
+						'id'	: village.id,
+						'x'		: village.x,
+						'y'		: village.y,
+						'name'	: village.name,
+						'type'	: 'village'
+					});
 				}
 
-				return names;
-			}
-			, extendItemProperties = function extendItemProperties(item) {
+				onData({
+					'result' : result
+				});
+			},
 
-				if (item.message_id) {
-					// Messages use a different API for autocomplete.
-					item.name	= item.title;
-					item.smalls	= getMessageParticipantsName(item);
+			/**
+			 * Uses the autocomplete service to get results from back-end.
+			 *
+			 * @param {string} param charSequence
+			 * @param {number=} opt_amount how many results should be requested
+			 */
+			requestData = function requestData(param, opt_amount) {
+				lastRequestedParam = param;
+
+				if ($scope.autoComplete.byCoordinates) {
+					robotTW2.services.autoCompleteService.villageByCoordinates(param, onMapData);
+				} else if (typeof $scope.autoComplete.type === 'function') {
+					$scope.autoComplete.type(param, onData);
+				} else if (typeof $scope.autoComplete.type === 'string') {
+					robotTW2.services.autoCompleteService[$scope.autoComplete.type](param, onData, opt_amount);
+				} else if ($scope.autoComplete.type instanceof Array) {
+					robotTW2.services.autoCompleteService.mixed($scope.autoComplete.type, param, onData, opt_amount);
+				}
+			},
+
+			/**
+			 * Validator function if we can request data by the input.
+			 */
+			getRequestDataParam = function getRequestDataParam(input) {
+				if ($scope.autoComplete.byCoordinates) {
+					return parseHelper.toCoordinates(input);
 				}
 
-				if (item.type === 'village') {
-					item.displayedName = formatHelper.villageNameWithCoordinates(item);
+				if (input.length <= 1) {
+					// If the input is too short, skip.
+					return false;
 				}
 
-//				if (item.type) {
-//				item.leftIcon = 'size-34x34';
-//				// If type is defined, use its icon.
-//				item.leftIcon += ' icon-26x26-rte-' + item.type;
-//				}
-
-				return item;
-			}
-			, requestData = function requestData(param, type, opt_amount) {
-//				lastRequestedParam = param;
-
-				robotTW2.services.autoCompleteService.mixed(type, param, onData, opt_amount);
-			}
-			, releaseDelay = function() {
-				lastRequestDelay = false;
-				robotTW2.services.$timeout.cancel(lastRequestDelayTimeout);
-			}
-			, increaseDelayDots = function () {
-				if (dataRequestTimeout) {
-					robotTW2.services.$timeout.cancel(dataRequestTimeout);
-				}
-				updateInputValue();
-				dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots, 1000);
-			}
-			, updateInputValue = function updateInputValue(opt_newInputValue) {
-				if (opt_newInputValue !== undefined) {
-					inputValue = opt_newInputValue;
+				if (list.length === 0 && lastRequestedParam && lastRequestedParam.length < input.length && lastRequestedParam === input.substr(0, lastRequestedParam.length)) {
+					// If the result list is empty and we try to continue the search word, skip.
+					return false;
 				}
 
-				inputValueReadOnly = inputValue;
-			}
-			, stopIncreseInterval = function() {
-				if (dataRequestTimeout) {
-					robotTW2.services.$timeout.cancel(dataRequestTimeout);
-					element.off('blur', stopIncreseInterval);
-					dataRequestTimeout = null;
-				}
-			}
-			, isListElementSelected = function isListElementSelected() {
+				return input;
+			},
+
+			isListElementSelected = function isListElementSelected() {
 				return list && list.length && selectIndex.between(0, list.length - 1) && list[selectIndex];
-			}
-			, onSelect = function onSelect(item) {
-				if (!item) {
-					return;
-				}
-
-				// Callback defined in the creator scopes.
-				if (element.onEnter) {
-					element.onEnter(item);
-				}
-
-				if (element.keepSelected) {
-					updateInputValue(item.name);
-				} else {
-					// Clear also uses .updateInputValue
-					clear();
-				}
-
-				hideSelect();
-			}
+			},
 			
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 			
-			return function autoCompleteKeyUp($event, type) {
-				element = $($("[ng-keyup]")[0])
-				var interpretAsEnter = false;
-				if(!element) {return}
-				var inputValue = $event.srcElement.value;
-				if(!inputValue || inputValue.length <= 1) {return}
-
+			return function autoCompleteKeyUp(scope, e) {
+				angular.extend($scope, scope);
+				var requestDataParam,
+				interpretAsEnter = false;
+				
 				try {
+					switch (e.keyCode) {
 
-					if (!lastRequestDelay) {
+					case 27: // esc
+						clear();
+						break;
+					case 39: // right
+						selectIndex = selectIndex.bound(0, list.length - 1);
+						break;
+					case 13: // return
+						selectIndex = selectIndex.bound(0, list.length - 1);
+						interpretAsEnter = true;
+						break;
+					case 38: // up
+						selectIndex = ((selectIndex || list.length) - 1) % list.length;
+						break;
+					case 40: // down
+						selectIndex = (selectIndex + 1) % list.length;
+						break;
+					default: // any other key, so we can assume the user wants to search again
+						requestDataParam = getRequestDataParam($scope.inputValue);
 
-						lastRequestDelay = true;
-						// unblock data request after 200 ms
-						lastRequestDelayTimeout = robotTW2.services.$timeout(releaseDelay, 200);
-						// request loading process after 1s delay
-						if (dataRequestTimeout) {
-							robotTW2.services.$timeout.cancel(dataRequestTimeout);
+						if (requestDataParam && !lastRequestDelay) {
+
+                            lastRequestDelay = true;
+							// unblock data request after 200 ms
+                            lastRequestDelayTimeout = robotTW2.services.$timeout(releaseDelay, 200);
+							// request loading process after 1s delay
+                            if (dataRequestTimeout) {
+                            	robotTW2.services.$timeout.cancel(dataRequestTimeout);
+							}
+                            dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
+                            if (!elemListener) {
+								elemListener = element.on('blur', stopIncreseInterval);
+                            }
+                            // If requesting data is possible.
+							requestData(requestDataParam);
 						}
-						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
-						if (!elemListener) {
-							elemListener = element.on("blur", stopIncreseInterval);
-						}
-						// If requesting data is possible.
-						requestData(inputValue, type);
 					}
 				} catch (err) {
 					// Creating global message error, to show something's happening.
 					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.MESSAGE_ERROR, {
-						'message': 'No such ' + type + '.'
+						'message': 'No such ' + $scope.autoComplete.type + '.'
 					});
 				}
 
