@@ -1547,6 +1547,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			, clickHandler
 			, inputValueReadOnly
 			, list
+			, type
 			, id = generate.hex()
 			, onData = function onData(data) {
 				var newList = data.result;
@@ -1629,7 +1630,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			, requestData = function requestData(param, opt_amount) {
 //				lastRequestedParam = param;
 
-				robotTW2.services.autoCompleteService[element.type](param, onData, opt_amount);
+				robotTW2.services.autoCompleteService[type](param, onData, opt_amount);
 			}
 			, releaseDelay = function() {
 				lastRequestDelay = false;
@@ -1681,8 +1682,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 			
-			return function autoCompleteKeyUp($event) {
-				
+			return function autoCompleteKeyUp($event, type) {
+				type = type;
 				var interpretAsEnter = false;
 				element = $event.srcElement
 				if(!element) {return}
@@ -1710,7 +1711,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				} catch (err) {
 					// Creating global message error, to show something's happening.
 					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.MESSAGE_ERROR, {
-						'message': 'No such ' + element.type + '.'
+						'message': 'No such ' + type + '.'
 					});
 				}
 

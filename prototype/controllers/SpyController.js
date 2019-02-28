@@ -106,8 +106,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.isRunning = services.SpyService.isRunning();
 
 		$scope.autoCompleteKeyUp = function(event){
-			event.type = ["character", "tribe", "village"]
-			autocomplete(event)
+			autocomplete(event, ["character", "tribe", "village"])
 		}
 
 		$scope.getVstart = function(param){
