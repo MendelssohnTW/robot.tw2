@@ -51,11 +51,6 @@ define("robotTW2/controllers/SpyController", [
 		$scope.requestedTab = TABS.SPY;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-		
-		var scope = angular.element($("[ng-keyup]")).scope()
-		$scope["inputValue"] = angular.extend({}, scope.inputValue);
-		$scope["autoComplete"] = angular.extend({}, scope.autoComplete);
-		$scope["autoCompleteKeyUp"] = angular.extend({}, scope.autoCompleteKeyUp);
 
 		$scope.local_data_villages = []
 
@@ -109,9 +104,10 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.isRunning = services.SpyService.isRunning();
 
-//		$scope.autoCompleteKeyUp = function(event){
-//			$scope.autoCompleteKeyUp(event)
-//		}
+		$scope.autoCompleteKeyUp = function(event){
+			var scope = angular.element($("[ng-keyup]")).scope()
+			scope.autoCompleteKeyUp(event)
+		}
 
 		$scope.getVstart = function(param){
 			var vid = param.start_village;
