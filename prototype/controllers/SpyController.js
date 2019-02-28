@@ -103,7 +103,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.isRunning = services.SpyService.isRunning();
 
-		$scope.autoCompleteKeyUp = function(event){
+		$scope.autoCompleteKey = function(event){
 			var scope = angular.element($("[world-map-search]")[1]).scope()
 			scope.autoCompleteKeyUp(event)
 		}
