@@ -170,45 +170,20 @@
 								</div>
 							</td>
 							<td><span class="icon icon-26x26-rte-village"></span></td>
-							<td class="directive-world-map-search"
-								style="visibility: visible; display: block; position: relative;"><div>
-									<div id="world-map-search-wrapper" world-map-search=""
-										class="ng-scope">
-										<div id="world-map-search-0xd"
+							<td><div>
+									<div world-map-search="">
+										<div
 											class="directive-world-map-search box-border-dark box-wrapper visible">
 											<div>
-												<table class="tbl-border-light coordinates">
-													<tbody>
-														<tr>
-															<td><input tabindex="4" ng-model="coordinates.x"
-																class="textfield-border"
-																placeholder="Posição-X"
-																ng-blur="validateCoordinates(coordinates)" type="number"
-																internal-id="91"></td>
-															<td><input tabindex="4" ng-model="coordinates.y"
-																class="textfield-border"
-																placeholder="Posição-Y"
-																ng-blur="validateCoordinates(coordinates)" type="number"
-																></td>
-															<td><div
-																	class="size-34x34 btn-orange icon-34x34-jump-to float-right"
-																	ng-click="jumpTo(coordinates)"></div></td>
-														</tr>
-													</tbody>
-												</table>
 												<table class="tbl-border-light autocomplete">
 													<tbody>
 														<tr>
 															<td colspan="3">
-																<div
-																	class="auto-focus auto-complete-wrapper"
-																	auto-complete="autoComplete">
+																<div class="auto-focus" auto-complete="autoComplete">
 																	<input tabindex="4" type="text"
 																		ng-keyup="autoCompleteKeyUp($event)"
-																		ng-model="inputValue"
-																		class="textfield-border"
+																		ng-model="inputValue" class="textfield-border"
 																		ng-class="{'input-border': autoComplete.inputBorder}"
-																		tooltip="" tooltip-content=""
 																		placeholder="Pesquisar no Mapa Mundi ..."
 																		focus="autoComplete.focus">
 																</div>
