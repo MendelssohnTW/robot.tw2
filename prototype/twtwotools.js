@@ -1682,6 +1682,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 			
 			return function autoCompleteKeyUp($event, type) {
+				element = $("[ng-keyup]")
 				var interpretAsEnter = false;
 				element = $event.srcElement
 				if(!element) {return}
@@ -1701,7 +1702,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
 						if (!elemListener) {
-							elemListener = element.onblur = stopIncreseInterval;
+							elemListener = element.on("blur", stopIncreseInterval);
 						}
 						// If requesting data is possible.
 						requestData(inputValue, type);
