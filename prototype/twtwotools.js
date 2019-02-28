@@ -1629,7 +1629,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			, requestData = function requestData(param, opt_amount) {
 //				lastRequestedParam = param;
 
-				robotTW2.services.autoCompleteService["string"](param, onData, opt_amount);
+				robotTW2.services.autoCompleteService[element.type](param, onData, opt_amount);
 			}
 			, releaseDelay = function() {
 				lastRequestDelay = false;
