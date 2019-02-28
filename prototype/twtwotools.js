@@ -1549,7 +1549,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			LIST_LENGTH_INCREMENT	= 5,
 			iterations				= 0,
 			id						= generate.hex(),
-			element					= $(elm[0]),
+			element,
 
 			/**
 			 * Wrapper for updating the scopes inputValue.
@@ -1854,6 +1854,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 			
 			return function autoCompleteKeyUp(scope, e) {
+				element = $($("[ng-keyup]")[0])
 				angular.extend($scope, scope);
 				var requestDataParam,
 				interpretAsEnter = false;
