@@ -4,16 +4,14 @@ define("robotTW2/controllers/SpyController", [
 	"helper/time",
 	"robotTW2/time",
 	"robotTW2/databases/data_spy",
-	"robotTW2/databases/data_villages",
-	"robotTW2/autocomplete"
+	"robotTW2/databases/data_villages"
 	], function(
 			services,
 			providers,
 			helper,
 			time,
 			data_spy,
-			data_villages,
-			autocomplete
+			data_villages
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -34,6 +32,7 @@ define("robotTW2/controllers/SpyController", [
 //		type: "units"
 
 
+		$scope.inputValue;
 		
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
@@ -107,6 +106,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.autoCompleteKeyUp = function(event){
 			var scope = angular.element($("[ng-keyup]")).scope()
+			angular.extend($scope, scope);
 			scope.autoCompleteKeyUp(event)
 		}
 
