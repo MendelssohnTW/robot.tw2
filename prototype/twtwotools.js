@@ -1629,7 +1629,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			, requestData = function requestData(param, type, opt_amount) {
 //				lastRequestedParam = param;
 
-				robotTW2.services.autoCompleteService[type](param, onData, opt_amount);
+				robotTW2.services.autoCompleteService.mixed(type, param, onData, opt_amount);
 			}
 			, releaseDelay = function() {
 				lastRequestDelay = false;
@@ -1682,7 +1682,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 			
 			return function autoCompleteKeyUp($event, type) {
-				element = $("[ng-keyup]")
+				element = $($("[ng-keyup]")[0])
 				var interpretAsEnter = false;
 				if(!element) {return}
 				var inputValue = $event.srcElement.value;
