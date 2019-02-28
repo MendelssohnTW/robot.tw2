@@ -1682,8 +1682,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 			
 			return function autoCompleteKeyUp($event) {
-				var requestDataParam,
-				interpretAsEnter = false;
+				
+				var interpretAsEnter = false;
 				element = $event.srcElement
 				if(!element) {return}
 				var inputValue = element.value;
@@ -1705,7 +1705,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							elemListener = element.onblur = stopIncreseInterval;
 						}
 						// If requesting data is possible.
-						requestData(requestDataParam);
+						requestData(inputValue);
 					}
 				} catch (err) {
 					// Creating global message error, to show something's happening.
