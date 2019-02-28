@@ -90,6 +90,10 @@ define("robotTW2/controllers/SpyController", [
 
 		initTab();
 		update();
+		
+		$scope.userSetActiveTab = function(tab){
+			setActiveTab(tab);
+		}
 
 		$scope.isRunning = services.SpyService.isRunning();
 		
