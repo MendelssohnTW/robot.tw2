@@ -4,14 +4,16 @@ define("robotTW2/controllers/SpyController", [
 	"helper/time",
 	"robotTW2/time",
 	"robotTW2/databases/data_spy",
-	"robotTW2/databases/data_villages"
+	"robotTW2/databases/data_villages",
+	"robotTW2/autocomplete"
 	], function(
 			services,
 			providers,
 			helper,
 			time,
 			data_spy,
-			data_villages
+			data_villages,
+			autocomplete
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -30,6 +32,8 @@ define("robotTW2/controllers/SpyController", [
 //		timer_delay: 395462
 //		type: "units"
 
+		
+		
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
@@ -87,6 +91,10 @@ define("robotTW2/controllers/SpyController", [
 		update();
 
 		$scope.isRunning = services.SpyService.isRunning();
+		
+		$scope.autoCompleteKeyUp = function(event){
+			autocomplete(event)
+		}
 
 		$scope.getVstart = function(param){
 			var vid = param.start_village;

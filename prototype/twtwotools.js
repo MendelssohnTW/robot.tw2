@@ -1534,6 +1534,201 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 		,
+		define("robotTW2/autocomplete", ['conf/conf', 'helper/dom', 'helper/format', 'generators/generate'], function(conf, domHelper, formatHelper, generate){
+			var lastRequestDelay
+			, lastRequestDelayTimeout
+			, dataRequestTimeout
+			, inputValue
+			, element
+			, elemListener
+			, noResultTranslation
+			, clickHandler
+			, inputValueReadOnly
+			, list
+			, id = generate.hex()
+			, onData = function onData(data) {
+				var newList = data.result;
+				// as data received give user access to change value
+				releaseDelay();
+				// stop dots indicator
+				robotTW2.services.$timeout(stopIncreseInterval);
+
+				list = list.map(extendItemProperties);
+
+				// filter only tribe members if there was option for that
+//				if ($scope.autoComplete.members) {
+//					list = list.filter(selectTribeMembers);
+//				}
+
+				// avoid showing empty lists
+				iterations = 0;
+				if (list.length > 0) {
+					showSelect();
+				} else {
+					hideSelect();
+				}
+				selectIndex = -1;
+			}
+			, hideSelect = function hideSelect() {
+				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
+				$(window).off('click', clickHandler);
+			}
+			, showSelect = function showSelect() {
+				if (!noResultTranslation) {
+					noResultTranslation = robotTW2.services.$filter('i18n')('no_results', $rootScope.loc.ale, 'directive_autocomplete');
+				}
+
+				$rootScope.$broadcast(
+					robotTW2.providers.eventTypeProvider.SELECT_SHOW,
+					id,
+					list,
+					undefined,
+					onSelect,
+					element,
+					undefined,
+					undefined,
+					noResultTranslation
+				);
+
+				$(window).off('click', clickHandler).on('click', clickHandler);
+			}
+			, getMessageParticipantsName = function getMessageParticipantsName(message) {
+				var i,
+				names = [];
+
+				if (message.participants) {
+					for (i = 0; i < message.participants.length; i++) {
+						names.push(message.participants[i].character_name);
+					}
+				}
+
+				return names;
+			}
+			, extendItemProperties = function extendItemProperties(item) {
+
+				if (item.message_id) {
+					// Messages use a different API for autocomplete.
+					item.name	= item.title;
+					item.smalls	= getMessageParticipantsName(item);
+				}
+
+				if (item.type === 'village') {
+					item.displayedName = formatHelper.villageNameWithCoordinates(item);
+				}
+
+//				if (item.type) {
+//				item.leftIcon = 'size-34x34';
+//				// If type is defined, use its icon.
+//				item.leftIcon += ' icon-26x26-rte-' + item.type;
+//				}
+
+				return item;
+			}
+			, requestData = function requestData(param, opt_amount) {
+//				lastRequestedParam = param;
+
+				robotTW2.services.autoCompleteService["string"](param, onData, opt_amount);
+			}
+			, releaseDelay = function() {
+				lastRequestDelay = false;
+				robotTW2.services.$timeout.cancel(lastRequestDelayTimeout);
+			}
+			, increaseDelayDots = function () {
+				if (dataRequestTimeout) {
+					robotTW2.services.$timeout.cancel(dataRequestTimeout);
+				}
+				updateInputValue();
+				dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots, 1000);
+			}
+			, updateInputValue = function updateInputValue(opt_newInputValue) {
+				if (opt_newInputValue !== undefined) {
+					inputValue = opt_newInputValue;
+				}
+
+				inputValueReadOnly = inputValue;
+			}
+			, stopIncreseInterval = function() {
+				if (dataRequestTimeout) {
+					robotTW2.services.$timeout.cancel(dataRequestTimeout);
+					element.off('blur', stopIncreseInterval);
+					dataRequestTimeout = null;
+				}
+			}
+			, isListElementSelected = function isListElementSelected() {
+				return list && list.length && selectIndex.between(0, list.length - 1) && list[selectIndex];
+			}
+			, onSelect = function onSelect(item) {
+				if (!item) {
+					return;
+				}
+
+				// Callback defined in the creator scopes.
+				if ($scope.autoComplete.onEnter) {
+					$scope.autoComplete.onEnter(item);
+				}
+
+				if ($scope.autoComplete.keepSelected) {
+					updateInputValue(item.name);
+				} else {
+					// Clear also uses .updateInputValue
+					clear();
+				}
+
+				hideSelect();
+			}
+			
+			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
+			
+			return function autoCompleteKeyUp($event) {
+				var requestDataParam,
+				interpretAsEnter = false;
+				element = ("[ng-keyup]")
+				if(!element) {return}
+				var inputValue = element[0].value;
+				if(!inputValue || inputValue.lenght <= 1) {return}
+
+				try {
+
+					if (!lastRequestDelay) {
+
+						lastRequestDelay = true;
+						// unblock data request after 200 ms
+						lastRequestDelayTimeout = robotTW2.services.$timeout(releaseDelay, 200);
+						// request loading process after 1s delay
+						if (dataRequestTimeout) {
+							robotTW2.services.$timeout.cancel(dataRequestTimeout);
+						}
+						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
+						if (!elemListener) {
+							elemListener = element.on('blur', stopIncreseInterval);
+						}
+						// If requesting data is possible.
+						requestData(requestDataParam);
+					}
+				} catch (err) {
+					// Creating global message error, to show something's happening.
+					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.MESSAGE_ERROR, {
+						'message': 'No such ' + $scope.autoComplete.type + '.'
+					});
+				}
+
+				// Check if there is a currently keyboard "hovered" element.
+				if (isListElementSelected()) {
+					updateInputValue(list[selectIndex].name);
+
+					// Trigger simulation of hover effect when using key shortcuts.
+					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_KEY_HOVER, id, selectIndex);
+
+					// Handle key codes which were interpreted as enter.
+					if (interpretAsEnter) {
+						onSelect(list[selectIndex]);
+					}
+				} else {
+					updateInputValue();
+				}
+			};
+		})
+		,
 		define("robotTW2/calibrate_time", [
 			"helper/time", 
 			"robotTW2/time",

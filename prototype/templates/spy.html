@@ -155,23 +155,27 @@
 				<table class="tbl-border-light tbl-striped tbl-content"
 					id="preset-list">
 					<colgroup>
-						<col width="20%">
-						<col width="75px">
-						<col width="150px">
-						<col width="*">
+						<col width="30%">
+                        <col width="5%">
+                        <col>
+                        <col width="18%">
 					</colgroup>
 					<tbody>
 						<tr>
 							<td>
 								<div class="select-wrapper box-border-dark">
 									<select id="select_order" class="select-handler"
-										ng-options="item as item.name for item in data_headquarter.selects track by item.id"
-										ng-model="value_vill.selected"></select>
+										ng-options="item as item.name for item in data_villages.villages track by item.name"
+										ng-model="vill.selected"></select>
 								</div>
 							</td>
-							<td><span></span></td>
-							<td><input></input></td>
-							<td><button></button></td>
+							<td><span class="icon icon-26x26-rte-village"></span></td>
+							<td><input data-setting="origin" type="text"
+								class="textfield-border origin" pattern="\d{2,3}\|\d{2,3}"
+								placeholder="Encontre uma aldeia ..." required=""
+								ng-keyup="autoCompleteKeyUp($event)"></td>
+							<td><a class="btn-orange btn-border stop"
+								ng-click="stop_headquarter()">{{SELECT}}</a></td>
 						</tr>
 					</tbody>
 				</table>
