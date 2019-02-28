@@ -1548,6 +1548,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			, inputValueReadOnly
 			, list
 			, id = generate.hex()
+			, $scope = $rootScope.$new()
 			, onData = function onData(data) {
 				var newList = data.result;
 				// as data received give user access to change value
@@ -1555,7 +1556,17 @@ var robotTW2 = window.robotTW2 = undefined;
 				// stop dots indicator
 				robotTW2.services.$timeout(stopIncreseInterval);
 				
-				list = newList;
+				if ($scope.autoComplete.exclude) {
+					list = newList.filter($scope.autoComplete.exclude);
+					if (iterations < ITERATION_LIMIT && list.length < newList.length && list.length < conf.AUTOCOMPLETE_AMOUNT) {
+						// gimme some more
+						iterations++;
+						requestData(lastRequestedParam, newList.length + LIST_LENGTH_INCREMENT);
+						return;
+					}
+				} else {
+					list = newList;
+				}
 
 				list = list.map(extendItemProperties);
 
