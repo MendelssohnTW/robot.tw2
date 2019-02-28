@@ -1547,7 +1547,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			, clickHandler
 			, inputValueReadOnly
 			, list
-			, type
 			, id = generate.hex()
 			, onData = function onData(data) {
 				var newList = data.result;
@@ -1627,7 +1626,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 				return item;
 			}
-			, requestData = function requestData(param, opt_amount) {
+			, requestData = function requestData(param, type, opt_amount) {
 //				lastRequestedParam = param;
 
 				robotTW2.services.autoCompleteService[type](param, onData, opt_amount);
@@ -1683,7 +1682,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 			
 			return function autoCompleteKeyUp($event, type) {
-				type = type;
 				var interpretAsEnter = false;
 				element = $event.srcElement
 				if(!element) {return}
@@ -1706,7 +1704,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							elemListener = element.onblur = stopIncreseInterval;
 						}
 						// If requesting data is possible.
-						requestData(inputValue);
+						requestData(inputValue, type);
 					}
 				} catch (err) {
 					// Creating global message error, to show something's happening.
