@@ -1684,7 +1684,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				interpretAsEnter = false;
 				element = $event.srcElement
 				if(!element) {return}
-				var inputValue = element[0].value;
+				var inputValue = element.value;
 				if(!inputValue || inputValue.lenght <= 1) {return}
 
 				try {
