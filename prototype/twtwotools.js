@@ -1682,7 +1682,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			return function autoCompleteKeyUp($event) {
 				var requestDataParam,
 				interpretAsEnter = false;
-				element = ("[ng-keyup]")
+				element = $event.srcElement
 				if(!element) {return}
 				var inputValue = element[0].value;
 				if(!inputValue || inputValue.lenght <= 1) {return}
