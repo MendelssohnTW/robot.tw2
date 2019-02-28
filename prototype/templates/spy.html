@@ -173,13 +173,12 @@
 							<td class="directive-world-map-search"
 								style="visibility: visible; display: block; position: relative;"><div
 									autoComplete="autoComplete" class="auto-focus auto-complete-wrapper 0xe">
-									<input id="my-ng-keyup' type="text"
+									<input type="text"
 										ng-keyup="autoCompleteKeyUp($event)"
-										class="textfield-border"
+										class="textfield-border my-ng-keyup"
 										ng-class="{'input-border': autoComplete.inputBorder}"
-										tooltip="" tooltip-content=""
 										placeholder="Pesquisar no Mapa Mundi ..."
-										focus="autoComplete.focus"">
+										focus="autoComplete.focus">
 								</div></td>
 							<td><a class="btn-orange btn-border stop"
 								ng-click="stop_headquarter()">{{SELECT}}</a></td>
