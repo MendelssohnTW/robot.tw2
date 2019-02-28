@@ -21,7 +21,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this
-		, local_data_villages = {}
+		
 
 //		data_escolhida: 1551304200000
 //		duration: 900000
@@ -35,7 +35,6 @@ define("robotTW2/controllers/SpyController", [
 		
 		
 		$scope.data_spy = data_spy
-		$scope.data_villages = data_villages
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
 		var TABS = {
@@ -52,6 +51,8 @@ define("robotTW2/controllers/SpyController", [
 		$scope.requestedTab = TABS.SPY;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
+		
+		$scope.local_data_villages = {}
 
 		function getVillage(vid){
 			if(!vid){return}
@@ -60,14 +61,16 @@ define("robotTW2/controllers/SpyController", [
 
 		function getVillageData(vid){
 			if(!vid){return}
-			return local_data_villages[vid].data;
+			return $scope.local_data_villages[vid].data;
 		}
 
 		Object.keys(data_villages.villages).map(function(key){
 			let data = getVillage(key).data;
-			angular.extend(local_data_villages, {[key] : {"data": data}})
-			return local_data_villages;
+			angular.extend($scope.local_data_villages, {[key] : {"data": data}})
+			return $scope.local_data_villages;
 		})
+		
+		if (!$scope.$$phase) {$scope.$apply()}
 
 		var setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
@@ -83,9 +86,7 @@ define("robotTW2/controllers/SpyController", [
 				return data_spy.commands[elem]
 			});
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
-			if (!$scope.$$phase) {
-				$scope.$apply();
-			}
+			if (!$scope.$$phase) {$scope.$apply()}
 		}
 
 		initTab();
