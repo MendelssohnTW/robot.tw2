@@ -24,13 +24,13 @@ define("robotTW2/databases/data_defense", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: true,
-			activated 				: true,
-			recon		 			: unitTypesRenameRecon,
+			auto_start				: false,
+			init_initialized 		: false,
+			activated 				: false,
 			hotkey					: conf.HOTKEY.DEFENSE,
 			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
 			interval				: conf.INTERVAL.DEFENSE,
+			list_defense 			: unitTypesRenameRecon,
 			version					: conf.VERSION.DEFENSE,
 			time_sniper_ant			: conf.TIME_SNIPER_ANT,
 			time_sniper_post		: conf.TIME_SNIPER_POST,
@@ -48,19 +48,13 @@ define("robotTW2/databases/data_defense", [
 			database.set("data_defense", data_defense, true)
 			notify("data_defense");
 		} else {
-			if(!data_defense.auto_initialize) data_defense.initialized = !1;
-			if(data_defense.auto_initialize) data_defense.initialized = !0;
+			if(!data_defense.auto_start) data_defense.init_initialized = !1;
+			if(data_defense.auto_start) data_defense.init_initialized = !0;
 			database.set("data_defense", data_defense, true)		
 		}
 	}
 
 	Object.setPrototypeOf(data_defense, db_defense);
-
-	services.$rootScope.data_defense = data_defense;
-
-	services.$rootScope.$watch("data_defense", function(){
-		data_defense.set()
-	}, true)
 
 	return data_defense;
 })

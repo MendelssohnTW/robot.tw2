@@ -3,11 +3,15 @@ define("robotTW2/services/RecruitService", [
 	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
+	"robotTW2/databases/data_log",
+	"robotTW2/databases/data_recruit",
 	], function(
 			robotTW2,
 			version,
 			time,
-			conf
+			conf,
+			data_log,
+			data_recruit
 	){
 	return (function FarmService(
 			$rootScope,
@@ -16,9 +20,9 @@ define("robotTW2/services/RecruitService", [
 			groupService,
 			modelDataService,
 			$timeout,
+			$filter,
 			ready
 	) {
-
 		var isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
@@ -53,16 +57,18 @@ define("robotTW2/services/RecruitService", [
 			game.GroupsCount = game.GroupsKeys.length;
 
 			game.GroupsKeys.forEach(function(id){
-				if (!$rootScope.data_recruit.Groups[id]){
-					$rootScope.data_recruit.Groups[id] = game.Groups[id]; 
+				if (!data_recruit.Groups[id]){
+					data_recruit.Groups[id] = game.Groups[id]; 
 				}
 			});
 
-			$rootScope.data_recruit.GroupsKeys.forEach(function(id){
+			data_recruit.GroupsKeys.forEach(function(id){
 				if (!game.Groups[id]){
-					delete $rootScope.data_recruit.Groups[id];
+					delete data_recruit.Groups[id];
 				}
 			});
+			
+			data_recruit.set();
 
 			return;
 		}
@@ -96,7 +102,7 @@ define("robotTW2/services/RecruitService", [
 					if (villageUnits != undefined){
 						for (key in villageUnits){
 							if (villageUnits.hasOwnProperty(key)) {
-								if (villageUnits[key] == 0 || $rootScope.data_recruit.troops_not.some(elem => elem == key)){
+								if (villageUnits[key] == 0 || data_recruit.troops_not.some(elem => elem == key)){
 									delete villageUnits[key];
 								}
 							}
@@ -149,7 +155,7 @@ define("robotTW2/services/RecruitService", [
 						if(keys_listGroups.length){
 							var key = keys_listGroups.shift()
 							, group = copia_listGroups[key]
-							, gr = $rootScope.data_recruit.Groups[group.id]
+							, gr = data_recruit.Groups[group.id]
 
 							if (gr && gr.units){
 								var units = gr.units;
@@ -176,7 +182,7 @@ define("robotTW2/services/RecruitService", [
 										var ltz = [];
 										Object.keys(RESOURCE_TYPES).forEach(
 												function(name){
-													if (copia_res[RESOURCE_TYPES[name]] < $rootScope.data_recruit.reserva[name.toLowerCase()]){
+													if (copia_res[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toLowerCase()]){
 														ltz.push(true);
 													} else {
 														ltz.push(false);
@@ -189,10 +195,10 @@ define("robotTW2/services/RecruitService", [
 										};
 										amount = Math.floor(
 												Math.min(
-														(copia_res.wood - $rootScope.data_recruit.reserva.wood) / prices[unit_type][0], 
-														(copia_res.clay - $rootScope.data_recruit.reserva.clay) / prices[unit_type][1], 
-														(copia_res.iron - $rootScope.data_recruit.reserva.iron) / prices[unit_type][2], 
-														(copia_res.food - $rootScope.data_recruit.reserva.food) / prices[unit_type][3]
+														(copia_res.wood - data_recruit.reserva.wood) / prices[unit_type][0], 
+														(copia_res.clay - data_recruit.reserva.clay) / prices[unit_type][1], 
+														(copia_res.iron - data_recruit.reserva.iron) / prices[unit_type][2], 
+														(copia_res.food - data_recruit.reserva.food) / prices[unit_type][3]
 												) * 0.9
 										)
 
@@ -220,6 +226,7 @@ define("robotTW2/services/RecruitService", [
 											if(!promise_recruitRequest){
 												promise_recruitRequest = new Promise(function(res, rej){
 													if (village_id && unit_type){
+														data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
 														socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
 															res()
 														});
@@ -230,6 +237,8 @@ define("robotTW2/services/RecruitService", [
 													if(queue_recruitRequest.length){
 														data_rec = queue_recruitRequest.shift()
 														recruit_promise(data_rec)
+													} else {
+														data_log.recruit.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 													}
 												})
 											} else {
@@ -327,9 +336,9 @@ define("robotTW2/services/RecruitService", [
 				var dif = timer - time.convertedTime();
 				dif < conf.MIN_INTERVAL ? dif = conf.MIN_INTERVAL : dif;
 				lt.push(dif);
-				lt.push($rootScope.data_recruit.interval);
+				lt.push(data_recruit.interval);
 			}
-			var t = $rootScope.data_recruit.interval > 0 ? $rootScope.data_recruit.interval : $rootScope.data_recruit.interval = conf.INTERVAL.RECRUIT;
+			var t = data_recruit.interval > 0 ? data_recruit.interval : data_recruit.interval = conf.INTERVAL.RECRUIT;
 			if(lt.length){
 				t = Math.min.apply(null, lt);
 			}
@@ -337,15 +346,17 @@ define("robotTW2/services/RecruitService", [
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.RECRUIT)
-			$rootScope.data_recruit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push($rootScope.data_recruit.interval)
+			data_recruit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push(data_recruit.interval)
 			var t = Math.min.apply(null, list);
-			$rootScope.data_recruit.interval = t
-			$rootScope.data_recruit.complete = time.convertedTime() + t
+			data_recruit.interval = t
+			data_recruit.complete = time.convertedTime() + t
 			list = [];
+			data_recruit.set();
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_RECRUIT)
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
 		, recruit = function(){
+			data_log.recruit.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 			var villages = modelDataService.getSelectedCharacter().getVillages()
 			, list_recruit = [];
 
@@ -357,7 +368,7 @@ define("robotTW2/services/RecruitService", [
 					list.push(getFinishedForFree(village))
 				}
 				setList();
-				if (tam < $rootScope.data_recruit.reserva.slots || tam < 1){
+				if (tam < data_recruit.reserva.slots || tam < 1){
 					list_recruit.push(village_id);
 				}
 			})
@@ -438,6 +449,7 @@ define("robotTW2/services/RecruitService", [
 			robotTW2.services.groupService,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
+			robotTW2.services.$filter,
 			robotTW2.ready
 	)
 })

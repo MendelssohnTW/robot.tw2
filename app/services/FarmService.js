@@ -57,27 +57,6 @@ define("robotTW2/services/villages_town", function(){
 		return grid;
 	}
 
-//	serv.loaded = function(x1, x2, y1, y2){
-//		for (i = x1; i <= x2; i++){
-//			for (j = y1; j <= y2; j++){
-//				grid[i][j].loaded = true;
-//			}	
-//		}
-//	}
-//
-//	serv.load = function(x1, x2, y1, y2){
-//		var list = []
-//		, loaded = true;
-//		for (i = x1; i <= x2; i++){
-//			for (j = y1; j <= y2; j++){
-//				if(!grid[i][j].loaded){
-//					loaded = false
-//				}
-//			}
-//		}
-//		return loaded
-//	}
-
 	Object.setPrototypeOf(grid, serv);
 
 	return grid
@@ -162,13 +141,6 @@ define("robotTW2/services/FarmService", [
 
 			for (var i = 0; i < t_cicloX; i++) {
 				for (var j = 0; j < t_cicloY; j++) {
-//					if(!villages_town.load(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))){
-//						villages_town.loaded(coordX + (conf.MAP_CHUNCK_LEN * i), coordX + (conf.MAP_CHUNCK_LEN * (i + 1)), coordY + (conf.MAP_CHUNCK_LEN * j), coordY + (conf.MAP_CHUNCK_LEN * (j + 1)))
-//					}
-					
-//					if(!grid_town.load((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN)){
-//						grid_town.loaded((coordX + (conf.MAP_CHUNCK_LEN * i)) / conf.MAP_CHUNCK_LEN, (coordY + (conf.MAP_CHUNCK_LEN * j)) / conf.MAP_CHUNCK_LEN);
-//					}
 					grid[i][j] = {"x": coordX + (conf.MAP_CHUNCK_LEN * i), "y": coordY + (conf.MAP_CHUNCK_LEN * j), "distX": conf.MAP_CHUNCK_LEN, "distY": conf.MAP_CHUNCK_LEN};
 				};
 			};
@@ -184,8 +156,6 @@ define("robotTW2/services/FarmService", [
 				};
 			};
 
-//			villages_town.loaded(coordX, (coordX + (t_ciclo * map_chunk_size)), coordY, (coordY + (t_ciclo * map_chunk_size)))
-			
 			return {grid: grid};
 		}
 		, exec = function (cmd_preset) {
@@ -217,50 +187,21 @@ define("robotTW2/services/FarmService", [
 						distY		: grid[tx][ty].distY,
 						village_id	: village_id,
 						villages	: []
-//						loaded		: grid[tx][ty].loaded
 					});
 				}
 			};
 
-//			listaGrid.sort(function (a, b) {
-//			if (a.x != b.x) {
-//			if ((a.x - a.dist) - x < (b.x - b.dist) - x) {
-//			return -1;
-//			};
-//			if ((a.x - a.dist) - x > (b.x - b.dist) - x) {
-//			return 1;
-//			};
-//			} else if(a.y != b.y) {
-//			if ((a.y - a.dist) - y < (b.y - b.dist) - y) {
-//			return -1;
-//			};
-//			if ((a.y - a.dist) - y > (b.y - b.dist) - y) {
-//			return 1;
-//			};
-//			} else {
-//			return 0;	
-//			}
-//			});
-
-
 			listaGrid.sort(function (a, b) {
-				if (a.x != b.x) {
-					if (a.x - x < b.x - x) {
-						return -1;
-					};
-					if (a.x - x > b.x - x) {
-						return 1;
-					};
-				} else if(a.y != b.y) {
-					if (a.y - y < b.y - y) {
-						return -1;
-					};
-					if (a.y - y > b.y - y) {
-						return 1;
-					};
-				} else {
-					return 0;	
+
+				let aa = Math.abs(Math.sqrt(Math.pow((a.x + (a.distX / 2)) - x, 2) + (Math.pow((a.y + (a.distY / 2)) - y, 2) * 0.75)))
+				let bb = Math.abs(Math.sqrt(Math.pow((b.x + (b.distX / 2)) - x, 2) + (Math.pow((b.y + (b.distY / 2)) - y, 2) * 0.75)))
+				if(aa < bb){
+					return -1
 				}
+				if(aa > bb){
+					return 1
+				}
+				return 0
 			});
 
 			return {listaGrid: listaGrid};
@@ -389,12 +330,6 @@ define("robotTW2/services/FarmService", [
 									var permit_send = result_units[0];
 									var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
 									var selectedVillage = modelDataService.getSelectedVillage();
-//									socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-//									'my_village_id'		: selectedVillage.getId(),					
-//									'village_id'		: bb,
-//									'num_reports'		: 0
-//									}, function (village) {
-//									data_log.farm.push({"text":village_own.data.name + " " + $filter("i18n")("text_target", $rootScope.loc.ale, "farm") + " " + village.village_name + " " + village.village_x + "/" + village.village_y, "date": (new Date(time.convertedTime())).toString()})
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									resolve_send(permit_send)
 //									});
@@ -518,7 +453,6 @@ define("robotTW2/services/FarmService", [
 
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
-					console.log("timeout grid map search villages")
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT + 20000);
 
@@ -538,7 +472,6 @@ define("robotTW2/services/FarmService", [
 							listaVil = listaVil.filter(f => f.affiliation == "barbarian")
 
 							for (j = 0; j < listaVil.length; j++) {
-//								villages_town[listaVil[j].x][listaVil[j].y] = listaVil[j]
 								angular.extend(villages_town[listaVil[j].x][listaVil[j].y], listaVil[j])
 							}
 
@@ -546,11 +479,9 @@ define("robotTW2/services/FarmService", [
 							listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
 							listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 							listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
-//							listaVil = listaVil.filter(f => !lt_barbaras.find(g => g == f.id))
 							listaVil = listaVil.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
 
 							listaVil.sort(function (a, b) {
-//								Math.abs(Math.sqrt(Math.pow(b.x - x2,2) + (Math.pow(b.y - y2,2) * 0.75))) - Math.abs(Math.sqrt(Math.pow(a.x - x2,2) + (Math.pow(a.y - y2,2) * 0.75)))
 								return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
 							});
 
@@ -600,10 +531,8 @@ define("robotTW2/services/FarmService", [
 				if(grid_town.load(reg.x / conf.MAP_CHUNCK_LEN, reg.y / conf.MAP_CHUNCK_LEN)){
 					$timeout.cancel(t);
 					t = undefined;
-					console.log("reg loaded")
 					search_for_town(reg, resolve_grid, cmd_preset);
 				} else {
-					console.log("reg not loaded")
 					send_for_socket(reg, t, resolve_grid, cmd_preset)
 				}
 			})
@@ -625,7 +554,6 @@ define("robotTW2/services/FarmService", [
 								var load_exec = exec(cmd_preset)
 								, listaGrid = load_exec.listaGrid
 								if(!listaGrid.length){
-									console.log("sem listaGrid para " + JSON.stringify(cmd_preset))
 									if(promise_preset_queue.length){
 										cmd_preset = promise_preset_queue.shift();
 										t(cmd_preset)
@@ -663,7 +591,7 @@ define("robotTW2/services/FarmService", [
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
 				var g = $timeout(function(){
-					console.log("New cicle farm " + new Date(time.convertedTime()).toString())
+					data_log.farm.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 					clear()
 					var commands_for_presets = []
@@ -671,16 +599,15 @@ define("robotTW2/services/FarmService", [
 
 					villages.forEach(function(village){
 						var village_id = village.data.villageId
-						, presets = data_villages.villages[village_id].presets
-						, aldeia_units = angular.copy(village.unitInfo.units)
-
-						if(!isRunning){
+						, presets
+						, aldeia_units;
+						
+						if(!village_id || !isRunning || !data_villages.villages[village_id]) {
 							resol();
-							return !1;
-						}
-						if(!presets || !aldeia_units || !village_id) {
-							resol();
-							return !0;
+							return;
+						} else {
+							presets = data_villages.villages[village_id].presets
+							aldeia_units = angular.copy(village.unitInfo.units)
 						}
 
 						var presets_order = Object.keys(presets).map(function(preset){
@@ -754,7 +681,6 @@ define("robotTW2/services/FarmService", [
 								}
 								init_first = false;
 								execute_cicle(tempo).then(function(){
-									console.log("Terminate cicle process " + new Date(time.convertedTime()).toString())
 									data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 									data_log.set()
 									f()

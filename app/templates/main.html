@@ -8,8 +8,10 @@
 	</header>
 	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
 			<div class="scroll-wrap main" style="margin-bottom: 100px">
-
 				<div>
 					<table class="tbl-border-light tbl-striped" id="preset-list">
 						<colgroup>
@@ -29,6 +31,8 @@
 													<col width="56px">
 													<col width="100px">
 													<col width="50px">
+													<col width="100px">
+													<col width="100px">
 												</colgroup>
 												<tbody>
 													<tr>
@@ -38,15 +42,15 @@
 														<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
 														<td class="cell-center"><h5>{{text_status}}</h5></td>
 													</tr>
-													<tr ng-repeat="ext in extensions">
+													<tr ng-repeat="ext in extensions" ng-show="ext.activated">
 														<td class="cell-right"><span>{{ext.name}}</span></td>
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div tooltip
 																	tooltip-content="{{ext.activated ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
 																	switch-slider="" border="true" enabled="ext.activated"
-																	value="ext.initialized"
-																	ng-click="toggleValueState(ext)" vertical="false"
+																	value="ext.init_initialized"
+																	vertical="false"
 																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
 																		class="box-border-dark box-filter">
@@ -64,10 +68,9 @@
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div switch-slider="" border="true"
-																	enabled="ext.activated && ext.initialized"
-																	value="ext.auto_initialize"
-																	ng-click="toggleValueInit(ext)" vertical="false"
-																	size="'56x28'">
+																	enabled="ext.activated && ext.init_initialized"
+																	value="ext.auto_start" ng-click="toggleValueInit(ext)"
+																	vertical="false" size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
 																		class="box-border-dark box-filter">
 																		<div class="switch switch-56x28 switch-horizontal"
@@ -86,9 +89,19 @@
 															<div class="icon-26x26-dot-bg" tooltip
 																tooltip-content="{{ext.status}}">
 																<span
-																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status ==stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
+																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status == stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
 															</div>
 														</td>
+														<td><a href="#"
+															class="btn-orange btn-form btn-border no-padding"
+															ng-click="startExt(ext.name)"
+															ng-class="{'btn-grey': ext.status == running || ext.activated == false}"><span
+																id="span-text" class="text">{{START}}</span></a></td>
+														<td><a href="#"
+															class="btn-orange btn-form btn-border no-padding"
+															ng-click="stopExt(ext.name)"
+															ng-class="{'btn-grey': ext.status == stopped || ext.activated == false}"><span
+																id="span-text" class="text">{{STOP}}</span></a></td>
 													</tr>
 												</tbody>
 											</table>

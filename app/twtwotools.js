@@ -46,10 +46,12 @@ var robotTW2 = window.robotTW2 = undefined;
 	var villageService 			= injector.get("villageService");
 	var eventTypeProvider		= injector.get("eventTypeProvider");
 	var routeProvider 			= injector.get("routeProvider");
+	var autoCompleteService		= injector.get("autoCompleteService");
 	var CONTENT_CLASS			= 'win-content';
 	var BLOCKED_CLASS			= 'blocked';
 	var scripts_loaded = [];
 	var scripts_removed = [];
+
 	var getPath = function getPath(origPath, opt_noHost) {
 		if (opt_noHost) {
 			return origPath;
@@ -80,6 +82,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			});
 		};
+
 
 		httpService.get(uri, function(jsont) {
 			if(path == "/lang/"){
@@ -567,17 +570,18 @@ var robotTW2 = window.robotTW2 = undefined;
 					var e = document.createElement("a");
 					e.className = "btn-orange icon-26x26-" + (c ? "minus" : "plus"),
 					!c ? (b.nextElementSibling.style.display = "none") : (b.nextElementSibling.style.display = ""),
-					d.appendChild(e),
-					b.appendChild(d),
-					d.addEventListener("click", function() {
-						"none" === b.nextElementSibling.style.display ? (b.nextElementSibling.style.display = "",
-								e.className = e.className.replace("plus", "minus"),
-								c = !0) : (b.nextElementSibling.style.display = "none",
-										e.className = e.className.replace("minus", "plus"),
-										c = !1),
-										self.recalcScrollbar()
-					})
+							d.appendChild(e),
+							b.appendChild(d),
+							d.addEventListener("click", function() {
+								"none" === b.nextElementSibling.style.display ? (b.nextElementSibling.style.display = "",
+										e.className = e.className.replace("plus", "minus"),
+										c = !0) : (b.nextElementSibling.style.display = "none",
+												e.className = e.className.replace("minus", "plus"),
+												c = !1),
+												self.recalcScrollbar()
+							})
 				})
+				self.recalcScrollbar()
 			}
 			angular.extend(data.scope, self)
 			self.controller.apply(self.controller, [data.scope])
@@ -612,6 +616,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			'route': route.type
 		});
 	}
+
+
 
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
@@ -681,7 +687,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			recruitingService			: recruitingService,
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService,
-			villageService				: villageService
+			villageService				: villageService,
+			autoCompleteService			: autoCompleteService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
@@ -725,26 +732,28 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 
-		define("robotTW2/version", function(){
-			return {
-				main:			"3.0.4",
-				villages:		"3.0.4",
-				alert:			"3.0.4",
-				deposit:		"3.0.4",
-				headquarter:	"3.0.4",
-				recon:			"3.0.4",
-				spy:			"3.0.4",
-				attack:			"3.0.4",
-				defense:		"3.0.4",
-				farm:			"3.0.4",
-				recruit:		"3.0.4",
-				medic:			"3.0.4",
-				secondvillage:	"3.0.4",
-				map:			"3.0.4",
-				data:			"3.0.4",
-				log:			"3.0.4"
-			}
-		});
+		var version = "3.1.0"
+
+			define("robotTW2/version", function(){
+				return {
+					main:			version,
+					villages:		version,
+					alert:			version,
+					deposit:		version,
+					headquarter:	version,
+					recon:			version,
+					spy:			version,
+					attack:			version,
+					defense:		version,
+					farm:			version,
+					recruit:		version,
+					medic:			version,
+					secondvillage:	version,
+					map:			version,
+					data:			version,
+					log:			version
+				}
+			});
 
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
@@ -761,10 +770,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			) {
 
 			return (function(){
-				var levelsBuilding = [];
+				var levelsBuilding = {};
 				for (var type in buildingTypes){
 					if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
-						levelsBuilding.push({[buildingTypes[type]] : 0})
+						levelsBuilding[buildingTypes[type]] = 0;
 					}
 				}
 
@@ -811,8 +820,8 @@ var robotTW2 = window.robotTW2 = undefined;
 							MEDIC			: version.medic,
 							SECONDVILLAGE	: version.secondvillage,
 							MAP				: version.map,
-							DATA			: version.data,
-							LOGS			: version.logs
+//							DATA			: version.data,
+							LOG				: version.log
 						},
 						FARM_TIME		      	: 30 * min,
 						MIN_INTERVAL	     	: 5 * min,
@@ -823,12 +832,12 @@ var robotTW2 = window.robotTW2 = undefined;
 							ALERT		: 5 * min,
 							ATTACK		: h,
 							MEDIC		: h,
-							DATA		: {
-								villages	: 6 * h,
-								tribes		: 2 * h,
-								logs		: 1 * h,
-								members		: 3 * h
-							},
+//							DATA		: {
+//							villages	: 6 * h,
+//							tribes		: 2 * h,
+//							log			: 1 * h,
+//							members		: 3 * h
+//							},
 							SPY			: 30 * min
 						},
 						DBS : [
@@ -845,7 +854,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							"secondvillage",
 							"map",
 							"data",
-							"logs"
+							"log"
 							]
 						,
 						HOTKEY					: {
@@ -861,8 +870,8 @@ var robotTW2 = window.robotTW2 = undefined;
 							RECRUIT		 	: "shift+e",
 							SPY			 	: "shift+s",
 							SECONDVILLAGE	: "shift+q",
-							MAP			 	: "shift+m",
-							DATA			: "shift+j"
+//							DATA			: "shift+j",
+							MAP			 	: "shift+m"
 						},
 						RESERVA				: {
 							RECRUIT : {
@@ -1035,167 +1044,170 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		})
 
-		define("robotTW2/socket", ["robotTW2/base"], function(base) {
-			var service = {},
-			id = 0,
-			count = 0,
-			timeouts = {}
-			callbacks = {},
-			onopen = function onopen(){
-				connect.call(true);
-			},
-			onmessage = function onmessage(message){
-				var msg;
-				try {
-					msg = angular.fromJson(message.data);
-				} catch (err) {
-					msg = message.data;
-				}
+//		define("robotTW2/socket", ["robotTW2/base"], function(base) {
+//		var service = {},
+//		id = 0,
+//		count = 0,
+//		timeouts = {}
+//		callbacks = {},
+//		onopen = function onopen(){
+//		connect.call(true);
+//		},
+//		onmessage = function onmessage(message){
+//		var msg;
+//		try {
+//		msg = angular.fromJson(message.data);
+//		} catch (err) {
+//		msg = message.data;
+//		}
 
-				var id_return = msg.id
-				if(timeouts[id_return]){
-					robotTW2.services.$timeout.cancel(timeouts[id_return])
-					delete timeouts[id_return];
-				}
-				var opt_callback = callbacks[id_return];
-				if(typeof(opt_callback) == "function"){
-					opt_callback(msg);
-				}
-			},
-			onclose = function onclose($event){
-				if($event.code == 1006 && $event.type == "close"){
-					console.log($event)
-					robotTW2.loadScript("/controllers/ConfirmController.js");
-				}
-			},
-			onerror = function onerror($event){
-				count++;
-				if(count < 10) {
-					service = new WebSocket(base.URL_SOCKET);
-				} else {
-					count = 0
-					if($rootScope.data_data){
-						$rootScope.data_data.possible = false;
-						$rootScope.data_data.activated = false;
-					}
-					console.log("Socket error ... \n");
-					console.log($event);
-				}
-			},
-			connect = function connect(callback){
-				switch (service.readyState){
-				case 1 : //Aberta
-					if($rootScope.data_data){
-						$rootScope.data_data.possible = true;
-					}
-					if (typeof callback === "function") {
-						callback(true);
-					};
-					break;
-				case 3 : //Fechada
-					service = new WebSocket(base.URL_SOCKET);
-					break;
-				}
-			},
-			disconnect = function disconnect(){
-				if (service) {
-					service.close();
-				}
-			}
-			, createTimeout = function (id, type, opt_callback){
-				if(!timeouts[id]){
-					timeouts[id] = robotTW2.services.$timeout(function(){
-						if(typeof(opt_callback) == "function"){
-							opt_callback({"type" : type, "data": "Timeout"})
-						}
-					}, 15000)
-				}
-			}
-			, sendMsg = function sendMsg(type, data, opt_callback){
-				if(robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data){
-					id = ++id;
-					createTimeout(id, type, opt_callback)
-					var dw = null
-					var dt = null
-					if(data.world_id)
-						dw = data.world.id;
-					if(data.tribe_id)
-						dt = data.tribe_id;
-					if(data){
-						if(data.user){
-							angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
-						} else {
-							data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
-						}
-						angular.extend(data, {
-							"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
-							"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-							"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
-						});
-					}
-					callbacks[id] = opt_callback;
+//		var id_return = msg.id
+//		if(timeouts[id_return]){
+//		robotTW2.services.$timeout.cancel(timeouts[id_return])
+//		delete timeouts[id_return];
+//		}
+//		var opt_callback = callbacks[id_return];
+//		if(typeof(opt_callback) == "function"){
+//		opt_callback(msg);
+//		}
+//		},
+//		onclose = function onclose($event){
+//		if($event.code == 1006 && $event.type == "close"){
+//		console.log($event)
+////		robotTW2.loadScript("/controllers/ConfirmController.js");
+//		}
+//		},
+//		onerror = function onerror($event, url, data){
+//		if($event == "Uncaught TypeError: Illegal invocation") {
+//		return
+//		}
+//		count++;
+//		if(count < 10) {
+//		service = new WebSocket(base.URL_SOCKET);
+//		} else {
+//		count = 0
+//		if($rootScope.data_data){
+//		$rootScope.data_data.possible = false;
+//		$rootScope.data_data.activated = false;
+//		}
+//		console.log("Socket error ... \n");
+//		console.log($event);
+//		}
+//		},
+//		connect = function connect(callback){
+//		switch (service.readyState){
+//		case 1 : //Aberta
+//		if($rootScope.data_data){
+//		$rootScope.data_data.possible = true;
+//		}
+//		if (typeof callback === "function") {
+//		callback(true);
+//		};
+//		break;
+//		case 3 : //Fechada
+//		service = new WebSocket(base.URL_SOCKET);
+//		break;
+//		}
+//		},
+//		disconnect = function disconnect(){
+//		if (service) {
+//		service.close();
+//		}
+//		}
+//		, createTimeout = function (id, type, opt_callback){
+//		if(!timeouts[id]){
+//		timeouts[id] = robotTW2.services.$timeout(function(){
+//		if(typeof(opt_callback) == "function"){
+//		opt_callback({"type" : type, "data": "Timeout"})
+//		}
+//		}, 15000)
+//		}
+//		}
+//		, sendMsg = function sendMsg(type, data, opt_callback){
+//		if(robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data){
+//		id = ++id;
+//		createTimeout(id, type, opt_callback)
+//		var dw = null
+//		var dt = null
+//		if(data.world_id)
+//		dw = data.world.id;
+//		if(data.tribe_id)
+//		dt = data.tribe_id;
+//		if(data){
+//		if(data.user){
+//		angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
+//		} else {
+//		data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
+//		}
+//		angular.extend(data, {
+//		"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
+//		"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+//		"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
+//		});
+//		}
+//		callbacks[id] = opt_callback;
 
-					service.send(
-							angular.toJson({
-								'type'		: type,
-								'data'		: data,
-								'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-								'id'		: id,
-								'local'		: robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
-							})
-					)
-				} else {
-					if(typeof(opt_callback) == "function"){
-						opt_callback({"type": type, "resp": "noTribe"});
-					}
-				}
-			}
+//		service.send(
+//		angular.toJson({
+//		'type'		: type,
+//		'data'		: data,
+//		'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
+//		'id'		: id,
+//		'local'		: robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
+//		})
+//		)
+//		} else {
+//		if(typeof(opt_callback) == "function"){
+//		opt_callback({"type": type, "resp": "noTribe"});
+//		}
+//		}
+//		}
 
-			service = new WebSocket(base.URL_SOCKET);
-			service.onopen = onopen;
-			service.onmessage = onmessage;
-			service.onclose = onclose;
-			service.onerror = onerror;
-			service.connect = connect;
-			service.sendMsg = sendMsg;
+//		service = new WebSocket(base.URL_SOCKET);
+//		service.onopen = onopen;
+//		service.onmessage = onmessage;
+//		service.onclose = onclose;
+//		service.onerror = onerror;
+//		service.connect = connect;
+//		service.sendMsg = sendMsg;
 
-			return service;
+//		return service;
 
-		})
+//		})
 
-		define("robotTW2/socketSend", ["robotTW2/socket"], function(socket) {
+//		define("robotTW2/socketSend", ["robotTW2/socket"], function(socket) {
 
-			var service = {},
-			count = 0;
-			return service.emit = function (route, data, opt_callback){
-				var cal = function cal(connected){
-					count++;
-					if (connected && route != undefined){
-						socket.sendMsg(route.type, data, opt_callback);
-						return;
-					} else {
-						if (count < 10){
-							socket.connect(
-									function(connected){
-										cal(connected)
-									}
-							);
-							return;
-						} else {
-							count = 0;
-							return;
-						}
-					}
-				};
-				socket.connect(
-						function(connected){
-							cal(connected)
-						}
-				);
+//		var service = {},
+//		count = 0;
+//		return service.emit = function (route, data, opt_callback){
+//		var cal = function cal(connected){
+//		count++;
+//		if (connected && route != undefined){
+//		socket.sendMsg(route.type, data, opt_callback);
+//		return;
+//		} else {
+//		if (count < 10){
+//		socket.connect(
+//		function(connected){
+//		cal(connected)
+//		}
+//		);
+//		return;
+//		} else {
+//		count = 0;
+//		return;
+//		}
+//		}
+//		};
+//		socket.connect(
+//		function(connected){
+//		cal(connected)
+//		}
+//		);
 
-			}
-			, service;
-		})
+//		}
+//		, service;
+//		})
 
 		define("robotTW2/zerofill", function(){
 			return function (n, opt_len) {
@@ -1524,6 +1536,392 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 		,
+		define("robotTW2/autocomplete", ['conf/conf', 'helper/dom', 'helper/format', 'helper/parse', 'generators/generate'], function(conf, domHelper, formatHelper, parseHelper, generate){
+			var clickHandler,
+			lastRequestedParam,
+			lastRequestDelay,
+            lastRequestDelayTimeout,
+			dataRequestTimeout,
+            elemListener,
+			list,
+			selectIndex,
+			ITERATION_LIMIT			= 4,
+			LIST_LENGTH_INCREMENT	= 5,
+			iterations				= 0,
+			id						= generate.hex(),
+			element,
+
+			/**
+			 * Wrapper for updating the scopes inputValue.
+			 *
+			 * Also updates the parameter autoComplete objects
+			 * .inputValueReadOnly property, so outer scopes can
+			 * use not only values on select, but the current value
+			 * inside the input field. See TribeMemberListCtrl
+			 *
+			 * @param {string} opt_newInputValue to set the inputValue
+			 */
+			updateInputValue = function updateInputValue(opt_newInputValue) {
+				if (opt_newInputValue !== undefined) {
+					$scope.inputValue = opt_newInputValue;
+				}
+
+				$scope.autoComplete.inputValueReadOnly = $scope.inputValue;
+			},
+
+			/**
+			 * Clears the autocomplete input field and resets local variables
+			 * related to the autocomplete list.
+			 */
+			clear = function clear() {
+				list		= [];
+				selectIndex	= -1;
+
+				updateInputValue('');
+			},
+
+			/**
+			 * Return participant names of a message.
+			 */
+			getMessageParticipantsName = function getMessageParticipantsName(message) {
+				var i,
+					names = [];
+
+				if (message.participants) {
+					for (i = 0; i < message.participants.length; i++) {
+						names.push(message.participants[i].character_name);
+					}
+				}
+
+				return names;
+			},
+
+			/**
+			 * Extends a loaded item by its type to be ablo to show
+			 * icons and properties which have unconventional names.
+			 */
+			extendItemProperties = function extendItemProperties(item) {
+
+				if (item.message_id) {
+					// Messages use a different API for autocomplete.
+					item.name	= item.title;
+					item.smalls	= getMessageParticipantsName(item);
+				}
+
+				if (item.type === 'village') {
+					item.displayedName = formatHelper.villageNameWithCoordinates(item);
+				}
+
+				if (item.type) {
+					item.leftIcon = 'size-34x34';
+					// If type is defined, use its icon.
+					item.leftIcon += ' icon-26x26-rte-' + item.type;
+				}
+
+				return item;
+			},
+
+            /**
+             * Filter only tribe members from response data
+             */
+
+            selectTribeMembers = function selectTribeMembers(character) {
+                var selectedCharacter = robotTW2.services.modelDataService.getSelectedCharacter(),
+                tribeMemberModel = selectedCharacter.getTribeMemberModel(),
+					members = [],
+					m;
+
+                if (tribeMemberModel) {
+                    members = robotTW2.services.tribeMemberModel.getMembers();
+                }
+
+                for (m = 0; m < members.length; m += 1) {
+					if (members[m].id === character.id) {
+						return true;
+					}
+				}
+
+				return false;
+			},
+
+			/**
+			 * Triggers an event for the select element directive to
+			 * hide itself.
+			 */
+			hideSelect = function hideSelect() {
+				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
+				$(window).off('click', clickHandler);
+			},
+
+			/**
+			 * Calls the onEnter()-function and clears the input element
+			 *
+			 * @param {Object.<string, *>} item
+			 */
+			onSelect = function onSelect(item) {
+				if (!item) {
+					return;
+				}
+
+				// Callback defined in the creator scopes.
+				if ($scope.autoComplete.onEnter) {
+					$scope.autoComplete.onEnter(item);
+				}
+
+				if ($scope.autoComplete.keepSelected) {
+					updateInputValue(item.name);
+				} else {
+					// Clear also uses .updateInputValue
+					clear();
+				}
+
+				hideSelect();
+			},
+
+			/**
+			 * Triggers an event for the select element directive to
+			 * show the found elements of the autocompletion.
+			 */
+			showSelect = function showSelect() {
+				if (!noResultTranslation) {
+					noResultTranslation = robotTW2.services.$filter('i18n')('no_results', $rootScope.loc.ale, 'directive_autocomplete');
+				}
+
+				$rootScope.$broadcast(
+					robotTW2.providers.eventTypeProvider.SELECT_SHOW,
+					id,
+					list,
+					undefined,
+					onSelect,
+					element,
+					$scope.autoComplete.dropDown,
+					undefined,
+					noResultTranslation
+				);
+
+				$(window).off('click', clickHandler).on('click', clickHandler);
+			},
+
+            /**
+             * Cancel blocking user input
+             */
+
+            releaseDelay = function() {
+                lastRequestDelay = false;
+                robotTW2.services.$timeout.cancel(lastRequestDelayTimeout);
+			},
+
+            /**
+             * Stop the interval for dots
+             */
+
+			stopIncreseInterval = function() {
+                if (dataRequestTimeout) {
+                	robotTW2.services.$timeout.cancel(dataRequestTimeout);
+                    element.off('blur', stopIncreseInterval);
+                    dataRequestTimeout = null;
+                }
+			},
+
+            /**
+             * Starts the interval for dots
+             */
+
+            increaseDelayDots = function () {
+				//cancel any previous interval so we don't have unreferenced intervals running
+				if (dataRequestTimeout) {
+					robotTW2.services.$timeout.cancel(dataRequestTimeout);
+				}
+                updateInputValue();
+				dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots, 1000);
+			},
+			/**
+			 * Callback for request data.
+			 * if an exclude filter is used & it did exclude something, another request (same parameter,
+			 * greater amount) is sent to the server.
+			 * @param {{result: <Array>}} data
+			 */
+			onData = function onData(data) {
+				var newList = data.result;
+				// as data received give user access to change value
+                releaseDelay();
+                // stop dots indicator
+                robotTW2.services.$timeout(stopIncreseInterval);
+
+				// With exclude you can define some obj, which will not be shown on
+				// the selectable found item list.
+				if ($scope.autoComplete.exclude) {
+					list = newList.filter($scope.autoComplete.exclude);
+					if (iterations < ITERATION_LIMIT && list.length < newList.length && list.length < conf.AUTOCOMPLETE_AMOUNT) {
+						// gimme some more
+						iterations++;
+						requestData(lastRequestedParam, newList.length + LIST_LENGTH_INCREMENT);
+						return;
+					}
+				} else {
+					list = newList;
+				}
+
+				list = list.map(extendItemProperties);
+
+				// filter only tribe members if there was option for that
+				if ($scope.autoComplete.members) {
+                    list = list.filter(selectTribeMembers);
+				}
+
+				// avoid showing empty lists
+				iterations = 0;
+				if (list.length > 0) {
+					showSelect();
+				} else {
+					hideSelect();
+				}
+				selectIndex = -1;
+			},
+
+			/**
+			 * Callback for the special case, when map data was requested by coordinates.
+			 */
+			onMapData = function onMapData(data) {
+				var village	= data && data.villages && data.villages[0],
+					result	= [];
+
+				if (!village && data.id) {
+					// in case that the village is not added to an array of villages (using coordinate search)
+					village = data;
+				}
+
+				if (village) {
+					result.push({
+						'id'	: village.id,
+						'x'		: village.x,
+						'y'		: village.y,
+						'name'	: village.name,
+						'type'	: 'village'
+					});
+				}
+
+				onData({
+					'result' : result
+				});
+			},
+
+			/**
+			 * Uses the autocomplete service to get results from back-end.
+			 *
+			 * @param {string} param charSequence
+			 * @param {number=} opt_amount how many results should be requested
+			 */
+			requestData = function requestData(param, opt_amount) {
+				lastRequestedParam = param;
+
+				if ($scope.autoComplete.byCoordinates) {
+					robotTW2.services.autoCompleteService.villageByCoordinates(param, onMapData);
+				} else if (typeof $scope.autoComplete.type === 'function') {
+					$scope.autoComplete.type(param, onData);
+				} else if (typeof $scope.autoComplete.type === 'string') {
+					robotTW2.services.autoCompleteService[$scope.autoComplete.type](param, onData, opt_amount);
+				} else if ($scope.autoComplete.type instanceof Array) {
+					robotTW2.services.autoCompleteService.mixed($scope.autoComplete.type, param, onData, opt_amount);
+				}
+			},
+
+			/**
+			 * Validator function if we can request data by the input.
+			 */
+			getRequestDataParam = function getRequestDataParam(input) {
+				if ($scope.autoComplete.byCoordinates) {
+					return parseHelper.toCoordinates(input);
+				}
+
+				if (input.length <= 1) {
+					// If the input is too short, skip.
+					return false;
+				}
+
+				if (list.length === 0 && lastRequestedParam && lastRequestedParam.length < input.length && lastRequestedParam === input.substr(0, lastRequestedParam.length)) {
+					// If the result list is empty and we try to continue the search word, skip.
+					return false;
+				}
+
+				return input;
+			},
+
+			isListElementSelected = function isListElementSelected() {
+				return list && list.length && selectIndex.between(0, list.length - 1) && list[selectIndex];
+			},
+			
+			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
+			
+			return function autoCompleteKeyUp(scope, e) {
+				element = $($("[ng-keyup]")[0])
+				angular.extend($scope, scope);
+				var requestDataParam,
+				interpretAsEnter = false;
+				
+				try {
+					switch (e.keyCode) {
+
+					case 27: // esc
+						clear();
+						break;
+					case 39: // right
+						selectIndex = selectIndex.bound(0, list.length - 1);
+						break;
+					case 13: // return
+						selectIndex = selectIndex.bound(0, list.length - 1);
+						interpretAsEnter = true;
+						break;
+					case 38: // up
+						selectIndex = ((selectIndex || list.length) - 1) % list.length;
+						break;
+					case 40: // down
+						selectIndex = (selectIndex + 1) % list.length;
+						break;
+					default: // any other key, so we can assume the user wants to search again
+						requestDataParam = getRequestDataParam($scope.inputValue);
+
+						if (requestDataParam && !lastRequestDelay) {
+
+                            lastRequestDelay = true;
+							// unblock data request after 200 ms
+                            lastRequestDelayTimeout = robotTW2.services.$timeout(releaseDelay, 200);
+							// request loading process after 1s delay
+                            if (dataRequestTimeout) {
+                            	robotTW2.services.$timeout.cancel(dataRequestTimeout);
+							}
+                            dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
+                            if (!elemListener) {
+								elemListener = element.on('blur', stopIncreseInterval);
+                            }
+                            // If requesting data is possible.
+							requestData(requestDataParam);
+						}
+					}
+				} catch (err) {
+					// Creating global message error, to show something's happening.
+					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.MESSAGE_ERROR, {
+						'message': 'No such ' + $scope.autoComplete.type + '.'
+					});
+				}
+
+				// Check if there is a currently keyboard "hovered" element.
+				if (isListElementSelected()) {
+					updateInputValue(list[selectIndex].name);
+
+					// Trigger simulation of hover effect when using key shortcuts.
+					$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_KEY_HOVER, id, selectIndex);
+
+					// Handle key codes which were interpreted as enter.
+					if (interpretAsEnter) {
+						onSelect(list[selectIndex]);
+					}
+				} else {
+					updateInputValue();
+				}
+			};
+		})
+		,
 		define("robotTW2/calibrate_time", [
 			"helper/time", 
 			"robotTW2/time",
@@ -1676,7 +2074,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
-					robotTW2.loadScript("/controllers/DataController.js");
+//					robotTW2.loadScript("/controllers/DataController.js");
 					break
 				}
 				case robotTW2.controllers.AlertController : {
@@ -1747,7 +2145,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 		: "",
 								url		 		: "/controllers/SpyController.js",
 								style 			: {
-									width:"350px"
+									width:"1080px"
 								}
 						}		
 						robotTW2.build(params)
@@ -1764,7 +2162,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 		: "",
 								url		 		: "/controllers/FarmController.js",
 								style 			: {
-									width:"950px"
+									width:"1080px"
 								}
 						}		
 						robotTW2.build(params)
@@ -1852,21 +2250,21 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
-				case robotTW2.controllers.DataController : {
-					robotTW2.createScopeLang("data", function(scopeLang){
-						var params = {
-								controller		: robotTW2.controllers.DataController,
-								scopeLang 		: scopeLang,
-								hotkey 			: conf.HOTKEY.DATA,
-								templateName 	: "data",
-								classes 		: "",
-								url		 		: "/controllers/DataController.js",
-								style 			: null
-						}		
-						robotTW2.build(params)
-					})
-					break
-				}
+//				case robotTW2.controllers.DataController : {
+//				robotTW2.createScopeLang("data", function(scopeLang){
+//				var params = {
+//				controller		: robotTW2.controllers.DataController,
+//				scopeLang 		: scopeLang,
+//				hotkey 			: conf.HOTKEY.DATA,
+//				templateName 	: "data",
+//				classes 		: "",
+//				url		 		: "/controllers/DataController.js",
+//				style 			: null
+//				}		
+//				robotTW2.build(params)
+//				})
+//				break
+//				}
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
@@ -1888,27 +2286,27 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
-//				case robotTW2.controllers.AttackDefenseController : {
-//				robotTW2.createScopeLang("attack", function(scopeLang){
-//				var get_father = function(){
-//				return $('[ng-controller=OverviewController]');
-//				}
-//				, get_son = function(){
-//				return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
-//				}
-//				, params = {
-//				included_controller		: "OverviewController",
-//				controller				: robotTW2.controllers.AttackCompletionController,
-//				get_son					: get_son,
-//				provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
-//				scopeLang 				: scopeLang,
-//				templateName 			: "defensecompletion",
-//				url		 				: "/controllers/DefenseCompletionController.js"
-//				}	
-//				robotTW2.build(params)
-//				})
-//				break
-//				}
+				case robotTW2.controllers.SpyCompletionController : {
+					robotTW2.createScopeLang("spy", function(scopeLang){
+						var get_father = function(){
+							return $('[ng-controller=ModalSendSpiesController]');
+						}
+						, get_son = function(){
+							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+						}
+						, params = {
+								included_controller		: "ModalSendSpiesController",
+								controller				: robotTW2.controllers.SpyCompletionController,
+								get_son					: get_son,
+								provider_listener		: "get_selected_village",
+								scopeLang 				: scopeLang,
+								templateName 			: "spycompletion",
+								url		 				: "/controllers/SpyCompletionController.js"
+						}	
+						robotTW2.build(params)
+					})
+					break
+				}
 				case robotTW2.controllers.FarmCompletionController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
 						var get_father = function(){
@@ -1943,7 +2341,7 @@ var robotTW2 = window.robotTW2 = undefined;
 										classes 		: null,
 										url		 		: "/controllers/MainController.js",
 										style 			: {
-											width : "850px"
+											width : "1080px"
 										}
 									}
 							)
@@ -2006,10 +2404,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.MapService && typeof(robotTW2.services.MapService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.MapService) : null;	
 					break
 				}
-				case robotTW2.services.DataService : {
-					robotTW2.services.DataService && typeof(robotTW2.services.DataService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.DataService) : null;	
-					break
-				}
+//				case robotTW2.services.DataService : {
+//				robotTW2.services.DataService && typeof(robotTW2.services.DataService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.DataService) : null;	
+//				break
+//				}
 				case "database" : {
 					robotTW2.ready(function(){
 						robotTW2.services.$timeout(function(){
@@ -2025,7 +2423,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-								robotTW2.loadScript("/databases/data_data.js");
+//								robotTW2.loadScript("/databases/data_data.js");
 								robotTW2.loadScript("/databases/data_log.js");
 
 								robotTW2.services.$timeout(function(){
@@ -2084,10 +2482,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/services/SecondVillageService.js");
 					break
 				}
-				case "data_data" : {
-					robotTW2.loadScript("/services/DataService.js");
-					break
-				}
+//				case "data_data" : {
+//				robotTW2.loadScript("/services/DataService.js");
+//				break
+//				}
 				}
 
 			});

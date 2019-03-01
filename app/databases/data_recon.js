@@ -22,11 +22,10 @@ define("robotTW2/databases/data_recon", [
 		return database.get("data_recon")
 	}
 
-
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: true,
-			activated 				: true,
+			auto_start				: false,
+			init_initialized 		: false,
+			activated 				: false,
 			hotkey					: conf.HOTKEY.RECON,
 			version					: conf.VERSION.RECON,
 			rename		 			: unitTypesRenameRecon,
@@ -43,19 +42,13 @@ define("robotTW2/databases/data_recon", [
 			database.set("data_recon", data_recon, true)
 			notify("data_recon");
 		} else {
-			if(!data_recon.auto_initialize) data_recon.initialized = !1;
-			if(data_recon.auto_initialize) data_recon.initialized = !0;
+			if(!data_recon.auto_start) data_recon.init_initialized = !1;
+			if(data_recon.auto_start) data_recon.init_initialized = !0;
 			database.set("data_recon", data_recon, true)		
 		}
 	}
 
 	Object.setPrototypeOf(data_recon, db_recon);
-
-	services.$rootScope.data_recon = data_recon;
-
-	services.$rootScope.$watch("data_recon", function(){
-		data_recon.set()
-	}, true)
 
 	return data_recon;
 })

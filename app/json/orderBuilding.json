@@ -1,320 +1,116 @@
 {
-	"standard": [
-		{
-			"warehouse": 1
-		},
-		{
-			"headquarter": 2
-		},
-		{
-			"academy": 3
-		},
-		{
-			"farm": 4
-		},
-		{
-			"barracks": 5
-		},
-		{
-			"wall": 6
-		},
-		{
-			"timber_camp": 7
-		},
-		{
-			"iron_mine": 8
-		},
-		{
-			"clay_pit": 9
-		},
-		{
-			"rally_point": 10
-		},
-		{
-			"statue": 11
-		},
-		{
-			"tavern": 12
-		},
-		{
-			"market": 13
-		},
-		{
-			"hospital": 14
-		},
-		{
-			"preceptory": 15
-		},
-		{
-			"church": 16
-		},
-		{
-			"chapel": 17
-		}
-	],
-	"academy": [
-		{
-			"warehouse": 1
-		},
-		{
-			"headquarter": 2
-		},
-		{
-			"academy": 3
-		},
-		{
-			"farm": 4
-		},
-		{
-			"barracks": 5
-		},
-		{
-			"wall": 6
-		},
-		{
-			"timber_camp": 7
-		},
-		{
-			"iron_mine": 8
-		},
-		{
-			"clay_pit": 9
-		},
-		{
-			"rally_point": 10
-		},
-		{
-			"statue": 11
-		},
-		{
-			"tavern": 12
-		},
-		{
-			"market": 13
-		},
-		{
-			"hospital": 14
-		},
-		{
-			"preceptory": 15
-		},
-		{
-			"church": 16
-		},
-		{
-			"chapel": 17
-		}
-	],
-	"production": [
-		{
-			"timber_camp": 1
-		},
-		{
-			"iron_mine": 2
-		},
-		{
-			"clay_pit": 3
-		},
-		{
-			"rally_point": 4
-		},
-		{
-			"academy": 5
-		},
-		{
-			"headquarter": 6
-		},
-		{
-			"farm": 7
-		},
-		{
-			"warehouse": 8
-		},
-		{
-			"barracks": 9
-		},
-		{
-			"wall": 10
-		},
-		{
-			"statue": 11
-		},
-		{
-			"tavern": 12
-		},
-		{
-			"market": 13
-		},
-		{
-			"hospital": 14
-		},
-		{
-			"preceptory": 15
-		},
-		{
-			"church": 16
-		},
-		{
-			"chapel": 17
-		}
-	],
-	"base": [
-		{
-			"academy": 1
-		},
-		{
-			"barracks": 2
-		},
-		{
-			"farm": 3
-		},
-		{
-			"headquarter": 4
-		},
-		{
-			"warehouse": 5
-		},
-		{
-			"rally_point": 6
-		},
-		{
-			"wall": 7
-		},
-		{
-			"statue": 8
-		},
-		{
-			"tavern": 9
-		},
-		{
-			"timber_camp": 10
-		},
-		{
-			"iron_mine": 11
-		},
-		{
-			"clay_pit": 12
-		},
-		{
-			"market": 13
-		},
-		{
-			"hospital": 14
-		},
-		{
-			"preceptory": 15
-		},
-		{
-			"church": 16
-		},
-		{
-			"chapel": 17
-		}
-	],
-	"attack": [
-		{
-			"academy": 1
-		},
-		{
-			"barracks": 2
-		},
-		{
-			"farm": 3
-		},
-		{
-			"headquarter": 4
-		},
-		{
-			"warehouse": 5
-		},
-		{
-			"rally_point": 6
-		},
-		{
-			"wall": 7
-		},
-		{
-			"statue": 8
-		},
-		{
-			"tavern": 9
-		},
-		{
-			"timber_camp": 10
-		},
-		{
-			"iron_mine": 11
-		},
-		{
-			"clay_pit": 12
-		},
-		{
-			"market": 13
-		},
-		{
-			"hospital": 14
-		},
-		{
-			"preceptory": 15
-		},
-		{
-			"church": 16
-		},
-		{
-			"chapel": 17
-		}
-	],
-	"defense": [
-		{
-			"academy": 1
-		},
-		{
-			"barracks": 2
-		},
-		{
-			"farm": 3
-		},
-		{
-			"headquarter": 4
-		},
-		{
-			"warehouse": 5
-		},
-		{
-			"rally_point": 6
-		},
-		{
-			"wall": 7
-		},
-		{
-			"statue": 8
-		},
-		{
-			"tavern": 9
-		},
-		{
-			"timber_camp": 10
-		},
-		{
-			"iron_mine": 11
-		},
-		{
-			"clay_pit": 12
-		},
-		{
-			"market": 13
-		},
-		{
-			"hospital": 14
-		},
-		{
-			"preceptory": 15
-		},
-		{
-			"church": 16
-		},
-		{
-			"chapel": 17
-		}
-	]
+	"standard": {
+		"headquarter": 2,
+		"barracks": 5,
+		"tavern": 12,
+		"hospital": 14,
+		"preceptory": 15,
+		"church": 16,
+		"chapel": 17,
+		"academy": 3,
+		"rally_point": 10,
+		"statue": 11,
+		"market": 13,
+		"timber_camp": 7,
+		"clay_pit": 9,
+		"iron_mine": 8,
+		"farm": 4,
+		"warehouse": 1,
+		"wall": 6
+	},
+	"academy": {
+		"headquarter": 2,
+		"barracks": 5,
+		"tavern": 12,
+		"hospital": 14,
+		"preceptory": 15,
+		"church": 16,
+		"chapel": 17,
+		"academy": 3,
+		"rally_point": 10,
+		"statue": 11,
+		"market": 13,
+		"timber_camp": 7,
+		"clay_pit": 9,
+		"iron_mine": 8,
+		"farm": 4,
+		"warehouse": 1,
+		"wall": 6
+	},
+	"production": {
+		"headquarter": 6,
+		"barracks": 9,
+		"tavern": 12,
+		"hospital": 14,
+		"preceptory": 15,
+		"church": 16,
+		"chapel": 17,
+		"academy": 5,
+		"rally_point": 4,
+		"statue": 11,
+		"market": 13,
+		"timber_camp": 1,
+		"clay_pit": 3,
+		"iron_mine": 2,
+		"farm": 7,
+		"warehouse": 8,
+		"wall": 10
+	},
+	"base": {
+		"headquarter": 4,
+		"barracks": 2,
+		"tavern": 9,
+		"hospital": 14,
+		"preceptory": 15,
+		"church": 16,
+		"chapel": 17,
+		"academy": 1,
+		"rally_point": 6,
+		"statue": 8,
+		"market": 13,
+		"timber_camp": 10,
+		"clay_pit": 12,
+		"iron_mine": 11,
+		"farm": 3,
+		"warehouse": 5,
+		"wall": 7
+	},
+	"attack": {
+		"headquarter": 4,
+		"barracks": 2,
+		"tavern": 9,
+		"hospital": 14,
+		"preceptory": 15,
+		"church": 16,
+		"chapel": 17,
+		"academy": 1,
+		"rally_point": 6,
+		"statue": 8,
+		"market": 13,
+		"timber_camp": 10,
+		"clay_pit": 12,
+		"iron_mine": 11,
+		"farm": 3,
+		"warehouse": 5,
+		"wall": 7
+	},
+	"defense": {
+		"headquarter": 4,
+		"barracks": 2,
+		"tavern": 9,
+		"hospital": 14,
+		"preceptory": 15,
+		"church": 16,
+		"chapel": 17,
+		"academy": 1,
+		"rally_point": 6,
+		"statue": 8,
+		"market": 13,
+		"timber_camp": 10,
+		"clay_pit": 12,
+		"iron_mine": 11,
+		"farm": 3,
+		"warehouse": 5,
+		"wall": 7
+	}
 }

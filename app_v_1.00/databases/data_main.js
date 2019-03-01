@@ -8,7 +8,7 @@ define("robotTW2/databases/data_main", [
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_deposit",
 	"robotTW2/databases/data_farm",
-	"robotTW2/databases/data_data",
+//	"robotTW2/databases/data_data",
 	"robotTW2/databases/data_headquarter",
 	"robotTW2/databases/data_log",
 	"robotTW2/databases/data_recon",
@@ -26,7 +26,7 @@ define("robotTW2/databases/data_main", [
 			data_defense,
 			data_deposit,
 			data_farm,
-			data_data,
+//			data_data,
 			data_headquarter,
 			data_log,
 			data_recon,
@@ -42,7 +42,7 @@ define("robotTW2/databases/data_main", [
 			data_defense: 		data_defense,
 			data_deposit: 		data_deposit,
 			data_farm: 			data_farm,
-			data_data: 			data_data,
+//			data_data: 			data_data,
 			data_headquarter: 	data_headquarter,
 			data_log: 			data_log,
 			data_recon: 		data_recon,
@@ -66,8 +66,8 @@ define("robotTW2/databases/data_main", [
 			var string = "data_" + extension.toLowerCase();
 			var db = data[string]
 			if(db){
-				db.initialized = extensions[extension].initialized
-				db.auto_initialize = extensions[extension].auto_initialize
+				db.init_initialized = extensions[extension].init_initialized
+				db.auto_start = extensions[extension].auto_start
 				db.activated = extensions[extension].activated
 				db.status = extensions[extension].status
 				db.set();
@@ -84,8 +84,8 @@ define("robotTW2/databases/data_main", [
 			if(db && string != "data_log"){
 				angular.extend(extensions, {
 					[db_name.toUpperCase()] : {
-						initialized 		: db.initialized,
-						auto_initialize 	: db.auto_initialize,
+						init_initialized 	: db.init_initialized,
+						auto_start 			: db.auto_start,
 						activated 			: db.activated,
 						name 				: db_name.toUpperCase(),
 						hotkey				: conf.HOTKEY[db_name.toUpperCase()]
@@ -113,8 +113,8 @@ define("robotTW2/databases/data_main", [
 			data_main = dataNew
 			notify("data_main");
 		} else {
-			if(!data_main.auto_initialize) data_main.initialized = !1;
-			if(data_main.auto_initialize) data_main.initialized = !0;
+			if(!data_main.auto_start) data_main.init_initialized = !1;
+			if(data_main.auto_start) data_main.init_initialized = !0;
 		}
 	}
 	database.set("data_main", data_main, true)

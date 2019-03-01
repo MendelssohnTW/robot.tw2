@@ -21,9 +21,9 @@ define("robotTW2/databases/data_deposit", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: true,
-			activated 				: true,
+			auto_start				: false,
+			init_initialized 		: false,
+			activated 				: false,
 			hotkey					: conf.HOTKEY.DEPOSIT,
 			use_reroll				: false,
 			complete				: 0,
@@ -39,8 +39,8 @@ define("robotTW2/databases/data_deposit", [
 			data_deposit = dataNew
 			notify("data_deposit");
 		} else {
-			if(!data_deposit.auto_initialize) data_deposit.initialized = !1;
-			if(data_deposit.auto_initialize) data_deposit.initialized = !0;
+			if(!data_deposit.auto_start) data_deposit.init_initialized = !1;
+			if(data_deposit.auto_start) data_deposit.init_initialized = !0;
 		}
 		database.set("data_deposit", data_deposit, true)
 	}

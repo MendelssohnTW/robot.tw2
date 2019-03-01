@@ -22,19 +22,33 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.pause = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
 		$scope.resume = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
+		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
-		var self = this;
+		var self = this,
+		local_data_villages = {};
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 		
-		$scope.status = "stopped";
+		$scope.text_version = $scope.version + " " + data_headquarter.version;
 
+		$scope.status = "stopped";
+		$scope.obj_standard = $scope.data_headquarter.standard;
+
+		var tt = false;
 		Object.keys($scope.data_villages.villages).map(function(key){
-			var elem = $scope.data_villages.villages[key]
-			var data = getVillage(key);
-			angular.extend(elem, {"data": data})
-			return elem;
+			if(!$scope.data_villages.villages[key].selected){
+				tt = true;
+				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="Standard");
+			}
+			let data = getVillage(key);
+			angular.extend(local_data_villages, {[key] : {"data": data}})
+			return local_data_villages;
 		})
+
+		tt ? $scope.data_villages.set(): null;
+
+		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes();
+		var buildings = services.modelDataService.getGameData().getBuildings();
 
 		var update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
@@ -51,10 +65,10 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
-		
+
 		function getVillageData(vid){
 			if(!vid){return}
-			return $scope.data_villages.villages[vid].data;
+			return local_data_villages[vid].data;
 		}
 
 		$scope.openVillageInfo = function(vid){
@@ -88,49 +102,106 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.getTimeRest = function(){
-			return $scope.data_headquarter.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
+			return $scope.data_headquarter.complete > time.convertedTime() && services.HeadquarterService.isRunning() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
 
-		$scope.getKey = function(buildingOrder){
-			return services.$filter("i18n")(Object.keys(buildingOrder)[0], services.$rootScope.loc.ale, "headquarter");
+		$scope.getKey = function(key){
+			if(!key){return}
+			return services.$filter("i18n")(key, services.$rootScope.loc.ale, "headquarter");
 		}
 
-		$scope.getClass = function(buildingOrder){
-			return "icon-20x20-building-" + Object.keys(buildingOrder)[0];
+		$scope.getMax = function(key, value){
+			if(!key){return}
+			return value < services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
 		}
 
-		$scope.getValue = function(buildingOrder){
-			return Object.values(buildingOrder)[0];
+		$scope.getClass = function(key){
+			if(!key){return}
+			return "icon-20x20-building-" + key;
 		}
 
-		$scope.up = function(vill, buildingOrder){
-			var ant = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]-1})
-			ant[Object.keys(ant)[0]] += 1
-			buildingOrder[Object.keys(buildingOrder)[0]] -= 1
-			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+//		$scope.getValue = function(key){
+//		if(!key){return}
+//		return Object.values(key)[0];
+//		}
+
+		$scope.up = function(key_vill, vill, key, value){
+			$scope.selected_village_buildingorder[key_vill] = value;
+			var ant = Object.keys(vill.buildingorder).map(
+					function(elem){
+						return {[elem]: vill.buildingorder[elem]}
+					}
+			).find(f => Object.values(f)[0] == vill.buildingorder[key] - 1)
+			vill.buildingorder[vill.selected.value][Object.keys(ant)[0]] += 1
+			vill.buildingorder[vill.selected.value][key] -= 1
+//			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.down = function(vill, buildingOrder){
-			var prox = vill.buildingorder[vill.selected.value].find(function(a,b){return Object.values(a)[0]==Object.values(buildingOrder)[0]+1})
-			prox[Object.keys(prox)[0]] -= 1
-			buildingOrder[Object.keys(buildingOrder)[0]] += 1
-			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+		$scope.down = function(key_vill, vill, key, value){
+			$scope.selected_village_buildingorder[key_vill] = value;
+			var prox = Object.keys(vill.buildingorder).map(
+					function(elem){
+						return {[elem]: vill.buildingorder[elem]}
+					}
+			).find(f => Object.values(f)[0] == vill.buildingorder[key] + 1)
+			vill.buildingorder[vill.selected.value][Object.keys(prox)[0]] -= 1
+			vill.buildingorder[vill.selected.value][key] += 1
+//			vill.buildingorder[key] = vill.buildingorder[key].map(function(key,index,array){return delete vill.buildingorder[key][index].$$hashKey ? vill.buildingorder[key][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.levelup = function(vill, buildingLimit){
-			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(Object.keys(vill.buildingLimit)[0]).max_level;
-			var level = vill.buildingLimit[Object.keys(vill.buildingLimit)[0]] += 1;
+		$scope.levelup = function(vill, key){
+			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
+			var level = vill.buildinglimit[vill.selected.value][key] += 1;
 			if(level > max_level){
-				vill.buildingLimit[Object.keys(vill.buildingLimit)[0]] -= 1
+				vill.buildinglimit[vill.selected.value][key] -= 1
 			}
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.leveldown = function(vill, buildingLimit){
-			vill.buildingLimit[Object.keys(vill.buildingLimit)[0]] -= 1
+		$scope.leveldown = function(vill, key){
+			vill.buildinglimit[vill.selected.value][key] -= 1
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+		$scope.upstandard = function(key){
+			var ant = Object.keys($scope.obj_standard.buildingorder).map(
+					function(elem){
+						return {[elem]: $scope.obj_standard.buildingorder[elem]}
+					}
+			).find(f => Object.values(f)[0] == $scope.obj_standard.buildingorder[key] - 1)
+			$scope.obj_standard.buildingorder[Object.keys(ant)[0]] += 1
+			$scope.obj_standard.buildingorder[key] -= 1
+//			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+		$scope.downstandard = function(key){
+			var prox = Object.keys($scope.obj_standard.buildingorder).map(
+					function(elem){
+						return {[elem]: $scope.obj_standard.buildingorder[elem]}
+					}
+			).find(f => Object.values(f)[0] == $scope.obj_standard.buildingorder[key] + 1)
+			$scope.obj_standard.buildingorder[Object.keys(prox)[0]] -= 1
+			$scope.obj_standard.buildingorder[key] += 1
+//			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+
+		$scope.levelupstandard = function(key){
+			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
+			var level = $scope.obj_standard.buildinglimit[key] += 1;
+			if(level > max_level){
+				$scope.obj_standard.buildinglimit[key] -= 1
+			}
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+
+		$scope.leveldownstandard = function(key){
+			$scope.obj_standard.buildinglimit[key] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
@@ -141,6 +212,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.stop_headquarter = function(){
 			services.HeadquarterService.stop();
+			$scope.data_headquarter.complete = 0
 			update()
 		}
 
@@ -156,23 +228,22 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.restore_headquarter = function(){
 			$scope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
-			Object.values(data_villages.villages).forEach(function(village){
+			Object.values($scope.data_villages.villages).forEach(function(village){
 				angular.merge(village, {
 					executebuildingorder 	: conf.executebuildingorder,
 					buildingorder 			: $scope.data_headquarter.buildingorder,
-					buildinglimit 			: $scope.data_headquarter.buildinglimit,
-					buildinglevels 			: $scope.data_headquarter.buildinglevels
+					buildinglimit 			: $scope.data_headquarter.buildinglimit
 				})
 			})
-//			data_villages.set();
+			$scope.data_villages.set();
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
-		$scope.selectvillagebuildingOrder = function(villageId, buildingOrder){
-			$scope.selected_village_buildingOrder[villageId] = buildingOrder;
+		$scope.selectvillagebuildingorder = function(villageId, value){
+			$scope.selected_village_buildingorder[villageId] = value;
 		}
 
-		$scope.selected_village_buildingOrder = {};
+		$scope.selected_village_buildingorder = {};
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER, update)
 
@@ -193,10 +264,24 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 		}, true)
 
-		$scope.$watch("data_villages", function(){
-			if(!$scope.data_villages){return}
-			data_villages = $scope.data_villages;
-			data_villages.set();
+//		$scope.$watch("data_villages", function($event, data){
+//		if(!$scope.data_villages){return}
+//		data_villages = $scope.data_villages;
+//		data_villages.set();
+//		}, true)
+
+		$scope.$watch("obj_standard", function(){
+			if(!$scope.obj_standard){return}
+			Object.values($scope.data_villages.villages).forEach(function(village){
+				if(village.selected.value == "standard"){
+					angular.merge(village, {
+						buildingorder 			: $scope.obj_standard.buildingorder,
+						buildinglimit 			: $scope.obj_standard.buildinglimit
+					})
+				}
+			})
+			$scope.data_headquarter.standard = $scope.obj_standard;
+			$scope.data_villages.set();
 		}, true)
 
 		$scope.$watch("data_headquarter", function(){
@@ -204,6 +289,10 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_headquarter = $scope.data_headquarter;
 			data_headquarter.set();
 		}, true)
+
+		$scope.$on("$destroy", function() {
+			$scope.data_villages.set();
+		});
 
 		$scope.setCollapse();
 

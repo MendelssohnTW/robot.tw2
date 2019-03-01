@@ -30,9 +30,9 @@ define("robotTW2/databases/data_recruit", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: true,
+			auto_start				: false,
+			init_initialized 		: false,
+			activated 				: false,
 			hotkey					: conf.HOTKEY.RECRUIT,
 			version					: conf.VERSION.RECRUIT,
 			interval				: conf.INTERVAL.RECRUIT,
@@ -61,22 +61,17 @@ define("robotTW2/databases/data_recruit", [
 			database.set("data_recruit", data_recruit, true)
 			notify("data_recruit");
 		} else {
-			if(!data_recruit.auto_initialize) data_recruit.initialized = !1;
-			if(data_recruit.auto_initialize) data_recruit.initialized = !0;
+			if(!data_recruit.auto_start) data_recruit.init_initialized = !1;
+			if(data_recruit.auto_start) data_recruit.init_initialized = !0;
 			database.set("data_recruit", data_recruit, true)		
 		}
 	}
 	
 	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, db_recruit.update);
+	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, db_recruit.update);
 	services.$rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, db_recruit.update);
 
 	Object.setPrototypeOf(data_recruit, db_recruit);
 	
-	services.$rootScope.data_recruit = data_recruit;
-
-	services.$rootScope.$watch("data_recruit", function(){
-		data_recruit.set()
-	}, true)
-
 	return data_recruit;
 })

@@ -47,25 +47,22 @@ define("robotTW2/services/HeadquarterService", [
 		, listener_building_level_change = undefined
 		, listener_resume = undefined
 		, checkBuildingOrderLimit = function(vill) {
+			if(!vill.selected){
+				vill.selected = data_headquarter.selects.find(f=>f.name ="standard");
+			}
 			var buildingLevels = vill.buildinglevels
 			, buildingLimit = vill.buildinglimit[vill.selected.value]
 			, builds = [];
 
-			buildingLevels.map(
-					function(e){
-						if(buildingLimit){
-							buildingLimit.map(
-									function(d){
-										if(Object.keys(e)[0] == Object.keys(d)[0] && Object.values(e)[0] < Object.values(d)[0]){
-											builds.push({[Object.keys(e)[0]] : Object.values(e)[0]})
-										}
-									}
-							)
-						} else {
-							console.log("No building limit for " + vill.data.name)
+			Object.keys(buildingLevels).forEach(function(key_level){
+				if(buildingLimit){
+					Object.keys(buildingLimit).forEach(function(key_limit){
+						if(Object.keys(buildingLevels[key_level])[0] == key_limit && Object.values(buildingLevels[key_level])[0] < buildingLimit[key_limit]){
+							builds.push({[Object.keys(buildingLevels[key_level])[0]] : Object.values(buildingLevels[key_level])[0]})
 						}
-					}
-			)
+					})
+				}
+			})
 
 			return builds
 
@@ -81,6 +78,8 @@ define("robotTW2/services/HeadquarterService", [
 			, nextLevelCosts = buildingData.nextLevelCosts
 			, not_enough_resources = false
 			, firstQueue = village.getBuildingQueue().getQueue()[0];
+			
+			
 
 			if(firstQueue && firstQueue.canBeFinishedForFree){
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
@@ -99,7 +98,7 @@ define("robotTW2/services/HeadquarterService", [
 					}
 
 					if(not_enough_resources){
-						callback(!1, {[village.data.name] : "not_enough_resources"})
+						callback(!1, {[village.data.name] : "not_enough_resources for " + build})
 					} else{
 
 						if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
@@ -117,7 +116,7 @@ define("robotTW2/services/HeadquarterService", [
 								}
 							}) 
 						} else {
-							callback(!1, {[village.data.name] : buildingData.upgradeability})
+							callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
 						}
 					}
 				})
@@ -173,19 +172,19 @@ define("robotTW2/services/HeadquarterService", [
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];
-
+				
 				var premiumActionService = injector.get("premiumActionService");
 
 				if(firstQueue && firstQueue.canBeFinishedForFree){
 					premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 					resolve(true);
+					return;
 				}
 
 				var gt = getFinishedForFree(village);
-				if(gt != Infinity && gt != 0 && !isNaN(gt)){
-					list.push(getFinishedForFree(village))
+				if(gt != Infinity && gt != 0 && !isNaN(gt) && gt > conf.MIN_INTERVAL){
+					list.push(gt)
 				}
-//				setList();
 
 				if (
 						!(
@@ -218,8 +217,11 @@ define("robotTW2/services/HeadquarterService", [
 					return;
 				}
 
-				var reBuilds = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value].map(function(key){
-					return data_villages.villages[village_id].builds.map(function(key){return Object.keys(key)[0]}).find(f=>f==Object.keys(key)[0])
+				var bd = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value]
+				var reBuilds = Object.keys(bd).map(function(key_db){
+					return data_villages.villages[village_id].builds.map(function(key){
+						return Object.keys(key)[0]
+					}).find(f=>f==key_db)
 				}).filter(f => f != undefined)
 				, g = [];
 
@@ -232,6 +234,8 @@ define("robotTW2/services/HeadquarterService", [
 					.filter(f => f != undefined)[0]
 					)
 				})
+				
+				g.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 
 				g.forEach(function(b) {
 					function a (build){
@@ -258,7 +262,6 @@ define("robotTW2/services/HeadquarterService", [
 								if(repeat){
 									resolve();
 									next_queue = [];
-									return !1;
 								} else if(g.length && isRunning){
 									build = g.shift()
 									a(build)
@@ -308,11 +311,13 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, wait = function(){
 			setList(function(tm){
-				if(!interval_builder){
-					interval_builder = $timeout(function(){cicle_building()}, tm)
-				} else {
-					$timeout.cancel(interval_builder);
-					interval_builder = $timeout(function(){cicle_building()}, tm)
+				if(isRunning){
+					if(!interval_builder){
+						interval_builder = $timeout(function(){cicle_building()}, tm)
+					} else {
+						$timeout.cancel(interval_builder);
+						interval_builder = $timeout(function(){cicle_building()}, tm)
+					}
 				}
 			});
 		}
@@ -340,6 +345,7 @@ define("robotTW2/services/HeadquarterService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
+			$timeout.cancel(interval_builder);
 			promise = undefined
 			promise_queue = []	
 			promise_next = undefined

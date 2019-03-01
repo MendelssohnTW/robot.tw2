@@ -19,13 +19,13 @@ define("robotTW2/databases/data_headquarter", [
 	db_headquarter.get = function(){
 		return database.get("data_headquarter")
 	}
-	
+
 	var id = 0;
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
-			activated 				: true,
+			auto_start				: false,
+			init_initialized 		: false,
+			activated 				: false,
 			hotkey					: conf.HOTKEY.HEADQUARTER,
 			interval				: conf.INTERVAL.HEADQUARTER,
 			time_complete			: 0,
@@ -44,7 +44,11 @@ define("robotTW2/databases/data_headquarter", [
 					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
 					value	: elem
 				}
-			})
+			}),
+			standard				: {
+				"buildingorder": conf.BUILDINGORDER["standard"],
+				"buildinglimit": conf.BUILDINGLIMIT["standard"]
+			}
 
 	}
 
@@ -53,13 +57,12 @@ define("robotTW2/databases/data_headquarter", [
 		database.set("data_headquarter", data_headquarter, true)
 	} else {
 		if(!data_headquarter.version || (typeof(data_headquarter.version) == "number" ? data_headquarter.version.toString() : data_headquarter.version) < conf.VERSION.HEADQUARTER){
-
 			data_headquarter = dataNew
 			database.set("data_headquarter", data_headquarter, true)
 			notify("data_headquarter");
 		} else {
-			if(!data_headquarter.auto_initialize) data_headquarter.initialized = !1;
-			if(data_headquarter.auto_initialize) data_headquarter.initialized = !0;
+			if(!data_headquarter.auto_start) data_headquarter.init_initialized = !1;
+			if(data_headquarter.auto_start) data_headquarter.init_initialized = !0;
 			database.set("data_headquarter", data_headquarter, true)		
 		}
 	}

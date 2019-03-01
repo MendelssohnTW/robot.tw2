@@ -1,12 +1,10 @@
 define("robotTW2/services/MainService", [
 	"robotTW2",
 	"robotTW2/conf",
-	"robotTW2/socketSend",
 	"robotTW2/databases/data_main",
 	], function(
 			robotTW2,
 			conf,
-			socketSend,
 			data_main
 	){
 	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService, providers) {
@@ -27,7 +25,7 @@ define("robotTW2/services/MainService", [
 				var arFn = requestFn.get(extension.toLowerCase(), true);
 				if(!arFn 
 						|| (extension.toLowerCase() == "secondvillage" && !secondVillageService.isFeatureActive())
-						|| (extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible))
+//						|| (extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible))
 				) {
 					extensions[extension].activated = false;
 					continue
@@ -36,14 +34,12 @@ define("robotTW2/services/MainService", [
 					extensions[extension].hotkey = conf.HOTKEY[extension].toUpperCase();
 					extensions[extension].activated = true;
 
-					if(extensions[extension].auto_initialize){
-						extensions[extension].initialized = true;
+					if(extensions[extension].auto_start){
+						extensions[extension].init_initialized = true;
 						if(fn.isInitialized())
 							return !1;
 						if(typeof(fn.init) == "function"){fn.init()}
 						if(typeof(fn.analytics) == "function"){fn.analytics()}
-					} else {
-						extensions[extension].auto_initialize = false
 					}
 				}
 			}

@@ -21,9 +21,9 @@ define("robotTW2/databases/data_alert", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: true,
-			activated 				: true,
+			auto_start				: false,
+			init_initialized 		: false,
+			activated 				: false,
 			hotkey					: conf.HOTKEY.ALERT,
 			interval	 			: conf.INTERVAL.ALERT,
 			version					: conf.VERSION.ALERT,
@@ -38,8 +38,8 @@ define("robotTW2/databases/data_alert", [
 			data_alert = dataNew
 			notify("data_alert");
 		} else {
-			if(!data_alert.auto_initialize) data_alert.initialized = !1;
-			if(data_alert.auto_initialize) data_alert.initialized = !0;
+			if(!data_alert.auto_start) data_alert.init_initialized = !1;
+			if(data_alert.auto_start) data_alert.init_initialized = !0;
 		}
 		database.set("data_alert", data_alert, true)
 	}

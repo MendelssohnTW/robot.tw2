@@ -4,14 +4,16 @@ define("robotTW2/controllers/RecruitController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"conf/unitTypes"
+	"conf/unitTypes",
+	"robotTW2/databases/data_recruit"
 	], function(
 			helper,
 			time,
 			services,
 			providers,
 			conf,
-			unitTypes
+			unitTypes,
+			data_recruit
 	){
 	return function RecruitController($scope) {
 		$scope.save = services.$filter("i18n")("SAVE", services.$rootScope.loc.ale);
@@ -20,7 +22,11 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.pause = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
 		$scope.resume = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
+		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		var self = this;
+		
+		$scope.data_recruit = data_recruit
+		$scope.text_version = $scope.version + " " + data_recruit.version;
 		
 		var TABS = {
 				RECRUIT	: services.$filter("i18n")("recruit", services.$rootScope.loc.ale, "recruit"),
@@ -49,7 +55,7 @@ define("robotTW2/controllers/RecruitController", [
 		, return_units = function (){
 			var units = {};
 			Object.keys(unitTypes).map(function(key){
-				if(services.$rootScope.data_recruit.troops_not.some(elem => elem == unitTypes[key])){
+				if(data_recruit.troops_not.some(elem => elem == unitTypes[key])){
 					delete units[unitTypes[key]]
 				} else {
 					units[unitTypes[key]] = 0
@@ -63,7 +69,7 @@ define("robotTW2/controllers/RecruitController", [
 		}
 		
 		$scope.getTimeRest = function(){
-			return services.$rootScope.data_recruit.complete > time.convertedTime() ? helper.readableMilliseconds(services.$rootScope.data_recruit.complete - time.convertedTime()) : 0; 
+			return data_recruit.complete > time.convertedTime() && $scope.isRunning ? helper.readableMilliseconds(data_recruit.complete - time.convertedTime()) : 0; 
 		}
 
 		$scope.getText = function(key){
@@ -82,6 +88,7 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.stop_recruit = function(){
 			services.RecruitService.stop();
 			$scope.isRunning = services.RecruitService.isRunning();
+			$scope.data_recruit.complete = 0
 		}
 
 		$scope.pause_recruit = function(){
@@ -115,7 +122,7 @@ define("robotTW2/controllers/RecruitController", [
 		
 		$scope.isRunning = services.RecruitService.isRunning();
 		$scope.isPaused = services.RecruitService.isPaused();
-		$scope.grupoSelected = services.$rootScope.data_recruit.Groups[Object.keys(services.$rootScope.data_recruit.Groups)[0]]
+		$scope.grupoSelected = data_recruit.Groups[Object.keys(data_recruit.Groups)[0]]
 
 //		$scope.setGroup($scope.grupo)
 		
@@ -126,11 +133,16 @@ define("robotTW2/controllers/RecruitController", [
 			}
 		}, true)
 		
+		$scope.$watch("data_recruit", function(){
+			if(!$scope.data_recruit){return}
+			data_recruit = $scope.data_recruit;
+			data_recruit.set();
+		}, true)
+		
+		
 		initTab();
-
 		
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 
 		return $scope;
 	}

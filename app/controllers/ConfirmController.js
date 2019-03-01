@@ -24,7 +24,7 @@ define("robotTW2/controllers/ConfirmController", [
 		}, 5000)
 		
 		$scope.Confirm = function(){
-			if(inConfirm){
+			if($scope.inConfirm){
 				$scope.inConfirm = false;
 				$scope.inReload = true;
 				window.open('https://www.ipatapp.com.br', '_blank');

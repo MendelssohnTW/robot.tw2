@@ -23,8 +23,8 @@ define("robotTW2/databases/data_data", [
 	}
 
 	var dataNew = {
-			auto_initialize			: false,
-			initialized 			: false,
+			auto_start				: false,
+			init_initialized 		: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.DATA,
 			xmin					: 0,
@@ -67,8 +67,8 @@ define("robotTW2/databases/data_data", [
 			data_data = dataNew
 			notify("data_data");
 		} else {
-			if(!data_data.auto_initialize) data_data.initialized = !1;
-			if(data_data.auto_initialize) data_data.initialized = !0;
+			if(!data_data.auto_start) data_data.init_initialized = !1;
+			if(data_data.auto_start) data_data.init_initialized = !0;
 		}
 		database.set("data_data", data_data, true)
 	}

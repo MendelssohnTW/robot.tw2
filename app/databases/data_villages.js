@@ -89,35 +89,29 @@ define("robotTW2/databases/data_villages", [
 		Object.keys(data_villages.villages).map(function(m){
 			return m
 		}).forEach(function(v){
-			if(!Object.keys(villagesExtended).map(function(m){
-				return m
-			}).find(f=>f==v)){
+			if(!villagesExtended[v]){
 				delete data_villages.villages[v]
 				updated = true;
 			}
 		})
 		return updated;
 	}
-	
+
 	var id = 0;
-	
+
 	db_villages.verifyVillages = function (villagesExtended, callback){
 
 		if(services.modelDataService.getPresetList().isLoadedValue){
 			if(!data_villages){data_villages = {}}
 			if(!villagesExtended){villagesExtended = {}}
+			let update = false;
 			if(data_villages.villages == undefined){data_villages.villages = {}}
 			Object.keys(villagesExtended).map(function(m){
-				if(!Object.keys(data_villages.villages).map(function(v){
-					return v
-				}).find(f=>f==m)){
-					var selects = Object.keys(conf.BUILDINGORDER).map(function(elem){
-						return {
-							id		: ++id,
-							name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
-							value	: elem
-						}
-					})
+				if(!data_villages.villages[m]
+				|| !data_villages.villages[m].buildingorder 
+				|| !data_villages.villages[m].buildinglimit
+				|| !data_villages.villages[m].buildinglevels
+				){
 					angular.extend(villagesExtended[m], {
 						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
@@ -125,37 +119,23 @@ define("robotTW2/databases/data_villages", [
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
 						presets					: getPst(m),
-						selected				: selects.find(f=>f.name=="standard")
+						selected				: null//selects.find(f=>f.name=="standard")
 					})
 					data_villages.villages[m] = angular.extend({}, villagesExtended[m])
-					callback(true)
+					update = true;
 					return m;
 				} else {
 					if(data_villages.villages[m].presets){
 						angular.merge(villagesExtended[m], {
 							presets					: getPst(m)
 						})
-					} else {
-						angular.extend(villagesExtended[m], {
-							executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
-							buildingorder 			: conf.BUILDINGORDER,
-							buildinglimit 			: conf.BUILDINGLIMIT,
-							buildinglevels 			: conf.BUILDINGLEVELS,
-							farm_activate 			: true,
-							presets					: getPst(m),
-							selected				: {
-								id: 0,
-								name: services.$filter("i18n")("standard", services.$rootScope.loc.ale, "headquarter"),
-								value: "standard"
-							}
-						})
+						angular.extend(data_villages.villages[m], villagesExtended[m])
+						update = true;
 					}
-					angular.extend(data_villages.villages[m], villagesExtended[m])
-					callback(true)
 					return m;
 				}
 			})
-			callback(false)
+			callback(update)
 			return;
 		} else {
 			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){return db_villages.verifyVillages(villagesExtended, callback)});
@@ -169,12 +149,16 @@ define("robotTW2/databases/data_villages", [
 		var updated = false;
 		var villages = services.modelDataService.getVillages();
 		var villagesExtended = {};
-		Object.keys(villages).map(function(village_id){
-			var vill = services.villageService.getInitializedVillage(village_id)
-			villagesExtended[village_id] = {}
-		})
+		try{
+			Object.keys(villages).map(function(village_id){
 
-//		var villagesExtended = angular.merge({}, villages)
+				villagesExtended[village_id] = {}
+				var vill = services.villageService.getInitializedVillage(village_id)
+			})
+		} catch (err){
+			return
+		}
+
 		var promise = new Promise(function(res, rej){
 			db_villages.verifyVillages(villagesExtended, function(updated){
 				updated ? res() : rej()
@@ -183,23 +167,16 @@ define("robotTW2/databases/data_villages", [
 		.then(function(){
 			if(db_villages.verifyDB(villagesExtended)) {
 				data_villages.version = conf.VERSION.VILLAGES
-			} else {
-				if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
-					data_villages.version = conf.VERSION.VILLAGES
-				}
-			} 
+			}
 			db_villages.set();
-//			database.set("data_villages", data_villages, true)	
 		}, function(){
-			db_villages.set();
-//			database.set("data_villages", data_villages, true)
+			if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
+				data_villages = {};
+				data_villages.version = conf.VERSION.VILLAGES
+				db_villages.set();
+				db_villages.updateVillages();
+			}
 		})
-	}
-
-	db_villages.renameVillage = function($event, data){
-		var id = data.village_id;
-		!data_villages.villages[id] ? !1 : data_villages.villages[id].data.name = data.name;
-		db_villages.set();
 	}
 
 	db_villages.getAssignedPresets = function(){
@@ -212,7 +189,7 @@ define("robotTW2/databases/data_villages", [
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_NAME_CHANGED, db_villages.renameVillage);
+
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, db_villages.updateVillages);
@@ -221,10 +198,5 @@ define("robotTW2/databases/data_villages", [
 
 	Object.setPrototypeOf(data_villages, db_villages);
 
-//	services.$rootScope.data_villages = data_villages;
-
-//	services.$rootScope.$watch("data_villages", function(){
-//		db_villages.set()
-//	}, true)
 	return data_villages;
 })

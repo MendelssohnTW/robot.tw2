@@ -5,7 +5,9 @@ define("robotTW2/controllers/DefenseController", [
 	"robotTW2/conf",
 	"robotTW2/time",
 	"helper/time",
-	"robotTW2/unitTypesRenameRecon"
+	"robotTW2/unitTypesRenameRecon",
+	"robotTW2/databases/data_villages",
+	"robotTW2/databases/data_defense"
 	], function(
 			robotTW2,
 			services,
@@ -13,12 +15,18 @@ define("robotTW2/controllers/DefenseController", [
 			conf,
 			time,
 			helper,
-			unitTypesRenameRecon
+			unitTypesRenameRecon,
+			data_villages,
+			data_defense
 	){
 	return function DefenseController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
-		var self = this;
+		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
+		var self = this,
+		local_data_villages = {};
+		$scope.data_defense = data_defense;
+		$scope.text_version = $scope.version + " " + data_defense.version;
 
 		var TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
@@ -31,10 +39,22 @@ define("robotTW2/controllers/DefenseController", [
 			TABS.LOG,
 			]
 		
-		if(!services.$rootScope.data_defense.recon){
-			services.$rootScope.data_defense.recon = unitTypesRenameRecon;
+		function getVillage(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
 
+		function getVillageData(vid){
+			if(!vid){return}
+			return local_data_villages[vid].data;
+		}
+		
+		Object.keys(data_villages.villages).map(function(key){
+			let data = getVillage(key);
+			angular.extend(local_data_villages, {[key] : {"data": data}})
+			return local_data_villages;
+		})
+		
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
@@ -74,15 +94,15 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getVstart = function(param){
 			var vid = param.start_village;
 			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid).data.name
+			return getVillageData(vid).name
 		}
 
 		$scope.getVcoordStart = function(param){
 
 			var vid = param.start_village;
 			if(!vid){return}
-			var x = services.modelDataService.getSelectedCharacter().getVillage(vid).data.x
-			var y = services.modelDataService.getSelectedCharacter().getVillage(vid).data.y
+			var x = getVillageData(vid).x
+			var y = getVillageData(vid).y
 			return "(" + x + "/" + y + ")"
 		}
 
@@ -106,32 +126,28 @@ define("robotTW2/controllers/DefenseController", [
 		}
 
 		$scope.getHoraSend = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
 		}
 
 		$scope.getHoraAlvo = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
 		}
 
 		$scope.getDataAlvo = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
 		}
 
 		$scope.getHoraRetorno = function(param){
-
 			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "HH:mm:ss.sss");
 		}
 
 		$scope.getTimeRest = function(param){
 			var difTime = param.data_escolhida - time.convertedTime() - param.time_sniper_ant; 
+			if(!difTime){return}
 			return helper.readableMilliseconds(difTime)
 		}
 
 		$scope.getVcoordTarget = function(param){
-
 			return "(" + param.target_x + "/" + param.target_y + ")"
 		}
 
@@ -151,10 +167,14 @@ define("robotTW2/controllers/DefenseController", [
 				$scope.$apply();
 			}
 		}, true)
-
+		
+		$scope.$watch("data_defense", function(){
+			if(!$scope.data_defense){return}
+			data_defense = $scope.data_defense;
+			data_defense.set();
+		}, true)
 
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 
 		return $scope;
 	}

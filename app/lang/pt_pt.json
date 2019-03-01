@@ -11,10 +11,12 @@
 	"CLEAR": "Limpar",
 	"START": "Iniciar",
 	"STOP": "Parar",
+	"SELECT": "Selecionar",
 	"PAUSE": "Pausar",
 	"RESUME": "Retomar",
 	"YES": "Sim",
 	"NO": "Não",
+	"version": "Versão",
 	"map": {
 		"title": "Mini mapa",
 		"minimap": "Mini mapa",
@@ -56,6 +58,7 @@
 		"title": "Automatização do Quartel",
 		"settings": "Configuração global",
 		"settings_for_villages": "Configurações por aldeia",
+		"settings_standard": "Configurações padrão",
 		"init_standard": "Inicialização automática",
 		"seq_int": "Sequência íntegra",
 		"seq_flex": "Sequência flexível",
@@ -140,6 +143,8 @@
 		"title": "Coleta de recursos",
 		"wait_init": "Aguardando início do ciclo de Farm",
 		"farm_init": "Ciclo de Farm iniciado",
+		"terminate_cicles": "Terminado todos os Ciclos de Farm",
+		"init_cicles": "Iniciado ciclos de Farm",
 		"farm_no_init": "Ciclo de Farm não iniciado. Término de farm inferior ao tempo mínimo do ciclo",
 		"farm_running": "Estado atual do processamento de farm",
 		"time_max": "Tempo máximo",
@@ -176,6 +181,8 @@
 		"title": "Recrutamento de tropas",
 		"settings": "Configurações para recrutamento de tropas",
 		"recruit_running": "Estado atual do recrutamento",
+		"init_cicles": "Iniciado ciclo recruit",
+		"terminate_cicles": "Terminado ciclo recruit",
 		"text_interval_recruit": "Próximo ciclo em ",
 		"text_reserva_food": "Reserva de provisões",
 		"text_reserva_slots": "Quantidade de slots",
@@ -208,10 +215,18 @@
 		"text_interval": "Próximo ciclo em "
 	},
 	"spy": {
+		"spy": "Espiões",
+		"log": "Log",
+		"comp": "Multi programação",
 		"title": "Recrutamento de espiões",
 		"settings": "Configurações",
+		"command_list": "Lista de comandos",
 		"text_interval": "Próximo ciclo em ",
-		"text_interval_spy": "Intervalo de verificação"
+		"text_interval_spy": "Intervalo de verificação",
+		"text_date": "Data",
+		"text_hour": "Hora",
+		"text_ms": "Milisegundos",
+		"schedule": "Programar"
 	},
 	"notify": {
 		"title": "Notícias",

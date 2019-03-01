@@ -13,6 +13,12 @@
 	justify-content: center
 }
 
+.robotTW2 .version {
+	display: flex;
+	justify-content: center;
+	min-height: 40px;
+}
+
 .robotTW2 .indicator {
 	margin-right: 4px;
 	float: right
