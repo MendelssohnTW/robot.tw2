@@ -189,17 +189,13 @@ define("robotTW2/controllers/SpyController", [
 		$scope.isRunning = services.SpyService.isRunning();
 
 		$scope.autoCompleteKey = function(event){
-			var scope = angular.element($("[world-map-search]")[1]).scope()
-			scope.autoCompleteKeyUp(event)
-			return function() {
-				var b = "origin" === a ? w : x,
-						c = b.val();
-				if (c.length < 2) return j.hide();
-				j.search(c, function(c) {
-					c.length && j.show(c, b[0], "commandQueue-" + a)
-				}, ["village"])
-			}
-
+			var id = 0;
+			var b = "origin" === a ? w : x,
+					c = b.val();
+			if (c.length < 2) return autocomplete.hide();
+			autocomplete.search(c, function(list) {
+				list.length && autocomplete.show(list, b[0], id)
+			}, ["village"])
 		}
 
 		$scope.getVstart = function(param){
