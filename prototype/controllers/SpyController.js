@@ -66,7 +66,7 @@ define("robotTW2/autocomplete", [
 				!0
 		)
 	}, service.search = function(param, callback, type, e) {
-		var list = []
+		let list = []
 		if (isValidCoords(param)) {
 			var coords_args = param.split("/").map(function(arg) {
 				return parseInt(arg, 10)
@@ -79,7 +79,8 @@ define("robotTW2/autocomplete", [
 				}), callback(list)
 			})
 		}
-		services.autoCompleteService.mixed(type, param, function(list) {
+		services.autoCompleteService.mixed(type, param, function(data) {
+			let list = data.result;
 			list = list.map(extendItemProperties);
 			callback(list)
 		});
