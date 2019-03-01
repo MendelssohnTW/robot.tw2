@@ -665,22 +665,12 @@ define("robotTW2/services/FarmService", [
 				
 						var init_first = true;
 						var f = function(){
-<<<<<<< HEAD
-<<<<<<< HEAD
-						
-								var tempo = 60*60*15*1000;
-								
-=======
-=======
->>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
-							
 								var tempo = 0;
 								if(!init_first){
 									tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()));
 								}
->>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 								init_first = false;
-								execute_cicle(60*60*15*1000).then(function(){
+								execute_cicle(tempo).then(function(){
 									data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 									data_log.set()
 									f()
@@ -689,14 +679,7 @@ define("robotTW2/services/FarmService", [
 						}
 						f()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 					
->>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
-=======
-					
->>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 			}, ["all_villages_ready"])
 		}
 		, init = function (bool) {
