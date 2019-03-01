@@ -666,10 +666,13 @@ define("robotTW2/services/FarmService", [
 						var init_first = true;
 						var f = function(){
 <<<<<<< HEAD
+<<<<<<< HEAD
 						
 								var tempo = 60*60*15*1000;
 								
 =======
+=======
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 							
 								var tempo = 0;
 								if(!init_first){
@@ -687,6 +690,10 @@ define("robotTW2/services/FarmService", [
 						f()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+					
+>>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 =======
 					
 >>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
