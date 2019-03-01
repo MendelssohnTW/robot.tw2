@@ -3,11 +3,13 @@ define("robotTW2/autocomplete", [
 	"struct/MapData",
 	"robotTW2/services",
 	"robotTW2/providers",
+	"helper/format"
 	], function(
 			domHelper, 
 			mapData,
 			services,
-			providers
+			providers,
+			formatHelper
 	){
 	var id = "two-autocomplete",
 	open = !1,
@@ -23,6 +25,20 @@ define("robotTW2/autocomplete", [
 	getLabel = function(village) {
 		return village.name + "(" + village.x + "/" + village.y + ")"
 	},
+	extendItemProperties = function extendItemProperties(item) {
+
+		if (item.type === 'village') {
+			item.displayedName = formatHelper.villageNameWithCoordinates(item);
+		}
+
+		if (item.type) {
+			item.leftIcon = 'size-34x34';
+			// If type is defined, use its icon.
+			item.leftIcon += ' icon-26x26-rte-' + item.type;
+		}
+
+		return item;
+	}
 	service = {};
 	return service.hide = function() {
 		services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), 
@@ -50,7 +66,7 @@ define("robotTW2/autocomplete", [
 				!0
 		)
 	}, service.search = function(param, callback, type, e) {
-		var list = [];
+		var list = []
 		if (isValidCoords(param)) {
 			var coords_args = param.split("/").map(function(arg) {
 				return parseInt(arg, 10)
@@ -63,14 +79,17 @@ define("robotTW2/autocomplete", [
 				}), callback(list)
 			})
 		}
-		services.autoCompleteService.mixed(["village", "character", "tribe"], param, function(a) {
-			for (var d in a.result){
-				if(a.result.hasOwnProperty(d)){
-					a.result[d].forEach(function(a, c) {
-						a.type = type, a.leftIcon = "size-34x34 icon-26x26-rte-" + type, "village" === type && (a.name = b.getLabel(a)), list.push(a)
-					})
-				}
-			}
+		services.autoCompleteService.mixed(type, param, function(data) {
+			
+			list = list.map(extendItemProperties);
+			
+//			for (var item in list){
+//				if(list.hasOwnProperty(item)){
+//					list[item].forEach(function(a, c) {
+//						a.type = type, a.leftIcon = "size-34x34 icon-26x26-rte-" + type, "village" === type && (a.name = b.getLabel(a)), list.push(a)
+//					})
+//				}
+//			}
 			callback(list)
 		});
 //		f.emit(g.AUTOCOMPLETE, {
@@ -78,7 +97,7 @@ define("robotTW2/autocomplete", [
 //		string: a,
 //		amount: e || 5
 //		}, function(a) {
-//		for (var d in a.result) a.result[d].forEach(function(a, c) {
+//		for (var d in list) list[d].forEach(function(a, c) {
 //		a.type = d, a.leftIcon = "size-34x34 icon-26x26-rte-" + d, "village" === d && (a.name = b.genVillageLabel(a)), list.push(a)
 //		});
 //		c(list)
