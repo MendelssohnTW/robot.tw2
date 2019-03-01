@@ -79,29 +79,10 @@ define("robotTW2/autocomplete", [
 				}), callback(list)
 			})
 		}
-		services.autoCompleteService.mixed(type, param, function(data) {
-			
+		services.autoCompleteService.mixed(type, param, function(list) {
 			list = list.map(extendItemProperties);
-			
-//			for (var item in list){
-//				if(list.hasOwnProperty(item)){
-//					list[item].forEach(function(a, c) {
-//						a.type = type, a.leftIcon = "size-34x34 icon-26x26-rte-" + type, "village" === type && (a.name = b.getLabel(a)), list.push(a)
-//					})
-//				}
-//			}
 			callback(list)
 		});
-//		f.emit(g.AUTOCOMPLETE, {
-//		types: d || ["village", "character", "tribe"],
-//		string: a,
-//		amount: e || 5
-//		}, function(a) {
-//		for (var d in list) list[d].forEach(function(a, c) {
-//		a.type = d, a.leftIcon = "size-34x34 icon-26x26-rte-" + d, "village" === d && (a.name = b.genVillageLabel(a)), list.push(a)
-//		});
-//		c(list)
-//		})
 	}, service
 }),
 define("robotTW2/controllers/SpyController", [
