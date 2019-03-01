@@ -56,7 +56,7 @@ define("robotTW2/autocomplete", [
 						triggerElement, 
 						!0, //dropDown
 						0, //rightMargin
-						noResultTranslation || services.$filter('i18n')('no_results', services.$rootScope.loc.ale, 'directive_autocomplete')
+						services.$filter('i18n')('no_results', services.$rootScope.loc.ale, 'directive_autocomplete')
 				), 
 				open || (
 						open = !0, 
