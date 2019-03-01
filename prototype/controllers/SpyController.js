@@ -64,9 +64,13 @@ define("robotTW2/autocomplete", [
 			})
 		}
 		services.autoCompleteService.mixed(["village", "character", "tribe"], param, function(a) {
-			for (var d in a.result) a.result[d].forEach(function(a, c) {
-				a.type = type, a.leftIcon = "size-34x34 icon-26x26-rte-" + type, "village" === type && (a.name = b.getLabel(a)), list.push(a)
-			});
+			for (var d in a.result){
+				if(a.result.hasOwnProperty(d)){
+					a.result[d].forEach(function(a, c) {
+						a.type = type, a.leftIcon = "size-34x34 icon-26x26-rte-" + type, "village" === type && (a.name = b.getLabel(a)), list.push(a)
+					})
+				}
+			}
 			callback(list)
 		});
 //		f.emit(g.AUTOCOMPLETE, {
