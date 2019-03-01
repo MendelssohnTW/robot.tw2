@@ -189,11 +189,10 @@ define("robotTW2/controllers/SpyController", [
 		$scope.isRunning = services.SpyService.isRunning();
 
 		$scope.autoCompleteKey = function(event){
-			var id = 0;
-			var b = "origin" === a ? w : x,
-					c = b.val();
-			if (c.length < 2) return autocomplete.hide();
-			autocomplete.search(c, function(list) {
+			var id = event.srcElement.id;
+			var valeu = event.srcElement.value;
+			if (!valeu || valeu.length < 2) return autocomplete.hide();
+			autocomplete.search(valeu, function(list) {
 				list.length && autocomplete.show(list, b[0], id)
 			}, ["village"])
 		}
