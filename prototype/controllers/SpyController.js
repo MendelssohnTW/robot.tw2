@@ -80,7 +80,7 @@ define("robotTW2/autocomplete", [
 //		c(list)
 //		})
 	}, n
-},
+}),
 define("robotTW2/controllers/SpyController", [
 	"robotTW2/services",
 	"robotTW2/providers",
