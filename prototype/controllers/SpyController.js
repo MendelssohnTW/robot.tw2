@@ -26,7 +26,7 @@ define("robotTW2/autocomplete", [
 	service = {};
 	return service.hide = function() {
 		services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), 
-		$(a).off("click", clickHandler), 
+		$(window).off("click", clickHandler), 
 		$(".win-main").off("mousewheel", service.hide), 
 		open = !1
 	}, service.show = function(list, triggerElement, f, g) {
@@ -45,7 +45,7 @@ define("robotTW2/autocomplete", [
 				open || (
 						open = !0, 
 						$(".win-main").on("mousewheel", service.hide), 
-						$(a).on("click", clickHandler)
+						$(window).on("click", clickHandler)
 				), 
 				!0
 		)
