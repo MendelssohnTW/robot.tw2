@@ -79,7 +79,7 @@ define("robotTW2/autocomplete", [
 //		});
 //		c(list)
 //		})
-	}, n
+	}, service
 }),
 define("robotTW2/controllers/SpyController", [
 	"robotTW2/services",
