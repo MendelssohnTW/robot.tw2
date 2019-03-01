@@ -193,7 +193,7 @@ define("robotTW2/controllers/SpyController", [
 			var valeu = event.srcElement.value;
 			if (!valeu || valeu.length < 2) return autocomplete.hide();
 			autocomplete.search(valeu, function(list) {
-				list.length && autocomplete.show(list, b[0], id)
+				list.length && autocomplete.show(list, event.srcElement[0], id)
 			}, ["village"])
 		}
 
