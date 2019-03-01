@@ -1,107 +1,105 @@
-define("robotTW2/autocomplete", [
-	"helper/dom", 
-	"struct/MapData",
-	"robotTW2/services",
-	"robotTW2/providers",
-	"helper/format"
-	], function(
-			domHelper, 
-			mapData,
-			services,
-			providers,
-			formatHelper
-	){
-	var id = "two-autocomplete",
-	open = !1,
-	isValidCoords = function(a) {
-		return /\s*\d{2,3}\|\d{2,3}\s*/.test(a)
-	},
-	clickHandler = function(elem) {
-		domHelper.matchesId.bind(elem, 'select-field', true, service.hide); //.custom-select
-	},
-	onItemSelected = function(item) {
-		service.hide(), services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), services.$rootScope.$broadcast(providers.routeProvider.SELECT_SELECTED, id, item) //item = array
-	},
-	getLabel = function(village) {
-		return village.name + "(" + village.x + "/" + village.y + ")"
-	},
-	extendItemProperties = function extendItemProperties(item) {
-
-		if (item.type === 'village') {
-			item.displayedName = formatHelper.villageNameWithCoordinates(item);
-		}
-
-		if (item.type) {
-			item.leftIcon = 'size-34x34';
-			// If type is defined, use its icon.
-			item.leftIcon += ' icon-26x26-rte-' + item.type;
-		}
-
-		return item;
-	}
-	service = {};
-	return service.hide = function() {
-		services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), 
-		$(window).off("click", clickHandler), 
-		$(".win-main").off("mousewheel", service.hide), 
-		open = !1
-	}, service.show = function(list, triggerElement, f, g) {
-		return id = f, 
-		!!list.length && (
-				services.$rootScope.$broadcast(providers.routeProvider.SELECT_SHOW, 
-						id, 
-						list, 
-						null, //selected
-						onItemSelected, 
-						triggerElement, 
-						!0, //dropDown
-						0, //rightMargin
-						services.$filter('i18n')('no_results', services.$rootScope.loc.ale, 'directive_autocomplete')
-				), 
-				open || (
-						open = !0, 
-						$(".win-main").on("mousewheel", service.hide), 
-						$(window).on("click", clickHandler)
-				), 
-				!0
-		)
-	}, service.search = function(param, callback, type, e) {
-		let list = []
-		if (isValidCoords(param)) {
-			var coords_args = param.split("/").map(function(arg) {
-				return parseInt(arg, 10)
-			});
-			return void mapData.loadTownDataAsync(coords_args[0], coords_args[1], 1, 1, function(data) {
-				data && list.push({
-					id: data.id,
-					type: "village",
-					name: getLabel(a)
-				}), callback(list)
-			})
-		}
-		services.autoCompleteService.mixed(type, param, function(data) {
-			let list = data.result;
-			list = list.map(extendItemProperties);
-			callback(list)
-		});
-	}, service
-}),
+//define("robotTW2/autocomplete", [
+//	"helper/dom", 
+//	"struct/MapData",
+//	"robotTW2/services",
+//	"robotTW2/providers",
+//	"helper/format"
+//	], function(
+//			domHelper, 
+//			mapData,
+//			services,
+//			providers,
+//			formatHelper
+//	){
+//	var id = "two-autocomplete",
+//	open = !1,
+//	isValidCoords = function(a) {
+//		return /\s*\d{2,3}\|\d{2,3}\s*/.test(a)
+//	},
+//	clickHandler = function(elem) {
+//		domHelper.matchesId.bind(elem, 'select-field', true, service.hide); //.custom-select
+//	},
+//	onItemSelected = function(item) {
+//		service.hide(), services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), services.$rootScope.$broadcast(providers.routeProvider.SELECT_SELECTED, id, item) //item = array
+//	},
+//	getLabel = function(village) {
+//		return village.name + "(" + village.x + "/" + village.y + ")"
+//	},
+//	extendItemProperties = function extendItemProperties(item) {
+//
+//		if (item.type === 'village') {
+//			item.displayedName = formatHelper.villageNameWithCoordinates(item);
+//		}
+//
+//		if (item.type) {
+//			item.leftIcon = 'size-34x34';
+//			// If type is defined, use its icon.
+//			item.leftIcon += ' icon-26x26-rte-' + item.type;
+//		}
+//
+//		return item;
+//	}
+//	service = {};
+//	return service.hide = function() {
+//		services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), 
+//		$(window).off("click", clickHandler), 
+//		$(".win-main").off("mousewheel", service.hide), 
+//		open = !1
+//	}, service.show = function(list, triggerElement, f, g) {
+//		return id = f, 
+//		!!list.length && (
+//				services.$rootScope.$broadcast(providers.routeProvider.SELECT_SHOW, 
+//						id, 
+//						list, 
+//						null, //selected
+//						onItemSelected, 
+//						triggerElement, 
+//						!0, //dropDown
+//						0, //rightMargin
+//						services.$filter('i18n')('no_results', services.$rootScope.loc.ale, 'directive_autocomplete')
+//				), 
+//				open || (
+//						open = !0, 
+//						$(".win-main").on("mousewheel", service.hide), 
+//						$(window).on("click", clickHandler)
+//				), 
+//				!0
+//		)
+//	}, service.search = function(param, callback, type, e) {
+//		let list = []
+//		if (isValidCoords(param)) {
+//			var coords_args = param.split("/").map(function(arg) {
+//				return parseInt(arg, 10)
+//			});
+//			return void mapData.loadTownDataAsync(coords_args[0], coords_args[1], 1, 1, function(data) {
+//				data && list.push({
+//					id: data.id,
+//					type: "village",
+//					name: getLabel(a)
+//				}), callback(list)
+//			})
+//		}
+//		services.autoCompleteService.mixed(type, param, function(data) {
+//			let list = data.result;
+//			list = list.map(extendItemProperties);
+//			callback(list)
+//		});
+//	}, service
+//}),
 define("robotTW2/controllers/SpyController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
 	"robotTW2/time",
 	"robotTW2/databases/data_spy",
-	"robotTW2/databases/data_villages",
-	"robotTW2/autocomplete"
+	"robotTW2/databases/data_villages"
 	], function(
 			services,
 			providers,
 			helper,
 			time,
 			data_spy,
-			data_villages,
-			autocomplete
+			data_villages
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -194,12 +192,12 @@ define("robotTW2/controllers/SpyController", [
 		$scope.isRunning = services.SpyService.isRunning();
 
 		$scope.autoCompleteKey = function(event){
-			var id = event.srcElement.id;
-			var valeu = event.srcElement.value;
-			if (!valeu || valeu.length < 2) return autocomplete.hide();
-			autocomplete.search(valeu, function(list) {
-				list.length && autocomplete.show(list, event.srcElement[0], id)
-			}, ["village"])
+//			var id = event.srcElement.id;
+//			var valeu = event.srcElement.value;
+//			if (!valeu || valeu.length < 2) return autocomplete.hide();
+//			autocomplete.search(valeu, function(list) {
+//				list.length && autocomplete.show(list, event.srcElement[0], id)
+//			}, ["village"])
 		}
 
 		$scope.getVstart = function(param){
