@@ -1,17 +1,102 @@
+define("robotTW2/autocomplete", [
+	"helper/dom", 
+	"struct/MapData",
+	"robotTW2/services",
+	"robotTW2/providers",
+	], function(
+			domHelper, 
+			mapData,
+			services,
+			providers
+	){
+	var id = "two-autocomplete",
+	open = !1,
+	isValidCoords = function(a) {
+		return /\s*\d{2,3}\|\d{2,3}\s*/.test(a)
+	},
+	clickHandler = function(elem) {
+		domHelper.matchesId.bind(elem, 'select-field', true, service.hide); //.custom-select
+	},
+	onItemSelected = function(item) {
+		service.hide(), services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), services.$rootScope.$broadcast(providers.routeProvider.SELECT_SELECTED, id, item) //item = array
+	},
+	getLabel = function(village) {
+		return village.name + "(" + village.x + "/" + village.y + ")"
+	},
+	service = {};
+	return service.hide = function() {
+		services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), 
+		$(a).off("click", clickHandler), 
+		$(".win-main").off("mousewheel", service.hide), 
+		open = !1
+	}, service.show = function(list, triggerElement, f, g) {
+		return id = f, 
+		!!list.length && (
+				services.$rootScope.$broadcast(providers.routeProvider.SELECT_SHOW, 
+						id, 
+						list, 
+						null, //selected
+						onItemSelected, 
+						triggerElement, 
+						!0, //dropDown
+						0, //rightMargin
+						noResultTranslation || services.$filter('i18n')('no_results', services.$rootScope.loc.ale, 'directive_autocomplete')
+				), 
+				open || (
+						open = !0, 
+						$(".win-main").on("mousewheel", service.hide), 
+						$(a).on("click", clickHandler)
+				), 
+				!0
+		)
+	}, service.search = function(param, callback, type, e) {
+		var list = [];
+		if (isValidCoords(param)) {
+			var coords_args = param.split("/").map(function(arg) {
+				return parseInt(arg, 10)
+			});
+			return void mapData.loadTownDataAsync(coords_args[0], coords_args[1], 1, 1, function(data) {
+				data && list.push({
+					id: data.id,
+					type: "village",
+					name: getLabel(a)
+				}), callback(list)
+			})
+		}
+		services.autoCompleteService.mixed(["village", "character", "tribe"], param, function(a) {
+			for (var d in a.result) a.result[d].forEach(function(a, c) {
+				a.type = type, a.leftIcon = "size-34x34 icon-26x26-rte-" + type, "village" === type && (a.name = b.getLabel(a)), list.push(a)
+			});
+			callback(list)
+		});
+//		f.emit(g.AUTOCOMPLETE, {
+//		types: d || ["village", "character", "tribe"],
+//		string: a,
+//		amount: e || 5
+//		}, function(a) {
+//		for (var d in a.result) a.result[d].forEach(function(a, c) {
+//		a.type = d, a.leftIcon = "size-34x34 icon-26x26-rte-" + d, "village" === d && (a.name = b.genVillageLabel(a)), list.push(a)
+//		});
+//		c(list)
+//		})
+	}, n
+},
 define("robotTW2/controllers/SpyController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
 	"robotTW2/time",
 	"robotTW2/databases/data_spy",
-	"robotTW2/databases/data_villages"
+	"robotTW2/databases/data_villages",
+	"robotTW2/autocomplete"
 	], function(
 			services,
 			providers,
 			helper,
 			time,
 			data_spy,
-			data_villages
+			data_villages,
+			autocomplete
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -32,7 +117,7 @@ define("robotTW2/controllers/SpyController", [
 //		type: "units"
 
 
-		
+
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
@@ -72,9 +157,9 @@ define("robotTW2/controllers/SpyController", [
 			})
 			return $scope.local_data_villages;
 		})
-		
+
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
-		
+
 		if (!$scope.$$phase) {$scope.$apply()}
 
 		var setActiveTab = function setActiveTab(tab) {
@@ -103,10 +188,19 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.isRunning = services.SpyService.isRunning();
 
-//		$scope.autoCompleteKey = function(event){
-//			var scope = angular.element($("[world-map-search]")[1]).scope()
-//			scope.autoCompleteKeyUp(event)
-//		}
+		$scope.autoCompleteKey = function(event){
+			var scope = angular.element($("[world-map-search]")[1]).scope()
+			scope.autoCompleteKeyUp(event)
+			return function() {
+				var b = "origin" === a ? w : x,
+						c = b.val();
+				if (c.length < 2) return j.hide();
+				j.search(c, function(c) {
+					c.length && j.show(c, b[0], "commandQueue-" + a)
+				}, ["village"])
+			}
+
+		}
 
 		$scope.getVstart = function(param){
 			var vid = param.start_village;
