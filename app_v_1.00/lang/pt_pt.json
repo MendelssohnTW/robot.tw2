@@ -152,6 +152,8 @@
 		"init_hour": "Hora de início",
 		"terminate_hour": "Hora de término",
 		"time_cicle": "Tempo do ciclo de farm",
+		"time_infinite": "Ciclo infinito",
+		"time_finite": "Ciclo limitado",
 		"init_date": "Data de início",
 		"terminate_date": "Data de término",
 		"text_origin": "Origem ",
