@@ -105,7 +105,7 @@ define("robotTW2/controllers/FarmController", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function (villageId, distance, units) {
-			if($scope.activeTab != TABS.FARM){return}
+			if($scope.activeTab != TABS.PRESET){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
