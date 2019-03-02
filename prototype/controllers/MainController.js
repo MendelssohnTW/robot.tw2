@@ -37,7 +37,7 @@ define("robotTW2/controllers/MainController", [
 		
 		$scope.getInit = function getStatus(fn){
 			var status;
-			return fn.isInitilized();
+			return fn.isInitialized();
 		}
 		
 		for (var name in $scope.extensions) {
