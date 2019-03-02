@@ -695,7 +695,7 @@ define("robotTW2/services/FarmService", [
 				data_log.farm = [];
 				data_villages.getAssignedPresets();
 
-				if(!data_farm.infinite){
+				if(!data_farm.infinite && data_farm.farm_time != 0){
 					if ((data_farm.farm_time_stop - time.convertedTime()) - data_farm.farm_time > 0) {
 						var tempo_delay = data_farm.farm_time_start - time.convertedTime();
 						if(tempo_delay < 0) {
@@ -717,6 +717,10 @@ define("robotTW2/services/FarmService", [
 						return;
 					}
 				} else {
+					if(!data_farm.farm_time || data_farm.farm_time == 0){
+						data_farm.infinite = true;
+						data_farm.set();
+					}
 					execute_init(true)
 				}
 			}, ["all_villages_ready"])
