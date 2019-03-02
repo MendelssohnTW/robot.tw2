@@ -48,6 +48,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.data_farm = data_farm;
 		$scope.text_version = $scope.version + " " + data_farm.version;
 		$scope.list_exceptions = {};
+		$scope.infinite = data_farm.infinite;
 
 		function getVillage(vid){
 			if(!vid){return}
@@ -78,7 +79,7 @@ define("robotTW2/controllers/FarmController", [
 		, presetIds = []
 		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, update = function () {
-			if(!data_farm.infinite){
+			if(!$scope.infinite){
 				if(!$scope.data_farm.farm_time_start || $scope.data_farm.farm_time_start < time.convertedTime()) {
 					$scope.data_farm.farm_time_start = time.convertedTime();
 				}
@@ -220,11 +221,12 @@ define("robotTW2/controllers/FarmController", [
 		initTab();
 
 		$scope.togleInfinite = function(){
-			if(data_farm.infinite){
-				data_farm.infinite = false
+			if($scope.infinite){
+				$scope.infinite = false
 			} else {
-				data_farm.infinite = true
+				$scope.infinite = true
 			}
+			data_farm.infinite = $scope.infinite; 
 			data_farm.set();
 			update();
 		}
@@ -239,7 +241,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blur = function (callback) {
-			if($scope.activeTab != TABS.FARM || data_farm.infinite){return}
+			if($scope.activeTab != TABS.FARM || $scope.infinite){return}
 			$scope.farm_time = $("#farm_time").val()
 			$scope.inicio_de_farm = $("#inicio_de_farm").val()
 			$scope.termino_de_farm = $("#termino_de_farm").val()
