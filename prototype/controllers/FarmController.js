@@ -241,6 +241,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.blur = function (callback) {
 			if($scope.activeTab != TABS.FARM){return}
 			$scope.farm_time = $("#farm_time").val()
+			
 			if(!$scope.infinite){
 				$scope.inicio_de_farm = $("#inicio_de_farm").val()
 				$scope.termino_de_farm = $("#termino_de_farm").val()
@@ -254,6 +255,7 @@ define("robotTW2/controllers/FarmController", [
 				var tempo_escolhido_inicio = new Date($scope.data_inicio_de_farm + " " + $scope.inicio_de_farm).getTime();
 				var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
 
+				
 				if(tempo_escolhido_inicio > tempo_escolhido_termino || !tempo_escolhido_termino) {
 					tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
 					$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
@@ -265,6 +267,10 @@ define("robotTW2/controllers/FarmController", [
 				document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
 				document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
+				if(helper.unreadableSeconds($scope.farm_time) * 1000 == 0){
+					$scope.infinite = true
+				}
+				
 				$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
 				$scope.data_farm.farm_time_start = tempo_escolhido_inicio
 				$scope.data_farm.farm_time_stop = tempo_escolhido_termino
