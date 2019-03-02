@@ -673,7 +673,7 @@ define("robotTW2/services/FarmService", [
 				}
 				, g = function(){
 					if(!isRunning) {return}
-					execute_cicle(tempo).then(function(){
+					execute_cicle(0).then(function(){
 						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 						data_log.set()
 						g()
