@@ -695,7 +695,7 @@ define("robotTW2/services/FarmService", [
 				data_log.farm = [];
 				data_villages.getAssignedPresets();
 
-				if(!data_farm.farm_infinite){
+				if(!data_farm.infinite){
 					if ((data_farm.farm_time_stop - time.convertedTime()) - data_farm.farm_time > 0) {
 						var tempo_delay = data_farm.farm_time_start - time.convertedTime();
 						if(tempo_delay < 0) {
