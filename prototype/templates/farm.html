@@ -69,8 +69,9 @@
 								class="input-border inpd" type="date" id="data_termino_de_farm"
 								value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
 								ng-blur="blur()"></td>
-							<td class="cell-right"><label for="cicle_infinite"
-								style="margin-left: 12px; margin-right: 12px;">{{time_infinite}}</label><a
+							<td class="cell-right"><label ng-show="infinite" for="cicle_infinite"
+								style="margin-left: 12px; margin-right: 12px;">{{time_infinite}}</label><label ng-show="!infinite" for="cicle_infinite"
+                                style="margin-left: 12px; margin-right: 12px;">{{time_finite}}</label><a
 								id="cicle_infinite" href="#" class="size-34x34 btn-orange"
 								ng-class="{'icon-26x26-check-positive' : infinite, 'icon-26x26-check-negative' : !infinite}"
 								ng-click="togleInfinite()"></a></td>
