@@ -23,49 +23,55 @@
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
 		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
-		<div class="version"><h5>{{text_version}}</h5></div>
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
 			<div class="scroll-wrap farm" style="margin-bottom: 100px">
 				<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 					<colgroup>
-						<col width="50%">
+						<col width="33%">
+						<col width="33%">
 						<col width="*">
 					</colgroup>
 
 					<tbody>
 						<tr>
-							<td class="cell-right"><label for="inicio_de_farm"
+							<td ng-show="!data_farm.infinite" class="cell-right"><label for="inicio_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
 								class="input-border inpt" type="time" id="inicio_de_farm"
 								step="1" min="00:00:00" max="23:59:59"
 								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 								ng-blur="blur()"></td>
-							<td class="cell-right"><label for="data_inicio_de_farm"
+							<td ng-show="!data_farm.infinite" class="cell-right"><label for="data_inicio_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
 								class="input-border inpd" type="date" id="data_inicio_de_farm"
 								value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
 								ng-blur="blur()"></td>
-						</tr>
-						<tr>
-							<td class="cell-right"><label for="termino_de_farm"
-								style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
-								class="input-border inpt" type="time" id="termino_de_farm"
-								step="1" min="00:00:00" max="23:59:59"
-								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
-								ng-blur="blur()"></td>
-							<td class="cell-right"><label for="data_termino_de_farm"
-								style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
-								class="input-border inpd" type="date" id="data_termino_de_farm"
-								value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
-								ng-blur="blur()"></td>
-
-						</tr>
-						<tr>
 							<td class="cell-right"><label for="farm_time"
 								style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
 								class="input-border inpt" type="time" id="farm_time" step="1"
 								min="00:00:00" max="23:59:59" value="{{getFarmTime()}}"
 								ng-blur="blur()"></td>
-							<td>
+						</tr>
+						<tr>
+							<td ng-show="!data_farm.infinite" class="cell-right"><label for="termino_de_farm"
+								style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
+								class="input-border inpt" type="time" id="termino_de_farm"
+								step="1" min="00:00:00" max="23:59:59"
+								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
+								ng-blur="blur()"></td>
+							<td ng-show="!data_farm.infinite" class="cell-right"><label for="data_termino_de_farm"
+								style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
+								class="input-border inpd" type="date" id="data_termino_de_farm"
+								value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
+								ng-blur="blur()"></td>
+							<td><a href="#" class="size-34x34 btn-orange"
+								ng-class="{'icon-26x26-check-positive' : data_farm.infinite; icon-26x26-check-negative' : !data_farm.infinite}"
+								ng-click="togleInfinite()"></a></td>
+
+						</tr>
+						<tr>
+							<td colspan="3">
 								<div>
 									<span
 										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span>{{farm_running}}
@@ -154,7 +160,9 @@
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.PRESET">
 		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
 			<div class="scroll-wrap preset" style="margin-bottom: 100px">
 				<div class="list-collapse">
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
@@ -407,7 +415,9 @@
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
 		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
 			<div class="scroll-wrap logs" style="margin-bottom: 100px">
 				<div>
 					<table class="tbl-border-light tbl-striped">

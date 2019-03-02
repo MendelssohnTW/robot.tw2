@@ -590,6 +590,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
+				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 				var g = $timeout(function(){
 					data_log.farm.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
@@ -601,7 +602,7 @@ define("robotTW2/services/FarmService", [
 						var village_id = village.data.villageId
 						, presets
 						, aldeia_units;
-						
+
 						if(!village_id || !isRunning || !data_villages.villages[village_id]) {
 							resol();
 							return;
@@ -647,6 +648,40 @@ define("robotTW2/services/FarmService", [
 		, start = function () {
 			if(isRunning) {return}
 			clear()
+
+			function execute_init(opt){
+				
+				var init_first = true;
+				var f = function(){
+					if(!isRunning) {return}
+					if(time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop){
+						var tempo = 0;
+						if(!init_first){
+							tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()));
+						}
+						init_first = false;
+						execute_cicle(tempo).then(function(){
+							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+							data_log.set()
+							f()
+						})
+					} else {
+						clear()
+						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+						data_log.set()
+					}
+				}
+				, g = function(){
+					if(!isRunning) {return}
+					execute_cicle(tempo).then(function(){
+						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+						data_log.set()
+						g()
+					})
+				}
+				opt ? f() : g();
+			}
+
 			ready(function () {
 				requestFn.trigger("Farm/run");
 
@@ -660,47 +695,29 @@ define("robotTW2/services/FarmService", [
 				data_log.farm = [];
 				data_villages.getAssignedPresets();
 
-				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
-
-				if ((data_farm.farm_time_stop - time.convertedTime()) - data_farm.farm_time > 0) {
-					var tempo_delay = data_farm.farm_time_start - time.convertedTime();
-					if(tempo_delay < 0) {
-						tempo_delay = 0
+				if(!data_farm.farm_infinite){
+					if ((data_farm.farm_time_stop - time.convertedTime()) - data_farm.farm_time > 0) {
+						var tempo_delay = data_farm.farm_time_start - time.convertedTime();
+						if(tempo_delay < 0) {
+							tempo_delay = 0
+						} else {
+							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
+							data_log.farm.push({"text":$filter("i18n")("wait_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+							data_log.set()
+						};
+						interval_init = $timeout(function () {
+							execute_init()
+						}, tempo_delay);
+						return;
 					} else {
-						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("wait_init", $rootScope.loc.ale, "farm")})
-						data_log.farm.push({"text":$filter("i18n")("wait_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+						isRunning = !1;
+						$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: $filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm")})
+						data_log.farm.push({"text":$filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 						data_log.set()
-					};
-					interval_init = $timeout(function () {
-						var init_first = true;
-						var f = function(){
-							if(time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop){
-								var tempo = 0;
-								if(!init_first){
-									tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()));
-								}
-								init_first = false;
-								execute_cicle(tempo).then(function(){
-									data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
-									data_log.set()
-									f()
-								})
-							} else {
-								clear()
-								data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
-								data_log.set()
-							}
-						}
-						f()
-
-					}, tempo_delay);
-					return;
+						return;
+					}
 				} else {
-					isRunning = !1;
-					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: $filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm")})
-					data_log.farm.push({"text":$filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
-					data_log.set()
-					return;
+					execute_init(true)
 				}
 			}, ["all_villages_ready"])
 		}

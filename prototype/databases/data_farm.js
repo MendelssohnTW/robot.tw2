@@ -39,7 +39,8 @@ define("robotTW2/databases/data_farm", [
 			list_exceptions			: [],
 			commands				: {},
 			troops_not				: conf.TROOPS_NOT.FARM,
-			name					: "data_farm"
+			name					: "data_farm",
+			infinite				: true
 	}
 
 	if(!data_farm){

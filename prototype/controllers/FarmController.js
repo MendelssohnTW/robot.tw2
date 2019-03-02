@@ -24,7 +24,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		
+
 		var self = this,
 		local_data_villages = {};
 		var TABS = {
@@ -47,6 +47,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
 		$scope.text_version = $scope.version + " " + data_farm.version;
+		$scope.list_exceptions = {};
 
 		function getVillage(vid){
 			if(!vid){return}
@@ -77,13 +78,11 @@ define("robotTW2/controllers/FarmController", [
 		, presetIds = []
 		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, update = function () {
-			if($scope.data_farm.farm_time_start < time.convertedTime()) {
-				$scope.data_farm.farm_time_start = time.convertedTime();
-			}
-			if(!$scope.data_farm.farm_time_stop){
-				$scope.blur()
-			} else {
-				if($scope.data_farm.farm_time_stop < $scope.data_farm.farm_time_start) {
+			if(!data_farm.infinite){
+				if(!$scope.data_farm.farm_time_start || $scope.data_farm.farm_time_start < time.convertedTime()) {
+					$scope.data_farm.farm_time_start = time.convertedTime();
+				}
+				if(!$scope.data_farm.farm_time_stop || $scope.data_farm.farm_time_stop < $scope.data_farm.farm_time_start) {
 					$scope.data_farm.farm_time_stop = $scope.data_farm.farm_time_start + 86400000;
 				}
 			}
@@ -91,6 +90,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function (villageId, journey_time, units) {
+			if($scope.activeTab != TABS.FARM){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
@@ -104,6 +104,7 @@ define("robotTW2/controllers/FarmController", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function (villageId, distance, units) {
+			if($scope.activeTab != TABS.FARM){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
@@ -218,6 +219,16 @@ define("robotTW2/controllers/FarmController", [
 
 		initTab();
 
+		$scope.togleInfinite = function(){
+			if(data_farm.infinite){
+				data_farm.infinite = false
+			} else {
+				data_farm.infinite = true
+			}
+			data_farm.set();
+			update();
+		}
+
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
@@ -228,37 +239,36 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blur = function (callback) {
-			if($scope.activeTab == TABS.FARM){
-				$scope.farm_time = $("#farm_time").val()
-				$scope.inicio_de_farm = $("#inicio_de_farm").val()
-				$scope.termino_de_farm = $("#termino_de_farm").val()
-				$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
-				$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
+			if($scope.activeTab != TABS.FARM || data_farm.infinite){return}
+			$scope.farm_time = $("#farm_time").val()
+			$scope.inicio_de_farm = $("#inicio_de_farm").val()
+			$scope.termino_de_farm = $("#termino_de_farm").val()
+			$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
+			$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
 
-				if($scope.farm_time.length <= 5) {
-					$scope.farm_time = $scope.farm_time + ":00"
-				}
-
-				var tempo_escolhido_inicio = new Date($scope.data_inicio_de_farm + " " + $scope.inicio_de_farm).getTime();
-				var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
-				
-				if(tempo_escolhido_inicio > tempo_escolhido_termino || !tempo_escolhido_termino) {
-					tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
-					$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
-					$scope.data_termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "yyyy-MM-dd");
-				}
-
-				document.getElementById("data_termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "yyyy-MM-dd");
-				document.getElementById("data_inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "yyyy-MM-dd");
-				document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
-				document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
-
-				$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
-				$scope.data_farm.farm_time_start = tempo_escolhido_inicio
-				$scope.data_farm.farm_time_stop = tempo_escolhido_termino
-
-				update()
+			if($scope.farm_time.length <= 5) {
+				$scope.farm_time = $scope.farm_time + ":00"
 			}
+
+			var tempo_escolhido_inicio = new Date($scope.data_inicio_de_farm + " " + $scope.inicio_de_farm).getTime();
+			var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
+
+			if(tempo_escolhido_inicio > tempo_escolhido_termino || !tempo_escolhido_termino) {
+				tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
+				$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
+				$scope.data_termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "yyyy-MM-dd");
+			}
+
+			document.getElementById("data_termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "yyyy-MM-dd");
+			document.getElementById("data_inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "yyyy-MM-dd");
+			document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
+			document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
+
+			$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
+			$scope.data_farm.farm_time_start = tempo_escolhido_inicio
+			$scope.data_farm.farm_time_stop = tempo_escolhido_termino
+
+			update()
 
 			if(callback != undefined && typeof(callback) == "function") {
 				callback()
@@ -411,21 +421,23 @@ define("robotTW2/controllers/FarmController", [
 
 		function getDetailsExceptions() {
 			var my_village_id = services.modelDataService.getSelectedVillage().getId();
-			$scope.list_exceptions = {};
-			$scope.data_farm.list_exceptions.forEach(function (vid) {
-				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-					'village_id'	: vid,
-					'my_village_id'	: my_village_id,
-					'num_reports'	: 5
-				}, function (data) {
-					$scope.list_exceptions[data.village_id] = {
-							village_name : data.village_name,
-							village_x : data.village_x,
-							village_y : data.village_y
-					}
-					if (!$scope.$$phase) $scope.$apply();
+
+			if(!bject.keys($scope.list_exceptions).length){
+				$scope.data_farm.list_exceptions.forEach(function (vid) {
+					services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+						'village_id'	: vid,
+						'my_village_id'	: my_village_id,
+						'num_reports'	: 5
+					}, function (data) {
+						$scope.list_exceptions[data.village_id] = {
+								village_name : data.village_name,
+								village_x : data.village_x,
+								village_y : data.village_y
+						}
+						if (!$scope.$$phase) $scope.$apply();
+					})
 				})
-			})
+			}
 		}
 
 		getDetailsExceptions();
