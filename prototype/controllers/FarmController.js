@@ -91,7 +91,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function (villageId, journey_time, units) {
-			if($scope.activeTab != TABS.FARM){return}
+			if($scope.activeTab != TABS.PRESET){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
