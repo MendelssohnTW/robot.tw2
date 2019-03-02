@@ -36,14 +36,14 @@
 
 					<tbody>
 						<tr>
-							<td ng-show="!data_farm.infinite" class="cell-right"><label
+							<td ng-show="!infinite" class="cell-right"><label
 								for="inicio_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
 								class="input-border inpt" type="time" id="inicio_de_farm"
 								step="1" min="00:00:00" max="23:59:59"
 								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 								ng-blur="blur()"></td>
-							<td ng-show="!data_farm.infinite" class="cell-right"><label
+							<td ng-show="!infinite" class="cell-right"><label
 								for="data_inicio_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
 								class="input-border inpd" type="date" id="data_inicio_de_farm"
@@ -56,14 +56,14 @@
 								ng-blur="blur()"></td>
 						</tr>
 						<tr>
-							<td ng-show="!data_farm.infinite" class="cell-right"><label
+							<td ng-show="!infinite" class="cell-right"><label
 								for="termino_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
 								class="input-border inpt" type="time" id="termino_de_farm"
 								step="1" min="00:00:00" max="23:59:59"
 								value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 								ng-blur="blur()"></td>
-							<td ng-show="!data_farm.infinite" class="cell-right"><label
+							<td ng-show="!infinite" class="cell-right"><label
 								for="data_termino_de_farm"
 								style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
 								class="input-border inpd" type="date" id="data_termino_de_farm"
@@ -72,7 +72,7 @@
 							<td class="cell-right"><label for="cicle_infinite"
 								style="margin-left: 12px; margin-right: 12px;">{{time_infinite}}</label><a
 								id="cicle_infinite" href="#" class="size-34x34 btn-orange"
-								ng-class="{'icon-26x26-check-positive' : data_farm.infinite; icon-26x26-check-negative' : !data_farm.infinite}"
+								ng-class="{'icon-26x26-check-positive' : infinite; 'icon-26x26-check-negative' : !infinite}"
 								ng-click="togleInfinite()"></a></td>
 
 						</tr>
