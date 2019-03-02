@@ -562,8 +562,9 @@ define("robotTW2/services/FarmService", [
 										data_log.set()
 										resol()
 									}
+								} else {
+									loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 								}
-								loadVillages(cmd_preset, listaGrid).then(resolve_presets);
 							})
 							.then(function(c_preset){
 								promise_preset = undefined
@@ -582,6 +583,7 @@ define("robotTW2/services/FarmService", [
 					}
 					t(cmd_preset)
 				})
+
 				commands_for_presets = null;
 			})
 		}
@@ -592,8 +594,7 @@ define("robotTW2/services/FarmService", [
 			return new Promise(function(resol){
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 				var g = $timeout(function(){
-					data_log.farm.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
-					$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
+
 					clear()
 					var commands_for_presets = []
 					var villages = modelDataService.getSelectedCharacter().getVillageList();
@@ -650,7 +651,7 @@ define("robotTW2/services/FarmService", [
 			clear()
 
 			function execute_init(opt){
-				
+
 				var init_first = true;
 				var f = function(){
 					if(!isRunning) {return}
@@ -706,6 +707,8 @@ define("robotTW2/services/FarmService", [
 							data_log.set()
 						};
 						interval_init = $timeout(function () {
+							data_log.farm.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
 							execute_init()
 						}, tempo_delay);
 						return;
