@@ -47,8 +47,8 @@
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div tooltip
-																	tooltip-content="{{ext.initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
-																	switch-slider="" border="true" enabled="!ext.initialized"
+																	tooltip-content="{{ext.init_initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
+																	switch-slider="" border="true" enabled="true"
 																	value="ext.init_initialized"
 																	vertical="false"
 																	size="'56x28'">
@@ -68,7 +68,7 @@
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div switch-slider="" border="true"
-																	enabled="ext.initialized && ext.status == 'running'"
+																	enabled="ext.init_initialized"
 																	value="ext.auto_start" ng-click="toggleValueInit(ext)"
 																	vertical="false" size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
@@ -95,12 +95,12 @@
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="startExt(ext.name)"
-															ng-class="{'btn-grey': ext.status == running || !ext.initialized || ext.initialized == false}"><span
+															ng-class="{'btn-grey': ext.status == 'running' || !ext.init_initialized}"><span
 																id="span-text" class="text">{{START}}</span></a></td>
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="stopExt(ext.name)"
-															ng-class="{'btn-grey': ext.status == stopped || !ext.initialized || ext.initialized == false}"><span
+															ng-class="{'btn-grey': ext.status == 'stopped' || !ext.init_initialized}"><span
 																id="span-text" class="text">{{STOP}}</span></a></td>
 													</tr>
 												</tbody>
