@@ -153,6 +153,13 @@ define("robotTW2/controllers/FarmController", [
 					$scope.data_villages.villages[$scope.villageSelected].presets[elem].max_points_farm = $scope.presetSelected.max_points_farm
 					$scope.data_villages.villages[$scope.villageSelected].presets[elem].max_commands_farm = $scope.presetSelected.max_commands_farm
 				})
+				triggerUpdate(function(){
+					$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
+							function(elem){
+								if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
+							}).filter(f=>f!=undefined)[0]
+					)
+				});
 //				$scope.data_villages.villages[$scope.villageSelected].presets = obj;
 			} else {
 				$scope.presetSelected.max_journey_distance = get_dist($scope.villageSelected, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)
@@ -162,15 +169,6 @@ define("robotTW2/controllers/FarmController", [
 			}
 
 			if (!$scope.$$phase) {$scope.$apply();}
-			if($scope.update_all_presets){
-				triggerUpdate(function(){
-					$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
-							function(elem){
-								if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-							}).filter(f=>f!=undefined)[0]
-					)
-				});
-			}
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function(){
