@@ -422,7 +422,7 @@ define("robotTW2/controllers/FarmController", [
 		function getDetailsExceptions() {
 			var my_village_id = services.modelDataService.getSelectedVillage().getId();
 
-			if(!bject.keys($scope.list_exceptions).length){
+			if(!Object.keys($scope.list_exceptions).length){
 				$scope.data_farm.list_exceptions.forEach(function (vid) {
 					services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 						'village_id'	: vid,
