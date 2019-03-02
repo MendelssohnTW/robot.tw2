@@ -46,9 +46,9 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
-		$scope.text_version = $scope.version + " " + data_farm.version;
+		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
 		$scope.list_exceptions = {};
-		$scope.infinite = data_farm.infinite;
+		$scope.infinite = $scope.data_farm.infinite;
 
 		function getVillage(vid){
 			if(!vid){return}
@@ -224,8 +224,7 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				$scope.infinite = true
 			}
-			data_farm.infinite = $scope.infinite; 
-			data_farm.set();
+			$scope.data_farm.infinite = $scope.infinite; 
 			update();
 		}
 
@@ -241,21 +240,20 @@ define("robotTW2/controllers/FarmController", [
 		$scope.blur = function (callback) {
 			if($scope.activeTab != TABS.FARM){return}
 			$scope.farm_time = $("#farm_time").val()
-			
+			if($scope.farm_time.length <= 5) {
+				$scope.farm_time = $scope.farm_time + ":00"
+			}
+			$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000 
+
 			if(!$scope.infinite){
 				$scope.inicio_de_farm = $("#inicio_de_farm").val()
 				$scope.termino_de_farm = $("#termino_de_farm").val()
 				$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
 				$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
 
-				if($scope.farm_time.length <= 5) {
-					$scope.farm_time = $scope.farm_time + ":00"
-				}
-
 				var tempo_escolhido_inicio = new Date($scope.data_inicio_de_farm + " " + $scope.inicio_de_farm).getTime();
 				var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
 
-				
 				if(tempo_escolhido_inicio > tempo_escolhido_termino || !tempo_escolhido_termino) {
 					tempo_escolhido_termino = new Date(tempo_escolhido_inicio + 2 * 86400000)
 					$scope.termino_de_farm = services.$filter("date")(tempo_escolhido_termino, "HH:mm:ss");
@@ -270,7 +268,7 @@ define("robotTW2/controllers/FarmController", [
 				if(helper.unreadableSeconds($scope.farm_time) * 1000 == 0){
 					$scope.infinite = true
 				}
-				
+
 				$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
 				$scope.data_farm.farm_time_start = tempo_escolhido_inicio
 				$scope.data_farm.farm_time_stop = tempo_escolhido_termino
@@ -480,8 +478,6 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				addQuadrant(pos)
 			}
-
-
 		}
 
 		$scope.getQuadrant = function (pos) {
@@ -494,7 +490,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.tmMin = "0";
 
 		$scope.getFarmTime = function () {
-
 			var tm = helper.readableMilliseconds($scope.data_farm.farm_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
@@ -531,8 +526,8 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("data_farm", function(){
 			if(!$scope.data_farm){return}
-			data_farm = $scope.data_farm;
-			data_farm.set();
+			$scope.data_farm = $scope.data_farm;
+			$scope.data_farm.set();
 		}, true)
 
 		$scope.$on("$destroy", function() {
