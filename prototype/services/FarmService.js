@@ -679,7 +679,7 @@ define("robotTW2/services/FarmService", [
 						g()
 					})
 				}
-				opt ? f() : g();
+				opt ? g() : f();
 			}
 
 			ready(function () {
