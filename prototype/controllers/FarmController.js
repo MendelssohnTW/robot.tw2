@@ -478,8 +478,6 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				addQuadrant(pos)
 			}
-
-
 		}
 
 		$scope.getQuadrant = function (pos) {
@@ -492,7 +490,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.tmMin = "0";
 
 		$scope.getFarmTime = function () {
-
 			var tm = helper.readableMilliseconds($scope.data_farm.farm_time);
 			if(tm.length == 7) {
 				tm = "0" + tm;
