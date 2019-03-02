@@ -35,11 +35,17 @@ define("robotTW2/controllers/MainController", [
 			return status;
 		}
 		
+		$scope.getInit = function getStatus(fn){
+			var status;
+			return fn.isInitilized();
+		}
+		
 		for (var name in $scope.extensions) {
 			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			var fn = arFn.fn;
 			$scope.extensions[name].status = $scope.getStatus(fn);
+			$scope.extensions[name].initialized = $scope.getInit(fn);
 		}
 
 		var updateCorrection = function(){
