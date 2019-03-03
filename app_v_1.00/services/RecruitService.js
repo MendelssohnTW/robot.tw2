@@ -31,6 +31,7 @@ define("robotTW2/services/RecruitService", [
 		, promise_recruitRequest = undefined 
 		, queue_recruitRequest = []
 		, interval_recruit = null
+		, interval_cicle = null
 		, listener_recruit = undefined
 		, listener_group_updated = undefined
 		, listener_group_created = undefined
@@ -383,6 +384,7 @@ define("robotTW2/services/RecruitService", [
 		, start = function (){
 			if(isRunning){return}
 			ready(function(){
+				interval_cicle = setInterval(recruit, 60 * 60 * 1000)
 				verificarGroups();
 				listener_recruit = $rootScope.$on(providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
 				listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
@@ -411,6 +413,7 @@ define("robotTW2/services/RecruitService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 			$timeout.cancel(listener_recruit);
 			interval_recruit = null
+			interval_cicle = null
 			list = []
 
 		}
