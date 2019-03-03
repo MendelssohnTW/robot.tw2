@@ -210,7 +210,7 @@ define("robotTW2/services/FarmService", [
 			for(unit in units) {
 				if (units.hasOwnProperty(unit)) {
 					if (unit_search == unit) {
-						if(units[unit].available != undefined && units[unit].available >= 5){
+						if(units[unit].available != undefined && units[unit].available >= 2){
 							return true;
 						}
 					}
