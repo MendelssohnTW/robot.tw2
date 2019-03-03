@@ -332,7 +332,6 @@ define("robotTW2/services/FarmService", [
 									var selectedVillage = modelDataService.getSelectedVillage();
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									resolve_send(permit_send)
-//									});
 								} else {
 									resolve_send(true)
 								}
@@ -486,9 +485,9 @@ define("robotTW2/services/FarmService", [
 							});
 
 							for (j = 0; j < listaVil.length; j++) {
-								if (check_village(listaVil[j], cmd_preset)) {
+//								if (check_village(listaVil[j], cmd_preset)) {
 									reg.villages.push(listaVil[j].id);
-								}
+//								}
 							}
 						}
 						resolve_grid(reg.villages)
