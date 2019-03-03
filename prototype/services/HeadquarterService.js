@@ -31,6 +31,7 @@ define("robotTW2/services/HeadquarterService", [
 
 		var o
 		, interval_builder
+		, interval_cicle
 		, q
 		, character
 		, s
@@ -335,6 +336,7 @@ define("robotTW2/services/HeadquarterService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
+				interval_cicle = setInterval(cicle_building, 60 * 60 * 1000)
 				data_headquarter.interval = conf.INTERVAL.HEADQUARTER;
 				data_headquarter.set()
 				listener_building_level_change = $rootScope.$on(providers.eventTypeProvider.BUILDING_LEVEL_CHANGED, cicle_building)
@@ -346,6 +348,7 @@ define("robotTW2/services/HeadquarterService", [
 		}
 		, stop = function(){
 			$timeout.cancel(interval_builder);
+			interval_cicle = undefined;
 			promise = undefined
 			promise_queue = []	
 			promise_next = undefined
