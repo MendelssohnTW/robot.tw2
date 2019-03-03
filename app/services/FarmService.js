@@ -222,7 +222,7 @@ define("robotTW2/services/FarmService", [
 			var f = []
 			for (unit_preset in preset_units) {
 				if (preset_units.hasOwnProperty(unit_preset)) {
-					if(preset_units[unit_preset] >= 5) {
+					if(preset_units[unit_preset] >= 2) {
 						if(data_farm.troops_not.some(elem => elem == unit_preset)) {
 							return !1;
 						} else {
