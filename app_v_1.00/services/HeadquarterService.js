@@ -261,7 +261,7 @@ define("robotTW2/services/HeadquarterService", [
 							}).then(function(repeat){
 								promise_next = undefined;
 								if(repeat){
-									resolve();
+									resolve(true);
 									next_queue = [];
 								} else if(g.length && isRunning){
 									build = g.shift()
@@ -314,10 +314,10 @@ define("robotTW2/services/HeadquarterService", [
 			setList(function(tm){
 				if(isRunning){
 					if(!interval_builder){
-						interval_builder = $timeout(function(){cicle_building()}, tm)
+						interval_builder = $timeout(cicle_building, tm || conf.MIN_INTERVAL)
 					} else {
 						$timeout.cancel(interval_builder);
-						interval_builder = $timeout(function(){cicle_building()}, tm)
+						interval_builder = $timeout(cicle_building, tm || conf.MIN_INTERVAL)
 					}
 				}
 			});

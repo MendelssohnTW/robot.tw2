@@ -520,9 +520,9 @@ define("robotTW2/services/FarmService", [
 					});
 
 					for (j = 0; j < listaVil.length; j++) {
-						if (check_village(listaVil[j], cmd_preset)) {
+//						if (check_village(listaVil[j], cmd_preset)) {
 							reg.villages.push(listaVil[j].id);
-						}
+//						}
 					}
 					resolve_grid(reg.villages)
 				}
