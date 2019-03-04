@@ -284,7 +284,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	}
 	, script_queue = []
 	, promise = undefined
-	, loadScript = function(url){
+	, loadScript = function(url, opt){
 		var t = undefined;
 		if(!promise){
 			promise = new Promise(function(res){
@@ -323,6 +323,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				b.onerror = function(erro){
 					console.log(erro)
+					exports.services.$timeout.cancel(t);
+					t = undefined;
 					res()
 					return
 				}
@@ -330,7 +332,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				b.src = host + url;
 
 				if(!scripts_loaded.find(f => f == url)){
-					if(!scripts_removed.find(f => f == url)){
+					if((opt && scripts_removed.find(f => f == url)) || (!opt && !scripts_removed.find(f => f == url))){
 						document.head.appendChild(b);	
 					}
 				}
@@ -1541,9 +1543,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			var clickHandler,
 			lastRequestedParam,
 			lastRequestDelay,
-            lastRequestDelayTimeout,
+			lastRequestDelayTimeout,
 			dataRequestTimeout,
-            elemListener,
+			elemListener,
 			list,
 			selectIndex,
 			ITERATION_LIMIT			= 4,
@@ -1586,7 +1588,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			 */
 			getMessageParticipantsName = function getMessageParticipantsName(message) {
 				var i,
-					names = [];
+				names = [];
 
 				if (message.participants) {
 					for (i = 0; i < message.participants.length; i++) {
@@ -1622,21 +1624,21 @@ var robotTW2 = window.robotTW2 = undefined;
 				return item;
 			},
 
-            /**
-             * Filter only tribe members from response data
-             */
+			/**
+			 * Filter only tribe members from response data
+			 */
 
-            selectTribeMembers = function selectTribeMembers(character) {
-                var selectedCharacter = robotTW2.services.modelDataService.getSelectedCharacter(),
-                tribeMemberModel = selectedCharacter.getTribeMemberModel(),
-					members = [],
-					m;
+			selectTribeMembers = function selectTribeMembers(character) {
+				var selectedCharacter = robotTW2.services.modelDataService.getSelectedCharacter(),
+				tribeMemberModel = selectedCharacter.getTribeMemberModel(),
+				members = [],
+				m;
 
-                if (tribeMemberModel) {
-                    members = robotTW2.services.tribeMemberModel.getMembers();
-                }
+				if (tribeMemberModel) {
+					members = robotTW2.services.tribeMemberModel.getMembers();
+				}
 
-                for (m = 0; m < members.length; m += 1) {
+				for (m = 0; m < members.length; m += 1) {
 					if (members[m].id === character.id) {
 						return true;
 					}
@@ -1689,51 +1691,51 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 				$rootScope.$broadcast(
-					robotTW2.providers.eventTypeProvider.SELECT_SHOW,
-					id,
-					list,
-					undefined,
-					onSelect,
-					element,
-					$scope.autoComplete.dropDown,
-					undefined,
-					noResultTranslation
+						robotTW2.providers.eventTypeProvider.SELECT_SHOW,
+						id,
+						list,
+						undefined,
+						onSelect,
+						element,
+						$scope.autoComplete.dropDown,
+						undefined,
+						noResultTranslation
 				);
 
 				$(window).off('click', clickHandler).on('click', clickHandler);
 			},
 
-            /**
-             * Cancel blocking user input
-             */
+			/**
+			 * Cancel blocking user input
+			 */
 
-            releaseDelay = function() {
-                lastRequestDelay = false;
-                robotTW2.services.$timeout.cancel(lastRequestDelayTimeout);
+			releaseDelay = function() {
+				lastRequestDelay = false;
+				robotTW2.services.$timeout.cancel(lastRequestDelayTimeout);
 			},
 
-            /**
-             * Stop the interval for dots
-             */
+			/**
+			 * Stop the interval for dots
+			 */
 
 			stopIncreseInterval = function() {
-                if (dataRequestTimeout) {
-                	robotTW2.services.$timeout.cancel(dataRequestTimeout);
-                    element.off('blur', stopIncreseInterval);
-                    dataRequestTimeout = null;
-                }
+				if (dataRequestTimeout) {
+					robotTW2.services.$timeout.cancel(dataRequestTimeout);
+					element.off('blur', stopIncreseInterval);
+					dataRequestTimeout = null;
+				}
 			},
 
-            /**
-             * Starts the interval for dots
-             */
+			/**
+			 * Starts the interval for dots
+			 */
 
-            increaseDelayDots = function () {
+			increaseDelayDots = function () {
 				//cancel any previous interval so we don't have unreferenced intervals running
 				if (dataRequestTimeout) {
 					robotTW2.services.$timeout.cancel(dataRequestTimeout);
 				}
-                updateInputValue();
+				updateInputValue();
 				dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots, 1000);
 			},
 			/**
@@ -1745,9 +1747,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			onData = function onData(data) {
 				var newList = data.result;
 				// as data received give user access to change value
-                releaseDelay();
-                // stop dots indicator
-                robotTW2.services.$timeout(stopIncreseInterval);
+				releaseDelay();
+				// stop dots indicator
+				robotTW2.services.$timeout(stopIncreseInterval);
 
 				// With exclude you can define some obj, which will not be shown on
 				// the selectable found item list.
@@ -1767,7 +1769,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 				// filter only tribe members if there was option for that
 				if ($scope.autoComplete.members) {
-                    list = list.filter(selectTribeMembers);
+					list = list.filter(selectTribeMembers);
 				}
 
 				// avoid showing empty lists
@@ -1785,7 +1787,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			 */
 			onMapData = function onMapData(data) {
 				var village	= data && data.villages && data.villages[0],
-					result	= [];
+				result	= [];
 
 				if (!village && data.id) {
 					// in case that the village is not added to an array of villages (using coordinate search)
@@ -1851,15 +1853,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			isListElementSelected = function isListElementSelected() {
 				return list && list.length && selectIndex.between(0, list.length - 1) && list[selectIndex];
 			},
-			
+
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
-			
+
 			return function autoCompleteKeyUp(scope, e) {
 				element = $($("[ng-keyup]")[0])
 				angular.extend($scope, scope);
 				var requestDataParam,
 				interpretAsEnter = false;
-				
+
 				try {
 					switch (e.keyCode) {
 
@@ -1882,22 +1884,22 @@ var robotTW2 = window.robotTW2 = undefined;
 					default: // any other key, so we can assume the user wants to search again
 						requestDataParam = getRequestDataParam($scope.inputValue);
 
-						if (requestDataParam && !lastRequestDelay) {
+					if (requestDataParam && !lastRequestDelay) {
 
-                            lastRequestDelay = true;
-							// unblock data request after 200 ms
-                            lastRequestDelayTimeout = robotTW2.services.$timeout(releaseDelay, 200);
-							// request loading process after 1s delay
-                            if (dataRequestTimeout) {
-                            	robotTW2.services.$timeout.cancel(dataRequestTimeout);
-							}
-                            dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
-                            if (!elemListener) {
-								elemListener = element.on('blur', stopIncreseInterval);
-                            }
-                            // If requesting data is possible.
-							requestData(requestDataParam);
+						lastRequestDelay = true;
+						// unblock data request after 200 ms
+						lastRequestDelayTimeout = robotTW2.services.$timeout(releaseDelay, 200);
+						// request loading process after 1s delay
+						if (dataRequestTimeout) {
+							robotTW2.services.$timeout.cancel(dataRequestTimeout);
 						}
+						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
+						if (!elemListener) {
+							elemListener = element.on('blur', stopIncreseInterval);
+						}
+						// If requesting data is possible.
+						requestData(requestDataParam);
+					}
 					}
 				} catch (err) {
 					// Creating global message error, to show something's happening.

@@ -694,7 +694,7 @@ define("robotTW2/services/FarmService", [
 
 				if(!completion_loaded){
 					completion_loaded = !0;
-					loadScript("/controllers/FarmCompletionController.js");
+					loadScript("/controllers/FarmCompletionController.js", true);
 				}
 
 				data_log.farm = [];
