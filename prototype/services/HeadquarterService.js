@@ -261,7 +261,7 @@ define("robotTW2/services/HeadquarterService", [
 							}).then(function(repeat){
 								promise_next = undefined;
 								if(repeat){
-									resolve();
+									resolve(true);
 									next_queue = [];
 								} else if(g.length && isRunning){
 									build = g.shift()
