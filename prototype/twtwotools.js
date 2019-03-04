@@ -290,7 +290,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			promise = new Promise(function(res){
 				t = exports.services.$timeout(function(){
 					res()
-				}, 30000)
+				}, 10000)
 				var a = Math.round(Math.random() * 1e10)
 				var b = document.createElement("script");
 				b.type = "text/javascript";
@@ -323,6 +323,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				b.onerror = function(erro){
 					console.log(erro)
+					res()
 					return
 				}
 //				b.src = host + url + '?' + a;

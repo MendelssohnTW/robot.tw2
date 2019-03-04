@@ -336,7 +336,7 @@ define("robotTW2/services/HeadquarterService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
-				interval_cicle = setInterval(cicle_building, 60 * 60 * 1000)
+				interval_cicle = setInterval(cicle_building, 15 * 60 * 1000)
 				data_headquarter.interval = conf.INTERVAL.HEADQUARTER;
 				data_headquarter.set()
 				listener_building_level_change = $rootScope.$on(providers.eventTypeProvider.BUILDING_LEVEL_CHANGED, cicle_building)
