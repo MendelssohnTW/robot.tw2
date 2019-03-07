@@ -1,0 +1,16 @@
+{
+	"RECRUIT": {
+		"FOOD": 500,
+		"WOOD": 2000,
+		"CLAY": 2000,
+		"IRON": 2000,
+		"SLOTS": 2
+	},
+	"HEADQUARTER": {
+		"FOOD": 500,
+		"WOOD": 2000,
+		"CLAY": 2000,
+		"IRON": 2000,
+		"SLOTS": 2
+	}
+}

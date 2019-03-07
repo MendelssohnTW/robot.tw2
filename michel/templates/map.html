@@ -1,0 +1,180 @@
+<div id="minimap" class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="tabs tabs-bg">
+		<div class="tabs-three-col">
+			<div ng-repeat="tabName in TAB_ORDER" class="tab"
+				ng-click="userSetActiveTab(tabName)"
+				ng-class="{'tab-active': activeTab === tabName}">
+				<div class="tab-inner">
+					<div
+						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
+						<a href="#"
+							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="win-main">
+		<div
+			class="box-paper footer has-footer-upper twOverflow-content-minimap">
+			<canvas class="cross"></canvas>
+			<canvas class="minimap"></canvas>
+		</div>
+		<div
+			class="box-paper footer has-footer-upper twOverflow-content-highlights">
+			<h5 class="twx-section">{{add}}</h5>
+			<form class="addForm">
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="30%">
+						<col width="6%">
+						<col>
+						<col width="12%">
+						<col width="7%">
+					</colgroup>
+					<tbody>
+						<tr>
+							<td class="item-input"><input type="text"
+								class="textfield-border" autocomplete="off"
+								placeholder="{{text_entry}}"></td>
+							<td><span class="item-icon"></span></td>
+							<td class="item-name"></td>
+							<td class="item-color"><input type="text"
+								class="textfield-border" value="#000000" tooltip="{{color}}"></td>
+							<td class="item-add"><span
+								class="btn-orange icon-26x26-plus" tooltip="{{add}}"></span></td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="tbl-border-light tbl-striped color-picker"
+					style="display: none">
+					<tbody>
+						<tr ng-repeat="color in colorPalette">
+							<td style="background: ' + color + ' data-color=' + color'"></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			<div class="highlights">
+				<h5 class="twx-section">{{highlights}}</h5>
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="6%">
+						<col>
+						<col width="7%">
+						<col width="7%">
+					</colgroup>
+					<tbody class="<#= type #>" ng-repeat="type in types"></tbody>
+				</table>
+			</div>
+		</div>
+		<div
+			class="box-paper footer has-footer-upper twOverflow-content-settings">
+			<h5 class="twx-section">{{misc}}</h5>
+			<form class="settings">
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="40%">
+						<col>
+					</colgroup>
+					<tbody>
+						<tr>
+							<td>{{right}}</td>
+							<td><select data-setting="rightClickAction"><option
+										value="quick-highlight-village" selected="selected">{{highlight_village}}</option>
+									<option value="quick-highlight-player">{{highlight_player}}</option>
+									<option value="quick-highlight-tribe">{{highlight_tribe}}</option></select></td>
+						</tr>
+						<tr>
+							<td>{{floating_minimap}}</td>
+							<td><label class="size-26x26 btn-orange icon-26x26-checkbox"
+								for="settings-floatingMinimap"><input
+									id="settings-floatingMinimap" type="checkbox"
+									data-setting="floatingMinimap"></label></td>
+						</tr>
+					</tbody>
+				</table>
+				<h5 class="twx-section">{{colors}}</h5>
+				<table class="tbl-border-light tbl-striped">
+					<colgroup>
+						<col width="40%">
+						<col>
+					</colgroup>
+					<tbody></tbody>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="minimap-tooltip box-border-darker box-wrapper"
+	style="display: none">
+	<table class="tbl-border-light tbl-striped">
+		<colgroup>
+			<col width="50%">
+			<col width="50%">
+		</colgroup>
+		<tbody>
+			<tr>
+				<td class="cell-space-left"><div class="ff-cell-fix">
+						<span class="size-34x34 icon-bg-black icon-26x26-village"></span>
+						<div class="text">
+							<span>Village</span> <span class="overflow-ellipsis village-name"></span>
+						</div>
+					</div></td>
+				<td class="cell-space-left"><div class="ff-cell-fix">
+						<span class="size-34x34 icon-bg-black icon-26x26-points"></span>
+						<div class="text">
+							<span>Village points</span> <span class="village-points"></span>
+						</div>
+					</div></td>
+			</tr>
+			<tr>
+				<td class="cell-space-left"><div class="ff-cell-fix">
+						<span class="size-34x34 icon-bg-black icon-34x34-player"></span>
+						<div class="text text-limited">
+							<span>Player name</span> <span
+								class="overflow-ellipsis player-name"></span>
+						</div>
+					</div></td>
+				<td class="cell-space-left"><div class="ff-cell-fix">
+						<span class="size-34x34 icon-bg-black icon-26x26-points"></span>
+						<div class="text">
+							<span>Player Points</span> <span class="player-points"></span>
+						</div>
+					</div></td>
+			</tr>
+			<tr>
+				<td class="cell-space-left"><div class="ff-cell-fix">
+						<span class="size-34x34 icon-bg-black icon-34x34-tribe"></span>
+						<div class="text text-limited">
+							<span>Tribe name</span> <span
+								class="overflow-ellipsis tribe-name"></span>
+						</div>
+					</div></td>
+				<td class="cell-space-left"><div class="ff-cell-fix">
+						<span class="size-34x34 icon-bg-black icon-34x34-tribe-points"></span>
+						<div class="text">
+							<span>Tribe points</span> <span class="tribe-points"></span>
+						</div>
+					</div></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="cell-space-left"><div
+						class="ff-cell-fix">
+						<span class="size-34x34 icon-bg-black icon-34x34-province"></span>
+						<div class="text">
+							<span>Province name</span> <span
+								class="overflow-ellipsis province-name"></span>
+						</div>
+					</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

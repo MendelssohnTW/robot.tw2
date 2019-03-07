@@ -591,7 +591,6 @@ define("robotTW2/services/FarmService", [
 		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
-				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 				var g = $timeout(function(){
 
@@ -695,7 +694,7 @@ define("robotTW2/services/FarmService", [
 
 				if(!completion_loaded){
 					completion_loaded = !0;
-					loadScript("/controllers/FarmCompletionController.js", true);
+					loadScript("/controllers/FarmCompletionController.js");
 				}
 
 				data_log.farm = [];
