@@ -366,7 +366,7 @@ define("robotTW2/controllers/FarmController", [
 			}, conf_conf.LOADING_TIMEOUT)
 
 			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-				'village_id': $scope.village_selected,
+				'village_id': $scope.village_selected.id,
 				'preset_ids': presetIds
 			}, function(data){
 				services.$timeout.cancel(timeout_preset)
