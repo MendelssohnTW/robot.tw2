@@ -131,6 +131,7 @@ define("robotTW2/controllers/FarmController", [
 				if(!$scope.data.presets[presetId].assigned_villages){continue}
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
 			}
+			setFirstPreset();
 			if(typeof(callback) == "function"){
 				callback()
 			}
@@ -155,13 +156,7 @@ define("robotTW2/controllers/FarmController", [
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_points_farm = $scope.presetSelected.max_points_farm
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_commands_farm = $scope.presetSelected.max_commands_farm
 				})
-				triggerUpdate(function(){
-					$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
-							function(elem){
-								if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-							}).filter(f=>f!=undefined)[0]
-					)
-				});
+				triggerUpdate();
 				break;
 			case "check_all_villages":
 				Object.keys($scope.data_villages.villages).map(function(village){
@@ -175,13 +170,7 @@ define("robotTW2/controllers/FarmController", [
 						$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_commands_farm = $scope.presetSelected.max_commands_farm
 					})
 				})
-				triggerUpdate(function(){
-					$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
-							function(elem){
-								if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-							}).filter(f=>f!=undefined)[0]
-					)
-				});
+				triggerUpdate();
 				break;
 			}
 
@@ -233,13 +222,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, updateAll = function updateAll(){
-			triggerUpdate(function(){
-				$scope.setPresetSelected(Object.keys($scope.data.assignedPresetList).map(
-						function(elem){
-							if($scope.data.assignedPresetList[elem]) {return elem} else {return undefined}
-						}).filter(f=>f!=undefined)[0]
-				)
-			});
+			triggerUpdate();
 			services.$timeout(blurPreset, 1500)
 		}
 		, getDetailsExceptions = function getDetailsExceptions() {
@@ -262,7 +245,9 @@ define("robotTW2/controllers/FarmController", [
 				})
 			}
 		}
-
+		, setFirstPreset = function setFirstPreset(){
+			$scope.presetSelected =	Object.keys($scope.data.presets)[0];
+		}
 
 		$scope.togleInfinite = function(){
 			if($scope.infinite){
@@ -348,12 +333,6 @@ define("robotTW2/controllers/FarmController", [
 		/*
 		 * Presets
 		 */
-
-		$scope.data = {
-				'assignedPresetList': {},
-				'presets'			: angular.copy(services.presetListService.getPresets()),
-				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey())
-		}
 
 		$scope.showPresetDeleteModal = function showPresetDeleteModal(preset) {
 			services.presetService.showPresetDeleteModal(preset).then(onDeletePreset);
@@ -460,7 +439,6 @@ define("robotTW2/controllers/FarmController", [
 			getDetailsExceptions();
 		}
 
-
 		$scope.start_farm = function () {
 			$scope.blur(function () {
 				services.FarmService.start();
@@ -564,7 +542,6 @@ define("robotTW2/controllers/FarmController", [
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			let data = getVillage(key).data;
-			let label = data.name + " - (" + data.x + "/" + data.y + ")"
 			$scope.local_data_villages.push({
 				id : key,
 				name : data.name,
@@ -581,11 +558,19 @@ define("robotTW2/controllers/FarmController", [
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
 		
-		$scope.data_select = {
-				availableOptions : $scope.local_data_villages,
-				selectedOption : $scope.village_selected
+		let presets_load = angular.copy(services.presetListService.getPresets());
+		$scope.data = {
+				'assignedPresetList': {},
+				'presets'			: presets_load,
+				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey()),
+				"selectedOption"	: Object.keys(presets_load)[0]
 		}
-
+		
+		$scope.data_select = {
+				"availableOptions" : $scope.local_data_villages,
+				"selectedOption" : $scope.village_selected
+		}
+		
 		triggerUpdate()
 		update()
 
