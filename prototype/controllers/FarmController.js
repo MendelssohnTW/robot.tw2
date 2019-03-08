@@ -518,7 +518,6 @@ define("robotTW2/controllers/FarmController", [
 			if(!$scope.data_preset || !blurPreset){return}
 			$scope.preset_selected = $scope.data_preset.selectedOption;
 			blurPreset();
-			updateBlur();
 		}, true)
 
 		$scope.$watch("data_farm", function(){
