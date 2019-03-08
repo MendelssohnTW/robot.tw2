@@ -52,7 +52,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.toggle_option = "check_one";
 		$scope.check_one = true;
 		$scope.check_all = false;
-		$scope.check_all_village = false;
+		$scope.check_all_villages = false;
 
 		function getVillage(vid){
 			if(!vid){return}
@@ -263,17 +263,17 @@ define("robotTW2/controllers/FarmController", [
 			case "check_one":
 				$scope.check_one = true;
 				$scope.check_all = false;
-				$scope.check_all_village = false;
+				$scope.check_all_villages = false;
 				break;
 			case "check_all":
 				$scope.check_one = false;
 				$scope.check_all = true;
-				$scope.check_all_village = false;
+				$scope.check_all_villages = false;
 				break;
 			case "check_all_villages":
 				$scope.check_one = false;
 				$scope.check_all = false;
-				$scope.check_all_village = true;
+				$scope.check_all_villages = true;
 				break;
 			}
 			if (!$scope.$$phase) {$scope.$apply();}
