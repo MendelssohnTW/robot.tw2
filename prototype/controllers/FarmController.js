@@ -502,6 +502,10 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
+		
+		$scope.villageChanged = function(){
+			console.log($scope.village_selected.id)
+		}
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
