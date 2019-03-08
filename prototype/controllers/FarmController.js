@@ -64,7 +64,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid).value;
+			return $scope.local_data_villages.find(f=>f.id==vid).value.data;
 		}
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab	= tab;
@@ -541,12 +541,11 @@ define("robotTW2/controllers/FarmController", [
 		getDetailsExceptions();
 
 		Object.keys($scope.data_villages.villages).map(function(key){
-			let data = getVillage(key).data;
 			$scope.local_data_villages.push({
 				id : key,
 				name : data.name,
 				label : formatHelper.villageNameWithCoordinates(data),
-				value : data
+				value : getVillage(key)
 			})
 			return $scope.local_data_villages;
 		})
