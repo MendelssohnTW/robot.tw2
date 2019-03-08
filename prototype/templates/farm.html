@@ -183,22 +183,29 @@
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<tbody>
 											<tr>
-												<td class="cell-center"><span class="icon icon-26x26-rte-village"></span></td>
+												<td colspan="3">{{SELECT}}</td>
+											</tr>
+											<tr>
+											<td>{{text_village}}</td>
+												<td class="cell-center"><span
+													class="icon icon-26x26-rte-village"></span></td>
 												<td><div>
-														<select id="select_village" class="select-handler" 
+														<select id="select_village" class="select-handler"
 															ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 															ng-model="data_select.selectedOption"></select>
 													</div></td>
 
 											</tr>
 											<tr>
-                                                <td class="cell-center"><span class="icon icon-34x34-preset"></span></td>
-                                                <td><div>
-                                                        <select id="select_preset" class="select-handler" 
-                                                            ng-options="item as item.name for item in data_preset.availableOptions track by item.name"
-                                                            ng-model="data_preset.selectedOption"></select>
-                                                    </div></td>
-                                            </tr>
+											<td>{{text_preset}}</td>
+												<td class="cell-center"><span
+													class="icon icon-34x34-preset"></span></td>
+												<td><div>
+														<select id="select_preset" class="select-handler"
+															ng-options="item as item.name for item in data_preset.availableOptions track by item.name"
+															ng-model="data_preset.selectedOption"></select>
+													</div></td>
+											</tr>
 										</tbody>
 									</table>
 								</td>
