@@ -246,7 +246,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 		}
 		, setFirstPreset = function setFirstPreset(){
-			$scope.presetSelected =	Object.keys($scope.data.presets)[0];
+			$scope.presetSelected =	Object.values($scope.data.presets)[0];
 		}
 
 		$scope.togleInfinite = function(){
