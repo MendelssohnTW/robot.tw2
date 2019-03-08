@@ -399,7 +399,7 @@ define("robotTW2/controllers/FarmController", [
 
 				$scope.preset_selected.max_journey_time = helper.unreadableSeconds(r) * 1000
 				services.modelDataService.getVillage($scope.village_selected)
-				$scope.preset_selected.max_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected).data.villageId, $scope.preset_selected.max_journey_time, $scope.preset_selected.units)
+				$scope.preset_selected.max_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.preset_selected.max_journey_time, $scope.preset_selected.units)
 				updateBlur()
 			}
 		}
@@ -411,7 +411,7 @@ define("robotTW2/controllers/FarmController", [
 					r = r + ":00"
 				}
 				$scope.preset_selected.min_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.preset_selected.min_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected).data.villageId, $scope.preset_selected.min_journey_time, $scope.preset_selected.units) || 0
+				$scope.preset_selected.min_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.preset_selected.min_journey_time, $scope.preset_selected.units) || 0
 				updateBlur()
 			}
 		}
@@ -513,6 +513,7 @@ define("robotTW2/controllers/FarmController", [
 			if(!$scope.data_preset || !blurPreset){return}
 			$scope.preset_selected = $scope.data_preset.selectedOption;
 			blurPreset();
+			updateBlur();
 		}, true)
 
 		$scope.$watch("data_farm", function(){
