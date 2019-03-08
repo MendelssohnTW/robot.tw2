@@ -91,7 +91,7 @@ define("robotTW2/controllers/MainController", [
 					fn.stop()
 				}
 			}
-		}
+		};
 
 		$scope.recalibrate = function(){
 			services.AttackService.calibrate_time();
@@ -129,3 +129,4 @@ define("robotTW2/controllers/MainController", [
 		return $scope;
 	}
 })
+)
