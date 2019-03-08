@@ -183,10 +183,10 @@
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<tbody>
 											<tr>
-												<td colspan="3">{{SELECT}}</td>
+												<td class="cell-center selected" colspan="3">{{SELECT}}</td>
 											</tr>
 											<tr>
-											<td>{{text_village}}</td>
+												<td>{{text_village}}</td>
 												<td class="cell-center"><span
 													class="icon icon-26x26-rte-village"></span></td>
 												<td><div>
@@ -197,7 +197,7 @@
 
 											</tr>
 											<tr>
-											<td>{{text_preset}}</td>
+												<td>{{text_preset}}</td>
 												<td class="cell-center"><span
 													class="icon icon-34x34-preset"></span></td>
 												<td><div>
@@ -209,29 +209,60 @@
 										</tbody>
 									</table>
 								</td>
-								<td class="cell-right"><label for="check_one"
-									class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-									<div id="check_one" class="position-absolute size-34x34"
-										ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-										ng-click="toggleOption('check_one')" tooltip
-										tooltip-content=""></div></td>
+								<td class="cell-right">
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<tbody>
+											<tr>
+												<td><label for="check_one" class="with-margin"
+													style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+													<div id="check_one" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
+														ng-click="toggleOption('check_one')" tooltip
+														tooltip-content=""></div></td>
+											</tr>
+											<tr>
+												<td class="cell-right"><label for="check_all"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+													<div id="check_all" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
+														ng-click="toggleOption('check_all')" tooltip
+														tooltip-content=""></div></td>
+											</tr>
+											<tr>
+												<td class="cell-right"><label for="check_all_villages"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+													<div id="check_all_villages"
+														class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
+														ng-click="toggleOption('check_all_villages')" tooltip
+														tooltip-content=""></div></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
 							</tr>
 							<tr>
-								<td class="cell-right"><label for="check_all"
-									class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-									<div id="check_all" class="position-absolute size-34x34"
-										ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-										ng-click="toggleOption('check_all')" tooltip
-										tooltip-content=""></div></td>
-							</tr>
-							<tr>
-								<td class="cell-right"><label for="check_all_villages"
-									class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-									<div id="check_all_villages"
-										class="position-absolute size-34x34"
-										ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-										ng-click="toggleOption('check_all_villages')" tooltip
-										tooltip-content=""></div></td>
+								<td>
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<tbody>
+											<tr>
+												<td class="cell-center selected" colspan="3">{{text_add}}</td>
+											</tr>
+											<tr>
+												<td>{{text_global}}</td>
+												<td class="cell-center"><span
+													class="icon icon-34x34-preset"></span></td>
+												<td><div>
+														<select id="select_preset" class="select-handler"
+															ng-options="item as item.name for item in data.presets track by item.name"
+															ng-model="data.selectedOption"></select>
+													</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -245,35 +276,7 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<td class="cell-right" colspan="3">
-									<!-- 
-									<div class="checkbox box-border-dark" id="check_all"
-										style="text-align: center;">
-
-										<div switch-slider="" border="true" enabled="true"
-											value="update_all_presets"
-											ng-click="toggleValueState(update_all_presets)"
-											vertical="false" size="'56x28'"
-											style="width: 60px; text-align: center;">
-											<div ng-class="{'box-border-dark box-filter': border}"
-												audio="{ 'mouseup': 'button_01' }"
-												class="box-border-dark box-filter">
-												<div class="switch switch-56x28 switch-horizontal"
-													ng-click="toggleValue()"
-													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false, 'switch-premium': enabled &amp;&amp; (premium == true)}">
-													<span class="size-26x26 switch-thumb"> <span
-														ng-if="!icon"
-														class="simple ng-scope icon-26x26-switch-off"
-														ng-class="{'icon-26x26-resource-premium': premium, 'icon-26x26-switch-on': value &amp;&amp; !premium, 'icon-26x26-switch-off': !value &amp;&amp; !premium, 'icon-inactive': enabled == false}"></span>
-													</span>
-												</div>
-											</div>
-										</div>
-										 
-
-									</div>
-									-->
-								</td>
+								<td class="cell-right" colspan="3"></td>
 								<td></td>
 								<td class="cell-right"><label for="cmd_max"
 									class="with-margin">{{text_cmd_max}}</label><input
