@@ -541,11 +541,12 @@ define("robotTW2/controllers/FarmController", [
 		getDetailsExceptions();
 
 		Object.keys($scope.data_villages.villages).map(function(key){
+			var vill = getVillage(key);
 			$scope.local_data_villages.push({
 				id : key,
-				name : data.name,
+				name : vill.data.name,
 				label : formatHelper.villageNameWithCoordinates(data),
-				value : getVillage(key)
+				value : vill
 			})
 			return $scope.local_data_villages;
 		})
