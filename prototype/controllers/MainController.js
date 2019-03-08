@@ -41,7 +41,7 @@ define("robotTW2/controllers/MainController", [
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			var fn = arFn.fn;
 			$scope.extensions[name].status = $scope.getStatus(fn);
-			if($scope.extensions[name].status == running){
+			if($scope.extensions[name].status == $scope.running){
 				$scope.extensions_status[name] = true;	
 			} else {
 				$scope.extensions_status[name] = false;
@@ -91,7 +91,7 @@ define("robotTW2/controllers/MainController", [
 					fn.stop()
 				}
 			}
-		};
+		}
 
 		$scope.recalibrate = function(){
 			services.AttackService.calibrate_time();
@@ -124,7 +124,7 @@ define("robotTW2/controllers/MainController", [
 
 		$scope.$on("$destroy", function() {
 			$scope.data_main.setExtensions($scope.extensions);
-		});
+		})
 
 		return $scope;
 	}
