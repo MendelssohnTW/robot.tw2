@@ -52,6 +52,8 @@
 		"recal_button": "Recalibrar",
 		"extension_disabled": "desativado",
 		"extension_enabled": "ativado",
+		"extension_start": "Iniciar",
+        "extension_stop": "Parar",
 		"text_time_correction_command": "Correção atual de tempo para comandos",
 		"text_max_time_correction": "Valor máximo para correção de tempo para comandos"
 	},
