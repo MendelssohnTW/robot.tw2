@@ -129,4 +129,3 @@ define("robotTW2/controllers/MainController", [
 		return $scope;
 	}
 })
-)
