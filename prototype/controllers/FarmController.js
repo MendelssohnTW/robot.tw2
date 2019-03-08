@@ -64,7 +64,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid).value.data;
+			return $scope.local_data_villages.find(f=>f.id==vid).value;
 		}
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab	= tab;
@@ -424,7 +424,7 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.getVillageInfo = function(villageId){
-			var data = getVillageData(villageId)
+			var data = getVillageData(villageId).data
 			return formatHelper.villageNameWithCoordinates(data)
 		}
 
