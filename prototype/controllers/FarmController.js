@@ -523,7 +523,7 @@ define("robotTW2/controllers/FarmController", [
 		}, true)
 
 		$scope.$watch("village_selected", function(){
-			if(!village_selected){return}
+			if(!$scope.village_selected){return}
 			updateAll()
 		}, true)
 

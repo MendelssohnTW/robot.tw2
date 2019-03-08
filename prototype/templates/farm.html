@@ -178,39 +178,45 @@
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 						<tbody>
 							<tr>
-							<td rowspan="3">
-                                <div>
-                                    <select id="select_order" class="select-handler"
-                                        ng-options="item as item.name for item in local_data_villages track by item.name"
-                                        ng-model="village_selected"></select>
-                                </div>
-                            </td>
-								<td class="cell-right"><label for="check_one" class="with-margin"
-									style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-									<div id="check_one"
-										class="position-absolute size-34x34"
-										ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-										ng-click="toggleOption('check_one')" tooltip
+								<td><span class="icon icon-26x26-rte-village"></span></td>
+								<td rowspan="3">
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<tbody>
+											<tr>
+												<td><div>
+														<select id="select_order" class="select-handler"
+															ng-options="item as item.name for item in local_data_villages track by item.name"
+															ng-model="village_selected"></select>
+													</div></td>
+												<td class="cell-right"><label for="check_one"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+													<div id="check_one" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
+														ng-click="toggleOption('check_one')" tooltip
+														tooltip-content=""></div></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td class="cell-right"><label for="check_all"
+									class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+									<div id="check_all" class="position-absolute size-34x34"
+										ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
+										ng-click="toggleOption('check_all')" tooltip
 										tooltip-content=""></div></td>
 							</tr>
 							<tr>
-                                <td class="cell-right"><label for="check_all" class="with-margin"
-                                    style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-                                    <div id="check_all"
-                                        class="position-absolute size-34x34"
-                                        ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-                                        ng-click="toggleOption('check_all')" tooltip
-                                        tooltip-content=""></div></td>
-                            </tr>
-                            <tr>
-                                <td class="cell-right"><label for="check_all_villages" class="with-margin"
-                                    style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-                                    <div id="check_all_villages"
-                                        class="position-absolute size-34x34"
-                                        ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-                                        ng-click="toggleOption('check_all_villages')" tooltip
-                                        tooltip-content=""></div></td>
-                            </tr>
+								<td class="cell-right"><label for="check_all_villages"
+									class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+									<div id="check_all_villages"
+										class="position-absolute size-34x34"
+										ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
+										ng-click="toggleOption('check_all_villages')" tooltip
+										tooltip-content=""></div></td>
+							</tr>
 						</tbody>
 					</table>
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
