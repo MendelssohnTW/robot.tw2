@@ -25,6 +25,8 @@ define("robotTW2/controllers/FarmController", [
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.PAUSE = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
 		$scope.RESUME = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
+		$scope.REMOVE = services.$filter("i18n")("REMOVE", services.$rootScope.loc.ale);
+		$scope.ADD = services.$filter("i18n")("ADD", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
@@ -375,12 +377,14 @@ define("robotTW2/controllers/FarmController", [
 
 		}
 
-		$scope.assignPreset = function assignPreset(presetId) {
+		$scope.assignPreset = function assignPreset() {
+			let presetId = $scope.data_preset.selectedOption.id;
 			!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
 			$scope.assignPresets();
 		}
 
-		$scope.unassignPreset = function unassignPreset(presetId) {
+		$scope.unassignPreset = function unassignPreset() {
+			let presetId = $scope.data_preset.selectedOption.id;
 			presetIds.splice(presetIds.indexOf(presetId), 1);
 			$scope.assignPresets();
 		}

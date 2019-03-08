@@ -176,6 +176,10 @@
 			<div class="scroll-wrap preset" style="margin-bottom: 100px">
 				<div class="list-collapse">
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+						<colgroup>
+							<col width="50%">
+							<col width="50%">
+						</colgroup>
 						<tbody>
 							<tr>
 								<td>
@@ -205,6 +209,15 @@
 															ng-options="item as item.name for item in data_preset.availableOptions track by item.name"
 															ng-model="data_preset.selectedOption"></select>
 													</div></td>
+											</tr>
+											<tr>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="unassignPreset()"><span>{{REMOVE}}</span></a></li>
+													</ul>
+												</td>
 											</tr>
 										</tbody>
 									</table>
@@ -260,30 +273,22 @@
 															ng-model="data.selectedOption"></select>
 													</div></td>
 											</tr>
+											<tr>
+                                                <td>
+                                                    <ul class="list-btn list-center">
+                                                        <li><a id="button-start"
+                                                            class="btn-border btn-orange btn-init"
+                                                            ng-click="assignPreset()"><span>{{ADD}}</span></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
 										</tbody>
 									</table>
 								</td>
 								<td>
 									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<colgroup>
-											<col width="100px">
-											<col width="104px">
-											<col width="36%">
-											<col width="32%">
-											<col width="32%">
-										</colgroup>
 										<tbody>
-											<tr>
-												<td class="cell-right" colspan="3"></td>
-												<td></td>
-												<td class="cell-right"><label for="cmd_max"
-													class="with-margin">{{text_cmd_max}}</label><input
-													class="input-border inputcreated" type="number"
-													id="cmd_max" step="1" min="0" max="50"
-													ng-model="preset_selected.max_commands_farm"
-													ng-blur="updateBlur()"></td>
-											</tr>
 											<tr>
 												<td rowspan="2">
 													<div class="quadrant">
@@ -333,6 +338,12 @@
 													class="input-border inputcreated" type="number"
 													id="min_dist" step="1" min="1" max="180"
 													ng-model="preset_selected.min_journey_distance" disabled></td>
+												<td class="cell-right"><label for="cmd_max"
+													class="with-margin">{{text_cmd_max}}</label><input
+													class="input-border inputcreated" type="number"
+													id="cmd_max" step="1" min="0" max="50"
+													ng-model="preset_selected.max_commands_farm"
+													ng-blur="updateBlur()"></td>
 
 											</tr>
 											<tr>
@@ -360,7 +371,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<table>
+					<!--<table>
 						<colgroup>
 							<col width="50%">
 							<col width="50%">
@@ -474,7 +485,7 @@
 							</tr>
 						</tbody>
 					</table>
-				</div>
+				--></div>
 			</div>
 		</div>
 		<div class="jssb-y">
