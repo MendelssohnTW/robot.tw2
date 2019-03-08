@@ -272,7 +272,7 @@
 									class="with-margin">{{text_cmd_max}}</label><input
 									class="input-border inputcreated" type="number" id="cmd_max"
 									step="1" min="0" max="50"
-									ng-model="presetSelected.max_commands_farm"
+									ng-model="preset_selected.max_commands_farm"
 									ng-blur="updateBlur()"></td>
 							</tr>
 							<tr>
@@ -312,7 +312,7 @@
 									class="with-margin">{{text_min_point}}</label><input
 									class="input-border inputcreated" type="number" id="min_point"
 									step="1" min="0" max="12000"
-									ng-model="presetSelected.min_points_farm"
+									ng-model="preset_selected.min_points_farm"
 									ng-blur="updateBlur()"></td>
 								<td class="cell-right"><label for="min_journey_time"
 									class="with-margin">{{time_min}}</label><input
@@ -323,7 +323,7 @@
 									class="with-margin">{{text_min_dist}}</label><input
 									class="input-border inputcreated" type="number" id="min_dist"
 									step="1" min="1" max="180"
-									ng-model="presetSelected.min_journey_distance" disabled></td>
+									ng-model="preset_selected.min_journey_distance" disabled></td>
 
 							</tr>
 							<tr>
@@ -332,7 +332,7 @@
 									class="with-margin">{{text_max_point}}</label><input
 									class="input-border inputcreated" type="number" id="max_point"
 									step="1" min="00" max="12000"
-									ng-model="presetSelected.max_points_farm"
+									ng-model="preset_selected.max_points_farm"
 									ng-blur="updateBlur()"></td>
 								<td class="cell-right"><label for="max_journey_time"
 									class="with-margin">{{time_max}}</label><input
@@ -343,7 +343,7 @@
 									class="with-margin">{{text_max_dist}}</label><input
 									class="input-border inputcreated" type="number" id="max_dist"
 									step="1" min="5" max="200"
-									ng-model="presetSelected.max_journey_distance" disabled></td>
+									ng-model="preset_selected.max_journey_distance" disabled></td>
 
 
 							</tr>
@@ -436,7 +436,7 @@
 													ng-show="data.assignedPresetList[preset.id]">
 													<td class="cell-space cell-left"
 														ng-click="setPresetSelected(preset.id)"
-														ng-class="{'selected': preset.id == presetSelected.id}">
+														ng-class="{'selected': preset.id == preset_selected.id}">
 														<canvas icon-generator="preset.icon" icon-type="'preset'"
 															class="preset-icon" width="44" height="44"
 															style="height: 26px;"></canvas> <span class="preset-name">{{preset.name}}</span>
