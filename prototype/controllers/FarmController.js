@@ -38,7 +38,7 @@ define("robotTW2/controllers/FarmController", [
 			]
 
 		$scope.update_all_presets = false;
-		$scope.local_data_villages = {};
+		$scope.local_data_villages = [];
 		$scope.requestedTab = TABS.FARM;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
