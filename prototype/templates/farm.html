@@ -127,7 +127,7 @@
 
 											<tbody>
 												<tr ng-repeat="(key, value) in data_villages.villages">
-													<td ng-class="{'selected': villageSelected == key}"
+													<td ng-class="{'selected': village_selected == key}"
 														ng-click="setVillage(key)" class="cell-right"><span>{{getVillageInfo(key)}}</span></td>
 													<td class="cell-space">
 														<div class="checkbox box-border-dark">
@@ -137,7 +137,7 @@
 																<div ng-class="{'box-border-dark box-filter': border}"
 																	class="box-border-dark box-filter">
 																	<div class="switch switch-56x28 switch-horizontal"
-																		ng-class="{'switch-checked': value, 'switch-inactive': !villageSelected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																		ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
 																		<span class="size-26x26 switch-thumb"> <span
 																			class="simple icon-26x26-switch-off"
 																			ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
@@ -178,6 +178,13 @@
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 						<tbody>
 							<tr>
+							<td rowspan="3">
+                                <div>
+                                    <select id="select_order" class="select-handler"
+                                        ng-options="item as item.name for item in local_data_villages track by item.name"
+                                        ng-model="village_selected"></select>
+                                </div>
+                            </td>
 								<td class="cell-right"><label for="check_one" class="with-margin"
 									style="top: 21px; left: 100px;">{{text_one_preset}}</label>
 									<div id="check_one"
