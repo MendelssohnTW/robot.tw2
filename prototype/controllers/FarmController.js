@@ -23,8 +23,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
-		$scope.PAUSE = services.$filter("i18n")("PAUSE", services.$rootScope.loc.ale);
-		$scope.RESUME = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
+		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.REMOVE = services.$filter("i18n")("REMOVE", services.$rootScope.loc.ale);
 		$scope.ADD = services.$filter("i18n")("ADD", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
@@ -340,26 +339,6 @@ define("robotTW2/controllers/FarmController", [
 		 * Presets
 		 */
 
-		$scope.showPresetDeleteModal = function showPresetDeleteModal(preset) {
-			services.presetService.showPresetDeleteModal(preset).then(onDeletePreset);
-		}
-
-		$scope.showPresetEditModal = function showPresetEditModal(preset) {
-			services.presetService.showPresetEditModal(angular.copy(preset));
-		}
-
-		$scope.showPresetInfoModal = function showPresetInfoModal(preset) {
-			services.presetService.showPresetInfoModal(preset);
-		}
-
-		$scope.hasPresets = function hasPresets() {
-			return !!Object.keys($scope.data.presets)[0];
-		}
-
-		$scope.createPreset = function createPreset() {
-			services.presetService.createPreset();
-		}
-
 		$scope.assignPresets = function assignPresets() {
 			var timeout_preset = services.$timeout(function(){
 				triggerUpdate()
@@ -387,10 +366,6 @@ define("robotTW2/controllers/FarmController", [
 			let presetId = $scope.data_preset.selectedOption.id;
 			presetIds.splice(presetIds.indexOf(presetId), 1);
 			$scope.assignPresets();
-		}
-
-		$scope.setPresetSelected = function (preset_id) {
-			$scope.preset_selected =	$scope.data.presets[preset_id]
 		}
 
 		$scope.blurMaxJourney = function () {
@@ -456,13 +431,8 @@ define("robotTW2/controllers/FarmController", [
 		$scope.stop_farm = function () {
 			services.FarmService.stop();
 		}
-		$scope.pause_farm = function () {
-			services.FarmService.pause();
-			$scope.paused = !0;
-		}
-		$scope.resume_farm = function () {
-			services.FarmService.resume();
-			$scope.paused = !1;
+		$scope.menu_farm = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MENU);
 		}
 
 		/*

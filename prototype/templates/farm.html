@@ -433,156 +433,67 @@
 											</tr>
 											<tr>
 												<td class="cell-right">{{text_units_preset}}</td>
-												<td class="cell-center">{{preset_selected.units.spear || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.sword || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.axe || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.archer || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.light_cavalry || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.mounted_arquer || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.heavy_cavalry || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.ram || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.catapult || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.doppelsoldner || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.trebuchet || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.snob || 0}}</td>
-												<td class="cell-center">{{preset_selected.units.knight || 0}}</td>
+												<td class="cell-center">{{preset_selected.units.spear
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.sword
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.axe ||
+													0}}</td>
+												<td class="cell-center">{{preset_selected.units.archer
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.light_cavalry
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.mounted_arquer
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.heavy_cavalry
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.ram ||
+													0}}</td>
+												<td class="cell-center">{{preset_selected.units.catapult
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.doppelsoldner
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.trebuchet
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.snob ||
+													0}}</td>
+												<td class="cell-center">{{preset_selected.units.knight
+													|| 0}}</td>
 											</tr>
 											<tr>
-                                                <td class="cell-right">{{text_units_village}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.mounted_arquer.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town || 0}}</td>
-                                                <td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town || 0}}</td>
-                                            </tr>
+												<td class="cell-right">{{text_units_village}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.mounted_arquer.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town
+													|| 0}}</td>
+											</tr>
 										</tbody>
 									</table></td>
 							</tr>
 						</tbody>
 					</table>
-					<!--<table>
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-
-						</colgroup>
-						<tbody>
-							<tr>
-								<td class="cell-top cell-right" rowspan="3" colspan="3">
-									<div class="list-collapse">
-										<h5 class="twx-section collapse">{{text_preset}}</h5>
-
-										<div class="box-text ng-hide" ng-show="!hasPresets();">
-											{{text_alert_preset}}
-											<ul class="list-btn list-center">
-												<li><a id="button-start"
-													class="btn-border btn-orange btn-init"
-													ng-click="createPreset()"><span>{{text_create}}</span></a></li>
-											</ul>
-										</div>
-										<div ng-show="hasPresets();">
-											<table class="tbl-border-light tbl-striped" id="preset-list">
-												<colgroup>
-													<col width="*">
-													<col width="46">
-													<col width="146">
-												</colgroup>
-												<tbody>
-													<tr>
-														<th class="cell-center">{{text_name_preset}}</th>
-														<th class="cell-center">{{text_name_state}}</th>
-														<th class="cell-center">{{text_name_action}}</th>
-													</tr>
-													<tr ng-repeat="preset in data.presets"
-														ng-show="!data.assignedPresetList[preset.id]">
-														<td class="cell-space cell-left">
-															<canvas icon-generator="preset.icon" icon-type="'preset'"
-																class="preset-icon" width="44" height="44"
-																style="height: 26px;"></canvas> <span
-															class="preset-name">{{preset.name}}</span>
-															<div class="hotkey" tooltip=""
-																tooltip-content="{{text_atalho}}"
-																ng-if="data.hotkeys[preset.id]">
-																{{data.hotkeys[preset.id]}}</div>
-														</td>
-														<td class="cell-space cell-center">
-															<div class="btn-orange icon-26x26-arrow-right size-34x34"
-																ng-click="assignPreset(preset.id)"></div>
-														</td>
-														<td class="cell-space cell-center preset-actions"><a
-															href="#"
-															class="btn-orange size-34x34 icon-34x34-unit-info"
-															ng-click="showPresetInfoModal(preset);"></a><a href="#"
-															class="btn-orange size-34x34 icon-34x34-edit"
-															ng-click="showPresetEditModal(preset);"></a><a href="#"
-															class="btn-red size-34x34 icon-34x34-trash"
-															ng-click="showPresetDeleteModal(preset);"></a></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</td>
-
-								<td class="cell-top cell-right" rowspan="3" colspan="2">
-									<div class="list-collapse">
-										<h5 class="twx-section collapse">{{text_selection}}</h5>
-										<table
-											class="tbl-border-light tbl-striped tbl-content tbl-hover">
-											<colgroup>
-												<col width="*">
-												<col width="46">
-												<col width="146">
-											</colgroup>
-											<tbody>
-												<tr>
-													<th class="cell-center">{{text_name_preset}}</th>
-													<th class="cell-center">{{text_name_state}}</th>
-													<th class="cell-center">{{text_name_action}}</th>
-												</tr>
-												<tr ng-repeat="preset in data.presets"
-													ng-show="data.assignedPresetList[preset.id]">
-													<td class="cell-space cell-left"
-														ng-click="setPresetSelected(preset.id)"
-														ng-class="{'selected': preset.id == preset_selected.id}">
-														<canvas icon-generator="preset.icon" icon-type="'preset'"
-															class="preset-icon" width="44" height="44"
-															style="height: 26px;"></canvas> <span class="preset-name">{{preset.name}}</span>
-														<div class="hotkey" tooltip=""
-															tooltip-content="{{text_atalho}}"
-															ng-if="data.hotkeys[preset.id]">
-															{{data.hotkeys[preset.id]}}</div>
-													</td>
-													<td class="cell-space cell-center">
-														<div class="btn-orange icon-26x26-arrow-left size-34x34"
-															ng-click="unassignPreset(preset.id)"></div>
-													</td>
-													<td class="cell-space cell-center preset-actions"><a
-														href="#"
-														class="btn-orange size-34x34 icon-34x34-unit-info"
-														ng-click="showPresetInfoModal(preset);"></a><a href="#"
-														class="btn-orange size-34x34 icon-34x34-edit"
-														ng-click="showPresetEditModal(preset);"></a><a href="#"
-														class="btn-red size-34x34 icon-34x34-trash"
-														ng-click="showPresetDeleteModal(preset);"></a></td>
-												</tr>
-
-											</tbody>
-										</table>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				-->
 				</div>
 			</div>
 		</div>
@@ -632,12 +543,10 @@
 				ng-click="start_farm()"><span>{{START}}</span></a></li>
 			<li><a id="button-stop" class="btn-border btn-orange btn-stop"
 				ng-click="stop_farm()"><span>{{STOP}}</span></a></li>
-			<li><a id="button-pause" class="btn-border btn-orange btn-pause"
-				ng-click="pause_farm()"><span>{{PAUSE}}</span></a></li>
-			<li><a id="button-resume"
-				class="btn-border btn-orange btn-resume" ng-click="resume_farm()"><span>{{RESUME}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu_farm()"><span>{{MENU}}</span></a></li>
 		</ul>
 	</footer>
 </div>
