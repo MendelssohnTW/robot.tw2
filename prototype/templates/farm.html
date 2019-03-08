@@ -187,7 +187,7 @@
 												<td><div>
 														<select id="select_order" class="select-handler"
 															ng-options="item as item.name for item in local_data_villages track by item.name"
-															ng-model="village_selected" ng-change="villageChanged()"></select>
+															ng-model="village_selected" ng-change="villageChanged(item)"></select>
 													</div></td>
 
 											</tr>

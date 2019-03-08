@@ -503,7 +503,8 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 		
-		$scope.villageChanged = function(){
+		$scope.villageChanged = function(item){
+			$scope.village_selected = item;
 			console.log($scope.village_selected.id)
 		}
 
@@ -520,9 +521,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("data_logs.farm", function(){
 			$scope.recalcScrollbar();
-			if (!$scope.$$phase) {
-				$scope.$apply();
-			}
+			if (!$scope.$$phase) {$scope.$apply()}
 		}, true)
 
 		$scope.$watch("village_selected", function(){
