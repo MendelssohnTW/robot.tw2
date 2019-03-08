@@ -114,6 +114,9 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.openExt = function(name) {
+			var text = "OPEN_";
+			var concat = text + name.toUpperCase();
+			services.$rootScope.$broadcast(exports.providers.eventTypeProvider[concat])
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
