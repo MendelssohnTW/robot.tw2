@@ -112,7 +112,7 @@ define("robotTW2/controllers/MainController", [
 				startExt(ext.name)
 			}
 		}
-
+		
 		$scope.openExt = function(name) {
 			var text = "OPEN_";
 			var concat = text + name.toUpperCase();
