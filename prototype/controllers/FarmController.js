@@ -440,7 +440,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.getVillageInfo = function(villageId){
 			var village = getVillageData(villageId)
-			return village.data.name + " - (" + village.data.x + "|" + village.data.y + ")"
+			return village.name + " - (" + village.x + "|" + village.y + ")"
 		}
 
 		$scope.setVillage = function (villageId) {
@@ -457,8 +457,6 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
 			getDetailsExceptions();
 		}
-
-
 
 
 		$scope.start_farm = function () {
