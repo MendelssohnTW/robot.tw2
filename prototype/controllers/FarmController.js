@@ -26,7 +26,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this,
-		local_data_villages = {};
+		$scope.local_data_villages = {};
 		var TABS = {
 				FARM 	: services.$filter("i18n")("farm", services.$rootScope.loc.ale, "farm"),
 				PRESET 	: services.$filter("i18n")("preset", services.$rootScope.loc.ale, "farm"),
@@ -63,7 +63,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return local_data_villages[vid].data;
+			return $scope.local_data_villages[vid].data;
 		}
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab	= tab;
@@ -568,7 +568,7 @@ define("robotTW2/controllers/FarmController", [
 				name : data.name,
 				value : data
 			})
-			return local_data_villages;
+			return $scope.local_data_villages;
 		})
 
 		$scope.date_ref = new Date(0);
