@@ -144,7 +144,8 @@
 																</div>
 															</div>
 														</td>
-														<td><a href="#"
+														<td><a href="#" tooltip
+                                                                    tooltip-content="{{extensions_status[ext.name] ? OPEN + ' ' + ext.name : stopped}}"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="openExt(ext.name)"
 															ng-class="{'btn-grey': !ext.init_initialized}"><span
