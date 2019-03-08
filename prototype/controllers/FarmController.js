@@ -432,7 +432,7 @@ define("robotTW2/controllers/FarmController", [
 			services.FarmService.stop();
 		}
 		$scope.menu_farm = function () {
-			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MENU);
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 
 		/*
