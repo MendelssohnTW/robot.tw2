@@ -186,8 +186,8 @@
 												<td class="cell-center"><span class="icon icon-26x26-rte-village"></span></td>
 												<td><div>
 														<select id="select_order" class="select-handler"
-															ng-options="item as item.name for item in data.availableOptions track by item.name"
-															ng-model="data.selectedOption" ng-change="villageChanged(item)"></select>
+															ng-options="item.name for item in data.availableOptions track by item.name"
+															ng-model="data.selectedOption"></select>
 													</div></td>
 
 											</tr>
