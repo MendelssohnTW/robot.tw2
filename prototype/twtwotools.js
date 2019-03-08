@@ -423,6 +423,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		this.controller 			= params.controller;
 		this.get_son	 			= params.get_son;
 		this.provider_listener 		= params.provider_listener;
+		this.build_open 			= params.build_open;
 		this.scopeLang 				= params.scopeLang;
 		this.url	 				= params.url;
 		this.style 					= params.style;
@@ -602,7 +603,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 	}
 	, builderWindow.prototype.addlistener = function() {
-		var fnThis = this.addWin;
+		var fnThis;
+		if(this.build_open) {
+			fnThis = this.buildWin
+		} else {
+			fnThis = this.addWin
+		}
 		var self = this;
 		this.listener_layout = exports.services.$rootScope.$on(this.provider_listener, function(){
 			if(scripts_loaded.some(f => f == self.url)){
@@ -2095,6 +2101,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.AlertController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_ALERT,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.ALERT,
 								templateName 		: "alert",
@@ -2124,6 +2131,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.RecruitController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_RECRUIT,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.RECRUIT,
 								templateName 		: "recruit",
@@ -2140,6 +2148,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.HeadquarterController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_HEADQUARTER,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.HEADQUARTER,
 								templateName 		: "headquarter",
@@ -2156,6 +2165,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.SpyController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_SPY,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.SPY,
 								templateName 		: "spy",
@@ -2174,6 +2184,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.FarmController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_FARM,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.FARM,
 								templateName 		: "farm",
@@ -2192,6 +2203,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.DefenseController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_DEFENSE,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.DEFENSE,
 								templateName 		: "defense",
@@ -2208,6 +2220,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.ReconController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_RECON,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.RECON,
 								templateName 		: "recon",
@@ -2226,6 +2239,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.AttackController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_ATTACK,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.ATTACK,
 								templateName 		: "attack",
@@ -2242,6 +2256,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.DepositController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_DEPOSIT,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.DEPOSIT,
 								templateName 		: "deposit",
@@ -2260,6 +2275,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						var params = {
 								controller			: robotTW2.controllers.SecondVillageController,
 								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_SECONDVILLAGE,
+								build_open			: true,
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.SECONDVILLAGE,
 								templateName 		: "secondvillage",
@@ -2273,21 +2289,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
-//				case robotTW2.controllers.DataController : {
-//				robotTW2.createScopeLang("data", function(scopeLang){
-//				var params = {
-//				controller		: robotTW2.controllers.DataController,
-//				scopeLang 		: scopeLang,
-//				hotkey 			: conf.HOTKEY.DATA,
-//				templateName 	: "data",
-//				classes 		: "",
-//				url		 		: "/controllers/DataController.js",
-//				style 			: null
-//				}		
-//				robotTW2.build(params)
-//				})
-//				break
-//				}
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
@@ -2299,6 +2300,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						, params = {
 								included_controller		: "ModalCustomArmyController",
 								controller				: robotTW2.controllers.AttackCompletionController,
+								build_open				: false,
 								get_son					: get_son,
 								provider_listener		: robotTW2.providers.eventTypeProvider.PREMIUM_SHOP_OFFERS,
 								scopeLang 				: scopeLang,
@@ -2320,6 +2322,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						, params = {
 								included_controller		: "ModalSendSpiesController",
 								controller				: robotTW2.controllers.SpyCompletionController,
+								build_open				: false,
 								get_son					: get_son,
 								provider_listener		: "get_selected_village",
 								scopeLang 				: scopeLang,
@@ -2341,6 +2344,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						, params = {
 								included_controller		: "BattleReportController",
 								controller				: robotTW2.controllers.FarmCompletionController,
+								build_open				: false,
 								get_son					: get_son,
 								provider_listener		: robotTW2.providers.eventTypeProvider.OPEN_REPORT,
 								scopeLang 				: scopeLang,
@@ -2359,6 +2363,7 @@ var robotTW2 = window.robotTW2 = undefined;
 									{
 										controller			: robotTW2.controllers.MainController,
 										provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_MAIN,
+										build_open			: true,
 										scopeLang 			: scopeLang,
 										hotkey 				: conf.HOTKEY.MAIN,
 										templateName 		: "main",
