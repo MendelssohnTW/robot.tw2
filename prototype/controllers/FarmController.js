@@ -60,7 +60,7 @@ define("robotTW2/controllers/FarmController", [
 		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, getVillage = function getVillage(vid){
 			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid)
+			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
