@@ -6,6 +6,7 @@
     "DELETE": "Delete",
     "LEVEL": "Level",
     "CLOSE": "Close",
+    "OPEN": "Open",
     "RESTORE": "Restore",
     "SCHEDULE": "Schedule",
     "CLEAR": "Clear",

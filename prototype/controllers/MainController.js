@@ -54,12 +54,7 @@ define("robotTW2/controllers/MainController", [
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
-
-		$scope.recalibrate = function(){
-			services.AttackService.calibrate_time();
-		}
-
-		$scope.startExt = function(name){
+		, startExt = function(name){
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			var fn = arFn.fn;
 			if(!fn.isInitialized()){
@@ -82,11 +77,9 @@ define("robotTW2/controllers/MainController", [
 				}
 			}
 		}
-
-		$scope.stopExt = function(name){
+		, stopExt = function(name){
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
 			var fn = arFn.fn;
-//			let ext = $scope.extensions[name]
 			if(typeof(fn.stop) == "function"){
 				if(fn.isRunning()){
 					fn.stop()
@@ -94,6 +87,11 @@ define("robotTW2/controllers/MainController", [
 			}
 		}
 
+		$scope.recalibrate = function(){
+			services.AttackService.calibrate_time();
+		}
+
+		
 //		$scope.toggleValueState = function(name, opt) {
 //			let ext = $scope.extensions[name]
 //			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true);
@@ -107,6 +105,17 @@ define("robotTW2/controllers/MainController", [
 		$scope.toggleValueInit = function(ext) {
 			$scope.extensions[ext.name].auto_start = ext.auto_start
 			$scope.data_main.setExtensions($scope.extensions);
+		};
+		
+		$scope.toggleStartStop = function(ext) {
+			if(ext.status == running){
+				stopExt(ext.name)
+			} else if(ext.status == stopped){
+				startExt(ext.name)
+			}
+		};
+		
+		$scope.openExt = function(name) {
 		};
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {

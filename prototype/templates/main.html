@@ -84,7 +84,6 @@
 																</div>
 															</div>
 														</td>
-														<td class="cell-center">{{ext.hotkey}}</td>
 														<td class="cell-center">
 															<div class="icon-26x26-dot-bg" tooltip
 																tooltip-content="{{ext.status}}">
@@ -92,16 +91,31 @@
 																	ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status == stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></span>
 															</div>
 														</td>
+														<td>
+														<div class="checkbox box-border-dark">
+                                                                <div  tooltip
+                                                                    tooltip-content="{{value == running ? STOP : START}}" switch-slider="" border="true"
+                                                                    enabled="ext.init_initialized"
+                                                                    value="ext.status" ng-click="toggleStartStop(ext)"
+                                                                    vertical="false" size="'56x28'">
+                                                                    <div ng-class="{'box-border-dark box-filter': border}"
+                                                                        class="box-border-dark box-filter">
+                                                                        <div class="switch switch-56x28 switch-horizontal"
+                                                                            ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
+                                                                            <span class="size-26x26 switch-thumb"> <span
+                                                                                class="simple icon-26x26-switch-off"
+                                                                                ng-class="{'icon-26x26-switch-on': value == running; 'icon-26x26-switch-off': value == stopped; 'icon-inactive': enabled == false}"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+														</td>
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
-															ng-click="startExt(ext.name)"
-															ng-class="{'btn-grey': ext.status == running || !ext.init_initialized}"><span
-																id="span-text" class="text">{{START}}</span></a></td>
-														<td><a href="#"
-															class="btn-orange btn-form btn-border no-padding"
-															ng-click="stopExt(ext.name)"
-															ng-class="{'btn-grey': ext.status == stopped || !ext.init_initialized}"><span
-																id="span-text" class="text">{{STOP}}</span></a></td>
+															ng-click="openExt(ext.name)"
+															ng-class="{'btn-grey': !ext.init_initialized}"><span
+																id="span-text" class="text">{{ext.hotkey}}</span></a></td>
 													</tr>
 												</tbody>
 											</table>
