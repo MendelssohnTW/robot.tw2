@@ -7,6 +7,7 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_farm",
+	"helper/format"
 	], function(
 			helper,
 			time,
@@ -15,7 +16,8 @@ define("robotTW2/controllers/FarmController", [
 			conf_conf,
 			calculateTravelTime,
 			data_villages,
-			data_farm
+			data_farm,
+			formatHelper
 	){
 	return function FarmController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -440,8 +442,8 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.getVillageInfo = function(villageId){
-			var village = getVillageData(villageId)
-			return village.name + " - (" + village.x + "|" + village.y + ")"
+			var data = getVillageData(villageId)
+			return formatHelper.villageNameWithCoordinates(data)
 		}
 
 		$scope.setVillage = function (villageId) {
@@ -562,11 +564,11 @@ define("robotTW2/controllers/FarmController", [
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			let data = getVillage(key).data;
-			let label = $scope.getVillageInfo(key);
+			let label = data.name + " - (" + data.x + "/" + data.y + ")"
 			$scope.local_data_villages.push({
 				id : key,
 				name : data.name,
-				label : label,
+				label : formatHelper.villageNameWithCoordinates(data),
 				value : data
 			})
 			return $scope.local_data_villages;
