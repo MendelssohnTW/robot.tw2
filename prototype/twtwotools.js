@@ -1,4 +1,3 @@
-
 var robotTW2 = window.robotTW2 = undefined;
 (function(root, factory) {
 	if (typeof define === "function" && define.amd) { 
