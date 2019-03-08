@@ -445,9 +445,8 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.setVillage = function (villageId) {
 			$scope.data.assignedPresetList = {};
-			$scope.village_selected = villageId;
+			$scope.village_selected = $scope.local_data_villages.find(f=>f.id==villageId);
 		}
-
 
 		/*
 		 * Exceptions
