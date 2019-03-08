@@ -167,7 +167,7 @@
         "text_min_dist": "Minimum distance",
         "text_max_dist": "Maximum distance",
         "text_preset": "Presets",
-        "text_one_preset": "Apply only to the selected preset of the selected villages",
+        "text_one_preset": "Apply only to the selected preset of the selected village",
         "text_all_preset": "Apply to all presets in the selected village",
         "text_all_village_preset": "Apply to all presets to all villages",
         "text_name_preset": "Name of the preset",
