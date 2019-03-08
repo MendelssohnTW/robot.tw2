@@ -565,6 +565,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.local_data_villages.push({
 				id : key,
 				name : data.name,
+				label : getVillageInfo(key),
 				value : data
 			})
 			return $scope.local_data_villages;
