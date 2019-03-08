@@ -147,18 +147,12 @@ define("robotTW2/controllers/FarmController", [
 
 			switch ($scope.toggle_option) {
 			case "check_one":
-				$scope.check_one = true;
-				$scope.check_all = false;
-				$scope.check_all_village = false;
 				$scope.presetSelected.max_journey_distance = get_dist($scope.villageSelected, $scope.presetSelected.max_journey_time, $scope.presetSelected.units)
 				$scope.presetSelected.min_journey_distance = get_dist($scope.villageSelected, $scope.presetSelected.min_journey_time, $scope.presetSelected.units);
 				angular.extend($scope.data_villages.villages[$scope.villageSelected].presets[$scope.presetSelected.id], $scope.presetSelected)
 				angular.extend($scope.data_villages.villages[$scope.villageSelected].presets, $scope.data_villages.villages[$scope.villageSelected].presets)
 				break;
 			case "check_all":
-				$scope.check_one = false;
-				$scope.check_all = true;
-				$scope.check_all_village = false;
 				Object.keys($scope.data_villages.villages[$scope.villageSelected].presets).map(function(elem){
 					$scope.data_villages.villages[$scope.villageSelected].presets[elem].max_journey_distance = get_dist($scope.villageSelected, $scope.presetSelected.max_journey_time, $scope.data_villages.villages[$scope.villageSelected].presets[elem].units)
 					$scope.data_villages.villages[$scope.villageSelected].presets[elem].max_journey_time = get_time($scope.villageSelected, $scope.data_villages.villages[$scope.villageSelected].presets[elem].max_journey_distance, $scope.data_villages.villages[$scope.villageSelected].presets[elem].units)
@@ -177,9 +171,6 @@ define("robotTW2/controllers/FarmController", [
 				});
 				break;
 			case "check_all_villages":
-				$scope.check_one = false;
-				$scope.check_all = false;
-				$scope.check_all_village = true;
 				Object.keys($scope.data_villages.villages).map(function(village){
 					Object.keys($scope.data_villages.villages[village].presets).map(function(elem){
 						$scope.data_villages.villages[$scope.villageSelected].presets[elem].max_journey_distance = get_dist($scope.villageSelected, $scope.presetSelected.max_journey_time, $scope.data_villages.villages[$scope.villageSelected].presets[elem].units)
@@ -265,13 +256,26 @@ define("robotTW2/controllers/FarmController", [
 			setActiveTab(tab);
 		}
 
-//		$scope.toggleValueState = function(update_all_presets){
-//			$scope.update_all_presets = update_all_presets;
-//			if (!$scope.$$phase) {$scope.$apply();}
-//		}
-
 		$scope.toggleOption = function(option){
 			$scope.toggle_option = option;
+			
+			switch (option) {
+			case "check_one":
+				$scope.check_one = true;
+				$scope.check_all = false;
+				$scope.check_all_village = false;
+				break;
+			case "check_all":
+				$scope.check_one = false;
+				$scope.check_all = true;
+				$scope.check_all_village = false;
+				break;
+			case "check_all_villages":
+				$scope.check_one = false;
+				$scope.check_all = false;
+				$scope.check_all_village = true;
+				break;
+			}
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
