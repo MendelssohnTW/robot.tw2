@@ -25,9 +25,8 @@ define("robotTW2/controllers/FarmController", [
 		$scope.RESUME = services.$filter("i18n")("RESUME", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
-		var self = this,
-		$scope.local_data_villages = {};
-		var TABS = {
+		var self = this
+		, TABS = {
 				FARM 	: services.$filter("i18n")("farm", services.$rootScope.loc.ale, "farm"),
 				PRESET 	: services.$filter("i18n")("preset", services.$rootScope.loc.ale, "farm"),
 				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "farm")
@@ -39,11 +38,10 @@ define("robotTW2/controllers/FarmController", [
 			]
 
 		$scope.update_all_presets = false;
-
+		$scope.local_data_villages = {};
 		$scope.requestedTab = TABS.FARM;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
