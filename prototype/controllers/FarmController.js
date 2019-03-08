@@ -51,6 +51,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.check_one = true;
 		$scope.check_all = false;
 		$scope.check_all_villages = false;
+		
 
 		var presetListModel = services.modelDataService.getPresetList()
 		, presetIds = []
@@ -556,7 +557,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.setCollapse();
 
 		initTab();
-
 		getDetailsExceptions();
 
 		Object.keys($scope.data_villages.villages).map(function(key){
@@ -575,6 +575,11 @@ define("robotTW2/controllers/FarmController", [
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
+		
+		$scope.data_select = {
+				availableOptions : $scope.local_data_villages,
+				selectedOption : $scope.selected_village
+		}
 
 		triggerUpdate()
 		update()
