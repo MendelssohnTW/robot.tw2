@@ -185,6 +185,11 @@
 								<td>
 									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<colgroup>
+											<col width="120px">
+											<col width="30px">
+											<col width="*">
+										</colgroup>
 										<tbody>
 											<tr>
 												<td class="cell-center selected" colspan="3">{{SELECT}}</td>
@@ -211,7 +216,8 @@
 													</div></td>
 											</tr>
 											<tr>
-												<td colspan="3">
+												<td colspan="2">{{text_remove_preset}}</td>
+												<td>
 													<ul class="list-btn list-center">
 														<li><a id="button-start"
 															class="btn-border btn-orange btn-init"
@@ -259,6 +265,11 @@
 								<td>
 									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<colgroup>
+											<col width="120px">
+											<col width="30px">
+											<col width="*">
+										</colgroup>
 										<tbody>
 											<tr>
 												<td class="cell-center selected" colspan="3">{{text_add}}</td>
@@ -274,14 +285,15 @@
 													</div></td>
 											</tr>
 											<tr>
-                                                <td colspan="3">
-                                                    <ul class="list-btn list-center">
-                                                        <li><a id="button-start"
-                                                            class="btn-border btn-orange btn-init"
-                                                            ng-click="assignPreset()"><span>{{ADD}}</span></a></li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
+												<td colspan="2">{{text_add_preset}}</td>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="assignPreset()"><span>{{ADD}}</span></a></li>
+													</ul>
+												</td>
+											</tr>
 										</tbody>
 									</table>
 								</td>
@@ -368,6 +380,91 @@
 										</tbody>
 									</table>
 								</td>
+							</tr>
+							<tr>
+								<td colspan="2"><table
+										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<colgroup>
+											<col width="*">
+
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>Teste</td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-spear"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-sword"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-axe"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-archer"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-light_cavalry"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-mounted_archer"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-heavy_cavalry"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-ram"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-catapult"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-doppelsoldner"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-trebuchet"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-snob"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-knight"></span></td>
+											</tr>
+											<tr>
+												<td>{{text_units_preset}}</td>
+												<td>{{preset_selected.units.spear || 0}}</td>
+												<td>{{preset_selected.units.sword || 0}}</td>
+												<td>{{preset_selected.units.axe || 0}}</td>
+												<td>{{preset_selected.units.archer || 0}}</td>
+												<td>{{preset_selected.units.light_cavalry || 0}}</td>
+												<td>{{preset_selected.units.mounted_arquer || 0}}</td>
+												<td>{{preset_selected.units.heavy_cavalry || 0}}</td>
+												<td>{{preset_selected.units.ram || 0}}</td>
+												<td>{{preset_selected.units.catapult || 0}}</td>
+												<td>{{preset_selected.units.doppelsoldner || 0}}</td>
+												<td>{{preset_selected.units.trebuchet || 0}}</td>
+												<td>{{preset_selected.units.snob || 0}}</td>
+												<td>{{preset_selected.units.knight || 0}}</td>
+											</tr>
+											<tr>
+                                                <td>{{text_units_village}}</td>
+                                                <td>{{village_selected.units.spear || 0}}</td>
+                                                <td>{{village_selected.units.sword || 0}}</td>
+                                                <td>{{village_selected.units.axe || 0}}</td>
+                                                <td>{{village_selected.units.archer || 0}}</td>
+                                                <td>{{village_selected.units.light_cavalry || 0}}</td>
+                                                <td>{{village_selected.units.mounted_arquer || 0}}</td>
+                                                <td>{{village_selected.units.heavy_cavalry || 0}}</td>
+                                                <td>{{village_selected.units.ram || 0}}</td>
+                                                <td>{{village_selected.units.catapult || 0}}</td>
+                                                <td>{{village_selected.units.doppelsoldner || 0}}</td>
+                                                <td>{{village_selected.units.trebuchet || 0}}</td>
+                                                <td>{{village_selected.units.snob || 0}}</td>
+                                                <td>{{village_selected.units.knight || 0}}</td>
+                                            </tr>
+										</tbody>
+									</table></td>
 							</tr>
 						</tbody>
 					</table>
@@ -485,7 +582,8 @@
 							</tr>
 						</tbody>
 					</table>
-				--></div>
+				-->
+				</div>
 			</div>
 		</div>
 		<div class="jssb-y">
