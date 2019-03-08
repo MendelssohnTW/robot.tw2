@@ -527,6 +527,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
+			$scope.village_selected = $scope.data_select.selectedOption;
 			updateAll()
 		}, true)
 
