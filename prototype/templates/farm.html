@@ -176,6 +176,34 @@
 			<div class="scroll-wrap preset" style="margin-bottom: 100px">
 				<div class="list-collapse">
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+						<tbody>
+							<tr>
+								<td><label for="check_all" class="with-margin"
+									style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+									<div id="check_all"
+										class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
+										ng-click="toggleValueState(update_all_presets)" tooltip
+										tooltip-content=""></div></td>
+							</tr>
+							<tr>
+                                <td><label for="check_all" class="with-margin"
+                                    style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+                                    <div id="check_all"
+                                        class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
+                                        ng-click="toggleValueState(update_all_presets)" tooltip
+                                        tooltip-content=""></div></td>
+                            </tr>
+                            <tr>
+                                <td><label for="check_all" class="with-margin"
+                                    style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+                                    <div id="check_all"
+                                        class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
+                                        ng-click="toggleValueState(update_all_presets)" tooltip
+                                        tooltip-content=""></div></td>
+                            </tr>
+						</tbody>
+					</table>
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 						<colgroup>
 							<col width="100px">
 							<col width="104px">
@@ -185,18 +213,8 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<td class="cell-right" colspan="3"><label for="check_all"
-									class="with-margin"
-									style="position: absolute; top: 21px; left: 100px;">{{text_all_preset}}</label>
-
-									<div
-										class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
-										ng-click="toggleValueState(update_all_presets)" tooltip
-										tooltip-content=""></div>
-
-
-
-<!-- 
+								<td class="cell-right" colspan="3">
+									<!-- 
 									<div class="checkbox box-border-dark" id="check_all"
 										style="text-align: center;">
 
@@ -223,7 +241,7 @@
 
 									</div>
 									-->
-									</td>
+								</td>
 								<td></td>
 								<td class="cell-right"><label for="cmd_max"
 									class="with-margin">{{text_cmd_max}}</label><input
