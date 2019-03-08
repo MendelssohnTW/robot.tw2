@@ -244,9 +244,10 @@ define("robotTW2/controllers/FarmController", [
 			}
 		}
 		, setFirstPreset = function setFirstPreset(){
-			$scope.preset_selected = Object.values($scope.data.presets)[0];
+			let availableOptions  = Object.values($scope.data.presets).map(function(elem){return elem})
+			$scope.preset_selected = availableOptions[0];
 			$scope.data_preset = {
-					"availableOptions" : $scope.data.presets,
+					"availableOptions" : availableOptions,
 					"selectedOption" : $scope.preset_selected
 			}
 		}
