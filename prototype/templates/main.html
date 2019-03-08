@@ -49,8 +49,7 @@
 																<div tooltip
 																	tooltip-content="{{ext.init_initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
 																	switch-slider="" border="true" enabled="true"
-																	value="ext.init_initialized"
-																	vertical="false"
+																	value="ext.init_initialized" vertical="false"
 																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
 																		class="box-border-dark box-filter">
@@ -68,9 +67,9 @@
 														<td class="cell-center">
 															<div class="checkbox box-border-dark">
 																<div switch-slider="" border="true"
-																	enabled="ext.init_initialized"
-																	value="ext.auto_start" ng-click="toggleValueInit(ext)"
-																	vertical="false" size="'56x28'">
+																	enabled="ext.init_initialized" value="ext.auto_start"
+																	ng-click="toggleValueInit(ext)" vertical="false"
+																	size="'56x28'">
 																	<div ng-class="{'box-border-dark box-filter': border}"
 																		class="box-border-dark box-filter">
 																		<div class="switch switch-56x28 switch-horizontal"
@@ -92,24 +91,25 @@
 															</div>
 														</td>
 														<td>
-														<div class="checkbox box-border-dark">
-                                                                <div  tooltip
-                                                                    tooltip-content="{{value == running ? STOP : START}}" switch-slider="" border="true"
-                                                                    enabled="ext.init_initialized"
-                                                                    value="ext.status" ng-click="toggleStartStop(ext)"
-                                                                    vertical="false" size="'56x28'">
-                                                                    <div ng-class="{'box-border-dark box-filter': border}"
-                                                                        class="box-border-dark box-filter">
-                                                                        <div class="switch switch-56x28 switch-horizontal"
-                                                                            ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
-                                                                            <span class="size-26x26 switch-thumb"> <span
-                                                                                class="simple icon-26x26-switch-off"
-                                                                                ng-class="{'icon-26x26-switch-on': value == running; 'icon-26x26-switch-off': value == stopped; 'icon-inactive': enabled == false}"></span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+															<div class="checkbox box-border-dark">
+																<div tooltip
+																	tooltip-content="{{value == running ? STOP : START}}"
+																	switch-slider="" border="true"
+																	enabled="ext.init_initialized" value="ext.status"
+																	ng-click="toggleStartStop(ext)" vertical="false"
+																	size="'56x28'">
+																	<div ng-class="{'box-border-dark box-filter': border}"
+																		class="box-border-dark box-filter">
+																		<div class="switch switch-56x28 switch-horizontal"
+																			ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
+																			<span class="size-26x26 switch-thumb"> <span
+																				class="simple icon-26x26-switch-off"
+																				ng-class="{'icon-26x26-switch-on': value == running; 'icon-26x26-switch-off': value == stopped; 'icon-inactive': enabled == false}"></span>
+																			</span>
+																		</div>
+																	</div>
+																</div>
+															</div>
 														</td>
 														<td><a href="#"
 															class="btn-orange btn-form btn-border no-padding"
@@ -122,6 +122,8 @@
 										</div>
 									</div>
 								</td>
+							</tr>
+							<tr>
 								<td class="cell-top">
 									<div class="list-collapse">
 										<table class="tbl-border-light tbl-striped" id="preset-list">
@@ -138,7 +140,9 @@
 																	id="preset-list">
 																	<colgroup>
 																		<col width="*">
-																		<col width="34px">
+																		<col width="48px">
+																		<col width="*">
+																		<col width="48px">
 																	</colgroup>
 																	<tbody>
 																		<tr>
@@ -152,8 +156,6 @@
 																					class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
 																					ng-click="recalibrate()" tooltip
 																					tooltip-content="{{recal_button}}"></div></td>
-																		</tr>
-																		<tr>
 																			<td class="cell-right"><label
 																				for="max_time_correction">{{text_max_time_correction}}</label><input
 																				id="max_time_correction"
