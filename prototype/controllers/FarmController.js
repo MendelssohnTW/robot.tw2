@@ -578,7 +578,7 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.data_select = {
 				availableOptions : $scope.local_data_villages,
-				selectedOption : $scope.selected_village
+				selectedOption : $scope.village_selected
 		}
 
 		triggerUpdate()
