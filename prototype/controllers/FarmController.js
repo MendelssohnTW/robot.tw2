@@ -429,16 +429,18 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.deleteException = function () {
 			let id_village = $scope.data_exception.selectedOption.village_id
-			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
-			getDetailsExceptions(true);
+			if(!$scope.data_farm.list_exceptions.find(f=>f==id_village)){
+				$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
+				getDetailsExceptions(true);
+			}
 		}
 
 		$scope.addException = function () {
 			let id_village = $scope.item.id;
 			if(!$scope.data_farm.list_exceptions.find(f=>f==id_village)){
 				$scope.data_farm.list_exceptions.push(id_village)
+				getDetailsExceptions(true);
 			}
-			getDetailsExceptions(true);
 		}
 
 		$scope.start_farm = function () {
@@ -498,7 +500,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.autoCompleteKey = function(event){
 			var scope = services.$rootScope.$new()
-			
+
 			let obj_autocomplete = {
 				'type'					: 'village',
 				'placeholder'			: $scope.SEARCH_MAP,
