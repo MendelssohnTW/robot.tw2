@@ -21,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-	<!--<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
 		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
 			<div class="version">
 				<h5>{{text_version}}</h5>
@@ -90,30 +90,6 @@
 
 						</tr>
 						<tr>
-							<td class="cell-top">
-								<div class="list-collapse">
-									<h5 class="twx-section collapse">{{exceptions}}</h5>
-									<div>
-										<table
-											class="tbl-border-light tbl-striped tbl-content tbl-hover">
-											<colgroup>
-												<col width="*">
-												<col width="34">
-											</colgroup>
-
-											<tbody>
-												<tr ng-repeat="(key, value) in list_exceptions">
-													<td class="cell-right"><span>{{value.village_name}}
-															- ({{value.village_x}}|{{value.village_y}})</span></td>
-													<td class="cell-space"><a href="#"
-														class="size-34x34 btn-red icon-26x26-close"
-														ng-click="deleteException(key)"></a></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</td>
 							<td class="cell-top" colspan=2>
 								<div class="list-collapse">
 									<h5 class="twx-section collapse">{{villages_selections}}</h5>
@@ -169,7 +145,7 @@
 		</div>
 	</div>
 
--->
+
 
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.PRESET">
 		<div class="box-paper content-settings">
