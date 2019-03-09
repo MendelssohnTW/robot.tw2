@@ -499,8 +499,6 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.autoCompleteKey = function(event){
-			var scope = services.$rootScope.$new()
-
 			let obj_autocomplete = {
 				'type'					: 'village',
 				'placeholder'			: $scope.SEARCH_MAP,
@@ -522,8 +520,8 @@ define("robotTW2/controllers/FarmController", [
 				"id" 			: "autocomplete_farm",
 				"autoComplete" 	: obj_autocomplete
 			}
-			angular.extend(scope, object_scope)
-			autocomplete(scope, event);
+			angular.extend($scope, object_scope)
+			autocomplete($scope, event);
 		}
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
