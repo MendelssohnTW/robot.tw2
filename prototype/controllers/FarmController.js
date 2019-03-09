@@ -492,7 +492,7 @@ define("robotTW2/controllers/FarmController", [
 					$scope.inputValue = item.displayedName
 				},
 				'exclude'				: function(elem){
-					return elem
+					return elem.owner_id == undefined
 				},
 				"inputValueReadOnly" 	: "",
 				"keepSelected"			: false
