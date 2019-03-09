@@ -137,33 +137,33 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<td></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-spear"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-sword"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-axe"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-archer"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-light_cavalry"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-mounted_archer"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-heavy_cavalry"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-ram"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-catapult"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-doppelsoldner"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-trebuchet"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-snob"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-knight"></span></td>
+												<th></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-spear"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-sword"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-axe"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-archer"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-light_cavalry"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-mounted_archer"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-heavy_cavalry"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-ram"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-catapult"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-doppelsoldner"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-trebuchet"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-snob"></span></th>
+												<th class="cell-center"><span
+													class="icon-34x34-unit-knight"></span></th>
 											</tr>
 											<tr>
 												<td class="cell-right">{{text_units_preset}}</td>
@@ -241,10 +241,10 @@
 														</colgroup>
 														<tbody>
 															<tr>
-																<td class="cell-center selected" colspan="3">{{text_selections}}</td>
+																<th class="cell-center selected" colspan="3">{{text_selections}}</th>
 															</tr>
 															<tr>
-																<td>{{text_village}}</td>
+																<th>{{text_village}}</th>
 																<td class="cell-center"><span
 																	class="icon icon-34x34-select-village"></span></td>
 																<td><div>
@@ -255,7 +255,7 @@
 
 															</tr>
 															<tr>
-																<td>{{text_preset}}</td>
+																<th>{{text_preset}}</th>
 																<td class="cell-center"><span
 																	class="icon icon-34x34-preset"></span></td>
 																<td><div>
@@ -265,7 +265,7 @@
 																	</div></td>
 															</tr>
 															<tr>
-																<td colspan="2">{{text_remove_preset}}</td>
+																<th colspan="2">{{text_remove_preset}}</th>
 																<td>
 																	<ul class="list-btn list-center">
 																		<li><a id="button-start"
@@ -275,7 +275,7 @@
 																</td>
 															</tr>
 															<tr>
-																<td>{{text_global}}</td>
+																<th>{{text_global}}</th>
 																<td class="cell-center"><span
 																	class="icon icon-34x34-preset"></span></td>
 																<td><div>
@@ -285,7 +285,7 @@
 																	</div></td>
 															</tr>
 															<tr>
-																<td colspan="2">{{text_add_preset}}</td>
+																<th colspan="2">{{text_add_preset}}</th>
 																<td>
 																	<ul class="list-btn list-center">
 																		<li><a id="button-start"
@@ -307,7 +307,7 @@
 														</colgroup>
 														<tbody>
 															<tr>
-																<td class="cell-center selected" colspan="3">{{exceptions}}</td>
+																<th class="cell-center selected" colspan="3">{{exceptions}}</th>
 															</tr>
 															<tr>
 																<td></td>
@@ -320,7 +320,7 @@
 																	</div></td>
 															</tr>
 															<tr>
-																<td colspan="2">{{text_remove_exceptions}}</td>
+																<th colspan="2">{{text_remove_exceptions}}</th>
 																<td>
 																	<ul class="list-btn list-center">
 																		<li><a id="button-start"
@@ -361,7 +361,7 @@
 																	</div></td>
 															</tr>
 															<tr>
-																<td colspan="2">{{text_add_exceptions}}</td>
+																<th colspan="2">{{text_add_exceptions}}</th>
 																<td>
 																	<ul class="list-btn list-center">
 																		<li><a id="button-start"
@@ -490,23 +490,39 @@
 																class="input-border inputcreated" type="number"
 																id="max_dist" step="1" min="5" max="200"
 																ng-model="preset_selected.max_journey_distance" disabled></td>
-															<td class="cell-space cell-top">
-																<div class="checkbox box-border-dark">
-																	<div switch-slider="" border="true" enabled="true"
-																		value="data_villages.villages[village_selected.id].farm_activate"
-																		vertical="false" size="'56x28'">
-																		<div ng-class="{'box-border-dark box-filter': border}"
-																			class="box-border-dark box-filter">
-																			<div class="switch switch-56x28 switch-horizontal"
-																				ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
-																				<span class="size-26x26 switch-thumb"> <span
-																					class="simple icon-26x26-switch-off"
-																					ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
-																				</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
+															<td class="cell-space">
+																<table
+																	class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+																	<tbody>
+																		<tr>
+																			<th>{{villages_selections}}</th>
+																		</tr>
+																		<tr>
+																			<td>
+																				<div class="checkbox box-border-dark">
+																					<div switch-slider="" border="true" enabled="true"
+																						value="data_villages.villages[village_selected.id].farm_activate"
+																						vertical="false" size="'56x28'">
+																						<div
+																							ng-class="{'box-border-dark box-filter': border}"
+																							class="box-border-dark box-filter">
+																							<div
+																								class="switch switch-56x28 switch-horizontal"
+																								ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																								<span class="size-26x26 switch-thumb"> <span
+																									class="simple icon-26x26-switch-off"
+																									ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
+																								</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+
+
 															</td>
 														</tr>
 													</tbody>
@@ -514,14 +530,8 @@
 										</tr>
 									</table></td>
 							</tr>
-
-
 						</tbody>
 					</table>
-
-
-
-
 				</div>
 			</div>
 		</div>
