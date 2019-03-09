@@ -230,8 +230,11 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, getDetailsExceptions = function getDetailsExceptions(opt) {
 			var my_village_id = services.modelDataService.getSelectedVillage().getId();
+			if(opt){
+				$scope.data_exception.availableOptions = [];
+			}
 
-			if(!$scope.data_exception.availableOptions.length || opt){
+			if(!$scope.data_exception.availableOptions.length){
 				$scope.data_farm.list_exceptions.forEach(function (vid) {
 					services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 						'village_id'	: vid,
@@ -500,25 +503,25 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
-				'type'					: 'village',
-				'placeholder'			: $scope.SEARCH_MAP,
-				'onEnter'				: function(item, element){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
-					$scope.item = item
-					element[0].firstElementChild.value = item.displayedName
-					if (!$scope.$$phase) {$scope.$apply()}
-				},
-				'exclude'				: function(elem){
-					return elem.owner_id == undefined
-				},
-				"inputValueReadOnly" 	: "",
-				"keepSelected"			: false
+					'type'					: 'village',
+					'placeholder'			: $scope.SEARCH_MAP,
+					'onEnter'				: function(item, element){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
+						$scope.item = item
+						element[0].firstElementChild.value = item.displayedName
+						if (!$scope.$$phase) {$scope.$apply()}
+					},
+					'exclude'				: function(elem){
+						return elem.owner_id == undefined
+					},
+					"inputValueReadOnly" 	: "",
+					"keepSelected"			: false
 			}
 
 			let object_scope = {
-				"inputValue" 	: event.srcElement.value,
-				"element" 		: $($("#autocomplete_farm")[0]),
-				"id" 			: "autocomplete_farm",
-				"autoComplete" 	: obj_autocomplete
+					"inputValue" 	: event.srcElement.value,
+					"element" 		: $($("#autocomplete_farm")[0]),
+					"id" 			: "autocomplete_farm",
+					"autoComplete" 	: obj_autocomplete
 			}
 //			angular.extend($scope, object_scope)
 			autocomplete(object_scope, event);
