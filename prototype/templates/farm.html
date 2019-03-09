@@ -482,7 +482,6 @@
 							<col width="60%">
 						</colgroup>
 						<tbody>
-
 							<tr>
 								<td>
 									<table
@@ -499,8 +498,8 @@
 													class="icon icon-34x34-preset"></span></td>
 												<td><div>
 														<select id="list_exceptions" class="select-handler"
-															ng-options="item as item.label for item in data_exceptions.availableOptions track by item.village_id"
-															ng-model="data_exceptions.selectedOption"></select>
+															ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id"
+															ng-model="data_exception.selectedOption"></select>
 													</div></td>
 											</tr>
 											<tr>
@@ -516,6 +515,7 @@
 										</tbody>
 									</table>
 								</td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
