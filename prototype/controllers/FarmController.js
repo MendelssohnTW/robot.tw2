@@ -481,7 +481,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.autoCompleteKey = function(event){
 //			let id = event.srcElement.id;
 //			let value = event.srcElement.value;
-			var scope = $rootScope.$new()
+			var scope = services.$rootScope.$new()
 			
 			let obj_autocomplete = {
 					'type'			: 'village',
