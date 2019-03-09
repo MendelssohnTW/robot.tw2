@@ -1863,7 +1863,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 
-			return function autoCompleteKeyUp(scope, id_element) {
+			return function autoCompleteKeyUp(scope, e) {
 				angular.extend($scope, scope)
 				element = $scope.element
 				id = $scope.id
