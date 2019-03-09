@@ -167,8 +167,9 @@
 }
 
 .robotTW2 .select-wrapper {
-	height: 36px;
+	height: 34px;
 	min-width: 130px;
+	padding-left: 10px;
 }
 
 .robotTW2 select {
@@ -176,13 +177,15 @@
 	-moz-appearance: button;
 	appearance: button;
 	height: 34px;
-	width: 100%;
+	width: 96%;
 	background: url(../imgs/arrow_down.png);
 	background-repeat: no-repeat;
 	background-position: 100% center;
-	background-color: #b89064;
-	color: white;
+	background-color: #9c6e3b;
+	color: #4c290b;
 	overflow: hidden;
+	border-style: inset;
+	border-color: floralwhite;
 }
 
 #Minimap .minimap {

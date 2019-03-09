@@ -485,7 +485,7 @@ define("robotTW2/controllers/FarmController", [
 			
 			let obj_autocomplete = {
 					'type'			: 'village',
-					'placeholder'	: services.$filter('i18n')('village_search_placeholder', $rootScope.loc.ale, textObject),
+					'placeholder'	: $scope.SEARCH_MAP,
 					'onEnter'		: function (){},
 					'exclude'		: function(){}
 			}
