@@ -481,13 +481,28 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
+
+		/* Properties of item	
+		 * 		
+		displayedName: "name village com coordenadas"
+		id: id_village
+		leftIcon: "size-34x34 icon-26x26-rte-village"
+		name: "name village"
+		owner_id: id player
+		owner_name: "name player"
+		type: "village"
+		x: 466
+		y: 486
+
+		 */
+
 		$scope.autoCompleteKey = function(event){
 			var scope = services.$rootScope.$new()
 
 			let obj_autocomplete = {
 				'type'					: 'village',
 				'placeholder'			: $scope.SEARCH_MAP,
-				'onEnter'				: function(item){
+				'onEnter'				: function(item){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
 					$scope.item = item
 					$scope.inputValue = item.displayedName
 				},
@@ -497,18 +512,7 @@ define("robotTW2/controllers/FarmController", [
 				"inputValueReadOnly" 	: "",
 				"keepSelected"			: false
 			}
-/* Properties of item			
-				$$hashKey: "object:226"
-				displayedName: "Tallinn (466|486)"
-				id: 871
-				leftIcon: "size-34x34 icon-26x26-rte-village"
-				name: "Tallinn"
-				owner_id: 25016
-				owner_name: "conqueror741"
-				type: "village"
-				x: 466
-				y: 486
-*/
+
 			let object_scope = {
 				"inputValue" 	: event.srcElement.value,
 				"element" 		: $($("#autocomplete_farm")[0]),
@@ -565,8 +569,6 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_villages.set();
 			$scope.data_farm.set();
 		});
-
-
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = getVillage(key);
