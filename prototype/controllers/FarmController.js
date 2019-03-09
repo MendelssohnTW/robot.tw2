@@ -497,14 +497,16 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.autoCompleteKey = function(event){
-			var scope = services.$rootScope.$new()
-
+			var that = this
+			, scope = services.$rootScope.$new()
+			that.elem = event.srcElement;
 			let obj_autocomplete = {
 				'type'					: 'village',
 				'placeholder'			: $scope.SEARCH_MAP,
 				'onEnter'				: function(item, element){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
 					$scope.item = item
 					$scope.inputValue = item.displayedName
+					that.elem.value = item.displayedName
 					if (!$scope.$$phase) {$scope.$apply()}
 				},
 				'exclude'				: function(elem){
