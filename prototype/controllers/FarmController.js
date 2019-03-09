@@ -57,6 +57,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.check_one = true;
 		$scope.check_all = false;
 		$scope.check_all_villages = false;
+		$scope.item = {}
 
 
 		var presetListModel = services.modelDataService.getPresetList()
@@ -433,8 +434,10 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.addException = function () {
-			let id_village = $scope.data_exception.selectedOption.village_id
-			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
+			let id_village = $scope.item.id;
+			if(!$scope.data_farm.list_exceptions.find(f=>f==id_village)){
+				$scope.data_farm.list_exceptions.push(id_village)
+			}
 			getDetailsExceptions();
 		}
 
@@ -479,36 +482,41 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.autoCompleteKey = function(event){
-//			let id = event.srcElement.id;
-//			let value = event.srcElement.value;
 			var scope = services.$rootScope.$new()
 
 			let obj_autocomplete = {
 				'type'					: 'village',
 				'placeholder'			: $scope.SEARCH_MAP,
-				'onEnter'				: function(){},
+				'onEnter'				: function(item){
+					$scope.item = item
+					$scope.inputValue = item.displayedName
+				},
 				'exclude'				: function(elem){
 					return elem
 				},
 				"inputValueReadOnly" 	: "",
 				"keepSelected"			: false
 			}
-
+/* Properties of item			
+				$$hashKey: "object:226"
+				displayedName: "Tallinn (466|486)"
+				id: 871
+				leftIcon: "size-34x34 icon-26x26-rte-village"
+				name: "Tallinn"
+				owner_id: 25016
+				owner_name: "conqueror741"
+				type: "village"
+				x: 466
+				y: 486
+*/
 			let object_scope = {
 				"inputValue" 	: event.srcElement.value,
 				"element" 		: $($("#autocomplete_farm")[0]),
 				"id" 			: "autocomplete_farm",
 				"autoComplete" 	: obj_autocomplete
 			}
-
 			angular.extend(scope, object_scope)
-
 			autocomplete(scope, event);
-
-//			if (!value || value.length < 2) return autocomplete.hide();
-//			autocomplete.search(value, function(list) {
-//			list.length && autocomplete.show(list, event.srcElement[0], id)
-//			}, ["village"])
 		}
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
