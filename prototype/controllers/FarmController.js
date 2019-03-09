@@ -497,16 +497,14 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.autoCompleteKey = function(event){
-			var that = this
-			, scope = services.$rootScope.$new()
-			that.elem = event.srcElement;
+			var scope = services.$rootScope.$new()
+			
 			let obj_autocomplete = {
 				'type'					: 'village',
 				'placeholder'			: $scope.SEARCH_MAP,
 				'onEnter'				: function(item, element){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
 					$scope.item = item
-					$scope.inputValue = item.displayedName
-					that.elem.value = item.displayedName
+					element[0].firstElementChild.value = item.displayedName
 					if (!$scope.$$phase) {$scope.$apply()}
 				},
 				'exclude'				: function(elem){
@@ -518,7 +516,7 @@ define("robotTW2/controllers/FarmController", [
 
 			let object_scope = {
 				"inputValue" 	: event.srcElement.value,
-				"element" 		: $("#autocomplete_farm"),
+				"element" 		: $($("#autocomplete_farm")[0]),
 				"id" 			: "autocomplete_farm",
 				"autoComplete" 	: obj_autocomplete
 			}
@@ -585,7 +583,6 @@ define("robotTW2/controllers/FarmController", [
 		})
 
 		$scope.date_ref = new Date(0);
-		$scope.inputValue = "";
 		$scope.tmMax = "0";
 		$scope.tmMin = "0";
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
