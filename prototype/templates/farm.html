@@ -22,7 +22,7 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
-		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
+		<div class="box-paper content-settings">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
@@ -144,11 +144,8 @@
 			</div>
 		</div>
 	</div>
-
-
-
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.PRESET">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings" ng-if="activeTab == TABS.PRESET">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
@@ -561,7 +558,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOGS">
 		<div class="box-paper content-settings">
 			<div class="version">
 				<h5>{{text_version}}</h5>
