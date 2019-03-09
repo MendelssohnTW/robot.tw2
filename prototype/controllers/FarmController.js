@@ -29,7 +29,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.REMOVE = services.$filter("i18n")("REMOVE", services.$rootScope.loc.ale);
 		$scope.ADD = services.$filter("i18n")("ADD", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
-		$scope.SEARCH_MAP = services.$filter("i18n")("SEARCH_MAP", services.$rootScope.loc.ale);
+		$scope.SEARCH_MAP = services.$filter('i18n')('village_search_placeholder', services.$rootScope.loc.ale, textObject);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this
@@ -481,8 +481,23 @@ define("robotTW2/controllers/FarmController", [
 		$scope.autoCompleteKey = function(event){
 //			let id = event.srcElement.id;
 //			let value = event.srcElement.value;
+			var scope = $rootScope.$new()
 			
-			autocomplete.autoCompleteKeyUp(scope, element);
+			let obj_autocomplete = {
+					'type'			: 'village',
+					'placeholder'	: services.$filter('i18n')('village_search_placeholder', $rootScope.loc.ale, textObject),
+					'onEnter'		: function (){},
+					'exclude'		: function(){}
+			}
+			
+			let object_scope = {
+				"inputValue" 	: event.srcElement.value,
+				"element" 		: $($("#autocomplete_farm")[0]),
+				"id" 			: "autocomplete_farm",
+				"autocomplete" 	: obj_autocomplete
+			}
+			
+			autocomplete(scope, event);
 			
 //			if (!value || value.length < 2) return autocomplete.hide();
 //			autocomplete.search(value, function(list) {
@@ -551,6 +566,7 @@ define("robotTW2/controllers/FarmController", [
 		})
 
 		$scope.date_ref = new Date(0);
+		$scope.inputValue = "";
 		$scope.tmMax = "0";
 		$scope.tmMin = "0";
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]

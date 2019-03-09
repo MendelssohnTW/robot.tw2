@@ -381,12 +381,21 @@
 																<td><div>
 																		<table class="tbl-border-light">
 																			<tbody>
-																				<tr>
-																					<td colspan="3">
-																						<div id="autocomplete" class="auto-complete-wrapper">
+																				<tr class="cell-center">
+																					<td>
+																						<div>
+																							<div id="select-field" select-element=""
+																								ng-style="{'width': width + 'px'}"
+																								style="transform: translate3d(63px, 819px, 0px); width: 309px;">
+																								<ul class="action-list select-handler"><!-- ng-class="{'action-list-top': actionListTop}" -->
+																								</ul>
+																							</div>
+																						</div>
+																						<div id="autocomplete_farm"
+																							class="auto-complete-wrapper">
 																							<input type="text"
-																								ng-keyup="autoCompleteKey($event)" ng-model="inputValue"
-																								class="textfield-border"
+																								ng-keyup="autoCompleteKey($event)"
+																								ng-model="inputValue" class="textfield-border"
 																								placeholder="{{SEARCH_MAP}}">
 																						</div>
 																					</td>

@@ -1567,8 +1567,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			ITERATION_LIMIT			= 4,
 			LIST_LENGTH_INCREMENT	= 5,
 			iterations				= 0,
-			id						= generate.hex(),
+			id,
 			element,
+			$scope 					= $rootScope.$new(),
 
 			/**
 			 * Wrapper for updating the scopes inputValue.
@@ -1834,11 +1835,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			requestData = function requestData(param, opt_amount) {
 				lastRequestedParam = param;
 
-				if ($scope.autoComplete.byCoordinates) {
-					robotTW2.services.autoCompleteService.villageByCoordinates(param, onMapData);
-				} else if (typeof $scope.autoComplete.type === 'function') {
-					$scope.autoComplete.type(param, onData);
-				} else if (typeof $scope.autoComplete.type === 'string') {
+				if (typeof $scope.autoComplete.type === 'string') {
 					robotTW2.services.autoCompleteService[$scope.autoComplete.type](param, onData, opt_amount);
 				} else if ($scope.autoComplete.type instanceof Array) {
 					robotTW2.services.autoCompleteService.mixed($scope.autoComplete.type, param, onData, opt_amount);
@@ -1849,17 +1846,11 @@ var robotTW2 = window.robotTW2 = undefined;
 			 * Validator function if we can request data by the input.
 			 */
 			getRequestDataParam = function getRequestDataParam(input) {
-				if ($scope.autoComplete.byCoordinates) {
-					return parseHelper.toCoordinates(input);
-				}
-
 				if (input.length <= 1) {
-					// If the input is too short, skip.
 					return false;
 				}
 
 				if (list.length === 0 && lastRequestedParam && lastRequestedParam.length < input.length && lastRequestedParam === input.substr(0, lastRequestedParam.length)) {
-					// If the result list is empty and we try to continue the search word, skip.
 					return false;
 				}
 
@@ -1872,9 +1863,10 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 
-			return function autoCompleteKeyUp(scope, e) {
-				element = $($("[ng-keyup]")[0])
-				angular.extend($scope, scope);
+			return function autoCompleteKeyUp(scope, id_element) {
+				angular.extend($scope, scope)
+				element = $scope.element
+				id = $scope.id
 				var requestDataParam,
 				interpretAsEnter = false;
 
