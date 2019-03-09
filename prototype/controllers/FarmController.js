@@ -505,6 +505,7 @@ define("robotTW2/controllers/FarmController", [
 				'onEnter'				: function(item){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
 					$scope.item = item
 					$scope.inputValue = item.displayedName
+					if (!$scope.$$phase) {$scope.$apply()}
 				},
 				'exclude'				: function(elem){
 					return elem.owner_id == undefined
