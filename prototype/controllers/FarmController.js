@@ -431,7 +431,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
 			getDetailsExceptions();
 		}
-		
+
 		$scope.addException = function () {
 			let id_village = $scope.data_exception.selectedOption.village_id
 			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
@@ -477,35 +477,37 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
-		
+
 		$scope.autoCompleteKey = function(event){
 //			let id = event.srcElement.id;
 //			let value = event.srcElement.value;
 			var scope = services.$rootScope.$new()
-			
+
 			let obj_autocomplete = {
-					'type'					: 'village',
-					'placeholder'			: $scope.SEARCH_MAP,
-					'onEnter'				: function (){},
-					'exclude'				: function(){},
-					"inputValueReadOnly" 	: "",
-					"keepSelected"			: false
+				'type'					: 'village',
+				'placeholder'			: $scope.SEARCH_MAP,
+				'onEnter'				: function(){},
+				'exclude'				: function(elem){
+					return elem
+				},
+				"inputValueReadOnly" 	: "",
+				"keepSelected"			: false
 			}
-			
+
 			let object_scope = {
 				"inputValue" 	: event.srcElement.value,
 				"element" 		: $($("#autocomplete_farm")[0]),
 				"id" 			: "autocomplete_farm",
 				"autoComplete" 	: obj_autocomplete
 			}
-			
+
 			angular.extend(scope, object_scope)
-			
+
 			autocomplete(scope, event);
-			
+
 //			if (!value || value.length < 2) return autocomplete.hide();
 //			autocomplete.search(value, function(list) {
-//				list.length && autocomplete.show(list, event.srcElement[0], id)
+//			list.length && autocomplete.show(list, event.srcElement[0], id)
 //			}, ["village"])
 		}
 
@@ -556,7 +558,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.set();
 		});
 
-		
+
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = getVillage(key);
@@ -594,7 +596,7 @@ define("robotTW2/controllers/FarmController", [
 				"availableOptions" : [],
 				"selectedOption" : {}
 		}
-		
+
 		$scope.setCollapse();
 
 		initTab();
