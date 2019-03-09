@@ -314,41 +314,7 @@
 									</table></td>
 											</tr>
 											<tr>
-												<td>
-													<table
-														class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-														<tbody>
-															<tr>
-																<td><label for="check_one" class="with-margin"
-																	style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-																	<div id="check_one"
-																		class="position-absolute size-34x34"
-																		ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-																		ng-click="toggleOption('check_one')" tooltip
-																		tooltip-content=""></div></td>
-															</tr>
-															<tr>
-																<td class="cell-right"><label for="check_all"
-																	class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-																	<div id="check_all"
-																		class="position-absolute size-34x34"
-																		ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-																		ng-click="toggleOption('check_all')" tooltip
-																		tooltip-content=""></div></td>
-															</tr>
-															<tr>
-																<td class="cell-right"><label
-																	for="check_all_villages" class="with-margin"
-																	style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-																	<div id="check_all_villages"
-																		class="position-absolute size-34x34"
-																		ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-																		ng-click="toggleOption('check_all_villages')" tooltip
-																		tooltip-content=""></div></td>
-															</tr>
-														</tbody>
-													</table>
-												</td>
+												
 											</tr>
 
 											<tr>
@@ -435,7 +401,27 @@
 											<td></td>
 										</tr>
 									</table>
-								</td><td><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+								</td><td><table>
+										<tr>
+											<td><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+														<tbody>
+															<tr>
+																<td><label for="check_one" class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+																	<div id="check_one" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}" ng-click="toggleOption('check_one')" tooltip="" tooltip-content=""></div></td>
+															</tr>
+															<tr>
+																<td class="cell-right"><label for="check_all" class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+																	<div id="check_all" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}" ng-click="toggleOption('check_all')" tooltip="" tooltip-content=""></div></td>
+															</tr>
+															<tr>
+																<td class="cell-right"><label for="check_all_villages" class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+																	<div id="check_all_villages" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}" ng-click="toggleOption('check_all_villages')" tooltip="" tooltip-content=""></div></td>
+															</tr>
+														</tbody>
+													</table></td>
+										</tr>
+										<tr>
+											<td><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 														<tbody>
 															<tr>
 																<td rowspan="2">
@@ -476,6 +462,8 @@
 															</tr>
 														</tbody>
 													</table></td>
+										</tr>
+									</table></td>
 							</tr>
 
 
