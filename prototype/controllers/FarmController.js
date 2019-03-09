@@ -518,7 +518,7 @@ define("robotTW2/controllers/FarmController", [
 
 			let object_scope = {
 				"inputValue" 	: event.srcElement.value,
-				"element" 		: $($("#autocomplete_farm")[0]),
+				"element" 		: $("#autocomplete_farm")[0],
 				"id" 			: "autocomplete_farm",
 				"autoComplete" 	: obj_autocomplete
 			}
