@@ -496,7 +496,7 @@ define("robotTW2/controllers/FarmController", [
 				"inputValue" 	: event.srcElement.value,
 				"element" 		: $($("#autocomplete_farm")[0]),
 				"id" 			: "autocomplete_farm",
-				"autocomplete" 	: obj_autocomplete
+				"autoComplete" 	: obj_autocomplete
 			}
 			
 			angular.extend(scope, object_scope)
