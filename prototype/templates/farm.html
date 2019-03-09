@@ -121,7 +121,6 @@
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
 											<col width="*">
-
 											<col width="48px">
 											<col width="48px">
 											<col width="48px">
@@ -491,10 +490,10 @@
 																class="input-border inputcreated" type="number"
 																id="max_dist" step="1" min="5" max="200"
 																ng-model="preset_selected.max_journey_distance" disabled></td>
-															<td class="cell-space">
+															<td class="cell-space cell-top">
 																<div class="checkbox box-border-dark">
 																	<div switch-slider="" border="true" enabled="true"
-																		value="data_villages[village_selected.id].farm_activate"
+																		value="data_villages.villages[village_selected.id].farm_activate"
 																		vertical="false" size="'56x28'">
 																		<div ng-class="{'box-border-dark box-filter': border}"
 																			class="box-border-dark box-filter">
