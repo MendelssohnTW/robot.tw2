@@ -49,13 +49,13 @@ define("robotTW2/controllers/FarmController", [
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
-		$scope.list_exceptions = {};
+//		$scope.list_exceptions = [];
 		$scope.infinite = $scope.data_farm.infinite;
 		$scope.toggle_option = "check_one";
 		$scope.check_one = true;
 		$scope.check_all = false;
 		$scope.check_all_villages = false;
-		
+
 
 		var presetListModel = services.modelDataService.getPresetList()
 		, presetIds = []
@@ -134,7 +134,7 @@ define("robotTW2/controllers/FarmController", [
 				$scope.data.presets[presetId].assigned_villages.forEach(assignPreset);
 			}
 			setFirstPreset();
-			
+
 		}
 		, updateBlur = function updateBlur(){
 			if($scope.activeTab != TABS.PRESET){return}
@@ -228,21 +228,26 @@ define("robotTW2/controllers/FarmController", [
 		, getDetailsExceptions = function getDetailsExceptions() {
 			var my_village_id = services.modelDataService.getSelectedVillage().getId();
 
-			if(!Object.keys($scope.list_exceptions).length){
+			if(!$scope.data_exception.availableOptions.length){
 				$scope.data_farm.list_exceptions.forEach(function (vid) {
 					services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 						'village_id'	: vid,
 						'my_village_id'	: my_village_id,
 						'num_reports'	: 5
 					}, function (data) {
-						$scope.list_exceptions[data.village_id] = {
-								village_name : data.village_name,
-								village_x : data.village_x,
-								village_y : data.village_y
+						if(!$scope.data_exception.availableOptions.find(f=>f.village_id == data.village_id)){
+							$scope.data_exception.availableOptions.push(
+									{
+										village_id : data.village_id,
+										village_name : data.village_name,
+										village_x : data.village_x,
+										village_y : data.village_y
+									}
+							)
 						}
-						if (!$scope.$$phase) $scope.$apply();
 					})
 				})
+				$scope.data_exception.selectedOption = $scope.list_exceptions[0]
 			}
 		}
 		, setFirstPreset = function setFirstPreset(){
@@ -461,7 +466,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 			return tm;
 		}
-		
+
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
 			update();
@@ -531,7 +536,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
-		
+
 		let presets_load = angular.copy(services.presetListService.getPresets());
 		$scope.data = {
 				'assignedPresetList': {},
@@ -539,12 +544,18 @@ define("robotTW2/controllers/FarmController", [
 				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey()),
 				"selectedOption" 	: presets_load[0]
 		}
-		
+
 		$scope.data_select = {
 				"availableOptions" : $scope.local_data_villages,
 				"selectedOption" : $scope.village_selected
 		}
+
+		$scope.data_exception = {
+				"availableOptions" : [],
+				"selectedOption" : {}
+		}
 		
+
 		triggerUpdate()
 		update()
 

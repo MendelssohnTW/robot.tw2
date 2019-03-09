@@ -168,6 +168,9 @@
 			</div>
 		</div>
 	</div>
+
+
+
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.PRESET">
 		<div class="box-paper content-settings">
 			<div class="version">
@@ -491,6 +494,37 @@
 											</tr>
 										</tbody>
 									</table></td>
+							</tr>
+						</tbody>
+					</table>
+
+
+
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+						<colgroup>
+							<col width="40%">
+							<col width="60%">
+						</colgroup>
+						<tbody>
+							<tr>
+								<td>{{exceptions}}</td>
+								<td class="cell-center"><span
+									class="icon icon-34x34-preset"></span></td>
+								<td><div>
+										<select id="list_exceptions" class="select-handler"
+											ng-options="item as item.name for item in data_exceptions.availableOptions track by item.name"
+											ng-model="data_exceptions.selectedOption"></select>
+									</div></td>
+							</tr>
+							<tr>
+								<td colspan="2">{{text_remove_exceptions}}</td>
+								<td>
+									<ul class="list-btn list-center">
+										<li><a id="button-start"
+											class="btn-border btn-orange btn-init"
+											ng-click="deleteException()"><span>{{REMOVE}}</span></a></li>
+									</ul>
+								</td>
 							</tr>
 						</tbody>
 					</table>
