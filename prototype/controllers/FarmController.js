@@ -228,10 +228,10 @@ define("robotTW2/controllers/FarmController", [
 			triggerUpdate();
 			services.$timeout(blurPreset, 1500)
 		}
-		, getDetailsExceptions = function getDetailsExceptions() {
+		, getDetailsExceptions = function getDetailsExceptions(opt) {
 			var my_village_id = services.modelDataService.getSelectedVillage().getId();
 
-			if(!$scope.data_exception.availableOptions.length){
+			if(!$scope.data_exception.availableOptions.length || opt){
 				$scope.data_farm.list_exceptions.forEach(function (vid) {
 					services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 						'village_id'	: vid,
@@ -428,19 +428,17 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.deleteException = function () {
-			$scope.data_exception.availableOptions = [];
 			let id_village = $scope.data_exception.selectedOption.village_id
 			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
-			getDetailsExceptions();
+			getDetailsExceptions(true);
 		}
 
 		$scope.addException = function () {
-			$scope.data_exception.availableOptions = [];
 			let id_village = $scope.item.id;
 			if(!$scope.data_farm.list_exceptions.find(f=>f==id_village)){
 				$scope.data_farm.list_exceptions.push(id_village)
 			}
-			getDetailsExceptions();
+			getDetailsExceptions(true);
 		}
 
 		$scope.start_farm = function () {
