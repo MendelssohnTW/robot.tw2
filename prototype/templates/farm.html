@@ -293,7 +293,7 @@
 																<td class="cell-center"><span
 																	class="icon icon-34x34-select-village"></span></td>
 																<td><div>
-																		<select id="select_village" class="select-handler"
+																		<select id="select_village" class="select-wrapper"
 																			ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 																			ng-model="data_select.selectedOption"></select>
 																	</div></td>
@@ -304,7 +304,7 @@
 																<td class="cell-center"><span
 																	class="icon icon-34x34-preset"></span></td>
 																<td><div>
-																		<select id="select_preset" class="select-handler"
+																		<select id="select_preset" class="select-wrapper"
 																			ng-options="item as item.name for item in data_preset.availableOptions track by item.name"
 																			ng-model="data_preset.selectedOption"></select>
 																	</div></td>
@@ -324,7 +324,7 @@
 																<td class="cell-center"><span
 																	class="icon icon-34x34-preset"></span></td>
 																<td><div>
-																		<select id="select_preset" class="select-handler"
+																		<select id="select_preset" class="select-wrapper"
 																			ng-options="item as item.name for item in data.presets track by item.name"
 																			ng-model="data.selectedOption"></select>
 																	</div></td>
@@ -359,7 +359,7 @@
 																<td class="cell-center"><span
 																	class="icon icon-34x34-select-village"></span></td>
 																<td><div>
-																		<select id="list_exceptions" class="select-handler"
+																		<select id="list_exceptions" class="select-wrapper"
 																			ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id"
 																			ng-model="data_exception.selectedOption"></select>
 																	</div></td>
