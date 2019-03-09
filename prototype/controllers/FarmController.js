@@ -29,7 +29,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.REMOVE = services.$filter("i18n")("REMOVE", services.$rootScope.loc.ale);
 		$scope.ADD = services.$filter("i18n")("ADD", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
-		$scope.SEARCH_MAP = services.$filter('i18n')('village_search_placeholder', services.$rootScope.loc.ale, textObject);
+		$scope.SEARCH_MAP = services.$filter('i18n')('placeholder_autocomplete', services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this
