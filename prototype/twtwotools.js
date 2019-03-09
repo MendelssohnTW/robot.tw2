@@ -1561,6 +1561,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			lastRequestDelay,
 			lastRequestDelayTimeout,
 			dataRequestTimeout,
+			noResultTranslation,
 			elemListener,
 			list					= [],
 			selectIndex,
