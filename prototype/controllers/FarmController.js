@@ -244,9 +244,10 @@ define("robotTW2/controllers/FarmController", [
 									}
 							)
 						}
+						$scope.data_exception.selectedOption = $scope.data_exception.availableOptions[0]
+						if (!$scope.$$phase) {$scope.$apply()}
 					})
 				})
-				$scope.data_exception.selectedOption = $scope.data_exception.availableOptions[0]
 			}
 		}
 		, setFirstPreset = function setFirstPreset(){
