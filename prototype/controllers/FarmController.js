@@ -49,7 +49,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
-//		$scope.list_exceptions = [];
 		$scope.infinite = $scope.data_farm.infinite;
 		$scope.toggle_option = "check_one";
 		$scope.check_one = true;
@@ -247,7 +246,7 @@ define("robotTW2/controllers/FarmController", [
 						}
 					})
 				})
-				$scope.data_exception.selectedOption = $scope.list_exceptions[0]
+				$scope.data_exception.selectedOption = $scope.data_exception.availableOptions[0]
 			}
 		}
 		, setFirstPreset = function setFirstPreset(){
