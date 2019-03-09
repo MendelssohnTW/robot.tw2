@@ -7,7 +7,8 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/calculateTravelTime",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_farm",
-	"helper/format"
+	"helper/format",
+	"robotTW2/autocomplete"
 	], function(
 			helper,
 			time,
@@ -17,7 +18,8 @@ define("robotTW2/controllers/FarmController", [
 			calculateTravelTime,
 			data_villages,
 			data_farm,
-			formatHelper
+			formatHelper,
+			autocomplete
 	){
 	return function FarmController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -424,7 +426,14 @@ define("robotTW2/controllers/FarmController", [
 		 * Exceptions
 		 */
 
-		$scope.deleteException = function (id_village) {
+		$scope.deleteException = function () {
+			let id_village = $scope.data_exception.selectedOption.village_id
+			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
+			getDetailsExceptions();
+		}
+		
+		$scope.addException = function () {
+			let id_village = $scope.data_exception.selectedOption.village_id
 			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
 			getDetailsExceptions();
 		}
@@ -470,10 +479,13 @@ define("robotTW2/controllers/FarmController", [
 		}
 		
 		$scope.autoCompleteKey = function(event){
-//			var id = event.srcElement.id;
-//			var valeu = event.srcElement.value;
-//			if (!valeu || valeu.length < 2) return autocomplete.hide();
-//			autocomplete.search(valeu, function(list) {
+//			let id = event.srcElement.id;
+//			let value = event.srcElement.value;
+			
+			autocomplete.autoCompleteKeyUp(scope, element);
+			
+//			if (!value || value.length < 2) return autocomplete.hide();
+//			autocomplete.search(value, function(list) {
 //				list.length && autocomplete.show(list, event.srcElement[0], id)
 //			}, ["village"])
 		}
