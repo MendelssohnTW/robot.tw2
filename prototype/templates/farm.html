@@ -161,6 +161,102 @@
 						</colgroup>
 						<tbody>
 							<tr>
+								<td colspan="2"><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<colgroup>
+											<col width="*">
+
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+										</colgroup>
+										<tbody>
+											<tr>
+												<td></td>
+												<td class="cell-center"><span class="icon-34x34-unit-spear"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-sword"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-axe"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-archer"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-light_cavalry"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-mounted_archer"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-heavy_cavalry"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-ram"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-catapult"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-doppelsoldner"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-trebuchet"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-snob"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-knight"></span></td>
+											</tr>
+											<tr>
+												<td class="cell-right">{{text_units_preset}}</td>
+												<td class="cell-center">{{preset_selected.units.spear
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.sword
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.axe ||
+													0}}</td>
+												<td class="cell-center">{{preset_selected.units.archer
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.light_cavalry
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.mounted_arquer
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.heavy_cavalry
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.ram ||
+													0}}</td>
+												<td class="cell-center">{{preset_selected.units.catapult
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.doppelsoldner
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.trebuchet
+													|| 0}}</td>
+												<td class="cell-center">{{preset_selected.units.snob ||
+													0}}</td>
+												<td class="cell-center">{{preset_selected.units.knight
+													|| 0}}</td>
+											</tr>
+											<tr>
+												<td class="cell-right">{{text_units_village}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.mounted_arquer.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town
+													|| 0}}</td>
+											</tr>
+										</tbody>
+									</table></td>
+							</tr><tr>
 								<td>
 									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
@@ -176,7 +272,7 @@
 											<tr>
 												<td>{{text_village}}</td>
 												<td class="cell-center"><span
-													class="icon icon-26x26-rte-village"></span></td>
+													class="icon icon-34x34-select-village"></span></td>
 												<td><div>
 														<select id="select_village" class="select-handler"
 															ng-options="item as item.label for item in data_select.availableOptions track by item.name"
@@ -360,117 +456,7 @@
 									</table>
 								</td>
 							</tr>
-							<tr>
-								<td colspan="2"><table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<colgroup>
-											<col width="*">
-
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-										</colgroup>
-										<tbody>
-											<tr>
-												<td></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-spear"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-sword"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-axe"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-archer"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-light_cavalry"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-mounted_archer"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-heavy_cavalry"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-ram"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-catapult"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-doppelsoldner"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-trebuchet"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-snob"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-knight"></span></td>
-											</tr>
-											<tr>
-												<td class="cell-right">{{text_units_preset}}</td>
-												<td class="cell-center">{{preset_selected.units.spear
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.sword
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.axe ||
-													0}}</td>
-												<td class="cell-center">{{preset_selected.units.archer
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.light_cavalry
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.mounted_arquer
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.heavy_cavalry
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.ram ||
-													0}}</td>
-												<td class="cell-center">{{preset_selected.units.catapult
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.doppelsoldner
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.trebuchet
-													|| 0}}</td>
-												<td class="cell-center">{{preset_selected.units.snob ||
-													0}}</td>
-												<td class="cell-center">{{preset_selected.units.knight
-													|| 0}}</td>
-											</tr>
-											<tr>
-												<td class="cell-right">{{text_units_village}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.mounted_arquer.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town
-													|| 0}}</td>
-											</tr>
-										</tbody>
-									</table></td>
-							</tr>
+							
 						</tbody>
 					</table>
 
@@ -495,7 +481,7 @@
 											<tr>
 												<td>{{exceptions}}</td>
 												<td class="cell-center"><span
-													class="icon icon-34x34-preset"></span></td>
+													class="icon icon-34x34-select-village"></span></td>
 												<td><div>
 														<select id="list_exceptions" class="select-handler"
 															ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id"
