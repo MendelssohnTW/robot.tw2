@@ -237,10 +237,11 @@ define("robotTW2/controllers/FarmController", [
 						if(!$scope.data_exception.availableOptions.find(f=>f.village_id == data.village_id)){
 							$scope.data_exception.availableOptions.push(
 									{
-										village_id : data.village_id,
-										village_name : data.village_name,
-										village_x : data.village_x,
-										village_y : data.village_y
+										village_id 		: data.village_id,
+										village_name 	: data.village_name,
+										village_x 		: data.village_x,
+										village_y 		: data.village_y,
+										label			: formatHelper.villageNameWithCoordinates(data)
 									}
 							)
 						}
