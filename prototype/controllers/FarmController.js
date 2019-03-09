@@ -497,6 +497,8 @@ define("robotTW2/controllers/FarmController", [
 				"autocomplete" 	: obj_autocomplete
 			}
 			
+			angular.extend(scope, object_scope)
+			
 			autocomplete(scope, event);
 			
 //			if (!value || value.length < 2) return autocomplete.hide();
