@@ -520,8 +520,8 @@ define("robotTW2/controllers/FarmController", [
 				"id" 			: "autocomplete_farm",
 				"autoComplete" 	: obj_autocomplete
 			}
-			angular.extend($scope, object_scope)
-			autocomplete($scope, event);
+//			angular.extend($scope, object_scope)
+			autocomplete(object_scope, event);
 		}
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
