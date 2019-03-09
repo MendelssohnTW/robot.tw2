@@ -27,6 +27,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.REMOVE = services.$filter("i18n")("REMOVE", services.$rootScope.loc.ale);
 		$scope.ADD = services.$filter("i18n")("ADD", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
+		$scope.SEARCH_MAP = services.$filter("i18n")("SEARCH_MAP", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this
@@ -466,6 +467,15 @@ define("robotTW2/controllers/FarmController", [
 				tm = "0" + tm;
 			}
 			return tm;
+		}
+		
+		$scope.autoCompleteKey = function(event){
+//			var id = event.srcElement.id;
+//			var valeu = event.srcElement.value;
+//			if (!valeu || valeu.length < 2) return autocomplete.hide();
+//			autocomplete.search(valeu, function(list) {
+//				list.length && autocomplete.show(list, event.srcElement[0], id)
+//			}, ["village"])
 		}
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {

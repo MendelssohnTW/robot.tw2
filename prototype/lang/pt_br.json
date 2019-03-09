@@ -18,6 +18,7 @@
     "RESUME": "Retomar",
     "REMOVE": "Remover",
     "ADD": "Adicionar",
+    "SEARCH_MAP": "Pesquisar no mapa mundi ...",
     "YES": "Sim",
     "NO": "Não",
     "version": "Versão",
@@ -165,6 +166,7 @@
         "text_village": "Aldeia",
         "text_origin": "Origem ",
         "text_target": " alvo ",
+        "text_selections": "Seleções",
         "text_cmd_max": "Limite de comandos",
         "text_min_point": "Pontuação mínima",
         "text_max_point": "Pontuação máxima",
@@ -190,9 +192,8 @@
         "text_add": "Adicionar predefinição",
         "text_title_preset": "Selecione as predefinições para sua aldeia atual.",
         "text_alert_preset": "Não há predefinições globais no momento. Para criar uma nova predefinição, clique no botão 'Criar nova predefinição' abaixo.",
-        "text_selection": "Selecionadas",
         "text_check": "Adicionar aldeia na lista de excessão de farm",
-        "exceptions": "Lista de excessão",
+        "exceptions": "Lista de excessões",
         "villages_selections": "Ativação / desativação"
     },
     "recruit": {
