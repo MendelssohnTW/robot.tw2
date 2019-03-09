@@ -161,7 +161,8 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<td colspan="2"><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+								<td colspan="2"><table
+										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
 											<col width="*">
 
@@ -182,19 +183,32 @@
 										<tbody>
 											<tr>
 												<td></td>
-												<td class="cell-center"><span class="icon-34x34-unit-spear"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-sword"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-axe"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-archer"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-light_cavalry"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-mounted_archer"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-heavy_cavalry"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-ram"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-catapult"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-doppelsoldner"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-trebuchet"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-snob"></span></td>
-												<td class="cell-center"><span class="icon-34x34-unit-knight"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-spear"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-sword"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-axe"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-archer"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-light_cavalry"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-mounted_archer"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-heavy_cavalry"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-ram"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-catapult"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-doppelsoldner"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-trebuchet"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-snob"></span></td>
+												<td class="cell-center"><span
+													class="icon-34x34-unit-knight"></span></td>
 											</tr>
 											<tr>
 												<td class="cell-right">{{text_units_preset}}</td>
@@ -256,10 +270,14 @@
 											</tr>
 										</tbody>
 									</table></td>
-							</tr><tr>
-								<td>
+							</tr>
+							<tr>
+								<td class="cell-right">
 									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<tbody>
+											<tr>
+												<td><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
 											<col width="120px">
 											<col width="30px">
@@ -271,198 +289,107 @@
 											</tr>
 											<tr>
 												<td>{{text_village}}</td>
-												<td class="cell-center"><span
-													class="icon icon-34x34-select-village"></span></td>
+												<td class="cell-center"><span class="icon icon-34x34-select-village"></span></td>
 												<td><div>
-														<select id="select_village" class="select-handler"
-															ng-options="item as item.label for item in data_select.availableOptions track by item.name"
-															ng-model="data_select.selectedOption"></select>
+														<select id="select_village" class="select-handler" ng-options="item as item.label for item in data_select.availableOptions track by item.name" ng-model="data_select.selectedOption"></select>
 													</div></td>
 
 											</tr>
 											<tr>
 												<td>{{text_preset}}</td>
-												<td class="cell-center"><span
-													class="icon icon-34x34-preset"></span></td>
+												<td class="cell-center"><span class="icon icon-34x34-preset"></span></td>
 												<td><div>
-														<select id="select_preset" class="select-handler"
-															ng-options="item as item.name for item in data_preset.availableOptions track by item.name"
-															ng-model="data_preset.selectedOption"></select>
+														<select id="select_preset" class="select-handler" ng-options="item as item.name for item in data_preset.availableOptions track by item.name" ng-model="data_preset.selectedOption"></select>
 													</div></td>
 											</tr>
 											<tr>
 												<td colspan="2">{{text_remove_preset}}</td>
 												<td>
 													<ul class="list-btn list-center">
-														<li><a id="button-start"
-															class="btn-border btn-orange btn-init"
-															ng-click="unassignPreset()"><span>{{REMOVE}}</span></a></li>
+														<li><a id="button-start" class="btn-border btn-orange btn-init" ng-click="unassignPreset()"><span>{{REMOVE}}</span></a></li>
 													</ul>
 												</td>
 											</tr>
 										</tbody>
-									</table>
-								</td>
-								<td class="cell-right">
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<tbody>
-											<tr>
-												<td><label for="check_one" class="with-margin"
-													style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-													<div id="check_one" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-														ng-click="toggleOption('check_one')" tooltip
-														tooltip-content=""></div></td>
+									</table></td>
 											</tr>
 											<tr>
-												<td class="cell-right"><label for="check_all"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-													<div id="check_all" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-														ng-click="toggleOption('check_all')" tooltip
-														tooltip-content=""></div></td>
-											</tr>
-											<tr>
-												<td class="cell-right"><label for="check_all_villages"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-													<div id="check_all_villages"
-														class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-														ng-click="toggleOption('check_all_villages')" tooltip
-														tooltip-content=""></div></td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<colgroup>
-											<col width="120px">
-											<col width="30px">
-											<col width="*">
-										</colgroup>
-										<tbody>
-											<tr>
-												<td class="cell-center selected" colspan="3">{{text_add}}</td>
-											</tr>
-											<tr>
-												<td>{{text_global}}</td>
-												<td class="cell-center"><span
-													class="icon icon-34x34-preset"></span></td>
-												<td><div>
-														<select id="select_preset" class="select-handler"
-															ng-options="item as item.name for item in data.presets track by item.name"
-															ng-model="data.selectedOption"></select>
-													</div></td>
-											</tr>
-											<tr>
-												<td colspan="2">{{text_add_preset}}</td>
 												<td>
-													<ul class="list-btn list-center">
-														<li><a id="button-start"
-															class="btn-border btn-orange btn-init"
-															ng-click="assignPreset()"><span>{{ADD}}</span></a></li>
-													</ul>
+													<table
+														class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+														<tbody>
+															<tr>
+																<td><label for="check_one" class="with-margin"
+																	style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+																	<div id="check_one"
+																		class="position-absolute size-34x34"
+																		ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
+																		ng-click="toggleOption('check_one')" tooltip
+																		tooltip-content=""></div></td>
+															</tr>
+															<tr>
+																<td class="cell-right"><label for="check_all"
+																	class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+																	<div id="check_all"
+																		class="position-absolute size-34x34"
+																		ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
+																		ng-click="toggleOption('check_all')" tooltip
+																		tooltip-content=""></div></td>
+															</tr>
+															<tr>
+																<td class="cell-right"><label
+																	for="check_all_villages" class="with-margin"
+																	style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+																	<div id="check_all_villages"
+																		class="position-absolute size-34x34"
+																		ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
+																		ng-click="toggleOption('check_all_villages')" tooltip
+																		tooltip-content=""></div></td>
+															</tr>
+														</tbody>
+													</table>
 												</td>
 											</tr>
-										</tbody>
-									</table>
-								</td>
-								<td>
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<tbody>
+
 											<tr>
-												<td rowspan="2">
-													<div class="quadrant">
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(1)}"
-															ng-click="setQuadrant(1)">
-															<div class="quadrant-text">
-																<span style="">1</span>
-															</div>
-														</div>
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(2)}"
-															ng-click="setQuadrant(2)">
-															<div class="quadrant-text">
-																<span style="">2</span>
-															</div>
-														</div>
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(4)}"
-															ng-click="setQuadrant(4)">
-															<div class="quadrant-text">
-																<span style="">4</span>
-															</div>
-														</div>
-														<div class="quadrant-border"
-															ng-class="{'quadrant-selected': getQuadrant(3)}"
-															ng-click="setQuadrant(3)">
-															<div class="quadrant-text">
-																<span style="">3</span>
-															</div>
-														</div>
-													</div>
+												<td>
+													<table
+														class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+														<colgroup>
+															<col width="120px">
+															<col width="30px">
+															<col width="*">
+														</colgroup>
+														<tbody>
+															<tr>
+																<td class="cell-center selected" colspan="3">{{text_add}}</td>
+															</tr>
+															<tr>
+																<td>{{text_global}}</td>
+																<td class="cell-center"><span
+																	class="icon icon-34x34-preset"></span></td>
+																<td><div>
+																		<select id="select_preset" class="select-handler"
+																			ng-options="item as item.name for item in data.presets track by item.name"
+																			ng-model="data.selectedOption"></select>
+																	</div></td>
+															</tr>
+															<tr>
+																<td colspan="2">{{text_add_preset}}</td>
+																<td>
+																	<ul class="list-btn list-center">
+																		<li><a id="button-start"
+																			class="btn-border btn-orange btn-init"
+																			ng-click="assignPreset()"><span>{{ADD}}</span></a></li>
+																	</ul>
+																</td>
+															</tr>
+														</tbody>
+													</table>
 												</td>
-												<td class="cell-right"><label for="min_point"
-													class="with-margin">{{text_min_point}}</label><input
-													class="input-border inputcreated" type="number"
-													id="min_point" step="1" min="0" max="12000"
-													ng-model="preset_selected.min_points_farm"
-													ng-blur="updateBlur()"></td>
-												<td class="cell-right"><label for="min_journey_time"
-													class="with-margin">{{time_min}}</label><input
-													class="input-border inpt" type="time" id="min_journey_time"
-													step="1" min="00:00:00" max="23:59:59"
-													ng-blur="blurMinJourney()"></td>
-												<td class="cell-right"><label for="min_dist"
-													class="with-margin">{{text_min_dist}}</label><input
-													class="input-border inputcreated" type="number"
-													id="min_dist" step="1" min="1" max="180"
-													ng-model="preset_selected.min_journey_distance" disabled></td>
-												<td class="cell-right"><label for="cmd_max"
-													class="with-margin">{{text_cmd_max}}</label><input
-													class="input-border inputcreated" type="number"
-													id="cmd_max" step="1" min="0" max="50"
-													ng-model="preset_selected.max_commands_farm"
-													ng-blur="updateBlur()"></td>
-
 											</tr>
 											<tr>
-
-												<td class="cell-right"><label for="max_point"
-													class="with-margin">{{text_max_point}}</label><input
-													class="input-border inputcreated" type="number"
-													id="max_point" step="1" min="00" max="12000"
-													ng-model="preset_selected.max_points_farm"
-													ng-blur="updateBlur()"></td>
-												<td class="cell-right"><label for="max_journey_time"
-													class="with-margin">{{time_max}}</label><input
-													class="input-border inpt" type="time" id="max_journey_time"
-													step="1" min="00:00:00" max="23:59:59"
-													ng-blur="blurMaxJourney()"></td>
-												<td class="cell-right"><label for="max_dist"
-													class="with-margin">{{text_max_dist}}</label><input
-													class="input-border inputcreated" type="number"
-													id="max_dist" step="1" min="5" max="200"
-													ng-model="preset_selected.max_journey_distance" disabled></td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-							
-						</tbody>
-					</table>
-
-
-
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+												<td><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 						<colgroup>
 							<col width="40%">
 							<col width="60%">
@@ -470,8 +397,7 @@
 						<tbody>
 							<tr>
 								<td>
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
 											<col width="120px">
 											<col width="30px">
@@ -479,22 +405,20 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<td>{{exceptions}}</td>
-												<td class="cell-center"><span
-													class="icon icon-34x34-select-village"></span></td>
+												<td class="cell-center selected" colspan="3">{{exceptions}}</td>
+											</tr>
+											<tr>
+												<td></td>
+												<td class="cell-center"><span class="icon icon-34x34-select-village"></span></td>
 												<td><div>
-														<select id="list_exceptions" class="select-handler"
-															ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id"
-															ng-model="data_exception.selectedOption"></select>
+														<select id="list_exceptions" class="select-handler" ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id" ng-model="data_exception.selectedOption"></select>
 													</div></td>
 											</tr>
 											<tr>
 												<td colspan="2">{{text_remove_exceptions}}</td>
 												<td>
 													<ul class="list-btn list-center">
-														<li><a id="button-start"
-															class="btn-border btn-orange btn-init"
-															ng-click="deleteException()"><span>{{REMOVE}}</span></a></li>
+														<li><a id="button-start" class="btn-border btn-orange btn-init" ng-click="deleteException()"><span>{{REMOVE}}</span></a></li>
 													</ul>
 												</td>
 											</tr>
@@ -504,7 +428,63 @@
 								<td></td>
 							</tr>
 						</tbody>
+					</table></td>
+											</tr>
+										</tbody>
+										<tr>
+											<td></td>
+										</tr>
+									</table>
+								</td><td><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+														<tbody>
+															<tr>
+																<td rowspan="2">
+																	<div class="quadrant">
+																		<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(1)}" ng-click="setQuadrant(1)">
+																			<div class="quadrant-text">
+																				<span style="">1</span>
+																			</div>
+																		</div>
+																		<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(2)}" ng-click="setQuadrant(2)">
+																			<div class="quadrant-text">
+																				<span style="">2</span>
+																			</div>
+																		</div>
+																		<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(4)}" ng-click="setQuadrant(4)">
+																			<div class="quadrant-text">
+																				<span style="">4</span>
+																			</div>
+																		</div>
+																		<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(3)}" ng-click="setQuadrant(3)">
+																			<div class="quadrant-text">
+																				<span style="">3</span>
+																			</div>
+																		</div>
+																	</div>
+																</td>
+																<td class="cell-right"><label for="min_point" class="with-margin">{{text_min_point}}</label><input class="input-border inputcreated" type="number" id="min_point" step="1" min="0" max="12000" ng-model="preset_selected.min_points_farm" ng-blur="updateBlur()"></td>
+																<td class="cell-right"><label for="min_journey_time" class="with-margin">{{time_min}}</label><input class="input-border inpt" type="time" id="min_journey_time" step="1" min="00:00:00" max="23:59:59" ng-blur="blurMinJourney()"></td>
+																<td class="cell-right"><label for="min_dist" class="with-margin">{{text_min_dist}}</label><input class="input-border inputcreated" type="number" id="min_dist" step="1" min="1" max="180" ng-model="preset_selected.min_journey_distance" disabled></td>
+																<td class="cell-right"><label for="cmd_max" class="with-margin">{{text_cmd_max}}</label><input class="input-border inputcreated" type="number" id="cmd_max" step="1" min="0" max="50" ng-model="preset_selected.max_commands_farm" ng-blur="updateBlur()"></td>
+
+															</tr>
+															<tr>
+
+																<td class="cell-right"><label for="max_point" class="with-margin">{{text_max_point}}</label><input class="input-border inputcreated" type="number" id="max_point" step="1" min="00" max="12000" ng-model="preset_selected.max_points_farm" ng-blur="updateBlur()"></td>
+																<td class="cell-right"><label for="max_journey_time" class="with-margin">{{time_max}}</label><input class="input-border inpt" type="time" id="max_journey_time" step="1" min="00:00:00" max="23:59:59" ng-blur="blurMaxJourney()"></td>
+																<td class="cell-right"><label for="max_dist" class="with-margin">{{text_max_dist}}</label><input class="input-border inputcreated" type="number" id="max_dist" step="1" min="5" max="200" ng-model="preset_selected.max_journey_distance" disabled></td>
+															</tr>
+														</tbody>
+													</table></td>
+							</tr>
+
+
+						</tbody>
 					</table>
+
+
+
+					
 				</div>
 			</div>
 		</div>
