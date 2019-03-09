@@ -1686,7 +1686,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 				// Callback defined in the creator scopes.
 				if ($scope.autoComplete.onEnter) {
-					$scope.autoComplete.onEnter(item);
+					$scope.autoComplete.onEnter(item, element);
 				}
 
 				if ($scope.autoComplete.keepSelected) {

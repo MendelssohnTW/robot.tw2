@@ -502,7 +502,7 @@ define("robotTW2/controllers/FarmController", [
 			let obj_autocomplete = {
 				'type'					: 'village',
 				'placeholder'			: $scope.SEARCH_MAP,
-				'onEnter'				: function(item){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
+				'onEnter'				: function(item, element){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
 					$scope.item = item
 					$scope.inputValue = item.displayedName
 					if (!$scope.$$phase) {$scope.$apply()}
