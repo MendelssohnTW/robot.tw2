@@ -428,12 +428,14 @@ define("robotTW2/controllers/FarmController", [
 		 */
 
 		$scope.deleteException = function () {
+			$scope.data_exception.availableOptions = [];
 			let id_village = $scope.data_exception.selectedOption.village_id
 			$scope.data_farm.list_exceptions = $scope.data_farm.list_exceptions.filter(f => f != id_village)
 			getDetailsExceptions();
 		}
 
 		$scope.addException = function () {
+			$scope.data_exception.availableOptions = [];
 			let id_village = $scope.item.id;
 			if(!$scope.data_farm.list_exceptions.find(f=>f==id_village)){
 				$scope.data_farm.list_exceptions.push(id_village)
