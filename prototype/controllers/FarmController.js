@@ -484,10 +484,12 @@ define("robotTW2/controllers/FarmController", [
 			var scope = services.$rootScope.$new()
 			
 			let obj_autocomplete = {
-					'type'			: 'village',
-					'placeholder'	: $scope.SEARCH_MAP,
-					'onEnter'		: function (){},
-					'exclude'		: function(){}
+					'type'					: 'village',
+					'placeholder'			: $scope.SEARCH_MAP,
+					'onEnter'				: function (){},
+					'exclude'				: function(){},
+					"inputValueReadOnly" 	: "",
+					"keepSelected"			: false
 			}
 			
 			let object_scope = {
