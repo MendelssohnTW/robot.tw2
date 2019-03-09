@@ -514,10 +514,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.set();
 		});
 
-		$scope.setCollapse();
-
-		initTab();
-		getDetailsExceptions();
+		
 
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = getVillage(key);
@@ -555,6 +552,10 @@ define("robotTW2/controllers/FarmController", [
 				"selectedOption" : {}
 		}
 		
+		$scope.setCollapse();
+
+		initTab();
+		getDetailsExceptions();
 
 		triggerUpdate()
 		update()
