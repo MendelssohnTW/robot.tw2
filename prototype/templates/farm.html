@@ -87,48 +87,6 @@
 										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span>
 								</div>
 							</td>
-
-						</tr>
-						<tr>
-							<td class="cell-top" colspan=2>
-								<div class="list-collapse">
-									<h5 class="twx-section collapse">{{villages_selections}}</h5>
-									<div>
-										<table
-											class="tbl-border-light tbl-striped tbl-content tbl-hover">
-											<colgroup>
-												<col width="*">
-												<col width="56">
-											</colgroup>
-
-											<tbody>
-												<tr ng-repeat="(key, value) in data_villages.villages">
-													<td ng-class="{'selected': village_selected.id == key}"
-														ng-click="setVillage(key)" class="cell-right"><span>{{getVillageInfo(key)}}</span></td>
-													<td class="cell-space">
-														<div class="checkbox box-border-dark">
-															<div switch-slider="" border="true" enabled="true"
-																value="value.farm_activate" vertical="false"
-																size="'56x28'">
-																<div ng-class="{'box-border-dark box-filter': border}"
-																	class="box-border-dark box-filter">
-																	<div class="switch switch-56x28 switch-horizontal"
-																		ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
-																		<span class="size-26x26 switch-thumb"> <span
-																			class="simple icon-26x26-switch-off"
-																			ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
-																		</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -145,7 +103,8 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.PRESET">
-		<div class="box-paper content-settings" ng-if="activeTab == TABS.PRESET">
+		<div class="box-paper content-settings"
+			ng-if="activeTab == TABS.PRESET">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
@@ -384,7 +343,8 @@
 																							<div id="select-field" select-element=""
 																								ng-style="{'width': width + 'px'}"
 																								style="transform: translate3d(63px, 819px, 0px); width: 309px;">
-																								<ul class="action-list select-handler"><!-- ng-class="{'action-list-top': actionListTop}" -->
+																								<ul class="action-list select-handler">
+																									<!-- ng-class="{'action-list-top': actionListTop}" -->
 																								</ul>
 																							</div>
 																						</div>
@@ -531,6 +491,24 @@
 																class="input-border inputcreated" type="number"
 																id="max_dist" step="1" min="5" max="200"
 																ng-model="preset_selected.max_journey_distance" disabled></td>
+															<td class="cell-space">
+																<div class="checkbox box-border-dark">
+																	<div switch-slider="" border="true" enabled="true"
+																		value="village_selected.farm_activate"
+																		vertical="false" size="'56x28'">
+																		<div ng-class="{'box-border-dark box-filter': border}"
+																			class="box-border-dark box-filter">
+																			<div class="switch switch-56x28 switch-horizontal"
+																				ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																				<span class="size-26x26 switch-thumb"> <span
+																					class="simple icon-26x26-switch-off"
+																					ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
+																				</span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</td>
 														</tr>
 													</tbody>
 												</table></td>
