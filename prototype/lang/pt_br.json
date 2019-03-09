@@ -176,6 +176,7 @@
         "text_units_village": "Unidades da aldeia",
         "text_units_preset": "Unidades da predefinição",
         "text_remove_exceptions": "Remover aldeias da lista de excessão",
+        "text_add_exceptions": "Adicionar aldeias na lista de excessão",
         "text_add_preset": "Adicionar uma predefinição global para a aldeia selecionada",
         "text_remove_preset": "Remover a predefinição selecionada da aldeia selecionada",
         "text_one_preset": "Aplicar configurações somente à predefinição selecionada da aldeia selecionada",

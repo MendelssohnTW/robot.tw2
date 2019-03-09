@@ -376,14 +376,25 @@
 														<li><a id="button-start" class="btn-border btn-orange btn-init" ng-click="deleteException()"><span>{{REMOVE}}</span></a></li>
 													</ul>
 												</td>
-											</tr>
+											</tr><tr>
+                                                <td colspan="2">{{text_add_exceptions}}</td>
+                                                <td>
+                                                    <ul class="list-btn list-center">
+                                                        <li><a id="button-start" class="btn-border btn-orange btn-init" ng-click="addException()"><span>{{ADD}}</span></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr><tr>
+                                                <td></td>
+                                                <td class="cell-center"><span class="icon icon-34x34-select-village"></span></td>
+                                                <td><div>
+                                                        <select id="list_exceptions" class="select-handler" ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id" ng-model="data_exception.selectedOption"></select>
+                                                    </div></td>
+                                            </tr>
 										</tbody>
 									</table></td>
 											</tr>
 										</tbody>
-										<tr>
-											<td></td>
-										</tr>
+										
 									</table>
 								</td><td class="cell-top"><table>
 										<tr>
