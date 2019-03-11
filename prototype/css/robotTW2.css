@@ -97,6 +97,11 @@
 	height: 26px;
 }
 
+.robotTW2 input:disabled {
+    color:#231807;
+    background-color: #524d4d
+}
+
 .robotTW2 .recruit .input-list-collapse {
 	width: 100px;
 	min-width: 70px;

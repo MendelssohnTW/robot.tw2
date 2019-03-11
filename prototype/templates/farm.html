@@ -27,7 +27,7 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div class="scroll-wrap preset" style="margin-bottom: 100px">
-				<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+				<table class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 					<colgroup>
 						<col width="40%">
 						<col width="60%">
@@ -35,7 +35,7 @@
 					<tbody>
 						<tr>
 							<td colspan="2"><table
-									class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 									<colgroup>
 										<col width="*">
 										<col width="48px">
@@ -146,11 +146,11 @@
 						<tr>
 							<td class="cell-right">
 								<table
-									class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 									<tbody>
 										<tr>
 											<td><table
-													class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+													class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 													<colgroup>
 														<col width="120px">
 														<col width="30px">
@@ -176,7 +176,7 @@
 															<td class="cell-center"><span
 																class="icon icon-34x34-preset"></span></td>
 															<td><div>
-																	<select id="select_preset" class="select-wrapper"
+																	<select id="select_preset" class="select-wrapper" ng-show="getShow(item.id)"
 																		ng-options="item as item.name for item in data_preset.availableOptions track by item.name"
 																		ng-model="data_preset.selectedOption"></select>
 																</div></td>
@@ -216,7 +216,7 @@
 										</tr>
 										<tr>
 											<td><table
-													class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+													class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 													<colgroup>
 														<col width="120px">
 														<col width="30px">
@@ -251,7 +251,7 @@
 															<td class="cell-center"><span
 																class="icon icon-34x34-select-village"></span></td>
 															<td><div>
-																	<table class="tbl-border-light">
+																	<table class="tbl-border-golden">
 																		<tbody>
 																			<tr>
 																				<td class="cell-center">
@@ -298,7 +298,7 @@
 									<tr>
 										<td>
 											<table
-												class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+												class="tbl-border-golden tbl-border-dark tbl-big-header tbl-content tbl-farm">
 												<colgroup>
 													<col width="33%">
 													<col width="33%">
@@ -330,10 +330,12 @@
 													</tr>
 													<tr>
 														<td class="cell-right"><label for="cicle_infinite"
-															style="margin-left: 12px; margin-right: 12px;">{{time_infinite}}</label><label
+															style="margin-left: 12px; margin-right: 12px;"
+															ng-show="infinite">{{time_infinite}}</label><label
 															for="cicle_infinite"
-															style="margin-left: 12px; margin-right: 12px;">{{time_finite}}</label><a
-															id="cicle_infinite" href="#"
+															style="margin-left: 12px; margin-right: 12px;"
+															ng-show="!infinite">{{time_finite}}</label><a tooltip
+															tooltip-content="{{time_infinite}} + '/' + {{time_finite}}" id="cicle_infinite" href="#"
 															class="size-34x34 btn-orange"
 															ng-class="{'icon-26x26-check-positive' : infinite, 'icon-26x26-check-negative' : !infinite}"
 															ng-click="togleInfinite()"></a></td>
@@ -361,11 +363,9 @@
 																	style="margin-left: 12px; margin-right: 12px;">{{farm_running}}</label>
 															</div>
 														</td>
-														<td class="cell-right"><label
-															for="interval_farm">{{text_interval_headquarter}}</label><input
-															id="interval_farm"
-															class="input-border inpt disabled" type=text
-															value="{{getTimeRest()}}" disabled></td>
+														<td class="cell-right"><label for="interval_farm">{{text_interval_headquarter}}</label><input
+															id="interval_farm" class="input-border inpt disabled"
+															type=text value="{{getTimeRest()}}" disabled></td>
 													</tr>
 												</tbody>
 											</table>
@@ -373,7 +373,7 @@
 									</tr>
 									<tr>
 										<td><table
-												class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+												class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 												<tbody>
 													<tr>
 														<th class="selected cell-center">{{text_presets}}</th>
@@ -383,7 +383,7 @@
 															class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
 															<div id="check_one" class="position-absolute size-34x34"
 																ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-																ng-click="toggleOption('check_one')" tooltip=""
+																ng-click="toggleOption('check_one')" tooltip
 																tooltip-content=""></div></td>
 													</tr>
 													<tr>
@@ -391,7 +391,7 @@
 															class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
 															<div id="check_all" class="position-absolute size-34x34"
 																ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-																ng-click="toggleOption('check_all')" tooltip=""
+																ng-click="toggleOption('check_all')" tooltip
 																tooltip-content=""></div></td>
 													</tr>
 													<tr>
@@ -401,7 +401,7 @@
 															<div id="check_all_villages"
 																class="position-absolute size-34x34"
 																ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-																ng-click="toggleOption('check_all_villages')" tooltip=""
+																ng-click="toggleOption('check_all_villages')" tooltip
 																tooltip-content=""></div></td>
 													</tr>
 												</tbody>
@@ -409,7 +409,7 @@
 									</tr>
 									<tr>
 										<td><table
-												class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+												class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 												<colgroup>
 													<col width="100px">
 													<col width="140px">
@@ -504,7 +504,7 @@
 															ng-model="preset_selected.max_journey_distance" disabled></td>
 														<td class="cell-center">
 															<table
-																class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+																class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
 																<tbody>
 																	<tr>
 																		<td class="cell-center selected">{{villages_selections}}</td>
@@ -563,7 +563,7 @@
 			</div>
 			<div class="scroll-wrap logs" style="margin-bottom: 100px">
 				<div>
-					<table class="tbl-border-light tbl-striped">
+					<table class="tbl-border-golden tbl-striped">
 						<colgroup>
 							<col width="50%">
 							<col width="50%">
