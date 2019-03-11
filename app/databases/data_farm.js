@@ -42,7 +42,7 @@ define("robotTW2/databases/data_farm", [
 		let unit = Object.keys(preset)[0];
 		units[unit] = qtd;
 		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
-		let preset = {
+		let d_preset = {
 				"catapult_target": null,
 				"icon": parseInt("0c0b0c", 16),
 				"name": "Farm " + qtd.toString() + " " + trad_unit,
@@ -51,7 +51,7 @@ define("robotTW2/databases/data_farm", [
 				"village_id": null
 		}
 		
-		services.socketService.emit(routeProvider.SAVE_NEW_PRESET, preset);
+		services.socketService.emit(routeProvider.SAVE_NEW_PRESET, d_preset);
 	}
 
 	var dataNew = {
