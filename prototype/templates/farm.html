@@ -27,7 +27,7 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div class="scroll-wrap preset" style="margin-bottom: 100px">
-				<table class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+				<table class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 					<colgroup>
 						<col width="40%">
 						<col width="60%">
@@ -35,7 +35,7 @@
 					<tbody>
 						<tr>
 							<td colspan="2"><table
-									class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+									class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 									<colgroup>
 										<col width="*">
 										<col width="48px">
@@ -146,11 +146,11 @@
 						<tr>
 							<td class="cell-right">
 								<table
-									class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+									class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 									<tbody>
 										<tr>
 											<td><table
-													class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+													class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 													<colgroup>
 														<col width="120px">
 														<col width="30px">
@@ -176,8 +176,8 @@
 															<td class="cell-center"><span
 																class="icon icon-34x34-preset"></span></td>
 															<td><div>
-																	<select id="select_preset" class="select-wrapper" ng-show="getShow(item)"
-																		ng-options="item as item.name for item in data_preset.availableOptions track by item.name"
+																	<select id="select_preset" class="select-wrapper" 
+																		ng-options="item as item.name for item in data_preset.availableOptions track by item.name | filter:shouldShow"
 																		ng-model="data_preset.selectedOption"></select>
 																</div></td>
 														</tr>
@@ -216,7 +216,7 @@
 										</tr>
 										<tr>
 											<td><table
-													class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+													class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 													<colgroup>
 														<col width="120px">
 														<col width="30px">
@@ -251,7 +251,7 @@
 															<td class="cell-center"><span
 																class="icon icon-34x34-select-village"></span></td>
 															<td><div>
-																	<table class="tbl-border-golden">
+																	<table class="tbl-border-thin">
 																		<tbody>
 																			<tr>
 																				<td class="cell-center">
@@ -298,7 +298,7 @@
 									<tr>
 										<td>
 											<table
-												class="tbl-border-golden tbl-border-dark tbl-big-header tbl-content tbl-farm">
+												class="tbl-border-light tbl-border-dark tbl-big-header tbl-content tbl-farm">
 												<colgroup>
 													<col width="33%">
 													<col width="33%">
@@ -373,7 +373,7 @@
 									</tr>
 									<tr>
 										<td><table
-												class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+												class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 												<tbody>
 													<tr>
 														<th class="selected cell-center">{{text_presets}}</th>
@@ -409,7 +409,7 @@
 									</tr>
 									<tr>
 										<td><table
-												class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+												class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 												<colgroup>
 													<col width="100px">
 													<col width="140px">
@@ -504,7 +504,7 @@
 															ng-model="preset_selected.max_journey_distance" disabled></td>
 														<td class="cell-center">
 															<table
-																class="tbl-border-golden tbl-big-header tbl-content tbl-farm">
+																class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 																<tbody>
 																	<tr>
 																		<td class="cell-center selected">{{villages_selections}}</td>
@@ -563,7 +563,7 @@
 			</div>
 			<div class="scroll-wrap logs" style="margin-bottom: 100px">
 				<div>
-					<table class="tbl-border-golden tbl-striped">
+					<table class="tbl-border-thin tbl-striped">
 						<colgroup>
 							<col width="50%">
 							<col width="50%">

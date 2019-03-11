@@ -413,8 +413,8 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.updateBlur = updateBlur;
 		
-		$scope.getShow = function(id){
-			return Object.keys($scope.data.assignedPresetList).find(f=>f==id);
+		$scope.shouldShow = function(item){
+			return Object.keys($scope.data.assignedPresetList).find(f=>f==item.id);
 		}
 
 
