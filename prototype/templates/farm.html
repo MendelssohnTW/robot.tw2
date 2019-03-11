@@ -309,18 +309,18 @@
 														<th class="selected cell-center" colspan="3">{{farm}}</th>
 													</tr>
 													<tr>
-														<td class="cell-right"><label for="farm_time"
+														<td class="cell-center"><label for="farm_time"
 															style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
 															class="input-border inpt" type="time" id="farm_time"
 															step="1" min="00:00:00" max="23:59:59"
 															value="{{getFarmTime()}}" ng-blur="blur()"></td>
-														<td class="cell-right"><label for="inicio_de_farm"
+														<td class="cell-center"><label for="inicio_de_farm"
 															style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
 															class="input-border inpt" type="time" id="inicio_de_farm"
 															step="1" min="00:00:00" max="23:59:59"
 															value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 															ng-blur="blur()" ng-disabled="infinite"></td>
-														<td class="cell-right"><label
+														<td class="cell-center"><label
 															for="data_inicio_de_farm"
 															style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
 															class="input-border inpd" type="date"
@@ -329,7 +329,7 @@
 															ng-blur="blur()" ng-disabled="infinite"></td>
 													</tr>
 													<tr>
-														<td class="cell-right"><label for="cicle_infinite"
+														<td class="cell-center"><label for="cicle_infinite"
 															style="margin-left: 12px; margin-right: 12px;"
 															ng-show="infinite">{{time_infinite}}</label><label
 															for="cicle_infinite"
@@ -339,14 +339,14 @@
 															class="size-34x34 btn-orange"
 															ng-class="{'icon-26x26-check-positive' : infinite, 'icon-26x26-check-negative' : !infinite}"
 															ng-click="togleInfinite()"></a></td>
-														<td class="cell-right"><label for="termino_de_farm"
+														<td class="cell-center"><label for="termino_de_farm"
 															style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
 															class="input-border inpt" type="time"
 															id="termino_de_farm" step="1" min="00:00:00"
 															max="23:59:59"
 															value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 															ng-blur="blur()" ng-disabled="infinite"></td>
-														<td class="cell-right"><label
+														<td class="cell-center"><label
 															for="data_termino_de_farm"
 															style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
 															class="input-border inpd" type="date"
