@@ -107,7 +107,7 @@ define("robotTW2/databases/data_farm", [
 			for (village in villages){
 				if(villages.hasOwnProperty(village))
 				services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-					'village_id': village,
+					'village_id': villages[village],
 					'preset_ids': presets_load_keys
 				});
 			}
