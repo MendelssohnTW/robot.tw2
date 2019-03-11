@@ -46,7 +46,7 @@ define("robotTW2/databases/data_farm", [
 		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
 
 		var ll = Object.values(presets_load).map(function(elem){
-			return elem.name == trad_unit
+			return elem.name == "Farm " + qtd.toString() + " " + trad_unit
 		}).filter(f=>f!=undefined)
 
 		if(!ll || !ll.length){
