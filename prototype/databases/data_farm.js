@@ -115,7 +115,7 @@ define("robotTW2/databases/data_farm", [
 				list_loaded = list_loaded.filter(f=>f!=false);
 			}
 			
-			if(presets_created.length){
+			if(list_loaded.length){
 				for (village in villages){
 					if(villages.hasOwnProperty(village))
 						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
