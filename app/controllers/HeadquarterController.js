@@ -107,7 +107,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.getKey = function(key){
 			if(!key){return}
-			return services.$filter("i18n")(key, services.$rootScope.loc.ale, "headquarter");
+			return services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings");
 		}
 
 		$scope.getMax = function(key, value){

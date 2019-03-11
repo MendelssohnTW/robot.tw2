@@ -18,7 +18,7 @@ define("robotTW2/controllers/ReconController", [
 		$scope.text_version = $scope.version + " " + data_recon.version;
 		
 		$scope.getKey = function(unit_name){
-			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale);
+			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "units");
 		}
 		
 		$scope.getClass = function(unit_name){
