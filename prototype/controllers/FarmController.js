@@ -416,6 +416,10 @@ define("robotTW2/controllers/FarmController", [
 		$scope.shouldShow = function(item){
 			return Object.keys($scope.data.assignedPresetList).find(f=>f==item.id);
 		}
+		
+		$scope.shouldntShow = function(item){
+			return !Object.keys($scope.data.assignedPresetList).find(f=>f==item.id);
+		}
 
 
 		/*
