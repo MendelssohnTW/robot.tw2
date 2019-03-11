@@ -277,7 +277,7 @@ define("robotTW2/services/FarmService", [
 
 			if(!countCommands[village_id]) {countCommands[village_id] = []}
 			aldeia_commands.forEach(function (aldeia) {
-				if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId)){
+				if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId && aldeia.data.direction=="forward")){
 					countCommands[village_id].push(aldeia.targetVillageId);
 				}
 			})
