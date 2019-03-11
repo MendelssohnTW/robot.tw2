@@ -144,7 +144,7 @@
         "settings": "Selecione o tipo pra renomear"
     },
     "farm": {
-        "farm": "Configurações da coleta",
+        "farm": "Configurações de ciclo",
         "village": "Aldeia",
         "log": "Log",
         "title": "Coleta de recursos",
@@ -163,6 +163,7 @@
         "time_finite": "Ciclo limitado",
         "init_date": "Data de início",
         "terminate_date": "Data de término",
+        "text_farm": "Farm",
         "text_village": "Aldeia",
         "text_origin": "Origem ",
         "text_target": " alvo ",

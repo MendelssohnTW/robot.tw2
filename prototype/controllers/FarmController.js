@@ -34,13 +34,11 @@ define("robotTW2/controllers/FarmController", [
 
 		var self = this
 		, TABS = {
-				FARM 	: services.$filter("i18n")("farm", services.$rootScope.loc.ale, "farm"),
-				PRESET 	: services.$filter("i18n")("text_presets", services.$rootScope.loc.ale, "farm"),
+				FARM 	: services.$filter("i18n")("text_farm", services.$rootScope.loc.ale, "farm"),
 				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "farm")
 		}
 		, TAB_ORDER = [
 			TABS.FARM,
-			TABS.PRESET,
 			TABS.LOG,
 			]
 
