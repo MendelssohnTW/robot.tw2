@@ -26,7 +26,7 @@ define("robotTW2/databases/data_farm", [
 		return database.get("data_farm");
 	}
 	
-	var create_preset = function create_preset(preset){
+	var create_preset = function create_preset(preset, pri_vill){
 
 		let units = {};
 		let officers = {};
@@ -48,7 +48,7 @@ define("robotTW2/databases/data_farm", [
 				"name": "Farm " + qtd.toString() + " " + trad_unit,
 				"officers": officers,
 				"units": units,
-				"village_id": null
+				"village_id": pri_vill
 		}
 		
 		services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
@@ -84,12 +84,14 @@ define("robotTW2/databases/data_farm", [
 			{"heavy_cavalry": 5}
 		]
 
+		let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
+		let pri_vill = villages[0]
+		
 		for (var preset in list_presets){
-			create_preset(preset)
+			create_preset(preset, pri_vill)
 		}
 		
 		services.$timeout(function(){
-			let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
 			let presets_load = Object.keys(angular.copy(services.presetListService.getPresets()))
 			for (village in villages){
 				services.socketService.emit(routeProvider.ASSIGN_PRESETS, {
