@@ -106,7 +106,7 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.toggleStartStop = function(ext) {
-			if($scope.extensions_status[ext.name]){
+			if(!$scope.extensions_status[ext.name]){
 				stopExt(ext.name)
 			} else {
 				startExt(ext.name)
