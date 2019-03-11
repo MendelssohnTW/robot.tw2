@@ -54,8 +54,13 @@
 }
 
 .robotTW2 label {
-	margin-left: 6px;
-	margin-right: 6px;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.robotTW2 table td {
+    font-weight: bold;
+    color: #352108;
 }
 
 .robotTW2 .inpt {
