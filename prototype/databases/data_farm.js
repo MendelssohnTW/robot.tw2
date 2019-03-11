@@ -108,8 +108,12 @@ define("robotTW2/databases/data_farm", [
 			presets_load = angular.copy(services.presetListService.getPresets())
 			
 			var list_loaded = Object.values(presets_load).map(function(value){
-				return presets_created.find(f=>f==value.name)
-			}).filter(f=>f!=false).map(function(tr){return tr.id})
+				if(presets_created.find(f=>f==value.name))
+					return value.id
+			})
+			if(list_loaded.length){
+				list_loaded = list_loaded.filter(f=>f!=false);
+			}
 			
 			if(presets_created.length){
 				for (village in villages){
