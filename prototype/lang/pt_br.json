@@ -121,7 +121,7 @@
 		
 		"priority": "Sequência de prioridades",
 		"levels": "Limite de níveis",
-		"ativate": "Estado atual",
+		"activate": "Estado atual",
 		"introducing": "Você pode criar customizações por aldeias. Inicialmente serão configuradas com as configurações globais",
 		"tooltip_input": "Tempo mínimo de 30 minutos",
 		"tooltip_button": "Selecionar edifício"

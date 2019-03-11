@@ -835,7 +835,7 @@ var robotTW2 = window.robotTW2 = undefined;
 //							DATA			: version.data,
 							LOG				: version.log
 						},
-						FARM_TIME		      	: 30 * min,
+						FARM_TIME		      	: 15 * min,
 						MIN_INTERVAL	     	: 5 * min,
 						INTERVAL				: {
 							HEADQUARTER	: h,
@@ -887,17 +887,17 @@ var robotTW2 = window.robotTW2 = undefined;
 						},
 						RESERVA				: {
 							RECRUIT : {
-								FOOD			: 500,
-								WOOD			: 2000,
-								CLAY			: 2000,
-								IRON			: 2000,
+								FOOD			: 50,
+								WOOD			: 200,
+								CLAY			: 200,
+								IRON			: 200,
 								SLOTS			: 2
 							},
 							HEADQUARTER : {
-								FOOD			: 500,
-								WOOD			: 2000,
-								CLAY			: 2000,
-								IRON			: 2000,
+								FOOD			: 50,
+								WOOD			: 200,
+								CLAY			: 200,
+								IRON			: 200,
 								SLOTS			: 2
 							}
 
