@@ -120,7 +120,7 @@ define("robotTW2/databases/data_farm", [
 					if(villages.hasOwnProperty(village))
 						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
 							'village_id': villages[village],
-							'preset_ids': presets_created
+							'preset_ids': list_loaded
 						});
 				}
 			}
