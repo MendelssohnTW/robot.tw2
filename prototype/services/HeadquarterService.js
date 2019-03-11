@@ -283,7 +283,7 @@ define("robotTW2/services/HeadquarterService", [
 				if(!promise){
 					promise = new Promise(function(res){
 						upgradeBuilding(vill_id).then(function(repeat){
-							data_villages.set();
+//							data_villages.set();
 							if(repeat){
 								f(vill_id)
 							} else {
