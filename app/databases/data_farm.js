@@ -51,7 +51,7 @@ define("robotTW2/databases/data_farm", [
 				"village_id": null
 		}
 		
-		services.socketService.emit(routeProvider.SAVE_NEW_PRESET, d_preset);
+		services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 	}
 
 	var dataNew = {
