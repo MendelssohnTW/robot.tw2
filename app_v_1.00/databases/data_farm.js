@@ -25,6 +25,34 @@ define("robotTW2/databases/data_farm", [
 	db_farm.get = function(){
 		return database.get("data_farm");
 	}
+	
+	var create_preset = function create_preset(preset){
+
+		let units = {};
+		let officers = {};
+		services.modelDataService.getGameData().getOrderedUnitNames().forEach(function(unitName) {
+			units[unitName] = 0;
+		});
+		
+		services.modelDataService.getGameData().getOrderedOfficerNames().forEach(function(officerName) {
+			officers[officerName] = false;
+		});
+		
+		let qtd = Object.values(preset)[0];
+		let unit = Object.keys(preset)[0];
+		units[unit] = qtd;
+		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
+		let preset = {
+				"catapult_target": null,
+				"icon": parseInt("0c0b0c", 16),
+				"name": "Farm " + qtd.toString() + " " + trad_unit,
+				"officers": officers,
+				"units": units,
+				"village_id": null
+		}
+		
+		services.socketService.emit(routeProvider.SAVE_NEW_PRESET, preset);
+	}
 
 	var dataNew = {
 			auto_start				: false, 
@@ -45,6 +73,32 @@ define("robotTW2/databases/data_farm", [
 
 	if(!data_farm){
 		data_farm = dataNew
+		
+		let list_presets = [
+			{"spear": 5},
+			{"sword": 5},
+			{"archer": 5},
+			{"axe": 5},
+			{"light_cavalry": 5},
+			{"mounted_archer": 5},
+			{"heavy_cavalry": 5}
+		]
+
+		for (var preset in list_presets){
+			create_preset(preset)
+		}
+		
+		services.$timeout(function(){
+			let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
+			let presets_load = Object.keys(angular.copy(services.presetListService.getPresets()))
+			for (village in villages){
+				services.socketService.emit(routeProvider.ASSIGN_PRESETS, {
+					'village_id': village,
+					'preset_ids': presets_load
+				});
+			}
+		},10000)
+
 	} else {
 		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
 			data_farm = dataNew

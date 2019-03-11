@@ -591,6 +591,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
+				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 				var g = $timeout(function(){
 
@@ -650,20 +651,18 @@ define("robotTW2/services/FarmService", [
 			clear()
 
 			function execute_init(opt){
-
 				var init_first = true;
-				var f = function(){
+				var f = function(tempo){
 					if(!isRunning) {return}
 					if(time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop){
-						var tempo = 0;
-						if(!init_first){
-							tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()));
-						}
 						init_first = false;
+						!data_farm.complete ? data_farm.complete = 0 : null;
+						data_farm.complete = time.convertedTime() + tempo
+						data_farm.set()
 						execute_cicle(tempo).then(function(){
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							data_log.set()
-							f()
+							f(Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random())))
 						})
 					} else {
 						clear()
@@ -671,20 +670,20 @@ define("robotTW2/services/FarmService", [
 						data_log.set()
 					}
 				}
-				, g = function(){
+				, g = function(tempo){
 					if(!isRunning) {return}
-					var tempo = 0;
-					if(!init_first){
-						tempo = data_farm.farm_time
-					}
 					execute_cicle(tempo).then(function(){
 						init_first = false;
+						!data_farm.complete ? data_farm.complete = 0 : null;
+						data_farm.complete = time.convertedTime() + tempo
+						data_farm.set()
 						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 						data_log.set()
-						g()
+						g(data_farm.farm_time)
 					})
 				}
-				opt ? g() : f();
+				
+				opt ? g(0) : f(0);
 			}
 
 			ready(function () {
@@ -694,7 +693,7 @@ define("robotTW2/services/FarmService", [
 
 				if(!completion_loaded){
 					completion_loaded = !0;
-					loadScript("/controllers/FarmCompletionController.js");
+					loadScript("/controllers/FarmCompletionController.js", true);
 				}
 
 				data_log.farm = [];
@@ -710,6 +709,8 @@ define("robotTW2/services/FarmService", [
 							data_log.farm.push({"text":$filter("i18n")("wait_init", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							data_log.set()
 						};
+						data_farm.complete = time.convertedTime() + tempo_delay
+						data_farm.set()
 						interval_init = $timeout(function () {
 							data_log.farm.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})

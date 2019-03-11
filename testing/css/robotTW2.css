@@ -54,8 +54,13 @@
 }
 
 .robotTW2 label {
-	margin-left: 6px;
-	margin-right: 6px;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.robotTW2 table td {
+    font-weight: bold;
+    color: #352108;
 }
 
 .robotTW2 .inpt {
@@ -92,6 +97,11 @@
 	height: 26px;
 }
 
+.robotTW2 input:disabled {
+    color:#231807;
+    background-color: #524d4d
+}
+
 .robotTW2 .recruit .input-list-collapse {
 	width: 100px;
 	min-width: 70px;
@@ -104,19 +114,16 @@
 	margin-right: 20px;
 }
 
-.robotTW2 .list-btn a {
-	padding: 5px;
-}
-
 .robotTW2 .low {
 	font-size: 12px;
 }
 
 .robotTW2 .btn-border {
 	font-size: 14px;
-	line-height: 28px;
+	line-height: 34px;
 	min-width: 150px;
-	height: 28px;
+	height: 34px;
+	padding: 0 10px;
 }
 
 .robotTW2 .quadrant {
@@ -170,8 +177,9 @@
 }
 
 .robotTW2 .select-wrapper {
-	height: 36px;
+	height: 34px;
 	min-width: 130px;
+	padding-left: 10px;
 }
 
 .robotTW2 select {
@@ -179,13 +187,15 @@
 	-moz-appearance: button;
 	appearance: button;
 	height: 34px;
-	width: 100%;
+	width: 96%;
 	background: url(../imgs/arrow_down.png);
 	background-repeat: no-repeat;
 	background-position: 100% center;
-	background-color: #b89064;
-	color: white;
+	background-color: #9c6e3b;
+	color: #4c290b;
 	overflow: hidden;
+	border-style: inset;
+	border-color: floralwhite;
 }
 
 #Minimap .minimap {

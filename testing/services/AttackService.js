@@ -224,13 +224,14 @@ define("robotTW2/services/AttackService", [
 		}
 		, init = function(){
 			isInitialized = !0
+			loadScript("/controllers/AttackCompletionController.js");
 			start();
 		}
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
 				scope.commands = {};
-				loadScript("/controllers/AttackCompletionController.js");
+				loadScript("/controllers/AttackCompletionController.js", true);
 				calibrate_time()
 				isRunning = !0
 				Object.values(data_attack.commands).forEach(function(param){
