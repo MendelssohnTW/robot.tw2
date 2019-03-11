@@ -8,7 +8,9 @@
 	</header>
 	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings screen-overview">
-		<div class="version"><h5>{{text_version}}</h5></div>
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
 			<div class="scroll-wrap headquarter" style="margin-bottom: 100px">
 				<h5 class="twx-section collapse">{{settings}}</h5>
 				<div>
@@ -104,15 +106,13 @@
 												<col width="26">
 											</colgroup>
 											<tbody>
-												<tr
-													ng-repeat="(key, value) in obj_standard.buildingorder"
+												<tr ng-repeat="(key, value) in obj_standard.buildingorder"
 													style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
 															<span class="name">{{getKey(key)}}</span>
 														</div>
-														<div class="span-icon"
-															ng-class="getClass(key)"></div>
+														<div class="span-icon" ng-class="getClass(key)"></div>
 													</td>
 													<td class="cell-right"><div>{{value}}</div></td>
 													<td class="cell-right">
@@ -138,7 +138,8 @@
 												<col width="26">
 											</colgroup>
 											<tbody>
-												<tr ng-repeat="(key, value) in obj_standard.buildinglimit" style="height: 68px">
+												<tr ng-repeat="(key, value) in obj_standard.buildinglimit"
+													style="height: 68px">
 													<td class="content">
 														<div class="name-wrapper">
 															<span class="name">{{getKey(key)}}</span>
@@ -146,7 +147,8 @@
 														<div class="span-icon" ng-class="getClass(key)"></div>
 													</td>
 													<td class="cell-right"><div>{{value}}</div></td>
-													<td class="cell-right"><div ng-show="getMax(key, value)"
+													<td class="cell-right"><div
+															ng-show="getMax(key, value)"
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 															ng-click="levelupstandard(key)"></div>
 														<div ng-show="value > 0"
@@ -199,13 +201,10 @@
 											</div>
 										</div>
 									</td>
-									<td class="cell-top cell-center">
-										<div class="select-wrapper box-border-dark">
-											<select id="select_order" class="select-handler"
-												ng-options="item as item.name for item in data_headquarter.selects track by item.id"
-												ng-model="value_vill.selected"></select>
-										</div>
-									</td>
+									<td class="cell-top cell-center"><select id="select_order"
+										class="select-wrapper"
+										ng-options="item as item.name for item in data_headquarter.selects track by item.id"
+										ng-model="value_vill.selected"></select></td>
 									<td class="cell-space">
 										<h5 class="twx-section collapse hidden-content">{{getName(key_vill)}}</h5>
 										<div>
@@ -233,8 +232,7 @@
 																			<div class="name-wrapper">
 																				<span class="name">{{getKey(key)}}</span>
 																			</div>
-																			<div class="span-icon"
-																				ng-class="getClass(key)"></div>
+																			<div class="span-icon" ng-class="getClass(key)"></div>
 																		</td>
 																		<td class="cell-right"><div>{{value}}</div></td>
 																		<td class="cell-right">
@@ -267,11 +265,11 @@
 																			<div class="name-wrapper">
 																				<span class="name">{{getKey(key)}}</span>
 																			</div>
-																			<div class="span-icon"
-																				ng-class="getClass(key)"></div>
+																			<div class="span-icon" ng-class="getClass(key)"></div>
 																		</td>
 																		<td class="cell-right"><div>{{value}}</div></td>
-																		<td class="cell-right"><div ng-show="getMax(key, value)"
+																		<td class="cell-right"><div
+																				ng-show="getMax(key, value)"
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																				ng-click="levelup(value_vill, key)"></div>
 																			<div ng-show="value > 1"

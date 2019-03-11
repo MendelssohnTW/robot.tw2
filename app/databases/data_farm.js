@@ -60,7 +60,7 @@ define("robotTW2/databases/data_farm", [
 					"village_id": pri_vill
 			}
 
-			presets_created.push(pri_vill);
+			presets_created.push(d_preset.name);
 
 			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 		}
@@ -105,12 +105,22 @@ define("robotTW2/databases/data_farm", [
 		}
 
 		services.$timeout(function(){
-			if(presets_created.length){
+			presets_load = angular.copy(services.presetListService.getPresets())
+			
+			var list_loaded = Object.values(presets_load).map(function(value){
+				if(presets_created.find(f=>f==value.name))
+					return value.id
+			})
+			if(list_loaded.length){
+				list_loaded = list_loaded.filter(f=>f!=false);
+			}
+			
+			if(list_loaded.length){
 				for (village in villages){
 					if(villages.hasOwnProperty(village))
 						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
 							'village_id': villages[village],
-							'preset_ids': presets_created
+							'preset_ids': list_loaded
 						});
 				}
 			}
