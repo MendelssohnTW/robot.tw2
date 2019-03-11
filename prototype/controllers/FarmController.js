@@ -91,7 +91,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function get_dist(villageId, journey_time, units) {
-			if($scope.activeTab != TABS.PRESET){return}
+			if($scope.activeTab != TABS.FARM){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
@@ -105,7 +105,7 @@ define("robotTW2/controllers/FarmController", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function get_time(villageId, distance, units) {
-			if($scope.activeTab != TABS.PRESET){return}
+			if($scope.activeTab != TABS.FARM){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
@@ -138,7 +138,7 @@ define("robotTW2/controllers/FarmController", [
 
 		}
 		, updateBlur = function updateBlur(){
-			if($scope.activeTab != TABS.PRESET){return}
+			if($scope.activeTab != TABS.FARM){return}
 
 			switch ($scope.toggle_option) {
 			case "check_one":
@@ -179,7 +179,7 @@ define("robotTW2/controllers/FarmController", [
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function blurPreset(){
-			if($scope.activeTab != TABS.PRESET){return}
+			if($scope.activeTab != TABS.FARM){return}
 			var tmMax = helper.readableMilliseconds($scope.preset_selected.max_journey_time);
 			if(tmMax.length == 7) {
 				tmMax = "0" + tmMax;
@@ -380,7 +380,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blurMaxJourney = function () {
-			if($scope.activeTab == TABS.PRESET){
+			if($scope.activeTab == TABS.FARM){
 				var r = $("#max_journey_time").val() 
 				if(r.length <= 5) {
 					r = r + ":00"
@@ -396,7 +396,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blurMinJourney = function () {
-			if($scope.activeTab == TABS.PRESET){
+			if($scope.activeTab == TABS.FARM){
 				var r = $("#min_journey_time").val() 
 				if(r.length <= 5) {
 					r = r + ":00"
@@ -560,9 +560,8 @@ define("robotTW2/controllers/FarmController", [
 		}, true)
 
 		$scope.$watch("activeTab", function(){
-			if($scope.activeTab == TABS.PRESET){
+			if($scope.activeTab == TABS.FARM){
 				updateAll()
-			} else if ($scope.activeTab == TABS.FARM){
 				getDetailsExceptions()
 			}
 		}, true)
