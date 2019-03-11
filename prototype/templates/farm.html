@@ -177,7 +177,7 @@
 																class="icon icon-34x34-preset"></span></td>
 															<td><div>
 																	<select id="select_preset" class="select-wrapper" 
-																		ng-options="item as item.name for item in data_preset.availableOptions track by item.name | filter:shouldShow"
+																		ng-options="item.name for item in data_preset.availableOptions | filter:shouldShow"
 																		ng-model="data_preset.selectedOption"></select>
 																</div></td>
 														</tr>
