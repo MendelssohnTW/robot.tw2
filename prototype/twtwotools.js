@@ -698,6 +698,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			templateManagerService 		: templateManagerService,
 			reportService 				: reportService,
 			villageService				: villageService,
+			presetService				: presetService,
+			presetListService			: presetListService,
 			autoCompleteService			: autoCompleteService
 	};
 	exports.providers 			= {
