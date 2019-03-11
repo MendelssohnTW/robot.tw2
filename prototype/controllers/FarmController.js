@@ -274,7 +274,7 @@ define("robotTW2/controllers/FarmController", [
 				$scope.infinite = true
 			}
 			$scope.data_farm.infinite = $scope.infinite; 
-			update();
+			$scope.blur();
 		}
 
 		$scope.userSetActiveTab = function(tab){
