@@ -98,12 +98,14 @@ define("robotTW2/databases/data_farm", [
 
 
 		for (var preset in list_presets){
+			if(list_presets.hasOwnProperty(preset))
 			create_preset(list_presets[preset], pri_vill)
 		}
 
 		services.$timeout(function(){
 			let presets_load_keys = Object.keys(angular.copy(services.presetListService.getPresets()))
 			for (village in villages){
+				if(villages.hasOwnProperty(village))
 				services.socketService.emit(routeProvider.ASSIGN_PRESETS, {
 					'village_id': village,
 					'preset_ids': presets_load_keys
