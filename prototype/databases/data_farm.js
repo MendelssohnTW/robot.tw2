@@ -47,7 +47,7 @@ define("robotTW2/databases/data_farm", [
 
 		var ll = Object.values(presets_load).map(function(elem){
 			return elem.name == "Farm " + qtd.toString() + " " + trad_unit
-		}).filter(f=>f!=undefined)
+		}).filter(f=>f!=false)
 
 		if(!ll || !ll.length){
 			let d_preset = {
