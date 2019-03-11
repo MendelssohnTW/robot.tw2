@@ -25,7 +25,9 @@ define("robotTW2/databases/data_farm", [
 	db_farm.get = function(){
 		return database.get("data_farm");
 	}
-	
+
+	var presets_load = angular.copy(services.presetListService.getPresets())
+
 	var create_preset = function create_preset(preset, pri_vill){
 
 		let units = {};
@@ -33,25 +35,32 @@ define("robotTW2/databases/data_farm", [
 		services.modelDataService.getGameData().getOrderedUnitNames().forEach(function(unitName) {
 			units[unitName] = 0;
 		});
-		
+
 		services.modelDataService.getGameData().getOrderedOfficerNames().forEach(function(officerName) {
 			officers[officerName] = false;
 		});
-		
+
 		let qtd = Object.values(preset)[0];
 		let unit = Object.keys(preset)[0];
 		units[unit] = qtd;
 		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
-		let d_preset = {
-				"catapult_target": null,
-				"icon": parseInt("0c0b0c", 16),
-				"name": "Farm " + qtd.toString() + " " + trad_unit,
-				"officers": officers,
-				"units": units,
-				"village_id": pri_vill
+
+		var ll = Object.values(presets_load).map(function(elem){
+			return elem.name == "Farm " + qtd.toString() + " " + trad_unit
+		}).filter(f=>f!=false)
+
+		if(!ll || !ll.length){
+			let d_preset = {
+					"catapult_target": null,
+					"icon": parseInt("0c0b0c", 16),
+					"name": "Farm " + qtd.toString() + " " + trad_unit,
+					"officers": officers,
+					"units": units,
+					"village_id": pri_vill
+			}
+
+			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 		}
-		
-		services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 	}
 
 	var dataNew = {
@@ -73,7 +82,7 @@ define("robotTW2/databases/data_farm", [
 
 	if(!data_farm){
 		data_farm = dataNew
-		
+
 		let list_presets = [
 			{"spear": 5},
 			{"sword": 5},
@@ -82,21 +91,22 @@ define("robotTW2/databases/data_farm", [
 			{"light_cavalry": 5},
 			{"mounted_archer": 5},
 			{"heavy_cavalry": 5}
-		]
+			]
 
 		let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
 		let pri_vill = villages[0]
-		
+
+
 		for (var preset in list_presets){
 			create_preset(list_presets[preset], pri_vill)
 		}
-		
+
 		services.$timeout(function(){
-			let presets_load = Object.keys(angular.copy(services.presetListService.getPresets()))
+			let presets_load_keys = Object.keys(angular.copy(services.presetListService.getPresets()))
 			for (village in villages){
 				services.socketService.emit(routeProvider.ASSIGN_PRESETS, {
 					'village_id': village,
-					'preset_ids': presets_load
+					'preset_ids': presets_load_keys
 				});
 			}
 		},10000)
