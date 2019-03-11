@@ -88,7 +88,7 @@ define("robotTW2/databases/data_farm", [
 		let pri_vill = villages[0]
 		
 		for (var preset in list_presets){
-			create_preset(preset, pri_vill)
+			create_preset(list_presets[preset], pri_vill)
 		}
 		
 		services.$timeout(function(){
