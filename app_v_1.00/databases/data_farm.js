@@ -27,6 +27,7 @@ define("robotTW2/databases/data_farm", [
 	}
 
 	var presets_load = angular.copy(services.presetListService.getPresets())
+	var presets_created = [];
 
 	var create_preset = function create_preset(preset, pri_vill){
 
@@ -58,6 +59,8 @@ define("robotTW2/databases/data_farm", [
 					"units": units,
 					"village_id": pri_vill
 			}
+
+			presets_created.push(pri_vill);
 
 			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 		}
@@ -96,20 +99,20 @@ define("robotTW2/databases/data_farm", [
 		let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
 		let pri_vill = villages[0]
 
-
 		for (var preset in list_presets){
 			if(list_presets.hasOwnProperty(preset))
-			create_preset(list_presets[preset], pri_vill)
+				create_preset(list_presets[preset], pri_vill)
 		}
 
 		services.$timeout(function(){
-			let presets_load_keys = Object.keys(angular.copy(services.presetListService.getPresets()))
-			for (village in villages){
-				if(villages.hasOwnProperty(village))
-				services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-					'village_id': village,
-					'preset_ids': presets_load_keys
-				});
+			if(presets_created.length){
+				for (village in villages){
+					if(villages.hasOwnProperty(village))
+						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+							'village_id': villages[village],
+							'preset_ids': presets_created
+						});
+				}
 			}
 		},10000)
 
