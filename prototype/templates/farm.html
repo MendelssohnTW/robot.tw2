@@ -353,7 +353,7 @@
 															ng-blur="blur()" ng-disabled="infinite"></td>
 													</tr>
 													<tr>
-														<td colspan="3" class="cell-left">
+														<td class="cell-left" colspan="2">
 															<div>
 																<span id="cicle_status"
 																	ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span><label
@@ -361,6 +361,11 @@
 																	style="margin-left: 12px; margin-right: 12px;">{{farm_running}}</label>
 															</div>
 														</td>
+														<td class="cell-right"><label
+															for="interval_farm">{{text_interval_headquarter}}</label><input
+															id="interval_farm"
+															class="input-border inpt disabled" type=text
+															value="{{getTimeRest()}}" disabled></td>
 													</tr>
 												</tbody>
 											</table>

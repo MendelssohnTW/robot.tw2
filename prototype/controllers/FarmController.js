@@ -264,6 +264,10 @@ define("robotTW2/controllers/FarmController", [
 					"selectedOption" : $scope.preset_selected
 			}
 		}
+		
+		$scope.getTimeRest = function(){
+			return $scope.data_farm.complete > time.convertedTime() && services.FarmService.isRunning() ? helper.readableMilliseconds($scope.data_farm.complete - time.convertedTime()) : 0;
+		}
 
 		$scope.togleInfinite = function(){
 			if($scope.infinite){
