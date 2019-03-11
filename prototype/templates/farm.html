@@ -22,11 +22,11 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap preset" style="margin-bottom: 784px">
+			<div class="scroll-wrap preset" style="margin-bottom: 100px">
 				<table class="tbl-border-thin tbl-big-header tbl-content tbl-farm">
 					<colgroup>
 						<col width="40%">
@@ -557,7 +557,7 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOGS">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings" ng-if="activeTab == TABS.LOGS">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
