@@ -387,14 +387,14 @@ define("robotTW2/services/FarmService", [
 					quadrant = 3
 				}
 
-				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
+//				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
 				var existQuadrant = false;
 				if(data_villages.villages[village_id].presets[preset_id].quadrants){
 					existQuadrant = data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
 				} else {
 					existQuadrant = [1, 2, 3, 4].includes(quadrant);
 				}
-				if(existBarbara && existQuadrant) {
+				if(existQuadrant) {
 					return true
 				} else {
 					return false
@@ -488,9 +488,9 @@ define("robotTW2/services/FarmService", [
 							});
 
 							for (j = 0; j < listaVil.length; j++) {
-//								if (check_village(listaVil[j], cmd_preset)) {
+								if (check_village(listaVil[j], cmd_preset)) {
 									reg.villages.push(listaVil[j].id);
-//								}
+								}
 							}
 						}
 						resolve_grid(reg.villages)
@@ -523,9 +523,9 @@ define("robotTW2/services/FarmService", [
 					});
 
 					for (j = 0; j < listaVil.length; j++) {
-//						if (check_village(listaVil[j], cmd_preset)) {
+						if (check_village(listaVil[j], cmd_preset)) {
 							reg.villages.push(listaVil[j].id);
-//						}
+						}
 					}
 					resolve_grid(reg.villages)
 				}
