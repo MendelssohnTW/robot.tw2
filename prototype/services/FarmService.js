@@ -664,8 +664,8 @@ define("robotTW2/services/FarmService", [
 										preset_units			: preset.units,
 										x						: village.data.x,
 										y						: village.data.y,
-										max_journey_distance	: preset.max_journey_distance,
-										min_journey_distance	: preset.min_journey_distance
+										max_journey_time		: preset.max_journey_time,
+										min_journey_time		: preset.min_journey_time
 
 								};
 								if (!commands_for_presets.find(f => f === comando)) {
