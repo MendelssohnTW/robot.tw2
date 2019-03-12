@@ -584,7 +584,7 @@ define("robotTW2/controllers/FarmController", [
 		}, true)
 
 		$scope.$watch("t_farm_time", function(){
-			if(!$scope.t_farm_time){return}
+			if(!$scope.t_farm_time){return}	
 //			r_farm_time = $("#farm_time").val()
 			if($scope.t_farm_time.length <= 5) {
 				$scope.t_farm_time = $scope.t_farm_time + ":00"
