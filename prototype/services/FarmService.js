@@ -123,7 +123,7 @@ define("robotTW2/services/FarmService", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function get_time(villageId, distance, units) {
-			var village = getVillageData(villageId)
+			var village = modelDataService.getSelectedCharacter.getVillage(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
@@ -471,15 +471,14 @@ define("robotTW2/services/FarmService", [
 		}
 		, t = undefined
 		, exec_promise_grid = function(reg, cmd_preset){
-			var get_act_dist = function (village_id, bb) {
+			var get_act_time = function (village_id, bb) {
 				var village = modelDataService.getVillage(village_id);
 				let dt =  math.actualDistance(village.getPosition(), {
 					'x'			: bb.x,
 					'y'			: bb.y
 				})
 				
-				let journey = get_time(bb.id, dt, cmd_preset.preset_units)
-				return get_dist(village_id. journey, cmd_preset.preset_units)
+				return get_time(village_id. dt, cmd_preset.preset_units)
 			}
 			
 			return new Promise(function(resolve_grid){
@@ -507,8 +506,8 @@ define("robotTW2/services/FarmService", [
 								angular.extend(villages_town[listaVil[j].x][listaVil[j].y], listaVil[j])
 							}
 
-							listaVil = listaVil.filter(f => get_act_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
-							listaVil = listaVil.filter(f => get_act_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
+							listaVil = listaVil.filter(f => get_act_time(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time)
+							listaVil = listaVil.filter(f => get_act_time(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time)
 							listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 							listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 							listaVil = listaVil.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
