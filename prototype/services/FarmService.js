@@ -134,7 +134,7 @@ define("robotTW2/services/FarmService", [
 				'barbarian'		: true
 			})
 
-			return services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
+			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
 		}
 		setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
