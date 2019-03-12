@@ -140,8 +140,8 @@ define("robotTW2/services/FarmService", [
 //			var t_cicloX = (Math.round((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((x - distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN || 1
 //			var t_cicloY = (Math.round((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((y - distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN || 1
 
-			var t_cicloX = (Math.round((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - (coordX * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN) || 1
-			var t_cicloY = (Math.round((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - (coordY * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN) || 1
+			var t_cicloX = ((Math.round((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) - coordX) / conf.MAP_CHUNCK_LEN || 1
+			var t_cicloY = ((Math.round((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) - coordY) / conf.MAP_CHUNCK_LEN || 1
 
 			var grid = setupGrid(t_cicloX, t_cicloY)
 
