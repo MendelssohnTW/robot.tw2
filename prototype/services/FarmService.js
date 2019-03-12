@@ -109,6 +109,32 @@ define("robotTW2/services/FarmService", [
 		, countCommands = {}
 		, completion_loaded = !1
 		, listener_report
+		, get_dist = function get_dist(villageId, journey_time, units) {
+			var village = getVillageData(villageId)
+			, units = units
+			, army = {
+				'officers'	: {},
+				"units"		: units
+			}
+			, travelTime = calculateTravelTime(army, village, "attack", {
+				'barbarian'		: true
+			})
+
+			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
+		}
+		, get_time = function get_time(villageId, distance, units) {
+			var village = getVillageData(villageId)
+			, units = units
+			, army = {
+				'officers'	: {},
+				"units"		: units
+			}
+			, travelTime = calculateTravelTime(army, village, "attack", {
+				'barbarian'		: true
+			})
+
+			return services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
+		}
 		setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -127,27 +153,23 @@ define("robotTW2/services/FarmService", [
 				return arr_y.concat()
 			});
 		}
-		, loadMap = function (x, y, distX, distY) {
-
-			var old_coordX = x - distX;
-			var old_coordY = y - distY;
+		, loadMap = function (x, y, dist) {
+			var old_coordX = x - dist;
+			var old_coordY = y - dist;
 			var ciclosX = 0;
 			var ciclosY = 0;
 
 			var coordX = Math.trunc(old_coordX / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 			var coordY = Math.trunc(old_coordY / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN
 
-//			var t_cicloX = (Math.round((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((x - distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN || 1
-//			var t_cicloY = (Math.round((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN - Math.round((y - distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) / conf.MAP_CHUNCK_LEN || 1
-
-			var t_cicloX = ((Math.round((x + distX) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) - coordX) / conf.MAP_CHUNCK_LEN || 1
-			var t_cicloY = ((Math.round((y + distY) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) - coordY) / conf.MAP_CHUNCK_LEN || 1
+			var t_cicloX = ((Math.round((x + dist) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) - coordX) / conf.MAP_CHUNCK_LEN || 1
+			var t_cicloY = ((Math.round((y + dist) / conf.MAP_CHUNCK_LEN) * conf.MAP_CHUNCK_LEN) - coordY) / conf.MAP_CHUNCK_LEN || 1
 
 			var grid = setupGrid(t_cicloX, t_cicloY)
 
 			for (var i = 0; i < t_cicloX; i++) {
 				for (var j = 0; j < t_cicloY; j++) {
-					grid[i][j] = {"x": coordX + (conf.MAP_CHUNCK_LEN * i), "y": coordY + (conf.MAP_CHUNCK_LEN * j), "distX": conf.MAP_CHUNCK_LEN, "distY": conf.MAP_CHUNCK_LEN};
+					grid[i][j] = {"x": coordX + (conf.MAP_CHUNCK_LEN * i), "y": coordY + (conf.MAP_CHUNCK_LEN * j), "dist": conf.MAP_CHUNCK_LEN, "dist": conf.MAP_CHUNCK_LEN};
 				};
 			};
 
@@ -169,8 +191,10 @@ define("robotTW2/services/FarmService", [
 			, y = cmd_preset.y
 			, preset_id = cmd_preset.preset_id
 			, village_id = cmd_preset.village_id
+			
+			var dist = get_dist(village_id, cmd_preset.max_journey_time, cmd_preset.preset_units)
 
-			var load_map = loadMap(x, y, data_villages.villages[village_id].presets[preset_id].max_journey_distance, data_villages.villages[village_id].presets[preset_id].max_journey_distance)
+			var load_map = loadMap(x, y, dist)
 			, grid = load_map.grid
 			, listaGrid = []
 			, lx = Object.keys(grid).length
@@ -189,8 +213,7 @@ define("robotTW2/services/FarmService", [
 					listaGrid.push({
 						x			: grid[tx][ty].x,
 						y			: grid[tx][ty].y,
-						distX		: grid[tx][ty].distX,
-						distY		: grid[tx][ty].distY,
+						dist		: grid[tx][ty].dist,
 						village_id	: village_id,
 						villages	: []
 					});
@@ -199,8 +222,8 @@ define("robotTW2/services/FarmService", [
 
 			listaGrid.sort(function (a, b) {
 
-				let aa = Math.abs(Math.sqrt(Math.pow((a.x + (a.distX / 2)) - x, 2) + (Math.pow((a.y + (a.distY / 2)) - y, 2) * 0.75)))
-				let bb = Math.abs(Math.sqrt(Math.pow((b.x + (b.distX / 2)) - x, 2) + (Math.pow((b.y + (b.distY / 2)) - y, 2) * 0.75)))
+				let aa = Math.abs(Math.sqrt(Math.pow((a.x + (a.dist / 2)) - x, 2) + (Math.pow((a.y + (a.dist / 2)) - y, 2) * 0.75)))
+				let bb = Math.abs(Math.sqrt(Math.pow((b.x + (b.dist / 2)) - x, 2) + (Math.pow((b.y + (b.dist / 2)) - y, 2) * 0.75)))
 				if(aa < bb){
 					return -1
 				}
@@ -448,21 +471,25 @@ define("robotTW2/services/FarmService", [
 		}
 		, t = undefined
 		, exec_promise_grid = function(reg, cmd_preset){
-			var get_dist = function (village_id, bb) {
+			var get_act_dist = function (village_id, bb) {
 				var village = modelDataService.getVillage(village_id);
-				return math.actualDistance(village.getPosition(), {
+				let dt =  math.actualDistance(village.getPosition(), {
 					'x'			: bb.x,
 					'y'			: bb.y
 				})
+				
+				let journey = get_time(bb.id, dt, cmd_preset.preset_units)
+				return get_dist(village_id. journey, cmd_preset.preset_units)
 			}
-
+			
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT + 20000);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
-					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.distX, height: reg.distY}, function (data) {
+					
+					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
@@ -480,8 +507,8 @@ define("robotTW2/services/FarmService", [
 								angular.extend(villages_town[listaVil[j].x][listaVil[j].y], listaVil[j])
 							}
 
-							listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
-							listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
+							listaVil = listaVil.filter(f => get_act_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
+							listaVil = listaVil.filter(f => get_act_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
 							listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 							listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 							listaVil = listaVil.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
@@ -502,9 +529,9 @@ define("robotTW2/services/FarmService", [
 
 				function search_for_town(reg, resolve_grid, cmd_preset){
 					var x1 = reg.x
-					, x2 = reg.x + reg.distX
+					, x2 = reg.x + reg.dist
 					, y1 = reg.y
-					, y2 = reg.y + reg.distY
+					, y2 = reg.y + reg.dist
 					, listaVil = []
 
 					for (x = x1; x < x2; x++) {
@@ -636,7 +663,9 @@ define("robotTW2/services/FarmService", [
 										preset_id				: preset.id,
 										preset_units			: preset.units,
 										x						: village.data.x,
-										y						: village.data.y
+										y						: village.data.y,
+										max_journey_distance	: preset.max_journey_distance,
+										min_journey_distance	: preset.min_journey_distance
 
 								};
 								if (!commands_for_presets.find(f => f === comando)) {

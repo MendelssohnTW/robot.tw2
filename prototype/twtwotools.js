@@ -1456,7 +1456,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					return false;
 				}
 
-				var unitsObject			= robotTW2.services.modelDataService.getGameData().getUnitsObject(),
+				var unitsObject		= robotTW2.services.modelDataService.getGameData().getUnitsObject(),
 				officerSpeeds		= robotTW2.services.modelDataService.getOfficers().getDataForType('change_movement_speed', army.officers),
 				worldConfig			= robotTW2.services.modelDataService.getWorldConfig(),
 				travelTime			= 0,
