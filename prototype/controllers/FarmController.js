@@ -203,17 +203,19 @@ define("robotTW2/controllers/FarmController", [
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.sort(function(a,b){return a-b})
 				break;
 			case "check_all":
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.push(pos)
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.sort(function(a,b){return a-b})
 				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
-					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants.push(pos)
-					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants.sort(function(a,b){return a-b})
+					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants;
 				})
 				triggerUpdate();
 				break;
 			case "check_all_villages":
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.push(pos)
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.sort(function(a,b){return a-b})
 				Object.keys($scope.data_villages.villages).map(function(village){
 					Object.keys($scope.data_villages.villages[village].presets).map(function(elem){
-						$scope.data_villages.villages[village].presets[elem].quadrants.push(pos)
-						$scope.data_villages.villages[village].presets[elem].quadrants.sort(function(a,b){return a-b})
+						$scope.data_villages.villages[village].presets[elem].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants;
 					})
 				})
 				break;
@@ -228,15 +230,17 @@ define("robotTW2/controllers/FarmController", [
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.filter(f => f != pos);
 				break;
 			case "check_all":
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.filter(f => f != pos);
 				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
-					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants.filter(f => f != pos);
+					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants
 				})
 				triggerUpdate();
 				break;
 			case "check_all_villages":
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.filter(f => f != pos);
 				Object.keys($scope.data_villages.villages).map(function(village){
 					Object.keys($scope.data_villages.villages[village].presets).map(function(elem){
-						$scope.data_villages.villages[village].presets[elem].quadrants = $scope.data_villages.villages[village].presets[elem].quadrants.filter(f => f != pos);
+						$scope.data_villages.villages[village].presets[elem].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants;
 					})
 				})
 				break;
@@ -516,8 +520,6 @@ define("robotTW2/controllers/FarmController", [
 			return $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.includes(pos)
 		}
 
-
-
 		/* Properties of item	
 		 * 		
 		displayedName: "name village com coordenadas"
@@ -562,8 +564,6 @@ define("robotTW2/controllers/FarmController", [
 			if(!data) {return} 
 			update();
 		})
-		
-		
 
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages) {return}
