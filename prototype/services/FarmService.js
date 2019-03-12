@@ -74,6 +74,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/databases/data_farm",
 	"robotTW2/services/villages_town",
 	"robotTW2/services/grid_town",
+	"conf/reportTypes",
 	], function(
 			robotTW2,
 			version,
@@ -86,7 +87,8 @@ define("robotTW2/services/FarmService", [
 			data_log,
 			data_farm,
 			villages_town,
-			grid_town
+			grid_town,
+			REPORT_TYPE_CONF
 	){
 	return (function FarmService(
 			$rootScope,
@@ -106,6 +108,7 @@ define("robotTW2/services/FarmService", [
 		, interval_init = null
 		, countCommands = {}
 		, completion_loaded = !1
+		, listener_report
 		setupGrid = function (t_ciclo_x, t_ciclo_y) {
 			var i
 			, t = 0
@@ -646,6 +649,12 @@ define("robotTW2/services/FarmService", [
 				}, tempo)
 			})
 		}
+		, analyze_report = function analyze_report(event, data){
+			if(data.type == "attack" && data.read == 0 && (report.result === RESULT_TYPES.CASUALTIES || report.result === RESULT_TYPES.OTHER || report.result === RESULT_TYPES.DEFEAT)){
+				data_farm.list_exceptions.push(data.target_village_id)
+				data_farm.set();
+			}
+		}
 		, start = function () {
 			if(isRunning) {return}
 			clear()
@@ -695,6 +704,8 @@ define("robotTW2/services/FarmService", [
 					completion_loaded = !0;
 					loadScript("/controllers/FarmCompletionController.js", true);
 				}
+				
+				listener_report = $rootScope.$on(providers.eventTypeProvider.REPORT_NEW, analyze_report)
 
 				data_log.farm = [];
 				data_villages.getAssignedPresets();
@@ -750,6 +761,9 @@ define("robotTW2/services/FarmService", [
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
 			}
+			
+			typeof(listener_report) == "function" ? listener_report(): null;
+			listener_report = undefined
 
 			interval_init = null
 			countCommands = {}
