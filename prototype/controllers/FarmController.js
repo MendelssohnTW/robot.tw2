@@ -104,7 +104,7 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 
-			return Math.trunc((journey_time / 1000 / travelTime)) || 0;
+			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function get_time(villageId, distance, units) {
 			if($scope.activeTab != TABS.FARM){return}
@@ -118,7 +118,7 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 
-			return services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000
+			return services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
 		}
 		, triggerUpdate = function triggerUpdate() {
 			presetIds = [];
