@@ -313,7 +313,7 @@
 															style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
 															class="input-border inpt" type="time" id="farm_time"
 															step="1" min="00:00:00" max="23:59:59"
-															value="{{getFarmTime()}}" ng-blur="blur()"></td>
+															value="{{t_farm_time}}" ng-blur="set_farm_time()"></td>
 														<td class="cell-center"><label for="inicio_de_farm"
 															style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
 															class="input-border inpt" type="time" id="inicio_de_farm"
@@ -363,7 +363,7 @@
 																	style="margin-left: 12px; margin-right: 12px;">{{farm_running}}</label>
 															</div>
 														</td>
-														<td class="cell-right"><label for="interval_farm">{{text_interval_headquarter}}</label><input
+														<td class="cell-center"><label for="interval_farm">{{getStatus()}}</label><input
 															id="interval_farm" class="input-border inpt disabled"
 															type=text value="{{getTimeRest()}}" disabled></td>
 													</tr>
