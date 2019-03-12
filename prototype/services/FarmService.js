@@ -110,7 +110,7 @@ define("robotTW2/services/FarmService", [
 		, completion_loaded = !1
 		, listener_report
 		, get_dist = function get_dist(villageId, journey_time, units) {
-			var village = modelDataService.getSelectedCharacter.getVillage(villageId)
+			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
@@ -123,7 +123,7 @@ define("robotTW2/services/FarmService", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function get_time(villageId, distance, units) {
-			var village = modelDataService.getSelectedCharacter.getVillage(villageId)
+			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
