@@ -121,7 +121,7 @@ define("robotTW2/services/FarmService", [
 				'barbarian'		: true
 			})
 
-			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
+			return Math.trunc((journey_time / 1000 / travelTime)) || 0;
 		}
 		, get_time = function get_time(villageId, distance, units) {
 			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
