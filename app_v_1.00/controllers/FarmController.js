@@ -209,7 +209,6 @@ define("robotTW2/controllers/FarmController", [
 				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants;
 				})
-				triggerUpdate();
 				break;
 			case "check_all_villages":
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.push(pos)
@@ -235,7 +234,6 @@ define("robotTW2/controllers/FarmController", [
 				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants
 				})
-				triggerUpdate();
 				break;
 			case "check_all_villages":
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants = $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.filter(f => f != pos);
