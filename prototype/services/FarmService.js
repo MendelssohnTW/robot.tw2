@@ -513,7 +513,7 @@ define("robotTW2/services/FarmService", [
 							listaVil = listaVil.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
 
 							listaVil.sort(function (a, b) {
-								return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
+								return get_act_time(reg.village_id, a) - get_act_time(reg.village_id, b)
 							});
 
 							for (j = 0; j < listaVil.length; j++) {
@@ -541,14 +541,14 @@ define("robotTW2/services/FarmService", [
 						}
 					}
 
-					listaVil = listaVil.filter(f => get_dist(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_distance)
-					listaVil = listaVil.filter(f => get_dist(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_distance)
+					listaVil = listaVil.filter(f => get_act_time(reg.village_id, f) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time)
+					listaVil = listaVil.filter(f => get_act_time(reg.village_id, f) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time)
 					listaVil = listaVil.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 					listaVil = listaVil.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 					listaVil = listaVil.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
 
 					listaVil.sort(function (a, b) {
-						return get_dist(reg.village_id, a) - get_dist(reg.village_id, b)
+						return get_act_time(reg.village_id, a) - get_act_time(reg.village_id, b)
 					});
 
 					for (j = 0; j < listaVil.length; j++) {

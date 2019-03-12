@@ -1438,10 +1438,12 @@ var robotTW2 = window.robotTW2 = undefined;
 			return function(army, village, opt_commandType, opt_flags) {
 
 				hasUnitsOfType = function (army, type) {
+					if(!army.units[type]) {return false}
 					return !!army.units[type] && (army.units[type] > 0);
 				}
 
 				isForcedMarchActive = function (army, commandType, village) {
+					if(!army){return false}
 					var forcedMarchResearch;
 
 					if (hasUnitsOfType(army, unitTypes.KNIGHT) && (commandType === commandTypesConf.TYPES.SUPPORT)) {
