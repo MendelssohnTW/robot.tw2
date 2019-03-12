@@ -41,7 +41,8 @@ define("robotTW2/controllers/FarmController", [
 			TABS.FARM,
 			TABS.LOG,
 			]
-		, r_farm_time;
+		, r_farm_time
+		, time_rest;
 
 		$scope.update_all_presets = false;
 		$scope.local_data_villages = [];
@@ -196,7 +197,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, addQuadrant = function addQuadrant(pos){
 			if(!$scope.village_selected || !$scope.preset_selected) {return}
-			
+
 			switch ($scope.toggle_option) {
 			case "check_one":
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.push(pos)
@@ -305,9 +306,21 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data.farm_time = helper.unreadableSeconds(r_farm_time) * 1000;
 			blur();
 		}
-		
+
+		$scope.getStatus = function(){
+			if($scope.status == "running"){
+				if(time_rest <= 0){
+					return $scope.text_execute;
+				} else {
+					return $scope.text_wait;
+				}
+			} 
+			return $scope.text_stop;
+		}
+
 		$scope.getTimeRest = function(){
-			return $scope.data_farm.complete > time.convertedTime() && services.FarmService.isRunning() ? helper.readableMilliseconds($scope.data_farm.complete - time.convertedTime()) : 0;
+			time_rest = $scope.data_farm.complete > time.convertedTime() && services.FarmService.isRunning() ? helper.readableMilliseconds($scope.data_farm.complete - time.convertedTime()) : 0;
+			return time_rest;
 		}
 
 		$scope.togleInfinite = function(){
