@@ -110,7 +110,7 @@ define("robotTW2/services/FarmService", [
 		, completion_loaded = !1
 		, listener_report
 		, get_dist = function get_dist(villageId, journey_time, units) {
-			var village = getVillageData(villageId)
+			var village = modelDataServices.getSelectedCharacter.getVillage(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
