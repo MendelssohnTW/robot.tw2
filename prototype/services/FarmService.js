@@ -478,7 +478,7 @@ define("robotTW2/services/FarmService", [
 					'y'			: bb.y
 				})
 				
-				return get_time(village_id. dt, cmd_preset.preset_units)
+				return get_time(village_id, dt, cmd_preset.preset_units)
 			}
 			
 			return new Promise(function(resolve_grid){
