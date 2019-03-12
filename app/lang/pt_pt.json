@@ -39,6 +39,7 @@
 	},
 	"buildings": {
 		"academy": "Academia",
+		"headquarter": "Quartel",
 		"farm": "Fazenda",
 		"warehouse": "Armazém",
 		"barracks": "Quartel",

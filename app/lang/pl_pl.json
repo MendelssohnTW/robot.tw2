@@ -39,6 +39,7 @@
 	},
 	"buildings": {
 		"academy": "Academy",
+		"headquarter": "Headquarter",
 		"farm": "Farm",
 		"warehouse": "Warehouse",
 		"barracks": "Barracks",
@@ -117,7 +118,7 @@
 		"text_reserva_clay": "Clay reservation",
 		"text_reserva_iron": "Iron reservation",
 		"text_select": "Select type of evolution",
-		"production": "Prodution",
+		"production": "Production",
 		"base": "Base",
 		"priority": "Sequence of priorities",
 		"levels": "Level limit",
