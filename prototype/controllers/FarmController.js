@@ -589,7 +589,7 @@ define("robotTW2/controllers/FarmController", [
 //			if(r_farm_time.length <= 5) {
 //				r_farm_time = r_farm_time + ":00"
 //			}
-			r_farm_time = helper.unreadableSeconds($scope.t_farm_time);
+			r_farm_time = helper.unreadableSeconds($scope.t_farm_time) * 1000;
 			$scope.data_farm.farm_time = r_farm_time
 			blur();
 		}, true)
