@@ -590,9 +590,6 @@ define("robotTW2/services/FarmService", [
 			countCommands = {}
 		}
 		, execute_cicle = function(tempo){
-			!data_farm.complete ? data_farm.complete = 0 : null;
-			data_farm.complete = time.convertedTime() + tempo
-			data_farm.set()
 			return new Promise(function(resol){
 				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
@@ -659,6 +656,9 @@ define("robotTW2/services/FarmService", [
 					if(!isRunning) {return}
 					if(time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop){
 						init_first = false;
+						!data_farm.complete ? data_farm.complete = 0 : null;
+						data_farm.complete = time.convertedTime() + tempo
+						data_farm.set()
 						execute_cicle(tempo).then(function(){
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							data_log.set()
@@ -672,6 +672,9 @@ define("robotTW2/services/FarmService", [
 				}
 				, g = function(tempo){
 					if(!isRunning) {return}
+					!data_farm.complete ? data_farm.complete = 0 : null;
+					data_farm.complete = time.convertedTime() + tempo
+					data_farm.set()
 					execute_cicle(tempo).then(function(){
 						init_first = false;
 						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
