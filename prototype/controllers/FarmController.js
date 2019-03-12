@@ -293,6 +293,15 @@ define("robotTW2/controllers/FarmController", [
 			return tm;
 		}
 
+		$scope.set_farm_time = function(){
+			r_farm_time = $("#farm_time").val()
+			if(r_farm_time.length <= 5) {
+				r_farm_time = r_farm_time + ":00"
+			}
+			$scope.data.farm_time = helper.unreadableSeconds(r_farm_time) * 1000;
+			blur();
+		}
+		
 		$scope.getTimeRest = function(){
 			return $scope.data_farm.complete > time.convertedTime() && services.FarmService.isRunning() ? helper.readableMilliseconds($scope.data_farm.complete - time.convertedTime()) : 0;
 		}
@@ -553,6 +562,8 @@ define("robotTW2/controllers/FarmController", [
 			if(!data) {return} 
 			update();
 		})
+		
+		
 
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages) {return}
@@ -581,18 +592,6 @@ define("robotTW2/controllers/FarmController", [
 			if(!$scope.data_farm){return}
 			$scope.data_farm = $scope.data_farm;
 			$scope.data_farm.set();
-		}, true)
-
-		$scope.$watch("t_farm_time", function(){
-			if(!$scope.t_farm_time){return}	
-//			r_farm_time = $("#farm_time").val()
-			if($scope.t_farm_time.length <= 5) {
-				$scope.t_farm_time = $scope.t_farm_time + ":00"
-			}
-			r_farm_time = helper.unreadableSeconds($scope.t_farm_time) * 1000;
-			$scope.data_farm.farm_time = r_farm_time
-			$scope.t_farm_time = getFarmTime();	
-			blur();
 		}, true)
 
 		$scope.$watch("activeTab", function(){
