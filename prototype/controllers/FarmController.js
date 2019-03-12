@@ -41,6 +41,7 @@ define("robotTW2/controllers/FarmController", [
 			TABS.FARM,
 			TABS.LOG,
 			]
+		, r_farm_time;
 
 		$scope.update_all_presets = false;
 		$scope.local_data_villages = [];
@@ -179,7 +180,7 @@ define("robotTW2/controllers/FarmController", [
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function blurPreset(){
-			if($scope.activeTab != TABS.FARM){return}
+			if($scope.activeTab != TABS.FARM || !$scope.preset_selected.max_journey_time || !$scope.preset_selected.min_journey_time){return}
 			var tmMax = helper.readableMilliseconds($scope.preset_selected.max_journey_time);
 			if(tmMax.length == 7) {
 				tmMax = "0" + tmMax;
@@ -264,7 +265,14 @@ define("robotTW2/controllers/FarmController", [
 					"selectedOption" : $scope.preset_selected
 			}
 		}
-		
+		, getFarmTime = function getFarmTime() {
+			var tm = helper.readableMilliseconds($scope.data_farm.farm_time);
+			if(tm.length == 7) {
+				tm = "0" + tm;
+			}
+			return tm;
+		}
+
 		$scope.getTimeRest = function(){
 			return $scope.data_farm.complete > time.convertedTime() && services.FarmService.isRunning() ? helper.readableMilliseconds($scope.data_farm.complete - time.convertedTime()) : 0;
 		}
@@ -308,12 +316,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.blur = function (callback) {
 			if($scope.activeTab != TABS.FARM){return}
-			$scope.farm_time = $("#farm_time").val()
-			if($scope.farm_time.length <= 5) {
-				$scope.farm_time = $scope.farm_time + ":00"
-			}
-			$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000 
-
 			if(!$scope.infinite){
 				$scope.inicio_de_farm = $("#inicio_de_farm").val()
 				$scope.termino_de_farm = $("#termino_de_farm").val()
@@ -334,11 +336,11 @@ define("robotTW2/controllers/FarmController", [
 				document.getElementById("termino_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_termino), "HH:mm:ss");
 				document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
-				if(helper.unreadableSeconds($scope.farm_time) * 1000 == 0){
+				if(helper.unreadableSeconds(r_farm_time) * 1000 == 0){
 					$scope.infinite = true
 				}
 
-				$scope.data_farm.farm_time = helper.unreadableSeconds($scope.farm_time) * 1000
+				$scope.data_farm.farm_time = helper.unreadableSeconds(r_farm_time) * 1000
 				$scope.data_farm.farm_time_start = tempo_escolhido_inicio
 				$scope.data_farm.farm_time_stop = tempo_escolhido_termino
 			}
@@ -412,11 +414,11 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.updateBlur = updateBlur;
-		
+
 		$scope.shouldShow = function(item){
 			return Object.keys($scope.data.assignedPresetList).find(f=>f==item.id);
 		}
-		
+
 		$scope.shouldntShow = function(item){
 			return !Object.keys($scope.data.assignedPresetList).find(f=>f==item.id);
 		}
@@ -488,13 +490,6 @@ define("robotTW2/controllers/FarmController", [
 			return $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.preset_selected.id].quadrants.includes(pos)
 		}
 
-		$scope.getFarmTime = function () {
-			var tm = helper.readableMilliseconds($scope.data_farm.farm_time);
-			if(tm.length == 7) {
-				tm = "0" + tm;
-			}
-			return tm;
-		}
 
 
 		/* Properties of item	
@@ -571,6 +566,16 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.set();
 		}, true)
 
+		$scope.$watch("t_farm_time", function(){
+			if(!$scope.t_farm_time){return}
+			r_farm_time = $("#farm_time").val()
+			if(r_farm_time.length <= 5) {
+				r_farm_time = r_farm_time + ":00"
+			}
+			$scope.data_farm.farm_time = helper.unreadableSeconds(r_farm_time) * 1000
+			blur();
+		}, true)
+
 		$scope.$watch("activeTab", function(){
 			if($scope.activeTab == TABS.FARM){
 				updateAll()
@@ -600,6 +605,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
+		$scope.t_farm_time = getFarmTime();
 
 		let presets_load = angular.copy(services.presetListService.getPresets());
 		$scope.data = {
