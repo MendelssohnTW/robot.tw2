@@ -724,10 +724,11 @@ define("robotTW2/services/FarmService", [
 		}
 		, clear = function(){
 			interval_init = null
+			villages_town.renew();
+			grid_town.renew();
 			countCommands = {}
 		}
 		, stop = function () {
-			villages_town.renew();
 			if(completion_loaded){
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
