@@ -656,7 +656,7 @@ define("robotTW2/controllers/FarmController", [
 				"selectedOption" : {}
 		}
 
-		$scope.setCollapse();
+//		$scope.setCollapse();
 
 		initTab();
 		getDetailsExceptions();
