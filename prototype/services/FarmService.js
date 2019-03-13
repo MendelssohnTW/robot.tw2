@@ -682,7 +682,7 @@ define("robotTW2/services/FarmService", [
 			})
 		}
 		, analyze_report = function analyze_report(event, data){
-			if(data.type == "attack" && data.read == 0 && (data.result === REPORT_TYPE_CONF.RESULT_TYPES.CASUALTIES || data.result === REPORT_TYPE_CONF.RESULT_TYPES.OTHER || data.result === REPORT_TYPE_CONF.RESULT_TYPES.DEFEAT)){
+			if(data.type == "attack" && data.read == 0 && (data.result === REPORT_TYPE_CONF.RESULT_TYPES.CASUALTIES || data.result === REPORT_TYPE_CONF.RESULT_TYPES.DEFEAT)){
 				data_farm.list_exceptions.push(data.target_village_id)
 				data_farm.set();
 			}
