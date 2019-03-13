@@ -715,7 +715,7 @@ define("robotTW2/services/DefenseService", [
 						}
 						addDefense(params);
 					}, function(){
-						consolo.log("parametros das aldeias não encontrado")
+						console.log("parametros das aldeias não encontrado")
 					})
 
 				} else {
