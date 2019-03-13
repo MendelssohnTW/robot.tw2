@@ -31,6 +31,7 @@
 													<col width="48px">
 													<col width="*">
 													<col width="48px">
+													<col width="100px">
 												</colgroup>
 												<tbody>
 													<tr>
@@ -52,6 +53,7 @@
 																class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
 																ng-click="saveCorrection()" tooltip
 																tooltip-content="{{save_button}}"></div></td>
+														<td></td>
 													</tr>
 
 												</tbody>
@@ -65,14 +67,20 @@
 													<col width="50px">
 													<col width="100px">
 													<col width="100px">
+													<col width="100px">
 												</colgroup>
 												<tbody>
 													<tr>
 														<td class="cell-center"><h5>{{module}}</h5></td>
 														<td class="cell-center"><h5>{{state}}</h5></td>
 														<td class="cell-center"><h5>{{init_standard}}</h5></td>
-														<td class="cell-center" colspan="2"><h5>{{extension_start + "/" + extension_stop}}</h5></td>
+														<td class="cell-center" colspan="2"><h5>{{extension_start
+																+ "/" + extension_stop}}</h5></td>
 														<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
+														<td><a href="#" tooltip tooltip-content="Teste"
+                                                            class="btn-orange btn-form btn-border no-padding"
+                                                            ng-click="clearAllDB()"><span
+                                                                id="span-text" class="text">{{CLEAR + " databases}}</span></a></td>
 													</tr>
 													<tr ng-repeat="ext in extensions" ng-show="ext.activated">
 														<td class="cell-right"><span>{{ext.name}}</span></td>
@@ -145,11 +153,17 @@
 															</div>
 														</td>
 														<td><a href="#" tooltip
-                                                                    tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
+															tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
+															class="btn-orange btn-form btn-border no-padding"
+															ng-click="clearDB(ext.name)"><span
+																class="text">{{CLEAR + " database " +
+																	ext.name.toUpperCase()}}</span></a></td>
+														<td><a href="#" tooltip tooltip-content="Teste"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="openExt(ext.name)"
 															ng-class="{'btn-grey': !ext.init_initialized}"><span
-																id="span-text" class="text">{{OPEN + " " + ext.name.toUpperCase()}}</span></a></td>
+																id="span-text" class="text">{{OPEN + " " +
+																	ext.name.toUpperCase()}}</span></a></td>
 													</tr>
 												</tbody>
 											</table>

@@ -13,6 +13,7 @@ define("robotTW2/controllers/MainController", [
 	){
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale)
+		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale)
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale)
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale)
 		$scope.OPEN = services.$filter("i18n")("OPEN", services.$rootScope.loc.ale)
@@ -91,6 +92,23 @@ define("robotTW2/controllers/MainController", [
 			}
 		}
 
+		$scope.clearDB = function(ext_name){
+			var db = "data_" + ext_name.toLowerCase();
+			robotTW2.databases[db].version = undefined
+			robotTW2.databases[db].set()
+			services.$timeout(function(){location.reload()}, 1000)
+		}
+
+		$scope.clearAllDB = function(){
+			Object.values(robotTW2.databases).map(function(db){
+				if(db.name != "database"){
+					db.version = undefined;
+					db.set();
+				}
+			})
+			services.$timeout(function(){location.reload()}, 2000)
+		}
+
 		$scope.recalibrate = function(){
 			services.AttackService.calibrate_time()
 		}
@@ -112,7 +130,7 @@ define("robotTW2/controllers/MainController", [
 				startExt(ext.name)
 			}
 		}
-		
+
 		$scope.openExt = function(name) {
 			var text = "OPEN_";
 			var concat = text + name.toUpperCase();
