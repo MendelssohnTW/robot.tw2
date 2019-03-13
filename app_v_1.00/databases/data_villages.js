@@ -113,11 +113,13 @@ define("robotTW2/databases/data_villages", [
 				|| !data_villages.villages[m].buildinglevels
 				){
 					angular.extend(villagesExtended[m], {
-						executebuildingorder 	: conf.EXECUTEBUILDINGORDER,
 						buildingorder 			: conf.BUILDINGORDER,
 						buildinglimit 			: conf.BUILDINGLIMIT,
 						buildinglevels 			: conf.BUILDINGLEVELS,
 						farm_activate 			: true,
+						defense_activate 		: true,
+						headquarter_activate	: true,
+						recruit_activate		: true,
 						presets					: getPst(m),
 						selected				: null//selects.find(f=>f.name=="standard")
 					})

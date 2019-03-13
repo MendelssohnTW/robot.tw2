@@ -60,7 +60,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.TAB_ORDER = TAB_ORDER;
 		
 		$scope.getKey = function(unit_name){
-			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "recon");
+			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "units");
 		}
 		
 		$scope.getClass = function(unit_name){

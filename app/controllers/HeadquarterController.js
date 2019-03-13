@@ -230,7 +230,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
 			Object.values($scope.data_villages.villages).forEach(function(village){
 				angular.merge(village, {
-					executebuildingorder 	: conf.executebuildingorder,
+					headquarter_activate 	: true,
 					buildingorder 			: $scope.data_headquarter.buildingorder,
 					buildinglimit 			: $scope.data_headquarter.buildinglimit
 				})
