@@ -184,7 +184,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
 
-		$scope.village_selected = $scope.local_data_village[0]
+		$scope.village_selected = $scope.local_data_villages[0]
 
 		$scope.data_units= {
 				"availableOptions" : $scope.data_defense.list_defense,
