@@ -75,6 +75,7 @@
 	"main": {
 		"title": "Configurações principais",
 		"introducing": "Ativação e desativação dos módulos",
+		"clear_databases": "Limpar todos os bancos de dados",
 		"settings": "Configurações padrões",
 		"settings_module": "Configurações dos módulos",
 		"settings_main": "Configurações gerais",

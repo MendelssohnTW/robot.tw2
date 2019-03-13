@@ -75,6 +75,7 @@
 	"main": {
 		"title": "Main Settings",
 		"introducing": "Activating and deactivating the modules",
+		"clear_databases": "Clear all databases",
 		"settings": "Default Settings",
 		"settings_module": "Modules settings",
 		"settings_main": "General Settings",
