@@ -76,11 +76,11 @@
 														<td class="cell-center"><h5>{{init_standard}}</h5></td>
 														<td class="cell-center" colspan="2"><h5>{{extension_start
 																+ "/" + extension_stop}}</h5></td>
-														<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
 														<td><a href="#" tooltip tooltip-content="Teste"
-                                                            class="btn-orange btn-form btn-border no-padding"
-                                                            ng-click="clearAllDB()"><span
-                                                                id="span-text" class="text">{{CLEAR + " databases"}}</span></a></td>
+															class="btn-orange btn-form btn-border no-padding"
+															ng-click="clearAllDB()"><span id="span-text"
+																class="text">{{CLEAR + " databases"}}</span></a></td>
+														<td class="cell-center"><h5>{{text_hotkey}}</h5></td>
 													</tr>
 													<tr ng-repeat="ext in extensions" ng-show="ext.activated">
 														<td class="cell-right"><span>{{ext.name}}</span></td>
@@ -155,10 +155,10 @@
 														<td><a href="#" tooltip
 															tooltip-content="{{CLEAR + ' database ' + ext.name.toUpperCase()}}"
 															class="btn-orange btn-form btn-border no-padding"
-															ng-click="clearDB(ext.name)"><span
-																class="text">{{CLEAR + " database " + ext.name.toUpperCase()}}</span></a></td>
+															ng-click="clearDB(ext.name)"><span class="text">{{CLEAR
+																	+ " " + ext.name.toUpperCase()}}</span></a></td>
 														<td><a href="#" tooltip
-                                                            tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
+															tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="openExt(ext.name)"
 															ng-class="{'btn-grey': !ext.init_initialized}"><span
