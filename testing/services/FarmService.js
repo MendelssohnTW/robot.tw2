@@ -1,66 +1,3 @@
-function loadGrid(limit){
-	var g = setupGrid(limit);
-	for (x = 0; x < limit; x++) {
-		for (y = 0; y < limit; y++) {
-			g[x][y] = {"loaded": false}
-		}	
-	}
-	return g
-}
-
-function setupGrid(limit){
-	var i, t = 0,
-	arr;
-
-	for (i = 0, arr = []; i < limit; i++) {
-		arr[i] = null;
-	}
-	return arr.concat().map(function (elem) {
-		return arr.concat();
-	});
-}
-
-define("robotTW2/services/grid_town", ["robotTW2/conf"], function(conf){
-	var limit = 0;
-	if(1000 % conf.MAP_CHUNCK_LEN > 0){
-		limit = (Math.trunc(1000 / conf.MAP_CHUNCK_LEN) + 1)
-	} else {
-		limit = 1000 / conf.MAP_CHUNCK_LEN
-	}
-	var serv = {}
-	, grad = loadGrid(limit);
-
-	serv.renew = function(){
-		grad = loadGrid(limit);
-		return grad;
-	}
-
-	serv.loaded = function(i, j){
-		grad[i][j].loaded = true;
-	}
-
-	serv.load = function(i, j){
-		return grad[i][j].loaded;
-	}
-
-	Object.setPrototypeOf(grad, serv);
-
-	return grad
-})
-
-define("robotTW2/services/villages_town", function(){
-	var serv = {}
-	, grid = loadGrid(1000);
-
-	serv.renew = function(){
-		grid = loadGrid(1000);
-		return grid;
-	}
-
-	Object.setPrototypeOf(grid, serv);
-
-	return grid
-})
 define("robotTW2/services/FarmService", [
 	"robotTW2",
 	"robotTW2/version",
@@ -327,14 +264,15 @@ define("robotTW2/services/FarmService", [
 			var cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 			var cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
 			var cmd_ind = Math.min(cmd_rest, cmd_possible)
-			if(cmd_ind > 0){
-				lt_bb.splice(data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
-			} else {
-				lt_bb.splice(0);
-			}
+//			if(cmd_ind > 0){
+//				lt_bb.splice(data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
+//			} else {
+//				lt_bb.splice(0);
+//			}
 			var r = undefined
 			, promise_send = undefined
-			, promise_send_queue= [];
+			, promise_send_queue= []
+			, count_command_sent = 0;
 
 			lt_bb.forEach(function (barbara) {
 				var g = undefined;
@@ -361,6 +299,7 @@ define("robotTW2/services/FarmService", [
 									var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
 									var selectedVillage = modelDataService.getSelectedVillage();
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
+									count_command_sent++;
 									resolve_send(permit_send)
 								} else {
 									resolve_send(true)
@@ -373,7 +312,7 @@ define("robotTW2/services/FarmService", [
 							$timeout.cancel(g);
 							g = undefined;
 							promise_send = undefined;
-							if(promise_send_queue.length && permited){
+							if(promise_send_queue.length && permited && count_command_sent <= cmd_ind){
 								barbara = promise_send_queue.shift()
 								f(barbara)
 							} else {
@@ -682,7 +621,7 @@ define("robotTW2/services/FarmService", [
 			})
 		}
 		, analyze_report = function analyze_report(event, data){
-			if(data.type == "attack" && data.read == 0 && (data.result === REPORT_TYPE_CONF.RESULT_TYPES.CASUALTIES || data.result === REPORT_TYPE_CONF.RESULT_TYPES.OTHER || data.result === REPORT_TYPE_CONF.RESULT_TYPES.DEFEAT)){
+			if(data.type == "attack" && data.read == 0 && (data.result === REPORT_TYPE_CONF.RESULT_TYPES.CASUALTIES || data.result === REPORT_TYPE_CONF.RESULT_TYPES.DEFEAT)){
 				data_farm.list_exceptions.push(data.target_village_id)
 				data_farm.set();
 			}
@@ -785,10 +724,11 @@ define("robotTW2/services/FarmService", [
 		}
 		, clear = function(){
 			interval_init = null
+			villages_town.renew();
+			grid_town.renew();
 			countCommands = {}
 		}
 		, stop = function () {
-			villages_town.renew();
 			if(completion_loaded){
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");

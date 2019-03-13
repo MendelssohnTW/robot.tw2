@@ -58,7 +58,7 @@ define("robotTW2/services/HeadquarterService", [
 			Object.keys(buildingLevels).forEach(function(key_level){
 				if(buildingLimit){
 					Object.keys(buildingLimit).forEach(function(key_limit){
-						if(Object.keys(buildingLevels[key_level])[0] == key_limit && Object.values(buildingLevels[key_level])[0] < buildingLimit[key_limit]){
+						if(Object.keys(buildingLevels[key_level])[0] == key_limit && Object.values(buildingLevels[key_level])[0] < buildingLimit[key_limit] && Object.values(buildingLevels[key_level])[0] > 0){
 							builds.push({[Object.keys(buildingLevels[key_level])[0]] : Object.values(buildingLevels[key_level])[0]})
 						}
 					})

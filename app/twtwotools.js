@@ -283,6 +283,26 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		}
 	}
+	, setupGrid = function setupGrid(limit){
+		var i, t = 0,
+		arr;
+
+		for (i = 0, arr = []; i < limit; i++) {
+			arr[i] = null;
+		}
+		return arr.concat().map(function (elem) {
+			return arr.concat();
+		});
+	}
+	, loadGrid = function loadGrid(limit){
+		var g = setupGrid(limit);
+		for (x = 0; x < limit; x++) {
+			for (y = 0; y < limit; y++) {
+				g[x][y] = {"loaded": false}
+			}	
+		}
+		return g
+	}
 	, script_queue = []
 	, promise = undefined
 	, loadScript = function(url, opt){
@@ -504,8 +524,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		});
 
 	}
-	,
-	builderWindow.prototype.buildWin = function() {
+	, builderWindow.prototype.buildWin = function() {
 		var scope = $rootScope.$new();
 		var self = this;
 		if(self.templateName != "main" && self.hotkey != "open"){
@@ -592,8 +611,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			self.controller.apply(self.controller, [data.scope])
 		});
 	}
-	,
-	builderWindow.prototype.addhotkey = function() {
+	, builderWindow.prototype.addhotkey = function() {
 		var fnThis = this.buildWin;
 		var self = this;
 		if(this.hotkey == "open"){
@@ -626,8 +644,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			'route': route.type
 		});
 	}
-
-
 
 	httpService.get = function get(uri, onLoad, onError, opt_host) {
 		var onLoadWrapper = function onLoadWrapper(responseText) {
@@ -717,6 +733,8 @@ var robotTW2 = window.robotTW2 = undefined;
 	exports.addScript			= addScript;
 	exports.removeScript		= removeScript;
 	exports.loadController		= loadController;
+	exports.setupGrid			= setupGrid;
+	exports.loadGrid			= loadGrid;
 	exports.createScopeLang 	= createScopeLang;
 	exports.requestFn 			= requestFn;
 	exports.requestFile 		= requestFile;
@@ -1438,10 +1456,12 @@ var robotTW2 = window.robotTW2 = undefined;
 			return function(army, village, opt_commandType, opt_flags) {
 
 				hasUnitsOfType = function (army, type) {
+					if(!army.units[type]) {return false}
 					return !!army.units[type] && (army.units[type] > 0);
 				}
 
 				isForcedMarchActive = function (army, commandType, village) {
+					if(!army){return false}
 					var forcedMarchResearch;
 
 					if (hasUnitsOfType(army, unitTypes.KNIGHT) && (commandType === commandTypesConf.TYPES.SUPPORT)) {
@@ -1456,7 +1476,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					return false;
 				}
 
-				var unitsObject			= robotTW2.services.modelDataService.getGameData().getUnitsObject(),
+				var unitsObject		= robotTW2.services.modelDataService.getGameData().getUnitsObject(),
 				officerSpeeds		= robotTW2.services.modelDataService.getOfficers().getDataForType('change_movement_speed', army.officers),
 				worldConfig			= robotTW2.services.modelDataService.getWorldConfig(),
 				travelTime			= 0,
@@ -2055,6 +2075,48 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 				}
 			}
+		})
+		, define("robotTW2/services/grid_town", ["robotTW2", "robotTW2/conf"], function(robotTW2, conf){
+			var limit = 0;
+			if(1000 % conf.MAP_CHUNCK_LEN > 0){
+				limit = (Math.trunc(1000 / conf.MAP_CHUNCK_LEN) + 1)
+			} else {
+				limit = 1000 / conf.MAP_CHUNCK_LEN
+			}
+			var serv = {}
+			, grad = robotTW2.loadGrid(limit);
+
+			serv.renew = function(){
+				grad = undefined;
+				grad = robotTW2.loadGrid(limit);
+				return grad;
+			}
+
+			serv.loaded = function(i, j){
+				grad[i][j].loaded = true;
+			}
+
+			serv.load = function(i, j){
+				return grad[i][j].loaded;
+			}
+
+			Object.setPrototypeOf(grad, serv);
+
+			return grad
+		})
+		, define("robotTW2/services/villages_town", ["robotTW2"], function(robotTW2){
+			var serv = {}
+			, grid = robotTW2.loadGrid(1000);
+
+			serv.renew = function(){
+				grid = undefined;
+				grid = robotTW2.loadGrid(1000);
+				return grid;
+			}
+
+			Object.setPrototypeOf(grid, serv);
+
+			return grid
 		})
 
 
