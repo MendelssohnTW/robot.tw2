@@ -2426,7 +2426,7 @@ var robotTW2 = window.robotTW2 = undefined;
 										classes 			: null,
 										url		 			: "/controllers/MainController.js",
 										style 				: {
-											width : "760px"
+											width : "960px"
 										}
 									}
 							)

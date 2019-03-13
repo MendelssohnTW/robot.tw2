@@ -153,12 +153,12 @@
 															</div>
 														</td>
 														<td><a href="#" tooltip
-															tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
+															tooltip-content="{{CLEAR + ' database ' + ext.name.toUpperCase()}}"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="clearDB(ext.name)"><span
-																class="text">{{CLEAR + " database " +
-																	ext.name.toUpperCase()}}</span></a></td>
-														<td><a href="#" tooltip tooltip-content="Teste"
+																class="text">{{CLEAR + " database " + ext.name.toUpperCase()}}</span></a></td>
+														<td><a href="#" tooltip
+                                                            tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
 															class="btn-orange btn-form btn-border no-padding"
 															ng-click="openExt(ext.name)"
 															ng-class="{'btn-grey': !ext.init_initialized}"><span
