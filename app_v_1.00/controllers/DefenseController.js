@@ -25,15 +25,12 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		
+
 		$scope.local_data_villages = [];
 		$scope.data_defense = data_defense;
 		$scope.text_version = $scope.version + " " + data_defense.version;
-		$scope.requestedTab = TABS.DEFENSE;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
-		
-		
+
+
 		var self = this
 		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
@@ -164,7 +161,7 @@ define("robotTW2/controllers/DefenseController", [
 			data_defense = $scope.data_defense;
 			data_defense.set();
 		}, true)
-		
+
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			$scope.village_selected = data_villages.villages[$scope.data_select.selectedOption];
@@ -181,19 +178,23 @@ define("robotTW2/controllers/DefenseController", [
 			})
 			return $scope.local_data_villages;
 		})
-		
+
+		$scope.requestedTab = TABS.DEFENSE;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
+
 		$scope.village_selected = $scope.local_data_village[0]
-		
+
 		$scope.data_units= {
-			"availableOptions" : $scope.data_defense.list_defense,
-			"selectedOption" : $scope.data_defense.list_defense[0]
+				"availableOptions" : $scope.data_defense.list_defense,
+				"selectedOption" : $scope.data_defense.list_defense[0]
 		}
 
 		$scope.data_select = {
-			"availableOptions" : $scope.local_data_villages,
-			"selectedOption" : $scope.village_selected
+				"availableOptions" : $scope.local_data_villages,
+				"selectedOption" : $scope.village_selected
 		}
-		
+
 		initTab();
 		update();
 

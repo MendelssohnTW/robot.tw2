@@ -32,6 +32,11 @@ define("robotTW2/controllers/FarmController", [
 		$scope.SEARCH_MAP = services.$filter('i18n')('SEARCH_MAP', services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
+		$scope.update_all_presets = false;
+		$scope.local_data_villages = [];
+		$scope.data_villages = data_villages;
+		$scope.data_farm = data_farm;
+
 		var self = this
 		, TABS = {
 				FARM 	: services.$filter("i18n")("text_farm", services.$rootScope.loc.ale, "farm"),
@@ -42,25 +47,8 @@ define("robotTW2/controllers/FarmController", [
 			TABS.LOG,
 			]
 		, r_farm_time
-		, time_rest;
-
-		$scope.update_all_presets = false;
-		$scope.local_data_villages = [];
-		$scope.requestedTab = TABS.FARM;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
-		$scope.data_villages = data_villages;
-		$scope.data_farm = data_farm;
-		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
-		$scope.infinite = $scope.data_farm.infinite;
-		$scope.toggle_option = "check_one";
-		$scope.check_one = true;
-		$scope.check_all = false;
-		$scope.check_all_villages = false;
-		$scope.item = {}
-
-
-		var presetListModel = services.modelDataService.getPresetList()
+		, time_rest
+		, presetListModel = services.modelDataService.getPresetList()
 		, presetIds = []
 		, rallyPointSpeedBonusVsBarbarians = services.modelDataService.getWorldConfig().getRallyPointSpeedBonusVsBarbarians()
 		, getVillage = function getVillage(vid){
@@ -466,21 +454,6 @@ define("robotTW2/controllers/FarmController", [
 			return !Object.keys($scope.data.assignedPresetList).find(f=>f==item.id);
 		}
 
-
-		/*
-		 * Villages
-		 */
-
-		$scope.getVillageInfo = function(villageId){
-			var data = getVillageData(villageId).data
-			return formatHelper.villageNameWithCoordinates(data)
-		}
-
-		$scope.setVillage = function (villageId) {
-			$scope.data.assignedPresetList = {};
-			$scope.village_selected = $scope.local_data_villages.find(f=>f.id==villageId);
-		}
-
 		/*
 		 * Exceptions
 		 */
@@ -629,11 +602,21 @@ define("robotTW2/controllers/FarmController", [
 			})
 			return $scope.local_data_villages;
 		})
-
+		
+		$scope.village_selected = $scope.local_data_village[0]
+		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
+		$scope.infinite = $scope.data_farm.infinite;
+		$scope.toggle_option = "check_one";
+		$scope.requestedTab = TABS.FARM;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
+		$scope.check_one = true;
+		$scope.check_all = false;
+		$scope.check_all_villages = false;
+		$scope.item = {}
 		$scope.date_ref = new Date(0);
 		$scope.tmMax = "0";
 		$scope.tmMin = "0";
-		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 		$scope.isRunning = services.FarmService.isRunning();
 		$scope.isPaused = services.FarmService.isPaused();
 		$scope.t_farm_time = getFarmTime();

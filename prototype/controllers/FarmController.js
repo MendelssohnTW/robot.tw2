@@ -34,24 +34,8 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.update_all_presets = false;
 		$scope.local_data_villages = [];
-		$scope.requestedTab = TABS.FARM;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
-		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
-		$scope.infinite = $scope.data_farm.infinite;
-		$scope.toggle_option = "check_one";
-		$scope.check_one = true;
-		$scope.check_all = false;
-		$scope.check_all_villages = false;
-		$scope.item = {}
-		$scope.date_ref = new Date(0);
-		$scope.tmMax = "0";
-		$scope.tmMin = "0";
-		$scope.isRunning = services.FarmService.isRunning();
-		$scope.isPaused = services.FarmService.isPaused();
-		$scope.t_farm_time = getFarmTime();
 
 		var self = this
 		, TABS = {
@@ -620,6 +604,22 @@ define("robotTW2/controllers/FarmController", [
 		})
 		
 		$scope.village_selected = $scope.local_data_village[0]
+		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
+		$scope.infinite = $scope.data_farm.infinite;
+		$scope.toggle_option = "check_one";
+		$scope.requestedTab = TABS.FARM;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
+		$scope.check_one = true;
+		$scope.check_all = false;
+		$scope.check_all_villages = false;
+		$scope.item = {}
+		$scope.date_ref = new Date(0);
+		$scope.tmMax = "0";
+		$scope.tmMin = "0";
+		$scope.isRunning = services.FarmService.isRunning();
+		$scope.isPaused = services.FarmService.isPaused();
+		$scope.t_farm_time = getFarmTime();
 
 		let presets_load = angular.copy(services.presetListService.getPresets());
 		$scope.data = {
