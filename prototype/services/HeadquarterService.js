@@ -169,7 +169,7 @@ define("robotTW2/services/HeadquarterService", [
 				, buildingLevels = angular.copy(Object.keys(levels).map(function(key){return {[key] : levels[key]}}))
 				, queues = village.buildingQueue.getQueue()
 				, readyState = village.checkReadyState()
-				, buildState = data_villages.villages[village_id].executebuildingorder
+				, buildState = data_villages.villages[village_id].headquarter_activate
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];

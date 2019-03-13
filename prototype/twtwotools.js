@@ -931,7 +931,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					requestFile("limitBuilding", "/json/", function(jsont_limit){
 						var limitBuilding = jsont_limit;
 						angular.extend(conf, {
-							EXECUTEBUILDINGORDER 	: true,
 							BUILDINGORDER			: orderBuilding,
 							BUILDINGLIMIT			: limitBuilding,
 							BUILDINGLEVELS			: levelsBuilding
