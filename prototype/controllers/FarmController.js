@@ -603,7 +603,7 @@ define("robotTW2/controllers/FarmController", [
 			return $scope.local_data_villages;
 		})
 		
-		$scope.village_selected = $scope.local_data_village[0]
+		$scope.village_selected = $scope.local_data_villages[0]
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
 		$scope.infinite = $scope.data_farm.infinite;
 		$scope.toggle_option = "check_one";
