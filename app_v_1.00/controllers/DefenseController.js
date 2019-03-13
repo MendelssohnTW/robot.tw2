@@ -7,7 +7,8 @@ define("robotTW2/controllers/DefenseController", [
 	"helper/time",
 	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_villages",
-	"robotTW2/databases/data_defense"
+	"robotTW2/databases/data_defense",
+	"helper/format"
 	], function(
 			robotTW2,
 			services,
@@ -17,18 +18,24 @@ define("robotTW2/controllers/DefenseController", [
 			helper,
 			unitTypesRenameRecon,
 			data_villages,
-			data_defense
+			data_defense,
+			formatHelper
 	){
 	return function DefenseController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		var self = this,
-		local_data_villages = {};
+		
+		$scope.local_data_villages = [];
 		$scope.data_defense = data_defense;
 		$scope.text_version = $scope.version + " " + data_defense.version;
-
-		var TABS = {
+		$scope.requestedTab = TABS.DEFENSE;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
+		
+		
+		var self = this
+		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
 				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense"),
 				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "defense")
@@ -38,36 +45,15 @@ define("robotTW2/controllers/DefenseController", [
 			TABS.TROOPS,
 			TABS.LOG,
 			]
-		
-		function getVillage(vid){
+		, getVillage = function getVillage(vid){
 			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
+			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
 		}
-
-		function getVillageData(vid){
+		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return local_data_villages[vid].data;
+			return $scope.local_data_villages.find(f=>f.id==vid).value;
 		}
-		
-		Object.keys(data_villages.villages).map(function(key){
-			let data = getVillage(key);
-			angular.extend(local_data_villages, {[key] : {"data": data}})
-			return local_data_villages;
-		})
-		
-		$scope.requestedTab = TABS.DEFENSE;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
-		
-		$scope.getKey = function(unit_name){
-			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "units");
-		}
-		
-		$scope.getClass = function(unit_name){
-			return "icon-34x34-unit-" + unit_name;
-		}
-
-		var setActiveTab = function setActiveTab(tab) {
+		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
 			$scope.requestedTab								= null;
 		}
@@ -84,8 +70,13 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 
-		initTab();
-		update();
+		$scope.getKey = function(unit_name){
+			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "units");
+		}
+
+		$scope.getClass = function(unit_name){
+			return "icon-34x34-unit-" + unit_name;
+		}
 
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
@@ -160,19 +151,51 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE, function() {
 			update();
 		})
-		
+
 		$scope.$watch("data_logs.defense", function(){
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
 		}, true)
-		
+
 		$scope.$watch("data_defense", function(){
 			if(!$scope.data_defense){return}
 			data_defense = $scope.data_defense;
 			data_defense.set();
 		}, true)
+		
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			$scope.village_selected = data_villages.villages[$scope.data_select.selectedOption];
+//			updateAll()
+		}, true)
+
+		Object.keys($scope.data_villages.villages).map(function(key){
+			var vill = getVillage(key);
+			$scope.local_data_villages.push({
+				id : key,
+				name : vill.data.name,
+				label : formatHelper.villageNameWithCoordinates(vill.data),
+				value : vill
+			})
+			return $scope.local_data_villages;
+		})
+		
+		$scope.village_selected = $scope.local_data_village[0]
+		
+		$scope.data_units= {
+			"availableOptions" : $scope.data_defense.list_defense,
+			"selectedOption" : $scope.data_defense.list_defense[0]
+		}
+
+		$scope.data_select = {
+			"availableOptions" : $scope.local_data_villages,
+			"selectedOption" : $scope.village_selected
+		}
+		
+		initTab();
+		update();
 
 		$scope.setCollapse();
 
