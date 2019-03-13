@@ -28,6 +28,7 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.local_data_villages = [];
 		$scope.data_defense = data_defense;
+		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_defense.version;
 
 
