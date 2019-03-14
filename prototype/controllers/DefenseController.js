@@ -164,17 +164,6 @@ define("robotTW2/controllers/DefenseController", [
 			data_defense.set();
 		}, true)
 
-		$scope.$watch("data_select", function(){
-			if(!$scope.data_select){return}
-			$scope.village_selected = data_villages.villages[$scope.data_select.selectedOption];
-		}, true)
-		
-		$scope.$watch("data_units", function(){
-			if(!$scope.data_units){return}
-//			$scope.data_defense.list_defense[$scope.data_units.selectedOption.name] = $scope.data_units.selectedOption.value
-//			$scope.data_defense.set()
-		}, true)
-
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = getVillage(key);
 			$scope.local_data_villages.push({
