@@ -48,8 +48,10 @@ define("robotTW2/controllers/HeadquarterController", [
 				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
 			})
 			angular.extend($scope.local_data_villages, {[key] : data})
+			$scope.local_data_villages.sort(function(a,b){return a.name - b.name})
 			return $scope.local_data_villages;
 		})
+		
 
 		tt ? $scope.data_villages.set(): null;
 
