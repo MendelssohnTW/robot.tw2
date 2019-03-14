@@ -24,7 +24,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
-		var self = this
+
 		$scope.local_data_villages = [];
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
@@ -34,49 +34,22 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.status = "stopped";
 		$scope.obj_standard = $scope.data_headquarter.standard;
 
-		var tt = false;
-		Object.keys($scope.data_villages.villages).map(function(key){
-			if(!$scope.data_villages.villages[key].selected){
-				tt = true;
-				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="Standard");
-			}
-			let data = getVillage(key);
-			angular.extend(data, {
-				"headquarter_activate": $scope.data_villages.villages[key].headquarter_activate,
-				"selected": $scope.data_villages.villages[key].selected,
-				"buildingorder": $scope.data_villages.villages[key].buildingorder,
-				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
-			})
-			$scope.local_data_villages.push(data)
-			$scope.local_data_villages.sort(function(a,b){return a.name.localeCompare(b.name)})
-			return $scope.local_data_villages;
-		})
-		
-
-		tt ? $scope.data_villages.set(): null;
-
-		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes();
-		var buildings = services.modelDataService.getGameData().getBuildings();
-
-		var update = function () {
+		var self = this
+		, tt = false
+		, buildingTypes = services.modelDataService.getGameData().getBuildingTypes()
+		, buildings = services.modelDataService.getGameData().getBuildings()
+		, update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			$scope.data_villages = data_villages;
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-
-//		$scope.toggleSelect = function(selected){
-//		console.log(selected)
-//		if (!$scope.$$phase) {$scope.$apply();}
-//		}
-
-		function getVillage(vid){
+		, getVillage = function getVillage(vid){
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
-
-		function getVillageData(vid){
+		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return $scope.local_data_villages[vid];
+			return $scope.local_data_villages.find(f=>f.id==vid).value;
 		}
 
 		$scope.openVillageInfo = function(vid){
@@ -260,6 +233,26 @@ define("robotTW2/controllers/HeadquarterController", [
 			update();
 		})
 
+		Object.keys($scope.data_villages.villages).map(function(key){
+			if(!$scope.data_villages.villages[key].selected){
+				tt = true;
+				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="Standard");
+			}
+			let data = getVillage(key);
+			angular.extend(data, {
+				"headquarter_activate": $scope.data_villages.villages[key].headquarter_activate,
+				"selected": $scope.data_villages.villages[key].selected,
+				"buildingorder": $scope.data_villages.villages[key].buildingorder,
+				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
+			})
+			$scope.local_data_villages.push(data)
+			$scope.local_data_villages.sort(function(a,b){return a.name.localeCompare(b.name)})
+			return $scope.local_data_villages;
+		})
+		
+
+		tt ? $scope.data_villages.set(): null;
+		
 		update();
 
 
