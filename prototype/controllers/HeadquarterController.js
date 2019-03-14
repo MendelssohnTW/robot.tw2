@@ -49,7 +49,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid).value;
+			return $scope.local_data_villages.find(f=>f.villageId==vid).value;
 		}
 
 		$scope.openVillageInfo = function(vid){
