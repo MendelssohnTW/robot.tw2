@@ -101,6 +101,8 @@
         "standard": "Standard",
         "attack": "Attack",
         "defense": "Defense",
+         "database": "Database",
+        "ext_all": "All",
         "headquarter_running": "Current state of the barracks",
 		"title": "Automation of the Barracks",
 		"settings": "Global settings",

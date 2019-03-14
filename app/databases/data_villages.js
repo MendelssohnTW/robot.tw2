@@ -200,9 +200,7 @@ define("robotTW2/databases/data_villages", [
 		data_villages = {};
 		data_villages.version = conf.VERSION.VILLAGES
 		db_villages.updateVillages();
-		console.log("updated")
 	} else {
-		console.log("no updated")
 		db_villages.updateVillages()	
 	}
 

@@ -84,12 +84,15 @@ define("robotTW2/controllers/MainController", [
 			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true)
 			var fn = arFn.fn;
+			
 			$scope.extensions[name].status = getStatus(fn)
 			if($scope.extensions[name].status == $scope.running){
-				$scope.extensions_status[name] = true;	
+				$scope.extensions_status[name] = true;
+				
 			} else {
 				$scope.extensions_status[name] = false;
 			}
+			
 		}
 
 		$scope.clearDB = function(ext_name){
@@ -118,11 +121,6 @@ define("robotTW2/controllers/MainController", [
 			services.$timeout(function(){update_status()}, 1500)
 		})
 
-		$scope.toggleValueInit = function(ext) {
-			$scope.extensions[ext.name].auto_start = ext.auto_start
-			$scope.data_main.setExtensions($scope.extensions)
-		}
-
 		$scope.toggleStartStop = function(ext) {
 			if(!$scope.extensions_status[ext.name]){
 				stopExt(ext.name)
@@ -137,6 +135,11 @@ define("robotTW2/controllers/MainController", [
 			services.$rootScope.$broadcast(providers.eventTypeProvider[concat])
 		}
 
+		$scope.$watch("extensions", function(){
+			if(!$scope.extensions){return}
+			$scope.data_main.setExtensions($scope.extensions)
+		}, true)
+
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			updateCorrection()
 		})
@@ -144,6 +147,7 @@ define("robotTW2/controllers/MainController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_main.setExtensions($scope.extensions)
 		})
+
 
 		return $scope;
 	}
