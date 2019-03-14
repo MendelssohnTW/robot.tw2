@@ -24,6 +24,7 @@ define("robotTW2/controllers/MainController", [
 		$scope.extensions = $scope.data_main.getExtensions()
 		$scope.extensions_status = {}
 		$scope.all_init_initialized = false;
+		$scope.all_start_stop = false;
 
 		var self = this
 		, toggle = false
@@ -144,19 +145,9 @@ define("robotTW2/controllers/MainController", [
 			updateCorrection()
 		})
 
-		$scope.$on("$destroy", function() {
-			$scope.data_main.setExtensions($scope.extensions)
-		})
-
 		$scope.$watch("all_init_initialized", function(){
-			if($scope.all_init_initialized){
-				for (var name in $scope.extensions) {
-					startExt(name)
-				}
-			} else {
-				for (var name in $scope.extensions) {
-					stopExt(name)
-				}
+			for (var name in $scope.extensions) {
+				$scope.extensions[name].all_init_initialized = $scope.all_init_initialized
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}, true);
@@ -167,6 +158,22 @@ define("robotTW2/controllers/MainController", [
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}, true);
+
+		$scope.$watch("all_start_stop", function(){
+			for (var name in $scope.extensions) {
+				if($scope.all_init_initialized){
+					startExt(name)
+				} else {
+					stopExt(name)
+				}
+			}
+			if (!$scope.$$phase) {$scope.$apply()}
+		}, true);
+		
+		$scope.$on("$destroy", function() {
+			$scope.data_main.setExtensions($scope.extensions)
+		})
+
 
 		return $scope;
 	}
