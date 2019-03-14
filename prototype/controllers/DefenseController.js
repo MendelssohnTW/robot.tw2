@@ -145,6 +145,34 @@ define("robotTW2/controllers/DefenseController", [
 			services.DefenseService.removeAll();
 		}
 
+		$scope.selectAllUnits = function(){
+			Object.values($scope.data_defense.list_defense).map(function(value){
+				value = true;
+			})
+			$scope.data_defense.set();
+		}
+
+		$scope.unselectAllUnits = function(){
+			Object.values($scope.data_defense.list_defense).map(function(value){
+				value = false;
+			})
+			$scope.data_defense.set();
+		}
+		
+		$scope.selectAllVillages = function(){
+			Object.values($scope.data_villages.villages).map(function(vill){
+				vill.defense_activate = true;
+			})
+			$scope.data_villages.set();
+		}
+
+		$scope.unselectAllVillages = function(){
+			Object.values($scope.data_villages.villages).map(function(vill){
+				vill.defense_activate = false;
+			})
+			$scope.data_villages.set();
+		}
+
 		$scope.removeCommand = services.DefenseService.removeCommandDefense;
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE, function() {
@@ -174,9 +202,9 @@ define("robotTW2/controllers/DefenseController", [
 			})
 			return $scope.local_data_villages;
 		})
-		
+
 		var id = 0;
-		
+
 		Object.keys($scope.data_defense.list_defense).map(function(key){
 			$scope.local_list_defense.push({
 				id : id++,
