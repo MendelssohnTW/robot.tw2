@@ -48,7 +48,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
 			})
 			$scope.local_data_villages.push(data)
-			$scope.local_data_villages.sort(function(a,b){return a.name - b.name})
+			$scope.local_data_villages.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_villages;
 		})
 		
