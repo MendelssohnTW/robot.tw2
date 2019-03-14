@@ -86,7 +86,7 @@
 		"module": "Módulo",
 		"text_hotkey": "Atalho",
 		"text_status": "Estado",
-		"init_standard": "Inicializar automático",
+		"init_standard": "Sempre",
 		"save_button": "Salvar",
 		"recal_button": "Recalibrar",
 		"extension_disabled": "desativado",
