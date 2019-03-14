@@ -176,10 +176,10 @@
 								<tr ng-repeat="vill in local_data_villages">
 									<td class="cell-top">
 										<div class="village">
-											<div class="name" ng-click="openVillageInfo(villageId)">
-												{{getName(villageId)}}</div>
-											<div class="coordinates" ng-click="jumpToVillage(villageId)">
-												{{getVcoordStart(villageId)}}</div>
+											<div class="name" ng-click="openVillageInfo(vill.villageId)">
+												{{getName(vill.villageId)}}</div>
+											<div class="coordinates" ng-click="jumpToVillage(vill.villageId)">
+												{{getVcoordStart(vill.villageId)}}</div>
 										</div>
 									</td>
 									<td class="cell-top">
@@ -206,7 +206,7 @@
 										ng-options="item as item.name for item in data_headquarter.selects track by item.id"
 										ng-model="vill.selected"></select></td>
 									<td class="cell-space">
-										<h5 class="twx-section collapse hidden-content">{{getName(villageId)}}</h5>
+										<h5 class="twx-section collapse hidden-content">{{getName(vill.villageId)}}</h5>
 										<div>
 											<table id="preset-list">
 												<colgroup>
@@ -239,10 +239,10 @@
 																			<div>
 																				<div ng-show="value > 1 "
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																					ng-click="up(villageId, vill, key, value)"></div>
+																					ng-click="up(vill.villageId, vill, key, value)"></div>
 																				<div ng-show="value < 17"
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																					ng-click="down(villageId, vill, key, value)"></div>
+																					ng-click="down(vill.villageId, vill, key, value)"></div>
 																			</div>
 																		</td>
 																	</tr>
