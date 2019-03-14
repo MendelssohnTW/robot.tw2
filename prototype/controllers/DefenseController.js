@@ -146,29 +146,29 @@ define("robotTW2/controllers/DefenseController", [
 		}
 
 		$scope.selectAllUnits = function(){
-			Object.values($scope.data_defense.list_defense).map(function(value){
-				value = true;
+			Object.keys($scope.data_defense.list_defense).map(function(key){
+				$scope.data_defense.list_defense[key] = true;
 			})
 			$scope.data_defense.set();
 		}
 
 		$scope.unselectAllUnits = function(){
-			Object.values($scope.data_defense.list_defense).map(function(value){
-				value = false;
+			Object.keys($scope.data_defense.list_defense).map(function(key){
+				$scope.data_defense.list_defense[key] = true;
 			})
 			$scope.data_defense.set();
 		}
 		
 		$scope.selectAllVillages = function(){
-			Object.values($scope.data_villages.villages).map(function(vill){
-				vill.defense_activate = true;
+			Object.keys($scope.data_villages.villages).map(function(key){
+				$scope.data_villages.villages[key].defense_activate = true;
 			})
 			$scope.data_villages.set();
 		}
 
 		$scope.unselectAllVillages = function(){
-			Object.values($scope.data_villages.villages).map(function(vill){
-				vill.defense_activate = false;
+			Object.keys($scope.data_villages.villages).map(function(key){
+				$scope.data_villages.villages[key].defense_activate = true;
 			})
 			$scope.data_villages.set();
 		}
