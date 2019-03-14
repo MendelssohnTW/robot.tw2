@@ -47,7 +47,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				"buildingorder": $scope.data_villages.villages[key].buildingorder,
 				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
 			})
-			angular.extend($scope.local_data_villages, {[key] : {"data": data}})
+			angular.extend($scope.local_data_villages, {[key] : data})
 			return $scope.local_data_villages;
 		})
 
@@ -74,7 +74,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		function getVillageData(vid){
 			if(!vid){return}
-			return $scope.local_data_villages[vid].data;
+			return $scope.local_data_villages[vid];
 		}
 
 		$scope.openVillageInfo = function(vid){
