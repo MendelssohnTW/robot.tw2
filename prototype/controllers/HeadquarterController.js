@@ -25,7 +25,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this
-		$scope.local_data_villages = {};
+		$scope.local_data_villages = [];
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 		
@@ -47,7 +47,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				"buildingorder": $scope.data_villages.villages[key].buildingorder,
 				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
 			})
-			angular.extend($scope.local_data_villages, {[key] : data})
+			$scope.local_data_villages.push({[key] : data})
 			$scope.local_data_villages.sort(function(a,b){return a.name - b.name})
 			return $scope.local_data_villages;
 		})
