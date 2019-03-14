@@ -173,20 +173,20 @@
 								<col width="*">
 							</colgroup>
 							<tbody>
-								<tr ng-repeat="(key_vill, value_vill) in local_data_villages">
+								<tr ng-repeat="vill in local_data_villages">
 									<td class="cell-top">
 										<div class="village">
-											<div class="name" ng-click="openVillageInfo(key_vill)">
-												{{getName(key_vill)}}</div>
-											<div class="coordinates" ng-click="jumpToVillage(key_vill)">
-												{{getVcoordStart(key_vill)}}</div>
+											<div class="name" ng-click="openVillageInfo(villageId)">
+												{{getName(villageId)}}</div>
+											<div class="coordinates" ng-click="jumpToVillage(villageId)">
+												{{getVcoordStart(villageId)}}</div>
 										</div>
 									</td>
 									<td class="cell-top">
 										<div class="checkbox box-border-dark">
 											<div tooltip tooltip-content="{{text_executebuildingorder}}"
 												switch-slider="" border="true" enabled="true"
-												value="value_vill.headquarter_activate" vertical="false"
+												value="vill.headquarter_activate" vertical="false"
 												size="'56x28'">
 												<div ng-class="{'box-border-dark box-filter': border}"
 													class="box-border-dark box-filter">
@@ -204,9 +204,9 @@
 									<td class="cell-top cell-center"><select id="select_order"
 										class="select-wrapper"
 										ng-options="item as item.name for item in data_headquarter.selects track by item.id"
-										ng-model="value_vill.selected"></select></td>
+										ng-model="vill.selected"></select></td>
 									<td class="cell-space">
-										<h5 class="twx-section collapse hidden-content">{{getName(key_vill)}}</h5>
+										<h5 class="twx-section collapse hidden-content">{{getName(villageId)}}</h5>
 										<div>
 											<table id="preset-list">
 												<colgroup>
@@ -225,7 +225,7 @@
 																</colgroup>
 																<tbody>
 																	<tr
-																		ng-repeat="(key, value) in value_vill.buildingorder[value_vill.selected.value]"
+																		ng-repeat="(key, value) in vill.buildingorder[vill.selected.value]"
 																		style="height: 68px">
 																		<td class="content"
 																			ng-class="{'resource-text' : selected_village_buildingorder[key] == value}">
@@ -239,10 +239,10 @@
 																			<div>
 																				<div ng-show="value > 1 "
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																					ng-click="up(key_vill, value_vill, key, value)"></div>
+																					ng-click="up(villageId, vill, key, value)"></div>
 																				<div ng-show="value < 17"
 																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																					ng-click="down(key_vill, value_vill, key, value)"></div>
+																					ng-click="down(villageId, vill, key, value)"></div>
 																			</div>
 																		</td>
 																	</tr>
@@ -259,7 +259,7 @@
 																</colgroup>
 																<tbody>
 																	<tr
-																		ng-repeat="(key, value) in value_vill.buildinglimit[value_vill.selected.value]"
+																		ng-repeat="(key, value) in vill.buildinglimit[vill.selected.value]"
 																		style="height: 68px">
 																		<td class="content">
 																			<div class="name-wrapper">
@@ -271,10 +271,10 @@
 																		<td class="cell-right"><div
 																				ng-show="getMax(key, value)"
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																				ng-click="levelup(value_vill, key)"></div>
+																				ng-click="levelup(vill, key)"></div>
 																			<div ng-show="value > 1"
 																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																				ng-click="leveldown(value_vill, key)"></div></td>
+																				ng-click="leveldown(vill, key)"></div></td>
 																	</tr>
 																</tbody>
 															</table>
