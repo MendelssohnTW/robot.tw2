@@ -92,6 +92,8 @@ define("robotTW2/controllers/DefenseController", [
 				})
 				return $scope.local_list_defense;
 			})
+			
+			$scope.village_selected = $scope.local_data_villages[0]
 
 			$scope.data_units = {
 				"availableOptions" : $scope.local_list_defense,

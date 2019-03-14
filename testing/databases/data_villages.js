@@ -196,7 +196,15 @@ define("robotTW2/databases/data_villages", [
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, db_villages.updateVillages);
 
-	db_villages.updateVillages()
+	if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
+		data_villages = {};
+		data_villages.version = conf.VERSION.VILLAGES
+		db_villages.updateVillages();
+		console.log("updated")
+	} else {
+		console.log("no updated")
+		db_villages.updateVillages()	
+	}
 
 	Object.setPrototypeOf(data_villages, db_villages);
 

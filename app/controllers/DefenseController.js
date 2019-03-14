@@ -25,8 +25,9 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-
+		
 		$scope.local_data_villages = [];
+		$scope.local_list_defense = [];
 		$scope.data_defense = data_defense;
 		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_defense.version;
@@ -66,6 +67,44 @@ define("robotTW2/controllers/DefenseController", [
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
+		}
+		, update_all = function(){
+			$scope.local_data_villages = [];
+			$scope.local_list_defense = [];
+			Object.keys($scope.data_villages.villages).map(function(key){
+				var vill = getVillage(key);
+				$scope.local_data_villages.push({
+					id : key,
+					name : vill.data.name,
+					label : formatHelper.villageNameWithCoordinates(vill.data),
+					value : $scope.data_villages.villages[key].defense_activate
+				})
+				return $scope.local_data_villages;
+			})
+
+			var id = 0;
+
+			Object.keys($scope.data_defense.list_defense).map(function(key){
+				$scope.local_list_defense.push({
+					id : id++,
+					name : key,
+					value : $scope.data_defense.list_defense[key]
+				})
+				return $scope.local_list_defense;
+			})
+			
+			$scope.village_selected = $scope.local_data_villages[0]
+
+			$scope.data_units = {
+				"availableOptions" : $scope.local_list_defense,
+				"selectedOption" : $scope.local_list_defense[0]
+			}
+
+			$scope.data_select = {
+				"availableOptions" : $scope.local_data_villages,
+				"selectedOption" : $scope.village_selected
+			}
+
 		}
 
 		$scope.getKey = function(unit_name){
@@ -144,6 +183,38 @@ define("robotTW2/controllers/DefenseController", [
 			services.DefenseService.removeAll();
 		}
 
+		$scope.selectAllUnits = function(){
+			Object.keys($scope.data_defense.list_defense).map(function(key){
+				$scope.data_defense.list_defense[key] = true;
+			})
+			$scope.data_defense.set();
+			update_all();
+		}
+
+		$scope.unselectAllUnits = function(){
+			Object.keys($scope.data_defense.list_defense).map(function(key){
+				$scope.data_defense.list_defense[key] = false;
+			})
+			$scope.data_defense.set();
+			update_all();
+		}
+
+		$scope.selectAllVillages = function(){
+			Object.keys($scope.data_villages.villages).map(function(key){
+				$scope.data_villages.villages[key].defense_activate = true;
+			})
+			$scope.data_villages.set();
+			update_all();
+		}
+
+		$scope.unselectAllVillages = function(){
+			Object.keys($scope.data_villages.villages).map(function(key){
+				$scope.data_villages.villages[key].defense_activate = false;
+			})
+			$scope.data_villages.set();
+			update_all();
+		}
+
 		$scope.removeCommand = services.DefenseService.removeCommandDefense;
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE, function() {
@@ -163,39 +234,13 @@ define("robotTW2/controllers/DefenseController", [
 			data_defense.set();
 		}, true)
 
-		$scope.$watch("data_select", function(){
-			if(!$scope.data_select){return}
-			$scope.village_selected = data_villages.villages[$scope.data_select.selectedOption];
-//			updateAll()
-		}, true)
-
-		Object.keys($scope.data_villages.villages).map(function(key){
-			var vill = getVillage(key);
-			$scope.local_data_villages.push({
-				id : key,
-				name : vill.data.name,
-				label : formatHelper.villageNameWithCoordinates(vill.data),
-				value : vill
-			})
-			return $scope.local_data_villages;
-		})
-
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
 
 		$scope.village_selected = $scope.local_data_villages[0]
 
-		$scope.data_units= {
-				"availableOptions" : $scope.data_defense.list_defense,
-				"selectedOption" : $scope.data_defense.list_defense[0]
-		}
-
-		$scope.data_select = {
-				"availableOptions" : $scope.local_data_villages,
-				"selectedOption" : $scope.village_selected
-		}
-
+		update_all();
 		initTab();
 		update();
 
