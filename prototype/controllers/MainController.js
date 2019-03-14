@@ -23,6 +23,7 @@ define("robotTW2/controllers/MainController", [
 		$scope.text_version = $scope.version + " " + data_main.version; 
 		$scope.extensions = $scope.data_main.getExtensions()
 		$scope.extensions_status = {}
+		$scope.all_init_initialized = false;
 
 		var self = this
 		, toggle = false
@@ -109,6 +110,8 @@ define("robotTW2/controllers/MainController", [
 			services.$timeout(function(){location.reload()}, 2000)
 		}
 
+
+
 		$scope.recalibrate = function(){
 			services.AttackService.calibrate_time()
 		}
@@ -117,11 +120,6 @@ define("robotTW2/controllers/MainController", [
 			if(!data){return} 
 			services.$timeout(function(){update_status()}, 1500)
 		})
-
-		$scope.toggleValueInit = function(ext) {
-			$scope.extensions[ext.name].auto_start = ext.auto_start
-			$scope.data_main.setExtensions($scope.extensions)
-		}
 
 		$scope.toggleStartStop = function(ext) {
 			if(!$scope.extensions_status[ext.name]){
@@ -137,6 +135,11 @@ define("robotTW2/controllers/MainController", [
 			services.$rootScope.$broadcast(providers.eventTypeProvider[concat])
 		}
 
+		$scope.$watch("extensions", function(){
+			if(!$scope.extensions){return}
+			$scope.data_main.setExtensions($scope.extensions)
+		}, true)
+
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			updateCorrection()
 		})
@@ -144,6 +147,26 @@ define("robotTW2/controllers/MainController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_main.setExtensions($scope.extensions)
 		})
+
+		$scope.$watch("all_init_initialized", function(){
+			if($scope.all_init_initialized){
+				for (var name in $scope.extensions) {
+					startExt(name)
+				}
+			} else {
+				for (var name in $scope.extensions) {
+					stopExt(name)
+				}
+			}
+			if (!$scope.$$phase) {$scope.$apply()}
+		}, true);
+
+		$scope.$watch("all_auto_start", function(){
+			for (var name in $scope.extensions) {
+				$scope.extensions[name].auto_start = $scope.all_auto_start
+			}
+			if (!$scope.$$phase) {$scope.$apply()}
+		}, true);
 
 		return $scope;
 	}

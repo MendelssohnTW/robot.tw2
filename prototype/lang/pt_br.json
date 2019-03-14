@@ -101,6 +101,8 @@
         "standard": "Padrão",
         "attack": "Ataque",
         "defense": "Defesa",
+        "database": "Banco de dados",
+        "ext_all": "Todos",
         "headquarter_running": "Estado atual do quartel",
 		"title": "Automatização do Quartel",
 		"settings": "Configuração global",
