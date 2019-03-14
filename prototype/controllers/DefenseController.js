@@ -27,6 +27,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		$scope.local_data_villages = [];
+		$scope.local_list_defense = [];
 		$scope.data_defense = data_defense;
 		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_defense.version;
@@ -166,7 +167,12 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			$scope.village_selected = data_villages.villages[$scope.data_select.selectedOption];
-//			updateAll()
+		}, true)
+		
+		$scope.$watch("data_units", function(){
+			if(!$scope.data_units){return}
+//			$scope.data_defense.list_defense[$scope.data_units.selectedOption.name] = $scope.data_units.selectedOption.value
+//			$scope.data_defense.set()
 		}, true)
 
 		Object.keys($scope.data_villages.villages).map(function(key){
@@ -179,6 +185,17 @@ define("robotTW2/controllers/DefenseController", [
 			})
 			return $scope.local_data_villages;
 		})
+		
+		var id = 0;
+		
+		Object.keys($scope.data_defense.list_defense).map(function(key){
+			$scope.local_list_defense.push({
+				id : id++,
+				name : key,
+				value : $scope.data_defense.list_defense[key]
+			})
+			return $scope.local_list_defense;
+		})
 
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
@@ -186,9 +203,9 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.village_selected = $scope.local_data_villages[0]
 
-		$scope.data_units= {
-				"availableOptions" : $scope.data_defense.list_defense,
-				"selectedOption" : $scope.data_defense.list_defense[0]
+		$scope.data_units = {
+				"availableOptions" : $scope.local_list_defense,
+				"selectedOption" : $scope.local_list_defense[0]
 		}
 
 		$scope.data_select = {
