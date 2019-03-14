@@ -23,8 +23,6 @@ define("robotTW2/controllers/MainController", [
 		$scope.text_version = $scope.version + " " + data_main.version; 
 		$scope.extensions = $scope.data_main.getExtensions()
 		$scope.extensions_status = {}
-		$scope.all_init_initialized = false;
-		$scope.all_start_stop = false;
 
 		var self = this
 		, toggle = false
@@ -86,12 +84,15 @@ define("robotTW2/controllers/MainController", [
 			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true)
 			var fn = arFn.fn;
+			
 			$scope.extensions[name].status = getStatus(fn)
 			if($scope.extensions[name].status == $scope.running){
-				$scope.extensions_status[name] = true;	
+				$scope.extensions_status[name] = true;
+				
 			} else {
 				$scope.extensions_status[name] = false;
 			}
+			
 		}
 
 		$scope.clearDB = function(ext_name){
@@ -110,8 +111,6 @@ define("robotTW2/controllers/MainController", [
 			})
 			services.$timeout(function(){location.reload()}, 2000)
 		}
-
-
 
 		$scope.recalibrate = function(){
 			services.AttackService.calibrate_time()
@@ -145,31 +144,6 @@ define("robotTW2/controllers/MainController", [
 			updateCorrection()
 		})
 
-		$scope.$watch("all_init_initialized", function(){
-			for (var name in $scope.extensions) {
-				$scope.extensions[name].all_init_initialized = $scope.all_init_initialized
-			}
-			if (!$scope.$$phase) {$scope.$apply()}
-		}, true);
-
-		$scope.$watch("all_auto_start", function(){
-			for (var name in $scope.extensions) {
-				$scope.extensions[name].auto_start = $scope.all_auto_start
-			}
-			if (!$scope.$$phase) {$scope.$apply()}
-		}, true);
-
-		$scope.$watch("all_start_stop", function(){
-			for (var name in $scope.extensions) {
-				if($scope.all_init_initialized){
-					startExt(name)
-				} else {
-					stopExt(name)
-				}
-			}
-			if (!$scope.$$phase) {$scope.$apply()}
-		}, true);
-		
 		$scope.$on("$destroy", function() {
 			$scope.data_main.setExtensions($scope.extensions)
 		})
