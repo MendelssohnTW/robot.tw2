@@ -600,6 +600,7 @@ define("robotTW2/controllers/FarmController", [
 				label : formatHelper.villageNameWithCoordinates(vill.data),
 				value : vill
 			})
+			$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
 			return $scope.local_data_villages;
 		})
 		
