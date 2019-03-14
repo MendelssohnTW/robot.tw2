@@ -181,7 +181,7 @@ define("robotTW2/controllers/DefenseController", [
 				id : key,
 				name : vill.data.name,
 				label : formatHelper.villageNameWithCoordinates(vill.data),
-				value : vill
+				value : $scope.data_villages.villages[key].defense_activate
 			})
 			return $scope.local_data_villages;
 		})
