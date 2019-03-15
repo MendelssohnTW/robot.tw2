@@ -13,6 +13,7 @@ define("robotTW2/controllers/SecondVillageController", [
 	){
 	return function SecondVillageController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		var self = this;
 		
