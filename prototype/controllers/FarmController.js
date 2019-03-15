@@ -631,7 +631,7 @@ define("robotTW2/controllers/FarmController", [
 				'assignedPresetList': {},
 				'presets'			: presets_load,
 				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey()),
-				"selectedOption" 	: presets_load[0]
+				"selectedOption" 	: $scope.village_selected.presets[presets_load[0].id]
 		}
 
 		$scope.data_select = {
