@@ -25,7 +25,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	"use strict";
 
-	var host = "https://mendelssohntw.github.io/robot.tw2/michel";
+	var host = "https://mendelssohntw.github.io/robot.tw2/testing";
 	var $rootScope				= injector.get('$rootScope');
 	var $templateCache 			= injector.get('$templateCache');
 	var $exceptionHandler 		= injector.get('$exceptionHandler');
@@ -931,7 +931,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					requestFile("limitBuilding", "/json/", function(jsont_limit){
 						var limitBuilding = jsont_limit;
 						angular.extend(conf, {
-							EXECUTEBUILDINGORDER 	: true,
 							BUILDINGORDER			: orderBuilding,
 							BUILDINGLIMIT			: limitBuilding,
 							BUILDINGLEVELS			: levelsBuilding
@@ -2284,7 +2283,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 			: "",
 								url		 			: "/controllers/ReconController.js",
 								style 				: {
-									width:"350px"
+									width:"450px"
 								}
 						}		
 						robotTW2.build(params)
@@ -2320,7 +2319,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 			: "",
 								url		 			: "/controllers/DepositController.js",
 								style 				: {
-									width:"350px"
+									width:"450px"
 								}
 						}		
 						robotTW2.build(params)
@@ -2339,7 +2338,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 			: "",
 								url		 			: "/controllers/SecondVillageController.js",
 								style 				: {
-									width:"350px"
+									width:"450px"
 								}
 						}		
 						robotTW2.build(params)
@@ -2427,7 +2426,7 @@ var robotTW2 = window.robotTW2 = undefined;
 										classes 			: null,
 										url		 			: "/controllers/MainController.js",
 										style 				: {
-											width : "760px"
+											width : "960px"
 										}
 									}
 							)

@@ -23,6 +23,7 @@ define("robotTW2/controllers/MainController", [
 		$scope.text_version = $scope.version + " " + data_main.version; 
 		$scope.extensions = $scope.data_main.getExtensions()
 		$scope.extensions_status = {}
+		$scope.time_correction_command = 0;
 
 		var self = this
 		, toggle = false
@@ -115,7 +116,11 @@ define("robotTW2/controllers/MainController", [
 		$scope.recalibrate = function(){
 			services.AttackService.calibrate_time()
 		}
-
+		
+		$scope.updateTimeCorrection = function(){
+			updateCorrection();
+		}
+		
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
 			services.$timeout(function(){update_status()}, 1500)
@@ -138,6 +143,10 @@ define("robotTW2/controllers/MainController", [
 		$scope.$watch("extensions", function(){
 			if(!$scope.extensions){return}
 			$scope.data_main.setExtensions($scope.extensions)
+		}, true)
+		
+		$scope.$watch("data_main", function(){
+			$scope.data_main.set()
 		}, true)
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {

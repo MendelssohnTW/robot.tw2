@@ -1,3 +1,8 @@
+define("robotTW2/CommandDefense", [
+	], function(){
+	return {}
+})
+
 define("robotTW2/services/DefenseService", [
 	"robotTW2",
 	"robotTW2/version",
@@ -8,7 +13,8 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/time",
 	"robotTW2/calibrate_time",
 	"robotTW2/unitTypesRenameRecon",
-	"robotTW2/databases/data_defense"
+	"robotTW2/databases/data_defense",
+	"robotTW2/CommandDefense"
 	], function(
 			robotTW2,
 			version,
@@ -19,7 +25,8 @@ define("robotTW2/services/DefenseService", [
 			time,
 			calibrate_time,
 			unitTypesRenameRecon,
-			data_defense
+			data_defense,
+			commandDefense
 	){
 	return (function DefenseService(
 			$rootScope,
@@ -382,11 +389,11 @@ define("robotTW2/services/DefenseService", [
 
 				var lt = []
 
-				Object.keys(scope.commands).map(function(key){
-					if(scope.commands[key].params.preserv){
-						lt.push(scope.commands[key].params)
+				Object.keys(commandDefense).map(function(key){
+					if(commandDefense[key].params.preserv){
+						lt.push(commandDefense[key].params)
 					} else {
-						delete scope.commands[key];
+						delete commandDefense[key];
 						removeCommandDefense(key)
 					}
 				})
@@ -518,7 +525,7 @@ define("robotTW2/services/DefenseService", [
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
-					scope.commands[params.id_command] = {
+					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
 					}
@@ -595,7 +602,7 @@ define("robotTW2/services/DefenseService", [
 //					- time.convertedTime()
 					if(timer_delay >= 0){
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
-							scope.commands[params.id_command] = {
+							commandDefense[params.id_command] = {
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
 									"params"	: params
 							}
@@ -657,7 +664,7 @@ define("robotTW2/services/DefenseService", [
 				})
 
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
-					scope.commands[params.id_command] = {
+					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
 					}
@@ -755,18 +762,18 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			if(scope.commands[id_command] && typeof(scope.commands[id_command].timeout) == "object"){
-				if(scope.commands[id_command].timeout.$$state.status == 0){
-					$timeout.cancel(scope.commands[id_command].timeout)	
+			if(commandDefense[id_command] && typeof(commandDefense[id_command].timeout) == "object"){
+				if(commandDefense[id_command].timeout.$$state.status == 0){
+					$timeout.cancel(commandDefense[id_command].timeout)	
 				}
-				delete scope.commands[id_command];
+				delete commandDefense[id_command];
 			}
 
 			commandQueue.unbind(id_command)
 		}
 		, removeAll = function(){
 			commandQueue.unbindAll("support")
-			scope.commands = {};
+			commandDefense = {};
 			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 		}
 		, init = function(){
@@ -787,7 +794,7 @@ define("robotTW2/services/DefenseService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
-				scope.commands = {};
+				commandDefense = {};
 				calibrate_time()
 				isRunning = !0;
 				reformatCommand();
@@ -854,8 +861,8 @@ define("robotTW2/services/DefenseService", [
 			stop 				: stop,
 			calibrate_time		: calibrate_time,
 			get_commands		: function (){
-				return Object.keys(scope.commands).map(function(key){
-					return scope.commands[key].params;
+				return Object.keys(commandDefense).map(function(key){
+					return commandDefense[key].params;
 				});
 			},
 			removeCommandDefense: removeCommandDefense,

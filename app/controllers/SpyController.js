@@ -103,6 +103,7 @@ define("robotTW2/controllers/SpyController", [
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
@@ -266,9 +267,12 @@ define("robotTW2/controllers/SpyController", [
 			return helper.readableMilliseconds(difTime)
 		}
 
-
 		$scope.clear_spy = function(){
 			services.SpyService.removeAll();
+		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 
 		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;

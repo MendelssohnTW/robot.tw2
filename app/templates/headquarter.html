@@ -11,11 +11,11 @@
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap headquarter" style="margin-bottom: 100px">
+			<div class="scroll-wrap headquarter" style="margin-bottom: 53px">
 				<h5 class="twx-section collapse">{{settings}}</h5>
 				<div>
 
-					<table class="tbl-border-light tbl-striped tbl-content">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
 						<colgroup>
 							<col width="33%">
 							<col width="33%">
@@ -90,7 +90,7 @@
 					<h5 class="twx-section collapse hidden-content">{{settings_standard}}</h5>
 					<div>
 						<table id="preset-list"
-							class="tbl-border-light tbl-striped tbl-content">
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
 							<colgroup>
 								<col width="50%">
 								<col width="50%">
@@ -164,7 +164,7 @@
 					</div>
 					<h5 class="twx-section collapse">{{settings_for_villages}}</h5>
 					<div>
-						<table class="tbl-border-light tbl-striped tbl-content"
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
 							id="preset-list">
 							<colgroup>
 								<col width="20%">
@@ -178,7 +178,8 @@
 										<div class="village">
 											<div class="name" ng-click="openVillageInfo(vill.villageId)">
 												{{getName(vill.villageId)}}</div>
-											<div class="coordinates" ng-click="jumpToVillage(vill.villageId)">
+											<div class="coordinates"
+												ng-click="jumpToVillage(vill.villageId)">
 												{{getVcoordStart(vill.villageId)}}</div>
 										</div>
 									</td>
@@ -306,17 +307,13 @@
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
 			<li><a class="btn-orange btn-border start"
-				ng-click="start_headquarter()">{{start}}</a></li>
+				ng-click="start_headquarter()">{{START}}</a></li>
 			<li><a class="btn-orange btn-border stop"
-				ng-click="stop_headquarter()">{{stop}}</a></li>
-			<li><a class="btn-border btn-orange btn-pause"
-				ng-click="pause_headquarter()"><span>{{pause}}</span></a></li>
-			<li><a class="btn-border btn-orange btn-resume"
-				ng-click="resume_headquarter()"><span>{{resume}}</span></a></li>
-			<li><a class="btn-orange btn-border restore"
-				ng-click="restore_headquarter()">{{restore}}</a></li>
+				ng-click="stop_headquarter()">{{STOP}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
-				ng-click="closeWindow()">{{close}}</a></li>
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
 
 		</ul>
 	</footer>

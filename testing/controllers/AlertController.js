@@ -11,6 +11,7 @@ define("robotTW2/controllers/AlertController", [
 	){
 	return function AlertController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		$scope.data_alert = data_alert;
 		$scope.text_version = $scope.version + " " + $scope.data_alert.version;
@@ -125,6 +126,10 @@ define("robotTW2/controllers/AlertController", [
 				$scope.data_alert.friends = $scope.data_alert.friends.filter(f => f !== member.name);
 			}
 			upDate()
+		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 		
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {

@@ -25,14 +25,14 @@
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.RECRUIT">
 		<div class="box-paper content-settings">
 		<div class="version"><h5>{{text_version}}</h5></div>
-			<div class="scroll-wrap recruit" style="margin-bottom: 100px">
+			<div class="scroll-wrap recruit" style="margin-bottom: 53px">
 				<div>
 					<span
 						ng-class="{'icon-26x26-dot-green' : isRunning, 'icon-26x26-dot-red' : !isRunning, 'icon-26x26-dot-blue' : isRunning && paused}"></span>{{recruit_running}}
 				</div>
 				<h5 class="twx-section">{{settings}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-striped">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="33%">
 							<col width="33%">
@@ -70,13 +70,13 @@
 								<div class="list-collapse">
 									<h5 class="twx-section">{{groups_selection}}</h5>
 									<div>
-										<table class="tbl-border-light tbl-striped">
+										<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 											<colgroup>
 												<col width="*">
 											</colgroup>
 											<tr>
 												<td class="cell-space">
-													<table class="tbl-border-light tbl-striped">
+													<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 														<colgroup>
 															<col width="*">
 														</colgroup>
@@ -99,7 +99,7 @@
 								<div class="list-collapse">
 									<h5 class="twx-section">{{unit_settings}}</h5>
 									<div>
-										<table class="tbl-border-light tbl-striped">
+										<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 											<colgroup>
 												<col width="*">
 											</colgroup>
@@ -134,9 +134,9 @@
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
 		<div class="box-paper content-settings">
 		<div class="version"><h5>{{text_version}}</h5></div>
-			<div class="scroll-wrap logs" style="margin-bottom: 100px">
+			<div class="scroll-wrap logs" style="margin-bottom: 53px">
 				<div>
-					<table class="tbl-border-light tbl-striped">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="50%">
 							<col width="50%">
@@ -167,10 +167,8 @@
 				ng-click="start_recruit()">{{start}}</a></li>
 			<li><a class="btn-orange btn-border stop"
 				ng-click="stop_recruit()">{{stop}}</a></li>
-			<li><a class="btn-border btn-orange btn-pause"
-				ng-click="pause_recruit()"><span>{{pause}}</span></a></li>
-			<li><a class="btn-border btn-orange btn-resume"
-				ng-click="resume_recruit()"><span>{{resume}}</span></a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+                ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>

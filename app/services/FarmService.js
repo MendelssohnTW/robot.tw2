@@ -512,7 +512,7 @@ define("robotTW2/services/FarmService", [
 			return new Promise(function(resol){
 				if(!isRunning || !commands_for_presets.length){
 					resol()
-					return !1;
+					return;
 				}
 
 				var promise_preset = undefined
@@ -566,10 +566,9 @@ define("robotTW2/services/FarmService", [
 				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 				var g = $timeout(function(){
-
 					clear()
 					var commands_for_presets = []
-					var villages = modelDataService.getSelectedCharacter().getVillageList();
+					, villages = modelDataService.getSelectedCharacter().getVillageList();
 
 					villages.forEach(function(village){
 						var village_id = village.data.villageId

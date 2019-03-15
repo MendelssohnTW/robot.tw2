@@ -23,11 +23,13 @@
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.ATTACK">
 		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
-			<div class="scroll-wrap attack" style="margin-bottom: 100px">
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
+			<div class="scroll-wrap attack" style="margin-bottom: 53px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-striped">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="*">
 							<col width="235px">
@@ -216,9 +218,11 @@
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
 		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
-			<div class="scroll-wrap logs" style="margin-bottom: 100px">
-				<table class="tbl-border-light tbl-striped">
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
+			<div class="scroll-wrap logs" style="margin-bottom: 53px">
+				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 					<colgroup>
 						<col width="50%">
 						<col width="50%">
@@ -246,6 +250,8 @@
 		<ul class="list-btn list-center buttons">
 			<li ng-if="activeTab == TABS.ATTACK"><a
 				class="btn-orange btn-border clear" ng-click="clear_attack()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>

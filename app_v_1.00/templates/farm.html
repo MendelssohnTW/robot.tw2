@@ -26,7 +26,7 @@
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap preset" style="margin-bottom: 100px">
+			<div class="scroll-wrap preset" style="margin-bottom: 53px">
 				<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 					<colgroup>
 						<col width="40%">
@@ -84,31 +84,31 @@
 										</tr>
 										<tr>
 											<td class="cell-right">{{text_units_preset}}</td>
-											<td class="cell-center">{{preset_selected.units.spear ||
+											<td class="cell-center">{{data.selectedOption.units.spear ||
 												0}}</td>
-											<td class="cell-center">{{preset_selected.units.sword ||
+											<td class="cell-center">{{data.selectedOption.units.sword ||
 												0}}</td>
-											<td class="cell-center">{{preset_selected.units.axe ||
+											<td class="cell-center">{{data.selectedOption.units.axe ||
 												0}}</td>
-											<td class="cell-center">{{preset_selected.units.archer
+											<td class="cell-center">{{data.selectedOption.units.archer
 												|| 0}}</td>
-											<td class="cell-center">{{preset_selected.units.light_cavalry
+											<td class="cell-center">{{data.selectedOption.units.light_cavalry
 												|| 0}}</td>
-											<td class="cell-center">{{preset_selected.units.mounted_archer
+											<td class="cell-center">{{data.selectedOption.units.mounted_archer
 												|| 0}}</td>
-											<td class="cell-center">{{preset_selected.units.heavy_cavalry
+											<td class="cell-center">{{data.selectedOption.units.heavy_cavalry
 												|| 0}}</td>
-											<td class="cell-center">{{preset_selected.units.ram ||
+											<td class="cell-center">{{data.selectedOption.units.ram ||
 												0}}</td>
-											<td class="cell-center">{{preset_selected.units.catapult
+											<td class="cell-center">{{data.selectedOption.units.catapult
 												|| 0}}</td>
-											<td class="cell-center">{{preset_selected.units.doppelsoldner
+											<td class="cell-center">{{data.selectedOption.units.doppelsoldner
 												|| 0}}</td>
-											<td class="cell-center">{{preset_selected.units.trebuchet
+											<td class="cell-center">{{data.selectedOption.units.trebuchet
 												|| 0}}</td>
-											<td class="cell-center">{{preset_selected.units.snob ||
+											<td class="cell-center">{{data.selectedOption.units.snob ||
 												0}}</td>
-											<td class="cell-center">{{preset_selected.units.knight
+											<td class="cell-center">{{data.selectedOption.units.knight
 												|| 0}}</td>
 										</tr>
 										<tr>
@@ -177,8 +177,8 @@
 																class="icon icon-34x34-preset"></span></td>
 															<td><div>
 																	<select id="select_preset" class="select-wrapper" 
-																		ng-options="item.name for item in data_preset.availableOptions | filter:shouldShow"
-																		ng-model="data_preset.selectedOption"></select>
+																		ng-options="item.name for item in data.presets | filter:shouldShow"
+																		ng-model="data.selectedOption"></select>
 																</div></td>
 														</tr>
 														<tr>
@@ -196,9 +196,9 @@
 															<td class="cell-center"><span
 																class="icon icon-34x34-preset"></span></td>
 															<td><div>
-																	<select id="select_preset" class="select-wrapper"
-																		ng-options="item.name for item in data_preset.availableOptions | filter:shouldntShow"
-																		ng-model="data.selectedOption"></select>
+																	<select id="select_preset_out" class="select-wrapper"
+																		ng-options="item.name for item in data.presets | filter:shouldntShow"
+																		ng-model="data.selectedOptionOut"></select>
 																</div></td>
 														</tr>
 														<tr>
@@ -464,7 +464,7 @@
 															class="with-margin">{{text_min_point}}</label><input
 															class="input-border inputcreated" type="number"
 															id="min_point" step="1" min="0" max="12000"
-															ng-model="preset_selected.min_points_farm"
+															ng-model="data.selectedOption.min_points_farm"
 															ng-blur="updateBlur()"></td>
 														<td class="cell-center"><label for="min_journey_time"
 															class="with-margin">{{time_min}}</label><input
@@ -475,12 +475,12 @@
 															class="with-margin">{{text_min_dist}}</label><input
 															class="input-border inputcreated" type="number"
 															id="min_dist" step="1" min="1" max="180"
-															ng-model="preset_selected.min_journey_distance" disabled></td>
+															ng-model="data.selectedOption.min_journey_distance" disabled></td>
 														<td class="cell-center"><label for="cmd_max"
 															class="with-margin">{{text_cmd_max}}</label><input
 															class="input-border inputcreated" type="number"
 															id="cmd_max" step="1" min="0" max="50"
-															ng-model="preset_selected.max_commands_farm"
+															ng-model="data.selectedOption.max_commands_farm"
 															ng-blur="updateBlur()"></td>
 
 													</tr>
@@ -490,7 +490,7 @@
 															class="with-margin">{{text_max_point}}</label><input
 															class="input-border inputcreated" type="number"
 															id="max_point" step="1" min="00" max="12000"
-															ng-model="preset_selected.max_points_farm"
+															ng-model="data.selectedOption.max_points_farm"
 															ng-blur="updateBlur()"></td>
 														<td class="cell-center"><label for="max_journey_time"
 															class="with-margin">{{time_max}}</label><input
@@ -501,7 +501,7 @@
 															class="with-margin">{{text_max_dist}}</label><input
 															class="input-border inputcreated" type="number"
 															id="max_dist" step="1" min="5" max="200"
-															ng-model="preset_selected.max_journey_distance" disabled></td>
+															ng-model="data.selectedOption.max_journey_distance" disabled></td>
 														<td class="cell-center">
 															<table
 																class="tbl-border-light tbl-big-header tbl-content tbl-farm">
@@ -561,9 +561,9 @@
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap logs" style="margin-bottom: 100px">
+			<div class="scroll-wrap logs" style="margin-bottom: 53px">
 				<div>
-					<table class="tbl-border-light tbl-striped">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="50%">
 							<col width="50%">
@@ -593,7 +593,7 @@
 			<li><a id="button-stop" class="btn-border btn-orange btn-stop"
 				ng-click="stop_farm()"><span>{{STOP}}</span></a></li>
 			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-				ng-click="menu_farm()"><span>{{MENU}}</span></a></li>
+				ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
 

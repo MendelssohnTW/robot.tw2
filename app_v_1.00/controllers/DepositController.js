@@ -16,6 +16,7 @@ define("robotTW2/controllers/DepositController", [
 	return function DepositController($scope) {
 		
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		var self = this;
 
@@ -28,6 +29,10 @@ define("robotTW2/controllers/DepositController", [
 			} else {
 				return 0;
 			}
+		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function($event, data) {

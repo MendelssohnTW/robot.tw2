@@ -12,9 +12,9 @@
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap main" style="margin-bottom: 100px">
+			<div class="scroll-wrap main" style="margin-bottom: 53px">
 				<div>
-					<table class="tbl-border-light tbl-striped" id="preset-list">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" id="preset-list">
 						<colgroup>
 							<col width="*">
 							<col width="50%">
@@ -25,45 +25,43 @@
 									<div class="list-collapse">
 										<h5 class="twx-section collapse">{{settings_module}}</h5>
 										<div class="list-collapse">
-											<table class="tbl-border-light tbl-striped" id="preset-list">
+											<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" id="preset-list">
 												<colgroup>
 													<col width="*">
-													<col width="48px">
+													<col width="34px">
 													<col width="*">
-													<col width="48px">
-													<col width="100px">
+													<col width="60px">
+													<col width="*">
+													<col width="60px">
 												</colgroup>
 												<tbody>
 													<tr>
 														<td class="cell-right"><label
-															for="time_correction_command">{{text_time_correction_command}}</label><input
-															id="time_correction_command"
-															class="input-border inputcreated disabled" type=text
-															ng-model="data_main.time_correction_command" disabled></td>
+															for="time_automatic_correction_command">{{text_time_automatic_correction_command}}</label></td>
 														<td class="cell-right"><div
 																class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
 																ng-click="recalibrate()" tooltip
 																tooltip-content="{{recal_button}}"></div></td>
 														<td class="cell-right"><label
-															for="max_time_correction">{{text_max_time_correction}}</label><input
-															id="max_time_correction"
-															class="input-border inputcreated" type=text
-															ng-model="data_main.max_time_correction"></td>
-														<td class="cell-right"><div
-																class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
-																ng-click="saveCorrection()" tooltip
-																tooltip-content="{{save_button}}"></div></td>
-														<td></td>
+															for="max_time_correction">{{text_max_time_correction}}</label></td>
+														<td><input id="max_time_correction"
+															class="input-border inputcreated" type=number
+															ng-model="data_main.max_time_correction" ng-blur="updateTimeCorrection()"></td>
+														<td class="cell-right"><label
+															for="time_correction_command">{{text_time_correction_command}}</label></td>
+														<td><input id="time_correction_command"
+															class="input-border inputcreated" type=number
+															ng-model="data_main.time_correction_command" ng-blur="updateTimeCorrection()"></td>
 													</tr>
 
 												</tbody>
 											</table>
-											<table class="tbl-border-light tbl-striped" id="preset-list">
+											<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" id="preset-list">
 												<colgroup>
 													<col width="*">
 													<col width="56px">
 													<col width="56px">
-													<col width="100px">
+													<col width="20px">
 													<col width="50px">
 													<col width="100px">
 													<col width="100px">
@@ -82,15 +80,11 @@
 													<tr>
 														<td class="cell-right"><span>{{ext_all}}</span></td>
 														<td class="cell-center">
-															
+
 															</div>
 														</td>
-														<td class="cell-center">
-															
-														</td>
-														<td colspan="2" class="cell-center">
-															
-														</td>
+														<td class="cell-center"></td>
+														<td colspan="2" class="cell-center"></td>
 														<td><a href="#" tooltip
 															tooltip-content={{clear_databases}}
 															class="btn-orange btn-form btn-border no-padding"

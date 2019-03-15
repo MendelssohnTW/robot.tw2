@@ -27,10 +27,10 @@
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap defense" style="margin-bottom: 100px">
+			<div class="scroll-wrap defense" style="margin-bottom: 53px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-striped">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="*">
 							<col width="235px">
@@ -160,8 +160,8 @@
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap defense" style="margin-bottom: 100px">
-				<table class="tbl-border-light tbl-striped" style="width: 690px;">
+			<div class="scroll-wrap defense" style="margin-bottom: 53px">
+				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" style="width: 690px;">
 					<colgroup>
 						<col width="*">
 						<col width="56px">
@@ -189,10 +189,12 @@
 							</div></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
-							ng-click="selectAllUnits()"><span id="span-text" class="text">Selecionar todos</span></a></td>
-							<td><a href="#" tooltip tooltip-content=""
-                            class="btn-orange btn-form btn-border no-padding"
-                            ng-click="unselectAllUnits()"><span id="span-text" class="text">Desmarcar todos</span></a></td>
+							ng-click="selectAllUnits()"><span id="span-text" class="text">Selecionar
+									todos</span></a></td>
+						<td><a href="#" tooltip tooltip-content=""
+							class="btn-orange btn-form btn-border no-padding"
+							ng-click="unselectAllUnits()"><span id="span-text"
+								class="text">Desmarcar todos</span></a></td>
 					</tr>
 					<tr>
 						<td><select id="select_villages" class="select-wrapper"
@@ -213,11 +215,13 @@
 								</div>
 							</div></td>
 						<td><a href="#" tooltip tooltip-content=""
-                            class="btn-orange btn-form btn-border no-padding"
-                            ng-click="selectAllVillages()"><span id="span-text" class="text">Selecionar todos</span></a></td>
-                            <td><a href="#" tooltip tooltip-content=""
-                            class="btn-orange btn-form btn-border no-padding"
-                            ng-click="unselectAllVillages()"><span id="span-text" class="text">Desmarcar todos</span></a></td>
+							class="btn-orange btn-form btn-border no-padding"
+							ng-click="selectAllVillages()"><span id="span-text"
+								class="text">Selecionar todos</span></a></td>
+						<td><a href="#" tooltip tooltip-content=""
+							class="btn-orange btn-form btn-border no-padding"
+							ng-click="unselectAllVillages()"><span id="span-text"
+								class="text">Desmarcar todos</span></a></td>
 					</tr>
 				</table>
 			</div>
@@ -228,8 +232,8 @@
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap logs" style="margin-bottom: 100px">
-				<table class="tbl-border-light tbl-striped">
+			<div class="scroll-wrap logs" style="margin-bottom: 53px">
+				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 					<colgroup>
 						<col width="50%">
 						<col width="50%">
@@ -257,6 +261,8 @@
 		<ul class="list-btn list-center buttons">
 			<li ng-if="activeTab == TABS.DEFENSE"><a
 				class="btn-orange btn-border clear" ng-click="clear_defense()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>

@@ -27,7 +27,7 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div>
-				<table class="tbl-border-light tbl-striped">
+				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 					<colgroup>
 						<col width="*">
 						<col width="100px">
@@ -49,10 +49,10 @@
 
 			</div>
 
-			<div class="scroll-wrap attack" style="margin-bottom: 100px">
+			<div class="scroll-wrap attack" style="margin-bottom: 53px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-striped">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="*">
 							<col width="235px">
@@ -152,7 +152,7 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div>
-				<table class="tbl-border-light tbl-striped tbl-content"
+				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
 					id="preset-list">
 					<colgroup>
 						<col>
@@ -200,6 +200,8 @@
 			<ul class="list-btn list-center buttons">
 				<li ng-if="activeTab == TABS.ATTACK"><a
 					class="btn-orange btn-border clear" ng-click="clear_spy()">{{CLEAR}}</a></li>
+				<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+					ng-click="menu()"><span>{{MENU}}</span></a></li>
 				<li><a class="btn-orange btn-border close"
 					ng-click="closeWindow()">{{CLOSE}}</a></li>
 			</ul>
