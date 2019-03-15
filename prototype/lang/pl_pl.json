@@ -93,7 +93,8 @@
 		"extension_enabled": "enabled",
 		"extension_start": "Start",
 		"extension_stop": "Stop",
-		"text_time_correction_command": "Current time correction for commands",
+		"text_time_automatic_correction_command": "Automatic time correction for commands",
+		"text_time_correction_command": "Manual time correction for commands",
 		"text_max_time_correction": "Maximum value for time correction for commands"
 	},
 	"headquarter": {

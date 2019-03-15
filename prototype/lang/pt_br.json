@@ -93,7 +93,8 @@
 		"extension_enabled": "ativado",
 		"extension_start": "Iniciar",
 		"extension_stop": "Parar",
-		"text_time_correction_command": "Correção atual de tempo para comandos",
+		"text_time_automatic_correction_command": "Correção automática de tempo para comandos",
+		"text_time_correction_command": "Correção manual de tempo para comandos",
 		"text_max_time_correction": "Valor máximo para correção de tempo para comandos"
 	},
 	"headquarter": {

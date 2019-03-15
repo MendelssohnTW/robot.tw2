@@ -31,13 +31,14 @@
 													<col width="48px">
 													<col width="*">
 													<col width="48px">
-													<col width="100px">
+													<col width="*">
+													<col width="48px">
 												</colgroup>
 												<tbody>
 													<tr>
 														<td class="cell-right"><label
-															for="time_correction_command">{{text_time_correction_command}}</label><input
-															id="time_correction_command"
+															for="time_automatic_correction_command">{{text_time_automatic_correction_command}}</label><input
+															id="time_automatic_correction_command"
 															class="input-border inputcreated disabled" type=text
 															ng-model="data_main.time_correction_command" disabled></td>
 														<td class="cell-right"><div
@@ -53,7 +54,15 @@
 																class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
 																ng-click="saveCorrection()" tooltip
 																tooltip-content="{{save_button}}"></div></td>
-														<td></td>
+														<td class="cell-right"><label
+															for="time_correction_command">{{text_time_correction_command}}</label><input
+															id="time_correction_command"
+															class="input-border inputcreated" type=text
+															ng-model="time_correction_command"></td>
+														<td class="cell-right"><div
+																class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
+																ng-click="saveTimeCorrection()" tooltip
+																tooltip-content="{{save_button}}"></div></td>
 													</tr>
 
 												</tbody>
@@ -82,15 +91,11 @@
 													<tr>
 														<td class="cell-right"><span>{{ext_all}}</span></td>
 														<td class="cell-center">
-															
+
 															</div>
 														</td>
-														<td class="cell-center">
-															
-														</td>
-														<td colspan="2" class="cell-center">
-															
-														</td>
+														<td class="cell-center"></td>
+														<td colspan="2" class="cell-center"></td>
 														<td><a href="#" tooltip
 															tooltip-content={{clear_databases}}
 															class="btn-orange btn-form btn-border no-padding"
