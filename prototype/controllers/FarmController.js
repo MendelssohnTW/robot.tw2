@@ -126,7 +126,6 @@ define("robotTW2/controllers/FarmController", [
 				}
 			}
 			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
-			services.$timeout(function(){$("#select_preset_out")[0].selectedIndex = 1}, 2000)
 		}
 		, updateBlur = function updateBlur(){
 			if($scope.activeTab != TABS.FARM){return}
