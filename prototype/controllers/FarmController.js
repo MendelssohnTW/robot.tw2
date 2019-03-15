@@ -114,8 +114,8 @@ define("robotTW2/controllers/FarmController", [
 			var presetId,
 			assignPreset = function assignPreset(villageId) {
 				if($scope.village_selected.id == villageId){
-					$scope.data.assignedPresetList[+presetId] = true
-					!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
+					$scope.data.assignedPresetList[+$scope.data.presets[key].id] = true
+					!presetIds.find(f=>f==$scope.data.presets[key].id) ? presetIds.push(parseInt($scope.data.presets[key].id, 10)) : presetIds;
 				}
 			};
 			for (key in $scope.data.presets) {
@@ -600,7 +600,7 @@ define("robotTW2/controllers/FarmController", [
 		Object.keys($scope.data_villages.villages).map(function(key){
 			var vill = getVillage(key);
 			$scope.local_data_villages.push({
-				id : key,
+				id : parseInt(key, 10),
 				name : vill.data.name,
 				label : formatHelper.villageNameWithCoordinates(vill.data),
 				value : vill
