@@ -123,7 +123,7 @@ define("robotTW2/controllers/FarmController", [
 				if(!$scope.data.presets[key].assigned_villages){continue}
 				$scope.data.presets[key].assigned_villages.forEach(assignPreset);
 			}
-			setFirstPreset();
+			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
 
 		}
 		, updateBlur = function updateBlur(){
@@ -268,17 +268,6 @@ define("robotTW2/controllers/FarmController", [
 					})
 				})
 			}
-		}
-		, setFirstPreset = function setFirstPreset(){
-
-			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
-//			let availableOptions  = Object.keys($scope.data.assignedPresetList).map(function(elem){return $scope.data.presets[elem]})
-//
-//			$scope.data.selectedOption = availableOptions[0];
-//			$scope.data_preset = {
-//					"availableOptions" 	: availableOptions,
-//					"selectedOption" 	: $scope.data.selectedOption
-//			}
 		}
 		, getFarmTime = function getFarmTime() {
 			var tm = helper.readableMilliseconds($scope.data_farm.farm_time);
@@ -630,7 +619,8 @@ define("robotTW2/controllers/FarmController", [
 				'assignedPresetList': {},
 				'presets'			: presets_load,
 				'hotkeys'			: services.storageService.getItem(services.presetService.getStorageKey()),
-				"selectedOption" 	: $scope.data_villages.villages[$scope.village_selected.id].presets[presets_load[0].id]
+				"selectedOption" 	: {},
+				"selectedOptionOut"	: {}
 		}
 
 		$scope.data_select = {
