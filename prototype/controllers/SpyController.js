@@ -266,9 +266,12 @@ define("robotTW2/controllers/SpyController", [
 			return helper.readableMilliseconds(difTime)
 		}
 
-
 		$scope.clear_spy = function(){
 			services.SpyService.removeAll();
+		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 
 		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;

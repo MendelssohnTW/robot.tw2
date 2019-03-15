@@ -167,10 +167,8 @@
 				ng-click="start_recruit()">{{start}}</a></li>
 			<li><a class="btn-orange btn-border stop"
 				ng-click="stop_recruit()">{{stop}}</a></li>
-			<li><a class="btn-border btn-orange btn-pause"
-				ng-click="pause_recruit()"><span>{{pause}}</span></a></li>
-			<li><a class="btn-border btn-orange btn-resume"
-				ng-click="resume_recruit()"><span>{{resume}}</span></a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+                ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>

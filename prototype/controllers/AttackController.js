@@ -137,6 +137,10 @@ define("robotTW2/controllers/AttackController", [
 		$scope.clear_attack = function(){
 			services.AttackService.removeAll();
 		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
 
 		$scope.removeCommand = services.AttackService.removeCommandAttack;
 

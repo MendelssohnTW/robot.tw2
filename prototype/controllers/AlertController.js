@@ -127,6 +127,10 @@ define("robotTW2/controllers/AlertController", [
 			upDate()
 		}
 		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
+		
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			$scope.isRunning = services.AlertService.isRunning();
 			if (!$scope.$$phase) {

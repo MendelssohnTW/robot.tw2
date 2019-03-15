@@ -95,9 +95,14 @@ define("robotTW2/controllers/RecruitController", [
 			services.RecruitService.pause();
 			$scope.paused = !0;
 		}
+		
 		$scope.resume_recruit = function(){
 			services.RecruitService.resume();
 			$scope.paused = !1;
+		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 		
 		$scope.$watch("grupoSelected", function(){

@@ -223,6 +223,10 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.selectvillagebuildingorder = function(villageId, value){
 			$scope.selected_village_buildingorder[villageId] = value;
 		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
 
 		$scope.selected_village_buildingorder = {};
 

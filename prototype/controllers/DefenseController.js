@@ -215,6 +215,10 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_villages.set();
 			update_all();
 		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
 
 		$scope.removeCommand = services.DefenseService.removeCommandDefense;
 

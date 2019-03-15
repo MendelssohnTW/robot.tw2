@@ -480,10 +480,12 @@ define("robotTW2/controllers/FarmController", [
 				$scope.isRunning = services.FarmService.isRunning();
 			});
 		}
+		
 		$scope.stop_farm = function () {
 			services.FarmService.stop();
 		}
-		$scope.menu_farm = function () {
+		
+		$scope.menu = function () {
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 

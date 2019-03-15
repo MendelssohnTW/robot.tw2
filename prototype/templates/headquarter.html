@@ -178,7 +178,8 @@
 										<div class="village">
 											<div class="name" ng-click="openVillageInfo(vill.villageId)">
 												{{getName(vill.villageId)}}</div>
-											<div class="coordinates" ng-click="jumpToVillage(vill.villageId)">
+											<div class="coordinates"
+												ng-click="jumpToVillage(vill.villageId)">
 												{{getVcoordStart(vill.villageId)}}</div>
 										</div>
 									</td>
@@ -309,12 +310,8 @@
 				ng-click="start_headquarter()">{{start}}</a></li>
 			<li><a class="btn-orange btn-border stop"
 				ng-click="stop_headquarter()">{{stop}}</a></li>
-			<li><a class="btn-border btn-orange btn-pause"
-				ng-click="pause_headquarter()"><span>{{pause}}</span></a></li>
-			<li><a class="btn-border btn-orange btn-resume"
-				ng-click="resume_headquarter()"><span>{{resume}}</span></a></li>
-			<li><a class="btn-orange btn-border restore"
-				ng-click="restore_headquarter()">{{restore}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 

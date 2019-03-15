@@ -25,6 +25,10 @@ define("robotTW2/controllers/ReconController", [
 			return "icon-34x34-unit-" + unit_name;
 		}
 		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
+		
 		$scope.$watch("data_recon", function(){
 			if(!$scope.data_recon){return}
 			data_recon = $scope.data_recon;

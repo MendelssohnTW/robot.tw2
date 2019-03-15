@@ -29,6 +29,10 @@ define("robotTW2/controllers/DepositController", [
 				return 0;
 			}
 		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function($event, data) {
 			if(document.getElementById("input-ms")){

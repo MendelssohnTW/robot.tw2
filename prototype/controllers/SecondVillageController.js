@@ -26,6 +26,10 @@ define("robotTW2/controllers/SecondVillageController", [
 				return helper.readableMilliseconds(conf.MIN_INTERVAL)
 			}
 		}
+		
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_DEPOSIT, function($event, data) {
 			if(document.getElementById("input-ms")){
