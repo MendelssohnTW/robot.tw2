@@ -126,6 +126,7 @@ define("robotTW2/controllers/FarmController", [
 				}
 			}
 			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
+			$("#select_preset")[0].selectedIndex = 0;
 
 		}
 		, updateBlur = function updateBlur(){
