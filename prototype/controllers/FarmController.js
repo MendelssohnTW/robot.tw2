@@ -169,19 +169,21 @@ define("robotTW2/controllers/FarmController", [
 		}
 		, blurPreset = function blurPreset(){
 			if($scope.activeTab != TABS.FARM || !$scope.preset_selected){return}
-			var tmMax = helper.readableMilliseconds($scope.preset_selected.max_journey_time);
-			if(tmMax.length == 7) {
-				tmMax = "0" + tmMax;
+			var tmMax = "00:00:00"
+				, tmMin = "00:00:00";
+			if($scope.preset_selected){
+				tmMax = helper.readableMilliseconds($scope.preset_selected.max_journey_time);
+				if(tmMax.length == 7) {
+					tmMax = "0" + tmMax;
+				}
+				tmMin = helper.readableMilliseconds($scope.preset_selected.min_journey_time);
+				if(tmMin.length == 7) {
+					tmMin = "0" + tmMin;
+				}
 			}
-			document.getElementById("max_journey_time").value = tmMax;	
-			var tmMin = helper.readableMilliseconds($scope.preset_selected.min_journey_time);
-			if(tmMin.length == 7) {
-				tmMin = "0" + tmMin;
-			}
+			document.getElementById("max_journey_time").value = tmMax;
 			document.getElementById("min_journey_time").value = tmMin;
-
 			if (!$scope.$$phase) {$scope.$apply();}
-
 		}
 		, addQuadrant = function addQuadrant(pos){
 			if(!$scope.village_selected || !$scope.preset_selected) {return}
@@ -269,14 +271,15 @@ define("robotTW2/controllers/FarmController", [
 			}
 		}
 		, setFirstPreset = function setFirstPreset(){
-			
-			let availableOptions  = Object.keys($scope.data.assignedPresetList).map(function(elem){return $scope.data.presets[elem]})
-			
-			$scope.preset_selected = availableOptions[0];
-			$scope.data_preset = {
-					"availableOptions" : availableOptions,
-					"selectedOption" : $scope.preset_selected
-			}
+
+			$scope.data.selectedOption = $scope.data.presets[Object.keys($scope.data.assignedPresetList)[0]];
+//			let availableOptions  = Object.keys($scope.data.assignedPresetList).map(function(elem){return $scope.data.presets[elem]})
+//
+//			$scope.preset_selected = availableOptions[0];
+//			$scope.data_preset = {
+//					"availableOptions" 	: availableOptions,
+//					"selectedOption" 	: $scope.preset_selected
+//			}
 		}
 		, getFarmTime = function getFarmTime() {
 			var tm = helper.readableMilliseconds($scope.data_farm.farm_time);
@@ -480,11 +483,11 @@ define("robotTW2/controllers/FarmController", [
 				$scope.isRunning = services.FarmService.isRunning();
 			});
 		}
-		
+
 		$scope.stop_farm = function () {
 			services.FarmService.stop();
 		}
-		
+
 		$scope.menu = function () {
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
@@ -570,11 +573,11 @@ define("robotTW2/controllers/FarmController", [
 			updateAll()
 		}, true)
 
-		$scope.$watch("data_preset", function(){
-			if(!$scope.data_preset || !blurPreset){return}
-			$scope.preset_selected = $scope.data_preset.selectedOption;
-			blurPreset();
-		}, true)
+//		$scope.$watch("data_preset", function(){
+//			if(!$scope.data_preset || !blurPreset){return}
+//			$scope.preset_selected = $scope.data_preset.selectedOption;
+//			blurPreset();
+//		}, true)
 
 		$scope.$watch("data_farm", function(){
 			if(!$scope.data_farm){return}
@@ -604,7 +607,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
 			return $scope.local_data_villages;
 		})
-		
+
 		$scope.village_selected = $scope.local_data_villages[0]
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
 		$scope.infinite = $scope.data_farm.infinite;
@@ -640,7 +643,7 @@ define("robotTW2/controllers/FarmController", [
 				"availableOptions" : [],
 				"selectedOption" : {}
 		}
-
+		
 //		$scope.setCollapse();
 
 		initTab();

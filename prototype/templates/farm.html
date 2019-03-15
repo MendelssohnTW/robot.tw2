@@ -177,8 +177,8 @@
 																class="icon icon-34x34-preset"></span></td>
 															<td><div>
 																	<select id="select_preset" class="select-wrapper" 
-																		ng-options="item.name for item in data_preset.availableOptions | filter:shouldShow"
-																		ng-model="data_preset.selectedOption"></select>
+																		ng-options="item.name for item in data.presets | filter:shouldShow"
+																		ng-model="data.presets.selectedOption"></select>
 																</div></td>
 														</tr>
 														<tr>
@@ -197,8 +197,8 @@
 																class="icon icon-34x34-preset"></span></td>
 															<td><div>
 																	<select id="select_preset" class="select-wrapper"
-																		ng-options="item.name for item in data_preset.availableOptions | filter:shouldntShow"
-																		ng-model="data.selectedOption"></select>
+																		ng-options="item.name for item in data.presets | filter:shouldntShow"
+																		ng-model="data.presets.selectedOption"></select>
 																</div></td>
 														</tr>
 														<tr>
