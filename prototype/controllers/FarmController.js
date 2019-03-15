@@ -125,8 +125,9 @@ define("robotTW2/controllers/FarmController", [
 					$scope.data.presets[key].assigned_villages.forEach(assignPreset);
 				}
 			}
-			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
-			$("#select_preset")[0].selectedIndex = 0;
+//			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
+			$("#select_preset")[0].selectedIndex = 1;
+			$("#select_preset_out")[0].selectedIndex = 1;
 
 		}
 		, updateBlur = function updateBlur(){
