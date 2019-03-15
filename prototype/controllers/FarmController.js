@@ -168,7 +168,7 @@ define("robotTW2/controllers/FarmController", [
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function blurPreset(){
-			if($scope.activeTab != TABS.FARM || !$scope.preset_selected.max_journey_time || $scope.preset_selected.min_journey_time == undefined){return}
+			if($scope.activeTab != TABS.FARM || !$scope.preset_selected){return}
 			var tmMax = helper.readableMilliseconds($scope.preset_selected.max_journey_time);
 			if(tmMax.length == 7) {
 				tmMax = "0" + tmMax;

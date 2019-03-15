@@ -2283,7 +2283,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 			: "",
 								url		 			: "/controllers/ReconController.js",
 								style 				: {
-									width:"350px"
+									width:"450px"
 								}
 						}		
 						robotTW2.build(params)
@@ -2319,7 +2319,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 			: "",
 								url		 			: "/controllers/DepositController.js",
 								style 				: {
-									width:"350px"
+									width:"450px"
 								}
 						}		
 						robotTW2.build(params)
@@ -2338,7 +2338,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								classes 			: "",
 								url		 			: "/controllers/SecondVillageController.js",
 								style 				: {
-									width:"350px"
+									width:"450px"
 								}
 						}		
 						robotTW2.build(params)
