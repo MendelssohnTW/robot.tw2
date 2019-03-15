@@ -119,9 +119,11 @@ define("robotTW2/controllers/FarmController", [
 				}
 			};
 			for (key in $scope.data.presets) {
-				angular.extend($scope.data.presets[key], $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.presets[key].id])
-				if(!$scope.data.presets[key].assigned_villages){continue}
-				$scope.data.presets[key].assigned_villages.forEach(assignPreset);
+				if($scope.data.presets.hasOwnProperty(key)){
+					angular.extend($scope.data.presets[key], $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.presets[key].id])
+					if(!$scope.data.presets[key].assigned_villages){continue}
+					$scope.data.presets[key].assigned_villages.forEach(assignPreset);
+				}
 			}
 			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
 
@@ -562,9 +564,9 @@ define("robotTW2/controllers/FarmController", [
 		}, true)
 
 //		$scope.$watch("data_preset", function(){
-//			if(!$scope.data_preset || !blurPreset){return}
-//			$scope.data.selectedOption = $scope.data_preset.selectedOption;
-//			blurPreset();
+//		if(!$scope.data_preset || !blurPreset){return}
+//		$scope.data.selectedOption = $scope.data_preset.selectedOption;
+//		blurPreset();
 //		}, true)
 
 		$scope.$watch("data_farm", function(){
@@ -632,7 +634,7 @@ define("robotTW2/controllers/FarmController", [
 				"availableOptions" : [],
 				"selectedOption" : {}
 		}
-		
+
 //		$scope.setCollapse();
 
 		initTab();
