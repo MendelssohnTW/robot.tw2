@@ -396,10 +396,10 @@ define("robotTW2/controllers/FarmController", [
 			}, function(data){
 				services.$timeout.cancel(timeout_preset)
 				timeout_preset = undefined
-				$scope.data.selectedOption = undefined;
+				$("#select_preset")[0].selectedIndex = 0;
+				$("#select_preset_out")[0].selectedIndex = 0;
 				triggerUpdate()
 			});
-
 		}
 
 		$scope.assignPreset = function assignPreset() {
