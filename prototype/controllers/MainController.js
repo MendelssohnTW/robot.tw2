@@ -117,15 +117,6 @@ define("robotTW2/controllers/MainController", [
 			services.AttackService.calibrate_time()
 		}
 		
-		$scope.saveCorrection = function(){
-//			$scope.data_main.max_time_correction = $scope.time_correction_command;
-			console.log($scope.data_main.max_time_correction)
-		}
-		
-		$scope.saveTimeCorrection = function(){
-			$scope.data_main.time_correction_command = $scope.time_correction_command;
-		}
-
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
 			services.$timeout(function(){update_status()}, 1500)
