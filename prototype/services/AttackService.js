@@ -1,3 +1,8 @@
+define("robotTW2/CommandAttack", [
+	], function(){
+	return {}
+})
+
 define("robotTW2/services/AttackService", [
 	"robotTW2",
 	"robotTW2/version",
@@ -6,7 +11,8 @@ define("robotTW2/services/AttackService", [
 	"robotTW2/notify",
 	"robotTW2/time",
 	"robotTW2/calibrate_time",
-	"robotTW2/databases/data_attack"
+	"robotTW2/databases/data_attack",
+	"robotTW2/CommandAttack"
 	], function(
 			robotTW2,
 			version,
@@ -15,7 +21,8 @@ define("robotTW2/services/AttackService", [
 			notify,
 			time,
 			calibrate_time,
-			data_attack
+			data_attack,
+			commandAttack
 	){
 	return (function AttackService(
 			$rootScope,
@@ -59,7 +66,7 @@ define("robotTW2/services/AttackService", [
 				})
 
 				commandQueue.bind(id_command, sendAttack, data_attack, params, function(fns){
-					scope.commands[fns.params.id_command] = {
+					commandAttack[fns.params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
 						"params"	: params
 					}
@@ -86,7 +93,7 @@ define("robotTW2/services/AttackService", [
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendAttack, data_attack, params, function(fns){
-					scope.commands[fns.params.id_command] = {
+					commandAttack[fns.params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
 						"params"	: params
 					}
@@ -203,11 +210,11 @@ define("robotTW2/services/AttackService", [
 			addAttack(params);
 		}
 		, removeCommandAttack = function(id_command){
-			if(typeof(scope.commands[id_command].timeout) == "object"){
-				if(scope.commands[id_command].timeout.$$state.status == 0){
-					$timeout.cancel(scope.commands[id_command].timeout)	
+			if(typeof(commandAttack[id_command].timeout) == "object"){
+				if(commandAttack[id_command].timeout.$$state.status == 0){
+					$timeout.cancel(commandAttack[id_command].timeout)	
 				}
-				delete scope.commands[id_command];
+				delete commandAttack[id_command];
 			}
 
 			commandQueue.unbind(id_command, data_attack)
@@ -230,7 +237,6 @@ define("robotTW2/services/AttackService", [
 		, start = function(){
 			if(isRunning){return}
 			ready(function(){
-				scope.commands = {};
 				loadScript("/controllers/AttackCompletionController.js", true);
 				calibrate_time()
 				isRunning = !0

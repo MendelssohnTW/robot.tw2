@@ -576,7 +576,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("data_farm", function(){
 			if(!$scope.data_farm){return}
-			$scope.data_farm = $scope.data_farm;
 			$scope.data_farm.set();
 		}, true)
 
