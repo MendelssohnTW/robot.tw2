@@ -401,13 +401,13 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.assignPreset = function assignPreset() {
-			let presetId = $scope.data_preset.selectedOption.id;
+			let presetId = $scope.data.selectedOptionOut.id;
 			!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
 			$scope.assignPresets();
 		}
 
 		$scope.unassignPreset = function unassignPreset() {
-			let presetId = $scope.data_preset.selectedOption.id;
+			let presetId = $scope.data.selectedOption.id;
 			presetIds.splice(presetIds.indexOf(presetId), 1);
 			$scope.assignPresets();
 		}
@@ -562,12 +562,6 @@ define("robotTW2/controllers/FarmController", [
 			$scope.village_selected = $scope.data_select.selectedOption;
 			updateAll()
 		}, true)
-
-//		$scope.$watch("data_preset", function(){
-//		if(!$scope.data_preset || !blurPreset){return}
-//		$scope.data.selectedOption = $scope.data_preset.selectedOption;
-//		blurPreset();
-//		}, true)
 
 		$scope.$watch("data_farm", function(){
 			if(!$scope.data_farm){return}
