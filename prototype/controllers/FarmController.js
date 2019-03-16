@@ -574,9 +574,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
 		$scope.infinite = $scope.data_farm.infinite;
 		$scope.toggle_option = "check_one";
-		$scope.requestedTab = TABS.FARM;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
 		$scope.check_one = true;
 		$scope.check_all = false;
 		$scope.check_all_villages = false;

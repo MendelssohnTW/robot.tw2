@@ -46,5 +46,9 @@ define("robotTW2/controllers/FarmController", [
 				setActiveTab($scope.requestedTab);
 			}
 		}
+		
+		$scope.requestedTab = TABS.FARM;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
 	}
 })
