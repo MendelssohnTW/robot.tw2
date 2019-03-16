@@ -51,6 +51,15 @@ define("robotTW2/controllers/SpyController", [
 			if(!vid){return}
 			return $scope.local_data_villages[vid].data;
 		}
+		, setActiveTab = function setActiveTab(tab) {
+			$scope.activeTab		= tab;
+			$scope.requestedTab		= null;
+		}
+		, initTab = function initTab() {
+			if (!$scope.activeTab) {
+				setActiveTab($scope.requestedTab);
+			}
+		}
 		, update = function(){
 			$scope.comandos = Object.keys(data_spy.commands).map(function(elem, index, array){
 				return data_spy.commands[elem]
@@ -206,8 +215,7 @@ define("robotTW2/controllers/SpyController", [
 			$scope.data_spy.set();
 		});
 
-		
-		
+		initTab();
 		update();
 		$scope.setCollapse();
 
