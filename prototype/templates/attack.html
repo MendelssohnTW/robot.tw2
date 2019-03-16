@@ -6,22 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="tabs tabs-bg">
-		<div class="tabs-two-col">
-			<div ng-repeat="tabName in TAB_ORDER" class="tab"
-				ng-click="userSetActiveTab(tabName)"
-				ng-class="{'tab-active': activeTab === tabName}">
-				<div class="tab-inner">
-					<div
-						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
-						<a href="#"
-							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.ATTACK">
+	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
 			<div class="version">
 				<h5>{{text_version}}</h5>
@@ -216,39 +201,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
-		<div class="box-paper content-settings">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-			<div class="scroll-wrap logs" style="margin-bottom: 53px">
-				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-					<colgroup>
-						<col width="50%">
-						<col width="50%">
-					</colgroup>
-					<tr ng-repeat="log in data_logs.attack">
-						<td class="cell-right">{{log.text}}</td>
-						<td class="cell-right">{{log.date}}</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div>
-			<div class="jssb-y  ">
-				<div class="jssb-y-track">
-					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
-						<div class="scrollbar-top"></div>
-						<div class="scrollbar-middle"></div>
-						<div class="scrollbar-bottom"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li ng-if="activeTab == TABS.ATTACK"><a
+			<li><a
 				class="btn-orange btn-border clear" ng-click="clear_attack()">{{CLEAR}}</a></li>
 			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
 				ng-click="menu()"><span>{{MENU}}</span></a></li>

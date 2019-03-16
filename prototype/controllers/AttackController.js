@@ -20,49 +20,12 @@ define("robotTW2/controllers/AttackController", [
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		var self = this
-		, local_data_villages = {}
+		
 		$scope.data_attack = data_attack;
 		$scope.text_version = $scope.version + " " + data_attack.version;
 
-		var TABS = {
-				ATTACK 	: services.$filter("i18n")("attack", services.$rootScope.loc.ale, "attack"),
-				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "attack")
-		}
-		, TAB_ORDER = [
-			TABS.ATTACK,
-			TABS.LOG,
-			]
-
-		$scope.requestedTab = TABS.ATTACK;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
-		
-		function getVillage(vid){
-			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid)
-		}
-
-		function getVillageData(vid){
-			if(!vid){return}
-			return local_data_villages[vid].data;
-		}
-		
-		Object.keys(data_villages.villages).map(function(key){
-			let data = getVillage(key).data;
-			angular.extend(local_data_villages, {[key] : {"data": data}})
-			return local_data_villages;
-		})
-
-		var setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab								= tab;
-			$scope.requestedTab								= null;
-		}
-		, initTab = function initTab() {
-			if (!$scope.activeTab) {
-				setActiveTab($scope.requestedTab);
-			}
-		}
+		var self = this
+		, local_data_villages = {}
 		, update = function(){
 			$scope.comandos = Object.keys(data_attack.commands).map(function(elem, index, array){
 				return data_attack.commands[elem]
@@ -72,12 +35,13 @@ define("robotTW2/controllers/AttackController", [
 				$scope.$apply();
 			}
 		}
-
-		initTab();
-		update();
-
-		$scope.userSetActiveTab = function(tab){
-			setActiveTab(tab);
+		, getVillage = function getVillage(vid){
+			if(!vid){return}
+			return services.modelDataService.getSelectedCharacter().getVillage(vid)
+		}
+		, getVillageData = function getVillageData(vid){
+			if(!vid){return}
+			return local_data_villages[vid].data;
 		}
 
 		$scope.getVstart = function(param){
@@ -149,13 +113,6 @@ define("robotTW2/controllers/AttackController", [
 			update();
 		})
 		
-		$scope.$watch("data_logs.attack", function(){
-			$scope.recalcScrollbar();
-			if (!$scope.$$phase) {
-				$scope.$apply();
-			}
-		}, true)
-		
 		$scope.$watch("data_attack", function(){
 			if(!$scope.data_attack){return}
 			data_attack = $scope.data_attack;
@@ -165,6 +122,14 @@ define("robotTW2/controllers/AttackController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_attack.set();
 		});
+		
+		Object.keys(data_villages.villages).map(function(key){
+			let data = getVillage(key).data;
+			angular.extend(local_data_villages, {[key] : {"data": data}})
+			return local_data_villages;
+		})
+
+		update();
 
 		$scope.setCollapse();
 

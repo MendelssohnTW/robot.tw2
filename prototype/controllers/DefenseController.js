@@ -37,13 +37,11 @@ define("robotTW2/controllers/DefenseController", [
 		var self = this
 		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
-				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense"),
-				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "defense")
+				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense")
 		}
 		, TAB_ORDER = [
 			TABS.DEFENSE,
-			TABS.TROOPS,
-			TABS.LOG,
+			TABS.TROOPS
 			]
 		, getVillage = function getVillage(vid){
 			if(!vid){return}

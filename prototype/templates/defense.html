@@ -227,36 +227,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
-		<div class="box-paper content-settings">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-			<div class="scroll-wrap logs" style="margin-bottom: 53px">
-				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-					<colgroup>
-						<col width="50%">
-						<col width="50%">
-					</colgroup>
-					<tr ng-repeat="log in data_logs.defense">
-						<td class="cell-right">{{log.text}}</td>
-						<td class="cell-right">{{log.date}}</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div>
-			<div class="jssb-y  ">
-				<div class="jssb-y-track">
-					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
-						<div class="scrollbar-top"></div>
-						<div class="scrollbar-middle"></div>
-						<div class="scrollbar-bottom"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
 			<li ng-if="activeTab == TABS.DEFENSE"><a
