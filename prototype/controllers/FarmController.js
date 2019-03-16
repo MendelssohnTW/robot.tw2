@@ -592,6 +592,8 @@ define("robotTW2/controllers/FarmController", [
 
 		triggerUpdate()
 		update()
+		
+		$scope.setCollapse();
 
 		return $scope;
 	}
