@@ -38,14 +38,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.data_farm = data_farm;
 
 		var self = this
-		, TABS = {
-				FARM 	: services.$filter("i18n")("text_farm", services.$rootScope.loc.ale, "farm"),
-				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "farm")
-		}
-		, TAB_ORDER = [
-			TABS.FARM,
-			TABS.LOG,
-			]
 		, r_farm_time
 		, time_rest
 		, presetListModel = services.modelDataService.getPresetList()
@@ -58,15 +50,6 @@ define("robotTW2/controllers/FarmController", [
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
 			return $scope.local_data_villages.find(f=>f.id==vid).value;
-		}
-		, setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab	= tab;
-			$scope.requestedTab	= null;
-		}
-		, initTab = function initTab() {
-			if (!$scope.activeTab) {
-				setActiveTab($scope.requestedTab);
-			}
 		}
 		, update = function update() {
 			if(!$scope.infinite){
@@ -311,10 +294,6 @@ define("robotTW2/controllers/FarmController", [
 			}
 			$scope.data_farm.infinite = $scope.infinite; 
 			$scope.blur();
-		}
-
-		$scope.userSetActiveTab = function(tab){
-			setActiveTab(tab);
 		}
 
 		$scope.toggleOption = function(option){
@@ -628,9 +607,6 @@ define("robotTW2/controllers/FarmController", [
 				"selectedOption" : {}
 		}
 
-//		$scope.setCollapse();
-
-		initTab();
 		getDetailsExceptions();
 
 		triggerUpdate()
