@@ -6,33 +6,15 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="tabs tabs-bg">
-		<div class="tabs-three-col">
-			<div ng-repeat="tabName in TAB_ORDER" class="tab"
-				ng-click="userSetActiveTab(tabName)"
-				ng-class="{'tab-active': activeTab === tabName}">
-				<div class="tab-inner">
-					<div
-						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
-						<a href="#"
-							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.RECRUIT">
+	<div class="win-main" scrollbar="">
 		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
 			<div class="scroll-wrap recruit" style="margin-bottom: 53px">
 				<div>
-					<span
-						ng-class="{'icon-26x26-dot-green' : isRunning, 'icon-26x26-dot-red' : !isRunning, 'icon-26x26-dot-blue' : isRunning && paused}"></span>{{recruit_running}}
-				</div>
-				<h5 class="twx-section">{{settings}}</h5>
-				<div>
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="33%">
 							<col width="33%">
@@ -70,13 +52,15 @@
 								<div class="list-collapse">
 									<h5 class="twx-section">{{groups_selection}}</h5>
 									<div>
-										<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 											<colgroup>
 												<col width="*">
 											</colgroup>
 											<tr>
 												<td class="cell-space">
-													<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+													<table
+														class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 														<colgroup>
 															<col width="*">
 														</colgroup>
@@ -99,7 +83,8 @@
 								<div class="list-collapse">
 									<h5 class="twx-section">{{unit_settings}}</h5>
 									<div>
-										<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 											<colgroup>
 												<col width="*">
 											</colgroup>
@@ -115,35 +100,10 @@
 								</div>
 							</td>
 						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div>
-			<div class="jssb-y  ">
-				<div class="jssb-y-track">
-					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
-						<div class="scrollbar-top"></div>
-						<div class="scrollbar-middle"></div>
-						<div class="scrollbar-bottom"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
-		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
-			<div class="scroll-wrap logs" style="margin-bottom: 53px">
-				<div>
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tr ng-repeat="log in data_logs.recruit">
-							<td class="cell-right">{{log.text}}</td>
-							<td class="cell-right">{{log.date}}</td>
+						<tr>
+							<td><span
+								ng-class="{'icon-26x26-dot-green' : isRunning, 'icon-26x26-dot-red' : !isRunning, 'icon-26x26-dot-blue' : isRunning && paused}"></span>{{recruit_running}}
+							</td>
 						</tr>
 					</table>
 				</div>
@@ -168,7 +128,7 @@
 			<li><a class="btn-orange btn-border stop"
 				ng-click="stop_recruit()">{{stop}}</a></li>
 			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-                ng-click="menu()"><span>{{MENU}}</span></a></li>
+				ng-click="menu()"><span>{{MENU}}</span></a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{close}}</a></li>
 		</ul>
