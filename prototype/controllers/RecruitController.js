@@ -27,14 +27,8 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.data_recruit = data_recruit
 		$scope.text_version = $scope.version + " " + data_recruit.version;
 		
-		
-		
 		$scope.isRunning = services.RecruitService.isRunning();
 		
-		$scope.requestedTab = TABS.RECRUIT;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
-
 		var self = this
 		, return_units = function (){
 			var units = {};
