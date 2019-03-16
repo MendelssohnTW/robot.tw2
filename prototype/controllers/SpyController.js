@@ -18,6 +18,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
+		$scope.SEARCH_MAP = services.$filter('i18n')('SEARCH_MAP', services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		
@@ -87,6 +88,36 @@ define("robotTW2/controllers/SpyController", [
 		})
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
+		
+		$scope.userSetActiveTab = function(tab){
+			setActiveTab(tab);
+		}
+		
+		$scope.autoCompleteKey = function(event){
+			let obj_autocomplete = {
+					'type'					: 'village',
+					'placeholder'			: $scope.SEARCH_MAP,
+					'onEnter'				: function(item, element){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
+						$scope.item = item
+						element[0].firstElementChild.value = item.displayedName
+						if (!$scope.$$phase) {$scope.$apply()}
+					},
+					'exclude'				: function(elem){
+						return elem.owner_id == undefined
+					},
+					"inputValueReadOnly" 	: "",
+					"keepSelected"			: false
+			}
+
+			let object_scope = {
+					"inputValue" 	: event.srcElement.value,
+					"element" 		: $($("#autocomplete_spy")[0]),
+					"id" 			: "autocomplete_farm",
+					"autoComplete" 	: obj_autocomplete
+			}
+//			angular.extend($scope, object_scope)
+			autocomplete(object_scope, event);
+		}
 
 		$scope.getVstart = function(param){
 			if($scope.activeTab != TABS.SPY){return}
