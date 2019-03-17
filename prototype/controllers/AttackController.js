@@ -39,11 +39,10 @@ define("robotTW2/controllers/AttackController", [
 				}, function(data){
 					$scope.local_out_villages.push(
 							{
-								[data.village_id] : {
-									"label"	: data.village_name + " (" + data.village_x + "|" + data.village_y + ")",
-									"x"		: data.village_x,
-									"y"		: data.village_y
-								}
+								"id"	: data.village_id ,
+								"label"	: data.village_name + " (" + data.village_x + "|" + data.village_y + ")",
+								"x"		: data.village_x,
+								"y"		: data.village_y
 							});
 					if (!$scope.$$phase) {$scope.$apply()}
 				})
@@ -96,7 +95,7 @@ define("robotTW2/controllers/AttackController", [
 
 		$scope.jumpOutVillage = function(vid){
 			if(!vid){return}
-			let v = $scope.local_out_villages.find(f=>f==vid);
+			let v = $scope.local_out_villages.find(f=>f.id==vid);
 			if(!v){return}
 			services.mapService.jumpToVillage(v.x, v.y);
 			$scope.closeWindow();
