@@ -214,6 +214,8 @@
     "recruit": {
         "recruit": "Recrutamento",
         "log": "Log",
+        "select_all": "Selecionar todos",
+        "remove_all": "Remover todos",
         "title": "Recrutamento de tropas",
         "settings": "Configurações para recrutamento de tropas",
         "recruit_running": "Estado atual do recrutamento",

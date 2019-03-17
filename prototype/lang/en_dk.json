@@ -215,6 +215,8 @@
 	"recruit": {
 		"recruit": "Recruitment",
 		"log": "Log",
+        "select_all": "Select all",
+        "remove_all": "Remove all",
 		"title": "Recruitment of troops",
 		"settings": "Configurations for troop recruitment",
 		"recruit_running": "Current recruitment status",
