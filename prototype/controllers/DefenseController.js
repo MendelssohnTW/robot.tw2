@@ -89,7 +89,7 @@ define("robotTW2/controllers/DefenseController", [
 			Object.keys($scope.data_defense.list_defense).map(function(key){
 				$scope.local_list_defense.push({
 					id : id++,
-					name : "<div><span class='icon-34x34-unit-" + key + "'></span>" + key + "</div>",
+					name : key,
 					value : $scope.data_defense.list_defense[key]
 				})
 				return $scope.local_list_defense;
