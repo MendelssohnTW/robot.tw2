@@ -158,6 +158,10 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getHoraSend = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
 		}
+		
+		$scope.getDataSend = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "dd/MM/yyyy");
+		}
 
 		$scope.getHoraAlvo = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
