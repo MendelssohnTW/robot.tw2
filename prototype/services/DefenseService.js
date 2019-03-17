@@ -47,7 +47,6 @@ define("robotTW2/services/DefenseService", [
 		, timeout = undefined
 		, oldCommand
 		, d = {}
-		, scope = $rootScope.$new()
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
@@ -556,12 +555,12 @@ define("robotTW2/services/DefenseService", [
 				return
 			}
 			if(data.direction == "backward" && data.type == "support"){
-				var cmds = Object.keys(commandsDefense).map(function(param){
-					if(commandsDefense[param].params.start_village == data.home.id
-							&& commandsDefense[param].params.target_village == data.target.id
-							&& commandsDefense[param].params.id_command == data.command_id
+				var cmds = Object.keys(commandDefense).map(function(param){
+					if(commandDefense[param].params.start_village == data.home.id
+							&& commandDefense[param].params.target_village == data.target.id
+							&& commandDefense[param].params.id_command == data.command_id
 					) {
-						return commandsDefense[param].params	
+						return commandDefense[param].params	
 					} else {
 						return undefined
 					}
@@ -578,12 +577,12 @@ define("robotTW2/services/DefenseService", [
 				return
 			}
 			if(data.direction == "forward" && data.type == "support"){
-				var cmds = Object.keys(commandsDefense).map(function(param){
+				var cmds = Object.keys(commandDefense).map(function(param){
 					//verificar a origem e alvo do comando
-					if(commandsDefense[param].params.start_village == data.home.id 
-							&& commandsDefense[param].params.target_village == data.target.id
+					if(commandDefense[param].params.start_village == data.home.id 
+							&& commandDefense[param].params.target_village == data.target.id
 					) {
-						return commandsDefense[param].params
+						return commandDefense[param].params
 					} else {
 						return undefined
 					}
