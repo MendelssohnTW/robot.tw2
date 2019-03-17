@@ -102,7 +102,7 @@
         "standard": "Standard",
         "attack": "Attack",
         "defense": "Defense",
-         "database": "Database",
+        "database": "Database",
         "ext_all": "All",
         "headquarter_running": "Current state of the barracks",
 		"title": "Automation of the Barracks",
@@ -155,7 +155,7 @@
 	},
 	"farm": {
 		"farm": "Collection settings",
-		"preset": "Presets",
+		"village": "Village",
 		"log": "Log",
 		"title": "Collection of resources",
 		"wait_init": "Waiting for start of Farm cycle",
@@ -295,7 +295,7 @@
 		"text_check": "Send all",
 		"title": "Scheduled commands",
 		"command_list": "List of commands",
-		"ident_cmd": "Command identification",
+		"ident_cmd": "ID",
 		"exclude_button": "Delete command",
 		"schedule": "Schedule"
 	},
