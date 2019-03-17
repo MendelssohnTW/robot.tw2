@@ -43,6 +43,7 @@
 							<col width="100px">
 							<col width="48px">
 							<col width="48px">
+							<col width="48px">
 						</colgroup>
 						<tr>
 							<th class="selected" style="display: table-cell">{{ident_cmd}}</th>
@@ -67,14 +68,14 @@
 							<td class="cell-center"><div>{{comando.id_command}}</div></td>
 							<td class="cell-center">
 								<div class="village">
-									<div class="coordinates"
+									<div class="name-coord"
 										ng-click="jumpToVillage(comando.start_village)">
 										{{getLabelStart(comando)}}</div>
 								</div>
 							</td>
 							<td class="cell-center">
 								<div class="village">
-									<div class="coordinates"
+									<div class="name-coord"
 										ng-click="jumpToVillage(comando.target_village)">
 										{{getLabelTarget(comando)}}</div>
 								</div>
