@@ -23,14 +23,15 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.DEFENSE">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings screen-overview">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
 			<div class="scroll-wrap defense" style="margin-bottom: 53px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="*">
 							<col width="235px">
@@ -79,13 +80,15 @@
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center"><span>{{comando.id_command}}</span></td>
 							<td class="cell-center">
-								<div class="coordinates" ng-click="jumpToVillage(comando.start_village)">
-									{{getLabelStart(comando)}}
-								</div>
+								<div class="coordinates"
+									ng-click="jumpToVillage(comando.start_village)">
+									{{getLabelStart(comando)}}</div>
 							</td>
 							<td class="cell-center">
-								<div class="coordinates" ng-click="jumpToVillage(comando.target_village)">
-									{{getLabelTarget(comando)}}
+								<div class="village">
+									<div class="coordinates"
+										ng-click="jumpToVillage(comando.target_village)">
+										{{getLabelTarget(comando)}}</div>
 								</div>
 							</td>
 							<td class="cell-center">
@@ -94,37 +97,23 @@
 								</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									{{getTimeRest(comando)}}
-								</div>
+								<div>{{getTimeRest(comando)}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									{{getHoraSend(comando)}}
-								</div>
+								<div>{{getHoraSend(comando)}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									{{getDataAlvo(comando)}}
-								</div>
-								<div>
-									{{getHoraAlvo(comando)}}
-								</div>
+								<div>{{getDataAlvo(comando)}}</div>
+								<div>{{getHoraAlvo(comando)}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									{{getHoraRetorno(comando)}}
-								</div>
+								<div>{{getHoraRetorno(comando)}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									{{comando.time_sniper_ant / 1000}} s
-								</div>
+								<div>{{comando.time_sniper_ant / 1000}} s</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									{{comando.time_sniper_post / 1000}} s
-								</div>
+								<div>{{comando.time_sniper_post / 1000}} s</div>
 							</td>
 
 							<td class="cell-center"><a href="#"
@@ -155,7 +144,9 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div class="scroll-wrap defense" style="margin-bottom: 53px">
-				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" style="width: 690px;">
+				<table
+					class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+					style="width: 690px;">
 					<colgroup>
 						<col width="*">
 						<col width="56px">
@@ -169,7 +160,7 @@
 							ng-model="data_units.selectedOption"></select></td>
 						<td><div id="switch" switch-slider="" border="true"
 								enabled="true" value="data_units.selectedOption.value"
-								vertical="false" size="'56x28'">    
+								vertical="false" size="'56x28'">
 								<div ng-class="{'box-border-dark box-filter': border}"
 									class="box-border-dark box-filter">
 									<div class="switch switch-56x28 switch-horizontal"
