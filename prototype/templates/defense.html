@@ -33,9 +33,9 @@
 					<table
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
-							<col width="*">
-							<col width="235px">
-							<col width="235px">
+							<col width="100px">
+							<col width="180px">
+							<col width="180px">
 							<col width="45px">
 							<col width="60px">
 							<col width="100px">
@@ -58,24 +58,23 @@
 							<col width="34px">
 						</colgroup>
 						<tr>
-							<td class="cell-center"><span>{{ident_cmd}}</span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-units-outgoing"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-village"></span></td>
-							<td class="cell-center"></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-time-remaining"></span></td>
-							<td class="cell-center"><span class="icon icon-26x26-time"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-26x26-time-arrival"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-units-return"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-26x26-arrow-left"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-26x26-arrow-right"></span></td>
-							<td class="cell-center"></td>
+							<th style="display: table-cell">{{ident_cmd}}</th>
+							<th class="icon icon-34x34-units-outgoing"
+								style="display: table-cell"></th>
+							<th class="icon icon-34x34-village" style="display: table-cell"></th>
+							<th style="display: table-cell"></th>
+							<th class="icon icon-34x34-time-remaining"
+								style="display: table-cell"></th>
+							<th class="icon icon-26x26-time" style="display: table-cell"></th>
+							<th class="icon icon-26x26-time-arrival"
+								style="display: table-cell"></th>
+							<th class="icon icon-34x34-units-return"
+								style="display: table-cell"></th>
+							<th class="icon icon-26x26-arrow-left"
+								style="display: table-cell"></th>
+							<th class="icon icon-26x26-arrow-right"
+								style="display: table-cell"></th>
+							<th style="display: table-cell"></th>
 						</tr>
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center"><span>{{comando.id_command}}</span></td>
@@ -93,7 +92,7 @@
 							</td>
 							<td class="cell-center">
 								<div>
-									<span class="type" ng-class="getClass(comando.type)"></span>
+									<div class="type" ng-class="getClass(comando.type)"></div>
 								</div>
 							</td>
 							<td class="cell-center">
