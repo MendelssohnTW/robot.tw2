@@ -214,6 +214,7 @@
     "recruit": {
         "recruit": "Recrutamento",
         "log": "Log",
+        "select_villages": "Ativação/Desativação de aldeias",
         "select_all": "Selecionar todos",
         "remove_all": "Remover todos",
         "title": "Recrutamento de tropas",
