@@ -174,8 +174,8 @@
 							ng-options="item as item.name for item in data_units.availableOptions track by item.name"
 							ng-model="data_units.selectedOption"></select></td>
 						<td><div id="switch" switch-slider="" border="true"
-								enabled="true" value="data_units.selectedOption.value.defense_activate"
-								vertical="false" size="'56x28'">
+								enabled="true" value="data_units.selectedOption.value"
+								vertical="false" size="'56x28'">    
 								<div ng-class="{'box-border-dark box-filter': border}"
 									class="box-border-dark box-filter">
 									<div class="switch switch-56x28 switch-horizontal"
@@ -201,7 +201,7 @@
 							ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 							ng-model="data_select.selectedOption"></select></td>
 						<td><div id="switch" switch-slider="" border="true"
-								enabled="true" value="data_select.selectedOption.value"
+								enabled="true" value="data_select.selectedOption.value.defense_activate"
 								vertical="false" size="'56x28'">
 								<div ng-class="{'box-border-dark box-filter': border}"
 									class="box-border-dark box-filter">
