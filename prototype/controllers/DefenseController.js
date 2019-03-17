@@ -76,7 +76,8 @@ define("robotTW2/controllers/DefenseController", [
 					id : key,
 					name : vill.data.name,
 					label : formatHelper.villageNameWithCoordinates(vill.data),
-					value : $scope.data_villages.villages[key].defense_activate
+					value : $scope.data_villages.villages[key]
+//					value : $scope.data_villages.villages[key].defense_activate
 				})
 				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
 				return $scope.local_data_villages;
