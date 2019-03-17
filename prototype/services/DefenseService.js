@@ -520,7 +520,6 @@ define("robotTW2/services/DefenseService", [
 					}
 				}
 				params.units = units;
-//				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
@@ -568,7 +567,6 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					cmd = cmds.pop();
-//					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
 				}
 			}
 		}
@@ -844,12 +842,6 @@ define("robotTW2/services/DefenseService", [
 
 			returnCommand();
 		}
-
-		angular.extend(scope, {
-			
-			params 				: {},
-			commands			: {}
-		})
 
 		return	{
 			init				: init,
