@@ -34,7 +34,7 @@ define("robotTW2/controllers/AttackController", [
 			$scope.comandos = Object.keys(data_attack.commands).map(function(elem, index, array){
 				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 					'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
-					'village_id'		: elem.id_command,
+					'village_id'		: data_attack.commands[elem].target_village,
 					'num_reports'		: 0
 				}, function(data){
 					$scope.local_out_villages.push(
