@@ -2164,7 +2164,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 		: "alert",
 								classes 			: "",
 								url		 			: "/controllers/AlertController.js",
-								style 				: null
+								style 				: {
+									width:"900px"
+								}
 						}		
 						robotTW2.build(params)
 					})
