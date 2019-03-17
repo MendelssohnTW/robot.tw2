@@ -830,16 +830,6 @@ define("robotTW2/services/DefenseService", [
 				delete listener_cancel;
 			}
 
-//			if(listener_timeout && typeof(listener_timeout) == "function") {
-//			listener_timeout();
-//			delete listener_timeout;
-//			}
-
-//			if(listener_returned && typeof(listener_returned) == "function") {
-//			listener_returned();
-//			delete listener_returned;
-//			}
-
 			returnCommand();
 		}
 
