@@ -16,11 +16,10 @@ define("robotTW2/controllers/RecruitController", [
 			data_recruit
 	){
 	return function RecruitController($scope) {
-		$scope.save = services.$filter("i18n")("SAVE", services.$rootScope.loc.ale);
-		$scope.close = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
-		$scope.start = services.$filter("i18n")("START", services.$rootScope.loc.ale);
-		$scope.stop = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
+		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
+		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		
 		
