@@ -138,7 +138,7 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.getClass = function(name){
 			if(!name){return}
-			return "icon-26x26-unit-" + name;
+			return "icon icon-34x34-unit-" + name;
 		}
 
 		$scope.getHoraSend = function(param){
