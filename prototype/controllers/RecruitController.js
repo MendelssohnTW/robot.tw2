@@ -46,6 +46,10 @@ define("robotTW2/controllers/RecruitController", [
 			})
 			return units
 		}
+		, getVillage = function getVillage(vid){
+			if(!vid){return}
+			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
+		}
 		, update_all = function(){
 			$scope.local_data_villages = [];
 			Object.keys($scope.data_villages.villages).map(function(key){
