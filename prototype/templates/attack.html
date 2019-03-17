@@ -41,7 +41,7 @@
 							<col width="34px">
 						</colgroup>
 						<tr>
-							<td class="cell-center"><span>{{ident_cmd}}</span></td>
+							<td class="cell-center">{{ident_cmd}}</td>
 							<td class="cell-center"><span
 								class="icon icon-34x34-units-outgoing"></span></td>
 							<td class="cell-center"><span
@@ -74,21 +74,21 @@
 							<td class="cell-center"></td>
 						</tr>
 						<tr ng-repeat="comando in comandos">
-							<td class="cell-center"><span>{{comando.id_command}}</span></td>
+							<td class="cell-center">{{comando.id_command}}</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getVstart(comando)}}</span>
+									{{getVstart(comando)}}
 								</div>
 								<div>
-									<span>{{getVcoordStart(comando)}}</span>
+									{{getVcoordStart(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.target_name}}</span>
+									{{comando.target_name}}
 								</div>
 								<div>
-									<span>{{getVcoordTarget(comando)}}</span>
+									{{getVcoordTarget(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
@@ -98,85 +98,85 @@
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getTimeRest(comando)}}</span>
+									{{getTimeRest(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getHoraSend(comando)}}</span>
+									{{getHoraSend(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getDataAlvo(comando)}}</span>
+									{{getDataAlvo(comando)}}
 								</div>
 								<div>
-									<span>{{getHoraAlvo(comando)}}</span>
-								</div>
-							</td>
-							<td class="cell-center">
-								<div>
-									<span>{{comando.units.spear || 0}}</span>
+									{{getHoraAlvo(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.sword || 0}}</span>
+									{{comando.units.spear || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.axe || 0}}</span>
+									{{comando.units.sword || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.archer || 0}}</span>
+									{{comando.units.axe || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.light_cavalry || 0}}</span>
+									{{comando.units.archer || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.mounted_archer || 0}}</span>
+									{{comando.units.light_cavalry || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.heavy_cavalry || 0}}</span>
+									{{comando.units.mounted_archer || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.ram || 0}}</span>
+									{{comando.units.heavy_cavalry || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.catapult || 0}}</span>
+									{{comando.units.ram || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.doppelsoldner || 0}}</span>
+									{{comando.units.catapult || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.trebuchet || 0}}</span>
+									{{comando.units.doppelsoldner || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.snob || 0}}</span>
+									{{comando.units.trebuchet || 0}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.units.knight || 0}}</span>
+									{{comando.units.snob || 0}}
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									{{comando.units.knight || 0}}
 								</div>
 							</td>
 							<td class="cell-center"><a href="#"
@@ -206,7 +206,7 @@
 			<li><a
 				class="btn-orange btn-border clear" ng-click="clear_attack()">{{CLEAR}}</a></li>
 			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-				ng-click="menu()"><span>{{MENU}}</span></a></li>
+				ng-click="menu()">{{MENU}}</a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>
