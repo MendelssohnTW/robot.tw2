@@ -44,21 +44,6 @@ define("robotTW2/controllers/AttackController", [
 			return local_data_villages[vid].data;
 		}
 
-		$scope.getVstart = function(param){
-			var vid = param.start_village;
-			if(!vid){return}
-			return getVillageData(vid).name
-		}
-
-		$scope.getVcoordStart = function(param){
-
-			var vid = param.start_village;
-			if(!vid){return}
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
-			return "(" + x + "/" + y + ")"
-		}
-
 		$scope.getClass = function(type){
 			var className = "";
 			switch (type) {
@@ -77,9 +62,35 @@ define("robotTW2/controllers/AttackController", [
 			}
 			return className
 		}
+		
+		$scope.jumpToVillage = function(vid){
+			if(!vid){return}
+			var data = getVillageData(vid);
+			if(!data){return}
+			let x = data.x
+			let y = data.y
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(vid)
+			services.mapService.jumpToVillage(x, y);
+			$scope.closeWindow();
+		}
+		
+		$scope.jumpOutVillage = function(vid){
+			if(!vid){return}
+			var data = getVillageData(vid);
+			if(!data){return}
+			let x = data.x
+			let y = data.y
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(vid)
+			services.mapService.jumpToVillage(x, y);
+			$scope.closeWindow();
+		}
 
 		$scope.getHoraSend = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
+		}
+		
+		$scope.getDataSend = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "dd/MM/yyyy");
 		}
 
 		$scope.getHoraAlvo = function(param){
@@ -94,10 +105,37 @@ define("robotTW2/controllers/AttackController", [
 			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
 			return helper.readableMilliseconds(difTime)
 		}
-
-		$scope.getVcoordTarget = function(param){
-			return "(" + param.target_x + "/" + param.target_y + ")"
+		
+		$scope.getLabelStart = function(param){
+			let vid = param.start_village;
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
+		
+		$scope.getLabelTarget = function(param){
+			let vid = param.target_village;
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
+		}
+		
+//		$scope.getVstart = function(param){
+//			var vid = param.start_village;
+//			if(!vid){return}
+//			return getVillageData(vid).name
+//		}
+//
+//		$scope.getVcoordStart = function(param){
+//
+//			var vid = param.start_village;
+//			if(!vid){return}
+//			var x = getVillageData(vid).x
+//			var y = getVillageData(vid).y
+//			return "(" + x + "/" + y + ")"
+//		}
+
+//		$scope.getVcoordTarget = function(param){
+//			return "(" + param.target_x + "/" + param.target_y + ")"
+//		}
 
 		$scope.clear_attack = function(){
 			services.AttackService.removeAll();
@@ -123,11 +161,25 @@ define("robotTW2/controllers/AttackController", [
 			$scope.data_attack.set();
 		});
 		
-		Object.keys(data_villages.villages).map(function(key){
-			let data = getVillage(key).data;
-			angular.extend(local_data_villages, {[key] : {"data": data}})
-			return local_data_villages;
-		})
+//		Object.keys(data_villages.villages).map(function(key){
+//			let data = getVillage(key).data;
+//			angular.extend(local_data_villages, {[key] : {"data": data}})
+//			return local_data_villages;
+//		})
+		
+		Object.keys($scope.data_villages.villages).map(function(key){
+				var vill = getVillage(key);
+				$scope.local_data_villages.push({
+					id 		: key,
+					name 	: vill.data.name,
+					label 	: formatHelper.villageNameWithCoordinates(vill.data),
+					value 	: $scope.data_villages.villages[key].defense_activate,
+					x		: vill.data.x,
+					y		: vill.data.y
+				})
+				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
+				return $scope.local_data_villages;
+			})
 
 		update();
 
