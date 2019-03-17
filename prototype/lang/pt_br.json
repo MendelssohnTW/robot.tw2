@@ -306,7 +306,7 @@
 		"text_ms": "Milisegundos",
 		"title": "Comandos programados",
 		"command_list": "Lista de comandos",
-		"ident_cmd": "Identificação do comando",
+		"ident_cmd": "ID",
 		"exclude_button": "Excluir comando",
 		"schedule": "Programar"
 	},

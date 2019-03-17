@@ -40,25 +40,12 @@
 							<col width="60px">
 							<col width="100px">
 							<col width="100px">
-
+							<col width="100px">
 							<col width="48px">
 							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-
-							<col width="34px">
 						</colgroup>
 						<tr>
-							<th style="display: table-cell">{{ident_cmd}}</th>
+							<th class="selected" style="display: table-cell">{{ident_cmd}}</th>
 							<th class="icon icon-34x34-units-outgoing"
 								style="display: table-cell"></th>
 							<th class="icon icon-34x34-village" style="display: table-cell"></th>
@@ -77,11 +64,13 @@
 							<th style="display: table-cell"></th>
 						</tr>
 						<tr ng-repeat="comando in comandos">
-							<td class="cell-center"><span>{{comando.id_command}}</span></td>
+							<td class="cell-center"><div>{{comando.id_command}}</div></td>
 							<td class="cell-center">
-								<div class="coordinates"
-									ng-click="jumpToVillage(comando.start_village)">
-									{{getLabelStart(comando)}}</div>
+								<div class="village">
+									<div class="coordinates"
+										ng-click="jumpToVillage(comando.start_village)">
+										{{getLabelStart(comando)}}</div>
+								</div>
 							</td>
 							<td class="cell-center">
 								<div class="village">

@@ -307,7 +307,7 @@
 		"text_ms": "Milliseconds",
 		"title": "Scheduled commands",
 		"command_list": "List of commands",
-		"ident_cmd": "Command identification",
+		"ident_cmd": "ID",
 		"exclude_button": "Delete command",
 		"schedule": "Schedule"
 	},
