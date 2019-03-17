@@ -74,7 +74,7 @@ define("robotTW2/controllers/DefenseController", [
 				var vill = getVillage(key);
 				$scope.local_data_villages.push({
 					id 		: key,
-					name 	: vill.data.name,
+					name 	: "<div>" + vill.data.name + "</div>",
 					label 	: formatHelper.villageNameWithCoordinates(vill.data),
 					value 	: $scope.data_villages.villages[key].defense_activate,
 					x		: vill.data.x,
