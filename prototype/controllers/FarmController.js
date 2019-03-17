@@ -147,7 +147,7 @@ define("robotTW2/controllers/FarmController", [
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function blurPreset(){
-			if(!$scope.data.selectedOption){return}
+			if(!$scope.data.selectedOption || !document.getElementById("max_journey_time") || !document.getElementById("min_journey_time")){return}
 			var tmMax = "00:00:00"
 				, tmMin = "00:00:00";
 			if($scope.data.selectedOption){
