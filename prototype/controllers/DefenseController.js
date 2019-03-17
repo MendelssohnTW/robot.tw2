@@ -73,10 +73,12 @@ define("robotTW2/controllers/DefenseController", [
 			Object.keys($scope.data_villages.villages).map(function(key){
 				var vill = getVillage(key);
 				$scope.local_data_villages.push({
-					id : key,
-					name : vill.data.name,
-					label : formatHelper.villageNameWithCoordinates(vill.data),
-					value : $scope.data_villages.villages[key].defense_activate
+					id 		: key,
+					name 	: vill.data.name,
+					label 	: formatHelper.villageNameWithCoordinates(vill.data),
+					value 	: $scope.data_villages.villages[key].defense_activate,
+					x		: vill.data.x,
+					y		: vill.data.y
 				})
 				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
 				return $scope.local_data_villages;
@@ -115,12 +117,8 @@ define("robotTW2/controllers/DefenseController", [
 			if(!vid){return}
 			var data = getVillageData(vid);
 			if(!data){return}
-			let label = data.label
-			let args_coord = label.split(" (");
-			let args_x = args_coord[1].split("|")
-			let args_y = args_x[1].split(")")
-			let x = args_x[0]
-			let y = args_y[0]
+			let x = data.x
+			let y = data.y
 			services.mapService.jumpToVillage(x, y);
 		}
 		
