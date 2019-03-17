@@ -99,7 +99,7 @@ define("robotTW2/controllers/RecruitController", [
 		})
 		
 		Object.keys($scope.data_recruit.Groups).map(function(key){
-			$scope.local_data_groups.push(key)
+			$scope.local_data_groups.push($scope.data_recruit.Groups[key])
 			$scope.local_data_groups.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_groups;
 		})
