@@ -119,7 +119,7 @@ define("robotTW2/controllers/DefenseController", [
 			if(!data){return}
 			let x = data.x
 			let y = data.y
-			modelDataService.getSelectedCharacter().setSelectedVillage(vid)
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(vid)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
