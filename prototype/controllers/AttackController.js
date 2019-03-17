@@ -5,7 +5,8 @@ define("robotTW2/controllers/AttackController", [
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/databases/data_villages",
-	"robotTW2/databases/data_attack"
+	"robotTW2/databases/data_attack",
+	"helper/format"
 	], function(
 			services,
 			providers,
@@ -13,7 +14,8 @@ define("robotTW2/controllers/AttackController", [
 			time,
 			helper,
 			data_villages,
-			data_attack
+			data_attack,
+			formatHelper
 	){
 	return function AttackController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
