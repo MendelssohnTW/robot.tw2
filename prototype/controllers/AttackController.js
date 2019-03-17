@@ -23,9 +23,10 @@ define("robotTW2/controllers/AttackController", [
 		
 		$scope.data_attack = data_attack;
 		$scope.text_version = $scope.version + " " + data_attack.version;
+		$scope.local_data_villages = []
+		$scope.data_villages = data_villages;
 
 		var self = this
-		, local_data_villages = {}
 		, update = function(){
 			$scope.comandos = Object.keys(data_attack.commands).map(function(elem, index, array){
 				return data_attack.commands[elem]
@@ -41,7 +42,7 @@ define("robotTW2/controllers/AttackController", [
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return local_data_villages[vid].data;
+			return $scope.local_data_villages[vid].data;
 		}
 
 		$scope.getClass = function(type){
@@ -163,8 +164,8 @@ define("robotTW2/controllers/AttackController", [
 		
 //		Object.keys(data_villages.villages).map(function(key){
 //			let data = getVillage(key).data;
-//			angular.extend(local_data_villages, {[key] : {"data": data}})
-//			return local_data_villages;
+//			angular.extend($scope.local_data_villages, {[key] : {"data": data}})
+//			return $scope.local_data_villages;
 //		})
 		
 		Object.keys($scope.data_villages.villages).map(function(key){
