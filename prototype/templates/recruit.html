@@ -61,23 +61,28 @@
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<tbody>
 						<colgroup>
+							<col width="*">
 							<col width="33%">
 							<col width="*">
 						</colgroup>
 						<tr>
+							<th></th>
 							<th class="cell-center selected">{{groups_selection}}</th>
 							<th class="cell-center selected">{{unit_settings}}</th>
 						</tr>
 						<tr>
+							<td><canvas icon-generator="grupoSelected.icon"
+									icon-type="'group'" width="26" height="26"></canvas> <span
+								class="group-name overflow-ellipsis"></span></td>
 							<td class="cell-top">
-								<div ng-repeat="grupo in data_recruit.Groups" class="cell-left"
-									ng-class="{'selected': grupoSelected == grupo}"
-									ng-click="setGroup(grupo)">
-									<canvas icon-generator="grupo.icon" icon-type="'group'"
-										width="26" height="26"></canvas>
-									<span class="group-name overflow-ellipsis ng-binding">{{grupo.name}}</span>
+								<div>
+									<select id="select_group" class="select-wrapper"
+										ng-options="item as item.name for item in data_recruit.Groups track by item.name"
+										ng-model="grupoSelected"></select>
 								</div>
 							</td>
+
+
 							<td class="cell-top">
 								<div ng-repeat="(key, value) in grupoSelected.units"
 									class="cell-right">
