@@ -49,7 +49,7 @@ define("robotTW2/controllers/DefenseController", [
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid).value;
+			return $scope.local_data_villages.find(f=>f.id==vid);
 		}
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
@@ -115,8 +115,12 @@ define("robotTW2/controllers/DefenseController", [
 			if(!vid){return}
 			var data = getVillageData(vid);
 			if(!data){return}
-			var x = data.x
-			var y = data.y
+			let label = data.label
+			let args_coord = label.split(" (");
+			let args_x = args_coord[1].split("|")
+			let args_y = args_x[1].split(")")
+			let x = args_x[0]
+			let y = args_y[0]
 			services.mapService.jumpToVillage(x, y);
 		}
 		
