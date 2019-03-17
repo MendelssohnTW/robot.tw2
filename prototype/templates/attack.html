@@ -7,15 +7,14 @@
 		</ul>
 	</header>
 	<div class="win-main" scrollbar="">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings screen-overview">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
 			<div class="scroll-wrap attack" style="margin-bottom: 53px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
-					<table
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+					<table class="tbl-border-light tbl-big-header tbl-striped">
 						<colgroup>
 							<col width="*">
 							<col width="235px">
@@ -42,37 +41,27 @@
 							<col width="34px">
 						</colgroup>
 						<tr>
-							<td class="cell-center">{{ident_cmd}}</td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-units-outgoing"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-village"></span></td>
-							<td class="cell-center"></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-time-remaining"></span></td>
-							<td class="cell-center"><span class="icon icon-26x26-time"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-26x26-time-arrival"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-spear"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-sword"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-axe"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-archer"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-light_cavalry"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-mounted_archer"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-heavy_cavalry"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-ram"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-catapult"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-doppelsoldner"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-trebuchet"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-snob"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-knight"></span></td>
-							<td class="cell-center"></td>
+							<td class="cell-center selected">{{ident_cmd}}</td>
+							<td class="icon icon-34x34-units-outgoing"></td>
+							<td class="icon icon-34x34-village"></td>
+							<td></td>
+							<td class="icon icon-34x34-time-remaining"></td>
+							<td class="icon icon-26x26-time"></td>
+							<td class="icon icon-26x26-time-arrival"></td>
+							<td class="icon-34x34-unit-spear"></td>
+							<td class="icon-34x34-unit-sword"></td>
+							<td class="icon-34x34-unit-axe"></td>
+							<td class="icon-34x34-unit-archer"></td>
+							<td class="icon-34x34-unit-light_cavalry"></td>
+							<td class="icon-34x34-unit-mounted_archer"></td>
+							<td class="icon-34x34-unit-heavy_cavalry"></td>
+							<td class="icon-34x34-unit-ram"></td>
+							<td class="icon-34x34-unit-catapult"></td>
+							<td class="icon-34x34-unit-doppelsoldner"></td>
+							<td class="icon-34x34-unit-trebuchet"></td>
+							<td class="icon-34x34-unit-snob"></td>
+							<td class="icon-34x34-unit-knight"></td>
+							<td></td>
 						</tr>
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center">{{comando.id_command}}</td>
@@ -91,9 +80,7 @@
 								</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span class="type" ng-class="getClass(comando.type)"></span>
-								</div>
+									<div class="type" ng-class="getClass(comando.type)"></div>
 							</td>
 							<td class="cell-center">
 								<div>{{getTimeRest(comando)}}</div>
