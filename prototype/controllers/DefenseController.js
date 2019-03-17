@@ -107,16 +107,17 @@ define("robotTW2/controllers/DefenseController", [
 
 		}
 
-		$scope.getKey = function(unit_name){
-			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "units");
-		}
-
-		$scope.getClass = function(unit_name){
-			return "icon-34x34-unit-" + unit_name;
-		}
-
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
+		}
+		
+		$scope.jumpToVillage = function(vid){
+			if(!vid){return}
+			var data = getVillageData(vid);
+			if(!data){return}
+			var x = data.x
+			var y = data.y
+			services.mapService.jumpToVillage(x, y);
 		}
 		
 		$scope.getLabelStart = function(param){
@@ -128,17 +129,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getLabelTarget = function(param){
 			let vid = param.start_village;
 			if(!vid){return}
-			let name = param.target_name
-			return name + " (" + param.target_x + "|" + param.target_y + ")"
-		}
-
-		$scope.getVcoordStart = function(param){
-
-			var vid = param.start_village;
-			if(!vid){return}
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
-			return "(" + x + "/" + y + ")"
+			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
 
 		$scope.getClass = function(type){

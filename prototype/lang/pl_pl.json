@@ -299,6 +299,8 @@
 	"defense": {
 		"defense": "defense",
 		"troops": "Troop selection",
+        "select_all": "Select all",
+        "unselect_all": "Unselect all",
 		"log": "Log",
 		"text_date": "Data",
 		"text_hour": "Time",

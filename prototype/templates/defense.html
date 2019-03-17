@@ -79,13 +79,13 @@
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center"><span>{{comando.id_command}}</span></td>
 							<td class="cell-center">
-								<div>
-									<span>{{getLabelStart(comando)}}</span>
+								<div class="coordinates">
+									{{getLabelStart(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{getLabelTarget(comando)}}</span>
+								<div class="coordinates">
+									{{getLabelTarget(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
@@ -95,35 +95,35 @@
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getTimeRest(comando)}}</span>
+									{{getTimeRest(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getHoraSend(comando)}}</span>
+									{{getHoraSend(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getDataAlvo(comando)}}</span>
+									{{getDataAlvo(comando)}}
 								</div>
 								<div>
-									<span>{{getHoraAlvo(comando)}}</span>
-								</div>
-							</td>
-							<td class="cell-center">
-								<div>
-									<span>{{getHoraRetorno(comando)}}</span>
+									{{getHoraAlvo(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.time_sniper_ant / 1000}} seg</span>
+									{{getHoraRetorno(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{comando.time_sniper_post / 1000}} seg</span>
+									{{comando.time_sniper_ant / 1000}} s
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									{{comando.time_sniper_post / 1000}} s
 								</div>
 							</td>
 
@@ -183,12 +183,11 @@
 							</div></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
-							ng-click="selectAllUnits()"><span id="span-text" class="text">Selecionar
-									todos</span></a></td>
+							ng-click="selectAllUnits()"><span id="span-text" class="text">{{select_all}}</span></a></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
 							ng-click="unselectAllUnits()"><span id="span-text"
-								class="text">Desmarcar todos</span></a></td>
+								class="text">{{unselect_all}}</span></a></td>
 					</tr>
 					<tr>
 						<td><select id="select_villages" class="select-wrapper"

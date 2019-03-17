@@ -298,6 +298,8 @@
     "defense": {
         "defense": "Defesa",
         "troops": "Seleção de tropas",
+        "select_all": "Selecionar todos",
+        "unselect_all": "Desmarcar todos",
         "log": "Log",
         "text_date": "Data",
         "text_hour": "Hora",

@@ -70,7 +70,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			var x = data.x
 			var y = data.y
 			var name = data.name
-			return "(" + x + "/" + y + ")"
+			return "(" + x + "|" + y + ")"
 		}
 
 		$scope.getName = function(vid){
