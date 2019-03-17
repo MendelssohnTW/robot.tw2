@@ -716,7 +716,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			villageService				: villageService,
 			presetService				: presetService,
 			presetListService			: presetListService,
-			autoCompleteService			: autoCompleteService
+			autoCompleteService			: autoCompleteService,
+			mapService					: mapService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
