@@ -58,10 +58,10 @@
 					</table>
 
 					<table
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						class="tbl-border-light tbl-big-header tbl-striped">
 						<tbody>
 						<colgroup>
-							<col width="*">
+							<col width="32px">
 							<col width="33%">
 							<col width="*">
 						</colgroup>
@@ -71,7 +71,7 @@
 							<th class="cell-center selected">{{unit_settings}}</th>
 						</tr>
 						<tr>
-							<td><canvas icon-generator="data_select.selectedOption.icon"
+							<td class="cell-top><canvas icon-generator="data_select.selectedOption.icon"
 									icon-type="'group'" width="26" height="26"></canvas> <span
 								class="group-name overflow-ellipsis"></span></td>
 							<td class="cell-top">
@@ -82,7 +82,7 @@
 								</div>
 							</td>
 
-							<td class="cell-top">
+							<td class="cell-top cell-right">
 								<div ng-repeat="(key, value) in grupoSelected.units"
 									class="cell-right">
 									<label for=key>{{getText(key)}}</label><span class="span-icon"
