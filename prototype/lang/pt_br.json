@@ -293,7 +293,16 @@
 		"command_list": "Lista de comandos",
 		"ident_cmd": "Identificação do comando",
 		"exclude_button": "Excluir comando",
-		"schedule": "Programar"
+		"schedule": "Programar",
+        "id_command":"Identificação do comando",
+        "village_sob_attack":"Aldeia sob ataque",
+        "village_manuever":"Aldeia para manobra",
+        "time_remaining":"Tempo restante para envio",
+        "time_out":"Tempo do envio",
+        "time_arrival":"Tempo de chegada do ataque",
+        "time_return":"Tempo de retorno da manobra",
+        "sec_ant":"Segundos anteriores",
+        "sec_post":"Segundo posteriores"
 	},
 	"defense": {
 		"defense": "Defesa",

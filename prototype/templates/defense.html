@@ -46,21 +46,30 @@
 							<col width="48px">
 						</colgroup>
 						<tr>
-							<th class="selected" style="display: table-cell">{{ident_cmd}}</th>
+							<th class="selected" tooltip
+                                tooltip-content="{{id_command}}" style="display: table-cell">{{ident_cmd}}</th>
 							<th class="icon icon-34x34-units-outgoing"
-								style="display: table-cell"></th>
-							<th class="icon icon-34x34-village" style="display: table-cell"></th>
+								style="display: table-cell" tooltip
+                                tooltip-content="{{village_sob_attack}}"></th>
+							<th class="icon icon-34x34-village" tooltip
+                                tooltip-content="{{village_manuever}}" style="display: table-cell"></th>
 							<th style="display: table-cell"></th>
-							<th class="icon icon-34x34-time-remaining"
+							<th class="icon icon-34x34-time-remaining" tooltip
+                                tooltip-content="{{time_remaining}}"
 								style="display: table-cell"></th>
-							<th class="icon icon-26x26-time" style="display: table-cell"></th>
-							<th class="icon icon-26x26-time-arrival"
+							<th class="icon icon-26x26-time" tooltip
+                                tooltip-content="{{time_out}}" style="display: table-cell"></th>
+							<th class="icon icon-26x26-time-arrival" tooltip
+                                tooltip-content="{{time_arrival}}"
 								style="display: table-cell"></th>
-							<th class="icon icon-34x34-units-return"
+							<th class="icon icon-34x34-units-return" tooltip
+                                tooltip-content="{{time_return}}"
 								style="display: table-cell"></th>
-							<th class="icon icon-26x26-arrow-left"
+							<th class="icon icon-26x26-arrow-left" tooltip
+                                tooltip-content="{{sec_ant}}"
 								style="display: table-cell"></th>
-							<th class="icon icon-26x26-arrow-right"
+							<th class="icon icon-26x26-arrow-right" tooltip
+                                tooltip-content="{{sec_post}}"
 								style="display: table-cell"></th>
 							<th style="display: table-cell"></th>
 						</tr>
@@ -92,7 +101,7 @@
 								<div>{{getDataSend(comando)}}</div>
 								<div>{{getHoraSend(comando)}}</div>
 							</td>
-							<td class="cell-center">
+							<td class="cell-center selected">
 								<div>{{getDataAlvo(comando)}}</div>
 								<div>{{getHoraAlvo(comando)}}</div>
 							</td>
