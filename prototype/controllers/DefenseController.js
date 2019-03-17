@@ -74,7 +74,7 @@ define("robotTW2/controllers/DefenseController", [
 				var vill = getVillage(key);
 				$scope.local_data_villages.push({
 					id 		: key,
-					name 	: "<div>" + vill.data.name + "</div>",
+					name 	: vill.data.name,
 					label 	: formatHelper.villageNameWithCoordinates(vill.data),
 					value 	: $scope.data_villages.villages[key].defense_activate,
 					x		: vill.data.x,
@@ -89,7 +89,7 @@ define("robotTW2/controllers/DefenseController", [
 			Object.keys($scope.data_defense.list_defense).map(function(key){
 				$scope.local_list_defense.push({
 					id : id++,
-					name : key,
+					name : "<div><span class='icon-34x34-unit-'" + key + "></span>" + key + "</div>",
 					value : $scope.data_defense.list_defense[key]
 				})
 				return $scope.local_list_defense;
