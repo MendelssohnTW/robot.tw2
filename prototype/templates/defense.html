@@ -139,7 +139,7 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.TROOPS">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings screen-overview">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
@@ -149,9 +149,9 @@
 					style="width: 690px;">
 					<colgroup>
 						<col width="*">
-						<col width="56px">
-						<col width="100px">
-						<col width="100px">
+						<col width="60px">
+						<col width="160px">
+						<col width="160px">
 
 					</colgroup>
 					<tr>
@@ -165,19 +165,19 @@
 									class="box-border-dark box-filter">
 									<div class="switch switch-56x28 switch-horizontal"
 										ng-class="{'switch-checked': value}">
-										<span class="size-26x26 switch-thumb"> <span
+										<div class="size-26x26 switch-thumb"> <div
 											class="simple icon-26x26-switch-off"
-											ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-										</span>
+											ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+										</div>
 									</div>
 								</div>
 							</div></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
-							ng-click="selectAllUnits()"><span id="span-text" class="text">{{select_all}}</span></a></td>
+							ng-click="selectAllUnits()"><span style="position: relative;" id="span-text" class="text">{{select_adiv</span></a></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
-							ng-click="unselectAllUnits()"><span id="span-text"
+							ng-click="unselectAllUnits()"><span style="position: relative;" id="span-text"
 								class="text">{{unselect_all}}</span></a></td>
 					</tr>
 					<tr>
@@ -191,21 +191,21 @@
 									class="box-border-dark box-filter">
 									<div class="switch switch-56x28 switch-horizontal"
 										ng-class="{'switch-checked': value}">
-										<span class="size-26x26 switch-thumb"> <span
+										<div class="size-26x26 switch-thumb"> <div
 											class="simple icon-26x26-switch-off"
-											ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-										</span>
+											ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+										</div>
 									</div>
 								</div>
 							</div></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
-							ng-click="selectAllVillages()"><span id="span-text"
-								class="text">Selecionar todos</span></a></td>
+							ng-click="selectAllVillages()"><span style="position: relative;" id="span-text"
+								class="text">{{select_all}}</span></a></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
-							ng-click="unselectAllVillages()"><span id="span-text"
-								class="text">Desmarcar todos</span></a></td>
+							ng-click="unselectAllVillages()"><span style="position: relative;" id="span-text"
+								class="text">{{unselect_all}}</span></a></td>
 					</tr>
 				</table>
 			</div>
