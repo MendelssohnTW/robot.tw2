@@ -122,7 +122,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getLabelStart = function(param){
 			let vid = param.start_village;
 			if(!vid){return}
-			return $scope.local_data_villages[vid].label
+			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
 		
 		$scope.getLabelTarget = function(param){
