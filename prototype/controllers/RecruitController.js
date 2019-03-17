@@ -22,9 +22,9 @@ define("robotTW2/controllers/RecruitController", [
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 		
-		
 		$scope.data_recruit = data_recruit
 		$scope.text_version = $scope.version + " " + data_recruit.version;
+		$scope.local_data_groups = []
 		
 		$scope.isRunning = services.RecruitService.isRunning();
 		
@@ -41,10 +41,6 @@ define("robotTW2/controllers/RecruitController", [
 			return units
 		}
 
-		$scope.setGroup = function (gr){
-			$scope.grupoSelected = gr;
-		}
-		
 		$scope.getTimeRest = function(){
 			return data_recruit.complete > time.convertedTime() && $scope.isRunning ? helper.readableMilliseconds(data_recruit.complete - time.convertedTime()) : 0; 
 		}
@@ -82,10 +78,10 @@ define("robotTW2/controllers/RecruitController", [
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 		
-		$scope.$watch("grupoSelected", function(){
-			if(!$scope.grupoSelected){return}
-			if(!$scope.grupoSelected.units){
-				$scope.grupoSelected.units = return_units();
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			if(!$scope.data_select.selectedOption.units){
+				$scope.data_select.selectedOption.units = return_units();
 			}
 		})
 		
@@ -102,9 +98,19 @@ define("robotTW2/controllers/RecruitController", [
 			}
 		})
 		
+		Object.keys($scope.data_recruit.Groups).map(function(key){
+			$scope.local_data_groups.push(key)
+			$scope.local_data_groups.sort(function(a,b){return a.name.localeCompare(b.name)})
+			return $scope.local_data_groups;
+		})
+		
+		$scope.data_select = {
+				"availableOptions" : $scope.local_data_groups,
+				"selectedOption" : $scope.local_data_groups[0]
+		}
+		
 		$scope.isRunning = services.RecruitService.isRunning();
 		$scope.isPaused = services.RecruitService.isPaused();
-		$scope.grupoSelected = data_recruit.Groups[Object.keys(data_recruit.Groups)[0]]
 
 		$scope.$watch("data_recruit", function(){
 			if(!$scope.data_recruit){return}

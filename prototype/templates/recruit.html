@@ -71,17 +71,16 @@
 							<th class="cell-center selected">{{unit_settings}}</th>
 						</tr>
 						<tr>
-							<td><canvas icon-generator="grupoSelected.icon"
+							<td><canvas icon-generator="data_select.selectedOption.icon"
 									icon-type="'group'" width="26" height="26"></canvas> <span
 								class="group-name overflow-ellipsis"></span></td>
 							<td class="cell-top">
 								<div>
 									<select id="select_group" class="select-wrapper"
-										ng-options="item as item.name for item in data_recruit.Groups track by item.name"
-										ng-model="grupoSelected"></select>
+										ng-options="item as item.name for item in data_select.availableOptions track by item.name"
+										ng-model="data_select.selectedOption"></select>
 								</div>
 							</td>
-
 
 							<td class="cell-top">
 								<div ng-repeat="(key, value) in grupoSelected.units"
