@@ -72,11 +72,12 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.local_list_defense = [];
 			Object.keys($scope.data_villages.villages).map(function(key){
 				var vill = getVillage(key);
+				angular.extend(vill, $scope.data_villages.villages[key])
 				$scope.local_data_villages.push({
 					id : key,
 					name : vill.data.name,
 					label : formatHelper.villageNameWithCoordinates(vill.data),
-					value : $scope.data_villages.villages[key]
+					value : vill
 //					value : $scope.data_villages.villages[key].defense_activate
 				})
 				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
