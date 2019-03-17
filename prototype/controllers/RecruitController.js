@@ -5,7 +5,9 @@ define("robotTW2/controllers/RecruitController", [
 	"robotTW2/providers",
 	"robotTW2/conf",
 	"conf/unitTypes",
-	"robotTW2/databases/data_recruit"
+	"robotTW2/databases/data_recruit",
+	"robotTW2/databases/data_villages",
+	"helper/format"
 	], function(
 			helper,
 			time,
@@ -13,7 +15,9 @@ define("robotTW2/controllers/RecruitController", [
 			providers,
 			conf,
 			unitTypes,
-			data_recruit
+			data_recruit,
+			data_villages,
+			formatHelper
 	){
 	return function RecruitController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -24,7 +28,9 @@ define("robotTW2/controllers/RecruitController", [
 		
 		$scope.data_recruit = data_recruit
 		$scope.text_version = $scope.version + " " + data_recruit.version;
+		$scope.data_villages = data_villages;
 		$scope.local_data_groups = []
+		$scope.local_data_villages = []
 		
 		$scope.isRunning = services.RecruitService.isRunning();
 		
@@ -39,6 +45,28 @@ define("robotTW2/controllers/RecruitController", [
 				}
 			})
 			return units
+		}
+		, update_all = function(){
+			$scope.local_data_villages = [];
+			Object.keys($scope.data_villages.villages).map(function(key){
+				var vill = getVillage(key);
+				$scope.local_data_villages.push({
+					id 		: key,
+					name 	: vill.data.name,
+					label 	: formatHelper.villageNameWithCoordinates(vill.data),
+					value 	: $scope.data_villages.villages[key].recruit_activate,
+					x		: vill.data.x,
+					y		: vill.data.y
+				})
+				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
+				return $scope.local_data_villages;
+			})
+
+			$scope.data_select = {
+				"availableOptions" : $scope.local_data_villages,
+				"selectedOption" : $scope.local_data_villages[0]
+			}
+
 		}
 
 		$scope.getTimeRest = function(){
@@ -78,10 +106,10 @@ define("robotTW2/controllers/RecruitController", [
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 		
-		$scope.$watch("data_select", function(){
-			if(!$scope.data_select){return}
-			if(!$scope.data_select.selectedOption.units){
-				$scope.data_select.selectedOption.units = return_units();
+		$scope.$watch("data_groups", function(){
+			if(!$scope.data_groups){return}
+			if(!$scope.data_groups.selectedOption.units){
+				$scope.data_groups.selectedOption.units = return_units();
 			}
 		})
 		
@@ -98,13 +126,29 @@ define("robotTW2/controllers/RecruitController", [
 			}
 		})
 		
+		$scope.selectAllVillages = function(){
+			Object.keys($scope.data_villages.villages).map(function(key){
+				$scope.data_villages.villages[key].recruit_activate = true;
+			})
+			$scope.data_villages.set();
+			update_all();
+		}
+
+		$scope.unselectAllVillages = function(){
+			Object.keys($scope.data_villages.villages).map(function(key){
+				$scope.data_villages.villages[key].recruit_activate = false;
+			})
+			$scope.data_villages.set();
+			update_all();
+		}
+		
 		Object.keys($scope.data_recruit.Groups).map(function(key){
 			$scope.local_data_groups.push($scope.data_recruit.Groups[key])
 			$scope.local_data_groups.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_groups;
 		})
 		
-		$scope.data_select = {
+		$scope.data_groups = {
 				"availableOptions" : $scope.local_data_groups,
 				"selectedOption" : $scope.local_data_groups[0]
 		}
@@ -117,6 +161,8 @@ define("robotTW2/controllers/RecruitController", [
 			data_recruit = $scope.data_recruit;
 			data_recruit.set();
 		}, true)
+		
+		update_all();
 		
 		$scope.setCollapse();
 
