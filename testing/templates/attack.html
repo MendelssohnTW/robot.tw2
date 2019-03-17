@@ -6,23 +6,8 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="tabs tabs-bg">
-		<div class="tabs-two-col">
-			<div ng-repeat="tabName in TAB_ORDER" class="tab"
-				ng-click="userSetActiveTab(tabName)"
-				ng-class="{'tab-active': activeTab === tabName}">
-				<div class="tab-inner">
-					<div
-						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
-						<a href="#"
-							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.ATTACK">
-		<div class="box-paper content-settings">
+	<div class="win-main" scrollbar="">
+		<div class="box-paper content-settings screen-overview">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
@@ -31,14 +16,13 @@
 				<div>
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
-							<col width="*">
+							<col width="115px">
 							<col width="235px">
 							<col width="235px">
 							<col width="45px">
 							<col width="60px">
 							<col width="100px">
 							<col width="100px">
-
 							<col width="48px">
 							<col width="48px">
 							<col width="48px">
@@ -56,143 +40,96 @@
 							<col width="34px">
 						</colgroup>
 						<tr>
-							<td class="cell-center"><span>{{ident_cmd}}</span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-units-outgoing"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-village"></span></td>
-							<td class="cell-center"></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-time-remaining"></span></td>
-							<td class="cell-center"><span class="icon icon-26x26-time"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-26x26-time-arrival"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-spear"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-sword"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-axe"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-archer"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-light_cavalry"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-mounted_archer"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-heavy_cavalry"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-ram"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-catapult"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-doppelsoldner"></span></td>
-							<td class="cell-center"><span
-								class="icon-34x34-unit-trebuchet"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-snob"></span></td>
-							<td class="cell-center"><span class="icon-34x34-unit-knight"></span></td>
-							<td class="cell-center"></td>
+							<th style="display: table-cell" class="cell-center selected">{{ident_cmd}}</th>
+							<th style="display: table-cell" class="icon icon-34x34-units-outgoing"></th>
+							<th style="display: table-cell" class="icon icon-34x34-village"></th>
+							<th></th>
+							<th style="display: table-cell" class="icon icon-34x34-time-remaining"></th>
+							<th style="display: table-cell" class="icon icon-26x26-time"></th>
+							<th style="display: table-cell" class="icon icon-26x26-time-arrival"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-spear"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-sword"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-axe"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-archer"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-light_cavalry"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-mounted_archer"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-heavy_cavalry"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-ram"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-catapult"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-doppelsoldner"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-trebuchet"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-snob"></th>
+							<th style="display: table-cell" class="icon-34x34-unit-knight"></th>
+							<th></th>
 						</tr>
 						<tr ng-repeat="comando in comandos">
-							<td class="cell-center"><span>{{comando.id_command}}</span></td>
+							<td class="cell-center">{{comando.id_command}}</td>
 							<td class="cell-center">
-								<div>
-									<span>{{getVstart(comando)}}</span>
-								</div>
-								<div>
-									<span>{{getVcoordStart(comando)}}</span>
+								<div class="village">
+									<div class="name-coord"
+										ng-click="jumpToVillage(comando.start_village)">
+										{{getLabelStart(comando)}}</div>
 								</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.target_name}}</span>
-								</div>
-								<div>
-									<span>{{getVcoordTarget(comando)}}</span>
-								</div>
-							</td>
-							<td class="cell-center">
-								<div>
-									<span class="type" ng-class="getClass(comando.type)"></span>
+								<div class="village">
+									<div class="name-coord"
+										ng-click="jumpOutVillage(comando.target_village)">
+										{{getLabelTarget(comando)}}</div>
 								</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{getTimeRest(comando)}}</span>
-								</div>
+									<div class="type" ng-class="getClass(comando.type)"></div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{getHoraSend(comando)}}</span>
-								</div>
+								<div>{{getTimeRest(comando)}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{getDataAlvo(comando)}}</span>
-								</div>
-								<div>
-									<span>{{getHoraAlvo(comando)}}</span>
-								</div>
+								<div>{{getDataSend(comando)}}</div>
+								<div>{{getHoraSend(comando)}}</div>
+							</td>
+							<td class="cell-center selected">
+								<div>{{getDataAlvo(comando)}}</div>
+								<div>{{getHoraAlvo(comando)}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.spear || 0}}</span>
-								</div>
+								<div>{{comando.units.spear || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.sword || 0}}</span>
-								</div>
+								<div>{{comando.units.sword || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.axe || 0}}</span>
-								</div>
+								<div>{{comando.units.axe || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.archer || 0}}</span>
-								</div>
+								<div>{{comando.units.archer || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.light_cavalry || 0}}</span>
-								</div>
+								<div>{{comando.units.light_cavalry || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.mounted_archer || 0}}</span>
-								</div>
+								<div>{{comando.units.mounted_archer || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.heavy_cavalry || 0}}</span>
-								</div>
+								<div>{{comando.units.heavy_cavalry || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.ram || 0}}</span>
-								</div>
+								<div>{{comando.units.ram || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.catapult || 0}}</span>
-								</div>
+								<div>{{comando.units.catapult || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.doppelsoldner || 0}}</span>
-								</div>
+								<div>{{comando.units.doppelsoldner || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.trebuchet || 0}}</span>
-								</div>
+								<div>{{comando.units.trebuchet || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.snob || 0}}</span>
-								</div>
+								<div>{{comando.units.snob || 0}}</div>
 							</td>
 							<td class="cell-center">
-								<div>
-									<span>{{comando.units.knight || 0}}</span>
-								</div>
+								<div>{{comando.units.knight || 0}}</div>
 							</td>
 							<td class="cell-center"><a href="#"
 								class="size-34x34 btn-red icon-26x26-close"
@@ -216,42 +153,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
-		<div class="box-paper content-settings">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-			<div class="scroll-wrap logs" style="margin-bottom: 53px">
-				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-					<colgroup>
-						<col width="50%">
-						<col width="50%">
-					</colgroup>
-					<tr ng-repeat="log in data_logs.attack">
-						<td class="cell-right">{{log.text}}</td>
-						<td class="cell-right">{{log.date}}</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div>
-			<div class="jssb-y  ">
-				<div class="jssb-y-track">
-					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
-						<div class="scrollbar-top"></div>
-						<div class="scrollbar-middle"></div>
-						<div class="scrollbar-bottom"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li ng-if="activeTab == TABS.ATTACK"><a
-				class="btn-orange btn-border clear" ng-click="clear_attack()">{{CLEAR}}</a></li>
+			<li><a class="btn-orange btn-border clear"
+				ng-click="clear_attack()">{{CLEAR}}</a></li>
 			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-				ng-click="menu()"><span>{{MENU}}</span></a></li>
+				ng-click="menu()">{{MENU}}</a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>

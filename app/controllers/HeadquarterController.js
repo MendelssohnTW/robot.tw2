@@ -22,7 +22,6 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
-
 		$scope.local_data_villages = [];
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
@@ -70,7 +69,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			var x = data.x
 			var y = data.y
 			var name = data.name
-			return "(" + x + "/" + y + ")"
+			return "(" + x + "|" + y + ")"
 		}
 
 		$scope.getName = function(vid){

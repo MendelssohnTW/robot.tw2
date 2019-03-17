@@ -47,7 +47,6 @@ define("robotTW2/services/DefenseService", [
 		, timeout = undefined
 		, oldCommand
 		, d = {}
-		, scope = $rootScope.$new()
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
@@ -521,7 +520,6 @@ define("robotTW2/services/DefenseService", [
 					}
 				}
 				params.units = units;
-//				scope.params[params.id_command] = params;
 			};
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
@@ -556,12 +554,12 @@ define("robotTW2/services/DefenseService", [
 				return
 			}
 			if(data.direction == "backward" && data.type == "support"){
-				var cmds = Object.keys($event.currentScope.commands).map(function(param){
-					if($event.currentScope.commands[param].params.start_village == data.home.id
-							&& $event.currentScope.commands[param].params.target_village == data.target.id
-							&& $event.currentScope.commands[param].params.id_command == data.command_id
+				var cmds = Object.keys(commandDefense).map(function(param){
+					if(commandDefense[param].params.start_village == data.home.id
+							&& commandDefense[param].params.target_village == data.target.id
+							&& commandDefense[param].params.id_command == data.command_id
 					) {
-						return $event.currentScope.commands[param].params	
+						return commandDefense[param].params	
 					} else {
 						return undefined
 					}
@@ -569,7 +567,6 @@ define("robotTW2/services/DefenseService", [
 				var cmd = undefined;
 				if(cmds.length){
 					cmd = cmds.pop();
-//					!scope.listener_returned ? scope.listener_returned = scope.$on(providers.eventTypeProvider.COMMAND_RETURNED, listener_command_returned) : null;
 				}
 			}
 		}
@@ -578,12 +575,12 @@ define("robotTW2/services/DefenseService", [
 				return
 			}
 			if(data.direction == "forward" && data.type == "support"){
-				var cmds = Object.keys($event.currentScope.commands).map(function(param){
+				var cmds = Object.keys(commandDefense).map(function(param){
 					//verificar a origem e alvo do comando
-					if($event.currentScope.commands[param].params.start_village == data.home.id 
-							&& $event.currentScope.commands[param].params.target_village == data.target.id
+					if(commandDefense[param].params.start_village == data.home.id 
+							&& commandDefense[param].params.target_village == data.target.id
 					) {
-						return $event.currentScope.commands[param].params
+						return commandDefense[param].params
 					} else {
 						return undefined
 					}
@@ -646,8 +643,8 @@ define("robotTW2/services/DefenseService", [
 		, addDefense = function(params){
 
 			if(!params){return}
-			!(typeof(scope.listener_sent) == "function") ? scope.listener_sent = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
-			!(typeof(scope.listener_cancel) == "function") ? scope.listener_cancel = scope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
+			!(typeof(listener_sent) == "function") ? listener_sent = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(listener_cancel) == "function") ? listener_cancel = $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
 
 			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(params.id_command){
@@ -823,37 +820,18 @@ define("robotTW2/services/DefenseService", [
 			listener_lost = undefined;
 			listener_conquered = undefined;
 
-			if(scope.listener_sent && typeof(scope.listener_sent) == "function") {
-				scope.listener_sent();
-				delete scope.listener_sent;
+			if(listener_sent && typeof(listener_sent) == "function") {
+				listener_sent();
+				delete listener_sent;
 			}
 
-			if(scope.listener_cancel && typeof(scope.listener_cancel) == "function") {
-				scope.listener_cancel();
-				delete scope.listener_cancel;
+			if(listener_cancel && typeof(listener_cancel) == "function") {
+				listener_cancel();
+				delete listener_cancel;
 			}
-
-//			if(scope.listener_timeout && typeof(scope.listener_timeout) == "function") {
-//			scope.listener_timeout();
-//			delete scope.listener_timeout;
-//			}
-
-//			if(scope.listener_returned && typeof(scope.listener_returned) == "function") {
-//			scope.listener_returned();
-//			delete scope.listener_returned;
-//			}
 
 			returnCommand();
 		}
-
-		angular.extend(scope, {
-			listener_sent 		: {},
-			listener_cancel 	: {},
-//			listener_timeout 	: {},
-//			listener_returned 	: {},
-			params 				: {},
-			commands			: {}
-		})
 
 		return	{
 			init				: init,

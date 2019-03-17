@@ -7,11 +7,15 @@
 		</ul>
 	</header>
 	<div class="win-main" scrollbar="">
-		<div class="box-paper content-settings">
-		<div class="version"><h5>{{text_version}}</h5></div>
-			<div class="scroll-wrap" style="margin-bottom: 53px">
+		<div class="box-paper content-settings screen-overview">
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
+			<div class="scroll-wrap" style="margin-bottom: 56px">
 				<div>
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" id="preset-list">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+						id="preset-list">
 						<colgroup>
 							<col width="*%">
 							<col width="33%">
@@ -20,16 +24,18 @@
 						<tbody>
 							<tr>
 								<td class="cell-top">
-									<div class="list-collapse">
+									<div>
 										<h5 class="twx-section collapse">{{settings_for_member}}</h5>
-										<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" id="preset-list">
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+											id="preset-list">
 											<colgroup>
 												<col width="*">
-												<col width="56px">
+												<col width="64px">
 											</colgroup>
 											<tbody>
 												<tr ng-repeat="member in members">
-													<td class="cell-right"><span>{{member.name}}</span></td>
+													<td class="cell-right">{{member.name}}</td>
 													<td>
 														<div switch-slider="" border="true" enabled="true"
 															value="member.isFriend" ng-click="toggleValue(member)"
@@ -52,16 +58,18 @@
 									</div>
 								</td>
 								<td class="cell-top">
-									<div class="list-collapse">
+									<div>
 										<h5 class="twx-section collapse">{{text_friends}}</h5>
-										<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" id="preset-list">
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+											id="preset-list">
 											<colgroup>
 												<col width="*">
-												<col width="26px">
+												<col width="32px">
 											</colgroup>
 											<tbody>
 												<tr ng-repeat="friend in data_alert.friends">
-													<td class="cell-right"><span>{{friend}}</span></td>
+													<td class="cell-right">{{friend}}</td>
 													<td>
 														<ul class="list-btn list-center buttons">
 															<li><a class="size-26x26 btn-red icon-26x26-close"
@@ -75,15 +83,17 @@
 									</div>
 								</td>
 								<td class="cell-top">
-									<div class="list-collapse">
+									<div>
 										<h5 class="twx-section collapse">{{text_underattack}}</h5>
-										<table class="tbl-border-light tbl-big-header tbl-content tbl-striped" id="preset-list">
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+											id="preset-list">
 											<colgroup>
 												<col width="*">
 											</colgroup>
 											<tbody>
 												<tr ng-repeat="under in underattack">
-													<td class="cell-right"><span>{{under.name}}</span></td>
+													<td class="cell-right">{{under.name}}</td>
 												</tr>
 											</tbody>
 										</table>
@@ -110,15 +120,15 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			
+
 			<li class="robotTW2-button-settings"><a
 				class="btn-orange btn-border close" ng-click="selectAll()">{{select_all}}</a></li>
 			<li class="robotTW2-button-settings"><a
-				class="btn-orange btn-border close" ng-click="removeAll()">{{remove_all}}</a></li>
-				<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-                ng-click="menu()"><span>{{MENU}}</span></a></li>
-				<li class="robotTW2-button-settings"><a
-                class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
+				class="btn-orange btn-border close" ng-click="removeAll()">{{unselect_all}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>
 	</footer>
 </div>

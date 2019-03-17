@@ -156,6 +156,8 @@ define("robotTW2/controllers/MainController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_main.setExtensions($scope.extensions)
 		})
+		
+		$scope.setCollapse();
 
 
 		return $scope;

@@ -6,27 +6,12 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="tabs tabs-bg">
-		<div class="tabs-three-col">
-			<div ng-repeat="tabName in TAB_ORDER" class="tab"
-				ng-click="userSetActiveTab(tabName)"
-				ng-class="{'tab-active': activeTab === tabName}">
-				<div class="tab-inner">
-					<div
-						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
-						<a href="#"
-							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
-		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
+	<div class="win-main" scrollbar="">
+		<div class="box-paper content-settings">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap preset" style="margin-bottom: 53px">
+			<div class="scroll-wrap preset" style="margin-bottom: 56px">
 				<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 					<colgroup>
 						<col width="40%">
@@ -84,12 +69,12 @@
 										</tr>
 										<tr>
 											<td class="cell-right">{{text_units_preset}}</td>
-											<td class="cell-center">{{data.selectedOption.units.spear ||
-												0}}</td>
-											<td class="cell-center">{{data.selectedOption.units.sword ||
-												0}}</td>
-											<td class="cell-center">{{data.selectedOption.units.axe ||
-												0}}</td>
+											<td class="cell-center">{{data.selectedOption.units.spear
+												|| 0}}</td>
+											<td class="cell-center">{{data.selectedOption.units.sword
+												|| 0}}</td>
+											<td class="cell-center">{{data.selectedOption.units.axe
+												|| 0}}</td>
 											<td class="cell-center">{{data.selectedOption.units.archer
 												|| 0}}</td>
 											<td class="cell-center">{{data.selectedOption.units.light_cavalry
@@ -98,16 +83,16 @@
 												|| 0}}</td>
 											<td class="cell-center">{{data.selectedOption.units.heavy_cavalry
 												|| 0}}</td>
-											<td class="cell-center">{{data.selectedOption.units.ram ||
-												0}}</td>
+											<td class="cell-center">{{data.selectedOption.units.ram
+												|| 0}}</td>
 											<td class="cell-center">{{data.selectedOption.units.catapult
 												|| 0}}</td>
 											<td class="cell-center">{{data.selectedOption.units.doppelsoldner
 												|| 0}}</td>
 											<td class="cell-center">{{data.selectedOption.units.trebuchet
 												|| 0}}</td>
-											<td class="cell-center">{{data.selectedOption.units.snob ||
-												0}}</td>
+											<td class="cell-center">{{data.selectedOption.units.snob
+												|| 0}}</td>
 											<td class="cell-center">{{data.selectedOption.units.knight
 												|| 0}}</td>
 										</tr>
@@ -145,402 +130,378 @@
 						</tr>
 						<tr>
 							<td class="cell-right">
+
+								<table
+									class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									<colgroup>
+										<col width="120px">
+										<col width="30px">
+										<col width="*">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th class="cell-center selected" colspan="3">{{text_selections}}</th>
+										</tr>
+										<tr>
+											<td>{{text_village}}</td>
+											<td class="cell-center"><span
+												class="icon icon-34x34-select-village"></span></td>
+											<td><div>
+													<select id="select_village" class="select-wrapper"
+														ng-options="item as item.label for item in data_select.availableOptions track by item.name"
+														ng-model="data_select.selectedOption"></select>
+												</div></td>
+
+										</tr>
+										<tr>
+											<td>{{text_preset}}</td>
+											<td class="cell-center"><span
+												class="icon icon-34x34-preset"></span></td>
+											<td><div>
+													<select id="select_preset" class="select-wrapper"
+														ng-options="item.name for item in data.presets | filter:shouldShow"
+														ng-model="data.selectedOption"></select>
+												</div></td>
+										</tr>
+										<tr>
+											<td colspan="2">{{text_remove_preset}}</td>
+											<td>
+												<ul class="list-btn list-center">
+													<li><a id="button-start"
+														class="btn-border btn-orange btn-init"
+														ng-click="unassignPreset()">{{REMOVE}}</a></li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td>{{text_global}}</td>
+											<td class="cell-center"><span
+												class="icon icon-34x34-preset"></span></td>
+											<td><div>
+													<select id="select_preset_out" class="select-wrapper"
+														ng-options="item.name for item in data.presets | filter:shouldntShow"
+														ng-model="data.selectedOptionOut"></select>
+												</div></td>
+										</tr>
+										<tr>
+											<td colspan="2">{{text_add_preset}}</td>
+											<td>
+												<ul class="list-btn list-center">
+													<li><a id="button-start"
+														class="btn-border btn-orange btn-init"
+														ng-click="assignPreset()">{{ADD}}</a></li>
+												</ul>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table
+									class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									<colgroup>
+										<col width="120px">
+										<col width="30px">
+										<col width="*">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th class="cell-center selected" colspan="3">{{exceptions}}</th>
+										</tr>
+										<tr>
+											<td></td>
+											<td class="cell-center"><span
+												class="icon icon-34x34-select-village"></span></td>
+											<td><div>
+													<select id="list_exceptions" class="select-wrapper"
+														ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id"
+														ng-model="data_exception.selectedOption"></select>
+												</div></td>
+										</tr>
+										<tr>
+											<td colspan="2">{{text_remove_exceptions}}</td>
+											<td>
+												<ul class="list-btn list-center">
+													<li><a id="button-start"
+														class="btn-border btn-orange btn-init"
+														ng-click="deleteException()">{{REMOVE}}</a></li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td></td>
+											<td class="cell-center"><span
+												class="icon icon-34x34-select-village"></span></td>
+											<td><div>
+													<table class="tbl-border-light">
+														<tbody>
+															<tr>
+																<td class="cell-center">
+																	<div>
+																		<div id="select-field" select-element=""
+																			ng-style="{'width': width + 'px'}"
+																			style="transform: translate3d(63px, 819px, 0px); width: 309px;">
+																			<ul class="action-list select-handler">
+																			</ul>
+																		</div>
+																	</div>
+																	<div id="autocomplete_farm"
+																		class="auto-complete-wrapper">
+																		<input type="text" ng-keyup="autoCompleteKey($event)"
+																			ng-model="inputValue" class="textfield-border"
+																			placeholder="{{SEARCH_MAP}}">
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div></td>
+										</tr>
+										<tr>
+											<td colspan="2">{{text_add_exceptions}}</td>
+											<td>
+												<ul class="list-btn list-center">
+													<li><a id="button-start"
+														class="btn-border btn-orange btn-init"
+														ng-click="addException()">{{ADD}}</a></li>
+												</ul>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</td>
+							<td class="cell-top">
+								<table
+									class="tbl-border-light tbl-border-dark tbl-big-header tbl-content tbl-farm">
+									<colgroup>
+										<col width="33%">
+										<col width="33%">
+										<col width="*">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th class="selected cell-center" colspan="3">{{farm}}</th>
+										</tr>
+										<tr>
+											<td class="cell-center"><label for="farm_time"
+												style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
+												class="input-border inpt" type="time" id="farm_time"
+												step="1" min="00:00:00" max="23:59:59"
+												value="{{t_farm_time}}" ng-blur="set_farm_time()"></td>
+											<td class="cell-center"><label for="inicio_de_farm"
+												style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
+												class="input-border inpt" type="time" id="inicio_de_farm"
+												step="1" min="00:00:00" max="23:59:59"
+												value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
+												ng-blur="blur()" ng-disabled="infinite"></td>
+											<td class="cell-center"><label for="data_inicio_de_farm"
+												style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
+												class="input-border inpd" type="date"
+												id="data_inicio_de_farm"
+												value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
+												ng-blur="blur()" ng-disabled="infinite"></td>
+										</tr>
+										<tr>
+											<td class="cell-center"><label for="cicle_infinite"
+												style="margin-left: 12px; margin-right: 12px;"
+												ng-show="infinite">{{time_infinite}}</label><label
+												for="cicle_infinite"
+												style="margin-left: 12px; margin-right: 12px;"
+												ng-show="!infinite">{{time_finite}}</label><a tooltip
+												tooltip-content="{{time_infinite}} + '/' + {{time_finite}}"
+												id="cicle_infinite" href="#" class="size-34x34 btn-orange"
+												ng-class="{'icon-26x26-check-positive' : infinite, 'icon-26x26-check-negative' : !infinite}"
+												ng-click="togleInfinite()"></a></td>
+											<td class="cell-center"><label for="termino_de_farm"
+												style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
+												class="input-border inpt" type="time" id="termino_de_farm"
+												step="1" min="00:00:00" max="23:59:59"
+												value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
+												ng-blur="blur()" ng-disabled="infinite"></td>
+											<td class="cell-center"><label
+												for="data_termino_de_farm"
+												style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
+												class="input-border inpd" type="date"
+												id="data_termino_de_farm"
+												value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
+												ng-blur="blur()" ng-disabled="infinite"></td>
+										</tr>
+										<tr>
+											<td class="cell-left" colspan="2">
+												<div>
+													<span id="cicle_status"
+														ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span><label
+														for="cicle_status"
+														style="margin-left: 12px; margin-right: 12px;">{{farm_running}}</label>
+												</div>
+											</td>
+											<td class="cell-center"><label for="interval_farm">{{getStatus()}}</label><input
+												id="interval_farm" class="input-border inpt disabled"
+												type=text value="{{getTimeRest()}}" disabled></td>
+										</tr>
+									</tbody>
+								</table>
+
 								<table
 									class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 									<tbody>
 										<tr>
-											<td><table
-													class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-													<colgroup>
-														<col width="120px">
-														<col width="30px">
-														<col width="*">
-													</colgroup>
-													<tbody>
-														<tr>
-															<th class="cell-center selected" colspan="3">{{text_selections}}</th>
-														</tr>
-														<tr>
-															<td>{{text_village}}</td>
-															<td class="cell-center"><span
-																class="icon icon-34x34-select-village"></span></td>
-															<td><div>
-																	<select id="select_village" class="select-wrapper"
-																		ng-options="item as item.label for item in data_select.availableOptions track by item.name"
-																		ng-model="data_select.selectedOption"></select>
-																</div></td>
-
-														</tr>
-														<tr>
-															<td>{{text_preset}}</td>
-															<td class="cell-center"><span
-																class="icon icon-34x34-preset"></span></td>
-															<td><div>
-																	<select id="select_preset" class="select-wrapper" 
-																		ng-options="item.name for item in data.presets | filter:shouldShow"
-																		ng-model="data.selectedOption"></select>
-																</div></td>
-														</tr>
-														<tr>
-															<td colspan="2">{{text_remove_preset}}</td>
-															<td>
-																<ul class="list-btn list-center">
-																	<li><a id="button-start"
-																		class="btn-border btn-orange btn-init"
-																		ng-click="unassignPreset()"><span>{{REMOVE}}</span></a></li>
-																</ul>
-															</td>
-														</tr>
-														<tr>
-															<td>{{text_global}}</td>
-															<td class="cell-center"><span
-																class="icon icon-34x34-preset"></span></td>
-															<td><div>
-																	<select id="select_preset_out" class="select-wrapper"
-																		ng-options="item.name for item in data.presets | filter:shouldntShow"
-																		ng-model="data.selectedOptionOut"></select>
-																</div></td>
-														</tr>
-														<tr>
-															<td colspan="2">{{text_add_preset}}</td>
-															<td>
-																<ul class="list-btn list-center">
-																	<li><a id="button-start"
-																		class="btn-border btn-orange btn-init"
-																		ng-click="assignPreset()"><span>{{ADD}}</span></a></li>
-																</ul>
-															</td>
-														</tr>
-													</tbody>
-												</table></td>
+											<th class="selected cell-center">{{text_presets}}</th>
 										</tr>
 										<tr>
-											<td><table
+											<td class="cell-right"><label for="check_one"
+												class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+												<div id="check_one" class="position-absolute size-34x34"
+													ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
+													ng-click="toggleOption('check_one')" tooltip
+													tooltip-content=""></div></td>
+										</tr>
+										<tr>
+											<td class="cell-right"><label for="check_all"
+												class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+												<div id="check_all" class="position-absolute size-34x34"
+													ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
+													ng-click="toggleOption('check_all')" tooltip
+													tooltip-content=""></div></td>
+										</tr>
+										<tr>
+											<td class="cell-right"><label for="check_all_villages"
+												class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+												<div id="check_all_villages"
+													class="position-absolute size-34x34"
+													ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
+													ng-click="toggleOption('check_all_villages')" tooltip
+													tooltip-content=""></div></td>
+										</tr>
+									</tbody>
+								</table>
+								<table
+									class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									<colgroup>
+										<col width="100px">
+										<col width="140px">
+										<col width="*">
+										<col width="70px">
+										<col width="150px">
+									</colgroup>
+									<tbody>
+										<tr>
+											<td rowspan="2">
+												<table class="tbl-border-light tbl-big-header tbl-content">
+													<tr>
+														<th class="selected cell-center">{{text_quad}}</th>
+													</tr>
+													<tr>
+														<td>
+															<div class="quadrant">
+																<div class="quadrant-border"
+																	ng-class="{'quadrant-selected': getQuadrant(1)}"
+																	ng-click="setQuadrant(1)">
+																	<div class="quadrant-text">
+																		<span style="">1</span>
+																	</div>
+																</div>
+																<div class="quadrant-border"
+																	ng-class="{'quadrant-selected': getQuadrant(2)}"
+																	ng-click="setQuadrant(2)">
+																	<div class="quadrant-text">
+																		<span style="">2</span>
+																	</div>
+																</div>
+																<div class="quadrant-border"
+																	ng-class="{'quadrant-selected': getQuadrant(4)}"
+																	ng-click="setQuadrant(4)">
+																	<div class="quadrant-text">
+																		<span style="">4</span>
+																	</div>
+																</div>
+																<div class="quadrant-border"
+																	ng-class="{'quadrant-selected': getQuadrant(3)}"
+																	ng-click="setQuadrant(3)">
+																	<div class="quadrant-text">
+																		<span style="">3</span>
+																	</div>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</table>
+											</td>
+											<td class="cell-center"><label for="min_point"
+												class="with-margin">{{text_min_point}}</label><input
+												class="input-border inputcreated" type="number"
+												id="min_point" step="1" min="0" max="12000"
+												ng-model="data.selectedOption.min_points_farm"
+												ng-blur="updateBlur()"></td>
+											<td class="cell-center"><label for="min_journey_time"
+												class="with-margin">{{time_min}}</label><input
+												class="input-border inpt" type="time" id="min_journey_time"
+												step="1" min="00:00:00" max="23:59:59"
+												ng-blur="blurMinJourney()"></td>
+											<td class="cell-center"><label for="min_dist"
+												class="with-margin">{{text_min_dist}}</label><input
+												class="input-border inputcreated" type="number"
+												id="min_dist" step="1" min="1" max="180"
+												ng-model="data.selectedOption.min_journey_distance" disabled></td>
+											<td class="cell-center"><label for="cmd_max"
+												class="with-margin">{{text_cmd_max}}</label><input
+												class="input-border inputcreated" type="number" id="cmd_max"
+												step="1" min="0" max="50"
+												ng-model="data.selectedOption.max_commands_farm"
+												ng-blur="updateBlur()"></td>
+
+										</tr>
+										<tr>
+
+											<td class="cell-center"><label for="max_point"
+												class="with-margin">{{text_max_point}}</label><input
+												class="input-border inputcreated" type="number"
+												id="max_point" step="1" min="00" max="12000"
+												ng-model="data.selectedOption.max_points_farm"
+												ng-blur="updateBlur()"></td>
+											<td class="cell-center"><label for="max_journey_time"
+												class="with-margin">{{time_max}}</label><input
+												class="input-border inpt" type="time" id="max_journey_time"
+												step="1" min="00:00:00" max="23:59:59"
+												ng-blur="blurMaxJourney()"></td>
+											<td class="cell-center"><label for="max_dist"
+												class="with-margin">{{text_max_dist}}</label><input
+												class="input-border inputcreated" type="number"
+												id="max_dist" step="1" min="5" max="200"
+												ng-model="data.selectedOption.max_journey_distance" disabled></td>
+											<td class="cell-center">
+												<table
 													class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-													<colgroup>
-														<col width="120px">
-														<col width="30px">
-														<col width="*">
-													</colgroup>
 													<tbody>
 														<tr>
-															<th class="cell-center selected" colspan="3">{{exceptions}}</th>
+															<td class="cell-center selected">{{villages_selections}}</td>
 														</tr>
 														<tr>
-															<td></td>
-															<td class="cell-center"><span
-																class="icon icon-34x34-select-village"></span></td>
-															<td><div>
-																	<select id="list_exceptions" class="select-wrapper"
-																		ng-options="item as item.label for item in data_exception.availableOptions track by item.village_id"
-																		ng-model="data_exception.selectedOption"></select>
-																</div></td>
-														</tr>
-														<tr>
-															<td colspan="2">{{text_remove_exceptions}}</td>
-															<td>
-																<ul class="list-btn list-center">
-																	<li><a id="button-start"
-																		class="btn-border btn-orange btn-init"
-																		ng-click="deleteException()"><span>{{REMOVE}}</span></a></li>
-																</ul>
-															</td>
-														</tr>
-														<tr>
-															<td></td>
-															<td class="cell-center"><span
-																class="icon icon-34x34-select-village"></span></td>
-															<td><div>
-																	<table class="tbl-border-light">
-																		<tbody>
-																			<tr>
-																				<td class="cell-center">
-																					<div>
-																						<div id="select-field" select-element=""
-																							ng-style="{'width': width + 'px'}"
-																							style="transform: translate3d(63px, 819px, 0px); width: 309px;">
-																							<ul class="action-list select-handler">
-																								<!-- ng-class="{'action-list-top': actionListTop}" -->
-																							</ul>
-																						</div>
-																					</div>
-																					<div id="autocomplete_farm"
-																						class="auto-complete-wrapper">
-																						<input type="text"
-																							ng-keyup="autoCompleteKey($event)"
-																							ng-model="inputValue" class="textfield-border"
-																							placeholder="{{SEARCH_MAP}}">
-																					</div>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</div></td>
-														</tr>
-														<tr>
-															<td colspan="2">{{text_add_exceptions}}</td>
-															<td>
-																<ul class="list-btn list-center">
-																	<li><a id="button-start"
-																		class="btn-border btn-orange btn-init"
-																		ng-click="addException()"><span>{{ADD}}</span></a></li>
-																</ul>
+															<td class="cell-center">
+																<div class="checkbox box-border-dark">
+																	<div switch-slider="" border="true" enabled="true"
+																		value="data_villages.villages[village_selected.id].farm_activate"
+																		vertical="false" size="'56x28'">
+																		<div ng-class="{'box-border-dark box-filter': border}"
+																			class="box-border-dark box-filter">
+																			<div class="switch switch-56x28 switch-horizontal"
+																				ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																				<span class="size-26x26 switch-thumb"> <span
+																					class="simple icon-26x26-switch-off"
+																					ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
+																				</span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 													</tbody>
-												</table></td>
+												</table>
+											</td>
 										</tr>
 									</tbody>
-
 								</table>
 							</td>
-							<td class="cell-top"><table>
-									<tr>
-										<td>
-											<table
-												class="tbl-border-light tbl-border-dark tbl-big-header tbl-content tbl-farm">
-												<colgroup>
-													<col width="33%">
-													<col width="33%">
-													<col width="*">
-												</colgroup>
-												<tbody>
-													<tr>
-														<th class="selected cell-center" colspan="3">{{farm}}</th>
-													</tr>
-													<tr>
-														<td class="cell-center"><label for="farm_time"
-															style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
-															class="input-border inpt" type="time" id="farm_time"
-															step="1" min="00:00:00" max="23:59:59"
-															value="{{t_farm_time}}" ng-blur="set_farm_time()"></td>
-														<td class="cell-center"><label for="inicio_de_farm"
-															style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
-															class="input-border inpt" type="time" id="inicio_de_farm"
-															step="1" min="00:00:00" max="23:59:59"
-															value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
-															ng-blur="blur()" ng-disabled="infinite"></td>
-														<td class="cell-center"><label
-															for="data_inicio_de_farm"
-															style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
-															class="input-border inpd" type="date"
-															id="data_inicio_de_farm"
-															value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
-															ng-blur="blur()" ng-disabled="infinite"></td>
-													</tr>
-													<tr>
-														<td class="cell-center"><label for="cicle_infinite"
-															style="margin-left: 12px; margin-right: 12px;"
-															ng-show="infinite">{{time_infinite}}</label><label
-															for="cicle_infinite"
-															style="margin-left: 12px; margin-right: 12px;"
-															ng-show="!infinite">{{time_finite}}</label><a tooltip
-															tooltip-content="{{time_infinite}} + '/' + {{time_finite}}" id="cicle_infinite" href="#"
-															class="size-34x34 btn-orange"
-															ng-class="{'icon-26x26-check-positive' : infinite, 'icon-26x26-check-negative' : !infinite}"
-															ng-click="togleInfinite()"></a></td>
-														<td class="cell-center"><label for="termino_de_farm"
-															style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
-															class="input-border inpt" type="time"
-															id="termino_de_farm" step="1" min="00:00:00"
-															max="23:59:59"
-															value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
-															ng-blur="blur()" ng-disabled="infinite"></td>
-														<td class="cell-center"><label
-															for="data_termino_de_farm"
-															style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
-															class="input-border inpd" type="date"
-															id="data_termino_de_farm"
-															value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
-															ng-blur="blur()" ng-disabled="infinite"></td>
-													</tr>
-													<tr>
-														<td class="cell-left" colspan="2">
-															<div>
-																<span id="cicle_status"
-																	ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span><label
-																	for="cicle_status"
-																	style="margin-left: 12px; margin-right: 12px;">{{farm_running}}</label>
-															</div>
-														</td>
-														<td class="cell-center"><label for="interval_farm">{{getStatus()}}</label><input
-															id="interval_farm" class="input-border inpt disabled"
-															type=text value="{{getTimeRest()}}" disabled></td>
-													</tr>
-												</tbody>
-											</table>
-										</td>
-									</tr>
-									<tr>
-										<td><table
-												class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-												<tbody>
-													<tr>
-														<th class="selected cell-center">{{text_presets}}</th>
-													</tr>
-													<tr>
-														<td class="cell-right"><label for="check_one"
-															class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-															<div id="check_one" class="position-absolute size-34x34"
-																ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-																ng-click="toggleOption('check_one')" tooltip
-																tooltip-content=""></div></td>
-													</tr>
-													<tr>
-														<td class="cell-right"><label for="check_all"
-															class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-															<div id="check_all" class="position-absolute size-34x34"
-																ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-																ng-click="toggleOption('check_all')" tooltip
-																tooltip-content=""></div></td>
-													</tr>
-													<tr>
-														<td class="cell-right"><label
-															for="check_all_villages" class="with-margin"
-															style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-															<div id="check_all_villages"
-																class="position-absolute size-34x34"
-																ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-																ng-click="toggleOption('check_all_villages')" tooltip
-																tooltip-content=""></div></td>
-													</tr>
-												</tbody>
-											</table></td>
-									</tr>
-									<tr>
-										<td><table
-												class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-												<colgroup>
-													<col width="100px">
-													<col width="140px">
-													<col width="*">
-													<col width="70px">
-													<col width="150px">
-												</colgroup>
-												<tbody>
-													<tr>
-														<td rowspan="2">
-															<table>
-																<tr>
-																	<th class="selected cell-center">{{text_quad}}</th>
-																</tr>
-																<tr>
-																	<td>
-																		<div class="quadrant">
-																			<div class="quadrant-border"
-																				ng-class="{'quadrant-selected': getQuadrant(1)}"
-																				ng-click="setQuadrant(1)">
-																				<div class="quadrant-text">
-																					<span style="">1</span>
-																				</div>
-																			</div>
-																			<div class="quadrant-border"
-																				ng-class="{'quadrant-selected': getQuadrant(2)}"
-																				ng-click="setQuadrant(2)">
-																				<div class="quadrant-text">
-																					<span style="">2</span>
-																				</div>
-																			</div>
-																			<div class="quadrant-border"
-																				ng-class="{'quadrant-selected': getQuadrant(4)}"
-																				ng-click="setQuadrant(4)">
-																				<div class="quadrant-text">
-																					<span style="">4</span>
-																				</div>
-																			</div>
-																			<div class="quadrant-border"
-																				ng-class="{'quadrant-selected': getQuadrant(3)}"
-																				ng-click="setQuadrant(3)">
-																				<div class="quadrant-text">
-																					<span style="">3</span>
-																				</div>
-																			</div>
-																		</div>
-																	</td>
-																</tr>
-															</table>
-														</td>
-														<td class="cell-center"><label for="min_point"
-															class="with-margin">{{text_min_point}}</label><input
-															class="input-border inputcreated" type="number"
-															id="min_point" step="1" min="0" max="12000"
-															ng-model="data.selectedOption.min_points_farm"
-															ng-blur="updateBlur()"></td>
-														<td class="cell-center"><label for="min_journey_time"
-															class="with-margin">{{time_min}}</label><input
-															class="input-border inpt" type="time"
-															id="min_journey_time" step="1" min="00:00:00"
-															max="23:59:59" ng-blur="blurMinJourney()"></td>
-														<td class="cell-center"><label for="min_dist"
-															class="with-margin">{{text_min_dist}}</label><input
-															class="input-border inputcreated" type="number"
-															id="min_dist" step="1" min="1" max="180"
-															ng-model="data.selectedOption.min_journey_distance" disabled></td>
-														<td class="cell-center"><label for="cmd_max"
-															class="with-margin">{{text_cmd_max}}</label><input
-															class="input-border inputcreated" type="number"
-															id="cmd_max" step="1" min="0" max="50"
-															ng-model="data.selectedOption.max_commands_farm"
-															ng-blur="updateBlur()"></td>
-
-													</tr>
-													<tr>
-
-														<td class="cell-center"><label for="max_point"
-															class="with-margin">{{text_max_point}}</label><input
-															class="input-border inputcreated" type="number"
-															id="max_point" step="1" min="00" max="12000"
-															ng-model="data.selectedOption.max_points_farm"
-															ng-blur="updateBlur()"></td>
-														<td class="cell-center"><label for="max_journey_time"
-															class="with-margin">{{time_max}}</label><input
-															class="input-border inpt" type="time"
-															id="max_journey_time" step="1" min="00:00:00"
-															max="23:59:59" ng-blur="blurMaxJourney()"></td>
-														<td class="cell-center"><label for="max_dist"
-															class="with-margin">{{text_max_dist}}</label><input
-															class="input-border inputcreated" type="number"
-															id="max_dist" step="1" min="5" max="200"
-															ng-model="data.selectedOption.max_journey_distance" disabled></td>
-														<td class="cell-center">
-															<table
-																class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-																<tbody>
-																	<tr>
-																		<td class="cell-center selected">{{villages_selections}}</td>
-																	</tr>
-																	<tr>
-																		<td class="cell-center">
-																			<div class="checkbox box-border-dark">
-																				<div switch-slider="" border="true" enabled="true"
-																					value="data_villages.villages[village_selected.id].farm_activate"
-																					vertical="false" size="'56x28'">
-																					<div
-																						ng-class="{'box-border-dark box-filter': border}"
-																						class="box-border-dark box-filter">
-																						<div class="switch switch-56x28 switch-horizontal"
-																							ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
-																							<span class="size-26x26 switch-thumb"> <span
-																								class="simple icon-26x26-switch-off"
-																								ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
-																							</span>
-																						</div>
-																					</div>
-																				</div>
-																			</div>
-																		</td>
-																	</tr>
-																</tbody>
-															</table>
-
-
-														</td>
-													</tr>
-												</tbody>
-											</table></td>
-									</tr>
-
-								</table></td>
 						</tr>
 					</tbody>
 				</table>
@@ -556,44 +517,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOGS">
-		<div class="box-paper content-settings" ng-if="activeTab == TABS.LOGS">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-			<div class="scroll-wrap logs" style="margin-bottom: 53px">
-				<div>
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tr ng-repeat="log in data_logs.farm">
-							<td class="cell-right">{{log.text}}</td>
-							<td class="cell-right">{{log.date}}</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="jssb-y">
-			<div class="jssb-y-track">
-				<div class="jssb-y-thumb">
-					<div class="scrollbar-top"></div>
-					<div class="scrollbar-middle"></div>
-					<div class="scrollbar-bottom"></div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center">
 			<li><a id="button-start" class="btn-border btn-orange btn-init"
-				ng-click="start_farm()"><span>{{START}}</span></a></li>
+				ng-click="start_farm()">{{START}}</a></li>
 			<li><a id="button-stop" class="btn-border btn-orange btn-stop"
-				ng-click="stop_farm()"><span>{{STOP}}</span></a></li>
+				ng-click="stop_farm()">{{STOP}}</a></li>
 			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-				ng-click="menu()"><span>{{MENU}}</span></a></li>
+				ng-click="menu()">{{MENU}}</a></li>
 			<li><a class="btn-orange btn-border close"
 				ng-click="closeWindow()">{{CLOSE}}</a></li>
 

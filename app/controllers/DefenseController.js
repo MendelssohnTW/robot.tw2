@@ -37,13 +37,11 @@ define("robotTW2/controllers/DefenseController", [
 		var self = this
 		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
-				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense"),
-				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "defense")
+				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense")
 		}
 		, TAB_ORDER = [
 			TABS.DEFENSE,
-			TABS.TROOPS,
-			TABS.LOG,
+			TABS.TROOPS
 			]
 		, getVillage = function getVillage(vid){
 			if(!vid){return}
@@ -51,7 +49,7 @@ define("robotTW2/controllers/DefenseController", [
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid).value;
+			return $scope.local_data_villages.find(f=>f.id==vid);
 		}
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
@@ -75,10 +73,12 @@ define("robotTW2/controllers/DefenseController", [
 			Object.keys($scope.data_villages.villages).map(function(key){
 				var vill = getVillage(key);
 				$scope.local_data_villages.push({
-					id : key,
-					name : vill.data.name,
-					label : formatHelper.villageNameWithCoordinates(vill.data),
-					value : $scope.data_villages.villages[key].defense_activate
+					id 		: key,
+					name 	: vill.data.name,
+					label 	: formatHelper.villageNameWithCoordinates(vill.data),
+					value 	: $scope.data_villages.villages[key].defense_activate,
+					x		: vill.data.x,
+					y		: vill.data.y
 				})
 				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
 				return $scope.local_data_villages;
@@ -109,54 +109,44 @@ define("robotTW2/controllers/DefenseController", [
 
 		}
 
-		$scope.getKey = function(unit_name){
-			return services.$filter("i18n")(unit_name, services.$rootScope.loc.ale, "units");
-		}
-
-		$scope.getClass = function(unit_name){
-			return "icon-34x34-unit-" + unit_name;
-		}
-
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-
-		$scope.getVstart = function(param){
-			var vid = param.start_village;
+		
+		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			return getVillageData(vid).name
+			var data = getVillageData(vid);
+			if(!data){return}
+			let x = data.x
+			let y = data.y
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(vid)
+			services.mapService.jumpToVillage(x, y);
+			$scope.closeWindow();
+		}
+		
+		$scope.getLabelStart = function(param){
+			let vid = param.start_village;
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
+		}
+		
+		$scope.getLabelTarget = function(param){
+			let vid = param.target_village;
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
 
-		$scope.getVcoordStart = function(param){
-
-			var vid = param.start_village;
-			if(!vid){return}
-			var x = getVillageData(vid).x
-			var y = getVillageData(vid).y
-			return "(" + x + "/" + y + ")"
-		}
-
-		$scope.getClass = function(type){
-			var className = "";
-			switch (type) {
-			case "support": {
-				className = "icon-26x26-support";
-				break;
-			}
-			case "defense": {
-				className = "icon-26x26-defense-red";
-				break;
-			}
-			case "relocate": {
-				className = "icon-26x26-relocate";
-				break;
-			}
-			}
-			return className
+		$scope.getClass = function(name){
+			if(!name){return}
+			return "icon icon-34x34-unit-" + name;
 		}
 
 		$scope.getHoraSend = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
+		}
+		
+		$scope.getDataSend = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "dd/MM/yyyy");
 		}
 
 		$scope.getHoraAlvo = function(param){
@@ -170,15 +160,15 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getHoraRetorno = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "HH:mm:ss.sss");
 		}
+		
+		$scope.getDataRetorno = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "dd/MM/yyyy");
+		}
 
 		$scope.getTimeRest = function(param){
 			var difTime = param.data_escolhida - time.convertedTime() - param.time_sniper_ant; 
 			if(!difTime){return}
 			return helper.readableMilliseconds(difTime)
-		}
-
-		$scope.getVcoordTarget = function(param){
-			return "(" + param.target_x + "/" + param.target_y + ")"
 		}
 
 		$scope.clear_defense = function(){

@@ -1,115 +1,29 @@
-//define("robotTW2/autocomplete", [
-//	"helper/dom", 
-//	"struct/MapData",
-//	"robotTW2/services",
-//	"robotTW2/providers",
-//	"helper/format"
-//	], function(
-//			domHelper, 
-//			mapData,
-//			services,
-//			providers,
-//			formatHelper
-//	){
-//	var id = "two-autocomplete",
-//	open = !1,
-//	isValidCoords = function(a) {
-//		return /\s*\d{2,3}\|\d{2,3}\s*/.test(a)
-//	},
-//	clickHandler = function(elem) {
-//		domHelper.matchesId.bind(elem, 'select-field', true, service.hide); //.custom-select
-//	},
-//	onItemSelected = function(item) {
-//		service.hide(), services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), services.$rootScope.$broadcast(providers.routeProvider.SELECT_SELECTED, id, item) //item = array
-//	},
-//	getLabel = function(village) {
-//		return village.name + "(" + village.x + "/" + village.y + ")"
-//	},
-//	extendItemProperties = function extendItemProperties(item) {
-//
-//		if (item.type === 'village') {
-//			item.displayedName = formatHelper.villageNameWithCoordinates(item);
-//		}
-//
-//		if (item.type) {
-//			item.leftIcon = 'size-34x34';
-//			// If type is defined, use its icon.
-//			item.leftIcon += ' icon-26x26-rte-' + item.type;
-//		}
-//
-//		return item;
-//	}
-//	service = {};
-//	return service.hide = function() {
-//		services.$rootScope.$broadcast(providers.routeProvider.SELECT_HIDE, id), 
-//		$(window).off("click", clickHandler), 
-//		$(".win-main").off("mousewheel", service.hide), 
-//		open = !1
-//	}, service.show = function(list, triggerElement, f, g) {
-//		return id = f, 
-//		!!list.length && (
-//				services.$rootScope.$broadcast(providers.routeProvider.SELECT_SHOW, 
-//						id, 
-//						list, 
-//						null, //selected
-//						onItemSelected, 
-//						triggerElement, 
-//						!0, //dropDown
-//						0, //rightMargin
-//						services.$filter('i18n')('no_results', services.$rootScope.loc.ale, 'directive_autocomplete')
-//				), 
-//				open || (
-//						open = !0, 
-//						$(".win-main").on("mousewheel", service.hide), 
-//						$(window).on("click", clickHandler)
-//				), 
-//				!0
-//		)
-//	}, service.search = function(param, callback, type, e) {
-//		let list = []
-//		if (isValidCoords(param)) {
-//			var coords_args = param.split("/").map(function(arg) {
-//				return parseInt(arg, 10)
-//			});
-//			return void mapData.loadTownDataAsync(coords_args[0], coords_args[1], 1, 1, function(data) {
-//				data && list.push({
-//					id: data.id,
-//					type: "village",
-//					name: getLabel(a)
-//				}), callback(list)
-//			})
-//		}
-//		services.autoCompleteService.mixed(type, param, function(data) {
-//			let list = data.result;
-//			list = list.map(extendItemProperties);
-//			callback(list)
-//		});
-//	}, service
-//}),
 define("robotTW2/controllers/SpyController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
 	"robotTW2/time",
 	"robotTW2/databases/data_spy",
-	"robotTW2/databases/data_villages"
+	"robotTW2/databases/data_villages",
+	"robotTW2/autocomplete"
 	], function(
 			services,
 			providers,
 			helper,
 			time,
 			data_spy,
-			data_villages
+			data_villages,
+			autocomplete
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
+		$scope.SEARCH_MAP = services.$filter('i18n')('SEARCH_MAP', services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
-		var self = this
-
+		
 
 //		data_escolhida: 1551304200000
 //		duration: 900000
@@ -120,55 +34,29 @@ define("robotTW2/controllers/SpyController", [
 //		timer_delay: 395462
 //		type: "units"
 
-
-
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
-		var TABS = {
+		var self = this
+		, TABS = {
 				SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
-				COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy"),
-				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "spy")
+				COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy")
 		}
 		, TAB_ORDER = [
 			TABS.SPY,
-			TABS.COMP,
-			TABS.LOG,
+			TABS.COMP
 			]
-
-		$scope.requestedTab = TABS.SPY;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
-
-		$scope.local_data_villages = []
-
-		function getVillage(vid){
+		, getVillage = function getVillage(vid){
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid)
 		}
-
-		function getVillageData(vid){
+		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
 			return $scope.local_data_villages[vid].data;
 		}
-
-		Object.keys(data_villages.villages).map(function(key){
-			let data = getVillage(key).data;
-			$scope.local_data_villages.push({
-				id : key,
-				name : data.name,
-				value : data
-			})
-			return $scope.local_data_villages;
-		})
-
-		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
-
-		if (!$scope.$$phase) {$scope.$apply()}
-
-		var setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab								= tab;
-			$scope.requestedTab								= null;
+		, setActiveTab = function setActiveTab(tab) {
+			$scope.activeTab		= tab;
+			$scope.requestedTab		= null;
 		}
 		, initTab = function initTab() {
 			if (!$scope.activeTab) {
@@ -180,25 +68,57 @@ define("robotTW2/controllers/SpyController", [
 				return data_spy.commands[elem]
 			});
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
+			document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
 
-		initTab();
-		update();
+		$scope.requestedTab = TABS.SPY;
+		$scope.TABS = TABS;
+		$scope.TAB_ORDER = TAB_ORDER;
 
+		$scope.local_data_villages = []
+		$scope.isRunning = services.SpyService.isRunning();
+		
+		Object.keys(data_villages.villages).map(function(key){
+			let data = getVillage(key).data;
+			$scope.local_data_villages.push({
+				id : key,
+				name : data.name,
+				value : data
+			})
+			return $scope.local_data_villages;
+		})
+
+		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
+		
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-
-		$scope.isRunning = services.SpyService.isRunning();
-
+		
 		$scope.autoCompleteKey = function(event){
-//			var id = event.srcElement.id;
-//			var valeu = event.srcElement.value;
-//			if (!valeu || valeu.length < 2) return autocomplete.hide();
-//			autocomplete.search(valeu, function(list) {
-//				list.length && autocomplete.show(list, event.srcElement[0], id)
-//			}, ["village"])
+			let obj_autocomplete = {
+					'type'					: 'village',
+					'placeholder'			: $scope.SEARCH_MAP,
+					'onEnter'				: function(item, element){ //Filtra somente as aldeias bárbaras - aldeias sem owner_id representam aldeias bárbaras
+						$scope.item = item
+						element[0].firstElementChild.value = item.displayedName
+						if (!$scope.$$phase) {$scope.$apply()}
+					},
+					'exclude'				: function(elem){
+						return elem.owner_id == undefined
+					},
+					"inputValueReadOnly" 	: "",
+					"keepSelected"			: false
+			}
+
+			let object_scope = {
+					"inputValue" 	: event.srcElement.value,
+					"element" 		: $($("#autocomplete_spy")[0]),
+					"id" 			: "autocomplete_farm",
+					"autoComplete" 	: obj_autocomplete
+			}
+//			angular.extend($scope, object_scope)
+			autocomplete(object_scope, event);
 		}
 
 		$scope.getVstart = function(param){
@@ -276,11 +196,7 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
-
-		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
-			update();
-		})
-
+		
 		$scope.blur = function(){
 			var t = $("#input-ms").val();
 			if(t.length <= 5) {
@@ -293,6 +209,10 @@ define("robotTW2/controllers/SpyController", [
 			if($scope.activeTab != TABS.SPY){return}
 			return data_spy.complete > time.convertedTime() ? helper.readableMilliseconds(data_spy.complete - time.convertedTime()) : 0;
 		}
+		
+		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
+			update();
+		})
 
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
@@ -328,9 +248,8 @@ define("robotTW2/controllers/SpyController", [
 			$scope.data_spy.set();
 		});
 
-		if($scope.activeTab = TABS.SPY){
-			document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
-		}
+		initTab();
+		update();
 		$scope.setCollapse();
 
 		return $scope;

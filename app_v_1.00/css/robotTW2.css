@@ -8,6 +8,25 @@
 	margin-right: 6px;
 }
 
+.robotTW2 .screen-overview .tbl-content .village .name-coord {
+	cursor:
+		url("https://twxen.innogamescdn.com/img/cursor/link_878ece13d7.cur"),
+		url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAkCAYAAAAKNyObAAAJ30lEQVR42sxYC1SUZRp+5n5lZpgZYAYYyAHkasIipBbrrRO529lirTU1rbTYddVKrc7psoXp5nYx66ixbBezRdOWFU07J9NMlFSSiFuAqMhtgIHhMhdmBuby7fu7ucf1nDaU2nr/85wz/+37nnnf93m/9/t5jDH8XI33UxP4X875WZPjX3UuI/zi5xjWBTweb5dYIsGI19tM54WE179vgIgoA0R8AXg87n8yiMRi+Hw+sGAQMpWGu4TbHloPoVKBgfpjqD35KTweF87WN30vuSs9t/zexQ+g9nwbfvv7xyeGqNWb6dq6H8sriWlJ10RONxLkgzuKXn0Bj21+FyEq9XN0vYiQ/lOE9UpyRVWnPsfrb+5A35ATUo8da14uRLjRmE/3VhIyf4gJtWFRY/beleQK21ouovObz/DKpm0wGbWICdNizsJ8JKVnLqN8rKRnPiAcJFQQlnEvWS0916T46IRU6A2m66pzC/gCwa6U1GSI5SrEp98MnoCP3EXLsGnlffC4nQgGfJiYMQVfnyhDX3d3Db0zmdBGOEroJlgIAu5PJKSmXrxaEJfNoBKjoboSBw8c/E5ygqvO66nuVPZaexdGRBqRmpOHzU8vx6nKs8jIvQONpz9H8Z69iIw0wT3iIdV5DFuL3kJ3n00jFIkyxBJxDl/A+7VQJJwbDAYftVmt+oG+vobs3Pl2PqnY09v6n4lClVLMnTMTKalpYybH2TmCw+V05sbH6GFneiy6fQree3s7eW4Yx44dBY/5kJqZg9uWrcaO1zfingdX4Z0tr4FFpsI92IcNr76CeLp/oaEu2+WwS4jcx1eTU8vFlDoRSEpOuSZynFX7RkefHR22I0jHB+StbZvWY0hiRMUnJdCER2Pd4yvRbxuCMjkLe7b+GSnZMyhHVahvbMKObZvB83kwOjoCr9ebVb5/h67iQHHr5JtybFeSi4rQXxc5P6HFZhvI67VchHvYibTsHNRWVyE82gwX3b3QYsX8udNxvtOGz/cVY9/uv6Ps00MULgkW3r8MowEeZGo9jOZkhBpib+pqaVLUVpR3E0HLWMl9n9JuJRyOMcfBZE7C089vQFhEGBq67XjlsSVITc/CxeY6zJ4zC3fPX4wIrQbOYRcCNKxWrcGZ5g5Y++xoPN+C8oN7UF1+GAG/X71oxROO2HA1siYl4a68edfsucvWQmgddjnvusFkQKPFj3m5U2l58+HIx3vh8ziwbuOL6OwbRE3TRXS5GRJioxFFJUilUCBco8BoMACXN4jItFvQXncK9oF+j1zMO26OS7jusF5pNaS8NKfTlTIj+wYU7foMlcf2Q0MTr1i7FvsOHgVThmNoqB9BmQaDQjW6XSPQKsVQSMSI1mswIToMzefOQRxiQFPliVkdbW3NObNm1483rJftQYlU8q4pxgSZQg6dLgz5K5ajdP8nUBpj4bD2ggmISNJkZM6aCV6Qwd7fj7QoCl1cNIa9IyguPQg/E6Dy1HEc2PkOvB7vbhr3LSpdR8dL7p3I2AlLNSEKUp8HCx+4D9Vf12LChBjSMg9d/UFQHwKtMRpxk6dCIhYhNoLyz9pJaEOieQJ4Igle3fQaRORNuVKLrvZ2NFWfhGNwsJHGf5ubg4jar5Uc90xw8rRboJQIYe2yYPKUDISFSvDLzHg4hkfQ2e+DZTAIh1+MEFJozpw5KDtQigi1ECseXoqH/rAcycmpeGzNakhlMhT+owwiSiinx4uKQ3tR/8Uh2AcHQenDkSwkklVjJaegddW1+sknYevtRsWZry71bTOnJiJjkhlKGR/uURHaBvxotgQhlIVgyNoBvUqOrOwp2F74Jko+2g9TuJ56vn8P2GV3o+RoFbrb2yAPCUFQpMBXh/ei5sQn5NFLhZpPBBl/DOS8XCvdTmGor6snhXrgHxlBw7kuXGjvg8fLoJZRkxnkREAhPltNv/0YoTr3xssvoWhPCdSa0Etu4DpyHh1RagUenJsNfWQ03M5ROCwdiIqJx41Z0y7PKRyrWrkm39BjtU7JmPM7BP0+uB2Dl5KcKyl86oBVtKj7Rtzo6+lBT+8AIqnwVn1xGEtWP4+uXhecUhKRXAIfCUVO8eQTUYlIiBvjIiE3hKOlvYdcBZhjDDhx9BA34+6CgoI+wRgF0eH1eJbz2Qhm586GTCJHT2cnBqnvcxPJAE3Ktek1Da2IIWJ1VaeRNiWHRKBB5emTqK+qg8dohkAuhV4qhJjPu5RPAj6fvChHXHwMQkLViNTrULJzB5d7JUSulT9GcrUU2qea66rx4fbtiDDqkJIQjdCwCFisNpxr6wV1InA43VCIRiFXSBGTOAmtF85jqN+K1rPf4J9b3kbl+X4c7h6Gxe2/FA4uB0XfEkwyRSCR1C9XKrn5JlzP1vARwhsKqnXhBgOMsWakTDThyy+rIKCRTNFGOF0e5MyegXYqujuL91AzoIBcIqBy40ZM9jzc/dQGJJv1mG6QQUvXBcTQ5w/gyJk6pFNNTElMgMNuX0zOKL6efauE8Awp+E9SmRRiiRRKWqoYtVFJycnU5wXwZXk5cqbF4uH8RchIjIbQ0YFz39RgQ9FpiCfdi7vXPoUMcygipQIYZQLaqTFs3FqEO2ZMx/Sbsriw6ojcwHi2A2LCfMIxIspEYhHThYUxAZ/Hls5NZJ/97Tfs8XnJLHuijkVpZWzb6mms+JkcRunGCvZVsV2Nfaza5mYN/S62bst7bMjuYKbYWC7aG7nqwEE4DnKjhD0caKC7WMBfKvI7cE9OLA580Yq9x1sQCDAEaRKDVo5QBa0MIk4EPGo6rWgRC9HdI0Xb8Y+wdEEe8letgoVERvaX/6on47RbI3Ty0hW3x+GPBffC2W6Bq7sXpR83Yu/pTghoD/LInckwRIXj/ZIz8FMI4RlEyxki4uzAA/ctwKOPrERFWRntTwJrr17CxmMalVLMPty9hDm6trHCVVOZLkTMUmJULFQpYlE6GfuoYBar3rmErclLYlwdzlu0mM3OW8Ce3bKLPbflfRZuiGB8AVflsP5yOH+IsHKWnZlhxO0zE/HCiq0oKW9HgAa9Nd2A6Uk6hGlkqG8dwmsl9Sir78P0mTNgzrgZPlqYjpRuR3Pt1xiw2Yq/XU9PXj34eMndPy9Nj96adhz+qovKhQchMhGOVPegoskGm3MEo74gNQYePLHmIQxR01my9UUMDNAKM+zmwriOSBX8WF8MbkmMVrHKv97JshO1zBQmZ/m5ZvbS0nSWGa9lVMJYcnIcM8fdwFQqFRMKhezbTXkeQXr5E9h3Ybzf57giH8z/VQIWzTKj1eqkzsSBE/W9qDjbD+9oYCc9YyS0E44TDnFNyf/z46FJJOC3p8SqaZ31o59C6XD74A+wELrnGs/Hw38JMABf413QQ8RSwQAAAABJRU5ErkJggg=="),
+		auto; /
+	overflow: hidden;
+}
+
+.robotTW2 .screen-overview .tbl-content .village .name-coord:hover {
+	font-weight: bold;
+	color: #ffde00;
+	-webkit-text-shadow: 1px 1px 0 #000;
+	-moz-text-shadow: 1px 1px 0 #000;
+	-o-text-shadow: 1px 1px 0 #000;
+	-ms-text-shadow: 1px 1px 0 #000;
+	text-shadow: 1px 1px 0 #000
+}
+
+}
 .robotTW2 .center {
 	display: flex;
 	justify-content: center
@@ -54,13 +73,13 @@
 }
 
 .robotTW2 label {
-    margin-left: 6px;
-    margin-right: 6px;
+	margin-left: 6px;
+	margin-right: 6px;
 }
 
 .robotTW2 table td {
-    font-weight: bold;
-    color: #352108;
+	font-weight: bold;
+	color: #352108;
 }
 
 .robotTW2 .inpt {
@@ -84,6 +103,11 @@
 	font-weight: bold;
 }
 
+.robotTW2 .selected-green {
+    color: darkgreen;
+    font-weight: bold;
+}
+
 .robotTW2 .disabled {
 	color: #d8c836;
 	background: #5f482e;
@@ -98,8 +122,8 @@
 }
 
 .robotTW2 input:disabled {
-    color:#231807;
-    background-color: #524d4d
+	color: #231807;
+	background-color: #524d4d
 }
 
 .robotTW2 .recruit .input-list-collapse {
@@ -123,7 +147,6 @@
 	line-height: 34px;
 	min-width: 150px;
 	height: 34px;
-	padding: 0 10px;
 }
 
 .robotTW2 .quadrant {
@@ -192,7 +215,7 @@
 	background-repeat: no-repeat;
 	background-position: 100% center;
 	background-color: #9c6e3b;
-	color: #4c290b;
+	color: #ffde00;
 	overflow: hidden;
 	border-style: inset;
 	border-color: floralwhite;

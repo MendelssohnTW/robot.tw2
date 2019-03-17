@@ -27,7 +27,8 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div>
-				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+				<table
+					class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 					<colgroup>
 						<col width="*">
 						<col width="100px">
@@ -49,10 +50,11 @@
 
 			</div>
 
-			<div class="scroll-wrap attack" style="margin-bottom: 53px">
+			<div class="scroll-wrap attack" style="margin-bottom: 94px">
 				<h5 class="twx-section collapse">{{command_list}}</h5>
 				<div>
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col width="*">
 							<col width="235px">
@@ -64,7 +66,7 @@
 							<col width="48px">
 						</colgroup>
 						<tr>
-							<td class="cell-center"><span>{{ident_cmd}}</span></td>
+							<td class="cell-center">{{ident_cmd}}</td>
 							<td class="cell-center"><span
 								class="icon icon-34x34-units-outgoing"></span></td>
 							<td class="cell-center"><span
@@ -80,21 +82,21 @@
 							<td class="cell-center"></td>
 						</tr>
 						<tr ng-repeat="comando in comandos">
-							<td class="cell-center"><span>{{comando.id_command}}</span></td>
+							<td class="cell-center">{{comando.id_command}}</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getVstart(comando)}}</span>
+									{{getVstart(comando)}}
 								</div>
 								<div>
-									<span>{{getVcoordStart(comando)}}</span>
+									{{getVcoordStart(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getVtarget(comando)}}</span>
+									{{getVtarget(comando)}}
 								</div>
 								<div>
-									<span>{{getVcoordTarget(comando)}}</span>
+									{{getVcoordTarget(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
@@ -104,23 +106,23 @@
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getTimeRestSend(comando)}}</span>
+									{{getTimeRestSend(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getHoraSend(comando)}}</span>
+									{{getHoraSend(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
 								<div>
-									<span>{{getDataAlvo(comando)}}</span>
+									{{getDataAlvo(comando)}}
 								</div>
 								<div>
-									<span>{{getHoraAlvo(comando)}}</span>
+									{{getHoraAlvo(comando)}}
 								</div>
 							</td>
-							<td class="cell-center"><span>{{comando.spys}}</span></td>
+							<td class="cell-center">{{comando.spys}}</td>
 							<td class="cell-center"><a href="#"
 								class="size-34x34 btn-red icon-26x26-close"
 								ng-click="removeCommand(comando.id_command)" tooltip
@@ -152,15 +154,16 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div>
-				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
+				<table
+					class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
 					id="preset-list">
 					<colgroup>
-						<col>
-						<col width="32px">
-						<col width="200px">
-						<col width="150px">
-					</colgroup>
-					<tbody>
+                        <col>
+                        <col width="32px">
+                        <col width="350px">
+                        <col width="150px">
+                    </colgroup>
+					<tbody>    
 						<tr>
 							<td>
 								<div>
@@ -176,10 +179,18 @@
 										<tbody>
 											<tr>
 												<td colspan="3">
-													<div id="autocomplete">
+													<div>
+														<div id="select-field" select-element=""
+															ng-style="{'width': width + 'px'}"
+															style="transform: translate3d(63px, 819px, 0px); width: 309px;">
+															<ul class="action-list select-handler">
+															</ul>
+														</div>
+													</div>
+													<div id="autocomplete_spy" class="auto-complete-wrapper">
 														<input type="text" ng-keyup="autoCompleteKey($event)"
-															class="textfield-border"
-															placeholder="Pesquisar no Mapa Mundi ...">
+															ng-model="inputValue" class="textfield-border"
+															placeholder="{{SEARCH_MAP}}" style="width: 100%;">
 													</div>
 												</td>
 											</tr>
@@ -194,17 +205,16 @@
 				</table>
 			</div>
 		</div>
-		<div class="win-main" scrollbar="" ng-if="activeTab == TABS.LOG">
-		</div>
-		<footer class="win-foot">
-			<ul class="list-btn list-center buttons">
-				<li ng-if="activeTab == TABS.ATTACK"><a
-					class="btn-orange btn-border clear" ng-click="clear_spy()">{{CLEAR}}</a></li>
-				<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-					ng-click="menu()"><span>{{MENU}}</span></a></li>
-				<li><a class="btn-orange btn-border close"
-					ng-click="closeWindow()">{{CLOSE}}</a></li>
-			</ul>
-		</footer>
 	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li ng-if="activeTab == TABS.ATTACK"><a
+				class="btn-orange btn-border clear" ng-click="clear_spy()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li><a class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+
 </div>

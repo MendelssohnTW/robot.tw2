@@ -38,14 +38,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.data_farm = data_farm;
 
 		var self = this
-		, TABS = {
-				FARM 	: services.$filter("i18n")("text_farm", services.$rootScope.loc.ale, "farm"),
-				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "farm")
-		}
-		, TAB_ORDER = [
-			TABS.FARM,
-			TABS.LOG,
-			]
 		, r_farm_time
 		, time_rest
 		, presetListModel = services.modelDataService.getPresetList()
@@ -58,15 +50,6 @@ define("robotTW2/controllers/FarmController", [
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
 			return $scope.local_data_villages.find(f=>f.id==vid).value;
-		}
-		, setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab	= tab;
-			$scope.requestedTab	= null;
-		}
-		, initTab = function initTab() {
-			if (!$scope.activeTab) {
-				setActiveTab($scope.requestedTab);
-			}
 		}
 		, update = function update() {
 			if(!$scope.infinite){
@@ -81,7 +64,6 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function get_dist(villageId, journey_time, units) {
-			if($scope.activeTab != TABS.FARM){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
@@ -95,7 +77,6 @@ define("robotTW2/controllers/FarmController", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function get_time(villageId, distance, units) {
-			if($scope.activeTab != TABS.FARM){return}
 			var village = getVillageData(villageId)
 			, units = units
 			, army = {
@@ -128,8 +109,6 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
 		}
 		, updateBlur = function updateBlur(){
-			if($scope.activeTab != TABS.FARM){return}
-
 			switch ($scope.toggle_option) {
 			case "check_one":
 				$scope.data.selectedOption.max_journey_distance = get_dist($scope.village_selected.id, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
@@ -168,7 +147,7 @@ define("robotTW2/controllers/FarmController", [
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function blurPreset(){
-			if($scope.activeTab != TABS.FARM || !$scope.data.selectedOption){return}
+			if(!$scope.data.selectedOption || !document.getElementById("max_journey_time") || !document.getElementById("min_journey_time")){return}
 			var tmMax = "00:00:00"
 				, tmMin = "00:00:00";
 			if($scope.data.selectedOption){
@@ -313,10 +292,6 @@ define("robotTW2/controllers/FarmController", [
 			$scope.blur();
 		}
 
-		$scope.userSetActiveTab = function(tab){
-			setActiveTab(tab);
-		}
-
 		$scope.toggleOption = function(option){
 			$scope.toggle_option = option;
 
@@ -341,7 +316,6 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blur = function (callback) {
-			if($scope.activeTab != TABS.FARM){return}
 			if(!$scope.infinite){
 				$scope.inicio_de_farm = $("#inicio_de_farm").val()
 				$scope.termino_de_farm = $("#termino_de_farm").val()
@@ -412,28 +386,24 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blurMaxJourney = function () {
-			if($scope.activeTab == TABS.FARM){
-				var r = $("#max_journey_time").val() 
-				if(r.length <= 5) {
-					r = r + ":00"
-				}
-				$scope.data.selectedOption.max_journey_time = helper.unreadableSeconds(r) * 1000
-				services.modelDataService.getVillage($scope.village_selected)
-				$scope.data.selectedOption.max_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
-				updateBlur()
+			var r = $("#max_journey_time").val() 
+			if(r.length <= 5) {
+				r = r + ":00"
 			}
+			$scope.data.selectedOption.max_journey_time = helper.unreadableSeconds(r) * 1000
+			services.modelDataService.getVillage($scope.village_selected)
+			$scope.data.selectedOption.max_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
+			updateBlur()
 		}
 
 		$scope.blurMinJourney = function () {
-			if($scope.activeTab == TABS.FARM){
-				var r = $("#min_journey_time").val() 
-				if(r.length <= 5) {
-					r = r + ":00"
-				}
-				$scope.data.selectedOption.min_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.data.selectedOption.min_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units) || 0
-				updateBlur()
+			var r = $("#min_journey_time").val() 
+			if(r.length <= 5) {
+				r = r + ":00"
 			}
+			$scope.data.selectedOption.min_journey_time = helper.unreadableSeconds(r) * 1000
+			$scope.data.selectedOption.min_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units) || 0
+			updateBlur()
 		}
 
 		$scope.updateBlur = updateBlur;
@@ -567,13 +537,6 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.set();
 		}, true)
 
-		$scope.$watch("activeTab", function(){
-			if($scope.activeTab == TABS.FARM){
-				updateAll()
-				getDetailsExceptions()
-			}
-		}, true)
-
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();
 			$scope.data_farm.set();
@@ -595,9 +558,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
 		$scope.infinite = $scope.data_farm.infinite;
 		$scope.toggle_option = "check_one";
-		$scope.requestedTab = TABS.FARM;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
 		$scope.check_one = true;
 		$scope.check_all = false;
 		$scope.check_all_villages = false;
@@ -628,13 +588,12 @@ define("robotTW2/controllers/FarmController", [
 				"selectedOption" : {}
 		}
 
-//		$scope.setCollapse();
-
-		initTab();
 		getDetailsExceptions();
 
 		triggerUpdate()
 		update()
+		
+		$scope.setCollapse();
 
 		return $scope;
 	}
