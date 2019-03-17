@@ -63,7 +63,7 @@
 								<th class="cell-center"><h5>{{module}}</h5></th>
 								<th class="cell-center"><h5>{{state}}</h5></th>
 								<th class="cell-center"><h5>{{init_standard}}</h5></th>
-								<th class="cell-center" colspan="2"><h5>{{extension_start
+								<th class="cell-center" coldiv="2"><h5>{{extension_start
 										+ "/" + extension_stop}}</h5></th>
 								<th class="cell-center"><h5>{{database}}</h5></th>
 								<th class="cell-center"><h5>{{text_hotkey}}</h5></th>
@@ -149,14 +149,14 @@
 									tooltip-content="{{CLEAR + ' database ' + ext.name.toUpperCase()}}"
 									class="btn-orange btn-form btn-border no-padding"
 									ng-click="clearDB(ext.name)"><span class="text">{{CLEAR
-											+ " " + ext.name.toUpperCase()}}</span></a></td>
+											+ " " + ext.name.toUpperCase()}}</div></a></td>
 								<td><a href="#" tooltip
 									tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
 									class="btn-orange btn-form btn-border no-padding"
 									ng-click="openExt(ext.name)"
-									ng-class="{'btn-grey': !ext.init_initialized}"><span
+									ng-class="{'btn-grey': !ext.init_initialized}"><div
 										id="span-text" class="text">{{OPEN + " " +
-											ext.name.toUpperCase()}}</span></a></td>
+											ext.name.toUpperCase()}}</div></a></td>
 							</tr>
 						</tbody>
 					</table>
