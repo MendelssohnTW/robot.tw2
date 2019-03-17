@@ -72,13 +72,11 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.local_list_defense = [];
 			Object.keys($scope.data_villages.villages).map(function(key){
 				var vill = getVillage(key);
-				angular.extend(vill, $scope.data_villages.villages[key])
 				$scope.local_data_villages.push({
 					id : key,
 					name : vill.data.name,
 					label : formatHelper.villageNameWithCoordinates(vill.data),
-					value : vill
-//					value : $scope.data_villages.villages[key].defense_activate
+					value : $scope.data_villages.villages[key].defense_activate
 				})
 				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
 				return $scope.local_data_villages;
@@ -120,11 +118,18 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-
-		$scope.getVstart = function(param){
-			var vid = param.start_village;
+		
+		$scope.getLabelStart = function(param){
+			let vid = param.start_village;
 			if(!vid){return}
-			return getVillageData(vid).name
+			return $scope.local_data_villages[vid].label
+		}
+		
+		$scope.getLabelTarget = function(param){
+			let vid = param.start_village;
+			if(!vid){return}
+			let name = param.target_name
+			return name + " (" + param.target_x + "|" + param.target_y + ")"
 		}
 
 		$scope.getVcoordStart = function(param){
@@ -175,10 +180,6 @@ define("robotTW2/controllers/DefenseController", [
 			var difTime = param.data_escolhida - time.convertedTime() - param.time_sniper_ant; 
 			if(!difTime){return}
 			return helper.readableMilliseconds(difTime)
-		}
-
-		$scope.getVcoordTarget = function(param){
-			return "(" + param.target_x + "/" + param.target_y + ")"
 		}
 
 		$scope.clear_defense = function(){
