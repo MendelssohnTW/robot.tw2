@@ -79,12 +79,12 @@
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center"><span>{{comando.id_command}}</span></td>
 							<td class="cell-center">
-								<div class="coordinates">
+								<div class="coordinates" ng-click="jumpToVillage(comando.start_village)">
 									{{getLabelStart(comando)}}
 								</div>
 							</td>
 							<td class="cell-center">
-								<div class="coordinates">
+								<div class="coordinates" ng-click="jumpToVillage(comando.target_village)">
 									{{getLabelTarget(comando)}}
 								</div>
 							</td>
