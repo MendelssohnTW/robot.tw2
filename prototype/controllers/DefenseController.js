@@ -136,23 +136,9 @@ define("robotTW2/controllers/DefenseController", [
 			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
 
-		$scope.getClass = function(type){
-			var className = "";
-			switch (type) {
-			case "support": {
-				className = "icon-26x26-support";
-				break;
-			}
-			case "defense": {
-				className = "icon-26x26-defense-red";
-				break;
-			}
-			case "relocate": {
-				className = "icon-26x26-relocate";
-				break;
-			}
-			}
-			return className
+		$scope.getClass = function(name){
+			if(!name){return}
+			return "icon-26x26-unit-" + name;
 		}
 
 		$scope.getHoraSend = function(param){
