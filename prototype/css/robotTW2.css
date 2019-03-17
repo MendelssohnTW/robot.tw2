@@ -103,6 +103,11 @@
 	font-weight: bold;
 }
 
+.robotTW2 .selected-green {
+    color: darkgreen;
+    font-weight: bold;
+}
+
 .robotTW2 .disabled {
 	color: #d8c836;
 	background: #5f482e;
