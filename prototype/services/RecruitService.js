@@ -361,9 +361,9 @@ define("robotTW2/services/RecruitService", [
 			var vls = modelDataService.getSelectedCharacter().getVillageList();
 			vls = Object.keys(vls).map(function(elem){
 				let tam = vls[elem].getRecruitingQueue("barracks").length || 0;
-				let gt = getFinishedForFree(elem);
+				let gt = getFinishedForFree(vls[elem]);
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
-					list.push(getFinishedForFree(elem))
+					list.push(getFinishedForFree(vls[elem]))
 				}
 				if(data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots || tam < 1){
 					return vls[elem].data.villageId

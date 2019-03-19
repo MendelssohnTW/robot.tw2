@@ -1,9 +1,11 @@
 define("robotTW2/controllers/SpyCompletionController", [
 	"robotTW2/services",
-	"robotTW2/time"
+	"robotTW2/time",
+	"robotTW2/notify"
 	], function(
 			services,
-			time
+			time,
+			notify
 	){
 	return function SpyCompletionController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -18,8 +20,27 @@ define("robotTW2/controllers/SpyCompletionController", [
 		$scope.ms_init = 0;
 
 		$scope.sendAttackSpy = function(){
-			$scope.startId = services.modelDataService.getSelectedVillage().data.villageId;
-			services.SpyService.sendCommandAttackSpy($scope)
+			
+			var durationInSeconds = helper.unreadableSeconds($scope.duration);
+			var get_data = $("#input-date").val();
+			var get_time = $("#input-time").val();
+			var get_ms = $("#input-ms").val();
+			if (get_time.length <= 5){
+				get_time = get_time + ":00"; 
+			}
+			if (get_data != undefined && get_time != undefined){
+				$scope.milisegundos_duracao = durationInSeconds * 1000;
+				$scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+				if ($scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
+					$scope.startId = services.modelDataService.getSelectedVillage().data.villageId;
+					services.SpyService.sendCommandAttackSpy($scope)
+					$scope.closeWindow();
+				} else {
+					notify("date_error");
+				}       
+			} else {
+				return;
+			}
 		}
 		
 		$scope.$on("$destroy", function() {

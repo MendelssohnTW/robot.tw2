@@ -23,6 +23,9 @@ define("robotTW2/controllers/SpyController", [
 		$scope.SEARCH_MAP = services.$filter('i18n')('SEARCH_MAP', services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
+		$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
+		$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
+		$scope.ms_init = 0;
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 
@@ -194,19 +197,45 @@ define("robotTW2/controllers/SpyController", [
 //			target_x: 458
 //			target_y: 477
 //			type: "buildings"
+			
+			//Calcular duration spy
 				
+			let scp = {}
+			let duration;
+			let durationInSeconds = helper.unreadableSeconds(duration);
+			let get_data = $("#input-date").val();
+			let get_time = $("#input-time").val();
+			let get_ms = $("#input-ms").val();
+			if (get_time.length <= 5){
+				get_time = get_time + ":00"; 
+			}
+
+			scp.type = data_type.selectedOption; //type
+			scp.startId
+			scp.targetId
+			scp.targetVillage //name
+			scp.targetX
+			scp.targetY
+			scp.qtd = data_qtd.selectedOption//qtd
+			
+			if (get_data != undefined && get_time != undefined){
+				scp.milisegundos_duracao = durationInSeconds * 1000;
+				scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+				if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
+					services.SpyService.addScopeAttackSpy(scp);
+					scp.closeWindow();
+				} else {
+					notify("date_error");
+				}       
+			} else {
+				return;
+			}
 				
-			$scope.startId = Object.keys($scope.data_villages.villages[$scope.data_select.selectedOption.id])[0]
-			
-			
-			
-			services.SpyService.sendCommandAttackSpy($scope)
 		}
 		
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
 		})
-
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
 			if($scope.activeTab != TABS.SPY){return}
@@ -242,6 +271,8 @@ define("robotTW2/controllers/SpyController", [
 		});
 		
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
+		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
+		$scope.data_type = services.MainService.getSelects(["building", "unit"])
 
 		initTab();
 		update();

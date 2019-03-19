@@ -4,7 +4,6 @@ define("robotTW2/services/SpyService", [
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/conf",
-	"robotTW2/notify",
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_spy"
@@ -14,7 +13,6 @@ define("robotTW2/services/SpyService", [
 			time,
 			helper,
 			conf,
-			notify,
 			SPY_TYPES,
 			data_villages,
 			data_spy
@@ -208,26 +206,7 @@ define("robotTW2/services/SpyService", [
 			if (scp.availableSpies === 0 || scp.option.length === 0 || scp.rangeSlider.value === 0) {
 				return;
 			}
-
-			var durationInSeconds = helper.unreadableSeconds(scp.duration);
-			var get_data = $("#input-date").val();
-			var get_time = $("#input-time").val();
-			var get_ms = $("#input-ms").val();
-			if (get_time.length <= 5){
-				get_time = get_time + ":00"; 
-			}
-			if (get_data != undefined && get_time != undefined){
-				scp.milisegundos_duracao = durationInSeconds * 1000;
-				scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-				if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
-					addScopeAttackSpy(scp);
-					scp.closeWindow();
-				} else {
-					notify("date_error");
-				}       
-			} else {
-				return;
-			}
+			addScopeAttackSpy(scp);
 		}
 		, addScopeAttackSpy = function(scp){
 			var params = {
@@ -236,9 +215,9 @@ define("robotTW2/services/SpyService", [
 					target_x			: scp.targetX,
 					target_y			: scp.targetY,
 					target_name			: scp.targetVillage,
-					spys				: scp.rangeSlider.value,
+					spys				: scp.rangeSlider.value || scp.qtd,
 					duration			: scp.milisegundos_duracao,
-					type				: scp.option,
+					type				: scp.option || scp.type,
 					data_escolhida		: scp.tempo_escolhido
 			}
 			addAttackSpy(params);
@@ -315,6 +294,7 @@ define("robotTW2/services/SpyService", [
 			stop 					: stop,
 			sendCommandAttackSpy 	: sendCommandAttackSpy,
 			removeCommandAttackSpy	: removeCommandAttackSpy,
+			addScopeAttackSpy		: addScopeAttackSpy,
 			removeAll				: removeAll,
 			isRunning				: function() {
 				return isRunning
