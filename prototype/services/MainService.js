@@ -25,7 +25,6 @@ define("robotTW2/services/MainService", [
 				var arFn = requestFn.get(extension.toLowerCase(), true);
 				if(!arFn 
 						|| (extension.toLowerCase() == "secondvillage" && !secondVillageService.isFeatureActive())
-//						|| (extensions[extension] == "data" && (!$rootScope.data_data || !$rootScope.data_data.possible))
 				) {
 					extensions[extension].activated = false;
 					continue
@@ -49,6 +48,14 @@ define("robotTW2/services/MainService", [
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
 			
 			return extensions
+		}
+		, service.getSelects = function(obj){
+			var select = {
+				"availableOptions" : obj,
+				"selectedOption" : obj[0]
+			}
+			
+			return select
 		}
 		, service
 	})(

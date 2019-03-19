@@ -42,14 +42,6 @@ define("robotTW2/controllers/DefenseController", [
 			TABS.DEFENSE,
 			TABS.TROOPS
 			]
-		, getVillage = function getVillage(vid){
-			if(!vid){return}
-			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
-		}
-		, setVillage = function setVillage(village){
-			if(!village){return}
-			return angular.copy(services.modelDataService.getSelectedCharacter().setSelectedVillage(village))
-		}
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
 			$scope.requestedTab								= null;
@@ -67,21 +59,8 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 		, update_all = function(){
-			$scope.local_data_villages = [];
 			$scope.local_list_defense = [];
-			Object.keys($scope.data_villages.villages).map(function(key){
-				var vill = getVillage(key);
-				$scope.local_data_villages.push({
-					id 		: key,
-					name 	: vill.data.name,
-					label 	: formatHelper.villageNameWithCoordinates(vill.data),
-					value 	: $scope.data_villages.villages[key].defense_activate,
-					x		: vill.data.x,
-					y		: vill.data.y
-				})
-				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
-				return $scope.local_data_villages;
-			})
+			$scope.local_data_villages = services.VillageService.getLocalVillages("defense", "label");
 
 			var id = 0;
 
@@ -96,15 +75,8 @@ define("robotTW2/controllers/DefenseController", [
 
 			$scope.village_selected = $scope.local_data_villages[0]
 
-			$scope.data_units = {
-				"availableOptions" : $scope.local_list_defense,
-				"selectedOption" : $scope.local_list_defense[0]
-			}
-
-			$scope.data_select = {
-				"availableOptions" : $scope.local_data_villages,
-				"selectedOption" : $scope.village_selected
-			}
+			$scope.data_units = services.MainService.getSelects($scope.local_list_defense)
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 
 		}
 
@@ -114,11 +86,11 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var village = getVillage(vid)
+			var village = services.VillageService.getVillage(vid)
 			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
-			setVillage(village)
+			services.VillageService.setVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
@@ -240,8 +212,6 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.requestedTab = TABS.DEFENSE;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-
-		$scope.village_selected = $scope.local_data_villages[0]
 
 		update_all();
 		initTab();

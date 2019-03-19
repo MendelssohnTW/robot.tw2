@@ -1,0 +1,99 @@
+define("robotTW2/services/VillageService", [
+	"robotTW2",
+	"robotTW2/version",
+	"robotTW2/databases/data_alert",
+	"robotTW2/databases/data_villages",
+	"helper/format"
+	], function(
+			robotTW2,
+			version,
+			data_alert,
+			formatHelper
+	){
+	return (function VillageService(
+			$rootScope,
+			socketService,
+			providers,
+			modelDataService,
+			$timeout,
+			$filter,
+			ready,
+			data_villages
+	) {
+		var isInitialized = !1
+		, isRunning = !1
+		, local_data_villages = []
+		, getVillage = function getVillage(vid){
+			if(!vid){return}
+			return angular.copy(modelDataService.getSelectedCharacter().getVillage(vid))
+		}
+		, setVillage = function setVillage(village){
+			if(!village){return}
+			return angular.copy(modelDataService.getSelectedCharacter().setSelectedVillage(village))
+		}
+		, getLocalVillages = function getLocalVillages(type, type_sort){
+			let str = undefined;
+			switch (type){
+			case "defense": 
+				str = "defense_activate"
+					break;
+			case "attack": 
+				str = undefined
+				break;
+			}
+			Object.keys(data_villages.villages).map(function(key){
+				var vill = getVillage(key);
+				local_data_villages.push({
+					id 		: key,
+					name 	: vill.data.name,
+					label 	: formatHelper.villageNameWithCoordinates(vill.data),
+					value 	: data_villages.villages[key][str] || data_villages.villages[key],
+					x		: vill.data.x,
+					y		: vill.data.y
+				})
+				if(typeof(type_sort) == "string"){
+					local_data_villages.sort(function(a,b){return a[type_sort].localeCompare(b[type_sort])})
+				}
+			})
+			return local_data_villages;
+		}
+		, init = function (){
+			isInitialized = !0
+			start();
+			wait();
+		}
+		, start = function (){
+			if(isRunning){return}
+			ready(function(){
+				isRunning = !0;
+			}, ["all_villages_ready"])
+		}
+		, stop = function (){
+			isRunning = !1;
+		}
+		return	{
+			init			: init,
+			start 			: start,
+			getVillage 		: getVillage,
+			setVillage 		: setVillage,
+			getLocalVillages: getLocalVillages,
+			stop 			: stop,
+			isRunning		: function() {
+				return isRunning
+			},
+			isInitialized	: function(){
+				return isInitialized
+			},
+			version			: version.alert,
+			name			: "village"
+		}
+	})(
+			robotTW2.services.$rootScope,
+			robotTW2.services.socketService,
+			robotTW2.providers,
+			robotTW2.services.modelDataService,
+			robotTW2.services.$timeout,
+			robotTW2.services.$filter,
+			robotTW2.ready
+	)
+})

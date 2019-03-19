@@ -2487,8 +2487,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
 				}
-				case robotTW2.services.MapService : {
-					robotTW2.services.MapService && typeof(robotTW2.services.MapService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.MapService) : null;	
+				case robotTW2.services.VillageService : {
+					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.VillageService) : null;	
 					break
 				}
 //				case robotTW2.services.DataService : {
@@ -2525,6 +2525,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_main" : {
 					robotTW2.loadScript("/services/MainService.js");
+					robotTW2.loadScript("/services/VillageService.js");
 					robotTW2.loadScript("/services/ExtensionService.js");
 					robotTW2.loadScript("/controllers/MainController.js");
 					break

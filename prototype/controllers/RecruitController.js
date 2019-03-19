@@ -157,6 +157,13 @@ define("robotTW2/controllers/RecruitController", [
 				"selectedOption" : $scope.local_data_groups[0]
 		}
 		
+		$scope.$watch("data_villages", function () {
+			if(!$scope.data_villages) {return}
+			services.DefenseService.stop();
+			$scope.data_villages.set();
+			services.DefenseService.start(true);
+		}, true)
+		
 		$scope.isRunning = services.RecruitService.isRunning();
 		$scope.isPaused = services.RecruitService.isPaused();
 
