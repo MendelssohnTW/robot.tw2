@@ -8,6 +8,7 @@ define("robotTW2/services/VillageService", [
 			robotTW2,
 			version,
 			data_alert,
+			data_villages,
 			formatHelper
 	){
 	return (function VillageService(
@@ -17,8 +18,7 @@ define("robotTW2/services/VillageService", [
 			modelDataService,
 			$timeout,
 			$filter,
-			ready,
-			data_villages
+			ready
 	) {
 		var isInitialized = !1
 		, isRunning = !1
