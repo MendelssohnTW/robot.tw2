@@ -145,15 +145,17 @@
 					id="preset-list">
 					<colgroup>
 						<col width="32px">
-						<col>
+						<col width="*">
 						<col width="32px">
-						<col width="350px">
-						<col width="150px">
+						<col width="300px">
+						<col width="200px">
+						<col width="160px">
+						<col width="160px">
 					</colgroup>
 					<tbody>
 						<tr>
-							<th class="cell-center" colspan="2">Origem</th>
-							<th class="cell-center" colspan="2">Alvo</th>
+							<th class="cell-center" colspan="2">{{text_source}}</th>
+							<th class="cell-center" colspan="2">{{text_target}}</th>
 						</tr>
 						<tr>
 							<td><div class="icon icon-34x34-village"></div></td>
@@ -161,7 +163,6 @@
 								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 								ng-model="data_select.selectedOption"></select></td>
 							<td><span class="icon icon-34x34-village"></span></td>
-							<td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
@@ -194,12 +195,16 @@
 										min="000" max="999" value="{{ms_init}}">
 								</div>
 							</td>
-							<td><select id="select_qtd" class="select-handler"
-								ng-options="item as item.name for item in data_qtd.availableOptions track by item.name"
-								ng-model="data_qtd.selectedOption"></select></td>
-							<td><select id="select_type" class="select-handler"
-								ng-options="item as item.name for item in data_type.availableOptions track by item.name"
-								ng-model="data_type.selectedOption"></select></td>
+							<td><div>
+									<select id="select_qtd" class="select-handler"
+										ng-options="item as item.name for item in data_qtd.availableOptions track by item.name"
+										ng-model="data_qtd.selectedOption"></select>
+								</div>
+								<div>
+									<select id="select_type" class="select-handler"
+										ng-options="item as item.name for item in data_type.availableOptions track by item.name"
+										ng-model="data_type.selectedOption"></select>
+								</div></td>
 							<td class="cell-center"><div>
 									<a href="#" id="button-prog"
 										class="btn-orange btn-form btn-border no-padding btn-grey"
