@@ -33,7 +33,8 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_defense.version;
 
-		var self = this
+		var self = this,
+		loaded = false
 		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
 				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense")
@@ -59,6 +60,7 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 		, update_all = function(){
+			loaded = true;
 			$scope.local_list_defense = [];
 			$scope.local_data_villages = services.VillageService.getLocalVillages("defense", "label");
 
@@ -196,14 +198,14 @@ define("robotTW2/controllers/DefenseController", [
 		}, true)
 
 		$scope.$watch("data_defense", function(){
-			if(!$scope.data_defense){return}
+			if(!$scope.data_defense || !loaded){return}
 			services.DefenseService.stop();
 			$scope.data_defense.set();
 			services.DefenseService.start();
 		}, true)
 
 		$scope.$watch("data_villages", function () {
-			if(!$scope.data_villages) {return}
+			if(!$scope.data_villages || !loaded) {return}
 			services.DefenseService.stop();
 			$scope.data_villages.set();
 			services.DefenseService.start(true);
