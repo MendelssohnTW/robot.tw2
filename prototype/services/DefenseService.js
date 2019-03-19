@@ -391,7 +391,7 @@ define("robotTW2/services/DefenseService", [
 				var lt = []
 
 				Object.keys(commandDefense).map(function(key){
-					if(commandDefense[key].params.preserv && data_villages.villages[commandDefense[key].start_village].defense.activate){
+					if(commandDefense[key].params.preserv && data_villages.villages[commandDefense[key].start_village].defense_activate){
 						lt.push(commandDefense[key].params)
 					} else {
 						delete commandDefense[key];
@@ -402,7 +402,7 @@ define("robotTW2/services/DefenseService", [
 				var vls = modelDataService.getSelectedCharacter().getVillageList();
 				
 				vls = Object.keys(vls).map(function(elem){
-					if(data_villages.villages[vls[elem].data.villageId].defense.activate){
+					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
 						return vls[elem]
 					}
 				})
