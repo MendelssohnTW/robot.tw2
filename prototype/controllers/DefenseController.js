@@ -225,8 +225,7 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.$watch("data_defense", function(){
 			if(!$scope.data_defense){return}
-			data_defense = $scope.data_defense;
-			data_defense.set();
+			$scope.data_defense.set();
 		}, true)
 		
 		$scope.$watch("data_units", function(){
