@@ -51,6 +51,7 @@ define("robotTW2/services/DefenseService", [
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
+		, listener_sent = undefined
 		, listener_conquered = undefined
 		, promise_verify = undefined
 		, queue_verifiy = []
