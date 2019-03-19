@@ -10,7 +10,6 @@ define("robotTW2/services/AttackService", [
 	"robotTW2/conf",
 	"robotTW2/notify",
 	"robotTW2/time",
-	"robotTW2/calibrate_time",
 	"robotTW2/databases/data_attack",
 	"robotTW2/CommandAttack"
 	], function(
@@ -20,7 +19,6 @@ define("robotTW2/services/AttackService", [
 			conf,
 			notify,
 			time,
-			calibrate_time,
 			data_attack,
 			commandAttack
 	){
@@ -238,7 +236,6 @@ define("robotTW2/services/AttackService", [
 			if(isRunning){return}
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js", true);
-				calibrate_time()
 				isRunning = !0
 				Object.values(data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
@@ -271,7 +268,6 @@ define("robotTW2/services/AttackService", [
 			start				: start,
 			stop 				: stop,
 			sendCommandAttack 	: sendCommandAttack,
-			calibrate_time		: calibrate_time,
 			removeCommandAttack	: removeCommandAttack,
 			removeAll			: removeAll,
 			isRunning			: function () {

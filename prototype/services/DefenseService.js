@@ -11,7 +11,6 @@ define("robotTW2/services/DefenseService", [
 	"conf/conf",
 	"conf/unitTypes",
 	"robotTW2/time",
-	"robotTW2/calibrate_time",
 	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_villages",
@@ -24,7 +23,6 @@ define("robotTW2/services/DefenseService", [
 			conf_conf,
 			unitTypes,
 			time,
-			calibrate_time,
 			unitTypesRenameRecon,
 			data_defense,
 			data_villages,
@@ -776,7 +774,6 @@ define("robotTW2/services/DefenseService", [
 			}
 			ready(function(){
 				commandDefense = {};
-//				calibrate_time()
 				isRunning = !0;
 				reformatCommand();
 				if(!listener_lost){
@@ -824,7 +821,6 @@ define("robotTW2/services/DefenseService", [
 			init				: init,
 			start				: start,
 			stop 				: stop,
-			calibrate_time		: calibrate_time,
 			get_commands		: function (){
 				return Object.keys(commandDefense).map(function(key){
 					return commandDefense[key].params;
