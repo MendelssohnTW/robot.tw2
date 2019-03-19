@@ -49,6 +49,7 @@ define("robotTW2/services/DefenseService", [
 		, timeout = undefined
 		, oldCommand
 		, d = {}
+		, resend = false
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
@@ -400,13 +401,13 @@ define("robotTW2/services/DefenseService", [
 				})
 
 				var vls = modelDataService.getSelectedCharacter().getVillageList();
-				
+
 				vls = Object.keys(vls).map(function(elem){
 					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
 						return vls[elem]
 					}
 				}).filter(f=>f!=undefined)
-				
+
 				function gt(){
 					if (vls.length){
 						var id = vls.shift().data.villageId;
@@ -595,6 +596,7 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, send = function(params){
+			resend = false;
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
 				target_village		: params.target_village,
@@ -615,6 +617,7 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				return 
 			}
+			resend = true;
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
@@ -760,19 +763,22 @@ define("robotTW2/services/DefenseService", [
 					if(!isRunning){return}
 					promise_verify = undefined;
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-						timeout = $timeout(verificarAtaques , 5 * 60 * 1000);
+						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
 					}
 				});
 			}
 		}
-		, start = function(){
+		, start = function(opt){
 			if(isRunning){return}
+			if(opt && isRunning && resend){
+				$timeout(function(){start(true)}, 10000)
+				return;
+			}
 			ready(function(){
 				commandDefense = {};
 //				calibrate_time()
 				isRunning = !0;
 				reformatCommand();
-//				w.reload();
 				if(!listener_lost){
 					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(function(){verificarAtaques(true)} , 60000));
 				}
@@ -784,30 +790,34 @@ define("robotTW2/services/DefenseService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
-			isRunning = !1;
-			commandQueue.unbindAll("support");
-			promise_verify = undefined
-			queue_verifiy = [];
-			$timeout.cancel(timeout);
-			timeout = undefined;
-			typeof(listener_verify) == "function" ? listener_verify(): null;
-			typeof(listener_lost) == "function" ? listener_lost(): null;
-			typeof(listener_conquered) == "function" ? listener_conquered(): null;
-			listener_verify = undefined;
-			listener_lost = undefined;
-			listener_conquered = undefined;
+			if(!resend){
+				isRunning = !1;
+				commandQueue.unbindAll("support");
+				promise_verify = undefined
+				queue_verifiy = [];
+				$timeout.cancel(timeout);
+				timeout = undefined;
+				typeof(listener_verify) == "function" ? listener_verify(): null;
+				typeof(listener_lost) == "function" ? listener_lost(): null;
+				typeof(listener_conquered) == "function" ? listener_conquered(): null;
+				listener_verify = undefined;
+				listener_lost = undefined;
+				listener_conquered = undefined;
 
-			if(listener_sent && typeof(listener_sent) == "function") {
-				listener_sent();
-				delete listener_sent;
+				if(listener_sent && typeof(listener_sent) == "function") {
+					listener_sent();
+					delete listener_sent;
+				}
+
+				if(listener_cancel && typeof(listener_cancel) == "function") {
+					listener_cancel();
+					delete listener_cancel;
+				}
+
+				returnCommand();
+			} else {
+				$timeout(stop, 30000)
 			}
-
-			if(listener_cancel && typeof(listener_cancel) == "function") {
-				listener_cancel();
-				delete listener_cancel;
-			}
-
-			returnCommand();
 		}
 
 		return	{

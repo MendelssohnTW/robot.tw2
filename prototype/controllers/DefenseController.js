@@ -234,7 +234,7 @@ define("robotTW2/controllers/DefenseController", [
 			if(!$scope.data_villages) {return}
 			services.DefenseService.stop();
 			$scope.data_villages.set();
-			services.DefenseService.start();
+			services.DefenseService.start(true);
 		}, true)
 
 		$scope.requestedTab = TABS.DEFENSE;
