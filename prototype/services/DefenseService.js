@@ -477,6 +477,7 @@ define("robotTW2/services/DefenseService", [
 					promise_verify = undefined;
 					if(renew || opt) {
 						renew = false;
+						opt = false;
 						verificarAtaques()
 					}
 				})

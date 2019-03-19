@@ -26,7 +26,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		
+
 		$scope.local_data_villages = [];
 		$scope.local_list_defense = [];
 		$scope.data_defense = data_defense;
@@ -93,7 +93,7 @@ define("robotTW2/controllers/DefenseController", [
 				})
 				return $scope.local_list_defense;
 			})
-			
+
 			$scope.village_selected = $scope.local_data_villages[0]
 
 			$scope.data_units = {
@@ -111,7 +111,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-		
+
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
 			var village = getVillage(vid)
@@ -122,13 +122,13 @@ define("robotTW2/controllers/DefenseController", [
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
-		
+
 		$scope.getLabelStart = function(param){
 			let vid = param.start_village;
 			if(!vid){return}
 			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
-		
+
 		$scope.getLabelTarget = function(param){
 			let vid = param.target_village;
 			if(!vid){return}
@@ -143,7 +143,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getHoraSend = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
 		}
-		
+
 		$scope.getDataSend = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "dd/MM/yyyy");
 		}
@@ -159,7 +159,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getHoraRetorno = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "HH:mm:ss.sss");
 		}
-		
+
 		$scope.getDataRetorno = function(param){
 			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "dd/MM/yyyy");
 		}
@@ -205,7 +205,7 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_villages.set();
 			update_all();
 		}
-		
+
 		$scope.menu = function () {
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
@@ -225,16 +225,16 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.$watch("data_defense", function(){
 			if(!$scope.data_defense){return}
+			services.DefenseService.stop();
 			$scope.data_defense.set();
+			services.DefenseService.start();
 		}, true)
-		
-		$scope.$watch("data_units", function(){
-			if(!$scope.data_units){return}
-		}, true)
-		
+
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages) {return}
+			services.DefenseService.stop();
 			$scope.data_villages.set();
+			services.DefenseService.start();
 		}, true)
 
 		$scope.requestedTab = TABS.DEFENSE;
