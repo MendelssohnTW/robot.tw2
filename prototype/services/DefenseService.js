@@ -405,7 +405,7 @@ define("robotTW2/services/DefenseService", [
 					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
 						return vls[elem]
 					}
-				})
+				}).filter(f=>f!=undefined)
 				
 				function gt(){
 					if (vls.length){
