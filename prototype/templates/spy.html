@@ -197,12 +197,12 @@
 							</td>
 							<td><div>
 									<select id="select_qtd" class="select-handler"
-										ng-options="item as item.name for item in data_qtd.availableOptions track by item.name"
+										ng-options="item in data_qtd.availableOptions"
 										ng-model="data_qtd.selectedOption"></select>
 								</div>
 								<div>
 									<select id="select_type" class="select-handler"
-										ng-options="item as item.name for item in data_type.availableOptions track by item.name"
+										ng-options="item in data_type.availableOptions"
 										ng-model="data_type.selectedOption"></select>
 								</div></td>
 							<td class="cell-center"><div>
