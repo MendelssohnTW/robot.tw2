@@ -14,6 +14,7 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/calibrate_time",
 	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_defense",
+	"robotTW2/databases/data_villages",
 	"robotTW2/CommandDefense"
 	], function(
 			robotTW2,
@@ -26,6 +27,7 @@ define("robotTW2/services/DefenseService", [
 			calibrate_time,
 			unitTypesRenameRecon,
 			data_defense,
+			data_villages,
 			commandDefense
 	){
 	return (function DefenseService(
@@ -389,7 +391,7 @@ define("robotTW2/services/DefenseService", [
 				var lt = []
 
 				Object.keys(commandDefense).map(function(key){
-					if(commandDefense[key].params.preserv){
+					if(commandDefense[key].params.preserv && data_villages.villages[commandDefense[key].start_village].defense.activate){
 						lt.push(commandDefense[key].params)
 					} else {
 						delete commandDefense[key];
@@ -397,15 +399,19 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 
-				var vls = modelDataService.getSelectedCharacter().getVillageList(); 
+				var vls = modelDataService.getSelectedCharacter().getVillageList();
+				
+				vls = Object.keys(vls).map(function(elem){
+					if(data_villages.villages[vls[elem].data.villageId].defense.activate){
+						return vls[elem]
+					}
+				})
+				
 				function gt(){
 					if (vls.length){
 						var id = vls.shift().data.villageId;
 						var list_snob = [];
 						var list_trebuchet = [];
-//						var list_calvary = [];
-//						var list_infatary = [];
-//						var list_ram = [];
 						var list_others = [];
 						var list_preserv_others = [];
 
@@ -436,21 +442,6 @@ define("robotTW2/services/DefenseService", [
 								troops_measure(cmd, function(push , unitType){
 									if(push){
 										switch (unitType) {
-//										case "light_cavalry":
-//										list_others.push(cmd);
-//										break;
-//										case "heavy_cavalry":
-//										list_others.push(cmd);
-//										break;
-//										case "axe":
-//										list_others.push(cmd);
-//										break;
-//										case "sword":
-//										list_others.push(cmd);
-//										break;
-//										case "ram":
-//										list_others.push(cmd);
-//										break;
 										case "snob":
 											list_snob.push(cmd);
 											break;
@@ -478,13 +469,13 @@ define("robotTW2/services/DefenseService", [
 				gt()
 			})
 		}
-		, verificarAtaques = function (){
+		, verificarAtaques = function (opt){
 			var renew = false;
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
-					if(renew) {
+					if(renew || opt) {
 						renew = false;
 						verificarAtaques()
 					}
@@ -535,20 +526,6 @@ define("robotTW2/services/DefenseService", [
 		, sendDefense = function(params){
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
-//		, listener_command_returned = function($event, data){
-//		if(!$event.currentScope){return}
-//		var cmds = Object.keys($event.currentScope.commands).map(function(param){
-//		if($event.currentScope.commands[param].id_command == data.command_id) {
-//		return $event.currentScope.commands[param]	
-//		} else {
-//		return undefined
-//		}
-//		}).filter(f => f != undefined)
-//		var cmd = undefined;
-//		if(cmds.length){
-//		cmd = cmds.pop();
-//		}
-//		}
 		, listener_command_cancel = function($event, data){
 			if(!$event.currentScope){
 				return
@@ -596,7 +573,6 @@ define("robotTW2/services/DefenseService", [
 						"id_command" 	: data.id
 					}
 
-//					- time.convertedTime()
 					if(timer_delay >= 0){
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 							commandDefense[params.id_command] = {
@@ -792,18 +768,18 @@ define("robotTW2/services/DefenseService", [
 			if(isRunning){return}
 			ready(function(){
 				commandDefense = {};
-				calibrate_time()
+//				calibrate_time()
 				isRunning = !0;
 				reformatCommand();
 //				w.reload();
 				if(!listener_lost){
-					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
+					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(function(){verificarAtaques(true)} , 60000));
 				}
 				if(!listener_conquered){
-					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
+					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(function(){verificarAtaques(true)} , 60000));
 				}
 				handlerVerify();
-				verificarAtaques();
+				verificarAtaques(true);
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
