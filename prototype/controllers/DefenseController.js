@@ -34,7 +34,6 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.text_version = $scope.version + " " + data_defense.version;
 
 		var self = this,
-		loaded = false
 		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
 				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense")
@@ -60,7 +59,7 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 		, update_all = function(){
-			
+
 			$scope.local_list_defense = [];
 			$scope.local_data_villages = services.VillageService.getLocalVillages("defense", "label");
 
@@ -197,15 +196,24 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}, true)
 
+		var first_1 = true
+		, first_2 = true;
+
 		$scope.$watch("data_defense", function(){
-			if(!$scope.data_defense || !loaded){return}
+			if(!$scope.data_defense || first_1){
+				first_1 = undefined
+				return
+			}
 			services.DefenseService.stop();
 			$scope.data_defense.set();
 			services.DefenseService.start();
 		}, true)
 
 		$scope.$watch("data_villages", function () {
-			if(!$scope.data_villages || !loaded) {return}
+			if(!$scope.data_villages || first_2) {
+				first_2 = undefined
+				return
+			}
 			services.DefenseService.stop();
 			$scope.data_villages.set();
 			services.DefenseService.start(true);
@@ -215,7 +223,6 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
 
-		loaded = true;
 		update_all();
 		initTab();
 		update();
