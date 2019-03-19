@@ -257,6 +257,8 @@
     "spy": {
         "spy": "Espiões",
         "log": "Log",
+        "text_source": "Origem",
+        "text_target": "Destino",
         "comp": "Multi programação",
         "title": "Recrutamento de espiões",
         "settings": "Configurações",

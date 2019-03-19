@@ -257,6 +257,8 @@
 	"spy": {
 		"spy": "Spy",
 		"log": "Log",
+        "text_source": "Source",
+        "text_target": "Target",
 		"comp": "Multi programming",
 		"title": "Recruitment of spies",
 		"settings": "Settings",

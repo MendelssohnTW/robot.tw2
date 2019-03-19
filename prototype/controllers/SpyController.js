@@ -183,6 +183,25 @@ define("robotTW2/controllers/SpyController", [
 			data_spy.interval = helper.unreadableSeconds(t) * 1000;
 		}
 
+		$scope.sendAttackSpy = function(){
+			
+//			data_escolhida: 1553046300000
+//			duration: 793000
+//			spys: 1
+//			start_village: 2444
+//			target_name: "Barbarian village"
+//			target_village: 1988
+//			target_x: 458
+//			target_y: 477
+//			type: "buildings"
+				
+				
+			$scope.startId = Object.keys($scope.data_villages.villages[$scope.data_select.selectedOption.id])[0]
+			
+			
+			
+			services.SpyService.sendCommandAttackSpy($scope)
+		}
 		
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
@@ -221,6 +240,8 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_spy.set();
 		});
+		
+		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 
 		initTab();
 		update();
