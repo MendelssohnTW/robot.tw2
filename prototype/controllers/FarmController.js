@@ -466,20 +466,6 @@ define("robotTW2/controllers/FarmController", [
 			return $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].quadrants.includes(pos)
 		}
 
-		/* Properties of item	
-		 * 		
-		displayedName: "name village com coordenadas"
-		id: id_village
-		leftIcon: "size-34x34 icon-26x26-rte-village"
-		name: "name village"
-		owner_id: id player
-		owner_name: "name player"
-		type: "village"
-		x: 466
-		y: 486
-
-		 */
-
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
 					'type'					: 'village',
@@ -562,11 +548,8 @@ define("robotTW2/controllers/FarmController", [
 				"selectedOption" 	: {},
 				"selectedOptionOut"	: {}
 		}
-
-		$scope.data_select = {
-				"availableOptions" : $scope.local_data_villages,
-				"selectedOption" : $scope.village_selected
-		}
+		
+		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 
 		$scope.data_exception = {
 				"availableOptions" : [],

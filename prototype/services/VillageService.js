@@ -37,6 +37,12 @@ define("robotTW2/services/VillageService", [
 			case "defense": 
 				str = "defense_activate"
 					break;
+			case "recruit": 
+				str = "recruit_activate"
+					break;
+			case "spy": 
+				str = undefined
+					break;
 			case "attack": 
 				str = undefined
 				break;

@@ -22,7 +22,7 @@
 		</div>
 	</div>
 	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.SPY">
-		<div class="box-paper content-settings">
+		<div class="box-paper content-settings screen-overview">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
@@ -66,38 +66,31 @@
 							<col width="48px">
 						</colgroup>
 						<tr>
-							<td class="cell-center">{{ident_cmd}}</td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-units-outgoing"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-village"></span></td>
-							<td class="cell-center"></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-time-remaining"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-26x26-time-spy"></span></td>
-							<td class="cell-center"><span
-								class="icon icon-34x34-time-completed"></span></td>
-							<td class="cell-center"></td>
-							<td class="cell-center"></td>
+							<th style="display: table-cell" class="cell-center selected">{{ident_cmd}}</th>
+							<th style="display: table-cell" class="icon icon-34x34-units-outgoing"></th>
+                            <th style="display: table-cell" class="icon icon-34x34-village"></th>
+                            <th></th>
+                            <th style="display: table-cell" class="icon icon-34x34-time-remaining"></th>
+                            <th style="display: table-cell" class="icon icon-26x26-time-spy"></th>
+                            <th style="display: table-cell" class="icon icon-26x26-time-arrival"></th>
+							<th></th>
+							<th></th>
 						</tr>
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center">{{comando.id_command}}</td>
 							<td class="cell-center">
-								<div>
-									{{getVstart(comando)}}
-								</div>
-								<div>
-									{{getVcoordStart(comando)}}
-								</div>
+								<div class="village">
+                                    <div class="name-coord"
+                                        ng-click="jumpToVillage(comando.start_village)">
+                                        {{getLabelStart(comando)}}</div>
+                                </div>
 							</td>
 							<td class="cell-center">
-								<div>
-									{{getVtarget(comando)}}
-								</div>
-								<div>
-									{{getVcoordTarget(comando)}}
-								</div>
+								<div class="village">
+                                    <div class="name-coord"
+                                        ng-click="jumpOutVillage(comando.target_village)">
+                                        {{getLabelTarget(comando)}}</div>
+                                </div>
 							</td>
 							<td class="cell-center">
 								<div>
@@ -110,6 +103,9 @@
 								</div>
 							</td>
 							<td class="cell-center">
+								<div>
+                                    {{getDataSend(comando)}}
+                                </div>
 								<div>
 									{{getHoraSend(comando)}}
 								</div>
