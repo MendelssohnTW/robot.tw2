@@ -33,7 +33,6 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_defense.version;
 
-
 		var self = this
 		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
@@ -47,9 +46,9 @@ define("robotTW2/controllers/DefenseController", [
 			if(!vid){return}
 			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
 		}
-		, getVillageData = function getVillageData(vid){
-			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid);
+		, setVillage = function setVillage(village){
+			if(!village){return}
+			return angular.copy(services.modelDataService.getSelectedCharacter().setSelectedVillage(village))
 		}
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab								= tab;
@@ -115,11 +114,11 @@ define("robotTW2/controllers/DefenseController", [
 		
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = services.modelDataService.getSelectedCharacter().getVillage(vid)
+			var data = getVillage(vid)
 			if(!data){return}
 			let x = data.x
 			let y = data.y
-			services.modelDataService.getSelectedCharacter().setSelectedVillage(data)
+			setVillage(data)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
