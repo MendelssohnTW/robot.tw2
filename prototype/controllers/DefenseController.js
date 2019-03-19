@@ -60,7 +60,7 @@ define("robotTW2/controllers/DefenseController", [
 			}
 		}
 		, update_all = function(){
-			loaded = true;
+			
 			$scope.local_list_defense = [];
 			$scope.local_data_villages = services.VillageService.getLocalVillages("defense", "label");
 
@@ -215,6 +215,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
 
+		loaded = true;
 		update_all();
 		initTab();
 		update();
