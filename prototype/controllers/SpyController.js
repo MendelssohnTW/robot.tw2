@@ -188,15 +188,12 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.sendAttackSpy = function(){
 			
-//			data_escolhida: 1553046300000
 //			duration: 793000
-//			spys: 1
 //			start_village: 2444
 //			target_name: "Barbarian village"
 //			target_village: 1988
 //			target_x: 458
 //			target_y: 477
-//			type: "buildings"
 			
 			//Calcular duration spy
 				

@@ -1,10 +1,12 @@
 define("robotTW2/controllers/SpyCompletionController", [
 	"robotTW2/services",
 	"robotTW2/time",
+	"helper/time",
 	"robotTW2/notify"
 	], function(
 			services,
 			time,
+			helper,
 			notify
 	){
 	return function SpyCompletionController($scope) {
