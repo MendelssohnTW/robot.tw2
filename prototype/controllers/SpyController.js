@@ -5,7 +5,8 @@ define("robotTW2/controllers/SpyController", [
 	"robotTW2/time",
 	"robotTW2/databases/data_spy",
 	"robotTW2/databases/data_villages",
-	"robotTW2/autocomplete"
+	"robotTW2/autocomplete",
+	"helper/math"
 	], function(
 			services,
 			providers,
@@ -13,7 +14,8 @@ define("robotTW2/controllers/SpyController", [
 			time,
 			data_spy,
 			data_villages,
-			autocomplete
+			autocomplete,
+			math
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -75,15 +77,15 @@ define("robotTW2/controllers/SpyController", [
 		$scope.TAB_ORDER = TAB_ORDER;
 
 		$scope.isRunning = services.SpyService.isRunning();
-		
+
 		$scope.local_data_villages = services.VillageService.getLocalVillages("spy", "label");
-		
+
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
-		
+
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-		
+
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
 					'type'					: 'village',
@@ -109,7 +111,7 @@ define("robotTW2/controllers/SpyController", [
 //			angular.extend($scope, object_scope)
 			autocomplete(object_scope, event);
 		}
-		
+
 		$scope.getLabelStart = function(param){
 			let vid = param.start_village;
 			if(!vid){return}
@@ -140,7 +142,7 @@ define("robotTW2/controllers/SpyController", [
 			if($scope.activeTab != TABS.SPY){return}
 			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
 		}
-		
+
 		$scope.getDataSend = function(param){
 			if($scope.activeTab != TABS.SPY){return}
 			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "dd/MM/yyyy");
@@ -162,22 +164,22 @@ define("robotTW2/controllers/SpyController", [
 			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
 			return helper.readableMilliseconds(difTime)
 		}
-		
+
 		$scope.getTimeRest = function(){
 			if($scope.activeTab != TABS.SPY){return}
 			return data_spy.complete > time.convertedTime() ? helper.readableMilliseconds(data_spy.complete - time.convertedTime()) : 0;
 		}
-		
+
 		$scope.clear_spy = function(){
 			services.SpyService.removeAll();
 		}
-		
+
 		$scope.menu = function () {
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 
 		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
-		
+
 		$scope.blur = function(){
 			var t = $("#input-ms").val();
 			if(t.length <= 5) {
@@ -187,49 +189,57 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.sendAttackSpy = function(){
-			
-//			duration: 793000
-//			start_village: 2444
-//			target_name: "Barbarian village"
-//			target_village: 1988
-//			target_x: 458
-//			target_y: 477
-			
-			//Calcular duration spy
+			services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+				'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
+				'village_id'		: $scope.inputValue.id,
+				'num_reports'		: 0
+			}, function(data){
+				var target_name = data.village_name
 				
-			let scp = {}
-			let duration;
-			let durationInSeconds = helper.unreadableSeconds(duration);
-			let get_data = $("#input-date").val();
-			let get_time = $("#input-time").val();
-			let get_ms = $("#input-ms").val();
-			if (get_time.length <= 5){
-				get_time = get_time + ":00"; 
-			}
+				let distance = math.actualDistance(
+						{
+							'x' : $scope.data_select.selectedOption.x,
+							'y' : $scope.data_select.selectedOption.y
+						}, 
+						{
+							'x' : data.village_x,
+							'y' : data.village_y
+						});
+				let durationInSeconds = distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
+				
+				let get_data = $("#input-date").val();
+				let get_time = $("#input-time").val();
+				let get_ms = $("#input-ms").val();
+				if (get_time.length <= 5){
+					get_time = get_time + ":00"; 
+				}
 
-			scp.type = data_type.selectedOption; //type
-			scp.startId
-			scp.targetId
-			scp.targetVillage //name
-			scp.targetX
-			scp.targetY
-			scp.qtd = data_qtd.selectedOption//qtd
-			
-			if (get_data != undefined && get_time != undefined){
-				scp.milisegundos_duracao = durationInSeconds * 1000;
-				scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-				if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
-					services.SpyService.addScopeAttackSpy(scp);
-					scp.closeWindow();
+				let scp = {}
+				scp.type = data_type.selectedOption; //type
+				scp.startId
+				scp.targetId
+				scp.targetVillage //name
+				scp.targetX
+				scp.targetY
+				scp.qtd = data_qtd.selectedOption//qtd
+
+				if (get_data != undefined && get_time != undefined){
+					scp.milisegundos_duracao = durationInSeconds * 1000;
+					scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+					if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
+						services.SpyService.addScopeAttackSpy(scp);
+						scp.closeWindow();
+					} else {
+						notify("date_error");
+					}       
 				} else {
-					notify("date_error");
-				}       
-			} else {
-				return;
-			}
-				
+					return;
+				}
+
+			})
+
 		}
-		
+
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
 		})
@@ -266,7 +276,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_spy.set();
 		});
-		
+
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 		$scope.data_type = services.MainService.getSelects(["building", "unit"])
