@@ -114,11 +114,11 @@ define("robotTW2/controllers/DefenseController", [
 		
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = getVillage(vid)
-			if(!data){return}
-			let x = data.x
-			let y = data.y
-			setVillage(data)
+			var village = getVillage(vid)
+			if(!village){return}
+			let x = village.data.x
+			let y = village.data.y
+			setVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
@@ -227,6 +227,14 @@ define("robotTW2/controllers/DefenseController", [
 			if(!$scope.data_defense){return}
 			data_defense = $scope.data_defense;
 			data_defense.set();
+		}, true)
+		
+		$scope.$watch("data_units", function(){
+			if(!$scope.data_units){return}
+		}, true)
+		
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
 		}, true)
 
 		$scope.requestedTab = TABS.DEFENSE;

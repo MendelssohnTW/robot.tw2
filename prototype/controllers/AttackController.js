@@ -85,7 +85,7 @@ define("robotTW2/controllers/AttackController", [
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
 			var village = getVillage(vid)
-			if(!data){return}
+			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
 			setVillage(village)
