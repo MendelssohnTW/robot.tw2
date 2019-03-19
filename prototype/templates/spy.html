@@ -197,17 +197,17 @@
 							</td>
 							<td><div>
 									<select id="select_qtd" class="select-handler"
-										ng-options="item in data_qtd.availableOptions"
+										ng-options="for item in data_qtd.availableOptions"
 										ng-model="data_qtd.selectedOption"></select>
 								</div>
 								<div>
 									<select id="select_type" class="select-handler"
-										ng-options="item in data_type.availableOptions"
+										ng-options="for item in data_type.availableOptions"
 										ng-model="data_type.selectedOption"></select>
 								</div></td>
 							<td class="cell-center"><div>
 									<a href="#" id="button-prog"
-										class="btn-orange btn-form btn-border no-padding btn-grey"
+										class="btn-orange btn-form btn-border no-padding"
 										ng-click="sendAttackSpy()"><span id="span-text"
 										class="text">{{schedule}}</span> </a>
 								</div></td>
