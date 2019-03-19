@@ -33,7 +33,7 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_defense.version;
 
-		var self = this,
+		var self = this
 		,TABS = {
 				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
 				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense")

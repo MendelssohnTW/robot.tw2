@@ -40,6 +40,9 @@ define("robotTW2/services/VillageService", [
 			case "attack": 
 				str = undefined
 				break;
+			case "farm": 
+				str = undefined
+				break;
 			}
 			Object.keys(data_villages.villages).map(function(key){
 				var vill = getVillage(key);

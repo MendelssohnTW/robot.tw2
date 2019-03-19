@@ -47,10 +47,6 @@ define("robotTW2/controllers/FarmController", [
 			if(!vid){return}
 			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
 		}
-		, getVillageData = function getVillageData(vid){
-			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid).value;
-		}
 		, update = function update() {
 			if(!$scope.infinite){
 				if(!$scope.data_farm.farm_time_start || $scope.data_farm.farm_time_start < time.convertedTime()) {
@@ -64,7 +60,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, get_dist = function get_dist(villageId, journey_time, units) {
-			var village = getVillageData(villageId)
+			var village = services.VillageService.getVillage(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
@@ -77,7 +73,7 @@ define("robotTW2/controllers/FarmController", [
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
 		, get_time = function get_time(villageId, distance, units) {
-			var village = getVillageData(villageId)
+			var village = services.VillageService.getVillage(villageId)
 			, units = units
 			, army = {
 				'officers'	: {},
@@ -391,8 +387,8 @@ define("robotTW2/controllers/FarmController", [
 				r = r + ":00"
 			}
 			$scope.data.selectedOption.max_journey_time = helper.unreadableSeconds(r) * 1000
-			services.modelDataService.getVillage($scope.village_selected)
-			$scope.data.selectedOption.max_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
+			services.VillageService.getVillage($scope.village_selected)
+			$scope.data.selectedOption.max_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
 			updateBlur()
 		}
 
@@ -402,7 +398,7 @@ define("robotTW2/controllers/FarmController", [
 				r = r + ":00"
 			}
 			$scope.data.selectedOption.min_journey_time = helper.unreadableSeconds(r) * 1000
-			$scope.data.selectedOption.min_journey_distance = get_dist(services.modelDataService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units) || 0
+			$scope.data.selectedOption.min_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units) || 0
 			updateBlur()
 		}
 
@@ -541,17 +537,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.set();
 		});
 
-		Object.keys($scope.data_villages.villages).map(function(key){
-			var vill = getVillage(key);
-			$scope.local_data_villages.push({
-				id : parseInt(key, 10),
-				name : vill.data.name,
-				label : formatHelper.villageNameWithCoordinates(vill.data),
-				value : vill
-			})
-			$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
-			return $scope.local_data_villages;
-		})
+		$scope.local_data_villages = services.VillageService.getLocalVillages("farm", "label");
 
 		$scope.village_selected = $scope.local_data_villages[0]
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
