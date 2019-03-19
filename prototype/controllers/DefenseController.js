@@ -233,11 +233,6 @@ define("robotTW2/controllers/DefenseController", [
 			if(!$scope.data_units){return}
 		}, true)
 		
-		$scope.$watch("data_select", function(){
-			if(!$scope.data_select){return}
-			$scope.data_villages.villages[$scope.data_select.selectedOption.id].defense_activate = $scope.data_select.selectedOption.value; 
-		}, true)
-		
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages) {return}
 			$scope.data_villages.set();
