@@ -115,7 +115,7 @@ define("robotTW2/controllers/DefenseController", [
 		
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = getVillageData(vid);
+			var data = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!data){return}
 			let x = data.x
 			let y = data.y
