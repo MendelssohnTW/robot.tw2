@@ -58,9 +58,9 @@ define("robotTW2/controllers/AttackController", [
 			if(!vid){return}
 			return services.modelDataService.getSelectedCharacter().getVillage(vid)
 		}
-		, getVillageData = function getVillageData(vid){
-			if(!vid){return}
-			return $scope.local_data_villages[vid].data;
+		, setVillage = function setVillage(village){
+			if(!village){return}
+			return services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
 		}
 
 		$scope.getClass = function(type){
@@ -84,11 +84,11 @@ define("robotTW2/controllers/AttackController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = services.modelDataService.getSelectedCharacter().getVillage(vid)
+			var village = getVillage(vid)
 			if(!data){return}
-			let x = data.x
-			let y = data.y
-			services.modelDataService.getSelectedCharacter().setSelectedVillage(data)
+			let x = village.data.x
+			let y = village.data.y
+			setVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
