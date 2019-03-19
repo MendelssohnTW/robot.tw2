@@ -68,7 +68,7 @@ define("robotTW2/services/RecruitService", [
 					delete data_recruit.Groups[id];
 				}
 			});
-			
+
 			data_recruit.set();
 
 			return;
@@ -348,7 +348,7 @@ define("robotTW2/services/RecruitService", [
 		, setList = function(callback){
 			list.push(conf.INTERVAL.RECRUIT)
 			data_recruit.interval < conf.MIN_INTERVAL ? list.push(conf.MIN_INTERVAL) : list.push(data_recruit.interval)
-			var t = Math.min.apply(null, list);
+					var t = Math.min.apply(null, list);
 			data_recruit.interval = t
 			data_recruit.complete = time.convertedTime() + t
 			list = [];
@@ -358,23 +358,21 @@ define("robotTW2/services/RecruitService", [
 		}
 		, recruit = function(){
 			data_log.recruit.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
-			var villages = modelDataService.getSelectedCharacter().getVillages()
-			, list_recruit = [];
-
-			Object.keys(villages).map(function(village_id){
-				var village = villages[village_id]
-				var tam = village.getRecruitingQueue("barracks").length || 0;
-				var gt = getFinishedForFree(village);
+			var vls = modelDataService.getSelectedCharacter().getVillageList();
+			vls = Object.keys(vls).map(function(elem){
+				let tam = vls[elem].getRecruitingQueue("barracks").length || 0;
+				let gt = getFinishedForFree(elem);
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
-					list.push(getFinishedForFree(village))
+					list.push(getFinishedForFree(elem))
 				}
-				setList();
-				if (tam < data_recruit.reserva.slots || tam < 1){
-					list_recruit.push(village_id);
+				if(data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots || tam < 1){
+					return vls[elem].data.villageId
 				}
-			})
+			}).filter(f=>f!=undefined)
+			
+			setList();
 
-			recruitSteps(list_recruit)
+			recruitSteps(vls)
 		}
 		, init = function (bool) {
 			isInitialized = !0
