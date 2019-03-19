@@ -235,6 +235,12 @@ define("robotTW2/controllers/DefenseController", [
 		
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
+			$scope.data_villages.villages[$scope.data_select.selectedOption.id].defense_activate = $scope.data_select.selectedOption.value; 
+		}, true)
+		
+		$scope.$watch("data_villages", function () {
+			if(!$scope.data_villages) {return}
+			$scope.data_villages.set();
 		}, true)
 
 		$scope.requestedTab = TABS.DEFENSE;

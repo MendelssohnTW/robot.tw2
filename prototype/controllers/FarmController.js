@@ -517,8 +517,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages) {return}
-			data_villages = $scope.data_villages;
-			data_villages.set();
+			$scope.data_villages.set();
 		}, true)
 
 		$scope.$watch("data_logs.farm", function(){
