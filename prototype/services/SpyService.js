@@ -39,10 +39,10 @@ define("robotTW2/services/SpyService", [
 		, interval_handler = undefined
 		, list = []
 		, counterMeasureTypes = {
-				CAMOUFLAGE: "camouflage",
-				DUMMIES: "dummies",
-				EXCHANGE: "exchange",
-				SWITCH_WEAPONS: "switch_weapons"
+			CAMOUFLAGE: "camouflage",
+			DUMMIES: "dummies",
+			EXCHANGE: "exchange",
+			SWITCH_WEAPONS: "switch_weapons"
 		}
 		, getMaxSpies = function(researches, level){
 			var a, b, c = {}, d;
@@ -203,15 +203,27 @@ define("robotTW2/services/SpyService", [
 			return $timeout(send.bind(null, params), timer_delay_send)
 		}
 		, sendCommandAttackSpy = function(scp){
+			let vl;
+			if(scp.rangeSlider){
+				vl = scp.rangeSlider.value
+			} else {
+				vl = scp.qtd
+			}
+			let opt;
+			if(scp.option){
+				opt = scp.option
+			} else {
+				opt = scp.type
+			}
 			var params = {
 					start_village		: scp.startId,
 					target_village		: scp.targetId,
 					target_x			: scp.targetX,
 					target_y			: scp.targetY,
 					target_name			: scp.targetVillage,
-					spys				: scp.rangeSlider.value || scp.qtd,
+					spys				: vl,
 					duration			: scp.milisegundos_duracao,
-					type				: scp.option || scp.type,
+					type				: opt,
 					data_escolhida		: scp.tempo_escolhido
 			}
 			addAttackSpy(params);
