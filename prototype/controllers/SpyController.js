@@ -294,82 +294,78 @@ define("robotTW2/controllers/SpyController", [
 				type = "character"
 					updateValuesSource()
 			}
-			if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
+
+			if(type == "village"){
+				if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
+					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+					$scope.send_scope.startId = $scope.data_select.selectedOption.id
+					$scope.send_scope.targetId = $scope.item.id
+					$scope.send_scope.targetVillage = $scope.item.name
+					$scope.send_scope.targetX = $scope.item.x
+					$scope.send_scope.targetY = $scope.item.y
+					$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
+
+					services.SpyService.sendCommandAttackSpy($scope.send_scope);
+				} else {
+					notify("date_error");
+				}
+			} else if(type == "character"){
 				if($scope.villages_for_sent.length){
-					if(type == "village"){
-						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-						$scope.send_scope.startId = $scope.data_select.selectedOption.id
-						$scope.send_scope.targetId = $scope.item.id
-						$scope.send_scope.targetVillage = $scope.item.name
-						$scope.send_scope.targetX = $scope.item.x
-						$scope.send_scope.targetY = $scope.item.y
-						$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
+					Object.keys($scope.villages_for_sent).map(function(elem){
 
-						services.SpyService.sendCommandAttackSpy($scope.send_scope);
-						$scope.send_scope = {}
-					} else if(type == "character"){
+						let target = $scope.villages_for_sent[elem]
 
-
-						Object.keys($scope.villages_for_sent).map(function(elem){
-
-							let target = $scope.villages_for_sent[elem]
-
-							let list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
-								return {
-									"id": vill, 
-									"dist" : math.actualDistance(
-											{
-												'x' : vill.x,
-												'y' : vill.y
-											}, 
-											{
-												'x' : target.village_x, 
-												'y' : target.village_y
-											}
-									)
-								}
-							}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
-
-							if(!list_dist_vills) return;
-
-							let dist_vill;
-
-							function next(dist_vill, limit){
-								count_spy++;
-
-								$scope.send_scope.tempo_escolhido = $scope.send_scope.tempo_escolhido + 200 * count_spy;
-								$scope.send_scope.startId = dist_vill.id
-								$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
-								$scope.send_scope.targetId = taget.village_id
-								$scope.send_scope.targetVillage = target.village_name
-								$scope.send_scope.targetX = target.village_x
-								$scope.send_scope.targetY = target.village_y
-								$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
-
-								services.SpyService.sendCommandAttackSpy($scope.send_scope);
-								$scope.local_data_villages[dist_vill.id].spies--;
-								if($scope.local_data_villages[dist_vill.id].spies > 0){
-									list_dist_vills.unshift(dist_vill)
-								}
+						let list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
+							return {
+								"id": vill, 
+								"dist" : math.actualDistance(
+										{
+											'x' : vill.x,
+											'y' : vill.y
+										}, 
+										{
+											'x' : target.village_x, 
+											'y' : target.village_y
+										}
+								)
 							}
+						}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
 
-							for (t = 0; t < $scope.data_qtd_source.selectedOption; t++){
-								dist_vill = list_dist_vills.shift();
-								next(dist_vill, $scope.data_qtd_source.selectedOption)
+						if(!list_dist_vills) return;
+
+						let dist_vill;
+
+						function next(dist_vill, limit){
+							count_spy++;
+
+							$scope.send_scope.tempo_escolhido = $scope.send_scope.tempo_escolhido + 200 * count_spy;
+							$scope.send_scope.startId = dist_vill.id
+							$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
+							$scope.send_scope.targetId = taget.village_id
+							$scope.send_scope.targetVillage = target.village_name
+							$scope.send_scope.targetX = target.village_x
+							$scope.send_scope.targetY = target.village_y
+							$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
+
+							services.SpyService.sendCommandAttackSpy($scope.send_scope);
+							$scope.local_data_villages[dist_vill.id].spies--;
+							if($scope.local_data_villages[dist_vill.id].spies > 0){
+								list_dist_vills.unshift(dist_vill)
 							}
+						}
 
-						})
-
-						$scope.send_scope = {}
-					}
-
-					$scope.closeWindow();
+						for (t = 0; t < $scope.data_qtd_source.selectedOption; t++){
+							dist_vill = list_dist_vills.shift();
+							next(dist_vill, $scope.data_qtd_source.selectedOption)
+						}
+					})
 				} else {
 					notify("villages_error");
 				}
-			} else {
-				notify("date_error");
+
 			}
+			$scope.send_scope = {}
+			$scope.closeWindow();
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
