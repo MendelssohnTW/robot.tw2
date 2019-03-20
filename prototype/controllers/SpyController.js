@@ -306,6 +306,7 @@ define("robotTW2/controllers/SpyController", [
 				}
 			} else if(type == "character"){
 				if($scope.villages_for_sent.length){
+					var list_proc = [];
 					Object.keys($scope.villages_for_sent).map(function(elem){
 
 						let target = $scope.villages_for_sent[elem]
@@ -326,12 +327,27 @@ define("robotTW2/controllers/SpyController", [
 							}
 						}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
 
+						list_dist_vills = list_dist_vills.map(function(elem){
+							let td = list_proc.find(f=>f.id==elem.id); 
+							if(!td){
+								return elem;
+							} else {
+								if(td.spies < elem.spies){
+									elem.spies = elem.spies - td.spies
+									return elem
+								}
+							}
+						}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
+
 						if(!list_dist_vills) return;
 
 						let dist_vill;
+						
+						let count = 0;
 
 						function next(dist_vill, limit){
 							count_spy++;
+							count++;
 
 							let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
 							$scope.send_scope.tempo_escolhido = vt + 200 * count_spy;
@@ -350,6 +366,12 @@ define("robotTW2/controllers/SpyController", [
 							}
 							if(vill_local.spies > 0){
 								list_dist_vills.unshift(dist_vill)
+							} else {
+								list_proc.push({
+									"id": dist_vill.id, 
+									"spies": count
+								})
+								count = 0;
 							}
 						}
 
