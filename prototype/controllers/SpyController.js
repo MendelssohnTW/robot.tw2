@@ -294,7 +294,7 @@ define("robotTW2/controllers/SpyController", [
 				type = "character"
 					updateValuesSource()
 			}
-			if ($scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
+			if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
 				if($scope.villages_for_sent.length){
 				if(type == "village"){
 					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
