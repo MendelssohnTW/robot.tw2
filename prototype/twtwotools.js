@@ -229,6 +229,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			requestFn.unbindAll(type)
 			if(opt_db)	{
 				opt_db.commands = {};
+				opt_db.set();
 			}
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 		}

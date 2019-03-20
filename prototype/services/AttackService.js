@@ -178,7 +178,14 @@ define("robotTW2/services/AttackService", [
 			commandQueue.unbind(id_command, data_attack)
 		}
 		, removeAll = function(){
-			commandAttack = {};
+			Object.keys(commandAttack).map(function(elem){
+				if(typeof(commandAttack[elem].timeout) == "object"){
+					if(commandAttack[elem].timeout.$$state.status == 0){
+						$timeout.cancel(commandAttack[elem].timeout)	
+					}
+					delete commandAttack[elem];
+				}
+			})
 			commandQueue.unbindAll("attack", data_attack)
 		}
 		, init = function(){

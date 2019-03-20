@@ -244,8 +244,16 @@ define("robotTW2/services/SpyService", [
 			commandQueue.unbind(id_command, data_spy)
 		}
 		, removeAll = function(){
-			spyAttack = {};
-			commandQueue.unbindAll("attack", data_spy)
+			Object.keys(spyAttack).map(function(elem){
+				if(typeof(spyAttack[elem].timeout) == "object"){
+					if(spyAttack[elem].timeout.$$state.status == 0){
+						$timeout.cancel(spyAttack[elem].timeout)	
+					}
+					delete spyAttack[elem];
+				}
+			})
+			commandQueue.unbindAll("units", data_spy)
+			commandQueue.unbindAll("buildings", data_spy)
 		}
 		, init = function (){
 			isInitialized = !0
