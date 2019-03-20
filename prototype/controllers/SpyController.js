@@ -111,13 +111,13 @@ define("robotTW2/controllers/SpyController", [
 						}
 				);
 
-				$scope.send_scope.type = data_type.selectedOption.value; //type
+				$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
 				$scope.send_scope.startId
 				$scope.send_scope.targetId
 				$scope.send_scope.targetVillage //name
 				$scope.send_scope.targetX
 				$scope.send_scope.targetY
-				$scope.send_scope.qtd = data_qtd.selectedOption//qtd
+				$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
 				updateValues()
 				if (!$scope.$$phase) {$scope.$apply()}
 			})
