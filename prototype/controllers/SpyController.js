@@ -67,9 +67,9 @@ define("robotTW2/controllers/SpyController", [
 				return $scope.data_spy.commands[elem]
 			});
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
-//			if(document.getElementById("input-ms-interval")){
-//				document.getElementById("input-ms-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
-//			}
+			if(document.getElementById("input-hour-interval")){
+				document.getElementById("input-hour-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
+			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
 		, updateValues = function(){
@@ -272,7 +272,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
 
 		$scope.blur = function(){
-			var t = $("#input-ms-interval").val();
+			var t = $("#input-hour-interval").val();
 			if(t.length <= 5) {
 				t = t + ":00"
 			}
@@ -412,7 +412,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
 			if($scope.activeTab != TABS.SPY){return}
-//			document.getElementById("input-ms-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
+			document.getElementById("input-hour-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
