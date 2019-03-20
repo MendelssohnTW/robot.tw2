@@ -278,6 +278,25 @@ define("robotTW2/controllers/SpyController", [
 			}
 			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
 		}
+		
+		$scope.jumpToVillage = function(vid){
+			if(!vid){return}
+			var village = services.VillageService.getVillage(vid)
+			if(!village){return}
+			let x = village.data.x
+			let y = village.data.y
+			services.VillageService.setVillage(village)
+			services.mapService.jumpToVillage(x, y);
+			$scope.closeWindow();
+		}
+
+		$scope.jumpOutVillage = function(vid){
+			if(!vid){return}
+			let v = $scope.local_out_villages.find(f=>f.id==vid);
+			if(!v){return}
+			services.mapService.jumpToVillage(v.x, v.y);
+			$scope.closeWindow();
+		}
 
 		$scope.sendAttackSpy = function(){
 			let type;
