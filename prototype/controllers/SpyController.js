@@ -317,7 +317,7 @@ define("robotTW2/controllers/SpyController", [
 
 						let list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
 							return {
-								"id": vill, 
+								"id": $scope.local_data_villages[vill].id, 
 								"dist" : math.actualDistance(
 										{
 											'x' : vill.x,
