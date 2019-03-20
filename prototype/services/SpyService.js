@@ -175,12 +175,10 @@ define("robotTW2/services/SpyService", [
 					}
 				}).filter(f => f != undefined)
 
-				params.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
-
-				var param = undefined;
+				let param = undefined;
 				if(params.length){
+					params.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 					param = params.shift();
-
 				}
 
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
