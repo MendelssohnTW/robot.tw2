@@ -111,7 +111,7 @@ define("robotTW2/controllers/SpyController", [
 						}
 				);
 
-				$scope.send_scope.type = data_type.selectedOption; //type
+				$scope.send_scope.type = data_type.selectedOption.value; //type
 				$scope.send_scope.startId
 				$scope.send_scope.targetId
 				$scope.send_scope.targetVillage //name
@@ -305,7 +305,17 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-		$scope.data_type = services.MainService.getSelects(["units", "buildings"])
+		$scope.data_type = services.MainService.getSelects([
+			{
+				"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+				"value" : "units"
+			},
+			{
+				"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+				"value" : "buildings"
+
+			}]
+		)
 
 		initTab();
 		update();

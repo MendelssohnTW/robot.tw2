@@ -257,6 +257,8 @@
     "spy": {
         "spy": "Espiões",
         "log": "Log",
+        "units": "Unidades",
+        "buildings": "Edifícios",
         "text_source": "Origem",
         "text_target": "Destino",
         "comp": "Multi programação",
