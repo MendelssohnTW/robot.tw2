@@ -349,8 +349,11 @@ define("robotTW2/controllers/SpyController", [
 							$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
 
 							services.SpyService.sendCommandAttackSpy($scope.send_scope);
-							$scope.local_data_villages[dist_vill.id].spies--;
-							if($scope.local_data_villages[dist_vill.id].spies > 0){
+							let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
+							if(vill_local){
+								vill_local.spies--
+							}
+							if(vill_local.spies > 0){
 								list_dist_vills.unshift(dist_vill)
 							}
 						}
