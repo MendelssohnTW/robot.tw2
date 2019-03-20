@@ -338,7 +338,8 @@ define("robotTW2/controllers/SpyController", [
 						function next(dist_vill, limit){
 							count_spy++;
 
-							$scope.send_scope.tempo_escolhido = $scope.send_scope.tempo_escolhido + 200 * count_spy;
+							let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
+							$scope.send_scope.tempo_escolhido = vt + 200 * count_spy;
 							$scope.send_scope.startId = dist_vill.id
 							$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
 							$scope.send_scope.targetId = taget.village_id
