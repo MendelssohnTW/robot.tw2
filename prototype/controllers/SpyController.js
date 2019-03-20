@@ -96,9 +96,9 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateValuesSource = function(){
 			if(Object.keys($scope.villages_for_sent).length){
-				let get_data = $("#input-date").val();
-				let get_time = $("#input-time").val();
-				let get_ms = $("#input-ms").val();
+				let get_data = $("#input-date-source").val();
+				let get_time = $("#input-time-source").val();
+				let get_ms = $("#input-ms-source").val();
 				if (get_time.length <= 5){
 					get_time = get_time + ":00"; 
 				}
