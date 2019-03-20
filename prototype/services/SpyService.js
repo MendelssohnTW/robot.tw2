@@ -1,4 +1,4 @@
-define("robotTW2/SpyAttack", [
+define("robotTW2/CommandSpy", [
 	], function(){
 	return {}
 })
@@ -12,7 +12,7 @@ define("robotTW2/services/SpyService", [
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_spy",
-	"robotTW2/SpyAttack"
+	"robotTW2/CommandSpy"
 	], function(
 			robotTW2,
 			version,
@@ -22,7 +22,7 @@ define("robotTW2/services/SpyService", [
 			SPY_TYPES,
 			data_villages,
 			data_spy,
-			spyAttack
+			commandSpy
 	){
 	return (function SpyService(
 			$rootScope,
@@ -147,7 +147,7 @@ define("robotTW2/services/SpyService", [
 				})
 
 				commandQueue.bind(id_command, sendAttackSpy, data_spy, params, function(fns){
-					spyCommands[fns.params.id_command] = {
+					commandSpy[fns.params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
 					}
@@ -156,7 +156,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, resend = function (params) {
 			commandQueue.bind(params.id_command, resendAttackSpy, data_spy, params, function(fns){
-				spyCommands[fns.params.id_command] = {
+				commandSpy[fns.params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
 						"params"	: params
 				}
@@ -165,11 +165,11 @@ define("robotTW2/services/SpyService", [
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "spy"){
-				var params = Object.keys(spyAttack).map(function(cmd){
-					if(spyAttack[cmd].params.start_village == data.home.id
-							&& spyAttack[cmd].params.target_village == data.target.id
+				var params = Object.keys(commandSpy).map(function(cmd){
+					if(commandSpy[cmd].params.start_village == data.home.id
+							&& commandSpy[cmd].params.target_village == data.target.id
 					) {
-						return spyAttack[cmd].params	
+						return commandSpy[cmd].params	
 					} else {
 						return undefined
 					}
@@ -234,22 +234,22 @@ define("robotTW2/services/SpyService", [
 			addAttackSpy(params);
 		}
 		, removeCommandAttackSpy = function(id_command){
-			if(typeof(spyCommands[id_command].timeout) == "object"){
-				if(spyCommands[id_command].timeout.$$state.status == 0){
-					$timeout.cancel(spyCommands[id_command].timeout)	
+			if(typeof(commandSpy[id_command].timeout) == "object"){
+				if(commandSpy[id_command].timeout.$$state.status == 0){
+					$timeout.cancel(commandSpy[id_command].timeout)	
 				}
-				delete spyCommands[id_command];
+				delete commandSpy[id_command];
 			}
 
 			commandQueue.unbind(id_command, data_spy)
 		}
 		, removeAll = function(){
-			Object.keys(spyAttack).map(function(elem){
-				if(typeof(spyAttack[elem].timeout) == "object"){
-					if(spyAttack[elem].timeout.$$state.status == 0){
-						$timeout.cancel(spyAttack[elem].timeout)	
+			Object.keys(commandSpy).map(function(elem){
+				if(typeof(commandSpy[elem].timeout) == "object"){
+					if(commandSpy[elem].timeout.$$state.status == 0){
+						$timeout.cancel(commandSpy[elem].timeout)	
 					}
-					delete spyAttack[elem];
+					delete commandSpy[elem];
 				}
 			})
 			commandQueue.unbindAll("units", data_spy)
