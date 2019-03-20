@@ -55,20 +55,14 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
-				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-					'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
-					'village_id'		: $scope.data_spy.commands[elem].target_village,
-					'num_reports'		: 0
-				}, function(data){
-					$scope.local_out_villages.push(
-							{
-								"id"	: data.village_id ,
-								"label"	: data.village_name + " (" + data.village_x + "|" + data.village_y + ")",
-								"x"		: data.village_x,
-								"y"		: data.village_y
-							});
-					if (!$scope.$$phase) {$scope.$apply()}
-				})
+				$scope.local_out_villages.push(
+						{
+							"id"	: $scope.data_spy.commands[elem].target_village ,
+							"label"	: $scope.data_spy.commands[elem].target_name + " (" + $scope.data_spy.commands[elem].target_x + "|" + $scope.data_spy.commands[elem].target_y + ")",
+							"x"		: $scope.data_spy.commands[elem].target_x,
+							"y"		: $scope.data_spy.commands[elem].target_y
+						});
+				if (!$scope.$$phase) {$scope.$apply()}
 				return $scope.data_spy.commands[elem]
 			});
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
