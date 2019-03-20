@@ -272,6 +272,17 @@ define("robotTW2/controllers/SpyController", [
 			data_spy = $scope.data_spy;
 			data_spy.set();
 		}, true)
+		
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			var village = services.VillageService.getVillage(data_select.selectedOption.id)
+			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
+			let lts = [];
+			for (let i = 0; i < qtd_spy; i++){
+				lts.push(i + 1)
+			}
+			$scope.data_qtd = services.MainService.getSelects(lts)
+		}, true)
 
 		$scope.$on("$destroy", function() {
 			$scope.data_spy.set();
@@ -279,7 +290,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-		$scope.data_type = services.MainService.getSelects(["building", "unit"])
+		$scope.data_type = services.MainService.getSelects(["buildings", "units"])
 
 		initTab();
 		update();
