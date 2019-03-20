@@ -113,8 +113,10 @@
 								<div>{{getHoraAlvo(comando)}}</div>
 							</td>
 							<td class="cell-center">{{comando.spys}}</td>
-
-
+							<td class="cell-center"><a href="#"
+                                class="size-34x34 btn-red icon-26x26-close"
+                                ng-click="removeCommand(comando.id_command)" tooltip
+                                tooltip-content="{{exclude_button}}"></a></td>
 						</tr>
 					</table>
 				</div>
