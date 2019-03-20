@@ -147,7 +147,7 @@ define("robotTW2/controllers/SpyController", [
 			let obj_autocomplete = {
 					'type'					: 'village',
 					'placeholder'			: $scope.SEARCH_MAP,
-					'onEnter'				: updateEnter,
+					'onEnter'				: function(item, element){updateEnter(item, element)},
 					'exclude'				: function(elem){
 						return elem.owner_id == undefined
 					},
