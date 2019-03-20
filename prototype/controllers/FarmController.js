@@ -575,7 +575,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.isPaused = services.FarmService.isPaused();
 		$scope.t_farm_time = getFarmTime();
 		let loads_p = angular.copy(services.presetListService.getPresets());
-		let presets_load = Object.keys(loads_p).map(function(key){return loads_p[key]});
+		let presets_load = Object.keys(loads_p).map(function(key){return angular.copy(loads_p[key])});
 		$scope.data = {
 				'assignedPresetList': {},
 				'presets'			: presets_load,
