@@ -114,6 +114,7 @@ define("robotTW2/controllers/FarmController", [
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_points_farm = $scope.data.selectedOption.min_points_farm
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_points_farm = $scope.data.selectedOption.max_points_farm
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_commands_farm = $scope.data.selectedOption.max_commands_farm
+				$scope.data_villages.set();
 				break;
 			case "check_all":
 				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
@@ -125,7 +126,7 @@ define("robotTW2/controllers/FarmController", [
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_points_farm = $scope.data.selectedOption.max_points_farm
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_commands_farm = $scope.data.selectedOption.max_commands_farm
 				})
-				triggerUpdate();
+				$scope.data_villages.set();
 				break;
 			case "check_all_villages":
 				Object.keys($scope.data_villages.villages).map(function(village){
@@ -139,9 +140,10 @@ define("robotTW2/controllers/FarmController", [
 						$scope.data_villages.villages[village].presets[elem].max_commands_farm = $scope.data.selectedOption.max_commands_farm
 					})
 				})
-				triggerUpdate();
+				$scope.data_villages.set();
 				break;
 			}
+			triggerUpdate();
 
 			if (!$scope.$$phase) {$scope.$apply();}
 			services.$timeout(blurPreset, 1500)
