@@ -342,7 +342,7 @@ define("robotTW2/controllers/SpyController", [
 							$scope.send_scope.tempo_escolhido = vt + 200 * count_spy;
 							$scope.send_scope.startId = dist_vill.id
 							$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
-							$scope.send_scope.targetId = taget.village_id
+							$scope.send_scope.targetId = target.village_id
 							$scope.send_scope.targetVillage = target.village_name
 							$scope.send_scope.targetX = target.village_x
 							$scope.send_scope.targetY = target.village_y
