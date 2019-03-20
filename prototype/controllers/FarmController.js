@@ -546,7 +546,7 @@ define("robotTW2/controllers/FarmController", [
 		
 		$scope.$watch("data.selectedOption", function(){
 			if(!$scope.data.selectedOption){return}
-			updateAll()
+			blurPreset()
 		}, true)
 
 		$scope.$watch("data_select", function(){
