@@ -304,15 +304,42 @@ define("robotTW2/controllers/SpyController", [
 
 					services.SpyService.sendCommandAttackSpy($scope);
 				} else if(type == "character"){
+
+
 					Object.keys($scope.villages_for_sent).map(function(elem){
+
 						let target = $scope.villages_for_sent[elem]
+
+						let list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
+							if($scope.local_data_villages[elem.spies] > 0){
+								return {
+									"id": vill, 
+									"dist" : math.actualDistance(
+											{
+												'x' : vill.x,
+												'y' : vill.y
+											}, 
+											{
+												'x' : target.village_x, 
+												'y' : target.village_y
+											}
+									)
+								}
+							}
+						}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})[0]
+
+						if(!list_dist_vills) return;
+						
+						$scope.local_data_villages[list_dist_vills.id].spies--
+
+						$scope.send_scope.startId = list_dist_vills.id
 						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-						$scope.send_scope.startId = $scope.data_select.selectedOption.id
 						$scope.send_scope.targetId = taget.village_id
 						$scope.send_scope.targetVillage = target.village_name
 						$scope.send_scope.targetX = target.village_x
 						$scope.send_scope.targetY = target.village_y
-
+						
+						services.SpyService.sendCommandAttackSpy($scope);
 					})
 				}
 
