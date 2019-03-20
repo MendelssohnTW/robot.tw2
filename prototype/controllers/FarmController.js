@@ -107,9 +107,13 @@ define("robotTW2/controllers/FarmController", [
 		, updateBlur = function updateBlur(){
 			switch ($scope.toggle_option) {
 			case "check_one":
-				$scope.data.selectedOption.max_journey_distance = get_dist($scope.village_selected.id, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
-				$scope.data.selectedOption.min_journey_distance = get_dist($scope.village_selected.id, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units);
-				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id] = $scope.data.selectedOption;
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance = get_dist($scope.village_selected.id, $scope.data.selectedOption.max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_distance = get_dist($scope.village_selected.id, $scope.data.selectedOption.min_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units) || 0
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units) || 0
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_points_farm = $scope.data.selectedOption.min_points_farm
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_points_farm = $scope.data.selectedOption.max_points_farm
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_commands_farm = $scope.data.selectedOption.max_commands_farm
 				break;
 			case "check_all":
 				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
@@ -386,9 +390,24 @@ define("robotTW2/controllers/FarmController", [
 			if(r.length <= 5) {
 				r = r + ":00"
 			}
-			$scope.data.selectedOption.max_journey_time = helper.unreadableSeconds(r) * 1000
-			services.VillageService.getVillage($scope.village_selected)
-			$scope.data.selectedOption.max_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
+			switch ($scope.toggle_option) {
+			case "check_one":
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time = helper.unreadableSeconds(r) * 1000
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
+				break;
+			case "check_all":
+				$scope.data.selectedOption.max_journey_time = helper.unreadableSeconds(r) * 1000
+				$scope.data.selectedOption.max_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
+				break;
+			case "check_all_villages":
+				Object.keys($scope.data_villages.villages).map(function(village){
+					Object.keys($scope.data_villages.villages[village].presets).map(function(elem){
+						$scope.data_villages.villages[village].presets[elem].max_journey_time = helper.unreadableSeconds(r) * 1000
+						$scope.data_villages.villages[village].presets[elem].max_journey_distance = get_dist(village, $scope.data_villages.villages[village].presets[elem].max_journey_time, $scope.data_villages.villages[village].presets[elem].units)
+					})
+				})
+				break;
+			}
 			updateBlur()
 		}
 
@@ -397,8 +416,24 @@ define("robotTW2/controllers/FarmController", [
 			if(r.length <= 5) {
 				r = r + ":00"
 			}
-			$scope.data.selectedOption.min_journey_time = helper.unreadableSeconds(r) * 1000
-			$scope.data.selectedOption.min_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units) || 0
+			switch ($scope.toggle_option) {
+			case "check_one":
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time = helper.unreadableSeconds(r) * 1000
+				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
+				break;
+			case "check_all":
+				$scope.data.selectedOption.min_journey_time = helper.unreadableSeconds(r) * 1000
+				$scope.data.selectedOption.min_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units)
+				break;
+			case "check_all_villages":
+				Object.keys($scope.data_villages.villages).map(function(village){
+					Object.keys($scope.data_villages.villages[village].presets).map(function(elem){
+						$scope.data_villages.villages[village].presets[elem].min_journey_time = helper.unreadableSeconds(r) * 1000
+						$scope.data_villages.villages[village].presets[elem].min_journey_distance = get_dist(village, $scope.data_villages.villages[village].presets[elem].min_journey_time, $scope.data_villages.villages[village].presets[elem].units)
+					})
+				})
+				break;
+			}
 			updateBlur()
 		}
 
@@ -548,19 +583,19 @@ define("robotTW2/controllers/FarmController", [
 				"selectedOption" 	: {},
 				"selectedOptionOut"	: {}
 		}
-		
+
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 
 		$scope.data_exception = {
-				"availableOptions" : [],
-				"selectedOption" : {}
+			"availableOptions" : [],
+			"selectedOption" : {}
 		}
 
 		getDetailsExceptions();
 
 		triggerUpdate()
 		update()
-		
+
 		$scope.setCollapse();
 
 		return $scope;
