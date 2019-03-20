@@ -290,7 +290,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-		$scope.data_type = services.MainService.getSelects(["buildings", "units"])
+		$scope.data_type = services.MainService.getSelects(["units", "buildings"])
 
 		initTab();
 		update();
