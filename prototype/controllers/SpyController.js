@@ -151,8 +151,17 @@ define("robotTW2/controllers/SpyController", [
 			$scope.item_player = item
 			$scope.item = undefined
 			element[0].firstElementChild.value = item.displayedName
-			updateTarget()
-			if (!$scope.$$phase) {$scope.$apply()}
+			getProfile(item.id, function(data){
+				updateTarget()
+				if (!$scope.$$phase) {$scope.$apply()}
+			})
+		}
+		, getProfile = function (character_id, callbackgetProfile){
+			services.socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
+				'character_id': character_id
+			}, function(data){
+				callbackgetProfile(data)
+			});
 		}
 
 		$scope.requestedTab = TABS.SPY;
