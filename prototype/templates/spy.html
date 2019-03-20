@@ -36,14 +36,14 @@
 					</colgroup>
 					<tr>
 						<td class="cell-right">{{text_interval_spy}}</td>
-						<td><input id="input-ms" class="input-border inpt"
+						<td><input id="input-hour-interval" class="input-border inpt"
 							type="time" step="1" min="00:00:00" max="23:59:59"
 							value="{{data_spy.interval | date : 'HH:mm:ss' : 'UTC'}}"
 							ng-blur="blur()"></td>
 					</tr>
 					<tr>
 						<td class="cell-right">{{text_interval}}</td>
-						<td><input id="input-ms" class="input-border inpt disabled"
+						<td><input id="input-ms-interval" class="input-border inpt disabled"
 							type=text value="{{getTimeRest()}}" disabled></td>
 					</tr>
 				</table>

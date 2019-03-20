@@ -22,7 +22,9 @@ define("robotTW2/controllers/SpyCompletionController", [
 		$scope.ms_init = 0;
 
 		$scope.sendAttackSpy = function(){
-			
+			if ($scope.availableSpies === 0 || $scope.option.length === 0 || $scope.rangeSlider.value === 0) {
+				return;
+			}
 			var durationInSeconds = helper.unreadableSeconds($scope.duration);
 			var get_data = $("#input-date").val();
 			var get_time = $("#input-time").val();

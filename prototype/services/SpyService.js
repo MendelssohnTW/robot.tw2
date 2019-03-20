@@ -203,12 +203,6 @@ define("robotTW2/services/SpyService", [
 			return $timeout(send.bind(null, params), timer_delay_send)
 		}
 		, sendCommandAttackSpy = function(scp){
-			if (scp.availableSpies === 0 || scp.option.length === 0 || scp.rangeSlider.value === 0) {
-				return;
-			}
-			addScopeAttackSpy(scp);
-		}
-		, addScopeAttackSpy = function(scp){
 			var params = {
 					start_village		: scp.startId,
 					target_village		: scp.targetId,
@@ -294,7 +288,6 @@ define("robotTW2/services/SpyService", [
 			stop 					: stop,
 			sendCommandAttackSpy 	: sendCommandAttackSpy,
 			removeCommandAttackSpy	: removeCommandAttackSpy,
-			addScopeAttackSpy		: addScopeAttackSpy,
 			removeAll				: removeAll,
 			isRunning				: function() {
 				return isRunning

@@ -153,44 +153,6 @@ define("robotTW2/services/AttackService", [
 			return $timeout(send.bind(null, params), timer_delay_send)
 		}
 		, sendCommandAttack = function(scp){
-			scp.army = {
-					'officers': {}
-			}
-			for (officerName in scp.officers) {
-				if (scp.officers.hasOwnProperty(officerName)) {
-					if (scp.officers[officerName].checked === true) {
-						scp.army.officers[officerName] = true;
-					}
-				}
-			}
-			var durationInSeconds = helper.unreadableSeconds(scp.properties.duration);
-			if (scp.enviarFull){
-				durationInSeconds = 0;
-			}
-			if (scp.armyEmpty && !scp.enviarFull){
-				notify("unity_select");
-			} else {
-				var get_data = $("#input-date").val();
-				var get_time = $("#input-time").val();
-				var get_ms = $("#input-ms").val();
-				if (get_time.length <= 5){
-					get_time = get_time + ":00"; 
-				}
-				if (get_data != undefined && get_time != undefined){
-					scp.milisegundos_duracao = durationInSeconds * 1000;
-					scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-					if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
-						addScopeAttack(scp);
-						scp.closeWindow();
-					} else {
-						notify("date_error");
-					}       
-				} else {
-					return;
-				}
-			}
-		}
-		, addScopeAttack = function(scp){
 			var params = {
 					start_village		: scp.selectedVillage.data.villageId,
 					target_village		: scp.target.id,
