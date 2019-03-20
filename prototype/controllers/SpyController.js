@@ -83,13 +83,11 @@ define("robotTW2/controllers/SpyController", [
 				if (get_time.length <= 5){
 					get_time = get_time + ":00"; 
 				}
-
-				$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
-				$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
-
 				if (get_data != undefined && get_time != undefined){
 					$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
 					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
+					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 				}
 			}
 		}
