@@ -165,11 +165,11 @@ define("robotTW2/services/SpyService", [
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "spy"){
-				var params = Object.keys($event.currentScope.commands).map(function(cmd){
-					if($event.currentScope.commands[cmd].params.start_village == data.home.id
-							&& $event.currentScope.commands[cmd].params.target_village == data.target.id
+				var params = Object.keys(spyAttack).map(function(cmd){
+					if(spyAttack[cmd].params.start_village == data.home.id
+							&& spyAttack[cmd].params.target_village == data.target.id
 					) {
-						return $event.currentScope.commands[cmd].params	
+						return spyAttack[cmd].params	
 					} else {
 						return undefined
 					}
