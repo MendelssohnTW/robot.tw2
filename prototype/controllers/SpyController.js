@@ -6,6 +6,7 @@ define("robotTW2/controllers/SpyController", [
 	"robotTW2/databases/data_spy",
 	"robotTW2/databases/data_villages",
 	"robotTW2/autocomplete",
+	"robotTW2/notify",
 	"helper/math"
 	], function(
 			services,
@@ -15,6 +16,7 @@ define("robotTW2/controllers/SpyController", [
 			data_spy,
 			data_villages,
 			autocomplete,
+			notify,
 			math
 	){
 	return function SpyController($scope) {
@@ -93,7 +95,7 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		, updateValuesSource = function(){
-			if(Object.keys($scope.send_scope).length){
+			if(Object.keys($scope.villages_for_sent).length){
 				let get_data = $("#input-date").val();
 				let get_time = $("#input-time").val();
 				let get_ms = $("#input-ms").val();
