@@ -197,7 +197,7 @@
 										min="000" max="999" value="{{ms_init}}">
 								</div>
 							</td>
-							<td rowspan="3"><div>
+							<td><div>
 									<select id="select_qtd" class="select-handler"
 										ng-options="item for item in data_qtd.availableOptions"
 										ng-model="data_qtd.selectedOption"></select>
@@ -256,6 +256,16 @@
                                         min="000" max="999" value="{{ms_init}}">
                                 </div>
                             </td>
+                            <td><div>
+                                    <select id="select_qtd_source" class="select-handler"
+                                        ng-options="item for item in data_qtd_source.availableOptions"
+                                        ng-model="data_qtd_source.selectedOption"></select>
+                                </div>
+                                <div>
+                                    <select id="select_type_source" class="select-handler"
+                                        ng-options="item as item.name for item in data_type_source.availableOptions"
+                                        ng-model="data_type_source.selectedOption"></select>
+                                </div></td>
                             <td class="cell-center"><div>
                                     <a href="#" id="button-prog"
                                         class="btn-orange btn-form btn-border no-padding"

@@ -283,6 +283,7 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.sendAttackSpy = function(){
+			let count_spy = 0;
 			let type;
 			if($scope.item){
 				type = "village"
@@ -302,7 +303,8 @@ define("robotTW2/controllers/SpyController", [
 					$scope.send_scope.targetY = $scope.item.y
 					$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
 
-					services.SpyService.sendCommandAttackSpy($scope);
+					services.SpyService.sendCommandAttackSpy($scope.send_scope);
+					$scope.send_scope = {}
 				} else if(type == "character"){
 
 
@@ -311,36 +313,52 @@ define("robotTW2/controllers/SpyController", [
 						let target = $scope.villages_for_sent[elem]
 
 						let list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
-							if($scope.local_data_villages[elem.spies] > 0){
-								return {
-									"id": vill, 
-									"dist" : math.actualDistance(
-											{
-												'x' : vill.x,
-												'y' : vill.y
-											}, 
-											{
-												'x' : target.village_x, 
-												'y' : target.village_y
-											}
-									)
-								}
+							return {
+								"id": vill, 
+								"dist" : math.actualDistance(
+										{
+											'x' : vill.x,
+											'y' : vill.y
+										}, 
+										{
+											'x' : target.village_x, 
+											'y' : target.village_y
+										}
+								)
 							}
-						}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})[0]
+						}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
 
 						if(!list_dist_vills) return;
-						
-						$scope.local_data_villages[list_dist_vills.id].spies--
 
-						$scope.send_scope.startId = list_dist_vills.id
-						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-						$scope.send_scope.targetId = taget.village_id
-						$scope.send_scope.targetVillage = target.village_name
-						$scope.send_scope.targetX = target.village_x
-						$scope.send_scope.targetY = target.village_y
-						
-						services.SpyService.sendCommandAttackSpy($scope);
+						let dist_vill;
+
+						function next(dist_vill, limit){
+							count_spy++;
+
+							$scope.send_scope.tempo_escolhido = $scope.send_scope.tempo_escolhido + 200 * count_spy;
+							$scope.send_scope.startId = dist_vill.id
+							$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
+							$scope.send_scope.targetId = taget.village_id
+							$scope.send_scope.targetVillage = target.village_name
+							$scope.send_scope.targetX = target.village_x
+							$scope.send_scope.targetY = target.village_y
+							$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
+
+							services.SpyService.sendCommandAttackSpy($scope.send_scope);
+							$scope.local_data_villages[dist_vill.id].spies--;
+							if($scope.local_data_villages[dist_vill.id].spies > 0){
+								list_dist_vills.unshift(dist_vill)
+							}
+						}
+
+						for (t = 0; t < $scope.data_qtd_source.selectedOption; t++){
+							dist_vill = list_dist_vills.shift();
+							next(dist_vill, $scope.data_qtd_source.selectedOption)
+						}
+
 					})
+
+					$scope.send_scope = {}
 				}
 
 				$scope.closeWindow();
@@ -403,6 +421,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
+		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])
 		$scope.data_type = services.MainService.getSelects([
 			{
 				"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
@@ -414,6 +433,8 @@ define("robotTW2/controllers/SpyController", [
 
 			}]
 		)
+
+		$scope.data_type_source = $scope.data_type;
 
 		initTab();
 		update();

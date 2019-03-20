@@ -52,7 +52,6 @@ define("robotTW2/services/VillageService", [
 			}
 			Object.keys(data_villages.villages).map(function(key){
 				var vill = getVillage(key);
-				
 				local_data_villages.push({
 					id 		: key,
 					name 	: vill.data.name,
