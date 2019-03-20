@@ -96,7 +96,7 @@ define("robotTW2/controllers/SpyController", [
 		, updateTarget = function(){
 			services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 				'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
-				'village_id'		: $scope.inputValue.id,
+				'village_id'		: $scope.item.id,
 				'num_reports'		: 0
 			}, function(data){
 				$scope.send_scope.target_name = data.village_name;
