@@ -31,6 +31,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.data_spy = data_spy
 		$scope.text_version = $scope.version + " " + data_spy.version;
 		$scope.send_scope = {};
+		$scope.villages_for_sent = {};
 
 		var self = this
 		, TABS = {
@@ -109,35 +110,21 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateTarget = function(){
 			if($scope.item){
-				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-					'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
-					'village_id'		: $scope.item.id,
-					'num_reports'		: 0
-				}, function(data){
-					$scope.send_scope.target_name = data.village_name;
-					$scope.send_scope.distance = math.actualDistance(
-							{
-								'x' : $scope.data_select.selectedOption.x,
-								'y' : $scope.data_select.selectedOption.y
-							}, 
-							{
-								'x' : data.village_x,
-								'y' : data.village_y
-							}
-					);
+				$scope.send_scope.distance = math.actualDistance(
+						{
+							'x' : $scope.data_select.selectedOption.x,
+							'y' : $scope.data_select.selectedOption.y
+						}, 
+						{
+							'x' : $scope.item.x,
+							'y' : $scope.item.y
+						}
+				);
 
-					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-					$scope.send_scope.startId
-					$scope.send_scope.targetId
-					$scope.send_scope.targetVillage //name
-					$scope.send_scope.targetX
-					$scope.send_scope.targetY
-					$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
-					updateValues()
-					if (!$scope.$$phase) {$scope.$apply()}
-				})
+				updateValues()
 			} else if($scope.item_player){
 				$scope.villages_for_sent = $scope.item_player.villages;
+				updateValuesSource();
 			}
 		}
 		, updateEnter = function(item, element){
@@ -296,19 +283,45 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.sendAttackSpy = function(){
+			let type;
 			if($scope.item){
-				updateValues()
+				type = "village"
+					updateValues()
 			} else if($scope.item_player){
-				updateValuesSource()
+				type = "character"
+					updateValuesSource()
 			}
 			if ($scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
-				services.SpyService.sendCommandAttackSpy($scope);
+
+				if(type == "village"){
+					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+					$scope.send_scope.startId = $scope.data_select.selectedOption.id
+					$scope.send_scope.targetId = $scope.item.id
+					$scope.send_scope.targetVillage = $scope.item.name
+					$scope.send_scope.targetX = $scope.item.x
+					$scope.send_scope.targetY = $scope.item.y
+					$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
+
+					services.SpyService.sendCommandAttackSpy($scope);
+				} else if(type == "character"){
+					Object.keys($scope.villages_for_sent).map(function(elem){
+						let target = $scope.villages_for_sent[elem]
+						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+						$scope.send_scope.startId = $scope.data_select.selectedOption.id
+						$scope.send_scope.targetId = taget.village_id
+						$scope.send_scope.targetVillage = target.village_name
+						$scope.send_scope.targetX = target.village_x
+						$scope.send_scope.targetY = target.village_y
+
+					})
+				}
+
 				$scope.closeWindow();
 			} else {
 				notify("date_error");
 			}
 		}
-		
+
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
 		})
