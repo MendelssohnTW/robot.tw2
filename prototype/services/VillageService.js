@@ -22,7 +22,6 @@ define("robotTW2/services/VillageService", [
 	) {
 		var isInitialized = !1
 		, isRunning = !1
-		, local_data_villages = []
 		, getVillage = function getVillage(vid){
 			if(!vid){return}
 			return angular.copy(modelDataService.getSelectedCharacter().getVillage(vid))
@@ -32,7 +31,8 @@ define("robotTW2/services/VillageService", [
 			return angular.copy(modelDataService.getSelectedCharacter().setSelectedVillage(village))
 		}
 		, getLocalVillages = function getLocalVillages(type, type_sort){
-			let str = undefined;
+			let str = undefined
+			, local_data_villages = []
 			switch (type){
 			case "defense": 
 				str = "defense_activate"

@@ -68,8 +68,10 @@ define("robotTW2/controllers/SpyController", [
 				return data_spy.commands[elem]
 			});
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
-			document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
-			if (!$scope.$$phase) {$scope.$apply()}
+			if(document.getElementById("input-ms")){
+				document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
+			}
+			if (!$scope.$$phase) {$scope.$apply()}s
 		}
 
 		$scope.requestedTab = TABS.SPY;
@@ -195,7 +197,7 @@ define("robotTW2/controllers/SpyController", [
 				'num_reports'		: 0
 			}, function(data){
 				var target_name = data.village_name
-				
+
 				let distance = math.actualDistance(
 						{
 							'x' : $scope.data_select.selectedOption.x,
@@ -206,7 +208,7 @@ define("robotTW2/controllers/SpyController", [
 							'y' : data.village_y
 						});
 				let durationInSeconds = distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
-				
+
 				let get_data = $("#input-date").val();
 				let get_time = $("#input-time").val();
 				let get_ms = $("#input-ms").val();
@@ -272,10 +274,10 @@ define("robotTW2/controllers/SpyController", [
 			data_spy = $scope.data_spy;
 			data_spy.set();
 		}, true)
-		
+
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			var village = services.VillageService.getVillage(data_select.selectedOption.id)
+			var village = services.VillageService.getVillage($scope.data_select.selectedOption.id)
 			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
 			let lts = [];
 			for (let i = 0; i < qtd_spy; i++){
