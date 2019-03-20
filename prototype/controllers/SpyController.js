@@ -75,22 +75,23 @@ define("robotTW2/controllers/SpyController", [
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
 		, updateValues = function(){
-			let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
+			if(Object.keys($scope.send_scope).length){
+				let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
+				let get_data = $("#input-date").val();
+				let get_time = $("#input-time").val();
+				let get_ms = $("#input-ms").val();
+				if (get_time.length <= 5){
+					get_time = get_time + ":00"; 
+				}
 
-			let get_data = $("#input-date").val();
-			let get_time = $("#input-time").val();
-			let get_ms = $("#input-ms").val();
-			if (get_time.length <= 5){
-				get_time = get_time + ":00"; 
+				$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
+				$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
+
+				if (get_data != undefined && get_time != undefined){
+					$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
+					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+				}
 			}
-
-			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
-			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
-
-			if (get_data != undefined && get_time != undefined){
-				$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
-				$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-			} 
 		}
 		, updateTarget = function(){
 			services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
@@ -294,6 +295,8 @@ define("robotTW2/controllers/SpyController", [
 			$scope.data_qtd = services.MainService.getSelects(lts)
 			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
 			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
+
+			updateValues();
 		}, true)
 
 		$scope.$on("$destroy", function() {
