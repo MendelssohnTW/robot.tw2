@@ -54,10 +54,10 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		, update = function(){
-			$scope.comandos = Object.keys(data_spy.commands).map(function(elem, index, array){
+			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
 				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 					'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
-					'village_id'		: data_attack.commands[elem].target_village,
+					'village_id'		: $scope.data_spy.commands[elem].target_village,
 					'num_reports'		: 0
 				}, function(data){
 					$scope.local_out_villages.push(
@@ -69,11 +69,11 @@ define("robotTW2/controllers/SpyController", [
 							});
 					if (!$scope.$$phase) {$scope.$apply()}
 				})
-				return data_spy.commands[elem]
+				return $scope.data_spy.commands[elem]
 			});
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
 			if(document.getElementById("input-ms-interval")){
-				document.getElementById("input-ms-interval").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
+				document.getElementById("input-ms-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
@@ -263,7 +263,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.getTimeRest = function(){
 			if($scope.activeTab != TABS.SPY){return}
-			return data_spy.complete > time.convertedTime() ? helper.readableMilliseconds(data_spy.complete - time.convertedTime()) : 0;
+			return $scope.data_spy.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_spy.complete - time.convertedTime()) : 0;
 		}
 
 		$scope.clear_spy = function(){
@@ -281,7 +281,7 @@ define("robotTW2/controllers/SpyController", [
 			if(t.length <= 5) {
 				t = t + ":00"
 			}
-			data_spy.interval = helper.unreadableSeconds(t) * 1000;
+			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
 		}
 
 		$scope.sendAttackSpy = function(){
@@ -375,7 +375,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
 			if($scope.activeTab != TABS.SPY){return}
-			document.getElementById("input-ms-interval").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
+			document.getElementById("input-ms-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
 			if (!$scope.$$phase) {
 				$scope.$apply();
 			}
@@ -398,8 +398,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_spy", function(){
 			if(!$scope.data_spy){return}
-			data_spy = $scope.data_spy;
-			data_spy.set();
+			$scope.data_spy.set();
 		}, true)
 
 		$scope.$watch("data_select", function(){
