@@ -320,8 +320,8 @@ define("robotTW2/controllers/SpyController", [
 								"id": $scope.local_data_villages[vill].id, 
 								"dist" : math.actualDistance(
 										{
-											'x' : vill.x,
-											'y' : vill.y
+											'x' : $scope.local_data_villages[vill].x,
+											'y' : $scope.local_data_villages[vill].y
 										}, 
 										{
 											'x' : target.village_x, 
