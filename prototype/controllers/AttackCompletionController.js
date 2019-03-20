@@ -58,8 +58,6 @@ define("robotTW2/controllers/AttackCompletionController", [
 					return;
 				}
 			}
-			
-			services.AttackService.sendCommandAttack($scope)
 		}
 
 		if (!$scope.$$phase) {
