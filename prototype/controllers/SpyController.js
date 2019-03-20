@@ -92,36 +92,48 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		, updateTarget = function(){
-			services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
-				'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
-				'village_id'		: $scope.item.id,
-				'num_reports'		: 0
-			}, function(data){
-				$scope.send_scope.target_name = data.village_name;
-				$scope.send_scope.distance = math.actualDistance(
-						{
-							'x' : $scope.data_select.selectedOption.x,
-							'y' : $scope.data_select.selectedOption.y
-						}, 
-						{
-							'x' : data.village_x,
-							'y' : data.village_y
-						}
-				);
+			if($scope.item){
+				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
+					'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
+					'village_id'		: $scope.item.id,
+					'num_reports'		: 0
+				}, function(data){
+					$scope.send_scope.target_name = data.village_name;
+					$scope.send_scope.distance = math.actualDistance(
+							{
+								'x' : $scope.data_select.selectedOption.x,
+								'y' : $scope.data_select.selectedOption.y
+							}, 
+							{
+								'x' : data.village_x,
+								'y' : data.village_y
+							}
+					);
 
-				$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-				$scope.send_scope.startId
-				$scope.send_scope.targetId
-				$scope.send_scope.targetVillage //name
-				$scope.send_scope.targetX
-				$scope.send_scope.targetY
-				$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
-				updateValues()
-				if (!$scope.$$phase) {$scope.$apply()}
-			})
+					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+					$scope.send_scope.startId
+					$scope.send_scope.targetId
+					$scope.send_scope.targetVillage //name
+					$scope.send_scope.targetX
+					$scope.send_scope.targetY
+					$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
+					updateValues()
+					if (!$scope.$$phase) {$scope.$apply()}
+				})
+			} else if($scope.item_player){
+
+			}
 		}
 		, updateEnter = function(item, element){
 			$scope.item = item
+			$scope.item_player = undefined
+			element[0].firstElementChild.value = item.displayedName
+			updateTarget()
+			if (!$scope.$$phase) {$scope.$apply()}
+		}
+		, updateEnterPlayer = function(item, element){
+			$scope.item_player = item
+			$scope.item = undefined
 			element[0].firstElementChild.value = item.displayedName
 			updateTarget()
 			if (!$scope.$$phase) {$scope.$apply()}
@@ -154,7 +166,27 @@ define("robotTW2/controllers/SpyController", [
 			let object_scope = {
 					"inputValue" 	: event.srcElement.value,
 					"element" 		: $($("#autocomplete_spy")[0]),
-					"id" 			: "autocomplete_farm",
+					"id" 			: "autocomplete_spy",
+					"autoComplete" 	: obj_autocomplete
+			}
+//			angular.extend($scope, object_scope)
+			autocomplete(object_scope, event);
+		}
+
+		$scope.autoCompleteKeyPlayer = function(event){
+			let obj_autocomplete = {
+					'type'					: 'member',
+					'placeholder'			: $scope.SEARCH_MAP,
+					'onEnter'				: updateEnterPlayer,
+					'exclude'				: null,
+					"inputValueReadOnly" 	: "",
+					"keepSelected"			: false
+			}
+
+			let object_scope = {
+					"inputValue" 	: event.srcElement.value,
+					"element" 		: $($("#autocomplete_spy_player")[0]),
+					"id" 			: "autocomplete_spy_player",
 					"autoComplete" 	: obj_autocomplete
 			}
 //			angular.extend($scope, object_scope)

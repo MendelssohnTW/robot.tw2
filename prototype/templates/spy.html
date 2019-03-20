@@ -43,8 +43,9 @@
 					</tr>
 					<tr>
 						<td class="cell-right">{{text_interval}}</td>
-						<td><input id="input-ms-interval" class="input-border inpt disabled"
-							type=text value="{{getTimeRest()}}" disabled></td>
+						<td><input id="input-ms-interval"
+							class="input-border inpt disabled" type=text
+							value="{{getTimeRest()}}" disabled></td>
 					</tr>
 				</table>
 
@@ -155,7 +156,8 @@
 					<tbody>
 						<tr>
 							<th class="cell-center" colspan="2">{{text_source}}</th>
-							<th class="cell-center" colspan="2">{{text_target}}</th>
+							<th class="cell-center" colspan="2">{{text_target_village}}</th>
+							<th class="cell-center" colspan="2">{{text_data}}</th>
 						</tr>
 						<tr>
 							<td><div class="icon icon-34x34-village"></div></td>
@@ -211,6 +213,32 @@
 										ng-click="sendAttackSpy()"><span id="span-text"
 										class="text">{{schedule}}</span> </a>
 								</div></td>
+						</tr>
+
+
+						<tr>
+						<th class="cell-center" colspan="2"></th>
+							<th class="cell-center" colspan="2">{{text_target_player}}</th>
+							<th class="cell-center" colspan="2">{{text_data}}</th>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td><div class="icon icon-34x34-village"></div></td>
+							<td>
+								<div>
+									<div id="select-field" select-element=""
+										ng-style="{'width': width + 'px'}"
+										style="transform: translate3d(63px, 819px, 0px); width: 309px;">
+										<ul class="action-list select-handler">
+										</ul>
+									</div>
+								</div>
+								<div id="autocomplete_spy_player" class="auto-complete-wrapper">
+									<input type="text" ng-keyup="autoCompleteKeyPlayer($event)"
+										ng-model="inputValue" class="textfield-border"
+										placeholder="{{SEARCH_MAP}}" style="width: 100%;">
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>
