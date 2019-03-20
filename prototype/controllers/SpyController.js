@@ -137,7 +137,7 @@ define("robotTW2/controllers/SpyController", [
 					if (!$scope.$$phase) {$scope.$apply()}
 				})
 			} else if($scope.item_player){
-
+				$scope.villages_for_sent = $scope.item_player.villages;
 			}
 		}
 		, updateEnter = function(item, element){
@@ -150,8 +150,9 @@ define("robotTW2/controllers/SpyController", [
 		, updateEnterPlayer = function(item, element){
 			$scope.item_player = item
 			$scope.item = undefined
-			element[0].firstElementChild.value = item.displayedName
+			element[0].firstElementChild.value = item.name
 			getProfile(item.id, function(data){
+				angular.extend($scope.item_player, data)
 				updateTarget()
 				if (!$scope.$$phase) {$scope.$apply()}
 			})
@@ -295,7 +296,11 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.sendAttackSpy = function(){
-			updateValues()
+			if($scope.item){
+				updateValues()
+			} else if($scope.item_player){
+				updateValuesSource()
+			}
 			if ($scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
 				services.SpyService.sendCommandAttackSpy($scope);
 				$scope.closeWindow();
