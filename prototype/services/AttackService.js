@@ -36,9 +36,9 @@ define("robotTW2/services/AttackService", [
 		var isRunning = !1
 		, isPaused = !1
 		, isInitialized = !1
+		, listener = undefined
 		, interval_reload = undefined
 		, that = this
-		, scope = $rootScope.$new()
 		, timetable = modelDataService.getGameData().data.units.map(function(obj, index, array){
 			return [obj.speed * 60, obj.name]
 		}).map(m => {
@@ -48,7 +48,7 @@ define("robotTW2/services/AttackService", [
 		})
 		, addAttack = function(params, opt_id){
 			if(!params){return}
-			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(listener) == "function") ? listener = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
 			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
@@ -180,13 +180,7 @@ define("robotTW2/services/AttackService", [
 			commandQueue.unbind(id_command, data_attack)
 		}
 		, removeAll = function(){
-			if(scope.params){
-				Object.keys(scope.params).map(function(pn){
-					if(scope.params[pn]){
-						delete scope.params[pn]
-					}
-				})
-			}
+			commandAttack = {};
 			commandQueue.unbindAll("attack", data_attack)
 		}
 		, init = function(){
@@ -214,16 +208,8 @@ define("robotTW2/services/AttackService", [
 			interval_reload ? $timeout.cancel(interval_reload): null;
 			interval_reload = undefined;
 			isRunning = !1;
-			scope = {};
-			if(scope.listener && typeof(scope.listener) == "function") {
-				scope.listener();
-				delete scope.listener;
-			}
+			typeof(listener) == "function" ? listener(): null
 		}
-
-		angular.extend(scope, {
-			commands : {}
-		})
 
 		return	{
 			init				: init,

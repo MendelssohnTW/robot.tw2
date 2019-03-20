@@ -1,3 +1,8 @@
+define("robotTW2/SpyAttack", [
+	], function(){
+	return {}
+})
+
 define("robotTW2/services/SpyService", [
 	"robotTW2",
 	"robotTW2/version",
@@ -6,7 +11,8 @@ define("robotTW2/services/SpyService", [
 	"robotTW2/conf",
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
-	"robotTW2/databases/data_spy"
+	"robotTW2/databases/data_spy",
+	"robotTW2/SpyAttack"
 	], function(
 			robotTW2,
 			version,
@@ -15,7 +21,8 @@ define("robotTW2/services/SpyService", [
 			conf,
 			SPY_TYPES,
 			data_villages,
-			data_spy
+			data_spy,
+			spyAttack
 	){
 	return (function SpyService(
 			$rootScope,
@@ -31,8 +38,8 @@ define("robotTW2/services/SpyService", [
 
 		var isInitialized = !1
 		, isRunning = !1
-		, scope = $rootScope.$new()
-		, interval_spy = null
+		, listener = undefined
+		, interval_spy = undefined
 		, listener_spy = undefined
 		, listener_open = undefined
 		, listener_close = undefined
@@ -124,7 +131,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, addAttackSpy = function(params, opt_id){
 			if(!params){return}
-			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.SCOUTING_SENT, listener_command_sent) : null;
+			!(typeof(listener) == "function") ? listener = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
 			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
@@ -140,7 +147,7 @@ define("robotTW2/services/SpyService", [
 				})
 
 				commandQueue.bind(id_command, sendAttackSpy, data_spy, params, function(fns){
-					scope.commands[fns.params.id_command] = {
+					spyCommands[fns.params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
 					}
@@ -149,7 +156,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, resend = function (params) {
 			commandQueue.bind(params.id_command, resendAttackSpy, data_spy, params, function(fns){
-				scope.commands[fns.params.id_command] = {
+				spyCommands[fns.params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
 						"params"	: params
 				}
@@ -229,23 +236,17 @@ define("robotTW2/services/SpyService", [
 			addAttackSpy(params);
 		}
 		, removeCommandAttackSpy = function(id_command){
-			if(typeof(scope.commands[id_command].timeout) == "object"){
-				if(scope.commands[id_command].timeout.$$state.status == 0){
-					$timeout.cancel(scope.commands[id_command].timeout)	
+			if(typeof(spyCommands[id_command].timeout) == "object"){
+				if(spyCommands[id_command].timeout.$$state.status == 0){
+					$timeout.cancel(spyCommands[id_command].timeout)	
 				}
-				delete scope.commands[id_command];
+				delete spyCommands[id_command];
 			}
 
 			commandQueue.unbind(id_command, data_spy)
 		}
 		, removeAll = function(){
-			if(scope.params){
-				Object.keys(scope.params).map(function(pn){
-					if(scope.params[pn]){
-						delete scope.params[pn]
-					}
-				})
-			}
+			spyAttack = {};
 			commandQueue.unbindAll("attack", data_spy)
 		}
 		, init = function (){
@@ -257,7 +258,6 @@ define("robotTW2/services/SpyService", [
 			if(isRunning){return}
 			ready(function(){
 				var open = false;
-				scope.commands = {};
 				loadScript("/controllers/SpyCompletionController.js", true);
 				listener_open = $rootScope.$on("open_get_selected_village", function(){open = true})
 				listener_close = $rootScope.$on("close_get_selected_village", function(){open = false})
@@ -285,6 +285,7 @@ define("robotTW2/services/SpyService", [
 		, stop = function (){
 			robotTW2.removeScript("/controllers/SpyCompletionController.js");
 			typeof(listener_spy) == "function" ? listener_spy(): null;
+			typeof(listener) == "function" ? listener(): null
 			listener_spy = undefined;
 			listener_open = undefined;
 			listener_close = undefined;
