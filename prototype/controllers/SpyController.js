@@ -71,7 +71,7 @@ define("robotTW2/controllers/SpyController", [
 			if(document.getElementById("input-ms")){
 				document.getElementById("input-ms").value = helper.readableMilliseconds(data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds(data_spy.interval) : helper.readableMilliseconds(data_spy.interval);
 			}
-			if (!$scope.$$phase) {$scope.$apply()}s
+			if (!$scope.$$phase) {$scope.$apply()}
 		}
 
 		$scope.requestedTab = TABS.SPY;
