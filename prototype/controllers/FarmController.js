@@ -543,6 +543,11 @@ define("robotTW2/controllers/FarmController", [
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {$scope.$apply()}
 		}, true)
+		
+		$scope.$watch("data.selectedOption", function(){
+			if(!$scope.data.selectedOption){return}
+			updateAll()
+		}, true)
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
