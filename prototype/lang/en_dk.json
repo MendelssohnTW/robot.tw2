@@ -289,7 +289,8 @@
 		"data_data": "Robot TW2 - Database (DATA) updated, re-enable the DATA module",
 		"data_logs": "Robot TW2 - Database (LOGS) updated",
 		"unity_select": "Select the units.",
-		"date_error": "Date less than the required travel time"
+		"date_error": "Date less than the required travel time",
+		"villages_error": "Player has no villages"
 	},
 	"attack": {
 		"attack": "Attack",

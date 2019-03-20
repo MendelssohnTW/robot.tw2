@@ -295,7 +295,7 @@ define("robotTW2/controllers/SpyController", [
 					updateValuesSource()
 			}
 			if ($scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
-
+				if($scope.villages_for_sent.length){
 				if(type == "village"){
 					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
 					$scope.send_scope.startId = $scope.data_select.selectedOption.id
@@ -364,6 +364,9 @@ define("robotTW2/controllers/SpyController", [
 				}
 
 				$scope.closeWindow();
+				} else {
+					notify("villages_error");
+				}
 			} else {
 				notify("date_error");
 			}

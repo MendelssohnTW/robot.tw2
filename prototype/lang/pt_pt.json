@@ -289,7 +289,8 @@
         "data_data": "Robot TW2 - Banco de dados (DATA) atualizado, reative o módulo DATA",
         "data_logs": "Robot TW2 - Banco de dados (LOGS) atualizado",
         "unity_select": "Selecione as unidades.",
-        "date_error": "Data inferior ao tempo necessário de percurso"
+        "date_error": "Data inferior ao tempo necessário de percurso",
+        "villages_error": "Jogador não possui aldeias"
     },
     "attack": {
         "attack": "Ataque",
