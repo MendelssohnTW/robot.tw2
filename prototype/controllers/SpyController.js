@@ -91,6 +91,22 @@ define("robotTW2/controllers/SpyController", [
 				}
 			}
 		}
+		, updateValuesSource = function(){
+			if(Object.keys($scope.send_scope).length){
+				let get_data = $("#input-date").val();
+				let get_time = $("#input-time").val();
+				let get_ms = $("#input-ms").val();
+				if (get_time.length <= 5){
+					get_time = get_time + ":00"; 
+				}
+				if (get_data != undefined && get_time != undefined){
+					$scope.send_scope.milisegundos_duracao = 0;
+					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
+					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
+				}
+			}
+		}
 		, updateTarget = function(){
 			if($scope.item){
 				services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
@@ -272,13 +288,13 @@ define("robotTW2/controllers/SpyController", [
 		$scope.sendAttackSpy = function(){
 			updateValues()
 			if ($scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
-				services.SpyService.addScopeAttackSpy($scope);
+				services.SpyService.sendCommandAttackSpy($scope);
 				$scope.closeWindow();
 			} else {
 				notify("date_error");
 			}
 		}
-
+		
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
 		})
