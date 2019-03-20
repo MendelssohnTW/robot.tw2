@@ -74,6 +74,24 @@ define("robotTW2/controllers/SpyController", [
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
+		, updateValues = function(){
+			let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
+
+			let get_data = $("#input-date").val();
+			let get_time = $("#input-time").val();
+			let get_ms = $("#input-ms").val();
+			if (get_time.length <= 5){
+				get_time = get_time + ":00"; 
+			}
+
+			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
+			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
+
+			if (get_data != undefined && get_time != undefined){
+				$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
+				$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+			} 
+		}
 		, updateTarget = function(){
 			services.socketService.emit(providers.routeProvider.MAP_GET_VILLAGE_DETAILS, {
 				'my_village_id'		: services.modelDataService.getSelectedVillage().getId(),
@@ -92,15 +110,6 @@ define("robotTW2/controllers/SpyController", [
 						}
 				);
 
-				let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
-
-				let get_data = $("#input-date").val();
-				let get_time = $("#input-time").val();
-				let get_ms = $("#input-ms").val();
-				if (get_time.length <= 5){
-					get_time = get_time + ":00"; 
-				}
-
 				$scope.send_scope.type = data_type.selectedOption; //type
 				$scope.send_scope.startId
 				$scope.send_scope.targetId
@@ -108,16 +117,8 @@ define("robotTW2/controllers/SpyController", [
 				$scope.send_scope.targetX
 				$scope.send_scope.targetY
 				$scope.send_scope.qtd = data_qtd.selectedOption//qtd
-
-				$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
-				$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
-				
-				if (get_data != undefined && get_time != undefined){
-					$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
-					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-				} else {
-					return;
-				}
+				updateValues()
+				if (!$scope.$$phase) {$scope.$apply()}
 			})
 		}
 		, updateEnter = function(item, element){
@@ -240,12 +241,13 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.sendAttackSpy = function(){
-			if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
-				services.SpyService.addScopeAttackSpy(scp);
-				scp.closeWindow();
+			updateValues()
+			if ($scope.tempo_escolhido > time.convertedTime() + $scope.milisegundos_duracao){
+				services.SpyService.addScopeAttackSpy($scope);
+				$scope.closeWindow();
 			} else {
 				notify("date_error");
-			}       
+			}
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
