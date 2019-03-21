@@ -113,10 +113,11 @@
 												style="height: 68px"
 												ng-click="data_standard_order.selectedOption = item">
 												<td class="content cell-left"
-													ng-class="{'selected': data_standard_order.selectedOption == item}">
-													<div class="span-icon" ng-class="getClass(item.name)"></div>
-													{{item.label}}
-												</td>
+													ng-class="{'selected': data_standard_order.selectedOption == item}"><div
+														class="name-wrapper">
+														<div class="span-icon" ng-class="getClass(item.name)"></div>
+														{{item.label}}
+													</div></td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right">
 													<div>
@@ -145,8 +146,10 @@
 												style="height: 68px">
 												<td class="content cell-left"
 													ng-class="{'selected': data_standard_limit.selectedOption == item}">
-													<div class="span-icon" ng-class="getClass(item.name)"></div>
-													{{item.label}}
+													<div class="name-wrapper">
+														<div class="span-icon" ng-class="getClass(item.name)"></div>
+														{{item.label}}
+													</div>
 												</td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right"><div ng-show="getMax(item)"
