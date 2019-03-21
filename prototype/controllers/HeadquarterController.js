@@ -280,7 +280,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_standard_order.push({
 				"name": key,
 				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
-				"value": $scope.local_data_select.buildingorder[key],
+				"value": $scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildingorder[key],
 			})
 			$scope.local_data_standard_order.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_standard_order;
@@ -290,7 +290,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_standard_level.push({
 				"name": key,
 				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
-				"value": $scope.local_data_select.buildinglimit[key],
+				"value": $scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildinglimit[key],
 			})
 			$scope.local_data_standard_level.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_standard_level;
