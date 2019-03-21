@@ -145,7 +145,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.upstandard = function(item){
-			var ant = $scope.data_standard_order.availableOptions.buildingorder.find(f => f.value == item.value - 1)
+			var ant = $scope.data_standard_order.availableOptions.find(f => f.value == item.value - 1)
 			ant.value += 1
 			item.value -= 1
 			if($scope.data_standard_order.selectedOption != item){
@@ -155,7 +155,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.downstandard = function(item){
-			var prox = $scope.data_standard_order.availableOptions.buildingorder.find(f => f.value == item.value + 1)
+			var prox = $scope.data_standard_order.availableOptions.find(f => f.value == item.value + 1)
 			prox.value -= 1
 			item.value += 1
 			if($scope.data_standard_order.selectedOption != item){
