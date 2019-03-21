@@ -88,9 +88,9 @@ define("robotTW2/controllers/HeadquarterController", [
 			return $scope.data_headquarter.complete > time.convertedTime() && services.HeadquarterService.isRunning() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
 
-		$scope.getMax = function(key, value){
-			if(!key){return}
-			return value < services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
+		$scope.getMax = function(item){
+			if(!item){return}
+			return item.value < services.modelDataService.getGameData().getBuildingDataForBuilding(item.name).max_level ? true: false;
 		}
 
 		$scope.getClass = function(key){

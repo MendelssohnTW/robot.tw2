@@ -112,10 +112,10 @@
 											<td class="cell-right"><div>{{item.value}}</div></td>
 											<td class="cell-right">
 												<div>
-													<div ng-show="value > 1"
+													<div ng-show="item.value > 1"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 														ng-click="upstandard(item)">{{$index}}</div>
-													<div ng-show="value < 17"
+													<div ng-show="item.value < 17"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 														ng-click="downstandard(item)">{{$index}}</div>
 												</div>
@@ -142,10 +142,10 @@
 												<div class="span-icon" ng-class="getClass(item.name)"></div>
 											</td>
 											<td class="cell-right"><div>{{item.value}}</div></td>
-											<td class="cell-right"><div ng-show="getMax(key, value)"
+											<td class="cell-right"><div ng-show="getMax(item)"
 													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 													ng-click="levelupstandard(key)"></div>
-												<div ng-show="value > 0"
+												<div ng-show="item.value > 0"
 													class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 													ng-click="leveldownstandard(key)"></div></td>
 										</tr>
