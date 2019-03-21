@@ -189,7 +189,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			var ant = $scope.data_standard_order.availableOptions.find(f => f.value == item.value - 1)
 			ant.value += 1
 			item.value -= 1
-			$scope.data_standard_order.selectedOption = item
+//			$scope.data_standard_order.selectedOption = item
 			save_order()
 		}
 
@@ -197,7 +197,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			var prox = $scope.data_standard_order.availableOptions.find(f => f.value == item.value + 1)
 			prox.value -= 1
 			item.value += 1
-			$scope.data_standard_order.selectedOption = item
+//			$scope.data_standard_order.selectedOption = item
 			save_order()
 		}
 
