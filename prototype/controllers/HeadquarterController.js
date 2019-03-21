@@ -276,20 +276,20 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select)
 		
-		Object.keys($scope.data_select.selectedOption.buildingorder).map(function(key){
+		Object.keys($scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildingorder).map(function(key){
 			$scope.local_data_standard_order.push({
 				"name": key,
-				"label": services.$filter("i18n")($scope.data_select.selectedOption.buildingorder[key], services.$rootScope.loc.ale, "buildings"),
+				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
 				"value": $scope.local_data_select.buildingorder[key],
 			})
 			$scope.local_data_standard_order.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_standard_order;
 		})
 
-		Object.keys($scope.data_select.selectedOption.buildinglimit).map(function(key){
+		Object.keys($scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildinglimit).map(function(key){
 			$scope.local_data_standard_level.push({
 				"name": key,
-				"label": services.$filter("i18n")($scope.data_select.selectedOption.buildinglimit[key], services.$rootScope.loc.ale, "buildings"),
+				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
 				"value": $scope.local_data_select.buildinglimit[key],
 			})
 			$scope.local_data_standard_level.sort(function(a,b){return a.name.localeCompare(b.name)})
