@@ -43,6 +43,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, updateAll = function(){
+			$scope.local_data_standard_order = []
+			$scope.local_data_standard_level = []
 			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(key){
 				$scope.local_data_standard_order.push({
 					"name": key,
