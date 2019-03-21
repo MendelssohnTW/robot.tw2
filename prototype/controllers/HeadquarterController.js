@@ -23,6 +23,9 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		$scope.local_data_villages = [];
+		$scope.data_select = []
+		$scope.data_standard_order = []
+		$scope.data_standard_level = []
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 
