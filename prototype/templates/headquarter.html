@@ -92,22 +92,6 @@
 					</colgroup>
 					<tbody>
 						<tr>
-							<td class="cell-center cell-top"><select id="select_order"
-								class="select-wrapper"
-								ng-options="item as item.name for item in data_select.availableOptions"
-								ng-model="data_select.selectedOption"></select></td>
-
-							<td class="cell-center cell-top"><select
-								id="select_standard_order" class="select-wrapper"
-								ng-options="item as item.label for item in data_standard_order.availableOptions"
-								ng-model="data_standard_order.selectedOption"></select></td>
-
-							<td class="cell-center cell-top"><select
-								id="select_standard_level" class="select-wrapper"
-								ng-options="item as item.label for item in data_standard_level.availableOptions"
-								ng-model="data_standard_level.selectedOption"></select></td>
-						</tr>
-						<tr>
 							<td class="cell-rigth cell-top">
 								<h5 class="twx-section">{{priority}}</h5>
 								<table id="preset-list">
@@ -117,23 +101,23 @@
 										<col width="26">
 									</colgroup>
 									<tbody>
-										<tr ng-repeat="(key, value) in obj_standard.buildingorder"
+										<tr ng-repeat="item in data_standard_order.availableOptions"
 											style="height: 68px">
 											<td class="content">
 												<div class="name-wrapper">
-													<span class="name">{{getKey(key)}}</span>
+													<span class="name">{{item.label}}</span>
 												</div>
-												<div class="span-icon" ng-class="getClass(key)"></div>
+												<div class="span-icon" ng-class="getClass(item.name)"></div>
 											</td>
-											<td class="cell-right"><div>{{value}}</div></td>
+											<td class="cell-right"><div>{{item.value}}</div></td>
 											<td class="cell-right">
 												<div>
 													<div ng-show="value > 1"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-														ng-click="upstandard(key)">{{$index}}</div>
+														ng-click="upstandard(item)">{{$index}}</div>
 													<div ng-show="value < 17"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-														ng-click="downstandard(key)">{{$index}}</div>
+														ng-click="downstandard(item)">{{$index}}</div>
 												</div>
 											</td>
 										</tr>
@@ -149,15 +133,15 @@
 										<col width="26">
 									</colgroup>
 									<tbody>
-										<tr ng-repeat="(key, value) in obj_standard.buildinglimit"
+										<tr ng-repeat="item in data_standard_level.availableOptions"
 											style="height: 68px">
 											<td class="content">
 												<div class="name-wrapper">
-													<span class="name">{{getKey(key)}}</span>
+													<span class="name">{{item.label}}</span>
 												</div>
-												<div class="span-icon" ng-class="getClass(key)"></div>
+												<div class="span-icon" ng-class="getClass(item.name)"></div>
 											</td>
-											<td class="cell-right"><div>{{value}}</div></td>
+											<td class="cell-right"><div>{{item.value}}</div></td>
 											<td class="cell-right"><div ng-show="getMax(key, value)"
 													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 													ng-click="levelupstandard(key)"></div>
@@ -169,6 +153,22 @@
 								</table>
 							</td>
 						</tr>
+						<tr>
+                            <td class="cell-center cell-top"><select id="select_order"
+                                class="select-wrapper"
+                                ng-options="item as item.name for item in data_select.availableOptions"
+                                ng-model="data_select.selectedOption"></select></td>
+
+                            <td class="cell-center cell-top"><select
+                                id="select_standard_order" class="select-wrapper"
+                                ng-options="item as item.label for item in data_standard_order.availableOptions"
+                                ng-model="data_standard_order.selectedOption"></select></td>
+
+                            <td class="cell-center cell-top"><select
+                                id="select_standard_level" class="select-wrapper"
+                                ng-options="item as item.label for item in data_standard_level.availableOptions"
+                                ng-model="data_standard_level.selectedOption"></select></td>
+                        </tr>
 					</tbody>
 				</table>
 
