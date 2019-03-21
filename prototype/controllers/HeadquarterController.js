@@ -272,7 +272,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
 				"value": $scope.data_headquarter.standard.buildingorder[key],
 			})
-			$scope.local_data_standard_order.sort(function(a,b){return a.name.localeCompare(b.name)})
+			$scope.local_data_standard_order.sort(function(a,b){return a.value - b.value})
 			return $scope.local_data_standard_order;
 		})
 
@@ -282,7 +282,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
 				"value": $scope.data_headquarter.standard.buildinglimit[key],
 			})
-			$scope.local_data_standard_level.sort(function(a,b){return a.name.localeCompare(b.name)})
+			$scope.local_data_standard_level.sort(function(a,b){return a.label.localeCompare(b.label)})
 			return $scope.local_data_standard_level;
 		})
 
