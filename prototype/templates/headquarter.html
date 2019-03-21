@@ -112,14 +112,10 @@
 											<tr ng-repeat="item in data_standard_order.availableOptions"
 												style="height: 68px"
 												ng-click="data_standard_order.selectedOption = item">
-												<td class="content">
-													<div class="name-wrapper"
-														ng-class="{'selected': data_standard_order.selectedOption == item}">
-														<div class="name">
-															<div class="span-icon" ng-class="getClass(item.name)"></div>
-															{{item.label}}
-														</div>
-													</div>
+												<td class="content cell-left"
+													ng-class="{'selected': data_standard_order.selectedOption == item}">
+													<div class="span-icon" ng-class="getClass(item.name)"></div>
+													{{item.label}}
 												</td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right">
@@ -147,7 +143,8 @@
 										<tbody>
 											<tr ng-repeat="item in data_standard_limit.availableOptions"
 												style="height: 68px">
-												<td class="content">
+												<td class="content cell-left"
+													ng-class="{'selected': data_standard_limit.selectedOption == item}">
 													<div class="span-icon" ng-class="getClass(item.name)"></div>
 													{{item.label}}
 												</td>
