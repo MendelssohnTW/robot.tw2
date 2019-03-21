@@ -107,9 +107,9 @@
 										</colgroup>
 										<tbody>
 											<tr ng-repeat="item in data_standard_order.availableOptions"
-												style="height: 68px">
+												style="height: 68px" ng-click="data_standard_order.selectedOption = item">
 												<td class="content">
-													<div class="name-wrapper" ng-class="{'selected': data_standard_order.selectedOption == item}" ng-click="data_standard_order.selectedOption = item">
+													<div class="name-wrapper" ng-class="{'selected': data_standard_order.selectedOption == item}">
 														<span class="name">{{item.label}}</span>
 													</div>
 													<div class="span-icon" ng-class="getClass(item.name)"></div>
