@@ -96,17 +96,18 @@
 								class="select-wrapper"
 								ng-options="item as item.name for item in data_select.availableOptions"
 								ng-model="data_select.selectedOption"></select></td>
-								
-								<td class="cell-center cell-top"><select id="select_standard_order"
-                                class="select-wrapper"
-                                ng-options="item as item.name for item in data_standard_order.availableOptions"
-                                ng-model="data_standard_order.selectedOption"></select></td>
-                                
-                                <td class="cell-center cell-top"><select id="select_standard_level"
-                                class="select-wrapper"
-                                ng-options="item as item.name for item in data_standard_level.availableOptions"
-                                ng-model="data_standard_level.selectedOption"></select></td>
-                                
+
+							<td class="cell-center cell-top"><select
+								id="select_standard_order" class="select-wrapper"
+								ng-options="item as item.name for item in data_standard_order.availableOptions"
+								ng-model="data_standard_order.selectedOption"></select></td>
+
+							<td class="cell-center cell-top"><select
+								id="select_standard_level" class="select-wrapper"
+								ng-options="item as item.name for item in data_standard_level.availableOptions"
+								ng-model="data_standard_level.selectedOption"></select></td>
+						</tr>
+						<tr>
 							<td class="cell-rigth cell-top">
 								<h5 class="twx-section">{{priority}}</h5>
 								<table id="preset-list">
@@ -186,10 +187,9 @@
 							<tr ng-repeat="vill in local_data_villages">
 								<td class="cell-top">
 									<div class="village">
-                                    <div class="name-coord"
-                                        ng-click="jumpToVillage(vill.id)">
-                                        {{getLabel(vill.id)}}</div>
-                                </div>
+										<div class="name-coord" ng-click="jumpToVillage(vill.id)">
+											{{getLabel(vill.id)}}</div>
+									</div>
 								</td>
 								<td class="cell-top">
 									<div class="checkbox box-border-dark">
