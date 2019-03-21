@@ -42,7 +42,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-		, updataAll = function(){
+		, updateAll = function(){
 			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(key){
 				$scope.local_data_standard_order.push({
 					"name": key,
