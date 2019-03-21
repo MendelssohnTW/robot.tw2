@@ -92,11 +92,14 @@
 					<table id="preset-list"
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
 						<colgroup>
+							<col width="200px">
 							<col width="50%">
 							<col width="50%">
+							<col width="200px">
 						</colgroup>
 						<tbody>
 							<tr>
+								<td></td>
 								<td class="cell-rigth cell-top">
 									<h5 class="twx-section">{{priority}}</h5>
 									<table id="preset-list">
@@ -145,12 +148,8 @@
 											<tr ng-repeat="item in data_standard_limit.availableOptions"
 												style="height: 68px">
 												<td class="content">
-													<div class="name-wrapper">
-														<div class="name">
-															<div class="span-icon" ng-class="getClass(item.name)"></div>
-															{{item.label}}
-														</div>
-													</div>
+													<div class="span-icon" ng-class="getClass(item.name)"></div>
+													{{item.label}}
 												</td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right"><div ng-show="getMax(item)"
@@ -163,6 +162,7 @@
 										</tbody>
 									</table>
 								</td>
+								<td></td>
 							</tr>
 
 						</tbody>
