@@ -286,11 +286,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			return $scope.local_data_standard_order;
 		})
 
-		Object.keys($scope.data_headquarter.standard.bildingLimit[$scope.data_select.selectedOption.value]).map(function(key){
+		Object.keys($scope.data_headquarter.standard.buildingLimit[$scope.data_select.selectedOption.value]).map(function(key){
 			$scope.local_data_standard_level.push({
 				"name": key,
 				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
-				"value": $scope.data_headquarter.standard.bildingLimit[$scope.data_select.selectedOption.value][key],
+				"value": $scope.data_headquarter.standard.buildingLimit[$scope.data_select.selectedOption.value][key],
 			})
 			$scope.local_data_standard_level.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_standard_level;
