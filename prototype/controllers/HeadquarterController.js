@@ -198,7 +198,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			prox.value -= 1
 			item.value += 1
 			$scope.data_standard_order.selectedOption = item
-			save_limit()
+			save_order()
 		}
 
 		$scope.levelupstandard = function(key){
