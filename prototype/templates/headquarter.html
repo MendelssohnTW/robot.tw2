@@ -112,8 +112,10 @@
 												<td class="content">
 													<div class="name-wrapper"
 														ng-class="{'selected': data_standard_order.selectedOption == item}">
-														<div class="span-icon" ng-class="getClass(item.name)"></div>
-														<div class="name">{{item.label}}</div>
+														<div class="name">
+															<div class="span-icon" ng-class="getClass(item.name)"></div>
+															{{item.label}}
+														</div>
 													</div>
 												</td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
@@ -144,8 +146,10 @@
 												style="height: 68px">
 												<td class="content">
 													<div class="name-wrapper">
-														<div class="span-icon" ng-class="getClass(item.name)"></div>
-														<div class="name">{{item.label}}</div>
+														<div class="name">
+															<div class="span-icon" ng-class="getClass(item.name)"></div>
+															{{item.label}}
+														</div>
 													</div>
 												</td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
