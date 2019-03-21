@@ -78,8 +78,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 		, save_limit = function(){
 			if(!$scope.data_standard_limit){return}
-			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
-				$scope.data_headquarter.standard.buildingorder[elem] = $scope.data_standard_limit.availableOptions.find(f=>f.name==elem).value;
+			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(elem){
+				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.data_standard_limit.availableOptions.find(f=>f.name==elem).value;
 			})
 			updateAll();
 		}
@@ -189,9 +189,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			var ant = $scope.data_standard_order.availableOptions.find(f => f.value == item.value - 1)
 			ant.value += 1
 			item.value -= 1
-			if($scope.data_standard_order.selectedOption != item){
-				$scope.data_standard_order.selectedOption = item
-			}
+			$scope.data_standard_order.selectedOption = item
 			save_order()
 		}
 
@@ -199,11 +197,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			var prox = $scope.data_standard_order.availableOptions.find(f => f.value == item.value + 1)
 			prox.value -= 1
 			item.value += 1
-			if($scope.data_standard_order.selectedOption != item){
-				$scope.data_standard_order.selectedOption = item
-			}
+			$scope.data_standard_order.selectedOption = item
 			save_limit()
-
 		}
 
 		$scope.levelupstandard = function(key){
@@ -308,15 +303,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select)
 
-
 		updateAll()
-
-		$scope.$watch("data_standard_limit", function(){
-			if(!$scope.data_standard_limit){return}
-			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(elem){
-				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.data_standard_limit.availableOptions.find(f=>f.name==elem).value;
-			})
-		}, true)
 
 		$scope.setCollapse();
 
