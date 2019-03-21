@@ -276,21 +276,21 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select)
 		
-		Object.keys($scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildingorder).map(function(key){
+		Object.keys($scope.data_headquarter.standard.buildingorder[$scope.data_select.selectedOption.value]).map(function(key){
 			$scope.local_data_standard_order.push({
 				"name": key,
 				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
-				"value": $scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildingorder[key],
+				"value": $scope.data_headquarter.standard.buildingorder[$scope.data_select.selectedOption.value][key],
 			})
 			$scope.local_data_standard_order.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_standard_order;
 		})
 
-		Object.keys($scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildinglimit).map(function(key){
+		Object.keys($scope.data_headquarter.standard.bildingLimit[$scope.data_select.selectedOption.value]).map(function(key){
 			$scope.local_data_standard_level.push({
 				"name": key,
 				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
-				"value": $scope.data_headquarter.standard[$scope.data_select.selectedOption.value].buildinglimit[key],
+				"value": $scope.data_headquarter.standard.bildingLimit[$scope.data_select.selectedOption.value][key],
 			})
 			$scope.local_data_standard_level.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_standard_level;
