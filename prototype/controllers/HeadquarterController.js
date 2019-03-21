@@ -25,7 +25,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.local_data_villages = [];
 		$scope.local_data_select = []
 		$scope.local_data_standard_order = []
-		$scope.local_data_standard_level = []
+		$scope.local_data_standard_limit = []
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 
@@ -44,7 +44,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 		, updateAll = function(){
 			$scope.local_data_standard_order = []
-			$scope.local_data_standard_level = []
+			$scope.local_data_standard_limit = []
 			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(key){
 				$scope.local_data_standard_order.push({
 					"name": key,
@@ -56,18 +56,32 @@ define("robotTW2/controllers/HeadquarterController", [
 			})
 
 			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(key){
-				$scope.local_data_standard_level.push({
+				$scope.local_data_standard_limit.push({
 					"name": key,
 					"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
 					"value": $scope.data_headquarter.standard.buildinglimit[key],
 				})
-				$scope.local_data_standard_level.sort(function(a,b){return a.label.localeCompare(b.label)})
-				return $scope.local_data_standard_level;
+				$scope.local_data_standard_limit.sort(function(a,b){return a.label.localeCompare(b.label)})
+				return $scope.local_data_standard_limit;
 			})
 
 			$scope.data_standard_order = services.MainService.getSelects($scope.local_data_standard_order)
-			$scope.data_standard_level = services.MainService.getSelects($scope.local_data_standard_level)
+			$scope.data_standard_limit = services.MainService.getSelects($scope.local_data_standard_limit)
 			if (!$scope.$$phase) {$scope.$apply();}
+		}
+		, save_order = function(){
+			if(!$scope.data_standard_order){return}
+			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
+				$scope.data_headquarter.standard.buildingorder[elem] = $scope.data_standard_order.availableOptions.find(f=>f.name==elem).value;
+			})
+			updateAll();
+		}
+		, save_limit = function(){
+			if(!$scope.data_standard_limit){return}
+			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
+				$scope.data_headquarter.standard.buildingorder[elem] = $scope.data_standard_limit.availableOptions.find(f=>f.name==elem).value;
+			})
+			updateAll();
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
@@ -178,7 +192,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_standard_order.selectedOption != item){
 				$scope.data_standard_order.selectedOption = item
 			}
-			updateAll()
+			save_order()
 		}
 
 		$scope.downstandard = function(item){
@@ -188,7 +202,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_standard_order.selectedOption != item){
 				$scope.data_standard_order.selectedOption = item
 			}
-			updateAll()
+			save_limit()
 
 		}
 
@@ -297,17 +311,10 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		updateAll()
 
-		$scope.$watch("data_standard_order", function(){
-			if(!$scope.data_standard_order){return}
-			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
-				$scope.data_headquarter.standard.buildingorder[elem] = $scope.data_standard_order.availableOptions.find(f=>f.name==elem).value;
-			})
-		}, true)
-
-		$scope.$watch("data_standard_level", function(){
-			if(!$scope.data_standard_level){return}
+		$scope.$watch("data_standard_limit", function(){
+			if(!$scope.data_standard_limit){return}
 			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(elem){
-				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.data_standard_level.availableOptions.find(f=>f.name==elem).value;
+				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.data_standard_limit.availableOptions.find(f=>f.name==elem).value;
 			})
 		}, true)
 

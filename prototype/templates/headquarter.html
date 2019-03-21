@@ -138,7 +138,7 @@
 											<col width="26">
 										</colgroup>
 										<tbody>
-											<tr ng-repeat="item in data_standard_level.availableOptions"
+											<tr ng-repeat="item in data_standard_limit.availableOptions"
 												style="height: 68px">
 												<td class="content">
 													<div class="name-wrapper">
@@ -186,9 +186,9 @@
 									ng-model="data_standard_order.selectedOption"></select></td>
 
 								<td class="cell-center cell-top"><select
-									id="select_standard_level" class="select-wrapper"
-									ng-options="item as item.label for item in data_standard_level.availableOptions"
-									ng-model="data_standard_level.selectedOption"></select></td>
+									id="select_standard_limit" class="select-wrapper"
+									ng-options="item as item.label for item in data_standard_limit.availableOptions"
+									ng-model="data_standard_limit.selectedOption"></select></td>
 							</tr>
 							<!-- 
 							<tr ng-repeat="vill in local_data_villages">
