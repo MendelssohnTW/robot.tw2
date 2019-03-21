@@ -42,6 +42,31 @@ define("robotTW2/controllers/HeadquarterController", [
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
+		, updataAll = function(){
+			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(key){
+				$scope.local_data_standard_order.push({
+					"name": key,
+					"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
+					"value": $scope.data_headquarter.standard.buildingorder[key],
+				})
+				$scope.local_data_standard_order.sort(function(a,b){return a.value - b.value})
+				return $scope.local_data_standard_order;
+			})
+
+			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(key){
+				$scope.local_data_standard_level.push({
+					"name": key,
+					"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
+					"value": $scope.data_headquarter.standard.buildinglimit[key],
+				})
+				$scope.local_data_standard_level.sort(function(a,b){return a.label.localeCompare(b.label)})
+				return $scope.local_data_standard_level;
+			})
+
+			$scope.data_standard_order = services.MainService.getSelects($scope.local_data_standard_order)
+			$scope.data_standard_level = services.MainService.getSelects($scope.local_data_standard_level)
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
 			return $scope.local_data_villages.find(f=>f.villageId==vid);
@@ -151,7 +176,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_standard_order.selectedOption != item){
 				$scope.data_standard_order.selectedOption = item
 			}
-			if (!$scope.$$phase) {$scope.$apply();}
+			updateAll()
 		}
 
 		$scope.downstandard = function(item){
@@ -161,7 +186,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_standard_order.selectedOption != item){
 				$scope.data_standard_order.selectedOption = item
 			}
-			if (!$scope.$$phase) {$scope.$apply();}
+			updateAll()
+
 		}
 
 		$scope.levelupstandard = function(key){
@@ -266,29 +292,8 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select)
 
-		Object.keys($scope.data_headquarter.standard.buildingorder).map(function(key){
-			$scope.local_data_standard_order.push({
-				"name": key,
-				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
-				"value": $scope.data_headquarter.standard.buildingorder[key],
-			})
-			$scope.local_data_standard_order.sort(function(a,b){return a.value - b.value})
-			return $scope.local_data_standard_order;
-		})
 
-		Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(key){
-			$scope.local_data_standard_level.push({
-				"name": key,
-				"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
-				"value": $scope.data_headquarter.standard.buildinglimit[key],
-			})
-			$scope.local_data_standard_level.sort(function(a,b){return a.label.localeCompare(b.label)})
-			return $scope.local_data_standard_level;
-		})
-
-		$scope.data_standard_order = services.MainService.getSelects($scope.local_data_standard_order)
-		$scope.data_standard_level = services.MainService.getSelects($scope.local_data_standard_level)
-
+		updateAll()
 
 		$scope.$watch("data_standard_order", function(){
 			if(!$scope.data_standard_order){return}
