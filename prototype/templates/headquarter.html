@@ -83,95 +83,82 @@
 					</tr>
 				</table>
 
-				<table id="preset-list"
-					class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-					<colgroup>
-						<col width="*">
-						<col width="33%">
-						<col width="33%">
-					</colgroup>
-					<tbody>
-						<tr>
-							<td class="cell-rigth cell-top">
-								<h5 class="twx-section">{{priority}}</h5>
-								<table id="preset-list">
-									<colgroup>
-										<col width="*">
-										<col width="20">
-										<col width="26">
-									</colgroup>
-									<tbody>
-										<tr ng-repeat="item in data_standard_order.availableOptions"
-											style="height: 68px">
-											<td class="content">
-												<div class="name-wrapper">
-													<span class="name">{{item.label}}</span>
-												</div>
-												<div class="span-icon" ng-class="getClass(item.name)"></div>
-											</td>
-											<td class="cell-right"><div>{{item.value}}</div></td>
-											<td class="cell-right">
-												<div>
-													<div ng-show="item.value > 1"
+				<h5 class="twx-section collapse">{{settings_standard}}</h5>
+				<div>
+					<table id="preset-list"
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+						<colgroup>
+							<col width="*">
+							<col width="33%">
+							<col width="33%">
+						</colgroup>
+						<tbody>
+							<tr>
+								<td class="cell-rigth cell-top">
+									<h5 class="twx-section">{{priority}}</h5>
+									<table id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr ng-repeat="item in data_standard_order.availableOptions"
+												style="height: 68px">
+												<td class="content">
+													<div class="name-wrapper">
+														<span class="name">{{item.label}}</span>
+													</div>
+													<div class="span-icon" ng-class="getClass(item.name)"></div>
+												</td>
+												<td class="cell-right"><div>{{item.value}}</div></td>
+												<td class="cell-right">
+													<div>
+														<div ng-show="item.value > 1"
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+															ng-click="upstandard(item)">{{$index}}</div>
+														<div ng-show="item.value < 17"
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+															ng-click="downstandard(item)">{{$index}}</div>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="cell-right cell-top">
+									<h5 class="twx-section">{{levels}}</h5>
+									<table id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr ng-repeat="item in data_standard_level.availableOptions"
+												style="height: 68px">
+												<td class="content">
+													<div class="name-wrapper">
+														<span class="name">{{item.label}}</span>
+													</div>
+													<div class="span-icon" ng-class="getClass(item.name)"></div>
+												</td>
+												<td class="cell-right"><div>{{item.value}}</div></td>
+												<td class="cell-right"><div ng-show="getMax(item)"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-														ng-click="upstandard(item)">{{$index}}</div>
-													<div ng-show="item.value < 17"
+														ng-click="levelupstandard(key)"></div>
+													<div ng-show="item.value > 0"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-														ng-click="downstandard(item)">{{$index}}</div>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-							<td class="cell-right cell-top">
-								<h5 class="twx-section">{{levels}}</h5>
-								<table id="preset-list">
-									<colgroup>
-										<col width="*">
-										<col width="20">
-										<col width="26">
-									</colgroup>
-									<tbody>
-										<tr ng-repeat="item in data_standard_level.availableOptions"
-											style="height: 68px">
-											<td class="content">
-												<div class="name-wrapper">
-													<span class="name">{{item.label}}</span>
-												</div>
-												<div class="span-icon" ng-class="getClass(item.name)"></div>
-											</td>
-											<td class="cell-right"><div>{{item.value}}</div></td>
-											<td class="cell-right"><div ng-show="getMax(item)"
-													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-													ng-click="levelupstandard(key)"></div>
-												<div ng-show="item.value > 0"
-													class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-													ng-click="leveldownstandard(key)"></div></td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-						<tr>
-                            <td class="cell-center cell-top"><select id="select_order"
-                                class="select-wrapper"
-                                ng-options="item as item.name for item in data_select.availableOptions"
-                                ng-model="data_select.selectedOption"></select></td>
+														ng-click="leveldownstandard(key)"></div></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
 
-                            <td class="cell-center cell-top"><select
-                                id="select_standard_order" class="select-wrapper"
-                                ng-options="item as item.label for item in data_standard_order.availableOptions"
-                                ng-model="data_standard_order.selectedOption"></select></td>
-
-                            <td class="cell-center cell-top"><select
-                                id="select_standard_level" class="select-wrapper"
-                                ng-options="item as item.label for item in data_standard_level.availableOptions"
-                                ng-model="data_standard_level.selectedOption"></select></td>
-                        </tr>
-					</tbody>
-				</table>
-
+						</tbody>
+					</table>
+				</div>
 				<h5 class="twx-section collapse">{{settings_for_villages}}</h5>
 				<div>
 					<table
@@ -184,6 +171,22 @@
 							<col width="*">
 						</colgroup>
 						<tbody>
+							<tr>
+								<td class="cell-center cell-top"><select id="select_order"
+									class="select-wrapper"
+									ng-options="item as item.name for item in data_select.availableOptions"
+									ng-model="data_select.selectedOption"></select></td>
+
+								<td class="cell-center cell-top"><select
+									id="select_standard_order" class="select-wrapper"
+									ng-options="item as item.label for item in data_standard_order.availableOptions"
+									ng-model="data_standard_order.selectedOption"></select></td>
+
+								<td class="cell-center cell-top"><select
+									id="select_standard_level" class="select-wrapper"
+									ng-options="item as item.label for item in data_standard_level.availableOptions"
+									ng-model="data_standard_level.selectedOption"></select></td>
+							</tr>
 							<tr ng-repeat="vill in local_data_villages">
 								<td class="cell-top">
 									<div class="village">
