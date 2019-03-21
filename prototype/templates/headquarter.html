@@ -107,12 +107,14 @@
 										</colgroup>
 										<tbody>
 											<tr ng-repeat="item in data_standard_order.availableOptions"
-												style="height: 68px" ng-click="data_standard_order.selectedOption = item">
+												style="height: 68px"
+												ng-click="data_standard_order.selectedOption = item">
 												<td class="content">
-													<div class="name-wrapper" ng-class="{'selected': data_standard_order.selectedOption == item}">
-														<span class="name">{{item.label}}</span>
+													<div class="name-wrapper"
+														ng-class="{'selected': data_standard_order.selectedOption == item}">
+														<div class="span-icon" ng-class="getClass(item.name)"></div>
+														<div class="name">{{item.label}}</div>
 													</div>
-													<div class="span-icon" ng-class="getClass(item.name)"></div>
 												</td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right">
@@ -142,9 +144,9 @@
 												style="height: 68px">
 												<td class="content">
 													<div class="name-wrapper">
-														<span class="name">{{item.label}}</span>
+														<div class="span-icon" ng-class="getClass(item.name)"></div>
+														<div class="name">{{item.label}}</div>
 													</div>
-													<div class="span-icon" ng-class="getClass(item.name)"></div>
 												</td>
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right"><div ng-show="getMax(item)"
