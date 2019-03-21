@@ -292,12 +292,17 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.$watch("data_standard_order", function(){
 			if(!$scope.data_standard_order){return}
-			$scope.data_headquarter.standard.buildingorder = $scope.data_standard_order.availableOptions.buildingorder
+			$scope.data_headquarter.standard.buildingorder = $scope.data_headquarter.standard.buildingorder.buildingorder
+			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
+				$scope.data_headquarter.standard.buildingorder[elem] = $scope.data_standard_order.availableOptions.buildingorder.find(f=>f.name==elem).value;
+			})
 		}, true)
 
 		$scope.$watch("data_standard_level", function(){
 			if(!$scope.data_standard_level){return}
-			$scope.data_headquarter.standard.buildinglimit = $scope.data_standard_order.availableOptions.buildinglimit
+			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(elem){
+				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.data_standard_level.availableOptions.buildinglimit.find(f=>f.name==elem).value;
+			})
 		}, true)
 
 		$scope.setCollapse();
