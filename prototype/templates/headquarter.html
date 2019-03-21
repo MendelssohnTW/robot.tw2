@@ -19,68 +19,72 @@
 						<col width="33%">
 						<col width="*">
 					</colgroup>
-					<tr>
-						<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
-							id="interval_headquarter" class="input-border inpt disabled"
-							type=text value="{{getTimeRest()}}" disabled></td>
-						<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
-							id="reserva_food" class="input-border inputcreated" type="number"
-							value="{{data_headquarter.reserva.food}}"
-							ng-model="data_headquarter.reserva.food"></td>
-						<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
-							id="reserva_slots" class="input-border inputcreated"
-							type="number" value="{{data_headquarter.reserva.slots}}"
-							ng-model="data_headquarter.reserva.slots"></td>
-					</tr>
-					<tr>
-						<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
-							id="reserva_wood" class="input-border inputcreated" type="number"
-							value="{{data_headquarter.reserva.wood}}"
-							ng-model="data_headquarter.reserva.wood"></td>
-						<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
-							id="reserva_clay" class="input-border inputcreated" type="number"
-							value="{{data_headquarter.reserva.clay}}"
-							ng-model="data_headquarter.reserva.clay"></td>
-						<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
-							id="reserva_iron" class="input-border inputcreated" type="number"
-							value="{{data_headquarter.reserva.iron}}"
-							ng-model="data_headquarter.reserva.iron"></td>
-					</tr>
-					<tr>
-						<td rowspan=2>
-							<table>
-								<colgroup>
-									<col width="50%">
-									<col width="64px">
-									<col width="50%">
-								</colgroup>
-								<tr>
-									<td class="cell-right"><div>{{seq_flex}}</div></td>
-									<td class="cell-center"><div switch-slider=""
-											border="true" enabled="true" value="data_headquarter.seq"
-											vertical="false" size="'56x28'">
-											<div ng-class="{'box-border-dark box-filter': border}"
-												class="box-border-dark box-filter">
-												<div class="switch switch-56x28 switch-horizontal"
-													ng-class="{'switch-checked': value}">
-													<div class="size-26x26 switch-thumb">
-														<span class="simple icon-26x26-switch-off"
-															ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+					<tbody>
+						<tr>
+							<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
+								id="interval_headquarter" class="input-border inpt disabled"
+								type=text value="{{getTimeRest()}}" disabled></td>
+							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
+								id="reserva_food" class="input-border inputcreated"
+								type="number" value="{{data_headquarter.reserva.food}}"
+								ng-model="data_headquarter.reserva.food"></td>
+							<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
+								id="reserva_slots" class="input-border inputcreated"
+								type="number" value="{{data_headquarter.reserva.slots}}"
+								ng-model="data_headquarter.reserva.slots"></td>
+						</tr>
+						<tr>
+							<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
+								id="reserva_wood" class="input-border inputcreated"
+								type="number" value="{{data_headquarter.reserva.wood}}"
+								ng-model="data_headquarter.reserva.wood"></td>
+							<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
+								id="reserva_clay" class="input-border inputcreated"
+								type="number" value="{{data_headquarter.reserva.clay}}"
+								ng-model="data_headquarter.reserva.clay"></td>
+							<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
+								id="reserva_iron" class="input-border inputcreated"
+								type="number" value="{{data_headquarter.reserva.iron}}"
+								ng-model="data_headquarter.reserva.iron"></td>
+						</tr>
+						<tr>
+							<td rowspan=2>
+								<table>
+									<colgroup>
+										<col width="50%">
+										<col width="64px">
+										<col width="50%">
+									</colgroup>
+									<tbody>
+										<tr>
+											<td class="cell-right"><div>{{seq_flex}}</div></td>
+											<td class="cell-center"><div switch-slider=""
+													border="true" enabled="true" value="data_headquarter.seq"
+													vertical="false" size="'56x28'">
+													<div ng-class="{'box-border-dark box-filter': border}"
+														class="box-border-dark box-filter">
+														<div class="switch switch-56x28 switch-horizontal"
+															ng-class="{'switch-checked': value}">
+															<div class="size-26x26 switch-thumb">
+																<span class="simple icon-26x26-switch-off"
+																	ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+															</div>
+														</div>
 													</div>
-												</div>
-											</div>
-										</div></td>
-									<td class="cell-left"><div>{{seq_int}}</div></td>
-								</tr>
-							</table>
-							<div>
-								<div
-									ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
-								{{headquarter_running}}
-							</div>
-						</td>
-						<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
-					</tr>
+												</div></td>
+											<td class="cell-left"><div>{{seq_int}}</div></td>
+										</tr>
+									</tbody>
+								</table>
+								<div>
+									<div
+										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
+									{{headquarter_running}}
+								</div>
+							</td>
+							<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
+						</tr>
+					</tbody>
 				</table>
 
 				<h5 class="twx-section collapse">{{settings_standard}}</h5>
