@@ -12,286 +12,292 @@
 				<h5>{{text_version}}</h5>
 			</div>
 			<div class="scroll-wrap headquarter" style="margin-bottom: 56px">
-				<h5 class="twx-section collapse">{{settings}}</h5>
-				<div>
-
-					<table
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-						<colgroup>
-							<col width="33%">
-							<col width="33%">
-							<col width="*">
-						</colgroup>
-						<tr>
-							<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
-								id="interval_headquarter" class="input-border inpt disabled"
-								type=text value="{{getTimeRest()}}" disabled></td>
-							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
-								id="reserva_food" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.food}}"
-								ng-model="data_headquarter.reserva.food"></td>
-							<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
-								id="reserva_slots" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.slots}}"
-								ng-model="data_headquarter.reserva.slots"></td>
-						</tr>
-						<tr>
-							<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
-								id="reserva_wood" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.wood}}"
-								ng-model="data_headquarter.reserva.wood"></td>
-							<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
-								id="reserva_clay" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.clay}}"
-								ng-model="data_headquarter.reserva.clay"></td>
-							<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
-								id="reserva_iron" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.iron}}"
-								ng-model="data_headquarter.reserva.iron"></td>
-						</tr>
-						<tr>
-							<td rowspan=2>
-								<table>
-									<colgroup>
-										<col width="50%">
-										<col width="64px">
-										<col width="50%">
-									</colgroup>
-									<tr>
-										<td class="cell-right"><div>{{seq_flex}}</div></td>
-										<td class="cell-center"><div switch-slider=""
-												border="true" enabled="true" value="data_headquarter.seq"
-												vertical="false" size="'56x28'">
-												<div ng-class="{'box-border-dark box-filter': border}"
-													class="box-border-dark box-filter">
-													<div class="switch switch-56x28 switch-horizontal"
-														ng-class="{'switch-checked': value}">
-														<div class="size-26x26 switch-thumb">
-															<span class="simple icon-26x26-switch-off"
-																ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-														</div>
-													</div>
-												</div>
-											</div></td>
-										<td class="cell-left"><div>{{seq_int}}</div></td>
-									</tr>
-								</table>
-								<div>
-									<div
-										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
-									{{headquarter_running}}
-								</div>
-							</td>
-							<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
-						</tr>
-					</table>
-
-				</div>
-				<div>
-					<h5 class="twx-section collapse hidden-content">{{settings_standard}}</h5>
-					<div>
-						<table id="preset-list"
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-							<colgroup>
-								<col width="50%">
-								<col width="50%">
-							</colgroup>
-							<tbody>
+				<table
+					class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+					<colgroup>
+						<col width="33%">
+						<col width="33%">
+						<col width="*">
+					</colgroup>
+					<tr>
+						<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
+							id="interval_headquarter" class="input-border inpt disabled"
+							type=text value="{{getTimeRest()}}" disabled></td>
+						<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
+							id="reserva_food" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.food}}"
+							ng-model="data_headquarter.reserva.food"></td>
+						<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
+							id="reserva_slots" class="input-border inputcreated"
+							type="number" value="{{data_headquarter.reserva.slots}}"
+							ng-model="data_headquarter.reserva.slots"></td>
+					</tr>
+					<tr>
+						<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
+							id="reserva_wood" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.wood}}"
+							ng-model="data_headquarter.reserva.wood"></td>
+						<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
+							id="reserva_clay" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.clay}}"
+							ng-model="data_headquarter.reserva.clay"></td>
+						<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
+							id="reserva_iron" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.iron}}"
+							ng-model="data_headquarter.reserva.iron"></td>
+					</tr>
+					<tr>
+						<td rowspan=2>
+							<table>
+								<colgroup>
+									<col width="50%">
+									<col width="64px">
+									<col width="50%">
+								</colgroup>
 								<tr>
-									<td class="cell-rigth cell-top">
-										<h5 class="twx-section">{{priority}}</h5>
-										<table id="preset-list">
-											<colgroup>
-												<col width="*">
-												<col width="20">
-												<col width="26">
-											</colgroup>
-											<tbody>
-												<tr ng-repeat="(key, value) in obj_standard.buildingorder"
-													style="height: 68px">
-													<td class="content">
-														<div class="name-wrapper">
-															<span class="name">{{getKey(key)}}</span>
-														</div>
-														<div class="span-icon" ng-class="getClass(key)"></div>
-													</td>
-													<td class="cell-right"><div>{{value}}</div></td>
-													<td class="cell-right">
-														<div>
-															<div ng-show="value > 1"
-																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="upstandard(key)">{{$index}}</div>
-															<div ng-show="value < 17"
-																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="downstandard(key)">{{$index}}</div>
-														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
-									<td class="cell-right cell-top">
-										<h5 class="twx-section">{{levels}}</h5>
-										<table id="preset-list">
-											<colgroup>
-												<col width="*">
-												<col width="20">
-												<col width="26">
-											</colgroup>
-											<tbody>
-												<tr ng-repeat="(key, value) in obj_standard.buildinglimit"
-													style="height: 68px">
-													<td class="content">
-														<div class="name-wrapper">
-															<span class="name">{{getKey(key)}}</span>
-														</div>
-														<div class="span-icon" ng-class="getClass(key)"></div>
-													</td>
-													<td class="cell-right"><div>{{value}}</div></td>
-													<td class="cell-right"><div
-															ng-show="getMax(key, value)"
-															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-															ng-click="levelupstandard(key)"></div>
-														<div ng-show="value > 0"
-															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-															ng-click="leveldownstandard(key)"></div></td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<h5 class="twx-section collapse">{{settings_for_villages}}</h5>
-					<div>
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
-							id="preset-list">
-							<colgroup>
-								<col width="20%">
-								<col width="75px">
-								<col width="150px">
-								<col width="*">
-							</colgroup>
-							<tbody>
-								<tr ng-repeat="vill in local_data_villages">
-									<td class="cell-top">
-										<div class="village">
-											<div class="name" ng-click="openVillageInfo(vill.villageId)">
-												{{getName(vill.villageId)}}</div>
-											<div class="coordinates"
-												ng-click="jumpToVillage(vill.villageId)">
-												{{getVcoordStart(vill.villageId)}}</div>
-										</div>
-									</td>
-									<td class="cell-top">
-										<div class="checkbox box-border-dark">
-											<div tooltip tooltip-content="{{text_executebuildingorder}}"
-												switch-slider="" border="true" enabled="true"
-												value="vill.headquarter_activate" vertical="false"
-												size="'56x28'">
-												<div ng-class="{'box-border-dark box-filter': border}"
-													class="box-border-dark box-filter">
-													<div class="switch switch-56x28 switch-horizontal"
-														ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
-														<span class="size-26x26 switch-thumb"> <span
-															class="simple icon-26x26-switch-off"
+									<td class="cell-right"><div>{{seq_flex}}</div></td>
+									<td class="cell-center"><div switch-slider=""
+											border="true" enabled="true" value="data_headquarter.seq"
+											vertical="false" size="'56x28'">
+											<div ng-class="{'box-border-dark box-filter': border}"
+												class="box-border-dark box-filter">
+												<div class="switch switch-56x28 switch-horizontal"
+													ng-class="{'switch-checked': value}">
+													<div class="size-26x26 switch-thumb">
+														<span class="simple icon-26x26-switch-off"
 															ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-														</span>
 													</div>
 												</div>
 											</div>
-										</div>
-									</td>
-									<td class="cell-top cell-center"><select id="select_order"
-										class="select-wrapper"
-										ng-options="item as item.name for item in data_headquarter.selects track by item.id"
-										ng-model="vill.selected"></select></td>
-									<td class="cell-space">
-										<h5 class="twx-section collapse hidden-content">{{getName(vill.villageId)}}</h5>
-										<div>
-											<table id="preset-list">
-												<colgroup>
-													<col width="50%">
-													<col width="50%">
-												</colgroup>
-												<tbody>
-													<tr>
-														<td class="cell-rigth cell-top">
-															<h5 class="twx-section">{{priority}}</h5>
-															<table id="preset-list">
-																<colgroup>
-																	<col width="*">
-																	<col width="20">
-																	<col width="26">
-																</colgroup>
-																<tbody>
-																	<tr
-																		ng-repeat="(key, value) in vill.buildingorder[vill.selected.value]"
-																		style="height: 68px">
-																		<td class="content"
-																			ng-class="{'resource-text' : selected_village_buildingorder[key] == value}">
-																			<div class="name-wrapper">
-																				<span class="name">{{getKey(key)}}</span>
-																			</div>
-																			<div class="span-icon" ng-class="getClass(key)"></div>
-																		</td>
-																		<td class="cell-right"><div>{{value}}</div></td>
-																		<td class="cell-right">
-																			<div>
-																				<div ng-show="value > 1 "
-																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																					ng-click="up(vill.villageId, vill, key, value)"></div>
-																				<div ng-show="value < 17"
-																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																					ng-click="down(vill.villageId, vill, key, value)"></div>
-																			</div>
-																		</td>
-																	</tr>
-																</tbody>
-															</table>
-														</td>
-														<td class="cell-right cell-top">
-															<h5 class="twx-section">{{levels}}</h5>
-															<table id="preset-list">
-																<colgroup>
-																	<col width="*">
-																	<col width="20">
-																	<col width="26">
-																</colgroup>
-																<tbody>
-																	<tr
-																		ng-repeat="(key, value) in vill.buildinglimit[vill.selected.value]"
-																		style="height: 68px">
-																		<td class="content">
-																			<div class="name-wrapper">
-																				<span class="name">{{getKey(key)}}</span>
-																			</div>
-																			<div class="span-icon" ng-class="getClass(key)"></div>
-																		</td>
-																		<td class="cell-right"><div>{{value}}</div></td>
-																		<td class="cell-right"><div
-																				ng-show="getMax(key, value)"
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																				ng-click="levelup(vill, key)"></div>
-																			<div ng-show="value > 0"
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																				ng-click="leveldown(vill, key)"></div></td>
-																	</tr>
-																</tbody>
-															</table>
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</td>
+										</div></td>
+									<td class="cell-left"><div>{{seq_int}}</div></td>
 								</tr>
-							</tbody>
-						</table>
-					</div>
+							</table>
+							<div>
+								<div
+									ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
+								{{headquarter_running}}
+							</div>
+						</td>
+						<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
+					</tr>
+				</table>
+
+				<table id="preset-list"
+					class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+					<colgroup>
+						<col width="*">
+						<col width="33%">
+						<col width="33%">
+					</colgroup>
+					<tbody>
+						<tr>
+							<td class="cell-center cell-top"><select id="select_order"
+								class="select-wrapper"
+								ng-options="item as item.name for item in data_select.availableOptions"
+								ng-model="data_select.selectedOption"></select></td>
+								
+								<td class="cell-center cell-top"><select id="select_standard_order"
+                                class="select-wrapper"
+                                ng-options="item as item.name for item in data_standard_order.availableOptions"
+                                ng-model="data_standard_order.selectedOption"></select></td>
+                                
+                                <td class="cell-center cell-top"><select id="select_standard_level"
+                                class="select-wrapper"
+                                ng-options="item as item.name for item in data_standard_level.availableOptions"
+                                ng-model="data_standard_level.selectedOption"></select></td>
+                                
+							<td class="cell-rigth cell-top">
+								<h5 class="twx-section">{{priority}}</h5>
+								<table id="preset-list">
+									<colgroup>
+										<col width="*">
+										<col width="20">
+										<col width="26">
+									</colgroup>
+									<tbody>
+										<tr ng-repeat="(key, value) in obj_standard.buildingorder"
+											style="height: 68px">
+											<td class="content">
+												<div class="name-wrapper">
+													<span class="name">{{getKey(key)}}</span>
+												</div>
+												<div class="span-icon" ng-class="getClass(key)"></div>
+											</td>
+											<td class="cell-right"><div>{{value}}</div></td>
+											<td class="cell-right">
+												<div>
+													<div ng-show="value > 1"
+														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+														ng-click="upstandard(key)">{{$index}}</div>
+													<div ng-show="value < 17"
+														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+														ng-click="downstandard(key)">{{$index}}</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+							<td class="cell-right cell-top">
+								<h5 class="twx-section">{{levels}}</h5>
+								<table id="preset-list">
+									<colgroup>
+										<col width="*">
+										<col width="20">
+										<col width="26">
+									</colgroup>
+									<tbody>
+										<tr ng-repeat="(key, value) in obj_standard.buildinglimit"
+											style="height: 68px">
+											<td class="content">
+												<div class="name-wrapper">
+													<span class="name">{{getKey(key)}}</span>
+												</div>
+												<div class="span-icon" ng-class="getClass(key)"></div>
+											</td>
+											<td class="cell-right"><div>{{value}}</div></td>
+											<td class="cell-right"><div ng-show="getMax(key, value)"
+													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+													ng-click="levelupstandard(key)"></div>
+												<div ng-show="value > 0"
+													class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+													ng-click="leveldownstandard(key)"></div></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h5 class="twx-section collapse">{{settings_for_villages}}</h5>
+				<div>
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
+						id="preset-list">
+						<colgroup>
+							<col width="20%">
+							<col width="75px">
+							<col width="150px">
+							<col width="*">
+						</colgroup>
+						<tbody>
+							<tr ng-repeat="vill in local_data_villages">
+								<td class="cell-top">
+									<div class="village">
+                                    <div class="name-coord"
+                                        ng-click="jumpToVillage(vill.id)">
+                                        {{getLabel(vill.id)}}</div>
+                                </div>
+								</td>
+								<td class="cell-top">
+									<div class="checkbox box-border-dark">
+										<div tooltip tooltip-content="{{text_executebuildingorder}}"
+											switch-slider="" border="true" enabled="true"
+											value="vill.headquarter_activate" vertical="false"
+											size="'56x28'">
+											<div ng-class="{'box-border-dark box-filter': border}"
+												class="box-border-dark box-filter">
+												<div class="switch switch-56x28 switch-horizontal"
+													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
+													<span class="size-26x26 switch-thumb"> <span
+														class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td class="cell-top cell-center"><select id="select_order"
+									class="select-wrapper"
+									ng-options="item as item.name for item in data_headquarter.selects track by item.id"
+									ng-model="vill.selected"></select></td>
+								<td class="cell-space">
+									<h5 class="twx-section collapse hidden-content">{{getName(vill.villageId)}}</h5>
+									<div>
+										<table id="preset-list">
+											<colgroup>
+												<col width="50%">
+												<col width="50%">
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="cell-rigth cell-top">
+														<h5 class="twx-section">{{priority}}</h5>
+														<table id="preset-list">
+															<colgroup>
+																<col width="*">
+																<col width="20">
+																<col width="26">
+															</colgroup>
+															<tbody>
+																<tr
+																	ng-repeat="(key, value) in vill.buildingorder[vill.selected.value]"
+																	style="height: 68px">
+																	<td class="content"
+																		ng-class="{'resource-text' : selected_village_buildingorder[key] == value}">
+																		<div class="name-wrapper">
+																			<span class="name">{{getKey(key)}}</span>
+																		</div>
+																		<div class="span-icon" ng-class="getClass(key)"></div>
+																	</td>
+																	<td class="cell-right"><div>{{value}}</div></td>
+																	<td class="cell-right">
+																		<div>
+																			<div ng-show="value > 1 "
+																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																				ng-click="up(vill.villageId, vill, key, value)"></div>
+																			<div ng-show="value < 17"
+																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																				ng-click="down(vill.villageId, vill, key, value)"></div>
+																		</div>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+													<td class="cell-right cell-top">
+														<h5 class="twx-section">{{levels}}</h5>
+														<table id="preset-list">
+															<colgroup>
+																<col width="*">
+																<col width="20">
+																<col width="26">
+															</colgroup>
+															<tbody>
+																<tr
+																	ng-repeat="(key, value) in vill.buildinglimit[vill.selected.value]"
+																	style="height: 68px">
+																	<td class="content">
+																		<div class="name-wrapper">
+																			<span class="name">{{getKey(key)}}</span>
+																		</div>
+																		<div class="span-icon" ng-class="getClass(key)"></div>
+																	</td>
+																	<td class="cell-right"><div>{{value}}</div></td>
+																	<td class="cell-right"><div
+																			ng-show="getMax(key, value)"
+																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																			ng-click="levelup(vill, key)"></div>
+																		<div ng-show="value > 0"
+																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																			ng-click="leveldown(vill, key)"></div></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
+
 			</div>
 		</div>
 		<div>

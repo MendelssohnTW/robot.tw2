@@ -25,11 +25,11 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.local_data_villages = [];
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
-		
+
 		$scope.text_version = $scope.version + " " + data_headquarter.version;
 
 		$scope.status = "stopped";
-		$scope.obj_standard = $scope.data_headquarter.standard;
+
 
 		var self = this
 		, tt = false
@@ -37,16 +37,16 @@ define("robotTW2/controllers/HeadquarterController", [
 		, buildings = services.modelDataService.getGameData().getBuildings()
 		, update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
-			$scope.data_villages = data_villages;
 			if (!$scope.$$phase) {$scope.$apply();}
-		}
-		, getVillage = function getVillage(vid){
-			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
 			return $scope.local_data_villages.find(f=>f.villageId==vid);
+		}
+		
+		$scope.getLabel = function(vid){
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
 
 		$scope.openVillageInfo = function(vid){
@@ -55,17 +55,19 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = getVillageData(vid);
+			var data = services.VillageService.getVillage(vid)
 			if(!data){return}
 			var x = data.x
 			var y = data.y
+			services.VillageService.setVillage(village)
 			services.mapService.jumpToVillage(x, y);
+			$scope.closeWindow();
 		}
 
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
 			var data = getVillageData(vid);
-			if(!data){return "(.../...)"}
+			if(!data){return "(...|...)"}
 			var x = data.x
 			var y = data.y
 			var name = data.name
@@ -220,7 +222,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.selectvillagebuildingorder = function(villageId, value){
 			$scope.selected_village_buildingorder[villageId] = value;
 		}
-		
+
 		$scope.menu = function () {
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
@@ -234,26 +236,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			update();
 		})
 
-		Object.keys($scope.data_villages.villages).map(function(key){
-			if(!$scope.data_villages.villages[key].selected){
-				tt = true;
-				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="Standard");
-			}
-			let data = getVillage(key);
-			angular.extend(data, {
-				"headquarter_activate": $scope.data_villages.villages[key].headquarter_activate,
-				"selected": $scope.data_villages.villages[key].selected,
-				"buildingorder": $scope.data_villages.villages[key].buildingorder,
-				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
-			})
-			$scope.local_data_villages.push(data)
-			$scope.local_data_villages.sort(function(a,b){return a.name.localeCompare(b.name)})
-			return $scope.local_data_villages;
-		})
-		
-
-		tt ? $scope.data_villages.set(): null;
-		
 		update();
 
 
@@ -271,20 +253,6 @@ define("robotTW2/controllers/HeadquarterController", [
 //		$scope.data_villages.set();
 //		}, true)
 
-		$scope.$watch("obj_standard", function(){
-			if(!$scope.obj_standard){return}
-			Object.values($scope.data_villages.villages).forEach(function(village){
-				if(village.selected.value == "standard"){
-					angular.merge(village, {
-						buildingorder 			: $scope.obj_standard.buildingorder,
-						buildinglimit 			: $scope.obj_standard.buildinglimit
-					})
-				}
-			})
-			$scope.data_headquarter.standard = $scope.obj_standard;
-			$scope.data_villages.set();
-		}, true)
-
 		$scope.$watch("data_headquarter", function(){
 			if(!$scope.data_headquarter){return}
 			data_headquarter = $scope.data_headquarter;
@@ -294,6 +262,48 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();
 		});
+
+		Object.keys($scope.data_headquarter.selects).map(function(key){
+			$scope.local_data_select.push($scope.data_headquarter.selects[key])
+			$scope.local_data_select.sort(function(a,b){return a.name.localeCompare(b.name)})
+			return $scope.local_data_select;
+		})
+
+		Object.keys($scope.local_data_select.buildingorder).map(function(key){
+			$scope.local_data_standard_order.push({
+				"name": key,
+				"label": services.$filter("i18n")($scope.local_data_select.buildingorder[key], services.$rootScope.loc.ale, "buildings"),
+				"value": $scope.local_data_select.buildingorder[key],
+			})
+			$scope.local_data_standard_order.sort(function(a,b){return a.name.localeCompare(b.name)})
+			return $scope.local_data_standard_order;
+		})
+
+		Object.keys($scope.local_data_select.buildinglimit).map(function(key){
+			$scope.local_data_standard_level.push({
+				"name": key,
+				"label": services.$filter("i18n")($scope.local_data_select.buildinglimit[key], services.$rootScope.loc.ale, "buildings"),
+				"value": $scope.local_data_select.buildinglimit[key],
+			})
+			$scope.local_data_standard_level.sort(function(a,b){return a.name.localeCompare(b.name)})
+			return $scope.local_data_standard_level;
+		})
+
+		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
+
+		$scope.data_select = services.MainService.getSelects($scope.local_data_select)
+
+		$scope.data_standard_order = services.MainService.getSelects($scope.local_data_standard_order)
+		$scope.data_standard_level = services.MainService.getSelects($scope.local_data_standard_level)
+
+		
+		$scope.$watch("data_standard_order", function(){
+			if(!$scope.data_standard_order){return}
+		}, true)
+		
+		$scope.$watch("data_standard_level", function(){
+			if(!$scope.data_standard_level){return}
+		}, true)
 
 		$scope.setCollapse();
 
