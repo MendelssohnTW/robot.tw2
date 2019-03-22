@@ -789,9 +789,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 
 			var conf = getJSON("conf") 
-			conf["BUILDINGORDER"] = getJSON("orderBuilding")
-			conf["BUILDINGLIMIT"] = getJSON("limitBuilding")
-			conf["VERSION"] = getJSON("version")
+			conf.BUILDINGORDER = getJSON("orderBuilding")
+			conf.BUILDINGLIMIT = getJSON("limitBuilding")
+			conf.VERSION = getJSON("version")
 
 			return conf;
 		})
