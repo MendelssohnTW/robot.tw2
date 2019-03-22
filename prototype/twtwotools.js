@@ -767,6 +767,15 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
 		})
+		
+		define("robotTW2/getJSON", ["robotTW2/requestFile"], function requestFile(requestFile){
+			var service = {};
+			return service.getJSON = function(str){
+				return requestFile(str, "/json/", function(jsont){
+					return jsont;
+				})
+			}
+		})
 
 
 		var version = "3.1.0"
@@ -801,11 +810,13 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
 			"robotTW2/version",
-			"robotTW2/requestFile"
+			"robotTW2/requestFile",
+			"robotTW2/getJSON"
 			], function(
 					buildingTypes,
 					version,
-					requestFile
+					requestFile,
+					getJSON
 			) {
 
 			return (function(){
@@ -815,6 +826,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						levelsBuilding[buildingTypes[type]] = 0;
 					}
 				}
+				
+				var teste = getJSON("dbs")
+				console.log(teste)
 
 				var seg = 1000 // 1000 milisegundos
 				, min = seg * 60
