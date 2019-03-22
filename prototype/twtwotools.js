@@ -816,8 +816,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"MIN_JOURNEY_TIME"			: 480000,
 						"FARM_TIME"					: 1800000,
 						"MIN_INTERVAL"				: 300000,
-						"BUILDINGLEVELS"			: levelsBuilding,
-						"BUILDINGORDER"				: angular.extend({}, getJSON("orderBuilding"))
+						"BUILDINGLEVELS"			: levelsBuilding
 				}
 				
 				angular.extend(conf, getJSON("orderBuilding"))
