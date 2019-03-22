@@ -79,8 +79,8 @@ define("robotTW2/databases/data_main", [
 		, extensions = {};
 		
 		console.log(conf)
-		console.log(DBS)
-		console.log(typeof(DBS))
+		console.log(dbs)
+		console.log(typeof(dbs))
 
 		dbs.forEach(function(db_name){
 			var string = "data_" + db_name.toLowerCase();
