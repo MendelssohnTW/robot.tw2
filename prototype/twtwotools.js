@@ -767,7 +767,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			var json = {};
 			return function(str){
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					angular.extend(json, [str.toUpperCase()], jsont)
+					angular.extend(json, {[str.toUpperCase()]: jsont})
 				})
 				return json[str.toUpperCase()] || json
 			}
