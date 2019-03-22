@@ -271,6 +271,7 @@ define("robotTW2/services/FarmService", [
 			let sum = Object.keys(countCommands[village_id]).reduce(function(a, b) {
 				return countCommands[village_id][a].length + countCommands[village_id][b].length
 			});
+			
 			var aldeia_commands_lenght = sum;
 
 			if(!t_obj){
