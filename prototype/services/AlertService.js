@@ -1,10 +1,10 @@
 define("robotTW2/services/AlertService", [
 	"robotTW2",
-	"robotTW2/version",
+	"robotTW2/conf",
 	"robotTW2/databases/data_alert",
 	], function(
 			robotTW2,
-			version,
+			conf,
 			data_alert
 	){
 	return (function AlertService(
@@ -76,7 +76,7 @@ define("robotTW2/services/AlertService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.alert,
+			version			: conf.version.alert,
 			name			: "alert"
 		}
 	})(

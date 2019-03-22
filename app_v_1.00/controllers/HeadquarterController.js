@@ -23,13 +23,16 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		$scope.local_data_villages = [];
+		$scope.local_data_select = []
+		$scope.local_data_standard_order = []
+		$scope.local_data_standard_limit = []
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
-		
+
 		$scope.text_version = $scope.version + " " + data_headquarter.version;
 
 		$scope.status = "stopped";
-		$scope.obj_standard = $scope.data_headquarter.standard;
+
 
 		var self = this
 		, tt = false
@@ -37,16 +40,57 @@ define("robotTW2/controllers/HeadquarterController", [
 		, buildings = services.modelDataService.getGameData().getBuildings()
 		, update = function () {
 			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
-			$scope.data_villages = data_villages;
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-		, getVillage = function getVillage(vid){
-			if(!vid){return}
-			return services.modelDataService.getSelectedCharacter().getVillage(vid).data
+		, updateAll = function(){
+			$scope.local_data_standard_order = []
+			$scope.local_data_standard_limit = []
+			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(key){
+				$scope.local_data_standard_order.push({
+					"name": key,
+					"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
+					"value": $scope.data_headquarter.standard.buildingorder[key],
+				})
+				$scope.local_data_standard_order.sort(function(a,b){return a.value - b.value})
+				return $scope.local_data_standard_order;
+			})
+
+			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(key){
+				$scope.local_data_standard_limit.push({
+					"name": key,
+					"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings"),
+					"value": $scope.data_headquarter.standard.buildinglimit[key],
+				})
+				$scope.local_data_standard_limit.sort(function(a,b){return a.label.localeCompare(b.label)})
+				return $scope.local_data_standard_limit;
+			})
+
+			$scope.data_standard_order = services.MainService.getSelects($scope.local_data_standard_order)
+			$scope.data_standard_limit = services.MainService.getSelects($scope.local_data_standard_limit)
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
+		, save_order = function(){
+			if(!$scope.data_standard_order){return}
+			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
+				$scope.data_headquarter.standard.buildingorder[elem] = $scope.data_standard_order.availableOptions.find(f=>f.name==elem).value;
+			})
+			updateAll();
+		}
+		, save_limit = function(){
+			if(!$scope.data_standard_limit){return}
+			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(elem){
+				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.data_standard_limit.availableOptions.find(f=>f.name==elem).value;
+			})
+			updateAll();
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
 			return $scope.local_data_villages.find(f=>f.villageId==vid);
+		}
+
+		$scope.getLabel = function(vid){
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
 		}
 
 		$scope.openVillageInfo = function(vid){
@@ -55,17 +99,19 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = getVillageData(vid);
+			var data = services.VillageService.getVillage(vid)
 			if(!data){return}
 			var x = data.x
 			var y = data.y
+			services.VillageService.setVillage(village)
 			services.mapService.jumpToVillage(x, y);
+			$scope.closeWindow();
 		}
 
 		$scope.getVcoordStart = function(vid){
 			if(!vid){return}
 			var data = getVillageData(vid);
-			if(!data){return "(.../...)"}
+			if(!data){return "(...|...)"}
 			var x = data.x
 			var y = data.y
 			var name = data.name
@@ -83,14 +129,9 @@ define("robotTW2/controllers/HeadquarterController", [
 			return $scope.data_headquarter.complete > time.convertedTime() && services.HeadquarterService.isRunning() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
 
-		$scope.getKey = function(key){
-			if(!key){return}
-			return services.$filter("i18n")(key, services.$rootScope.loc.ale, "buildings");
-		}
-
-		$scope.getMax = function(key, value){
-			if(!key){return}
-			return value < services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level ? true: false;
+		$scope.getMax = function(item){
+			if(!item){return}
+			return item.value < services.modelDataService.getGameData().getBuildingDataForBuilding(item.name).max_level ? true: false;
 		}
 
 		$scope.getClass = function(key){
@@ -144,30 +185,21 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.upstandard = function(key){
-			var ant = Object.keys($scope.obj_standard.buildingorder).map(
-					function(elem){
-						return {[elem]: $scope.obj_standard.buildingorder[elem]}
-					}
-			).find(f => Object.values(f)[0] == $scope.obj_standard.buildingorder[key] - 1)
-			$scope.obj_standard.buildingorder[Object.keys(ant)[0]] += 1
-			$scope.obj_standard.buildingorder[key] -= 1
-//			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
-			if (!$scope.$$phase) {$scope.$apply();}
+		$scope.upstandard = function(item){
+			var ant = $scope.data_standard_order.availableOptions.find(f => f.value == item.value - 1)
+			ant.value += 1
+			item.value -= 1
+//			$scope.data_standard_order.selectedOption = item
+			save_order()
 		}
 
-		$scope.downstandard = function(key){
-			var prox = Object.keys($scope.obj_standard.buildingorder).map(
-					function(elem){
-						return {[elem]: $scope.obj_standard.buildingorder[elem]}
-					}
-			).find(f => Object.values(f)[0] == $scope.obj_standard.buildingorder[key] + 1)
-			$scope.obj_standard.buildingorder[Object.keys(prox)[0]] -= 1
-			$scope.obj_standard.buildingorder[key] += 1
-//			vill.buildingorder[vill.selected.value] = vill.buildingorder[vill.selected.value].map(function(key,index,array){return delete vill.buildingorder[vill.selected.value][index].$$hashKey ? vill.buildingorder[vill.selected.value][index] : undefined}).sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
-			if (!$scope.$$phase) {$scope.$apply();}
+		$scope.downstandard = function(item){
+			var prox = $scope.data_standard_order.availableOptions.find(f => f.value == item.value + 1)
+			prox.value -= 1
+			item.value += 1
+//			$scope.data_standard_order.selectedOption = item
+			save_order()
 		}
-
 
 		$scope.levelupstandard = function(key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
@@ -220,7 +252,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.selectvillagebuildingorder = function(villageId, value){
 			$scope.selected_village_buildingorder[villageId] = value;
 		}
-		
+
 		$scope.menu = function () {
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
@@ -234,26 +266,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			update();
 		})
 
-		Object.keys($scope.data_villages.villages).map(function(key){
-			if(!$scope.data_villages.villages[key].selected){
-				tt = true;
-				$scope.data_villages.villages[key].selected = $scope.data_headquarter.selects.find(f=>f.name ="Standard");
-			}
-			let data = getVillage(key);
-			angular.extend(data, {
-				"headquarter_activate": $scope.data_villages.villages[key].headquarter_activate,
-				"selected": $scope.data_villages.villages[key].selected,
-				"buildingorder": $scope.data_villages.villages[key].buildingorder,
-				"buildinglimit": $scope.data_villages.villages[key].buildinglimit
-			})
-			$scope.local_data_villages.push(data)
-			$scope.local_data_villages.sort(function(a,b){return a.name.localeCompare(b.name)})
-			return $scope.local_data_villages;
-		})
-		
-
-		tt ? $scope.data_villages.set(): null;
-		
 		update();
 
 
@@ -268,23 +280,8 @@ define("robotTW2/controllers/HeadquarterController", [
 
 //		$scope.$watch("data_villages", function($event, data){
 //		if(!$scope.data_villages){return}
-//		data_villages = $scope.data_villages;
-//		data_villages.set();
+//		$scope.data_villages.set();
 //		}, true)
-
-		$scope.$watch("obj_standard", function(){
-			if(!$scope.obj_standard){return}
-			Object.values($scope.data_villages.villages).forEach(function(village){
-				if(village.selected.value == "standard"){
-					angular.merge(village, {
-						buildingorder 			: $scope.obj_standard.buildingorder,
-						buildinglimit 			: $scope.obj_standard.buildinglimit
-					})
-				}
-			})
-			$scope.data_headquarter.standard = $scope.obj_standard;
-			$scope.data_villages.set();
-		}, true)
 
 		$scope.$watch("data_headquarter", function(){
 			if(!$scope.data_headquarter){return}
@@ -295,6 +292,18 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();
 		});
+
+		Object.keys($scope.data_headquarter.selects).map(function(key){
+			$scope.local_data_select.push($scope.data_headquarter.selects[key])
+			$scope.local_data_select.sort(function(a,b){return a.name.localeCompare(b.name)})
+			return $scope.local_data_select;
+		})
+
+		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
+
+		$scope.data_select = services.MainService.getSelects($scope.local_data_select)
+
+		updateAll()
 
 		$scope.setCollapse();
 

@@ -5,22 +5,18 @@ define("robotTW2/CommandAttack", [
 
 define("robotTW2/services/AttackService", [
 	"robotTW2",
-	"robotTW2/version",
 	"helper/time",
 	"robotTW2/conf",
 	"robotTW2/notify",
 	"robotTW2/time",
-	"robotTW2/calibrate_time",
 	"robotTW2/databases/data_attack",
 	"robotTW2/CommandAttack"
 	], function(
 			robotTW2,
-			version,
 			helper,
 			conf,
 			notify,
 			time,
-			calibrate_time,
 			data_attack,
 			commandAttack
 	){
@@ -38,9 +34,9 @@ define("robotTW2/services/AttackService", [
 		var isRunning = !1
 		, isPaused = !1
 		, isInitialized = !1
+		, listener = undefined
 		, interval_reload = undefined
 		, that = this
-		, scope = $rootScope.$new()
 		, timetable = modelDataService.getGameData().data.units.map(function(obj, index, array){
 			return [obj.speed * 60, obj.name]
 		}).map(m => {
@@ -50,7 +46,7 @@ define("robotTW2/services/AttackService", [
 		})
 		, addAttack = function(params, opt_id){
 			if(!params){return}
-			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(listener) == "function") ? listener = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
 			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
@@ -105,22 +101,20 @@ define("robotTW2/services/AttackService", [
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "attack"){
-				var params = Object.keys($event.currentScope.commands).map(function(cmd){
-					if($event.currentScope.commands[cmd].params.start_village == data.home.id
-							&& $event.currentScope.commands[cmd].params.target_village == data.target.id
+				var params = Object.keys(commandAttack).map(function(cmd){
+					if(commandAttack[cmd].params.start_village == data.home.id
+							&& commandAttack[cmd].params.target_village == data.target.id
 					) {
-						return $event.currentScope.commands[cmd].params	
+						return commandAttack[cmd].params	
 					} else {
 						return undefined
 					}
 				}).filter(f => f != undefined)
-				
-				params.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 
-				var param = undefined;
+				let param = undefined;
 				if(params.length){
+					params.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 					param = params.shift();
-					
 				}
 
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
@@ -155,44 +149,6 @@ define("robotTW2/services/AttackService", [
 			return $timeout(send.bind(null, params), timer_delay_send)
 		}
 		, sendCommandAttack = function(scp){
-			scp.army = {
-					'officers': {}
-			}
-			for (officerName in scp.officers) {
-				if (scp.officers.hasOwnProperty(officerName)) {
-					if (scp.officers[officerName].checked === true) {
-						scp.army.officers[officerName] = true;
-					}
-				}
-			}
-			var durationInSeconds = helper.unreadableSeconds(scp.properties.duration);
-			if (scp.enviarFull){
-				durationInSeconds = 0;
-			}
-			if (scp.armyEmpty && !scp.enviarFull){
-				notify("unity_select");
-			} else {
-				var get_data = $("#input-date").val();
-				var get_time = $("#input-time").val();
-				var get_ms = $("#input-ms").val();
-				if (get_time.length <= 5){
-					get_time = get_time + ":00"; 
-				}
-				if (get_data != undefined && get_time != undefined){
-					scp.milisegundos_duracao = durationInSeconds * 1000;
-					scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-					if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
-						addScopeAttack(scp);
-						scp.closeWindow();
-					} else {
-						notify("date_error");
-					}       
-				} else {
-					return;
-				}
-			}
-		}
-		, addScopeAttack = function(scp){
 			var params = {
 					start_village		: scp.selectedVillage.data.villageId,
 					target_village		: scp.target.id,
@@ -220,13 +176,14 @@ define("robotTW2/services/AttackService", [
 			commandQueue.unbind(id_command, data_attack)
 		}
 		, removeAll = function(){
-			if(scope.params){
-				Object.keys(scope.params).map(function(pn){
-					if(scope.params[pn]){
-						delete scope.params[pn]
+			Object.keys(commandAttack).map(function(elem){
+				if(typeof(commandAttack[elem].timeout) == "object"){
+					if(commandAttack[elem].timeout.$$state.status == 0){
+						$timeout.cancel(commandAttack[elem].timeout)	
 					}
-				})
-			}
+					delete commandAttack[elem];
+				}
+			})
 			commandQueue.unbindAll("attack", data_attack)
 		}
 		, init = function(){
@@ -238,7 +195,6 @@ define("robotTW2/services/AttackService", [
 			if(isRunning){return}
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js", true);
-				calibrate_time()
 				isRunning = !0
 				Object.values(data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
@@ -255,23 +211,14 @@ define("robotTW2/services/AttackService", [
 			interval_reload ? $timeout.cancel(interval_reload): null;
 			interval_reload = undefined;
 			isRunning = !1;
-			scope = {};
-			if(scope.listener && typeof(scope.listener) == "function") {
-				scope.listener();
-				delete scope.listener;
-			}
+			typeof(listener) == "function" ? listener(): null
 		}
-
-		angular.extend(scope, {
-			commands : {}
-		})
 
 		return	{
 			init				: init,
 			start				: start,
 			stop 				: stop,
 			sendCommandAttack 	: sendCommandAttack,
-			calibrate_time		: calibrate_time,
 			removeCommandAttack	: removeCommandAttack,
 			removeAll			: removeAll,
 			isRunning			: function () {
@@ -280,7 +227,7 @@ define("robotTW2/services/AttackService", [
 			isInitialized		: function () {
 				return isInitialized
 			},
-			version				: version.attack,
+			version				: conf.version.attack,
 			name				: "attack"
 		}
 	})(

@@ -5,7 +5,6 @@ define("robotTW2/CommandSpy", [
 
 define("robotTW2/services/SpyService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/conf",
@@ -15,7 +14,6 @@ define("robotTW2/services/SpyService", [
 	"robotTW2/CommandSpy"
 	], function(
 			robotTW2,
-			version,
 			time,
 			helper,
 			conf,
@@ -314,7 +312,7 @@ define("robotTW2/services/SpyService", [
 			isInitialized			: function(){
 				return isInitialized
 			},
-			version					: version.spy,
+			version					: conf.version.spy,
 			name					: "spy"
 		}
 

@@ -51,30 +51,12 @@ define("robotTW2/controllers/RecruitController", [
 			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
 		}
 		, update_all = function(){
-			$scope.local_data_villages = [];
-			Object.keys($scope.data_villages.villages).map(function(key){
-				var vill = getVillage(key);
-				$scope.local_data_villages.push({
-					id 		: key,
-					name 	: vill.data.name,
-					label 	: formatHelper.villageNameWithCoordinates(vill.data),
-					value 	: $scope.data_villages.villages[key].recruit_activate,
-					x		: vill.data.x,
-					y		: vill.data.y
-				})
-				$scope.local_data_villages.sort(function(a,b){return a.label.localeCompare(b.label)})
-				return $scope.local_data_villages;
-			})
-
-			$scope.data_select = {
-				"availableOptions" : $scope.local_data_villages,
-				"selectedOption" : $scope.local_data_villages[0]
-			}
-
+			$scope.local_data_villages = services.VillageService.getLocalVillages("recruit", "label");
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		}
 
 		$scope.getTimeRest = function(){
-			return data_recruit.complete > time.convertedTime() && $scope.isRunning ? helper.readableMilliseconds(data_recruit.complete - time.convertedTime()) : 0; 
+			return $scope.data_recruit.complete > time.convertedTime() && $scope.isRunning ? helper.readableMilliseconds($scope.data_recruit.complete - time.convertedTime()) : 0; 
 		}
 
 		$scope.getText = function(key){
@@ -152,10 +134,14 @@ define("robotTW2/controllers/RecruitController", [
 			return $scope.local_data_groups;
 		})
 		
-		$scope.data_groups = {
-				"availableOptions" : $scope.local_data_groups,
-				"selectedOption" : $scope.local_data_groups[0]
-		}
+		$scope.data_groups = services.MainService.getSelects($scope.local_data_groups)
+		
+		$scope.$watch("data_villages", function () {
+			if(!$scope.data_villages) {return}
+			services.DefenseService.stop();
+			$scope.data_villages.set();
+			services.DefenseService.start(true);
+		}, true)
 		
 		$scope.isRunning = services.RecruitService.isRunning();
 		$scope.isPaused = services.RecruitService.isPaused();

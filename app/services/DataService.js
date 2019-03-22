@@ -1,6 +1,5 @@
 define("robotTW2/services/DataService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/conf",
 	"conf/conf",
 	"robotTW2/socketSend",
@@ -11,7 +10,6 @@ define("robotTW2/services/DataService", [
 	"robotTW2/databases/data_data"
 	], function(
 			robotTW2,
-			version,
 			conf,
 			conf_conf,
 			socketSend,
@@ -1274,7 +1272,7 @@ define("robotTW2/services/DataService", [
 			isInitializedTribes		: function(){
 				return checkTimerTribe.isInitialized()
 			},
-			version			: version.data,
+			version			: conf.version.data,
 			name			: "data"
 		}
 	})(

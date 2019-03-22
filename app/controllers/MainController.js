@@ -3,13 +3,15 @@ define("robotTW2/controllers/MainController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"robotTW2/databases/data_main"
+	"robotTW2/databases/data_main",
+	"robotTW2/calibrate_time"
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
-			data_main
+			data_main,
+			calibrate_time
 	){
 	return function MainController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale)
@@ -114,7 +116,7 @@ define("robotTW2/controllers/MainController", [
 		}
 
 		$scope.recalibrate = function(){
-			services.AttackService.calibrate_time()
+			calibrate_time()
 		}
 		
 		$scope.updateTimeCorrection = function(){

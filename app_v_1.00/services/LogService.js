@@ -1,6 +1,5 @@
 define("robotTW2/services/LogService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	"$rootScope",
@@ -11,7 +10,6 @@ define("robotTW2/services/LogService", [
 	"ready"
 	], function(
 			robotTW2,
-			version,
 			time,
 			conf,
 			$rootScope,
@@ -48,7 +46,7 @@ define("robotTW2/services/LogService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.log,
+			version			: conf.version.log,
 			name			: "log"
 		}
 

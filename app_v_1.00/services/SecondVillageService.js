@@ -1,13 +1,11 @@
 define("robotTW2/services/SecondVillageService", [
 	"robotTW2",
-	"robotTW2/version",
 	"helper/time",
 	"models/SecondVillageModel",
 	"robotTW2/conf",
 	"robotTW2/databases/data_deposit"
 	], function(
 			robotTW2,
-			version,
 			helper,
 			SecondVillageModel,
 			conf,
@@ -138,7 +136,7 @@ define("robotTW2/services/SecondVillageService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.secondvillage,
+			version			: conf.version.secondvillage,
 			name			: "secondvillage"
 		}
 

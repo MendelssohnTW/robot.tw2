@@ -5,7 +5,6 @@ define("robotTW2/CommandDefense", [
 
 define("robotTW2/services/DefenseService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/conf",
 	"helper/time",
 	"conf/conf",
@@ -17,7 +16,6 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/CommandDefense"
 	], function(
 			robotTW2,
-			version,
 			conf,
 			helper,
 			conf_conf,
@@ -839,7 +837,7 @@ define("robotTW2/services/DefenseService", [
 			isInitialized		: function () {
 				return isInitialized
 			},
-			version				: version.defense,
+			version				: conf.version.defense,
 			name				: "defense",
 		}
 	})(

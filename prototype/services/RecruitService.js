@@ -1,6 +1,5 @@
 define("robotTW2/services/RecruitService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	"robotTW2/databases/data_log",
@@ -8,7 +7,6 @@ define("robotTW2/services/RecruitService", [
 	"robotTW2/databases/data_villages"
 	], function(
 			robotTW2,
-			version,
 			time,
 			conf,
 			data_log,
@@ -442,7 +440,7 @@ define("robotTW2/services/RecruitService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.recruit,
+			version			: conf.version.recruit,
 			name			: "recruit"
 		}
 	})(

@@ -229,6 +229,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			requestFn.unbindAll(type)
 			if(opt_db)	{
 				opt_db.commands = {};
+				opt_db.set();
 			}
 			$rootScope.$broadcast(exports.providers.eventTypeProvider.CHANGE_COMMANDS)
 		}
@@ -716,7 +717,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			villageService				: villageService,
 			presetService				: presetService,
 			presetListService			: presetListService,
-			autoCompleteService			: autoCompleteService
+			autoCompleteService			: autoCompleteService,
+			mapService					: mapService
 	};
 	exports.providers 			= {
 			eventTypeProvider 			: eventTypeProvider,
@@ -762,41 +764,23 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 
-		var version = "3.1.0"
-
-			define("robotTW2/version", function(){
-				return {
-					main:			version,
-					villages:		version,
-					alert:			version,
-					deposit:		version,
-					headquarter:	version,
-					recon:			version,
-					spy:			version,
-					attack:			version,
-					defense:		version,
-					farm:			version,
-					recruit:		version,
-					medic:			version,
-					secondvillage:	version,
-					map:			version,
-					data:			version,
-					log:			version
-				}
-			});
-
-		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
-			return robotTW2.requestFile;
+		define("robotTW2/getJSON", function getJSON(){
+			var service = {};
+			return service.getJSON = function(str){
+				var json = {};
+				robotTW2.requestFile(str, "/json/", function(jsont){
+					angular.extend(json, jsont)
+				})
+				return json
+			}
 		})
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
-			"robotTW2/version",
-			"robotTW2/requestFile"
+			"robotTW2/getJSON"
 			], function(
 					buildingTypes,
-					version,
-					requestFile
+					getJSON
 			) {
 
 			return (function(){
@@ -807,136 +791,20 @@ var robotTW2 = window.robotTW2 = undefined;
 					}
 				}
 
-				var seg = 1000 // 1000 milisegundos
-				, min = seg * 60
-				, h = min * 60;
-
-				var conf = {
-						h						: h,
-						min						: min,
-						seg						: seg,
-						LIMIT_COMMANDS_DEFENSE	: 13,
-						MAX_COMMANDS_FARM		: 42,
-						MIN_POINTS_FARM			: 0,
-						MAX_POINTS_FARM			: 12000,
-						MAP_CHUNCK_LEN 			: 30 / 2,
-						TIME_CORRECTION_COMMAND : 1275,
-						TIME_DELAY_UPDATE		: 30 * seg,
-						TIME_DELAY_FARM			: 1000,
-						TIME_SNIPER_ANT 		: 30000,
-						TIME_SNIPER_POST 		: 3000,
-						TIME_SNIPER_POST_SNOB	: 1000,
-						MAX_TIME_CORRECTION 	: 5 * seg,
-						MIN_TIME_SNIPER_ANT 	: 5,
-						MAX_TIME_SNIPER_ANT 	: 600,
-						MIN_TIME_SNIPER_POST 	: 0.3,
-						MAX_TIME_SNIPER_POST 	: 600,
-						MAX_JOURNEY_DISTANCE 	: 6,
-						MIN_JOURNEY_DISTANCE 	: 1,
-						MAX_JOURNEY_TIME     	: 3 * h,
-						MIN_JOURNEY_TIME     	: 8 * min,
-						VERSION					: {
-							MAIN			: version.main,
-							VILLAGES		: version.villages,
-							HEADQUARTER		: version.headquarter,
-							ALERT			: version.alert,
-							RECON			: version.recon,
-							SPY				: version.spy,
-							ATTACK			: version.attack,
-							DEFENSE			: version.defense,
-							FARM			: version.farm,
-							RECRUIT			: version.recruit,
-							DEPOSIT			: version.deposit,
-							MEDIC			: version.medic,
-							SECONDVILLAGE	: version.secondvillage,
-							MAP				: version.map,
-//							DATA			: version.data,
-							LOG				: version.log
-						},
-						FARM_TIME		      	: 15 * min,
-						MIN_INTERVAL	     	: 5 * min,
-						INTERVAL				: {
-							HEADQUARTER	: h,
-							RECRUIT		: h,
-							DEPOSIT		: 15 * min,
-							ALERT		: 5 * min,
-							ATTACK		: h,
-							MEDIC		: h,
-//							DATA		: {
-//							villages	: 6 * h,
-//							tribes		: 2 * h,
-//							log			: 1 * h,
-//							members		: 3 * h
-//							},
-							SPY			: 30 * min
-						},
-						DBS : [
-							"alert",
-							"attack",
-							"defense",
-							"deposit",
-							"farm",
-							"headquarter",
-							"medic",
-							"recon",
-							"recruit",
-							"spy",
-							"secondvillage",
-							"map",
-							"data",
-							"log"
-							]
-						,
-						HOTKEY					: {
-							ALERT		 	: "shift+l",
-							ATTACK		 	: "shift+a",
-							DEFENSE		 	: "shift+d",
-							DEPOSIT		 	: "shift+t",
-							FARM		 	: "shift+f",
-							HEADQUARTER 	: "shift+h",
-							MAIN 			: "shift+p",
-							MEDIC		 	: "shift+i",
-							RECON		 	: "shift+r",
-							RECRUIT		 	: "shift+e",
-							SPY			 	: "shift+s",
-							SECONDVILLAGE	: "shift+q",
-//							DATA			: "shift+j",
-							MAP			 	: "shift+m"
-						},
-						RESERVA				: {
-							RECRUIT : {
-								FOOD			: 50,
-								WOOD			: 200,
-								CLAY			: 200,
-								IRON			: 200,
-								SLOTS			: 2
-							},
-							HEADQUARTER : {
-								FOOD			: 50,
-								WOOD			: 200,
-								CLAY			: 200,
-								IRON			: 200,
-								SLOTS			: 2
-							}
-
-						},
-						TROOPS_NOT				: {
-							RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
-							FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
-
+				var conf = getJSON("conf")
+				var conf_pre = {
+						BUILDINGLEVELS			: levelsBuilding,
+						BUILDINGORDER			: getJSON("orderBuilding"),
+						BUILDINGLIMIT			: getJSON("limitBuilding"),
+						VERSION					: getJSON("version"),
+						DBS 					: getJSON("dbs"),
+						HOTKEY					: getJSON("hotkey"),
+						RESERVA					: getJSON("reserve"),
+						TROOPS_NOT				: getJSON("troops_not"),
+						INTERVAL				: getJSON("interval")
 				}
-
-				requestFile("orderBuilding", "/json/", function(jsont_order){
-					var orderBuilding = jsont_order;
-					requestFile("limitBuilding", "/json/", function(jsont_limit){
-						var limitBuilding = jsont_limit;
-						angular.extend(conf, {
-							BUILDINGORDER			: orderBuilding,
-							BUILDINGLIMIT			: limitBuilding,
-							BUILDINGLEVELS			: levelsBuilding
-						})
-					})
-				})
+				
+				angular.extend(conf, conf_pre)
 
 				return conf;
 			})()
@@ -1993,7 +1861,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						var obj_unit;
 
 						if(!units){
-							console.log("no units")
 							return
 						} else {
 							obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
@@ -2034,7 +1901,6 @@ var robotTW2 = window.robotTW2 = undefined;
 											var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
 											var startedAt = outgoing[Object.keys(outgoing).pop()].startedAt;
-//											var dif = (gTime - time.convertMStoUTC(completedAt - (duration*1000))) - conf.TIME_CORRECTION_COMMAND;
 											var dif = (gTime - time.convertMStoUTC(startedAt)) - conf.TIME_CORRECTION_COMMAND;
 											if(!robotTW2.databases.data_main.max_time_correction || (dif > -robotTW2.databases.data_main.max_time_correction && dif < robotTW2.databases.data_main.max_time_correction)) {
 												robotTW2.databases.data_main.time_correction_command = dif
@@ -2099,9 +1965,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				return grad[i][j].loaded;
 			}
 
-			Object.setPrototypeOf(grad, serv);
+//			Object.setPrototypeOf(grad, serv);
 
-			return grad
+			return serv
 		})
 		, define("robotTW2/services/villages_town", ["robotTW2"], function(robotTW2){
 			var serv = {}
@@ -2163,7 +2029,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 		: "alert",
 								classes 			: "",
 								url		 			: "/controllers/AlertController.js",
-								style 				: null
+								style 				: {
+									width:"900px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -2485,8 +2353,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
 				}
-				case robotTW2.services.MapService : {
-					robotTW2.services.MapService && typeof(robotTW2.services.MapService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.MapService) : null;	
+				case robotTW2.services.VillageService : {
+					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.VillageService) : null;	
 					break
 				}
 //				case robotTW2.services.DataService : {
@@ -2523,6 +2391,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_main" : {
 					robotTW2.loadScript("/services/MainService.js");
+					robotTW2.loadScript("/services/VillageService.js");
 					robotTW2.loadScript("/services/ExtensionService.js");
 					robotTW2.loadScript("/controllers/MainController.js");
 					break

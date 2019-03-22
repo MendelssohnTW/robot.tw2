@@ -1,6 +1,5 @@
 define("robotTW2/services/FarmService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/conf",
@@ -14,7 +13,6 @@ define("robotTW2/services/FarmService", [
 	"conf/reportTypes",
 	], function(
 			robotTW2,
-			version,
 			time,
 			conf,
 			conf_conf,
@@ -424,7 +422,7 @@ define("robotTW2/services/FarmService", [
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
 					resolve_grid();
-				}, conf_conf.LOADING_TIMEOUT + 20000);
+				}, conf_conf.LOADING_TIMEOUT);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
 					
@@ -558,15 +556,12 @@ define("robotTW2/services/FarmService", [
 				commands_for_presets = null;
 			})
 		}
-		, clear = function(){
-			countCommands = {}
-		}
 		, execute_cicle = function(tempo){
 			return new Promise(function(resol){
 				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 				var g = $timeout(function(){
-					clear()
+					clear_partial()
 					var commands_for_presets = []
 					, villages = modelDataService.getSelectedCharacter().getVillageList();
 
@@ -644,7 +639,7 @@ define("robotTW2/services/FarmService", [
 							f(Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random())))
 						})
 					} else {
-						clear()
+						clear_partial()
 						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 						data_log.set()
 					}
@@ -727,6 +722,10 @@ define("robotTW2/services/FarmService", [
 			grid_town.renew();
 			countCommands = {}
 		}
+		, clear_partial = function(){
+			interval_init = null
+			countCommands = {}
+		}
 		, stop = function () {
 			if(completion_loaded){
 				completion_loaded = !1;
@@ -736,8 +735,7 @@ define("robotTW2/services/FarmService", [
 			typeof(listener_report) == "function" ? listener_report(): null;
 			listener_report = undefined
 
-			interval_init = null
-			countCommands = {}
+			clear_partial();
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 		}
@@ -766,7 +764,7 @@ define("robotTW2/services/FarmService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: version.farm,
+			version			: conf.version.farm,
 			name			: "farm",
 			analytics 		: function () {
 				ga("create", "UA-115071391-2", "auto", "RobotTW2");

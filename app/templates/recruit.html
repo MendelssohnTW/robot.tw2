@@ -67,7 +67,7 @@
 							<col width="160px">
 						</colgroup>
 						<tr>
-							<th colspan="5">{{select_villages}}</th>
+							<th colspan="5" class="cell-center selected">{{select_villages}}</th>
 						</tr>
 						<tr>
 							<td><div class="icon icon-34x34-village"></div></td>
@@ -75,7 +75,7 @@
 								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 								ng-model="data_select.selectedOption"></select></td>
 							<td><div id="switch" switch-slider="" border="true"
-									enabled="true" value="data_select.selectedOption.value"
+									enabled="true" value="data_villages.villages[data_select.selectedOption.id].defense_activate"
 									vertical="false" size="'56x28'">
 									<div ng-class="{'box-border-dark box-filter': border}"
 										class="box-border-dark box-filter">

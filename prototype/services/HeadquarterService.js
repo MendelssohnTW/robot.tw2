@@ -1,6 +1,5 @@
 define("robotTW2/services/HeadquarterService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/upgradeabilityStates",
@@ -9,7 +8,6 @@ define("robotTW2/services/HeadquarterService", [
 	"robotTW2/databases/data_headquarter",
 	], function(
 			robotTW2,
-			version,
 			time,
 			conf,
 			upgradeabilityStates,
@@ -383,7 +381,7 @@ define("robotTW2/services/HeadquarterService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.headquarter,
+			version			: conf.version.headquarter,
 			name			: "headquarter"
 		}
 

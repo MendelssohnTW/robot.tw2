@@ -5,27 +5,25 @@ define("robotTW2/CommandDefense", [
 
 define("robotTW2/services/DefenseService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/conf",
 	"helper/time",
 	"conf/conf",
 	"conf/unitTypes",
 	"robotTW2/time",
-	"robotTW2/calibrate_time",
 	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_defense",
+	"robotTW2/databases/data_villages",
 	"robotTW2/CommandDefense"
 	], function(
 			robotTW2,
-			version,
 			conf,
 			helper,
 			conf_conf,
 			unitTypes,
 			time,
-			calibrate_time,
 			unitTypesRenameRecon,
 			data_defense,
+			data_villages,
 			commandDefense
 	){
 	return (function DefenseService(
@@ -47,9 +45,12 @@ define("robotTW2/services/DefenseService", [
 		, timeout = undefined
 		, oldCommand
 		, d = {}
+		, resend = false
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
+		, listener_sent = undefined
+		, listener_cancel = undefined
 		, listener_conquered = undefined
 		, promise_verify = undefined
 		, queue_verifiy = []
@@ -389,7 +390,7 @@ define("robotTW2/services/DefenseService", [
 				var lt = []
 
 				Object.keys(commandDefense).map(function(key){
-					if(commandDefense[key].params.preserv){
+					if(commandDefense[key].params.preserv && data_villages.villages[commandDefense[key].start_village].defense_activate){
 						lt.push(commandDefense[key].params)
 					} else {
 						delete commandDefense[key];
@@ -397,15 +398,19 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 
-				var vls = modelDataService.getSelectedCharacter().getVillageList(); 
+				var vls = modelDataService.getSelectedCharacter().getVillageList();
+
+				vls = Object.keys(vls).map(function(elem){
+					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
+						return vls[elem]
+					}
+				}).filter(f=>f!=undefined)
+
 				function gt(){
 					if (vls.length){
 						var id = vls.shift().data.villageId;
 						var list_snob = [];
 						var list_trebuchet = [];
-//						var list_calvary = [];
-//						var list_infatary = [];
-//						var list_ram = [];
 						var list_others = [];
 						var list_preserv_others = [];
 
@@ -436,21 +441,6 @@ define("robotTW2/services/DefenseService", [
 								troops_measure(cmd, function(push , unitType){
 									if(push){
 										switch (unitType) {
-//										case "light_cavalry":
-//										list_others.push(cmd);
-//										break;
-//										case "heavy_cavalry":
-//										list_others.push(cmd);
-//										break;
-//										case "axe":
-//										list_others.push(cmd);
-//										break;
-//										case "sword":
-//										list_others.push(cmd);
-//										break;
-//										case "ram":
-//										list_others.push(cmd);
-//										break;
 										case "snob":
 											list_snob.push(cmd);
 											break;
@@ -478,14 +468,15 @@ define("robotTW2/services/DefenseService", [
 				gt()
 			})
 		}
-		, verificarAtaques = function (){
+		, verificarAtaques = function (opt){
 			var renew = false;
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
-					if(renew) {
+					if(renew || opt) {
 						renew = false;
+						opt = false;
 						verificarAtaques()
 					}
 				})
@@ -535,20 +526,6 @@ define("robotTW2/services/DefenseService", [
 		, sendDefense = function(params){
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
-//		, listener_command_returned = function($event, data){
-//		if(!$event.currentScope){return}
-//		var cmds = Object.keys($event.currentScope.commands).map(function(param){
-//		if($event.currentScope.commands[param].id_command == data.command_id) {
-//		return $event.currentScope.commands[param]	
-//		} else {
-//		return undefined
-//		}
-//		}).filter(f => f != undefined)
-//		var cmd = undefined;
-//		if(cmds.length){
-//		cmd = cmds.pop();
-//		}
-//		}
 		, listener_command_cancel = function($event, data){
 			if(!$event.currentScope){
 				return
@@ -596,7 +573,6 @@ define("robotTW2/services/DefenseService", [
 						"id_command" 	: data.id
 					}
 
-//					- time.convertedTime()
 					if(timer_delay >= 0){
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 							commandDefense[params.id_command] = {
@@ -618,6 +594,7 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, send = function(params){
+			resend = false;
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
 				target_village		: params.target_village,
@@ -638,6 +615,7 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				return 
 			}
+			resend = true;
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
@@ -783,61 +761,66 @@ define("robotTW2/services/DefenseService", [
 					if(!isRunning){return}
 					promise_verify = undefined;
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-						timeout = $timeout(verificarAtaques , 5 * 60 * 1000);
+						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
 					}
 				});
 			}
 		}
-		, start = function(){
+		, start = function(opt){
 			if(isRunning){return}
+			if(opt && isRunning && resend){
+				$timeout(function(){start(true)}, 10000)
+				return;
+			}
 			ready(function(){
 				commandDefense = {};
-				calibrate_time()
 				isRunning = !0;
 				reformatCommand();
-//				w.reload();
 				if(!listener_lost){
-					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
+					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(function(){verificarAtaques(true)} , 60000));
 				}
 				if(!listener_conquered){
-					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
+					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(function(){verificarAtaques(true)} , 60000));
 				}
 				handlerVerify();
-				verificarAtaques();
+				verificarAtaques(true);
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
-			isRunning = !1;
-			commandQueue.unbindAll("support");
-			promise_verify = undefined
-			queue_verifiy = [];
-			$timeout.cancel(timeout);
-			timeout = undefined;
-			typeof(listener_verify) == "function" ? listener_verify(): null;
-			typeof(listener_lost) == "function" ? listener_lost(): null;
-			typeof(listener_conquered) == "function" ? listener_conquered(): null;
-			listener_verify = undefined;
-			listener_lost = undefined;
-			listener_conquered = undefined;
+			if(!resend){
+				isRunning = !1;
+				commandQueue.unbindAll("support");
+				promise_verify = undefined
+				queue_verifiy = [];
+				$timeout.cancel(timeout);
+				timeout = undefined;
+				typeof(listener_verify) == "function" ? listener_verify(): null;
+				typeof(listener_lost) == "function" ? listener_lost(): null;
+				typeof(listener_conquered) == "function" ? listener_conquered(): null;
+				listener_verify = undefined;
+				listener_lost = undefined;
+				listener_conquered = undefined;
 
-			if(listener_sent && typeof(listener_sent) == "function") {
-				listener_sent();
-				delete listener_sent;
+				if(listener_sent && typeof(listener_sent) == "function") {
+					listener_sent();
+					delete listener_sent;
+				}
+
+				if(listener_cancel && typeof(listener_cancel) == "function") {
+					listener_cancel();
+					delete listener_cancel;
+				}
+
+				returnCommand();
+			} else {
+				$timeout(stop, 30000)
 			}
-
-			if(listener_cancel && typeof(listener_cancel) == "function") {
-				listener_cancel();
-				delete listener_cancel;
-			}
-
-			returnCommand();
 		}
 
 		return	{
 			init				: init,
 			start				: start,
 			stop 				: stop,
-			calibrate_time		: calibrate_time,
 			get_commands		: function (){
 				return Object.keys(commandDefense).map(function(key){
 					return commandDefense[key].params;
@@ -854,7 +837,7 @@ define("robotTW2/services/DefenseService", [
 			isInitialized		: function () {
 				return isInitialized
 			},
-			version				: version.defense,
+			version				: conf.version.defense,
 			name				: "defense",
 		}
 	})(

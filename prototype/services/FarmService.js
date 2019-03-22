@@ -1,6 +1,5 @@
 define("robotTW2/services/FarmService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/time",
 	"robotTW2/conf",
 	"conf/conf",
@@ -14,7 +13,6 @@ define("robotTW2/services/FarmService", [
 	"conf/reportTypes",
 	], function(
 			robotTW2,
-			version,
 			time,
 			conf,
 			conf_conf,
@@ -766,7 +764,7 @@ define("robotTW2/services/FarmService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: version.farm,
+			version			: conf.version.farm,
 			name			: "farm",
 			analytics 		: function () {
 				ga("create", "UA-115071391-2", "auto", "RobotTW2");

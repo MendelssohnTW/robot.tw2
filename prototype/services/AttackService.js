@@ -5,7 +5,6 @@ define("robotTW2/CommandAttack", [
 
 define("robotTW2/services/AttackService", [
 	"robotTW2",
-	"robotTW2/version",
 	"helper/time",
 	"robotTW2/conf",
 	"robotTW2/notify",
@@ -14,7 +13,6 @@ define("robotTW2/services/AttackService", [
 	"robotTW2/CommandAttack"
 	], function(
 			robotTW2,
-			version,
 			helper,
 			conf,
 			notify,
@@ -229,7 +227,7 @@ define("robotTW2/services/AttackService", [
 			isInitialized		: function () {
 				return isInitialized
 			},
-			version				: version.attack,
+			version				: conf.version.attack,
 			name				: "attack"
 		}
 	})(

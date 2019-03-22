@@ -39,7 +39,7 @@
 	},
 	"buildings": {
 		"academy": "Academia",
-		"headquarter": "Edifício principal",
+		"headquarter": "Quartel",
 		"farm": "Fazenda",
 		"warehouse": "Armazém",
 		"barracks": "Quartel",
@@ -257,6 +257,14 @@
     "spy": {
         "spy": "Espiões",
         "log": "Log",
+        "units": "Unidades",
+        "buildings": "Edifícios",
+        "text_source": "Origem",
+        "text_target_village": "Aldeia alvo",
+        "text_target_player": "Jogador alvo",
+        "text_target_province": "Província alvo",
+        "text_data_target": "Tempo no alvo",
+        "text_data_source": "Tempo na origem",
         "comp": "Multi programação",
         "title": "Recrutamento de espiões",
         "settings": "Configurações",
@@ -281,7 +289,8 @@
         "data_data": "Robot TW2 - Banco de dados (DATA) atualizado, reative o módulo DATA",
         "data_logs": "Robot TW2 - Banco de dados (LOGS) atualizado",
         "unity_select": "Selecione as unidades.",
-        "date_error": "Data inferior ao tempo necessário de percurso"
+        "date_error": "Data inferior ao tempo necessário de percurso",
+        "villages_error": "Jogador não possui aldeias"
     },
     "attack": {
         "attack": "Ataque",

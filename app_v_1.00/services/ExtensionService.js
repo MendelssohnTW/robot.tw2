@@ -1,9 +1,9 @@
 define("robotTW2/services/ExtensionService", [
 	"robotTW2",
-	"robotTW2/version"
+	"robotTW2/conf"
 	], function(
 			robotTW2,
-			version
+			conf
 	){
 	return (function ExtensionService(
 			$rootScope,
@@ -51,7 +51,7 @@ define("robotTW2/services/ExtensionService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.alert,
+			version			: conf.version.alert,
 			name			: "alert"
 		}
 	})(

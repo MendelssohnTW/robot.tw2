@@ -1,23 +1,26 @@
+define("robotTW2/CommandSpy", [
+	], function(){
+	return {}
+})
+
 define("robotTW2/services/SpyService", [
 	"robotTW2",
-	"robotTW2/version",
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/conf",
-	"robotTW2/notify",
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
-	"robotTW2/databases/data_spy"
+	"robotTW2/databases/data_spy",
+	"robotTW2/CommandSpy"
 	], function(
 			robotTW2,
-			version,
 			time,
 			helper,
 			conf,
-			notify,
 			SPY_TYPES,
 			data_villages,
-			data_spy
+			data_spy,
+			commandSpy
 	){
 	return (function SpyService(
 			$rootScope,
@@ -33,18 +36,18 @@ define("robotTW2/services/SpyService", [
 
 		var isInitialized = !1
 		, isRunning = !1
-		, scope = $rootScope.$new()
-		, interval_spy = null
+		, listener = undefined
+		, interval_spy = undefined
 		, listener_spy = undefined
 		, listener_open = undefined
 		, listener_close = undefined
 		, interval_handler = undefined
 		, list = []
 		, counterMeasureTypes = {
-				CAMOUFLAGE: "camouflage",
-				DUMMIES: "dummies",
-				EXCHANGE: "exchange",
-				SWITCH_WEAPONS: "switch_weapons"
+			CAMOUFLAGE: "camouflage",
+			DUMMIES: "dummies",
+			EXCHANGE: "exchange",
+			SWITCH_WEAPONS: "switch_weapons"
 		}
 		, getMaxSpies = function(researches, level){
 			var a, b, c = {}, d;
@@ -126,7 +129,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, addAttackSpy = function(params, opt_id){
 			if(!params){return}
-			!(typeof(scope.listener) == "function") ? scope.listener = scope.$on(providers.eventTypeProvider.SCOUTING_SENT, listener_command_sent) : null;
+			!(typeof(listener) == "function") ? listener = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
 			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
@@ -142,7 +145,7 @@ define("robotTW2/services/SpyService", [
 				})
 
 				commandQueue.bind(id_command, sendAttackSpy, data_spy, params, function(fns){
-					scope.commands[fns.params.id_command] = {
+					commandSpy[fns.params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
 					}
@@ -151,7 +154,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, resend = function (params) {
 			commandQueue.bind(params.id_command, resendAttackSpy, data_spy, params, function(fns){
-				scope.commands[fns.params.id_command] = {
+				commandSpy[fns.params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
 						"params"	: params
 				}
@@ -160,22 +163,20 @@ define("robotTW2/services/SpyService", [
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
 			if(data.direction == "forward" && data.type == "spy"){
-				var params = Object.keys($event.currentScope.commands).map(function(cmd){
-					if($event.currentScope.commands[cmd].params.start_village == data.home.id
-							&& $event.currentScope.commands[cmd].params.target_village == data.target.id
+				var params = Object.keys(commandSpy).map(function(cmd){
+					if(commandSpy[cmd].params.start_village == data.home.id
+							&& commandSpy[cmd].params.target_village == data.target.id
 					) {
-						return $event.currentScope.commands[cmd].params	
+						return commandSpy[cmd].params	
 					} else {
 						return undefined
 					}
 				}).filter(f => f != undefined)
 
-				params.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
-
-				var param = undefined;
+				let param = undefined;
 				if(params.length){
+					params.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 					param = params.shift();
-
 				}
 
 				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS)
@@ -205,63 +206,52 @@ define("robotTW2/services/SpyService", [
 			return $timeout(send.bind(null, params), timer_delay_send)
 		}
 		, sendCommandAttackSpy = function(scp){
-			if (scp.availableSpies === 0 || scp.option.length === 0 || scp.rangeSlider.value === 0) {
-				return;
-			}
-
-			var durationInSeconds = helper.unreadableSeconds(scp.duration);
-			var get_data = $("#input-date").val();
-			var get_time = $("#input-time").val();
-			var get_ms = $("#input-ms").val();
-			if (get_time.length <= 5){
-				get_time = get_time + ":00"; 
-			}
-			if (get_data != undefined && get_time != undefined){
-				scp.milisegundos_duracao = durationInSeconds * 1000;
-				scp.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-				if (scp.tempo_escolhido > time.convertedTime() + scp.milisegundos_duracao){
-					addScopeAttackSpy(scp);
-					scp.closeWindow();
-				} else {
-					notify("date_error");
-				}       
+			let vl;
+			if(scp.rangeSlider){
+				vl = scp.rangeSlider.value
 			} else {
-				return;
+				vl = scp.qtd
 			}
-		}
-		, addScopeAttackSpy = function(scp){
+			let opt;
+			if(scp.option){
+				opt = scp.option
+			} else {
+				opt = scp.type
+			}
 			var params = {
 					start_village		: scp.startId,
 					target_village		: scp.targetId,
 					target_x			: scp.targetX,
 					target_y			: scp.targetY,
 					target_name			: scp.targetVillage,
-					spys				: scp.rangeSlider.value,
+					spys				: vl,
 					duration			: scp.milisegundos_duracao,
-					type				: scp.option,
+					type				: opt,
 					data_escolhida		: scp.tempo_escolhido
 			}
 			addAttackSpy(params);
 		}
 		, removeCommandAttackSpy = function(id_command){
-			if(typeof(scope.commands[id_command].timeout) == "object"){
-				if(scope.commands[id_command].timeout.$$state.status == 0){
-					$timeout.cancel(scope.commands[id_command].timeout)	
+			if(typeof(commandSpy[id_command].timeout) == "object"){
+				if(commandSpy[id_command].timeout.$$state.status == 0){
+					$timeout.cancel(commandSpy[id_command].timeout)	
 				}
-				delete scope.commands[id_command];
+				delete commandSpy[id_command];
 			}
 
 			commandQueue.unbind(id_command, data_spy)
 		}
 		, removeAll = function(){
-			if(scope.params){
-				Object.keys(scope.params).map(function(pn){
-					if(scope.params[pn]){
-						delete scope.params[pn]
+			Object.keys(commandSpy).map(function(elem){
+				if(typeof(commandSpy[elem].timeout) == "object"){
+					if(commandSpy[elem].timeout.$$state.status == 0){
+						$timeout.cancel(commandSpy[elem].timeout)	
 					}
-				})
-			}
-			commandQueue.unbindAll("attack", data_spy)
+					delete commandSpy[elem];
+				}
+			})
+			commandQueue.unbindAll("units", data_spy)
+			commandQueue.unbindAll("buildings", data_spy)
 		}
 		, init = function (){
 			isInitialized = !0
@@ -272,7 +262,6 @@ define("robotTW2/services/SpyService", [
 			if(isRunning){return}
 			ready(function(){
 				var open = false;
-				scope.commands = {};
 				loadScript("/controllers/SpyCompletionController.js", true);
 				listener_open = $rootScope.$on("open_get_selected_village", function(){open = true})
 				listener_close = $rootScope.$on("close_get_selected_village", function(){open = false})
@@ -300,6 +289,7 @@ define("robotTW2/services/SpyService", [
 		, stop = function (){
 			robotTW2.removeScript("/controllers/SpyCompletionController.js");
 			typeof(listener_spy) == "function" ? listener_spy(): null;
+			typeof(listener) == "function" ? listener(): null
 			listener_spy = undefined;
 			listener_open = undefined;
 			listener_close = undefined;
@@ -322,7 +312,7 @@ define("robotTW2/services/SpyService", [
 			isInitialized			: function(){
 				return isInitialized
 			},
-			version					: version.spy,
+			version					: conf.version.spy,
 			name					: "spy"
 		}
 
