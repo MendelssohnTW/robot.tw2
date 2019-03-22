@@ -764,17 +764,13 @@ var robotTW2 = window.robotTW2 = undefined;
 	require(["robotTW2"], function(robotTW2){
 
 		define("robotTW2/getJSON", function getJSON(){
+			var json = {}
+
 			return function(str){
-				var service = {};
-				var json = {}
-
-				return function(str){
-					robotTW2.requestFile(str, "/json/", function(jsont){
-						angular.extend(json, jsont)
-					})
-
-					return json;
-				}
+				robotTW2.requestFile(str, "/json/", function(jsont){
+					angular.extend(json, jsont)
+				})
+				return json;
 			}
 		})
 
@@ -797,19 +793,19 @@ var robotTW2 = window.robotTW2 = undefined;
 						BUILDINGLEVELS			: levelsBuilding
 				}
 				, conf_pre = {
-					BUILDINGORDER			: getJSON("orderBuilding"),
-					BUILDINGLIMIT			: getJSON("limitBuilding"),
-					VERSION					: getJSON("version"),
-					DBS 					: getJSON("dbs"),
-					HOTKEY					: getJSON("hotkey"),
-					RESERVA					: getJSON("reserve"),
-					TROOPS_NOT				: getJSON("troops_not"),
-					INTERVAL				: getJSON("interval")
+						BUILDINGORDER			: getJSON("orderBuilding"),
+						BUILDINGLIMIT			: getJSON("limitBuilding"),
+						VERSION					: getJSON("version"),
+						DBS 					: getJSON("dbs"),
+						HOTKEY					: getJSON("hotkey"),
+						RESERVA					: getJSON("reserve"),
+						TROOPS_NOT				: getJSON("troops_not"),
+						INTERVAL				: getJSON("interval")
 				}
-				
+
 				angular.extend(conf, getJSON("conf"))
 				angular.extend(conf, conf_pre)
-				
+
 				return conf;
 			})()
 		})
