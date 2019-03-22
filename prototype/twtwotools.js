@@ -764,62 +764,24 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 
-		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
-			return robotTW2.requestFile;
-		})
-		
-		define("robotTW2/getJSON", ["robotTW2/requestFile"], function requestFile(requestFile){
+		define("robotTW2/getJSON", function getJSON(){
 			var service = {};
 			return service.getJSON = function(str){
 				var json = {};
-				requestFile(str, "/json/", function(jsont){
+				robotTW2.requestFile(str, "/json/", function(jsont){
 					angular.extend(json, jsont)
 				})
 				return json
 			}
 		})
 
-
-//		var version = "3.1.0"
-
-			define("robotTW2/version", ["robotTW2/requestFile"], function(requestFile){
-				var json = {};
-				return requestFile("version", "/json/", function(jsont){
-					angular.extend(json, jsont)
-					return json;
-				})
-
-//				return {
-//				main:			version,
-//				villages:		version,
-//				alert:			version,
-//				deposit:		version,
-//				headquarter:	version,
-//				recon:			version,
-//				spy:			version,
-//				attack:			version,
-//				defense:		version,
-//				farm:			version,
-//				recruit:		version,
-//				medic:			version,
-//				secondvillage:	version,
-//				map:			version,
-//				data:			version,
-//				log:			version
-//				}
-			});
-
-
-
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
 			"robotTW2/version",
-			"robotTW2/requestFile",
 			"robotTW2/getJSON"
 			], function(
 					buildingTypes,
 					version,
-					requestFile,
 					getJSON
 			) {
 
@@ -830,9 +792,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						levelsBuilding[buildingTypes[type]] = 0;
 					}
 				}
-				
-				var teste = getJSON("dbs")
-				console.log(teste)
 
 				var seg = 1000 // 1000 milisegundos
 				, min = seg * 60
@@ -881,22 +840,7 @@ var robotTW2 = window.robotTW2 = undefined;
 //							},
 							SPY			: 30 * min
 						},
-						DBS : [
-							"alert",
-							"attack",
-							"defense",
-							"deposit",
-							"farm",
-							"headquarter",
-							"medic",
-							"recon",
-							"recruit",
-							"spy",
-							"secondvillage",
-							"map",
-							"data",
-							"log"
-							]
+						DBS : getJSON("dbs")
 						,
 						HOTKEY					: {
 							ALERT		 	: "shift+l",
@@ -919,28 +863,18 @@ var robotTW2 = window.robotTW2 = undefined;
 
 				}
 
-				requestFile("orderBuilding", "/json/", function(jsont_order){
-					var orderBuilding = jsont_order;
-					requestFile("limitBuilding", "/json/", function(jsont_limit){
-						var limitBuilding = jsont_limit;
-						angular.extend(conf, {
-							BUILDINGORDER			: orderBuilding,
-							BUILDINGLIMIT			: limitBuilding,
-							BUILDINGLEVELS			: levelsBuilding
-						})
-					})
+				angular.extend(conf, {
+					BUILDINGORDER			: getJSON("orderBuilding"),
+					BUILDINGLIMIT			: getJSON("limitBuilding"),
+					BUILDINGLEVELS			: levelsBuilding
 				})
 
-				requestFile("reserve", "/json/", function(jsont){
-					angular.extend(conf, {
-						RESERVA	: jsont
-					})
+				angular.extend(conf, {
+					RESERVA	: getJSON("reserve")
 				})
 
-				requestFile("troops_not", "/json/", function(jsont){
-					angular.extend(conf, {
-						TROOPS_NOT	: jsont
-					})
+				angular.extend(conf, {
+					TROOPS_NOT	: getJSON("troops_not")
 				})
 
 				return conf;
