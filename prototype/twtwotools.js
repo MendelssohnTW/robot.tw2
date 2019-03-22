@@ -764,15 +764,11 @@ var robotTW2 = window.robotTW2 = undefined;
 	require(["robotTW2"], function(robotTW2){
 
 		define("robotTW2/getJSON", function getJSON(){
-			var onLoad = function(obj, jsont){
-				angular.extend(obj, jsont)
-			}
-
 			return function(obj, str){
-				"strict"
-				this.obj = obj;
+				var json = {}
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					onLoad(this.obj, jsont)
+					angular.extend(json, jsont)
+					return json
 				})
 			}
 		})
@@ -792,11 +788,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 
-			var conf = {} 
-			getJSON(conf, "conf")
-			getJSON(conf["BUILDINGORDER"], "orderBuilding")
-			getJSON(conf["BUILDINGLIMIT"], "limitBuilding")
-			getJSON(conf["VERSION"], "version")
+			var conf = getJSON("conf") 
+			conf["BUILDINGORDER"] = getJSON("orderBuilding")
+			conf["BUILDINGLIMIT"] = getJSON("limitBuilding")
+			conf["VERSION"] = getJSON("version")
 
 			return conf;
 		})
