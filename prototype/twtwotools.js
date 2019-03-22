@@ -77,14 +77,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		, onFileLoadedJson = function onFileLoadedJson(jsont) {
 			$timeout = $timeout || window.injector.get('$timeout');
-			console.log(jsont)
 			$timeout(function () {
 				if (onLoad) {
 					onLoad(jsont);
 				}
 			});
 		};
-
 
 		httpService.get(uri, function(jsont) {
 			if(path == "/lang/"){
@@ -770,7 +768,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			return service.getJSON = function(str){
 				var json = {};
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					angular.extend(json, jsont)
+					json = jsont
 				})
 				return json
 			}
