@@ -767,9 +767,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			var json = {};
 			return function(str){
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					angular.extend(json, jsont)
+					angular.extend(json, [str.toUpperCase()], jsont)
 				})
-				return json
+				return json[str.toUpperCase()] || json
 			}
 		})
 
@@ -817,7 +817,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"FARM_TIME"					: 1800000,
 						"MIN_INTERVAL"				: 300000,
 						"BUILDINGLEVELS"			: levelsBuilding,
-						"BUILDINGORDER"				: getJSON("orderBuilding"),
+						"BUILDINGORDER"				: angular.extend(getJSON("orderBuilding")),
 						"BUILDINGLIMIT"				: getJSON("limitBuilding"),
 						"VERSION"					: getJSON("version"),
 						"DBS" 						: getJSON("dbs"),
