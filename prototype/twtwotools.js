@@ -791,89 +791,20 @@ var robotTW2 = window.robotTW2 = undefined;
 					}
 				}
 
-				var seg = 1000 // 1000 milisegundos
-				, min = seg * 60
-				, h = min * 60;
-
-				var conf = {
-						h						: h,
-						min						: min,
-						seg						: seg,
-						LIMIT_COMMANDS_DEFENSE	: 13,
-						MAX_COMMANDS_FARM		: 42,
-						MIN_POINTS_FARM			: 0,
-						MAX_POINTS_FARM			: 12000,
-						MAP_CHUNCK_LEN 			: 30 / 2,
-						TIME_CORRECTION_COMMAND : 1275,
-						TIME_CORRECTION_STANDARD: -2500,
-						TIME_DELAY_UPDATE		: 30 * seg,
-						TIME_DELAY_FARM			: 500,
-						TIME_SNIPER_ANT 		: 30000,
-						TIME_SNIPER_POST 		: 3000,
-						TIME_SNIPER_POST_SNOB	: 1000,
-						MAX_TIME_CORRECTION 	: 5 * seg,
-						MIN_TIME_SNIPER_ANT 	: 5,
-						MAX_TIME_SNIPER_ANT 	: 600,
-						MIN_TIME_SNIPER_POST 	: 0.3,
-						MAX_TIME_SNIPER_POST 	: 600,
-						MAX_JOURNEY_DISTANCE 	: 6,
-						MIN_JOURNEY_DISTANCE 	: 1,
-						MAX_JOURNEY_TIME     	: 3 * h,
-						MIN_JOURNEY_TIME     	: 8 * min,
+				var conf = getJSON("conf")
+				var conf_pre = {
+						BUILDINGLEVELS			: levelsBuilding,
+						BUILDINGORDER			: getJSON("orderBuilding"),
+						BUILDINGLIMIT			: getJSON("limitBuilding"),
 						VERSION					: getJSON("version"),
-						FARM_TIME		      	: 15 * min,
-						MIN_INTERVAL	     	: 5 * min,
-						INTERVAL				: {
-							HEADQUARTER	: h,
-							RECRUIT		: h,
-							DEPOSIT		: 15 * min,
-							ALERT		: 5 * min,
-							ATTACK		: h,
-							MEDIC		: h,
-//							DATA		: {
-//							villages	: 6 * h,
-//							tribes		: 2 * h,
-//							log			: 1 * h,
-//							members		: 3 * h
-//							},
-							SPY			: 30 * min
-						},
-						DBS : getJSON("dbs")
-						,
-						HOTKEY					: {
-							ALERT		 	: "shift+l",
-							ATTACK		 	: "shift+a",
-							DEFENSE		 	: "shift+d",
-							DEPOSIT		 	: "shift+t",
-							FARM		 	: "shift+f",
-							HEADQUARTER 	: "shift+h",
-							MAIN 			: "shift+p",
-							MEDIC		 	: "shift+i",
-							RECON		 	: "shift+r",
-							RECRUIT		 	: "shift+e",
-							SPY			 	: "shift+s",
-							SECONDVILLAGE	: "shift+q",
-//							DATA			: "shift+j",
-							MAP			 	: "shift+m"
-						},
-						RESERVA				: {},
-						TROOPS_NOT			: {}
-
+						DBS 					: getJSON("dbs"),
+						HOTKEY					: getJSON("hotkey"),
+						RESERVA					: getJSON("reserve"),
+						TROOPS_NOT				: getJSON("troops_not"),
+						INTERVAL				: getJSON("interval")
 				}
-
-				angular.extend(conf, {
-					BUILDINGORDER			: getJSON("orderBuilding"),
-					BUILDINGLIMIT			: getJSON("limitBuilding"),
-					BUILDINGLEVELS			: levelsBuilding
-				})
-
-				angular.extend(conf, {
-					RESERVA	: getJSON("reserve")
-				})
-
-				angular.extend(conf, {
-					TROOPS_NOT	: getJSON("troops_not")
-				})
+				
+				angular.extend(conf, conf_pre)
 
 				return conf;
 			})()
