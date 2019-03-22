@@ -766,7 +766,7 @@ define("robotTW2/services/FarmService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: version.farm,
+			version			: version.FARM,
 			name			: "farm",
 			analytics 		: function () {
 				ga("create", "UA-115071391-2", "auto", "RobotTW2");

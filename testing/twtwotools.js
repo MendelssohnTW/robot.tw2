@@ -844,7 +844,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							SPY				: version.spy,
 							ATTACK			: version.attack,
 							DEFENSE			: version.defense,
-							FARM			: version.farm,
+							FARM			: version.FARM,
 							RECRUIT			: version.recruit,
 							DEPOSIT			: version.deposit,
 							MEDIC			: version.medic,
