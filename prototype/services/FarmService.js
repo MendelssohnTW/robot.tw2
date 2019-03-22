@@ -234,7 +234,7 @@ define("robotTW2/services/FarmService", [
 			let lt = Object.keys(countCommands).map(function(elem){
 				return Object.keys(countCommands[elem]).map(function(el){
 					return countCommands[elem][el].some(f=>f==cmd.targetVillageId || cmd.data.direction=="forward") && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm
-				})[0]
+				}).reduce(function(a,b){return a && b})
 			}).reduce(function(a,b){return a && b})
 			return !lt
 		}
@@ -242,7 +242,7 @@ define("robotTW2/services/FarmService", [
 			let lt = Object.keys(countCommands).map(function(elem){
 				return Object.keys(countCommands[elem]).map(function(el){
 					return countCommands[elem][el].some(f=>f==bb)
-				})[0]
+				}).reduce(function(a,b){return a && b})
 			}).reduce(function(a,b){return a && b})
 			return !lt
 		}
