@@ -233,7 +233,7 @@ define("robotTW2/services/FarmService", [
 		, check_commands = function(cmd, village_id, preset_id){
 			let lt = Object.keys(countCommands).map(function(elem){
 				return Object.keys(countCommands[elem]).map(function(el){
-					return countCommands[elem][el].some(f=>f==cmd.targetVillageId || cmd.data.direction=="forward") && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm - 1
+					return countCommands[elem][el].some(f=>f==cmd.targetVillageId || cmd.data.direction=="forward") && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm
 				})
 			})[0][0]
 			return !lt
@@ -279,8 +279,13 @@ define("robotTW2/services/FarmService", [
 				return !1;
 			}
 
-			if(!lt_bb.length || aldeia_commands_lenght >= max_cmds){
+			if(!lt_bb.length){
 				callback(true);
+				return !0;
+			}
+			
+			if(aldeia_commands_lenght >= max_cmds){
+				callback(false);
 				return !0;
 			}
 
