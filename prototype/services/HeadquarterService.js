@@ -381,7 +381,7 @@ define("robotTW2/services/HeadquarterService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: conf.version.HEADQUARTER,
+			version			: conf.VERSION.HEADQUARTER,
 			name			: "headquarter"
 		}
 

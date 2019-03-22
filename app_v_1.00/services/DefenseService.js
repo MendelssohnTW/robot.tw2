@@ -837,7 +837,7 @@ define("robotTW2/services/DefenseService", [
 			isInitialized		: function () {
 				return isInitialized
 			},
-			version				: conf.version.DEFENSE,
+			version				: conf.VERSION.DEFENSE,
 			name				: "defense",
 		}
 	})(

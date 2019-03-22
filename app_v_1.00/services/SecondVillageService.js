@@ -136,7 +136,7 @@ define("robotTW2/services/SecondVillageService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: conf.version.SECONDVILLAGE,
+			version			: conf.VERSION.SECONDVILLAGE,
 			name			: "secondvillage"
 		}
 
