@@ -799,8 +799,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					BUILDINGORDER			: getJSON("orderBuilding"),
 					BUILDINGLIMIT			: getJSON("limitBuilding"),
 					VERSION					: getJSON("version"),
-					DBS 					: getJSON("dbs"),
-					HOTKEY					: getJSON("hotkey"),
+					
+			
 					RESERVA					: getJSON("reserve"),
 					TROOPS_NOT				: getJSON("troops_not"),
 					INTERVAL				: getJSON("interval")
