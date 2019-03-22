@@ -777,11 +777,9 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
-			"robotTW2/version",
 			"robotTW2/getJSON"
 			], function(
 					buildingTypes,
-					version,
 					getJSON
 			) {
 
