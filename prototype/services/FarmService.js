@@ -127,7 +127,7 @@ define("robotTW2/services/FarmService", [
 			, y = cmd_preset.y
 			, preset_id = cmd_preset.preset_id
 			, village_id = cmd_preset.village_id
-			
+
 			var dist = get_dist(village_id, cmd_preset.max_journey_time, cmd_preset.preset_units)
 
 			var load_map = loadMap(x, y, dist)
@@ -230,6 +230,22 @@ define("robotTW2/services/FarmService", [
 				return [!0, aldeia_units];
 			return [!1, aldeia_units];
 		}
+		, check_commands = function(cmd, village_id, preset_id){
+			let lt = Object.keys(countCommands).map(function(elem){
+				Object.keys(countCommands[elem]).map(function(el){
+					return countCommands[elem][el].some(f=>f==cmd.targetVillageId && cmd.data.direction=="forward") && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm
+				})
+			})
+			return !lt
+		}
+		, check_commands_for_bb = function(bb, village_id, preset_id){
+			let lt = Object.keys(countCommands).map(function(elem){
+				Object.keys(countCommands[elem]).map(function(el){
+					return countCommands[elem][el].some(f=>f==bb) && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm
+				})
+			})
+			return !lt
+		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
 			var result_units = []
 			, village_id = cmd_preset.village_id
@@ -240,12 +256,17 @@ define("robotTW2/services/FarmService", [
 			, aldeia_commands = village.getCommandListModel().data
 			, t_obj = units_analyze(preset_units, aldeia_units);
 
-			if(!countCommands[village_id]) {countCommands[village_id] = []}
-			aldeia_commands.forEach(function (aldeia) {
-				if(!countCommands[village_id].find(f=>f==aldeia.targetVillageId && aldeia.data.direction=="forward")){
-					countCommands[village_id].push(aldeia.targetVillageId);
+			if(!countCommands[village_id]) {countCommands[village_id] = {}}
+			if(!countCommands[village_id][preset_id]) {countCommands[village_id][preset_id] = []}
+			aldeia_commands.forEach(function (cmd) {
+				if(check_commands(cmd, village_id, preset_id)){
+					countCommands[village_id][preset_id].push(aldeia.targetVillageId);
 				}
 			})
+
+			let max_cmds = Math.max(Object.keys(data_villages.villages[village_id].presets).map(function(elem){
+				return data_villages.villages[village_id].presets[elem].max_commands_farm
+			})) || 0;
 
 			var aldeia_commands_lenght = countCommands[village_id].length
 
@@ -254,18 +275,19 @@ define("robotTW2/services/FarmService", [
 				return !1;
 			}
 
-			if(!lt_bb.length || aldeia_commands_lenght >= data_villages.villages[village_id].presets[preset_id].max_commands_farm){
+			if(!lt_bb.length || aldeia_commands_lenght >= max_cmds){
 				callback(true);
 				return !0;
 			}
 
+			var cmd_rest_preset = max_cmds - aldeia_commands_lenght;
 			var cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 			var cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
-			var cmd_ind = Math.min(cmd_rest, cmd_possible)
+			var cmd_ind = Math.min(cmd_rest, cmd_possible, cmd_rest_preset)
 //			if(cmd_ind > 0){
-//				lt_bb.splice(data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
+//			lt_bb.splice(data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
 //			} else {
-//				lt_bb.splice(0);
+//			lt_bb.splice(0);
 //			}
 			var r = undefined
 			, promise_send = undefined
@@ -288,8 +310,8 @@ define("robotTW2/services/FarmService", [
 										army_preset_id: preset_id,
 										type: "attack"
 								}
-								if (check_village(bb, cmd_preset) && countCommands[village_id] && !countCommands[village_id].some(f=>f==bb)) {
-									countCommands[village_id].push(bb);
+								if (check_commands_for_bb(bb, village_id, preset_id)) {
+									countCommands[village_id][preset_id].push(bb);
 									requestFn.trigger("Farm/sendCmd")
 									result_units = units_subtract(preset_units, aldeia_units)
 									aldeia_units = result_units[1];
@@ -327,9 +349,11 @@ define("robotTW2/services/FarmService", [
 			});
 		}
 		, check_village = function (vill, cmd_preset) {
-			if(typeof(vill) == "number"){
-				return !Object.values(countCommands).map(function (key) {return key.find(f => f == vill)}).filter(f => f != undefined).length > 0 ? true : false
-			} else {
+//			if(typeof(vill) == "number"){
+//				return !Object.values(countCommands).map(function (key) {
+//					return key.find(f => f == vill)
+//				}).filter(f => f != undefined).length > 0 ? true : false
+//			} else {
 				if(!vill) 
 					return false;
 				var village_id = cmd_preset.village_id
@@ -363,7 +387,7 @@ define("robotTW2/services/FarmService", [
 				} else {
 					return false
 				}
-			}
+//			}
 		}
 		, loadVillages = function(cmd_preset, listaGrid){
 			return new Promise(function(resol){
@@ -415,17 +439,17 @@ define("robotTW2/services/FarmService", [
 					'x'			: bb.x,
 					'y'			: bb.y
 				})
-				
+
 				return get_time(village_id, dt, cmd_preset.preset_units)
 			}
-			
+
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
-					
+
 					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 						$timeout.cancel(t);
 						t = undefined;
@@ -656,7 +680,7 @@ define("robotTW2/services/FarmService", [
 						g(data_farm.farm_time)
 					})
 				}
-				
+
 				opt ? g(0) : f(0);
 			}
 
@@ -669,7 +693,7 @@ define("robotTW2/services/FarmService", [
 					completion_loaded = !0;
 					loadScript("/controllers/FarmCompletionController.js", true);
 				}
-				
+
 				listener_report = $rootScope.$on(providers.eventTypeProvider.REPORT_NEW, analyze_report)
 
 				data_log.farm = [];
@@ -731,7 +755,7 @@ define("robotTW2/services/FarmService", [
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
 			}
-			
+
 			typeof(listener_report) == "function" ? listener_report(): null;
 			listener_report = undefined
 
