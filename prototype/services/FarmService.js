@@ -267,10 +267,10 @@ define("robotTW2/services/FarmService", [
 			let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[village_id].presets).map(function(elem){
 				return data_villages.villages[village_id].presets[elem].max_commands_farm
 			})) || 0;
-
-			let sum = Object.keys(countCommands[village_id]).reduce(function(a, b) {
-				return countCommands[village_id][a].length + countCommands[village_id][b].length
-			});
+			
+			let sum = Object.values(countCommands[village_id]).map(function(elem){return elem}).reduce(function(a, b) {
+				  return a.concat(b);
+			}).length
 			
 			var aldeia_commands_lenght = sum;
 
