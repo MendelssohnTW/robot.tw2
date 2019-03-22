@@ -794,9 +794,9 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			var conf = {} 
 			getJSON(conf, "conf")
-			getJSON(conf.BUILDINGORDER, "conf")
-			getJSON(conf.BUILDINGLIMIT, "orderBuilding")
-			getJSON(conf.VERSION, "version")
+			getJSON(conf["BUILDINGORDER"], "conf")
+			getJSON(conf["BUILDINGLIMIT"], "orderBuilding")
+			getJSON(conf["VERSION"], "version")
 
 			return conf;
 		})
