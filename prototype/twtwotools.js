@@ -768,7 +768,11 @@ var robotTW2 = window.robotTW2 = undefined;
 			return service.getJSON = function(str){
 				var json = {};
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					json = jsont
+					if(typeof(jsont == "object")){
+						angular.extend(json, jsont)
+					} else {
+						json = jsont
+					}
 				})
 				return json
 			}
@@ -792,17 +796,17 @@ var robotTW2 = window.robotTW2 = undefined;
 
 				var conf = getJSON("conf")
 				var conf_pre = {
-						BUILDINGLEVELS			: levelsBuilding,
-						BUILDINGORDER			: getJSON("orderBuilding"),
-						BUILDINGLIMIT			: getJSON("limitBuilding"),
-						VERSION					: getJSON("version"),
-						DBS 					: getJSON("dbs"),
-						HOTKEY					: getJSON("hotkey"),
-						RESERVA					: getJSON("reserve"),
-						TROOPS_NOT				: getJSON("troops_not"),
-						INTERVAL				: getJSON("interval")
+					BUILDINGLEVELS			: levelsBuilding,
+					BUILDINGORDER			: getJSON("orderBuilding"),
+					BUILDINGLIMIT			: getJSON("limitBuilding"),
+					VERSION					: getJSON("version"),
+					DBS 					: getJSON("dbs"),
+					HOTKEY					: getJSON("hotkey"),
+					RESERVA					: getJSON("reserve"),
+					TROOPS_NOT				: getJSON("troops_not"),
+					INTERVAL				: getJSON("interval")
 				}
-				
+
 				angular.extend(conf, conf_pre)
 
 				return conf;
