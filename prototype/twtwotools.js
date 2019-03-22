@@ -764,16 +764,14 @@ var robotTW2 = window.robotTW2 = undefined;
 	require(["robotTW2"], function(robotTW2){
 
 		define("robotTW2/getJSON", function getJSON(){
-			var that = this
-			, onLoad = function(jsont){
+			var onLoad = function(jsont){
 				angular.extend(this.json, jsont)
 			}
-			
-			that.json = {};
-			
+			, json = {};
+
 			return function(str){
 				robotTW2.requestFile(str, "/json/", onLoad)
-				return that
+				angular.extend(json, jsont)
 			}
 		})
 
@@ -785,31 +783,29 @@ var robotTW2 = window.robotTW2 = undefined;
 					getJSON
 			) {
 
-			return (function(){
-				var levelsBuilding = {};
-				for (var type in buildingTypes){
-					if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
-						levelsBuilding[buildingTypes[type]] = 0;
-					}
+			var levelsBuilding = {};
+			for (var type in buildingTypes){
+				if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
+					levelsBuilding[buildingTypes[type]] = 0;
 				}
+			}
 
-				var conf = getJSON("conf") || {}
-				var conf_pre = {
-						BUILDINGLEVELS			: levelsBuilding,
-						BUILDINGORDER			: getJSON("orderBuilding"),
-						BUILDINGLIMIT			: getJSON("limitBuilding"),
-						VERSION					: getJSON("version"),
-						HOTKEY					: getJSON("hotkey"),
-						DBS						: getJSON("dbs"),
-						RESERVA					: getJSON("reserve"),
-						TROOPS_NOT				: getJSON("troops_not"),
-						INTERVAL				: getJSON("interval")
-				}
+			var conf = getJSON("conf") || {}
+			var conf_pre = {
+					BUILDINGLEVELS			: levelsBuilding,
+					BUILDINGORDER			: getJSON("orderBuilding"),
+					BUILDINGLIMIT			: getJSON("limitBuilding"),
+					VERSION					: getJSON("version"),
+					HOTKEY					: getJSON("hotkey"),
+					DBS						: getJSON("dbs"),
+					RESERVA					: getJSON("reserve"),
+					TROOPS_NOT				: getJSON("troops_not"),
+					INTERVAL				: getJSON("interval")
+			}
 
-				angular.extend(conf, conf_pre)
+			angular.extend(conf, conf_pre)
 
-				return conf;
-			})()
+			return conf;
 		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
