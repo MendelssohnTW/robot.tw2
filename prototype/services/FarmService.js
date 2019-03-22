@@ -238,13 +238,13 @@ define("robotTW2/services/FarmService", [
 			}).reduce(function(a,b){return a && b})
 			return !lt
 		}
-		, check_commands_for_bb = function(bb, village_id, preset_id){
+		, check_commands_for_bb = function(bb){
 			let lt = Object.keys(countCommands).map(function(elem){
 				return Object.keys(countCommands[elem]).map(function(el){
 					return countCommands[elem][el].some(f=>f==bb)
-				}).reduce(function(a,b){return a && b})
-			}).reduce(function(a,b){return a && b})
-			return !lt
+				}).every(f=>f==false)
+			}).every(f=>f==true)
+			return lt
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
 			var result_units = []
@@ -314,7 +314,7 @@ define("robotTW2/services/FarmService", [
 										army_preset_id: preset_id,
 										type: "attack"
 								}
-								if (check_commands_for_bb(bb, village_id, preset_id)) {
+								if (check_commands_for_bb(bb)) {
 									countCommands[village_id][preset_id].push(bb);
 									requestFn.trigger("Farm/sendCmd")
 									result_units = units_subtract(preset_units, aldeia_units)
