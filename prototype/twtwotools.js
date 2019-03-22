@@ -765,9 +765,15 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/getJSON", function getJSON(){
 			return function(str){
-				robotTW2.requestFile(str, "/json/", function(jsont){
-					return jsont
-				})
+				var json = {}
+
+				return function(str){
+					robotTW2.requestFile(str, "/json/", function(jsont){
+						angular.extend(json, jsont)
+					})
+
+					return json;
+				}
 			}
 		})
 
@@ -786,12 +792,21 @@ var robotTW2 = window.robotTW2 = undefined;
 						levelsBuilding[buildingTypes[type]] = 0;
 					}
 				}
-				var conf = {};
-				angular.extend(conf, getJSON("conf"))
-				angular.extend(conf, {"BUILDINGORDER" : getJSON("orderBuilding")})
-				angular.extend(conf, {"BUILDINGLIMIT" : getJSON("limitBuilding")})
-				angular.extend(conf, {"VERSION" : getJSON("version")})
+				var conf = getJSON("conf")
+				var conf_pre = {
+					BUILDINGLEVELS			: levelsBuilding,
+					BUILDINGORDER			: getJSON("orderBuilding"),
+					BUILDINGLIMIT			: getJSON("limitBuilding"),
+					VERSION					: getJSON("version"),
+					DBS 					: getJSON("dbs"),
+					HOTKEY					: getJSON("hotkey"),
+					RESERVA					: getJSON("reserve"),
+					TROOPS_NOT				: getJSON("troops_not"),
+					INTERVAL				: getJSON("interval")
+				}
 
+				angular.extend(conf, conf_pre)
+				
 				return conf;
 			})()
 		})
