@@ -788,10 +788,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 			}
 
-			var conf = getJSON("conf") 
-			conf.BUILDINGORDER = getJSON("orderBuilding")
-			conf.BUILDINGLIMIT = getJSON("limitBuilding")
-			conf.VERSION = getJSON("version")
+			var conf = getJSON("conf")
+			angular.extend(conf, {"BUILDINGORDER" : getJSON("orderBuilding")})
+			angular.extend(conf, {"BUILDINGLIMIT" : getJSON("limitBuilding")})
+			angular.extend(conf, {"VERSION" : getJSON("version")})
 
 			return conf;
 		})
