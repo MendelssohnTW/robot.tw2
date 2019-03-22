@@ -771,12 +771,12 @@ var robotTW2 = window.robotTW2 = undefined;
 			return service.getJSON = function(str){
 				robotTW2.requestFile(str, "/json/", function(jsont){
 					angular.extend(json, jsont)
-					if(Object.keys(json).length){
-						angular.extend(json_o, jsont)
-					} else if(json.length){
+					if(json.length){
 						json_o = undefined;
 						json_o = [];
 						json_o = jsont
+					} else {
+						angular.extend(json_o, jsont)
 					}
 				})
 
