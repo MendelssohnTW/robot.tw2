@@ -773,7 +773,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					angular.extend(json, jsont)
 					if(Object.keys(json).length){
 						angular.extend(json_o, jsont)
-					} else if(jsont.length){
+					} else if(json.length){
 						json_o = undefined;
 						json_o = [];
 						json_o = jsont
