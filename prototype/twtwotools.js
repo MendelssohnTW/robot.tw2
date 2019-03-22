@@ -817,7 +817,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"FARM_TIME"					: 1800000,
 						"MIN_INTERVAL"				: 300000,
 						"BUILDINGLEVELS"			: levelsBuilding,
-						"BUILDINGORDER"				: angular.extend(getJSON("orderBuilding")),
+						"BUILDINGORDER"				: angular.extend({}, getJSON("orderBuilding")),
 						"BUILDINGLIMIT"				: getJSON("limitBuilding"),
 						"VERSION"					: getJSON("version"),
 						"DBS" 						: getJSON("dbs"),
