@@ -769,8 +769,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 
 			return function(obj, str){
+				"strict"
+				this.obj = obj;
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					onLoad(obj, jsont)
+					onLoad(this.obj, jsont)
 				})
 			}
 		})
