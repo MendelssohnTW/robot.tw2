@@ -84,7 +84,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			});
 		};
 
-
 		httpService.get(uri, function(jsont) {
 			if(path == "/lang/"){
 				i18n.setJSON(jsont);
@@ -766,13 +765,11 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/getJSON", function getJSON(){
 			return function(str){
+				var json = {};
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					if(str!="conf"){
-						return {[str.toUpperCase()]: jsont}
-					} else {
-						return jsont
-					}
+					angular.extend(json, jsont)
 				})
+				return json
 			}
 		})
 
@@ -792,21 +789,44 @@ var robotTW2 = window.robotTW2 = undefined;
 					}
 				}
 
-				var conf = getJSON("conf", conf)
-				var conf_pre = {
-					BUILDINGLEVELS			: levelsBuilding,
-					BUILDINGORDER			: getJSON("orderBuilding"),
-					BUILDINGLIMIT			: getJSON("limitBuilding"),
-					VERSION					: getJSON("version"),
-
-
-					RESERVA					: getJSON("reserve"),
-					TROOPS_NOT				: getJSON("troops_not"),
-					INTERVAL				: getJSON("interval")
+				var conf = {
+						"h"							: 3600000,
+						"min"						: 60000,
+						"s"							: 1000,
+						"LIMIT_COMMANDS_DEFENSE"	: 13,
+						"MAX_COMMANDS_FARM"			: 42,
+						"MIN_POINTS_FARM"			: 0,
+						"MAX_POINTS_FARM"			: 12000,
+						"MAP_CHUNCK_LEN"			: 15,
+						"TIME_CORRECTION_COMMAND"	: 1275,
+						"TIME_CORRECTION_STANDARD"	: -2500,
+						"TIME_DELAY_UPDATE"			: 30000,
+						"TIME_DELAY_FARM"			: 1000,
+						"TIME_SNIPER_ANT"			: 30000,
+						"TIME_SNIPER_POST"			: 3000,
+						"TIME_SNIPER_POST_SNOB"		: 1000,
+						"MAX_TIME_CORRECTION"		: 5000,
+						"MIN_TIME_SNIPER_ANT"		: 5,
+						"MAX_TIME_SNIPER_ANT"		: 600,
+						"MIN_TIME_SNIPER_POST"		: 0.3,
+						"MAX_TIME_SNIPER_POST"		: 600,
+						"MAX_JOURNEY_DISTANCE"		: 6,
+						"MIN_JOURNEY_DISTANCE"		: 1,
+						"MAX_JOURNEY_TIME"			: 3600000,
+						"MIN_JOURNEY_TIME"			: 480000,
+						"FARM_TIME"					: 1800000,
+						"MIN_INTERVAL"				: 300000,
+						"BUILDINGLEVELS"			: levelsBuilding,
+						"BUILDINGORDER"				: new getJSON("orderBuilding"),
+						"BUILDINGLIMIT"				: new getJSON("limitBuilding"),
+						"VERSION"					: new getJSON("version"),
+						"DBS" 						: new getJSON("dbs"),
+						"HOTKEY"					: new getJSON("hotkey"),
+						"RESERVA"					: new getJSON("reserve"),
+						"TROOPS_NOT"				: new getJSON("troops_not"),
+						"INTERVAL"					: new getJSON("interval")
 				}
-
-				angular.extend(conf, conf_pre)
-
+				
 				return conf;
 			})()
 		})

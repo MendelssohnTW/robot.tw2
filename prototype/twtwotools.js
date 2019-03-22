@@ -2024,7 +2024,6 @@ var robotTW2 = window.robotTW2 = undefined;
 		$rootScope.$on("ready", function($event, type){
 
 			require(["robotTW2/conf"], function(conf){
-				console.log(conf)
 				switch (type) {
 				case robotTW2.controllers.MainController : {
 					robotTW2.loadScript("/controllers/FarmController.js");

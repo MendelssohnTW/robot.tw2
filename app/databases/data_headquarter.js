@@ -21,7 +21,7 @@ define("robotTW2/databases/data_headquarter", [
 	}
 
 	var id = 0;
-
+	
 	var dataNew = {
 			auto_start				: false,
 			init_initialized 		: false,
