@@ -817,15 +817,17 @@ var robotTW2 = window.robotTW2 = undefined;
 						"FARM_TIME"					: 1800000,
 						"MIN_INTERVAL"				: 300000,
 						"BUILDINGLEVELS"			: levelsBuilding,
-						"BUILDINGORDER"				: angular.extend({}, getJSON("orderBuilding")),
-						"BUILDINGLIMIT"				: getJSON("limitBuilding"),
-						"VERSION"					: getJSON("version"),
-						"DBS" 						: getJSON("dbs"),
-						"HOTKEY"					: getJSON("hotkey"),
-						"RESERVA"					: getJSON("reserve"),
-						"TROOPS_NOT"				: getJSON("troops_not"),
-						"INTERVAL"					: getJSON("interval")
+						"BUILDINGORDER"				: angular.extend({}, getJSON("orderBuilding"))
 				}
+				
+				angular.extend(conf, getJSON("orderBuilding"))
+				angular.extend(conf, getJSON("limitBuilding"))
+				angular.extend(conf, getJSON("version"))
+				angular.extend(conf, getJSON("dbs"))
+				angular.extend(conf, getJSON("hotkey"))
+				angular.extend(conf, getJSON("reserve"))
+				angular.extend(conf, getJSON("troops_not"))
+				angular.extend(conf, getJSON("interval"))
 
 				return conf;
 			})()
