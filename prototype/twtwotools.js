@@ -779,19 +779,21 @@ var robotTW2 = window.robotTW2 = undefined;
 					getJSON
 			) {
 
-			var levelsBuilding = {};
-			for (var type in buildingTypes){
-				if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
-					levelsBuilding[buildingTypes[type]] = 0;
+			return (function(){
+				var levelsBuilding = {};
+				for (var type in buildingTypes){
+					if(buildingTypes.hasOwnProperty(type) && [buildingTypes[type]] != "fortress"){
+						levelsBuilding[buildingTypes[type]] = 0;
+					}
 				}
-			}
-			var conf = {};
-			angular.extend(conf, getJSON("conf"))
-			angular.extend(conf, {"BUILDINGORDER" : getJSON("orderBuilding")})
-			angular.extend(conf, {"BUILDINGLIMIT" : getJSON("limitBuilding")})
-			angular.extend(conf, {"VERSION" : getJSON("version")})
+				var conf = {};
+				angular.extend(conf, getJSON("conf"))
+				angular.extend(conf, {"BUILDINGORDER" : getJSON("orderBuilding")})
+				angular.extend(conf, {"BUILDINGLIMIT" : getJSON("limitBuilding")})
+				angular.extend(conf, {"VERSION" : getJSON("version")})
 
-			return conf;
+				return conf;
+			})()
 		})
 		angular.extend(robotTW2.services, define("robotTW2/services", [], function(){
 			robotTW2.register("services", "hotkeys");
