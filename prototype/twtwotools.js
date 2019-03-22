@@ -788,7 +788,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					}
 				}
 
-				var conf = getJSON("conf")
+				var conf = getJSON("conf") || {}
 				var conf_pre = {
 					BUILDINGLEVELS			: levelsBuilding,
 					BUILDINGORDER			: getJSON("orderBuilding"),
