@@ -765,22 +765,22 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/getJSON", function getJSON(){
 			var service = {};
-			var json_object = {}
-			var json_array = []
-			var json;
+			var json = {}
+			var json_o = {};
 
 			return service.getJSON = function(str){
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					json = jsont
+					angular.extend(json, jsont)
+					if(Object.keys(json).length){
+						angular.extend(json_o, jsont)
+					} else if(jsont.length){
+						json_o = undefined;
+						json_o = [];
+						json_o = jsont
+					}
 				})
 
-				if(Object.keys(json).length){
-					angular.extend(json_object, jsont)
-					return json_object;
-				} else if(jsont.length){
-					json_array = jsont
-					return json_array
-				}
+				return json_o;
 
 			}
 		})
