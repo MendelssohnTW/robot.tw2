@@ -764,37 +764,39 @@ var robotTW2 = window.robotTW2 = undefined;
 , function(){
 	require(["robotTW2"], function(robotTW2){
 
-		var version = "3.1.0"
-
-			define("robotTW2/version", function(){
-				
-				return requestFile("troops_not", "/json/", function(jsont){
-					return jsont;
-				})
-				
-//				return {
-//					main:			version,
-//					villages:		version,
-//					alert:			version,
-//					deposit:		version,
-//					headquarter:	version,
-//					recon:			version,
-//					spy:			version,
-//					attack:			version,
-//					defense:		version,
-//					farm:			version,
-//					recruit:		version,
-//					medic:			version,
-//					secondvillage:	version,
-//					map:			version,
-//					data:			version,
-//					log:			version
-//				}
-			});
-
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
 			return robotTW2.requestFile;
 		})
+
+
+		var version = "3.1.0"
+
+			define("robotTW2/version", ["robotTW2/requestFile"], function(requestFile){
+				return requestFile("version", "/json/", function(jsont){
+					return jsont;
+				})
+
+//				return {
+//				main:			version,
+//				villages:		version,
+//				alert:			version,
+//				deposit:		version,
+//				headquarter:	version,
+//				recon:			version,
+//				spy:			version,
+//				attack:			version,
+//				defense:		version,
+//				farm:			version,
+//				recruit:		version,
+//				medic:			version,
+//				secondvillage:	version,
+//				map:			version,
+//				data:			version,
+//				log:			version
+//				}
+			});
+
+
 
 		define("robotTW2/conf", [
 			"conf/buildingTypes",
@@ -916,7 +918,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						RESERVA	: jsont
 					})
 				})
-				
+
 				requestFile("troops_not", "/json/", function(jsont){
 					angular.extend(conf, {
 						TROOPS_NOT	: jsont
