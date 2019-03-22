@@ -771,18 +771,22 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/getJSON", ["robotTW2/requestFile"], function requestFile(requestFile){
 			var service = {};
 			return service.getJSON = function(str){
-				return requestFile(str, "/json/", function(jsont){
-					return jsont;
+				var json = {};
+				requestFile(str, "/json/", function(jsont){
+					angular.extend(json, jsont)
 				})
+				return json
 			}
 		})
 
 
-		var version = "3.1.0"
+//		var version = "3.1.0"
 
 			define("robotTW2/version", ["robotTW2/requestFile"], function(requestFile){
+				var json = {};
 				return requestFile("version", "/json/", function(jsont){
-					return jsont;
+					angular.extend(json, jsont)
+					return json;
 				})
 
 //				return {
