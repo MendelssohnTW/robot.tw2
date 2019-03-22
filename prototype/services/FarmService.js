@@ -235,7 +235,7 @@ define("robotTW2/services/FarmService", [
 				return Object.keys(countCommands[elem]).map(function(el){
 					return countCommands[elem][el].some(f=>f==cmd.targetVillageId && cmd.data.direction=="forward") && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm
 				})
-			})[0]
+			})[0][0]
 			return !lt
 		}
 		, check_commands_for_bb = function(bb, village_id, preset_id){
@@ -243,7 +243,7 @@ define("robotTW2/services/FarmService", [
 				return Object.keys(countCommands[elem]).map(function(el){
 					return countCommands[elem][el].some(f=>f==bb) && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm
 				})
-			})[0]
+			})[0][0]
 			return !lt
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
