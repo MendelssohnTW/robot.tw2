@@ -260,7 +260,7 @@ define("robotTW2/services/FarmService", [
 			if(!countCommands[village_id][preset_id]) {countCommands[village_id][preset_id] = []}
 			aldeia_commands.forEach(function (cmd) {
 				if(check_commands(cmd, village_id, preset_id)){
-					countCommands[village_id][preset_id].push(aldeia.targetVillageId);
+					countCommands[village_id][preset_id].push(cmd.targetVillageId);
 				}
 			})
 
