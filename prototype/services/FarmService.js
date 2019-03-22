@@ -424,7 +424,7 @@ define("robotTW2/services/FarmService", [
 			return new Promise(function(resolve_grid){
 				t = $timeout(function(){
 					resolve_grid();
-				}, conf_conf.LOADING_TIMEOUT + 20000);
+				}, conf_conf.LOADING_TIMEOUT);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
 					

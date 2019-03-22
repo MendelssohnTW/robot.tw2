@@ -2100,9 +2100,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				return grad[i][j].loaded;
 			}
 
-			Object.setPrototypeOf(grad, serv);
+//			Object.setPrototypeOf(grad, serv);
 
-			return grad
+			return serv
 		})
 		, define("robotTW2/services/villages_town", ["robotTW2"], function(robotTW2){
 			var serv = {}
