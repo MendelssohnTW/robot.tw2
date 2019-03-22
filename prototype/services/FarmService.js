@@ -234,16 +234,16 @@ define("robotTW2/services/FarmService", [
 			let lt = Object.keys(countCommands).map(function(elem){
 				return Object.keys(countCommands[elem]).map(function(el){
 					return countCommands[elem][el].some(f=>f==cmd.targetVillageId || cmd.data.direction=="forward") && countCommands[elem][el].length >= data_villages.villages[village_id].presets[preset_id].max_commands_farm
-				})
-			}).reduce(function(a,b){return a && b})
+				}).reduce(function(a,b){return a && b})
+			}).reduce(function(a,b){return a && b})[0]
 			return !lt
 		}
 		, check_commands_for_bb = function(bb, village_id, preset_id){
 			let lt = Object.keys(countCommands).map(function(elem){
 				return Object.keys(countCommands[elem]).map(function(el){
 					return countCommands[elem][el].some(f=>f==bb)
-				})
-			}).reduce(function(a,b){return a && b})
+				}).reduce(function(a,b){return a && b})
+			}).reduce(function(a,b){return a && b})[0]
 			return !lt
 		}
 		, sendCmd = function (cmd_preset, lt_bb, callback) {
