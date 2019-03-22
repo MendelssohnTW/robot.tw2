@@ -51,7 +51,7 @@ define("robotTW2/services/ExtensionService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: conf.version.alert,
+			version			: conf.version.ALERT,
 			name			: "alert"
 		}
 	})(

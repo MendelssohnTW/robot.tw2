@@ -442,7 +442,7 @@ define("robotTW2/services/RecruitService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.recruit,
+			version			: version.RECRUIT,
 			name			: "recruit"
 		}
 	})(

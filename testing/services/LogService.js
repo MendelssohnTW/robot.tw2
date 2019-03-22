@@ -48,7 +48,7 @@ define("robotTW2/services/LogService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.log,
+			version			: version.LOG,
 			name			: "log"
 		}
 

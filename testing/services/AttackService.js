@@ -280,7 +280,7 @@ define("robotTW2/services/AttackService", [
 			isInitialized		: function () {
 				return isInitialized
 			},
-			version				: version.attack,
+			version				: version.ATTACK,
 			name				: "attack"
 		}
 	})(

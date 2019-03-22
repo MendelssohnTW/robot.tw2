@@ -134,7 +134,7 @@ define("robotTW2/services/DepositService", [
 			isInitialized	: function () {
 				return isInitialized
 			},
-			version			: version.deposit,
+			version			: version.DEPOSIT,
 			name			: "deposit",
 		}
 	})(

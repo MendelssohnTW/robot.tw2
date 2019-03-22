@@ -229,7 +229,7 @@ define("robotTW2/services/ReconService", [
 			isPaused		: function(){
 				return isPaused
 			},
-			version			: version.recon,
+			version			: version.RECON,
 			name			: "recon"
 		}
 

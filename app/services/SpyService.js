@@ -312,7 +312,7 @@ define("robotTW2/services/SpyService", [
 			isInitialized			: function(){
 				return isInitialized
 			},
-			version					: conf.version.spy,
+			version					: conf.version.SPY,
 			name					: "spy"
 		}
 

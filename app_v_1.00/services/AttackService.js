@@ -227,7 +227,7 @@ define("robotTW2/services/AttackService", [
 			isInitialized		: function () {
 				return isInitialized
 			},
-			version				: conf.version.attack,
+			version				: conf.version.ATTACK,
 			name				: "attack"
 		}
 	})(

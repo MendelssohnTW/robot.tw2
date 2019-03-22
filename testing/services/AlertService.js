@@ -76,7 +76,7 @@ define("robotTW2/services/AlertService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: version.alert,
+			version			: version.ALERT,
 			name			: "alert"
 		}
 	})(

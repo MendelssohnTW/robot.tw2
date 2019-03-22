@@ -1272,7 +1272,7 @@ define("robotTW2/services/DataService", [
 			isInitializedTribes		: function(){
 				return checkTimerTribe.isInitialized()
 			},
-			version			: conf.version.data,
+			version			: conf.version.DATA,
 			name			: "data"
 		}
 	})(
