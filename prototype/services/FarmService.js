@@ -274,7 +274,7 @@ define("robotTW2/services/FarmService", [
 			
 			var aldeia_commands_lenght = sum;
 
-			if(!t_obj){
+			if(!t_obj || aldeia_commands_lenght >= max_cmds){
 				callback(false);
 				return !1;
 			}
@@ -284,11 +284,6 @@ define("robotTW2/services/FarmService", [
 				return !0;
 			}
 			
-			if(aldeia_commands_lenght >= max_cmds){
-				callback(false);
-				return !0;
-			}
-
 			var cmd_rest_preset = max_cmds - aldeia_commands_lenght;
 			var cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
 			var cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
