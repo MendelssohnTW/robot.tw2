@@ -77,6 +77,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		, onFileLoadedJson = function onFileLoadedJson(jsont) {
 			$timeout = $timeout || window.injector.get('$timeout');
+			console.log(jsont)
 			$timeout(function () {
 				if (onLoad) {
 					onLoad(jsont);
