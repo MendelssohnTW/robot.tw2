@@ -268,7 +268,10 @@ define("robotTW2/services/FarmService", [
 				return data_villages.villages[village_id].presets[elem].max_commands_farm
 			})) || 0;
 
-			var aldeia_commands_lenght = countCommands[village_id].length
+			let sum = Object.keys(countCommands[village_id]).reduce(function(a, b) {
+				return countCommands[village_id][a].length + countCommands[village_id][b].length
+			});
+			var aldeia_commands_lenght = sum;
 
 			if(!t_obj){
 				callback(false);
@@ -350,43 +353,43 @@ define("robotTW2/services/FarmService", [
 		}
 		, check_village = function (vill, cmd_preset) {
 //			if(typeof(vill) == "number"){
-//				return !Object.values(countCommands).map(function (key) {
-//					return key.find(f => f == vill)
-//				}).filter(f => f != undefined).length > 0 ? true : false
+//			return !Object.values(countCommands).map(function (key) {
+//			return key.find(f => f == vill)
+//			}).filter(f => f != undefined).length > 0 ? true : false
 //			} else {
-				if(!vill) 
-					return false;
-				var village_id = cmd_preset.village_id
-				, preset_id = cmd_preset.preset_id
-				, village = modelDataService.getVillage(village_id) 
-				, x1 = vill.x
-				, y1 = vill.y 
-				, x2 = village.data.x 
-				, y2 = village.data.y
+			if(!vill) 
+				return false;
+			var village_id = cmd_preset.village_id
+			, preset_id = cmd_preset.preset_id
+			, village = modelDataService.getVillage(village_id) 
+			, x1 = vill.x
+			, y1 = vill.y 
+			, x2 = village.data.x 
+			, y2 = village.data.y
 
-				var quadrant = 0;
-				if(x1 <= x2 && y1 <= y2) {
-					quadrant = 1
-				} else if (x1 <= x2 && y1 > y2) {
-					quadrant = 4
-				} else if (x1 > x2 && y1 <= y2) {
-					quadrant = 2
-				} else if (x1 > x2 && y1 > y2) {
-					quadrant = 3
-				}
+			var quadrant = 0;
+			if(x1 <= x2 && y1 <= y2) {
+				quadrant = 1
+			} else if (x1 <= x2 && y1 > y2) {
+				quadrant = 4
+			} else if (x1 > x2 && y1 <= y2) {
+				quadrant = 2
+			} else if (x1 > x2 && y1 > y2) {
+				quadrant = 3
+			}
 
-//				var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
-				var existQuadrant = false;
-				if(data_villages.villages[village_id].presets[preset_id].quadrants){
-					existQuadrant = data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
-				} else {
-					existQuadrant = [1, 2, 3, 4].includes(quadrant);
-				}
-				if(existQuadrant) {
-					return true
-				} else {
-					return false
-				}
+//			var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
+			var existQuadrant = false;
+			if(data_villages.villages[village_id].presets[preset_id].quadrants){
+				existQuadrant = data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
+			} else {
+				existQuadrant = [1, 2, 3, 4].includes(quadrant);
+			}
+			if(existQuadrant) {
+				return true
+			} else {
+				return false
+			}
 //			}
 		}
 		, loadVillages = function(cmd_preset, listaGrid){
