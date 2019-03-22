@@ -264,7 +264,7 @@ define("robotTW2/services/FarmService", [
 				}
 			})
 
-			let max_cmds = Math.max(Object.keys(data_villages.villages[village_id].presets).map(function(elem){
+			let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[village_id].presets).map(function(elem){
 				return data_villages.villages[village_id].presets[elem].max_commands_farm
 			})) || 0;
 
