@@ -767,7 +767,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		define("robotTW2/getJSON", function getJSON(){
 			var service = {};
 
-			return function(str, obj){
+			return function(str){
 				robotTW2.requestFile(str, "/json/", function(jsont){
 					if(str!="conf"){
 						return {[str.toUpperCase()]: jsont}
