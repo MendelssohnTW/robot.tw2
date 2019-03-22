@@ -804,7 +804,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						INTERVAL				: getJSON("interval")
 				}
 
-				angular.extend(conf, conf_pre)
+				conf = angular.extend({}, conf_pre)
 
 				return conf;
 			})()
