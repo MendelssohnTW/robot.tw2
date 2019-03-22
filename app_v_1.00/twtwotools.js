@@ -769,7 +769,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			return service.getJSON = function(str){
 				var json = {};
 				robotTW2.requestFile(str, "/json/", function(jsont){
-					angular.extend(json, jsont)
+					json = jsont
 				})
 				return json
 			}
