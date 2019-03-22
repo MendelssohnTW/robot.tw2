@@ -793,9 +793,10 @@ var robotTW2 = window.robotTW2 = undefined;
 						levelsBuilding[buildingTypes[type]] = 0;
 					}
 				}
-				var conf = getJSON("conf")
-				var conf_pre = {
-					BUILDINGLEVELS			: levelsBuilding,
+				var conf = {
+						BUILDINGLEVELS			: levelsBuilding
+				}
+				, conf_pre = {
 					BUILDINGORDER			: getJSON("orderBuilding"),
 					BUILDINGLIMIT			: getJSON("limitBuilding"),
 					VERSION					: getJSON("version"),
@@ -805,7 +806,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					TROOPS_NOT				: getJSON("troops_not"),
 					INTERVAL				: getJSON("interval")
 				}
-
+				
+				angular.extend(conf, getJSON("conf"))
 				angular.extend(conf, conf_pre)
 				
 				return conf;
