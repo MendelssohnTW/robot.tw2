@@ -765,14 +765,13 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		define("robotTW2/getJSON", function getJSON(){
 			var service = {};
-			var json = {}
-
-			return service.getJSON = function(str){
-				robotTW2.requestFile(str, "/json/", function(jsont){
+			
+			return function(str){
+				return robotTW2.requestFile(str, "/json/", function(jsont){
+					var json = {}
 					angular.extend(json, jsont)
+					return json
 				})
-
-				return json;
 			}
 		})
 
@@ -798,8 +797,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						BUILDINGORDER			: getJSON("orderBuilding"),
 						BUILDINGLIMIT			: getJSON("limitBuilding"),
 						VERSION					: getJSON("version"),
-						DBS 					: getJSON("dbs"),
-						HOTKEY					: getJSON("hotkey"),
 						RESERVA					: getJSON("reserve"),
 						TROOPS_NOT				: getJSON("troops_not"),
 						INTERVAL				: getJSON("interval")
@@ -2004,6 +2001,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		$rootScope.$on("ready", function($event, type){
 
 			require(["robotTW2/conf"], function(conf){
+				console.log(conf)
 				switch (type) {
 				case robotTW2.controllers.MainController : {
 					robotTW2.loadScript("/controllers/FarmController.js");

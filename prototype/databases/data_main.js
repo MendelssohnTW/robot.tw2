@@ -78,10 +78,6 @@ define("robotTW2/databases/data_main", [
 		var dbs = conf.DBS
 		, extensions = {};
 		
-		console.log(conf)
-		console.log(dbs)
-		console.log(typeof(dbs))
-
 		Object.keys(dbs).map(function(db_name){
 			var string = "data_" + dbs[db_name].toLowerCase();
 			var db = data[string]

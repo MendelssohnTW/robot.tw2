@@ -22,8 +22,6 @@ define("robotTW2/databases/data_headquarter", [
 
 	var id = 0;
 	
-	console.log(conf)
-
 	var dataNew = {
 			auto_start				: false,
 			init_initialized 		: false,
