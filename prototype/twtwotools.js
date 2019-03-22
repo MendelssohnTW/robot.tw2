@@ -791,9 +791,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					}
 				}
 				var conf = {
-						BUILDINGLEVELS			: levelsBuilding
-				}
-				, conf_pre = {
+						BUILDINGLEVELS			: levelsBuilding,
 						BUILDINGORDER			: getJSON("orderBuilding"),
 						BUILDINGLIMIT			: getJSON("limitBuilding"),
 						VERSION					: getJSON("version"),
@@ -805,7 +803,6 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 
 				angular.extend(conf, getJSON("conf"))
-				angular.extend(conf, conf_pre)
 
 				return conf;
 			})()
