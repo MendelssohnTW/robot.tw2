@@ -1,4 +1,4 @@
-{["alert",
+["alert",
   "attack",
   "defense",
   "deposit",
@@ -12,4 +12,4 @@
   "map",
   "data",
   "log"
-]}
+]
