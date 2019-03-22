@@ -820,7 +820,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						MIN_JOURNEY_DISTANCE 	: 1,
 						MAX_JOURNEY_TIME     	: 3 * h,
 						MIN_JOURNEY_TIME     	: 8 * min,
-						VERSION					: version,
+						VERSION					: getJSON("version"),
 						FARM_TIME		      	: 15 * min,
 						MIN_INTERVAL	     	: 5 * min,
 						INTERVAL				: {
