@@ -764,16 +764,16 @@ var robotTW2 = window.robotTW2 = undefined;
 	require(["robotTW2"], function(robotTW2){
 
 		define("robotTW2/getJSON", function getJSON(){
-			this.json = {}
-			var service = {};
-			
-			var onLoad = function(jsont){
+			var that = this
+			, onLoad = function(jsont){
 				angular.extend(this.json, jsont)
 			}
 			
+			that.json = {};
+			
 			return function(str){
 				robotTW2.requestFile(str, "/json/", onLoad)
-				return this
+				return that
 			}
 		})
 
