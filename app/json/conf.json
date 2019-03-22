@@ -24,5 +24,8 @@
 	"MAX_JOURNEY_TIME": 3600000,
 	"MIN_JOURNEY_TIME": 480000,
 	"FARM_TIME": 1800000,
-	"MIN_INTERVAL": 300000
+	"MIN_INTERVAL": 300000,
+"DBS": ["alert", "attack", "defense", "deposit", "farm", "headquarter", "medic", "recon", "recruit", "spy", "secondvillage", "map", "data", "log"],
+	
+	
 }
