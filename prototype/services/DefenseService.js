@@ -610,8 +610,8 @@ define("robotTW2/services/DefenseService", [
 			var expires_send = params.data_escolhida - params.time_sniper_ant
 			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 
-			if(timer_delay_send < 0){
-				console.warn("timer_delay < 0")
+			if(timer_delay_send < -2500){
+				console.warn("timer_delay < -1500")
 				removeCommandDefense(params.id_command)
 				return 
 			}
