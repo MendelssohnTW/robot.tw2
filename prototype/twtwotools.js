@@ -767,24 +767,29 @@ var robotTW2 = window.robotTW2 = undefined;
 		var version = "3.1.0"
 
 			define("robotTW2/version", function(){
-				return {
-					main:			version,
-					villages:		version,
-					alert:			version,
-					deposit:		version,
-					headquarter:	version,
-					recon:			version,
-					spy:			version,
-					attack:			version,
-					defense:		version,
-					farm:			version,
-					recruit:		version,
-					medic:			version,
-					secondvillage:	version,
-					map:			version,
-					data:			version,
-					log:			version
-				}
+				
+				return requestFile("troops_not", "/json/", function(jsont){
+					return jsont;
+				})
+				
+//				return {
+//					main:			version,
+//					villages:		version,
+//					alert:			version,
+//					deposit:		version,
+//					headquarter:	version,
+//					recon:			version,
+//					spy:			version,
+//					attack:			version,
+//					defense:		version,
+//					farm:			version,
+//					recruit:		version,
+//					medic:			version,
+//					secondvillage:	version,
+//					map:			version,
+//					data:			version,
+//					log:			version
+//				}
 			});
 
 		define("robotTW2/requestFile", ["robotTW2"], function requestFile(robotTW2){
@@ -825,7 +830,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						TIME_CORRECTION_COMMAND : 1275,
 						TIME_CORRECTION_STANDARD: -2500,
 						TIME_DELAY_UPDATE		: 30 * seg,
-						TIME_DELAY_FARM			: 1000,
+						TIME_DELAY_FARM			: 500,
 						TIME_SNIPER_ANT 		: 30000,
 						TIME_SNIPER_POST 		: 3000,
 						TIME_SNIPER_POST_SNOB	: 1000,
@@ -906,26 +911,8 @@ var robotTW2 = window.robotTW2 = undefined;
 //							DATA			: "shift+j",
 							MAP			 	: "shift+m"
 						},
-						RESERVA				: {
-							RECRUIT : {
-								FOOD			: 50,
-								WOOD			: 200,
-								CLAY			: 200,
-								IRON			: 200,
-								SLOTS			: 2
-							},
-							HEADQUARTER : {
-								FOOD			: 50,
-								WOOD			: 200,
-								CLAY			: 200,
-								IRON			: 200,
-								SLOTS			: 2
-							}
-
-						},
-						TROOPS_NOT				: {
-							RECRUIT	: ["knight", "snob", "doppelsoldner", "trebuchet"],
-							FARM	: ["knight", "snob", "doppelsoldner", "trebuchet", "ram"]}
+						RESERVA				: {},
+						TROOPS_NOT			: {}
 
 				}
 
@@ -938,6 +925,18 @@ var robotTW2 = window.robotTW2 = undefined;
 							BUILDINGLIMIT			: limitBuilding,
 							BUILDINGLEVELS			: levelsBuilding
 						})
+					})
+				})
+
+				requestFile("reserve", "/json/", function(jsont){
+					angular.extend(conf, {
+						RESERVA	: jsont
+					})
+				})
+				
+				requestFile("troops_not", "/json/", function(jsont){
+					angular.extend(conf, {
+						TROOPS_NOT	: jsont
 					})
 				})
 
