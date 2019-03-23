@@ -264,6 +264,7 @@ define("robotTW2/services/FarmService", [
 			, aldeia_commands = village.getCommandListModel().data
 			, t_obj = units_analyze(preset_units, aldeia_units);
 
+			if(!countCommands[countCicle]) {countCommands[countCicle] = {}}
 			if(!countCommands[countCicle][village_id]) {countCommands[countCicle][village_id] = {}}
 			if(!countCommands[countCicle][village_id]["village"]) {countCommands[countCicle][village_id]["village"] = []}
 			if(!countCommands[countCicle][village_id][preset_id]) {countCommands[countCicle][village_id][preset_id] = []}
