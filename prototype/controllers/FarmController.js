@@ -280,7 +280,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.getTimeRest = function(){
-			time_rest = $scope.data_farm.complete > time.convertedTime() && services.FarmService.isRunning() ? helper.readableMilliseconds($scope.data_farm.complete - time.convertedTime()) : 0;
+			time_rest = $scope.data_farm.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_farm.complete - time.convertedTime()) : 0;
 			return time_rest;
 		}
 
