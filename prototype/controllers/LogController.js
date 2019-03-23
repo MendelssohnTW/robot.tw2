@@ -2,12 +2,14 @@ define("robotTW2/controllers/LogController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"conf/conf",
-	"robotTW2/databases/data_log"
+	"robotTW2/databases/data_log",
+	"robotTW2/databases/data_main"
 	], function(
 			services,
 			providers,
 			conf_conf,
-			data_log
+			data_log,
+			data_main
 	){
 	return function LogController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
