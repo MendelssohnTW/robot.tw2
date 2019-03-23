@@ -2377,10 +2377,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.VillageService) : null;	
 					break
 				}
-//				case robotTW2.services.DataService : {
-//				robotTW2.services.DataService && typeof(robotTW2.services.DataService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.DataService) : null;	
-//				break
-//				}
+				case robotTW2.services.LogService : {
+					robotTW2.services.LogService && typeof(robotTW2.services.LogService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.LogService) : null;	
+					break
+				}
 				case "database" : {
 					robotTW2.ready(function(){
 						robotTW2.services.$timeout(function(){
