@@ -81,7 +81,7 @@ define("robotTW2/databases/data_main", [
 		Object.keys(dbs).map(function(db_name){
 			var string = "data_" + dbs[db_name].toLowerCase();
 			var db = data[string]
-			if(db && string != "data_log"){
+			if(db){
 				angular.extend(extensions, {
 					[dbs[db_name].toUpperCase()] : {
 						init_initialized 	: db.init_initialized,
