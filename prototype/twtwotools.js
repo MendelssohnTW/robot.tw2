@@ -2195,6 +2195,23 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 					break
 				}
+				case robotTW2.controllers.LogController : {
+					robotTW2.createScopeLang("log", function(scopeLang){
+						var params = {
+								controller			: robotTW2.controllers.LogController,
+								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_LOG,
+								build_open			: true,
+								scopeLang 			: scopeLang,
+								hotkey 				: conf.HOTKEY.LOG,
+								templateName 		: "log",
+								classes 			: "fullsize",
+								url		 			: "/controllers/LogController.js",
+								style 				: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
 				case robotTW2.controllers.DepositController : {
 					robotTW2.createScopeLang("deposit", function(scopeLang){
 						var params = {
