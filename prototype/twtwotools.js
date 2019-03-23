@@ -2365,20 +2365,16 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.SpyService && typeof(robotTW2.services.SpyService.init) == "function" ? robotTW2.requestFn.bind("spy", robotTW2.services.SpyService) : null;	
 					break
 				}
-				case robotTW2.services.MedicService : {
-					robotTW2.services.MedicService && typeof(robotTW2.services.MedicService.init) == "function" ? robotTW2.requestFn.bind("medic", robotTW2.services.MedicService) : null;	
-					break
-				}
 				case robotTW2.services.SecondVillageService : {
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
 				}
 				case robotTW2.services.VillageService : {
-					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.VillageService) : null;	
+					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("village", robotTW2.services.VillageService) : null;	
 					break
 				}
 				case robotTW2.services.LogService : {
-					robotTW2.services.LogService && typeof(robotTW2.services.LogService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.LogService) : null;	
+					robotTW2.services.LogService && typeof(robotTW2.services.LogService.init) == "function" ? robotTW2.requestFn.bind("log", robotTW2.services.LogService) : null;	
 					break
 				}
 				case "database" : {
