@@ -77,21 +77,34 @@ define("robotTW2/databases/data_main", [
 	db_main.getExtensions = function(){
 		var dbs = conf.DBS
 		, extensions = {};
-		
+
 		Object.keys(dbs).map(function(db_name){
 			var string = "data_" + dbs[db_name].toLowerCase();
 			var db = data[string]
 			if(db){
-				angular.extend(extensions, {
-					[dbs[db_name].toUpperCase()] : {
-						init_initialized 	: db.init_initialized,
-						auto_start 			: db.auto_start,
-						activated 			: db.activated,
-						name 				: dbs[db_name].toUpperCase(),
-						hotkey				: conf.HOTKEY[dbs[db_name].toUpperCase()]
+				if(string != "data_log"){
+					angular.extend(extensions, {
+						[dbs[db_name].toUpperCase()] : {
+							init_initialized 	: true,
+							auto_start 			: true,
+							activated 			: true,
+							name 				: dbs[db_name].toUpperCase(),
+							hotkey				: conf.HOTKEY[dbs[db_name].toUpperCase()]
 
-					}		
-				});
+						}		
+					});
+				} else {
+					angular.extend(extensions, {
+						[dbs[db_name].toUpperCase()] : {
+							init_initialized 	: db.init_initialized,
+							auto_start 			: db.auto_start,
+							activated 			: db.activated,
+							name 				: dbs[db_name].toUpperCase(),
+							hotkey				: conf.HOTKEY[dbs[db_name].toUpperCase()]
+
+						}		
+					});
+				}
 			}	
 		})
 
