@@ -455,13 +455,14 @@ define("robotTW2/services/FarmService", [
 			}
 
 			return new Promise(function(resolve_grid){
+				var send_socket = undefined;
 				t = $timeout(function(){
+					send_socket = undefined;
 					resolve_grid();
 				}, conf_conf.LOADING_TIMEOUT);
 
 				function send_for_socket(reg, t, resolve_grid, cmd_preset){
-
-					socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
+					send_socket = socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(reg.x), y:(reg.y), width: reg.dist, height: reg.dist}, function (data) {
 						$timeout.cancel(t);
 						t = undefined;
 						if (data != undefined && data.villages != undefined && data.villages.length > 0) {
@@ -688,7 +689,7 @@ define("robotTW2/services/FarmService", [
 						init_first = false;
 						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 						data_log.set()
-						g(data_farm.farm_time)
+						g(Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random())))
 					})
 				}
 
@@ -736,10 +737,8 @@ define("robotTW2/services/FarmService", [
 						return;
 					}
 				} else {
-					if(!data_farm.farm_time || data_farm.farm_time == 0){
-						data_farm.infinite = true;
-						data_farm.set();
-					}
+					data_farm.infinite = true;
+					data_farm.set();
 					execute_init(true)
 				}
 			}, ["all_villages_ready"])
@@ -758,7 +757,6 @@ define("robotTW2/services/FarmService", [
 			countCommands = {}
 		}
 		, clear_partial = function(){
-			interval_init = null
 			countCommands = {}
 		}
 		, stop = function () {
