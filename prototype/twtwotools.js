@@ -349,8 +349,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					res()
 					return
 				}
-				b.src = host + url + '?' + a;
-//				b.src = host + url;
+//				b.src = host + url + '?' + a;
+				b.src = host + url;
 
 				if(!scripts_loaded.find(f => f == url)){
 					if((opt && scripts_removed.find(f => f == url)) || (!opt && !scripts_removed.find(f => f == url))){
