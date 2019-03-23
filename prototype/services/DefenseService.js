@@ -551,31 +551,6 @@ define("robotTW2/services/DefenseService", [
 				}
 			}
 		}
-		, send_without = function(cmd, id_data){
-			var expires = cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post
-			, timer_delay = (expires / 2) + robotTW2.databases.data_main.time_correction_command
-			, params = {
-				"timer_delay" 	: timer_delay,
-				"id_command" 	: data.id
-			}
-
-			if(timer_delay >= 0){
-				commandQueue.bind(data.id, sendCancel, null, params, function(fns){
-					commandDefense[params.id_command] = {
-							"timeout" 	: fns.fn.apply(this, [fns.params]),
-							"params"	: params
-					}
-
-				})
-			} else {
-				console.log("send cancel timer_delay < 0 " + JSON.stringify(params))
-			}
-
-			removeCommandDefense(cmd.id_command);
-
-			$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
-
-		}
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){
 				return
@@ -594,9 +569,27 @@ define("robotTW2/services/DefenseService", [
 
 				if(cmds.length){
 					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
-					var cmd = cmds.pop();
-					$rootScope.$broadcast("command_sent_received", params)
-					send_without(cmd, data.id)
+					var cmd = cmds.pop()
+					, expires = cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post
+					, timer_delay = (expires / 2) + robotTW2.databases.data_main.time_correction_command
+					, params = {
+						"timer_delay" 	: timer_delay,
+						"id_command" 	: data.id
+					}
+					if(timer_delay >= 0){
+						$rootScope.$broadcast("command_sent_received", params)
+						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
+							commandDefense[params.id_command] = {
+									"timeout" 	: fns.fn.apply(this, [fns.params]),
+									"params"	: params
+							}
+
+						})
+					} else {
+						console.log("send cancel timer_delay < 0 " + JSON.stringify(params))
+					}
+
+					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
 					console.log("não encontrou o comando para sendCancel")
@@ -624,6 +617,7 @@ define("robotTW2/services/DefenseService", [
 				if(data){
 					$timeout.cancel(r[data.id_command])
 					delete r[data.id_command]
+					removeCommandDefense(data.id_command);
 				}
 			}): listener_received;
 
