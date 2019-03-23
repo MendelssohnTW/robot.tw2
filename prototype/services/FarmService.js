@@ -294,23 +294,18 @@ define("robotTW2/services/FarmService", [
 				return !0;
 			}
 
-			var cmd_rest_preset = max_cmds - aldeia_commands_lenght;
-			var cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght;
-			var cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0]);
-			var cmd_ind = Math.min(cmd_rest, cmd_possible, cmd_rest_preset)
-//			if(cmd_ind > 0){
-//			lt_bb.splice(data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght);
-//			} else {
-//			lt_bb.splice(0);
-//			}
-			var r = undefined
+			var cmd_rest_preset = max_cmds - aldeia_commands_lenght
+			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght
+			, cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0])
+			, cmd_ind = Math.min(cmd_rest, cmd_possible, cmd_rest_preset)
+			, r = undefined
 			, promise_send = undefined
 			, promise_send_queue= []
 			, count_command_sent = 0;
 
 			lt_bb.forEach(function (barbara) {
-				var g = undefined;
-				var f = function(bb){
+				var g = undefined
+				, f = function(bb){
 					if(!promise_send){
 						promise_send = new Promise(function(resolve_send){
 							g = $timeout(function () {
@@ -363,11 +358,6 @@ define("robotTW2/services/FarmService", [
 			});
 		}
 		, check_village = function (vill, cmd_preset) {
-//			if(typeof(vill) == "number"){
-//			return !Object.values(countCommands).map(function (key) {
-//			return key.find(f => f == vill)
-//			}).filter(f => f != undefined).length > 0 ? true : false
-//			} else {
 			if(!vill) 
 				return false;
 			var village_id = cmd_preset.village_id
@@ -389,7 +379,6 @@ define("robotTW2/services/FarmService", [
 				quadrant = 3
 			}
 
-//			var existBarbara = !Object.values(countCommands).map(function (key) {return key.find(f => f == vill.id)}).filter(f => f != undefined).length > 0;
 			var existQuadrant = false;
 			if(data_villages.villages[village_id].presets[preset_id].quadrants){
 				existQuadrant = data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
@@ -401,7 +390,6 @@ define("robotTW2/services/FarmService", [
 			} else {
 				return false
 			}
-//			}
 		}
 		, loadVillages = function(cmd_preset, listaGrid, cicle){
 			return new Promise(function(resol){
@@ -599,7 +587,7 @@ define("robotTW2/services/FarmService", [
 			return new Promise(function(resol){
 				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
-				
+
 				var g = $timeout(function(){
 					clear_partial()
 					commands_for_presets[cicle] = []
@@ -661,21 +649,22 @@ define("robotTW2/services/FarmService", [
 			}
 		}
 		, start = function () {
-			
+
 			if(isRunning) {return}
 			clear()
 
 			function execute_init(opt){
 				var init_first = true;
-				var f = function(tempo){
+				var f = function(){
 					if(!isRunning) {return}
 					countCicle++
 					if(time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop){
 						init_first = false;
+						let tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()))
 						!data_farm.complete ? data_farm.complete = 0 : null;
 						data_farm.complete = time.convertedTime() + tempo
 						data_farm.set()
-						$timeout(f, Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random())))
+						$timeout(f, tempo)
 						execute_cicle(tempo, countCicle).then(function(){
 							let cCicle = countCicle;
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
@@ -688,13 +677,14 @@ define("robotTW2/services/FarmService", [
 						data_log.set()
 					}
 				}
-				, g = function(tempo){
+				, g = function(){
 					if(!isRunning) {return}
 					countCicle++
+					let tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()))
 					!data_farm.complete ? data_farm.complete = 0 : null;
 					data_farm.complete = time.convertedTime() + tempo
 					data_farm.set()
-					$timeout(g, Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random())))
+					$timeout(g, tempo)
 					execute_cicle(tempo, countCicle).then(function(){
 						let cCicle = countCicle;
 						init_first = false;
@@ -704,7 +694,7 @@ define("robotTW2/services/FarmService", [
 					})
 				}
 
-				opt ? g(0) : f(0);
+				opt ? g() : f();
 			}
 
 			ready(function () {
