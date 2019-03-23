@@ -6,11 +6,9 @@
 	"FARM": "shift+f",
 	"HEADQUARTER": "shift+h",
 	"MAIN": "shift+p",
-	"MEDIC": "shift+i",
 	"RECON": "shift+r",
 	"RECRUIT": "shift+e",
 	"SPY": "shift+s",
 	"SECONDVILLAGE": "shift+q",
-	"MAP": "shift+m",
-	"DATA": "shift+j"
+	"LOG": "shift+m"
 }

@@ -28,7 +28,6 @@ define("robotTW2/databases/data_defense", [
 			init_initialized 		: false,
 			activated 				: false,
 			hotkey					: conf.HOTKEY.DEFENSE,
-			time_correction_command	: conf.TIME_CORRECTION_COMMAND,
 			interval				: conf.INTERVAL.DEFENSE,
 			list_defense 			: unitTypesRenameRecon,
 			version					: conf.VERSION.DEFENSE,

@@ -25,7 +25,6 @@ define("robotTW2/controllers/MainController", [
 		$scope.text_version = $scope.version + " " + data_main.version; 
 		$scope.extensions = $scope.data_main.getExtensions()
 		$scope.extensions_status = {}
-		$scope.time_correction_command = 0;
 
 		var self = this
 		, toggle = false

@@ -826,7 +826,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"TROOPS_NOT"				: new getJSON("troops_not"),
 						"INTERVAL"					: new getJSON("interval")
 				}
-				
+
 				return conf;
 			})()
 		})
@@ -840,7 +840,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
 			robotTW2.register("services", "windowDisplayService");
-
 
 			return robotTW2.services;
 		}))
@@ -2036,7 +2035,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
-//					robotTW2.loadScript("/controllers/DataController.js");
+					robotTW2.loadScript("/controllers/LogController.js");
 					break
 				}
 				case robotTW2.controllers.AlertController : {
@@ -2397,7 +2396,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-//								robotTW2.loadScript("/databases/data_data.js");
 								robotTW2.loadScript("/databases/data_log.js");
 
 								robotTW2.services.$timeout(function(){
@@ -2457,10 +2455,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/services/SecondVillageService.js");
 					break
 				}
-//				case "data_data" : {
-//				robotTW2.loadScript("/services/DataService.js");
-//				break
-//				}
+				case "data_log" : {
+					robotTW2.loadScript("/services/LogService.js");
+					break
+				}
 				}
 
 			});

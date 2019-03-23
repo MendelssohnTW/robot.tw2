@@ -577,6 +577,7 @@ define("robotTW2/services/DefenseService", [
 					}
 					if(timer_delay >= 0){
 						$rootScope.$broadcast("command_sent_received", params)
+						console.log("Enviado sendCancel " + JSON.stringify(params))
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 							commandDefense[params.id_command] = {
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -614,7 +615,9 @@ define("robotTW2/services/DefenseService", [
 
 			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function(data){
 				if(data){
-					$timeout.cancel(r[data.id_command])
+					if(r[data.id_command].timeout.$$state.status == 0){
+						$timeout.cancel(r[data.id_command].timeout)	
+					}
 					delete r[data.id_command]
 					removeCommandDefense(data.id_command);
 				}

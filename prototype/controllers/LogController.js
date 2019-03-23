@@ -1,41 +1,38 @@
-define("robotTW2/controllers/FarmController", [
-	"helper/time",
-	"robotTW2/time",
+define("robotTW2/controllers/LogController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"conf/conf",
-	"robotTW2/calculateTravelTime",
-	"robotTW2/databases/data_villages",
-	"robotTW2/databases/data_farm",
-	"helper/format",
-	"robotTW2/autocomplete"
+	"robotTW2/databases/data_log"
 	], function(
-			helper,
-			time,
 			services,
 			providers,
 			conf_conf,
-			calculateTravelTime,
-			data_villages,
-			data_farm,
-			formatHelper,
-			autocomplete
+			data_log
 	){
-	return function FarmController($scope) {
+	return function LogController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
-		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
-		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		var self = this
 		, TABS = {
-				FARM 	: services.$filter("i18n")("text_farm", services.$rootScope.loc.ale, "farm"),
-				LOG		: services.$filter("i18n")("log", services.$rootScope.loc.ale, "farm")
+				ATTACK 			: services.$filter("i18n")("title", services.$rootScope.loc.ale, "attack"),
+				DEFENSE 		: services.$filter("i18n")("title", services.$rootScope.loc.ale, "defense"),
+				DEPOSIT 		: services.$filter("i18n")("title", services.$rootScope.loc.ale, "deposit"),
+				FARM 			: services.$filter("i18n")("title", services.$rootScope.loc.ale, "farm"),
+				HEADQUARTER 	: services.$filter("i18n")("title", services.$rootScope.loc.ale, "headquarter"),
+				RECRUIT 		: services.$filter("i18n")("title", services.$rootScope.loc.ale, "recruit"),
+				SECONDVILLAGE	: services.$filter("i18n")("title", services.$rootScope.loc.ale, "secondvillage"),
+				SPY				: services.$filter("i18n")("title", services.$rootScope.loc.ale, "spy"),
 		}
 		, TAB_ORDER = [
-			TABS.FARM,
-			TABS.LOG,
+			TABS.ATTACK,
+			TABS.DEFENSE,
+			TABS.DEPOSIT,
+			TABS.HEADQUARTER,
+			TABS.RECRUIT,
+			TABS.SECONDVILLAGE,
+			TABS.SPY
 			]
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab	= tab;
@@ -51,7 +48,7 @@ define("robotTW2/controllers/FarmController", [
 			setActiveTab(tab);
 		}
 		
-		$scope.requestedTab = TABS.FARM;
+		$scope.requestedTab = TABS.ATTACK;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
 	}
