@@ -513,7 +513,7 @@ define("robotTW2/services/DefenseService", [
 				params.units = units;
 			};
 			if (lista.length > 0) {
-				console.log("Adicionado timeout resendDefense " + stringify(params))
+				console.log("Adicionado timeout resendDefense " + JSON.stringify(params))
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -526,7 +526,7 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, sendDefense = function(params){
-			console.log("Adicionado timeout sendDefense " + stringify(params))
+			console.log("Adicionado timeout sendDefense " + JSON.stringify(params))
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
 		, listener_command_cancel = function($event, data){
@@ -585,7 +585,7 @@ define("robotTW2/services/DefenseService", [
 
 						})
 					} else {
-						console.log("send cancel timer_delay < 0 " + stringify(params))
+						console.log("send cancel timer_delay < 0 " + JSON.stringify(params))
 					}
 
 					removeCommandDefense(cmd.id_command);
