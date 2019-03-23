@@ -615,8 +615,8 @@ define("robotTW2/services/DefenseService", [
 
 			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function(data){
 				if(data){
-					if(r[data.id_command].timeout.$$state.status == 0){
-						$timeout.cancel(r[data.id_command].timeout)	
+					if(r[data.id_command].$$state.status == 0){
+						$timeout.cancel(r[data.id_command])	
 					}
 					delete r[data.id_command]
 					removeCommandDefense(data.id_command);
