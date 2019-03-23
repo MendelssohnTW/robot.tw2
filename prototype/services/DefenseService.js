@@ -512,7 +512,8 @@ define("robotTW2/services/DefenseService", [
 				}
 				params.units = units;
 			};
-			if (lista.length > 0 || !params.enviarFull) {
+			if (lista.length > 0) {
+				console.log("Adicionado timeout resendDefense " + stringify(params))
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -520,10 +521,12 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 			} else {
+				console.log("Comando removido sem unidades para o timeout sendDefense")
 				removeCommandDefense(params.id_command)
 			}
 		}
 		, sendDefense = function(params){
+			console.log("Adicionado timeout sendDefense " + stringify(params))
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
 		, listener_command_cancel = function($event, data){
@@ -582,14 +585,14 @@ define("robotTW2/services/DefenseService", [
 
 						})
 					} else {
-						console.warn("timer_delay < 0")
+						console.log("send cancel timer_delay < 0 " + stringify(params))
 					}
 
 					removeCommandDefense(cmd.id_command);
 
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 				} else {
-					console.warn("não encontrou o comando para sendCancel")
+					console.log("não encontrou o comando para sendCancel")
 				}
 			}
 		}
@@ -611,7 +614,7 @@ define("robotTW2/services/DefenseService", [
 			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 
 			if(timer_delay_send < -2500){
-				console.warn("timer_delay < -1500")
+				console.log("timer_delay < -1500")
 				removeCommandDefense(params.id_command)
 				return 
 			}
@@ -645,7 +648,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 			} else {
-				console.warn("timer_delay < 0")
+				console.log("timer_delay < 0")
 			}
 		}
 		, list_timeout = {}
@@ -825,6 +828,9 @@ define("robotTW2/services/DefenseService", [
 				return Object.keys(commandDefense).map(function(key){
 					return commandDefense[key].params;
 				});
+			},
+			getAllcommands		: function (){
+				return commandDefense;
 			},
 			removeCommandDefense: removeCommandDefense,
 			removeAll			: removeAll,
