@@ -23,8 +23,7 @@ define("robotTW2/services/MainService", [
 			var extensions = data_main.getExtensions();
 			for (var extension in extensions) {
 				var arFn = requestFn.get(extension.toLowerCase(), true);
-				if(!arFn 
-						|| (extension.toLowerCase() == "secondvillage" && !secondVillageService.isFeatureActive())
+				if(!arFn || (extension.toLowerCase() == "secondvillage" && !secondVillageService.isFeatureActive())
 				) {
 					extensions[extension].activated = false;
 					continue
