@@ -156,7 +156,6 @@
 	"farm": {
 		"farm": "Collection settings",
 		"village": "Village",
-		"log": "Log",
 		"title": "Collection of resources",
 		"wait_init": "Waiting for start of Farm cycle",
 		"farm_init": "Farm cycle started",
@@ -214,7 +213,6 @@
 	},
 	"recruit": {
 		"recruit": "Recruitment",
-		"log": "Log",
         "select_villages": "Villages activation / deactivation",		
         "select_all": "Select all",
         "unselect_all": "Remove all",
@@ -256,7 +254,6 @@
 	},
 	"spy": {
 		"spy": "Spy",
-		"log": "Log",
 		"units": "Units",
 		"buildings": "Buildings",
 		"text_source": "Source",
@@ -294,7 +291,6 @@
 	},
 	"attack": {
 		"attack": "Attack",
-		"log": "Log",
 		"text_date": "Data",
 		"text_hour": "Time",
 		"text_ms": "Milliseconds",
@@ -313,7 +309,6 @@
 		"troops": "Troop selection",
         "select_all": "Select all",
         "unselect_all": "Unselect all",
-		"log": "Log",
 		"text_date": "Data",
 		"text_hour": "Time",
 		"text_ms": "Milliseconds",
@@ -332,6 +327,9 @@
         "sec_ant":"Previous seconds",
         "sec_post":"Seconds after"
 	},
+	"log": {
+        "title": "Log"
+    },
 	"data": {
 		"title": "Update data",
 		"text_interval_data_villages": "New village update interval",

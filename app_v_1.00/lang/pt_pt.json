@@ -156,7 +156,6 @@
 	"farm": {
 		"farm": "Configurações de ciclo",
 		"village": "Aldeia",
-		"log": "Log",
 		"title": "Coleta de recursos",
 		"wait_init": "Aguardando início do ciclo de Farm",
 		"farm_init": "Ciclo de Farm iniciado",
@@ -214,7 +213,6 @@
 	},
 	"recruit": {
 		"recruit": "Recrutamento",
-		"log": "Log",
         "select_villages": "Ativação/Desativação de aldeias",
         "select_all": "Selecionar todos",
         "unselect_all": "Remover todos",
@@ -256,7 +254,6 @@
     },
     "spy": {
         "spy": "Espiões",
-        "log": "Log",
         "units": "Unidades",
         "buildings": "Edifícios",
         "text_source": "Origem",
@@ -294,7 +291,6 @@
     },
     "attack": {
         "attack": "Ataque",
-        "log": "Log",
         "text_date": "Data",
         "text_hour": "Hora",
         "text_ms": "Milisegundos",
@@ -313,7 +309,6 @@
         "troops": "Seleção de tropas",
         "select_all": "Selecionar todos",
         "unselect_all": "Desmarcar todos",
-        "log": "Log",
         "text_date": "Data",
         "text_hour": "Hora",
         "text_ms": "Milisegundos",
@@ -332,6 +327,9 @@
         "sec_ant":"Segundos anteriores",
         "sec_post":"Segundo posteriores"
        
+    },
+    "log": {
+        "title": "Log"
     },
     "data": {
         "title": "Atualização de dados",

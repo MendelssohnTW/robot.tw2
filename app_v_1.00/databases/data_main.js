@@ -77,21 +77,34 @@ define("robotTW2/databases/data_main", [
 	db_main.getExtensions = function(){
 		var dbs = conf.DBS
 		, extensions = {};
-		
+
 		Object.keys(dbs).map(function(db_name){
 			var string = "data_" + dbs[db_name].toLowerCase();
 			var db = data[string]
-			if(db && string != "data_log"){
-				angular.extend(extensions, {
-					[dbs[db_name].toUpperCase()] : {
-						init_initialized 	: db.init_initialized,
-						auto_start 			: db.auto_start,
-						activated 			: db.activated,
-						name 				: dbs[db_name].toUpperCase(),
-						hotkey				: conf.HOTKEY[dbs[db_name].toUpperCase()]
+			if(db){
+				if(string == "data_log"){
+					angular.extend(extensions, {
+						[dbs[db_name].toUpperCase()] : {
+							init_initialized 	: true,
+							auto_start 			: true,
+							activated 			: true,
+							name 				: dbs[db_name].toUpperCase(),
+							hotkey				: conf.HOTKEY[dbs[db_name].toUpperCase()]
 
-					}		
-				});
+						}		
+					});
+				} else {
+					angular.extend(extensions, {
+						[dbs[db_name].toUpperCase()] : {
+							init_initialized 	: db.init_initialized,
+							auto_start 			: db.auto_start,
+							activated 			: db.activated,
+							name 				: dbs[db_name].toUpperCase(),
+							hotkey				: conf.HOTKEY[dbs[db_name].toUpperCase()]
+
+						}		
+					});
+				}
 			}	
 		})
 
@@ -101,6 +114,7 @@ define("robotTW2/databases/data_main", [
 	var dataNew = {
 			max_time_correction		: conf.MAX_TIME_CORRECTION,
 			time_correction_command	: conf.TIME_CORRECTION_STANDARD,
+			auto_calibrate			: true,
 			version					: conf.VERSION.MAIN,
 			pages_excludes			: ["farm", "recruit", "headquarter", "data"],
 			name					: "data_main"

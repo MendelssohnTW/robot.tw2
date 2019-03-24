@@ -21,6 +21,9 @@ define("robotTW2/databases/data_log", [
 	}
 
 	var dataNew = {
+			auto_start				: false,
+			init_initialized 		: false,
+			activated 				: false,
 			farm		: [],
 			headquarter	: [],
 			attack 		: [],
