@@ -722,7 +722,6 @@ define("robotTW2/services/FarmService", [
 					if(!isRunning) {return}
 					countCicle++
 					if(time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop){
-						init_first = false;
 						let tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()))
 						!data_farm.complete ? data_farm.complete = 0 : null;
 						data_farm.complete = time.convertedTime() + tempo
@@ -733,6 +732,7 @@ define("robotTW2/services/FarmService", [
 							gt = 0;
 						console.log("execute cicle f - countCicle" + countCicle + " tempo " + gt)
 						execute_cicle(gt, countCicle).then(function(){
+							init_first = false;
 							let cCicle = countCicle;
 							console.log("terminate cicle " + cCicle)
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
@@ -749,7 +749,6 @@ define("robotTW2/services/FarmService", [
 				, g = function(){
 					if(!isRunning) {return}
 					countCicle++
-					init_first = false;
 					let tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()))
 					!data_farm.complete ? data_farm.complete = 0 : null;
 					data_farm.complete = time.convertedTime() + tempo
@@ -760,6 +759,7 @@ define("robotTW2/services/FarmService", [
 						gt = 0;
 					console.log("execute cicle g - countCicle" + countCicle + " tempo " + gt)
 					execute_cicle(gt, countCicle).then(function(){
+						init_first = false;
 						let cCicle = countCicle;
 						console.log("terminate cicle " + cCicle)
 						data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
