@@ -13,7 +13,6 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_villages",
-	"robotTW2/databases/data_main",
 	"robotTW2/CommandDefense",
 	"robotTW2/calibrate_time"
 	], function(
@@ -26,7 +25,6 @@ define("robotTW2/services/DefenseService", [
 			unitTypesRenameRecon,
 			data_defense,
 			data_villages,
-			data_main,
 			commandDefense,
 			calibrate_time
 	){
@@ -798,7 +796,7 @@ define("robotTW2/services/DefenseService", [
 				commandDefense = {};
 				isRunning = !0;
 				reformatCommand();
-				if(data_main.auto_calibrate){
+				if(robotTW2.databases.data_main.auto_calibrate){
 					calibrate_time()
 				}
 				if(!listener_lost){
