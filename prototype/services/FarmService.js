@@ -266,7 +266,7 @@ define("robotTW2/services/FarmService", [
 			, aldeia_commands = village.getCommandListModel().data
 			, t_obj = units_analyze(preset_units, aldeia_units);
 			
-			console.log("village " + village.data.name + " preset " + preset_id + " units " + JSON.stringify(preset_units) + " t_obj " + t_obj)
+			console.log("village " + village.data.name + " preset " + preset_id + " units " + JSON.stringify(preset_units) + " t_obj " + JSON.stringify(t_obj))
 
 			if(!countCommands[cicle]) {countCommands[cicle] = {}}
 			if(!countCommands[cicle][village_id]) {countCommands[cicle][village_id] = {}}
@@ -660,9 +660,10 @@ define("robotTW2/services/FarmService", [
 								}).filter(f=>f!=undefined)
 							}).filter(f=>f.length>0)[0][0]
 						}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
+						
+						console.log("presets " + JSON.stringify(presets_order))
 
 						presets_order.forEach(function(preset){
-							console.log("function presets_order.forEach " + preset.id + " units " + JSON.stringify(preset.units))
 							if(
 									data_villages.villages[village_id].farm_activate
 									&& units_analyze(preset.units, aldeia_units, true)
