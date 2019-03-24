@@ -262,11 +262,6 @@ define("robotTW2/services/FarmService", [
 				return !1;
 			}
 
-//			if(!lt_bb.length){
-//			console.log("!lt_bb.length")
-//			callback(true);
-//			return !0;
-//			}
 
 			var cmd_rest_preset = max_cmds - aldeia_commands_lenght
 			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght
@@ -277,6 +272,19 @@ define("robotTW2/services/FarmService", [
 			, count_command_sent = 0;
 
 			console.log("cmd_ind " + cmd_ind)
+
+			lt_bb = Object.keys(lt_bb).map(function (barbara) {
+				if (check_commands_for_bb(barbara, 1)) {
+					return lt_bb[barbara]
+				}
+			}).filter(f=>f!=undefined)
+
+			lt_bb = lt_bb.splice(0, 3)
+			
+			if(!lt_bb.length){
+				callback(true);
+				return !0;
+			}
 
 			lt_bb.forEach(function (barbara) {
 				var g = undefined
@@ -295,20 +303,16 @@ define("robotTW2/services/FarmService", [
 										army_preset_id: preset_id,
 										type: "attack"
 								}
-								if (check_commands_for_bb(bb, cicle)) {
-									countCommands[cicle][village_id][preset_id].push(bb);
-									result_units = units_subtract(preset_units, aldeia_units)
-									aldeia_units = result_units[1];
-									var permit_send = result_units[0];
-									var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
-									var selectedVillage = modelDataService.getSelectedVillage();
-									console.log("socketService.emit SEND_PRESET (" + bb + ", " + cicle + ")")
-									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-									count_command_sent++;
-									resolve_send(permit_send)
-								} else {
-									resolve_send(true)
-								}
+								countCommands[cicle][village_id][preset_id].push(bb);
+								result_units = units_subtract(preset_units, aldeia_units)
+								aldeia_units = result_units[1];
+								var permit_send = result_units[0];
+								var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
+								var selectedVillage = modelDataService.getSelectedVillage();
+								console.log("socketService.emit SEND_PRESET (" + bb + ", " + cicle + ")")
+								socketService.emit(providers.routeProvider.SEND_PRESET, params);
+								count_command_sent++;
+								resolve_send(permit_send)
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
 						.then(function(permited){
