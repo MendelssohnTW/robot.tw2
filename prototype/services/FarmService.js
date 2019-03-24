@@ -234,7 +234,6 @@ define("robotTW2/services/FarmService", [
 			return [!1, aldeia_units];
 		}
 		, check_commands = function(cmd, village_id, preset_id, cicle){
-			console.log("function check_commands")
 			let sum = Object.values(countCommands[cicle][village_id]).map(function(elem){return elem}).reduce(function(a, b) {
 				return a.concat(b);
 			}).length
@@ -249,7 +248,6 @@ define("robotTW2/services/FarmService", [
 			return lt
 		}
 		, check_commands_for_bb = function(bb, cicle){
-			console.log("function check_commands_for_bb")
 			let lt = Object.keys(countCommands[cicle]).map(function(elem){
 				return Object.keys(countCommands[cicle][elem]).map(function(el){
 					return countCommands[cicle][elem][el].some(f=>f==bb)
@@ -322,7 +320,6 @@ define("robotTW2/services/FarmService", [
 			console.log("cmd_ind " + cmd_ind)
 
 			lt_bb.forEach(function (barbara) {
-				console.log("function lt_bb.forEach - bb " + barbara)
 				var g = undefined
 				, f = function(bb){
 					if(!promise_send){
@@ -386,7 +383,6 @@ define("robotTW2/services/FarmService", [
 			});
 		}
 		, check_village = function (vill, cmd_preset) {
-			console.log("function check_village")
 			if(!vill) 
 				return false;
 			var village_id = cmd_preset.village_id
