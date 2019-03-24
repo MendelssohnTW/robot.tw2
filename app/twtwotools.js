@@ -798,10 +798,10 @@ var robotTW2 = window.robotTW2 = undefined;
 						"MIN_POINTS_FARM"			: 0,
 						"MAX_POINTS_FARM"			: 12000,
 						"MAP_CHUNCK_LEN"			: 15,
-						"TIME_CORRECTION_COMMAND"	: 1275,
-						"TIME_CORRECTION_STANDARD"	: -2500,
+						"TIME_CORRECTION_COMMAND"	: 775,
+						"TIME_CORRECTION_STANDARD"	: -225,
 						"TIME_DELAY_UPDATE"			: 30000,
-						"TIME_DELAY_FARM"			: 1000,
+						"TIME_DELAY_FARM"			: 2000,
 						"TIME_SNIPER_ANT"			: 30000,
 						"TIME_SNIPER_POST"			: 3000,
 						"TIME_SNIPER_POST_SNOB"		: 1000,
@@ -826,7 +826,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"TROOPS_NOT"				: new getJSON("troops_not"),
 						"INTERVAL"					: new getJSON("interval")
 				}
-				
+
 				return conf;
 			})()
 		})
@@ -840,7 +840,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			robotTW2.register("services", "effectService");
 			robotTW2.register("services", "armyService");
 			robotTW2.register("services", "windowDisplayService");
-
 
 			return robotTW2.services;
 		}))
@@ -2036,7 +2035,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
-//					robotTW2.loadScript("/controllers/DataController.js");
+					robotTW2.loadScript("/controllers/LogController.js");
 					break
 				}
 				case robotTW2.controllers.AlertController : {
@@ -2190,6 +2189,23 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 		: "attack",
 								classes 			: "fullsize",
 								url		 			: "/controllers/AttackController.js",
+								style 				: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
+				case robotTW2.controllers.LogController : {
+					robotTW2.createScopeLang("log", function(scopeLang){
+						var params = {
+								controller			: robotTW2.controllers.LogController,
+								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_LOG,
+								build_open			: true,
+								scopeLang 			: scopeLang,
+								hotkey 				: conf.HOTKEY.LOG,
+								templateName 		: "log",
+								classes 			: "fullsize",
+								url		 			: "/controllers/LogController.js",
 								style 				: null
 						}		
 						robotTW2.build(params)
@@ -2366,22 +2382,18 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.SpyService && typeof(robotTW2.services.SpyService.init) == "function" ? robotTW2.requestFn.bind("spy", robotTW2.services.SpyService) : null;	
 					break
 				}
-				case robotTW2.services.MedicService : {
-					robotTW2.services.MedicService && typeof(robotTW2.services.MedicService.init) == "function" ? robotTW2.requestFn.bind("medic", robotTW2.services.MedicService) : null;	
-					break
-				}
 				case robotTW2.services.SecondVillageService : {
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
 				}
 				case robotTW2.services.VillageService : {
-					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("map", robotTW2.services.VillageService) : null;	
+					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("village", robotTW2.services.VillageService) : null;	
 					break
 				}
-//				case robotTW2.services.DataService : {
-//				robotTW2.services.DataService && typeof(robotTW2.services.DataService.init) == "function" ? robotTW2.requestFn.bind("data", robotTW2.services.DataService) : null;	
-//				break
-//				}
+				case robotTW2.services.LogService : {
+					robotTW2.services.LogService && typeof(robotTW2.services.LogService.init) == "function" ? robotTW2.requestFn.bind("log", robotTW2.services.LogService) : null;	
+					break
+				}
 				case "database" : {
 					robotTW2.ready(function(){
 						robotTW2.services.$timeout(function(){
@@ -2397,7 +2409,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_headquarter.js");
 								robotTW2.loadScript("/databases/data_recruit.js");
 								robotTW2.loadScript("/databases/data_secondvillage.js");
-//								robotTW2.loadScript("/databases/data_data.js");
 								robotTW2.loadScript("/databases/data_log.js");
 
 								robotTW2.services.$timeout(function(){
@@ -2457,10 +2468,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/services/SecondVillageService.js");
 					break
 				}
-//				case "data_data" : {
-//				robotTW2.loadScript("/services/DataService.js");
-//				break
-//				}
+				case "data_log" : {
+					robotTW2.loadScript("/services/LogService.js");
+					break
+				}
 				}
 
 			});

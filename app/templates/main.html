@@ -84,7 +84,7 @@
 									<div class="checkbox box-border-dark">
 										<div tooltip
 											tooltip-content="{{ext.init_initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
-											switch-slider="" border="true" enabled="ext.activated"
+											switch-slider="" border="true" enabled="ext.activated && ext.name!='log'"
 											value="ext.init_initialized" vertical="false" size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
@@ -102,7 +102,7 @@
 								<td class="cell-center">
 									<div class="checkbox box-border-dark">
 										<div switch-slider="" border="true"
-											enabled="ext.init_initialized" value="ext.auto_start"
+											enabled="ext.init_initialized && ext.name!='log'" value="ext.auto_start"
 											vertical="false" size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
@@ -128,7 +128,7 @@
 									<div class="checkbox box-border-dark">
 										<div tooltip
 											tooltip-content="{{extensions_status[ext.name] ? STOP : START}}"
-											switch-slider="" border="true" enabled="ext.init_initialized"
+											switch-slider="" border="true" enabled="ext.init_initialized && ext.name!='log'"
 											value="extensions_status[ext.name]"
 											ng-click="toggleStartStop(ext)" vertical="false"
 											size="'56x28'">

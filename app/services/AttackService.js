@@ -10,7 +10,8 @@ define("robotTW2/services/AttackService", [
 	"robotTW2/notify",
 	"robotTW2/time",
 	"robotTW2/databases/data_attack",
-	"robotTW2/CommandAttack"
+	"robotTW2/CommandAttack",
+	"robotTW2/calibrate_time"
 	], function(
 			robotTW2,
 			helper,
@@ -18,7 +19,8 @@ define("robotTW2/services/AttackService", [
 			notify,
 			time,
 			data_attack,
-			commandAttack
+			commandAttack,
+			calibrate_time
 	){
 	return (function AttackService(
 			$rootScope,
@@ -63,8 +65,8 @@ define("robotTW2/services/AttackService", [
 
 				commandQueue.bind(id_command, sendAttack, data_attack, params, function(fns){
 					commandAttack[fns.params.id_command] = {
-						"timeout" 	: fns.fn.apply(this, [fns.params]),
-						"params"	: params
+							"timeout" 	: fns.fn.apply(this, [fns.params]),
+							"params"	: params
 					}
 				})
 			}
@@ -90,8 +92,8 @@ define("robotTW2/services/AttackService", [
 			if (lista.length > 0 || !params.enviarFull) {
 				commandQueue.bind(params.id_command, resendAttack, data_attack, params, function(fns){
 					commandAttack[fns.params.id_command] = {
-						"timeout" 	: fns.fn.apply(this, [fns.params]),
-						"params"	: params
+							"timeout" 	: fns.fn.apply(this, [fns.params]),
+							"params"	: params
 					}
 				})
 			} else {
@@ -196,6 +198,9 @@ define("robotTW2/services/AttackService", [
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js", true);
 				isRunning = !0
+				if(robotTW2.databases.data_main.auto_calibrate){
+					calibrate_time()
+				}
 				Object.values(data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
 						commandQueue.unbind(param.id_command, data_attack)

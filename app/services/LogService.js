@@ -1,25 +1,13 @@
 define("robotTW2/services/LogService", [
 	"robotTW2",
-	"robotTW2/time",
-	"robotTW2/conf",
-	"$rootScope",
-	"socketService",
-	"eventTypeProvider",
-	"modelDataService",
-	"$timeout",
-	"ready"
+	"robotTW2/conf"
 	], function(
 			robotTW2,
-			time,
-			conf,
-			$rootScope,
-			socketService,
-			eventTypeProvider,
-			modelDataService,
-			$timeout,
-			ready
+			conf
 	){
-	return (function LogService() {
+	return (function LogService(
+			ready
+	) {
 
 		var isInitialized = !1
 		, isRunning = !1
@@ -50,5 +38,7 @@ define("robotTW2/services/LogService", [
 			name			: "log"
 		}
 
-	})()
+	})(
+			robotTW2.ready
+	)
 })
