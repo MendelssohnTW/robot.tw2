@@ -423,7 +423,6 @@ define("robotTW2/services/FarmService", [
 				, promise_grid_queue = [];
 
 				listaGrid.forEach(function(reg){
-					console.log("function listaGrid.forEach " + JSON.stringify(reg))
 					function t (c_preset, r){
 						if(promise_grid){
 							promise_grid_queue.push([r, c_preset])
