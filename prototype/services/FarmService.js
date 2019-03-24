@@ -175,7 +175,7 @@ define("robotTW2/services/FarmService", [
 			var f = Object.keys(preset_units).map(function(unit_preset){
 				if(preset_units[unit_preset] >= 2 && !data_farm.troops_not.some(elem => elem == unit_preset)) {
 					if (units_has_unit_search(unit_preset, aldeia_units) && aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
-						return [{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available]
+						return [{[unit_preset] : preset_units[unit_preset]}, Math.trunc(aldeia_units[unit_preset].available / preset_units[unit_preset])]
 					}
 				}
 			}).filter(f=>f!=undefined).sort(function(a,b){return a[1] - b[1]}).shift()
@@ -270,8 +270,7 @@ define("robotTW2/services/FarmService", [
 
 			var cmd_rest_preset = max_cmds - aldeia_commands_lenght
 			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght
-			, cmd_possible = Math.trunc(aldeia_units[Object.keys(t_obj)[0]].available / Object.values(t_obj)[0])
-			, cmd_ind = Math.min(cmd_rest, cmd_possible, cmd_rest_preset)
+			, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 			, r = undefined
 			, promise_send = undefined
 			, promise_send_queue = []
