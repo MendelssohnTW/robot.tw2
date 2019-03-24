@@ -194,25 +194,30 @@ define("robotTW2/services/FarmService", [
 			return [f.length, aldeia_units] 
 		}
 		, check_commands = function(cmd, village_id, preset_id, cicle){
-			let sum = Object.values(countCommands[cicle][village_id]).map(function(elem){return elem}).reduce(function(a, b) {
-				return a.concat(b);
-			}).length
 			let lt = true;
+			let sum = 0;
+			if(Object.values(countCommands[cicle][village_id]).length)
+				sum = Object.values(countCommands[cicle][village_id]).map(function(elem){return elem}).reduce(function(a, b) {
+					return a.concat(b);
+				}).length;
 			if((cmd.data.direction=="forward") && sum < data_villages.villages[village_id].presets[preset_id].max_commands_farm){
-				lt = Object.keys(countCommands[cicle][village_id]).map(function(pst){
-					return !countCommands[cicle][village_id][pst].some(f=>f==cmd.targetVillageId)
-				}).every(f=>f==true)
+				if(Object.keys(countCommands[cicle][village_id]).length)
+					lt = Object.keys(countCommands[cicle][village_id]).map(function(pst){
+						return !countCommands[cicle][village_id][pst].some(f=>f==cmd.targetVillageId)
+					}).every(f=>f==true)
 			} else {
 				lt = true;
 			}
 			return lt
 		}
 		, check_commands_for_bb = function(bb, cicle){
-			let lt = Object.keys(countCommands[cicle]).map(function(elem){
-				return Object.keys(countCommands[cicle][elem]).map(function(el){
-					return countCommands[cicle][elem][el].some(f=>f==bb)
-				}).every(f=>f==false)
-			}).every(f=>f==true)
+			let lt = false;
+			if(Object.keys(countCommands[cicle]).length)
+				lt = Object.keys(countCommands[cicle]).map(function(elem){
+					return Object.keys(countCommands[cicle][elem]).map(function(el){
+						return countCommands[cicle][elem][el].some(f=>f==bb)
+					}).every(f=>f==false)
+				}).every(f=>f==true);
 			return lt
 		}
 		, sendCmd = function (cmd_preset, lt_bb, cicle, callback) {
