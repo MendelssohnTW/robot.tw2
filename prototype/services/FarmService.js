@@ -172,7 +172,7 @@ define("robotTW2/services/FarmService", [
 			return units.some(unit => unit == unit_search && units[unit].available != undefined && units[unit].available >= 2)
 		}
 		, units_analyze = function (preset_units, aldeia_units, opt) {
-			var f = preset_units.map(function(unit_preset){
+			var f = Object.keys(preset_units).map(function(unit_preset){
 				if(preset_units[unit_preset] >= 2 && !data_farm.troops_not.some(elem => elem == unit_preset)) {
 					if (units_has_unit_search(unit_preset, aldeia_units) && aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
 						return {[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available
@@ -183,7 +183,7 @@ define("robotTW2/services/FarmService", [
 			return f && opt ? !0 : f;
 		}
 		, units_subtract = function (preset_units, aldeia_units) {
-			var f = preset_units.map(function(unit_preset){
+			var f = Object.keys(preset_units).map(function(unit_preset){
 				if(preset_units[unit_preset] > 0 && !(data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
 					aldeia_units[unit_preset].available = aldeia_units[unit_preset].available - preset_units[unit_preset];
 					if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
