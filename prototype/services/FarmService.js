@@ -169,7 +169,7 @@ define("robotTW2/services/FarmService", [
 			return {listaGrid: listaGrid};
 		}
 		, units_has_unit_search = function (unit_search, units) {
-			return units.some(unit => unit == unit_search && units[unit].available != undefined && units[unit].available >= 2)
+			return Object.keys(units).some(unit => unit == unit_search && units[unit].available != undefined && units[unit].available >= 2)
 		}
 		, units_analyze = function (preset_units, aldeia_units, opt) {
 			var f = Object.keys(preset_units).map(function(unit_preset){
