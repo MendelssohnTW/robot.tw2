@@ -337,7 +337,6 @@ define("robotTW2/services/FarmService", [
 										type: "attack"
 								}
 								if (check_commands_for_bb(bb, cicle)) {
-									console.log("check_commands_for_bb(" + bb + ", " + cicle + ") returning true" )
 									countCommands[cicle][village_id][preset_id].push(bb);
 									requestFn.trigger("Farm/sendCmd")
 									result_units = units_subtract(preset_units, aldeia_units)
@@ -345,14 +344,11 @@ define("robotTW2/services/FarmService", [
 									var permit_send = result_units[0];
 									var village_own = modelDataService.getSelectedCharacter().getVillage(village_id)
 									var selectedVillage = modelDataService.getSelectedVillage();
-									console.log("socketService.emit SEND_PRESET")
+									console.log("socketService.emit SEND_PRESET (" + bb + ", " + cicle + ")")
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									count_command_sent++;
-									console.log("resolve_send")
 									resolve_send(permit_send)
 								} else {
-									console.log("check_commands_for_bb(" + bb + ", " + cicle + ") returning false" )
-									console.log("resolve_send")
 									resolve_send(true)
 								}
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
