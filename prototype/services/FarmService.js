@@ -279,7 +279,7 @@ define("robotTW2/services/FarmService", [
 				}
 			}).filter(f=>f!=undefined)
 
-			lt_bb = lt_bb.splice(0, 3)
+			lt_bb = lt_bb.splice(0, cmd_ind)
 			
 			if(!lt_bb.length){
 				callback(true);
