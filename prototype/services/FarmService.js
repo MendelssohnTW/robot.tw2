@@ -175,7 +175,7 @@ define("robotTW2/services/FarmService", [
 			var f = Object.keys(preset_units).map(function(unit_preset){
 				if(preset_units[unit_preset] >= 2 && !data_farm.troops_not.some(elem => elem == unit_preset)) {
 					if (units_has_unit_search(unit_preset, aldeia_units) && aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
-						return {[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available
+						return [{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available]
 					}
 				}
 			}).filter(f=>f!=undefined).sort(function(a,b){return a[1] - b[1]}).shift()
@@ -252,7 +252,7 @@ define("robotTW2/services/FarmService", [
 				return a.concat(b);
 			}).length
 
-			console.log("sum - aldeia_commands_lenght" + sum)
+			console.log("sum - aldeia_commands_lenght " + sum)
 
 			var aldeia_commands_lenght = sum;
 
