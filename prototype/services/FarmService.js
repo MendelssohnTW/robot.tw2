@@ -316,14 +316,12 @@ define("robotTW2/services/FarmService", [
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
 						.then(function(permited){
-							console.log("resolving resolve_send")
 							$timeout.cancel(r);
 							r = undefined;
 							$timeout.cancel(g);
 							g = undefined;
 							promise_send = undefined;
 							if(promise_send_queue.length && permited && count_command_sent <= cmd_ind){
-								console.log("promise_send_queue.shift")
 								barbara = promise_send_queue.shift()
 								f(barbara)
 							} else {
