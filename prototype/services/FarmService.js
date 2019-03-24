@@ -684,8 +684,6 @@ define("robotTW2/services/FarmService", [
 								} else {
 									console.log("já existe preset na lista " + preset.id)
 								}
-							} else {
-								console.log("farm_activate false ou no units " + preset.id)
 							}
 						})
 					})
