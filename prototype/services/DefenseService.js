@@ -13,7 +13,9 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_villages",
-	"robotTW2/CommandDefense"
+	"robotTW2/databases/data_main",
+	"robotTW2/CommandDefense",
+	"robotTW2/calibrate_time"
 	], function(
 			robotTW2,
 			conf,
@@ -24,7 +26,9 @@ define("robotTW2/services/DefenseService", [
 			unitTypesRenameRecon,
 			data_defense,
 			data_villages,
-			commandDefense
+			data_main,
+			commandDefense,
+			calibrate_time
 	){
 	return (function DefenseService(
 			$rootScope,
@@ -794,6 +798,9 @@ define("robotTW2/services/DefenseService", [
 				commandDefense = {};
 				isRunning = !0;
 				reformatCommand();
+				if(data_main.auto_calibrate){
+					calibrate_time()
+				}
 				if(!listener_lost){
 					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(function(){verificarAtaques(true)} , 60000));
 				}
