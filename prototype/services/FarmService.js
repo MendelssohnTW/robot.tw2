@@ -661,7 +661,7 @@ define("robotTW2/services/FarmService", [
 							}).filter(f=>f.length>0)[0][0]
 						}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 						
-						console.log("presets " + JSON.stringify(presets_order))
+						console.log(presets_order)
 
 						presets_order.forEach(function(preset){
 							if(
