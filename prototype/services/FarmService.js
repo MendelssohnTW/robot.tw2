@@ -178,7 +178,7 @@ define("robotTW2/services/FarmService", [
 						return {[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available
 					}
 				}
-			}).filter(f=>f!=undefined).sort(function(a,b){return a[1] - b[1]}).shift()[0]
+			}).filter(f=>f!=undefined).sort(function(a,b){return a[1] - b[1]}).shift()
 
 			return f && opt ? !0 : f;
 		}
