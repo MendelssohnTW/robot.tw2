@@ -583,7 +583,6 @@ define("robotTW2/services/FarmService", [
 				, promise_preset_queue = [];
 
 				commands_for_presets.forEach(function(cmd_preset){
-					console.log("function commands_for_presets.forEach " + cicle + " id " + cmd_preset.preset_id + " " + cmd_preset.village_id)
 					var t = function(cmd_preset){
 						if(!promise_preset){
 							promise_preset = new Promise(function(resolve_presets){
@@ -689,6 +688,7 @@ define("robotTW2/services/FarmService", [
 					})
 					villages = null;
 					
+					console.log(commands_for_presets[cicle])
 					execute_presets(commands_for_presets[cicle], cicle).then(resol)
 					$timeout.cancel(g);
 					g = undefined;
