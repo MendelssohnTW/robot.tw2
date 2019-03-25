@@ -230,10 +230,10 @@ define("robotTW2/services/FarmService", [
 			if(!countCommands[cicle][village_id]["village"]) {countCommands[cicle][village_id]["village"] = []}
 			if(!countCommands[cicle][village_id][preset_id]) {countCommands[cicle][village_id][preset_id] = []}
 
-			aldeia_commands.forEach(function (cmd) {
-				if(check_commands(cmd, village_id, preset_id, cicle)){
-					if(!countCommands[cicle][village_id]["village"].find(f=>f==cmd.targetVillageId)){
-						countCommands[cicle][village_id]["village"].push(cmd.targetVillageId);
+			Object.keys(aldeia_commands).map(function (cmd) {
+				if(check_commands(aldeia_commands[cmd], village_id, preset_id, cicle)){
+					if(!countCommands[cicle][village_id]["village"].find(f=>f==aldeia_commands[cmd].targetVillageId)){
+						countCommands[cicle][village_id]["village"].push(aldeia_commands[cmd].targetVillageId);
 					}
 				}
 			})
@@ -262,7 +262,7 @@ define("robotTW2/services/FarmService", [
 			, count_command_sent = 0;
 
 			lt_bb = Object.keys(lt_bb).map(function (barbara) {
-				if (check_commands_for_bb(barbara, cicle)) {
+				if (check_commands_for_bb(lt_bb[barbara], cicle)) {
 					return lt_bb[barbara]
 				}
 			}).filter(f=>f!=undefined)
