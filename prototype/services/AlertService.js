@@ -31,9 +31,7 @@ define("robotTW2/services/AlertService", [
 		, verify_alert = function(){
 
 			t = $timeout(function(){
-				send_socket = undefined;
 				g = undefined
-				resolve_grid();
 			}, conf_conf.LOADING_TIMEOUT);
 
 			!g ? g = socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
