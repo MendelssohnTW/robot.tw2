@@ -202,7 +202,7 @@ define("robotTW2/services/FarmService", [
 			lt = Object.keys(countCommands[cicle][village_id]).map(function(pst){
 				return countCommands[cicle][village_id][pst].some(f=>f==cmd.targetVillageId)
 			}).some(f=>f==true)
-			return lt
+			return !lt
 		}
 		, check_commands_for_bb = function(bb, cicle){
 			let lt = false;
