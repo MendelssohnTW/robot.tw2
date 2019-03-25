@@ -25,6 +25,7 @@ define("robotTW2/services/SpyService", [
 	return (function SpyService(
 			$rootScope,
 			socketService,
+			VillageService,
 			providers,
 			modelDataService,
 			$timeout,
@@ -44,10 +45,10 @@ define("robotTW2/services/SpyService", [
 		, interval_handler = undefined
 		, list = []
 		, counterMeasureTypes = {
-			CAMOUFLAGE: "camouflage",
-			DUMMIES: "dummies",
-			EXCHANGE: "exchange",
-			SWITCH_WEAPONS: "switch_weapons"
+				CAMOUFLAGE: "camouflage",
+				DUMMIES: "dummies",
+				EXCHANGE: "exchange",
+				SWITCH_WEAPONS: "switch_weapons"
 		}
 		, getMaxSpies = function(researches, level){
 			var a, b, c = {}, d;
@@ -183,12 +184,20 @@ define("robotTW2/services/SpyService", [
 			}
 		}
 		, send = function(params){
-			socketService.emit(providers.routeProvider.SCOUTING_SEND_COMMAND, {
-				'startVillage': params.start_village,
-				'targetVillage': params.target_village,
-				'spys': params.spys,
-				'type': params.type
-			});
+			var village = VillageService.getVillage(params.start_village)
+			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
+			if(qtd_spy < params.spys){
+				params.spys = qtd_spy
+			}
+			if(params.spys != 0){
+				socketService.emit(providers.routeProvider.SCOUTING_SEND_COMMAND, {
+					'startVillage': params.start_village,
+					'targetVillage': params.target_village,
+					'spys': params.spys,
+					'type': params.type
+				});
+			}
+
 			removeCommandAttackSpy(params.id_command)
 		}
 		, sendAttackSpy = function(params){
@@ -290,7 +299,7 @@ define("robotTW2/services/SpyService", [
 			robotTW2.removeScript("/controllers/SpyCompletionController.js");
 			typeof(listener_spy) == "function" ? listener_spy(): null;
 			typeof(listener) == "function" ? listener(): null
-			listener_spy = undefined;
+					listener_spy = undefined;
 			listener_open = undefined;
 			listener_close = undefined;
 			interval_handler = undefined;
@@ -319,6 +328,7 @@ define("robotTW2/services/SpyService", [
 	})(
 			robotTW2.services.$rootScope,
 			robotTW2.services.socketService,
+			robotTW2.services.VillageService,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
