@@ -187,7 +187,7 @@ define("robotTW2/services/FarmService", [
 				if(preset_units[unit_preset] > 0 && !(data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
 					aldeia_units[unit_preset].available = aldeia_units[unit_preset].available - preset_units[unit_preset];
 					if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
-						return {[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available
+						return [{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available]
 					}
 				}
 			}).filter(f=>f!=undefined)
