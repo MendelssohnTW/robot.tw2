@@ -195,12 +195,13 @@ define("robotTW2/services/FarmService", [
 		}
 		, check_commands = function(cmd, village_id, preset_id, cicle){
 			let lt = true
-			if(cmd.data.direction!="forward" || cmd.data.type!="attack"){
+			if(cmd.data.type!="attack"){
 				return false
 			}
-
-			lt = Object.keys(countCommands[cicle][village_id]).map(function(pst){
-				return countCommands[cicle][village_id][pst].some(f=>f==cmd.targetVillageId)
+			lt = Object.keys(countCommands).map(function(elem){
+				return Object.keys(countCommands[elem][village_id]).map(function(pst){
+					return countCommands[elem][village_id][pst].some(f=>f==cmd.targetVillageId)
+				}).some(f=>f==true)
 			}).some(f=>f==true)
 			return !lt
 		}
