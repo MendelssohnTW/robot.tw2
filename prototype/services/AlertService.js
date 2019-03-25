@@ -2,10 +2,12 @@ define("robotTW2/services/AlertService", [
 	"robotTW2",
 	"robotTW2/conf",
 	"robotTW2/databases/data_alert",
+	"conf/conf"
 	], function(
 			robotTW2,
 			conf,
-			data_alert
+			data_alert,
+			conf_conf
 	){
 	return (function AlertService(
 			$rootScope,
