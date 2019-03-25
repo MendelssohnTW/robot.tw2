@@ -246,7 +246,7 @@ define("robotTW2/services/FarmService", [
 
 			var aldeia_commands_lenght = aldeia_commands.length;
 
-			if(!t_obj || aldeia_commands_lenght >= max_cmds){
+			if(!t_obj || t_obj[1] == 0 || aldeia_commands_lenght >= max_cmds){
 				callback(false);
 				return !1;
 			}
