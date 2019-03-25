@@ -195,7 +195,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, check_commands = function(cmd, village_id, preset_id, cicle){
 			let lt = true
-			if(cmd.data.direction!="forward" || d.data.type!="attack"){
+			if(cmd.data.direction!="forward" || cmd.data.type!="attack"){
 				return false
 			}
 
