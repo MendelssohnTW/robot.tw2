@@ -187,36 +187,35 @@ define("robotTW2/services/FarmService", [
 				if(preset_units[unit_preset] > 0 && !(data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
 					aldeia_units[unit_preset].available = aldeia_units[unit_preset].available - preset_units[unit_preset];
 					if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
-						return {[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available
+						return [{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available]
 					}
 				}
 			}).filter(f=>f!=undefined)
 			return [f.length, aldeia_units] 
 		}
 		, check_commands = function(cmd, village_id, preset_id, cicle){
-			let lt = true;
-			let sum = 0;
-			if(Object.values(countCommands[cicle][village_id]).length)
-				sum = Object.values(countCommands[cicle][village_id]).map(function(elem){return elem}).reduce(function(a, b) {
-					return a.concat(b);
-				}).length;
-			if((cmd.data.direction=="forward") && sum && sum < data_villages.villages[village_id].presets[preset_id].max_commands_farm){
-				lt = Object.keys(countCommands[cicle][village_id]).map(function(pst){
-					return !countCommands[cicle][village_id][pst].some(f=>f==cmd.targetVillageId)
-				}).every(f=>f==true)
-			} else {
-				lt = true;
+			let lt = true
+			if(cmd.data.type!="attack"){
+				return false
 			}
-			return lt
+			lt = Object.keys(countCommands).map(function(cicle){
+				return Object.keys(countCommands[cicle]).map(function(village_id){
+					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+						return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
+					}).some(f=>f==true)
+				}).some(f=>f==true)
+			}).some(f=>f==true)
+			return !lt
 		}
 		, check_commands_for_bb = function(bb, cicle){
 			let lt = false;
-			if(Object.keys(countCommands[cicle]).length)
-				lt = Object.keys(countCommands[cicle]).map(function(elem){
-					return Object.keys(countCommands[cicle][elem]).map(function(el){
-						return countCommands[cicle][elem][el].some(f=>f==bb)
+			lt = Object.keys(countCommands).map(function(cicle){
+				return Object.keys(countCommands[cicle]).map(function(village_id){
+					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+						return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
 					}).every(f=>f==false)
-				}).every(f=>f==true);
+				}).every(f=>f==true)
+			}).every(f=>f==true)
 			return lt
 		}
 		, sendCmd = function (cmd_preset, lt_bb, cicle, callback) {
@@ -235,11 +234,9 @@ define("robotTW2/services/FarmService", [
 			if(!countCommands[cicle][village_id]["village"]) {countCommands[cicle][village_id]["village"] = []}
 			if(!countCommands[cicle][village_id][preset_id]) {countCommands[cicle][village_id][preset_id] = []}
 
-			aldeia_commands.forEach(function (cmd) {
-				if(check_commands(cmd, village_id, preset_id, cicle)){
-					if(!countCommands[cicle][village_id]["village"].find(f=>f==cmd.targetVillageId)){
-						countCommands[cicle][village_id]["village"].push(cmd.targetVillageId);
-					}
+			Object.keys(aldeia_commands).map(function (cmd) {
+				if(check_commands(aldeia_commands[cmd], village_id, preset_id, cicle)){
+					countCommands[cicle][village_id]["village"].push(aldeia_commands[cmd].targetVillageId);
 				}
 			})
 
@@ -247,11 +244,7 @@ define("robotTW2/services/FarmService", [
 				return data_villages.villages[village_id].presets[elem].max_commands_farm
 			})) || 0;
 
-			let sum = Object.values(countCommands[cicle][village_id]).map(function(elem){return elem}).reduce(function(a, b) {
-				return a.concat(b);
-			}).length
-
-			var aldeia_commands_lenght = sum;
+			var aldeia_commands_lenght = aldeia_commands.length;
 
 			if(!t_obj || aldeia_commands_lenght >= max_cmds){
 				callback(false);
@@ -267,7 +260,7 @@ define("robotTW2/services/FarmService", [
 			, count_command_sent = 0;
 
 			lt_bb = Object.keys(lt_bb).map(function (barbara) {
-				if (check_commands_for_bb(barbara, cicle)) {
+				if (check_commands_for_bb(lt_bb[barbara], cicle)) {
 					return lt_bb[barbara]
 				}
 			}).filter(f=>f!=undefined)
