@@ -300,7 +300,7 @@ define("robotTW2/services/DefenseService", [
 					list = removerItens(list, g);
 					return list
 				}
-				, ct = function ct(cmd, opt){
+				, ct = function (cmd, opt){
 					return new Promise(function(resolve_f){
 						return loadVillage(cmd).then(function(aldeia){
 							if(rt || rt.$$state || rt.$$state.status == 0){
@@ -330,20 +330,22 @@ define("robotTW2/services/DefenseService", [
 				}
 				, promise_queue = []
 				, fg = function fg(list, opt){
-					function n(){
-						if(promise_queue.length){
-							ct(promise_queue.shift(), n)
-						} else {
-							res();
-						}
-					}
 					return new Promise(function(res){
 						list.forEach(function(cm){
-							if(!ct){
-								ct(cm, opt).then(n)
-							} else {
-								promise_queue.push(cm, opt)
+							function f(cm){
+								if(!promise){
+									promise = ct(cm, opt).then(function (){
+										if(promise_queue.length){
+											f(promise_queue.shift())
+										} else {
+											res();
+										}
+									})
+								} else {
+									promise_queue.push(cm, opt)
+								}
 							}
+							f(cm)
 						})
 					})
 				}
