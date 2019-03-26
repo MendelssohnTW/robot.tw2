@@ -341,7 +341,7 @@ define("robotTW2/services/DefenseService", [
 									}
 								})
 							} else {
-								promise_queue.push(cm, opt)
+								promise_queue.push(cm)
 							}
 						}
 						list.forEach(function(cm){
