@@ -301,49 +301,48 @@ define("robotTW2/services/DefenseService", [
 					return list
 				}
 				, ct = function ct(cmd, opt){
-					return loadVillage(cmd).then(function(aldeia){
-						if(rt || rt.$$state || rt.$$state.status == 0){
-							$timeout.cancel(rt);
-						}
-						var timeSniperPost = data_defense.time_sniper_post;
-						if(opt) {
-							timeSniperPost = data_defense.time_sniper_post_snob || conf.TIME_SNIPER_POST_SNOB;
-						}
-						var params = {
-								start_village		: cmd.targetVillageId,
-								target_village		: aldeia.id,
-								target_name			: aldeia.name,
-								target_x			: aldeia.x,
-								target_y			: aldeia.y,
-								type				: "support",
-								data_escolhida		: time.convertMStoUTC(cmd.completedAt),
-								time_sniper_ant		: data_defense.time_sniper_ant,
-								time_sniper_post	: timeSniperPost,
-								preserv				: false,
-								id_command 			: cmd.id
-						}
-						addDefense(params);
+					new Promise(function(resolve_f){
+						return loadVillage(cmd).then(function(aldeia){
+							if(rt || rt.$$state || rt.$$state.status == 0){
+								$timeout.cancel(rt);
+							}
+							var timeSniperPost = data_defense.time_sniper_post;
+							if(opt) {
+								timeSniperPost = data_defense.time_sniper_post_snob || conf.TIME_SNIPER_POST_SNOB;
+							}
+							var params = {
+									start_village		: cmd.targetVillageId,
+									target_village		: aldeia.id,
+									target_name			: aldeia.name,
+									target_x			: aldeia.x,
+									target_y			: aldeia.y,
+									type				: "support",
+									data_escolhida		: time.convertMStoUTC(cmd.completedAt),
+									time_sniper_ant		: data_defense.time_sniper_ant,
+									time_sniper_post	: timeSniperPost,
+									preserv				: false,
+									id_command 			: cmd.id
+							}
+							addDefense(params);
+							resolve_f()
+						})
 					})
 				}
 				, promise_queue = []
 				, fg = function fg(list, opt){
-					return new Promise(function(resolve_f){
+					function n(){
+						if(promise_queue.length){
+							ct(promise_queue.shift(), n)
+						} else {
+							res();
+						}
+					}
+					return new Promise(function(res){
 						list.forEach(function(cm){
-							if(!promise){
-								promise = new Promise(function(res){
-									ct(cm, opt).then(function(){
-										if(promise_queue.length){
-											ct(promise_queue.shift(), opt)
-										} else {
-											res();
-										}
-									})
-								}, function(){
-									promise = undefined
-									resolve_f()
-								})
+							if(!ct){
+								ct(cm, opt).then(n)
 							} else {
-								promise_queue.push(cm)
+								promise_queue.push(cm, opt)
 							}
 						})
 					})
