@@ -331,16 +331,34 @@ define("robotTW2/services/DefenseService", [
 						}
 					})
 				}
+				, fg = function fg(list, opt){
+					return new Promise(function(resolve_f){
+						list.forEach(function(cm){
+							if(!ct){
+								ct(cm, opt).then(function(){
+									promise = undefined;
+									if(promise_queue_others.length){
+										ct(promise_queue_others.shift(), opt)
+									} else {
+										resolve_f();
+									}
+								})
+							} else {
+								promise_queue_others.push(cm)
+							}
+						})
+					})
+				}
 				, promise_queue_trebuchet = []
 				, promise_queue_snob = []
 				, promise_queue_othres = []
 
 //				lt.forEach(function(cmd){
-//					if(cmd.start_village == id){
-//						list_preserv_others.push(cmd.params)
-//					}
+//				if(cmd.start_village == id){
+//				list_preserv_others.push(cmd.params)
+//				}
 //				})
-				
+
 				list_preserv_others = lt.filter(cmd => cmd.params.start_village == id)
 
 				var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
@@ -393,44 +411,14 @@ define("robotTW2/services/DefenseService", [
 //				list_others = list_others.concat(list_snob)
 //				list_others = list_others.concat(list_trebuchet)
 
-				list_others.forEach(function(cm){
-					if(!ct){
-						ct(cm).then(function(){
-							promise = undefined;
-							if(promise_queue_others.length){
-								ct(promise_queue_others.shift())
-							}
-						})
-					} else {
-						promise_queue_others.push(cm)
-					}
-				})
+				fg(list_others).then(
+						fg(list_snob, true).then(
+								fg(list_trebuchet, true).then(
+										resolve()
+								)		
+						)
+				)
 
-				list_snob.forEach(function(cm){
-					if(!ct){
-						ct(cm, true).then(function(){
-							promise = undefined;
-							if(promise_queue_snob.length){
-								ct(promise_queue_snob.shift(), true)
-							}
-						})
-					} else {
-						promise_queue_snob.push(cm)
-					}
-				})
-
-				list_trebuchet.forEach(function(cm){
-					if(!ct){
-						ct(cm, true).then(function(){
-							promise = undefined;
-							if(promise_queue_trebuchet.length){
-								ct(promise_queue_trebuchet.shift(), true)
-							}
-						})
-					} else {
-						promise_queue_trebuchet.push(cm)
-					}
-				})
 			})
 		}
 		, getAtaques = function(){
