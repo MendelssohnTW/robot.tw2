@@ -192,7 +192,7 @@ define("robotTW2/services/DefenseService", [
 				callback(false, "");
 			}
 		}
-		, troops_analyze = function(id, callback){
+		, troops_analyze = function(id, lt){
 			return new Promise(function(resolve){
 				var list_snob = []
 				, list_trebuchet = []
@@ -335,12 +335,13 @@ define("robotTW2/services/DefenseService", [
 				, promise_queue_snob = []
 				, promise_queue_othres = []
 
-				lt.forEach(function(cmd){
-					if(cmd.start_village == id){
-						list_preserv_others.push(cmd.params)
-					}
-				})
-				lt = [];
+//				lt.forEach(function(cmd){
+//					if(cmd.start_village == id){
+//						list_preserv_others.push(cmd.params)
+//					}
+//				})
+				
+				list_preserv_others = lt.filter(cmd => cmd.params.start_village == id)
 
 				var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
 				var comandos_incoming = cmds.incoming;
@@ -455,7 +456,7 @@ define("robotTW2/services/DefenseService", [
 				function gt(){
 					if (vls.length){
 						var id = vls.shift();
-						troops_analyze(id).then(gt) 
+						troops_analyze(id, lt).then(gt) 
 					} else {
 //						upDateTbodySupport();
 						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
