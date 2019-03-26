@@ -328,8 +328,8 @@ define("robotTW2/services/DefenseService", [
 						})
 					})
 				}
-				, promise_queue = []
 				, fg = function fg(list, opt){
+					var promise_queue = []
 					return new Promise(function(res){
 						function f(cm){
 							if(!promise){
