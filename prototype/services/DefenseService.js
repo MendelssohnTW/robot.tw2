@@ -288,6 +288,7 @@ define("robotTW2/services/DefenseService", [
 //				return g;
 //				}
 				, removerItens =  function(list, g){
+					if(!g.length){return list}
 					g.forEach(function(cm){
 						list = list.filter(function(elem, index, array){
 							return elem.id != cm.id
