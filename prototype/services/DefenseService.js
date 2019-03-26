@@ -301,7 +301,7 @@ define("robotTW2/services/DefenseService", [
 					return list
 				}
 				, ct = function ct(cmd, opt){
-					return loadVillage(cmd).then(function(aldeia){
+					let a = loadVillage(cmd).then(function(aldeia){
 						promise = undefined;
 						if(rt || rt.$$state || rt.$$state.status == 0){
 							$timeout.cancel(rt);
@@ -330,6 +330,7 @@ define("robotTW2/services/DefenseService", [
 							resolve();
 						}
 					})
+					return a(cm)
 				}
 				, fg = function fg(list, opt){
 					return new Promise(function(resolve_f){
