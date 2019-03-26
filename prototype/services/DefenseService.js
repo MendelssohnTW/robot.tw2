@@ -10,7 +10,6 @@ define("robotTW2/services/DefenseService", [
 	"conf/conf",
 	"conf/unitTypes",
 	"robotTW2/time",
-	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_villages",
 	"robotTW2/CommandDefense",
@@ -22,7 +21,6 @@ define("robotTW2/services/DefenseService", [
 			conf_conf,
 			unitTypes,
 			time,
-			unitTypesRenameRecon,
 			data_defense,
 			data_villages,
 			commandDefense,
@@ -179,8 +177,8 @@ define("robotTW2/services/DefenseService", [
 			var units_ret = [];
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[1];
-
-			if(unitTypesRenameRecon[unitType]){
+			
+			if(data_defense.list_defense[unitType]){
 				switch (unitType) {
 				case "snob":
 					callback(unitTypes.SNOB, unitType);
@@ -402,20 +400,20 @@ define("robotTW2/services/DefenseService", [
 				})
 
 //				var vls = modelDataService.getSelectedCharacter().getVillageList();
-//
+
 //				vls = Object.keys(vls).map(function(elem){
-//					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
-//						return vls[elem]
-//					}
+//				if(data_villages.villages[vls[elem].data.villageId].defense_activate){
+//				return vls[elem]
+//				}
 //				}).filter(f=>f!=undefined)
-				
-				
+
+
 				var vls = Object.keys(data_villages.villages).map(function(villageId){
 					if(data_villages.villages[villageId].defense_activate){
 						return villageId
 					}
 				}).filter(f=>f!=undefined)
-				
+
 				function gt(){
 					if (vls.length){
 						var id = vls.shift();
@@ -437,6 +435,8 @@ define("robotTW2/services/DefenseService", [
 							return b.completedAt - a.completedAt;
 						})
 
+						comandos_incoming = comandos_incomig.filter(cmd=>cmd.actionType == "attack" && cmd.isCommand && !cmd.returning)
+
 						var limit = data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
 						var length_incomming = comandos_incoming.length; 
 
@@ -447,23 +447,21 @@ define("robotTW2/services/DefenseService", [
 						}
 
 						comandos_incoming.forEach(function(cmd){
-							if (cmd.actionType == "attack" && cmd.isCommand && !cmd.returning){
-								troops_measure(cmd, function(push , unitType){
-									if(push){
-										switch (unitType) {
-										case "snob":
-											list_snob.push(cmd);
-											break;
-										case "trebuchet":
-											list_trebuchet.push(cmd);
-											break;
-										default:
-											list_others.push(cmd);
-										}
-
+							troops_measure(cmd, function(push , unitType){
+								if(push){
+									switch (unitType) {
+									case "snob":
+										list_snob.push(cmd);
+										break;
+									case "trebuchet":
+										list_trebuchet.push(cmd);
+										break;
+									default:
+										list_others.push(cmd);
 									}
-								})
-							}
+
+								}
+							})
 						});
 						list_snob.length ? list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
 						list_trebuchet.length ? list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
