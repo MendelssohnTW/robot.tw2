@@ -401,17 +401,24 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 
-				var vls = modelDataService.getSelectedCharacter().getVillageList();
-
-				vls = Object.keys(vls).map(function(elem){
-					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
-						return vls[elem]
+//				var vls = modelDataService.getSelectedCharacter().getVillageList();
+//
+//				vls = Object.keys(vls).map(function(elem){
+//					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
+//						return vls[elem]
+//					}
+//				}).filter(f=>f!=undefined)
+				
+				
+				var vls = Object.keys(data_villages.villages).map(function(villageId){
+					if(data_villages.villages[villageId].defense_activate){
+						return villageId
 					}
 				}).filter(f=>f!=undefined)
-
+				
 				function gt(){
 					if (vls.length){
-						var id = vls.shift().data.villageId;
+						var id = vls.shift();
 						var list_snob = [];
 						var list_trebuchet = [];
 						var list_others = [];
