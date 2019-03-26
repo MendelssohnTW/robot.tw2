@@ -435,7 +435,7 @@ define("robotTW2/services/DefenseService", [
 							return b.completedAt - a.completedAt;
 						})
 
-						comandos_incoming = comandos_incomig.filter(cmd=>cmd.actionType == "attack" && cmd.isCommand && !cmd.returning)
+						comandos_incoming = comandos_incoming.filter(cmd=>cmd.actionType == "attack" && cmd.isCommand && !cmd.returning)
 
 						var limit = data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
 						var length_incomming = comandos_incoming.length; 
