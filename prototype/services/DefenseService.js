@@ -215,6 +215,17 @@ define("robotTW2/services/DefenseService", [
 					: null;
 					return g;
 				}
+				, reduzir = function(list){
+					list.length ? list.reduce(function(prevVal, elem, index, array) {
+						if(prevVal.completedAt - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT && !elem.nob) {
+							g.push(elem)
+							return elem;
+						} else {
+							return elem
+						}
+					})
+					: null
+				}
 //				, reduzir = function(listP){
 //				var g = [];
 //				var t = 0;
@@ -284,15 +295,16 @@ define("robotTW2/services/DefenseService", [
 					})
 					return list;
 				}
-//				, estab = function(list){
-//				list = list.sort(function (a, b) {return b.completedAt - a.completedAt})
-//				var g = [];
-//				angular.extend(g, list);
-//				g = reduzirSnob(g);
-//				list = removerItens(list, g);
-//				return list
-//				}
+				, estab = function(list){
+					list = list.sort(function (a, b) {return b.completedAt - a.completedAt})
+					var g = [];
+					angular.extend(g, list);
+					g = reduzir(g);
+					list = removerItens(list, g);
+					return list
+				}
 				, estabSnob = function(list){
+					if(!list.length){return []}
 					list = list.sort(function (a, b) {return a.completedAt - b.completedAt})
 					var g = [];
 					angular.extend(g, list);
@@ -409,8 +421,8 @@ define("robotTW2/services/DefenseService", [
 //				list_others = removerItens(list_others, list_trebuchet);
 
 				list_snob = estabSnob(list_snob);
-				list_trebuchet = estabSnob(list_trebuchet);
-				list_others = estabSnob(list_others);
+				list_trebuchet = estab(list_trebuchet);
+				list_others = estab(list_others);
 
 //				list_others = list_others.concat(list_snob)
 //				list_others = list_others.concat(list_trebuchet)
