@@ -216,6 +216,7 @@ define("robotTW2/services/DefenseService", [
 					return g;
 				}
 				, reduzir = function(list){
+					var g = [];
 					list.length ? list.reduce(function(prevVal, elem, index, array) {
 						if(prevVal.completedAt - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT && !elem.nob) {
 							g.push(elem)
@@ -225,6 +226,7 @@ define("robotTW2/services/DefenseService", [
 						}
 					})
 					: null
+					return g
 				}
 //				, reduzir = function(listP){
 //				var g = [];
@@ -288,7 +290,6 @@ define("robotTW2/services/DefenseService", [
 //				return g;
 //				}
 				, removerItens =  function(list, g){
-					if(!g.length){return list}
 					g.forEach(function(cm){
 						list = list.filter(function(elem, index, array){
 							return elem.id != cm.id
