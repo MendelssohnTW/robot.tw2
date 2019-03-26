@@ -463,10 +463,10 @@ define("robotTW2/services/DefenseService", [
 								}
 							})
 						});
-						list_snob.length ? list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
-						list_trebuchet.length ? list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
-						list_others.length ? list_others.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
-						list_snob.length || list_trebuchet.length || list_others.length ? troops_analyze(list_snob, list_trebuchet, list_others, list_preserv_others,  gt) : gt();
+						list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;})
+						list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;})
+						list_others.sort(function (a, b) {return b.completedAt - a.completedAt;})
+						[list_snob.length, list_trebuchet.length, list_others.length, list_preserv_others.length].some(f=>f) ? troops_analyze(list_snob, list_trebuchet, list_others, list_preserv_others,  gt) : gt();
 					} else {
 //						upDateTbodySupport();
 						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
