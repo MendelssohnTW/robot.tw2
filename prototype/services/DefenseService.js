@@ -330,23 +330,27 @@ define("robotTW2/services/DefenseService", [
 				}
 				, fg = function fg(list, opt){
 					var promise_queue = []
-					function f(cm){
-						if(!promise){
-							promise = ct(cm, opt).then(function (){
-								if(promise_queue.length){
-									f(promise_queue.shift())
-								} else {
-									res();
-								}
-							})
-						} else {
-							promise_queue.push(cm)
+					return new Promise(function(res){
+						function f(cm){
+							if(!promise){
+								promise = ct(cm, opt).then(function (){
+									if(promise_queue.length){
+										f(promise_queue.shift())
+									} else {
+										res();
+									}
+								})
+							} else {
+								promise_queue.push(cm)
+							}
 						}
-					}
-					list.forEach(function(cm){
-						f(cm)
+
+						list.forEach(function(cm){
+							f(cm)
+						})
 					})
 				}
+
 
 //				lt.forEach(function(cmd){
 //				if(cmd.start_village == id){
@@ -406,11 +410,13 @@ define("robotTW2/services/DefenseService", [
 //				list_others = list_others.concat(list_snob)
 //				list_others = list_others.concat(list_trebuchet)
 
-				fg(list_others)
-				fg(list_snob, true)
-				fg(list_trebuchet, true)
-				resolve()
-
+				fg(list_others).then(function(){
+					fg(list_snob, true).then(function(){
+						fg(list_trebuchet, true).then(function(){
+							resolve()	
+						})
+					})
+				})
 			})
 		}
 		, getAtaques = function(){
