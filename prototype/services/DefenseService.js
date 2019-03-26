@@ -345,9 +345,13 @@ define("robotTW2/services/DefenseService", [
 							}
 						}
 
-						list.forEach(function(cm){
-							f(cm)
-						})
+						if(!list.length){
+							res();
+						} else {
+							list.forEach(function(cm){
+								f(cm)
+							})
+						}
 					})
 				}
 
