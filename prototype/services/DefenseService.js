@@ -780,19 +780,18 @@ define("robotTW2/services/DefenseService", [
 			start();
 		}
 		, handlerVerify = function(){
-			var first = true;
+			verificarAtaques();
 			if(!listener_verify){
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
 					promise_verify = undefined;
+					
+//					promise.$$state.status === 0 // pending
+//					promise.$$state.status === 1 // resolved
+//					promise.$$state.status === 2 // rejected
+					
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-						if(first){
-							time = 0;
-							first = false;
-						} else {
-							time = 5 * 60 * 1000
-						}
-						timeout = $timeout(verificarAtaques, time);
+						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
 					}
 				});
 			}
