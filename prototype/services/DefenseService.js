@@ -177,7 +177,7 @@ define("robotTW2/services/DefenseService", [
 			var units_ret = [];
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[1];
-			
+
 			if(data_defense.list_defense[unitType]){
 				switch (unitType) {
 				case "snob":
@@ -466,7 +466,12 @@ define("robotTW2/services/DefenseService", [
 						list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;})
 						list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;})
 						list_others.sort(function (a, b) {return b.completedAt - a.completedAt;})
-						[list_snob.length, list_trebuchet.length, list_others.length, list_preserv_others.length].some(f=>f) ? troops_analyze(list_snob, list_trebuchet, list_others, list_preserv_others,  gt) : gt();
+						if([list_snob.length, list_trebuchet.length, list_others.length, list_preserv_others.length].some(f=>f)){
+							troops_analyze(list_snob, list_trebuchet, list_others, list_preserv_others,  gt) 
+						} else {
+							gt();
+						}
+
 					} else {
 //						upDateTbodySupport();
 						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
@@ -785,11 +790,11 @@ define("robotTW2/services/DefenseService", [
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
 					promise_verify = undefined;
-					
+
 //					promise.$$state.status === 0 // pending
 //					promise.$$state.status === 1 // resolved
 //					promise.$$state.status === 2 // rejected
-					
+
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
 						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
 					}
