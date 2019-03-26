@@ -351,7 +351,7 @@ define("robotTW2/services/DefenseService", [
 				}
 				, promise_queue_trebuchet = []
 				, promise_queue_snob = []
-				, promise_queue_othres = []
+				, promise_queue_others = []
 
 //				lt.forEach(function(cmd){
 //				if(cmd.start_village == id){
