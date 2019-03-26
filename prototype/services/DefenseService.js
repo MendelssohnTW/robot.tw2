@@ -471,20 +471,19 @@ define("robotTW2/services/DefenseService", [
 				gt()
 			})
 		}
-		, verificarAtaques = function (opt){
-			var renew = false;
+		, verificarAtaques = function (){
+			var promise_verify_queue = false
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
-					if(renew || opt) {
-						renew = false;
-						opt = false;
+					if(promise_verify_queue) {
+						promise_verify_queue = false;
 						verificarAtaques()
 					}
 				})
 			} else {
-				renew = true;
+				promise_verify_queue = true
 			}
 		}
 		, sendCancel = function(params){
@@ -776,12 +775,19 @@ define("robotTW2/services/DefenseService", [
 			start();
 		}
 		, handlerVerify = function(){
+			var first = true;
 			if(!listener_verify){
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
 					promise_verify = undefined;
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
+						if(first){
+							time = 0;
+							first = false;
+						} else {
+							time = 5 * 60 * 1000
+						}
+						timeout = $timeout(verificarAtaques, time);
 					}
 				});
 			}
@@ -800,13 +806,12 @@ define("robotTW2/services/DefenseService", [
 					calibrate_time()
 				}
 				if(!listener_lost){
-					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(function(){verificarAtaques(true)} , 60000));
+					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
 				}
 				if(!listener_conquered){
-					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(function(){verificarAtaques(true)} , 60000));
+					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
 				}
 				handlerVerify();
-				verificarAtaques(true);
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){
