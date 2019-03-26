@@ -334,6 +334,7 @@ define("robotTW2/services/DefenseService", [
 						function f(cm){
 							if(!promise){
 								promise = ct(cm, opt).then(function (){
+									promise = undefined
 									if(promise_queue.length){
 										f(promise_queue.shift())
 									} else {
