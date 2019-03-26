@@ -302,7 +302,6 @@ define("robotTW2/services/DefenseService", [
 				}
 				, ct = function ct(cmd, opt){
 					return loadVillage(cmd).then(function(aldeia){
-						promise = undefined;
 						if(rt || rt.$$state || rt.$$state.status == 0){
 							$timeout.cancel(rt);
 						}
@@ -324,11 +323,6 @@ define("robotTW2/services/DefenseService", [
 								id_command 			: cmd.id
 						}
 						addDefense(params);
-						if(promise_queue.length){
-							ct(promise_queue.shift())
-						} else {
-							resolve();
-						}
 					})
 				}
 				, promise_queue = []
@@ -345,6 +339,7 @@ define("robotTW2/services/DefenseService", [
 										}
 									})
 								}, function(){
+									promise = undefined
 									resolve_f()
 								})
 							} else {
