@@ -301,7 +301,7 @@ define("robotTW2/services/DefenseService", [
 					return list
 				}
 				, ct = function ct(cmd, opt){
-					let a = loadVillage(cmd).then(function(aldeia){
+					return loadVillage(cmd).then(function(aldeia){
 						promise = undefined;
 						if(rt || rt.$$state || rt.$$state.status == 0){
 							$timeout.cancel(rt);
@@ -330,29 +330,29 @@ define("robotTW2/services/DefenseService", [
 							resolve();
 						}
 					})
-					return a(cm)
 				}
+				, promise_queue = []
 				, fg = function fg(list, opt){
 					return new Promise(function(resolve_f){
 						list.forEach(function(cm){
-							if(!ct){
-								ct(cm, opt).then(function(){
-									promise = undefined;
-									if(promise_queue_others.length){
-										ct(promise_queue_others.shift(), opt)
-									} else {
-										resolve_f();
-									}
+							if(!promise){
+								promise = new Promise(function(res){
+									ct(cm, opt).then(function(){
+										if(promise_queue.length){
+											ct(promise_queue.shift(), opt)
+										} else {
+											res();
+										}
+									})
+								}, function(){
+									resolve_f()
 								})
 							} else {
-								promise_queue_others.push(cm)
+								promise_queue.push(cm)
 							}
 						})
 					})
 				}
-				, promise_queue_trebuchet = []
-				, promise_queue_snob = []
-				, promise_queue_others = []
 
 //				lt.forEach(function(cmd){
 //				if(cmd.start_village == id){
