@@ -331,20 +331,20 @@ define("robotTW2/services/DefenseService", [
 				, promise_queue = []
 				, fg = function fg(list, opt){
 					return new Promise(function(res){
-						list.forEach(function(cm){
-							function f(cm){
-								if(!promise){
-									promise = ct(cm, opt).then(function (){
-										if(promise_queue.length){
-											f(promise_queue.shift())
-										} else {
-											res();
-										}
-									})
-								} else {
-									promise_queue.push(cm, opt)
-								}
+						function f(cm){
+							if(!promise){
+								promise = ct(cm, opt).then(function (){
+									if(promise_queue.length){
+										f(promise_queue.shift())
+									} else {
+										res();
+									}
+								})
+							} else {
+								promise_queue.push(cm, opt)
 							}
+						}
+						list.forEach(function(cm){
 							f(cm)
 						})
 					})
