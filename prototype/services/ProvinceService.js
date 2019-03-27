@@ -27,6 +27,7 @@ define("robotTW2/services/ProvinceService", [
 		, isRunning = !1
 		, isPaused = !1
 		, callbk = undefined
+		, callPlayer = undefined
 		, start = function () {
 			if(isRunning) {return}
 			ready(function () {
@@ -70,6 +71,70 @@ define("robotTW2/services/ProvinceService", [
 				'y': 445
 			});
 		}
+		, getProvinceForPlayer = function(player, callback){
+			callPlayer = callback
+			var pvs = []
+			let vls = Object.keys(player.villages)
+			if(!player || !vls.lenth){return}
+			
+			var lt_vills = vls.map(function(vill){
+				return player.villages[vill]
+			})
+			
+			function d (ps) {
+				let df =  Object.keys(ps).map(function(pts){
+					let vf = ps[pts].villages;
+					let rts = Object.keys(vf).map(function(vt){
+						return vf[vt]
+					})
+					
+					rts = rts.filter(f=>f.character_id != character_id)
+					delete ps[pts].villages
+					ps[pts].villages = rts
+					return ps[pts].villages
+				})
+				if(typeof(callPlayer) == "function"){
+					callPlayer(df)
+					callPlayer = undefined;
+				} else {
+					return df
+				}
+			}
+
+			function n(village){
+				let village_id = village.village_id
+				, x = village.x
+				, y = village.y
+				, r
+
+				if(!ab){
+					ab = new Promise(function(resolve){
+						r = services.$timeout(function(){
+							resolve()
+						}, conf_conf.LOADING_TIMEOUT);
+						let pv = getProvinceCoord(x, y)
+						getProvinceData(pv.x, pv.y, function(data){
+							if(!pvs.find(f=>f.province_id==data.province_id)){
+								pvs.push(data)
+							}
+							resolve()
+						})
+					}, function(){
+						services.$timeout.cancel(r);
+						r = undefined;
+						ab = undefined
+						if(lt_vills.length){
+							n(lt_vills.shift())
+						} else {
+							d(pvs)
+						}
+					})
+				}
+			}
+			if(lt_vills.length){
+				n(lt_vills.shift())
+			}
+		}
 		, init = function () {
 			isInitialized = !0
 			start();
@@ -81,22 +146,22 @@ define("robotTW2/services/ProvinceService", [
 		init()
 
 		return	{
-			init				: init,
-			start				: start,
-			stop 				: stop,
-			getProvinceCoord 	: getProvinceCoord,
-			getProvinceData 	: getProvinceData,
-			isRunning			: function () {
+			init					: init,
+			start					: start,
+			stop 					: stop,
+			getProvinceCoord 		: getProvinceCoord,
+			getProvinceForPlayer 	: getProvinceForPlayer,
+			getProvinceData 		: getProvinceData,
+			isRunning				: function () {
 				return isRunning
 			},
-			isPaused			: function () {
+			isPaused				: function () {
 				return isPaused
 			},
-			isInitialized		: function () {
+			isInitialized			: function () {
 				return isInitialized
 			},
-			version				: conf.VERSION.FARM,
-			name				: "province"
+			name					: "province"
 		}
 	})(
 			robotTW2.services.$rootScope,

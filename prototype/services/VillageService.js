@@ -96,7 +96,6 @@ define("robotTW2/services/VillageService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: conf.VERSION.ALERT,
 			name			: "village"
 		}
 	})(
