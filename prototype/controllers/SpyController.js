@@ -7,7 +7,8 @@ define("robotTW2/controllers/SpyController", [
 	"robotTW2/databases/data_villages",
 	"robotTW2/autocomplete",
 	"robotTW2/notify",
-	"helper/math"
+	"helper/math",
+	"conf/conf"
 	], function(
 			services,
 			providers,
@@ -17,7 +18,8 @@ define("robotTW2/controllers/SpyController", [
 			data_villages,
 			autocomplete,
 			notify,
-			math
+			math,
+			conf_conf
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -88,6 +90,10 @@ define("robotTW2/controllers/SpyController", [
 					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 				}
 			}
+
+		}
+		, requestVillageProvinceNeighbours = function requestVillageProvinceNeighbours(villageId, callback) {
+			socketService.emit(providers.routeProvider.VILLAGES_IN_PROVINCE,	{'village_id' : villageId}, callback);
 		}
 		, updateValuesSource = function(){
 			if(Object.keys($scope.villages_for_sent).length){
@@ -103,6 +109,50 @@ define("robotTW2/controllers/SpyController", [
 					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
 					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 				}
+
+				$scope.village_province = [];
+
+				var ab = undefined
+				, ab_queue = []
+				
+				Object.keys($scope.villages_for_sent).map(function(village){
+					var village_id = $scope.villages_for_sent[village].village_id
+					, b
+					, r
+					function n(village_id){
+						if(!ab){
+							ab = new Promise(function(resolve){
+								r = services.$timeout(function(){
+									resolve()
+								}, conf_conf.LOADING_TIMEOUT);
+								b = requestVillageProvinceNeighbours(village_id, function(responseData){
+									if(!responseData){resolve()}
+									Objec.keys(responseData.villages).map(function(vill){
+										let province = responseData.villages[vill].province_name
+										if(!$scope.village_province.find(f=>f==province)){
+											$scope.village_province.push(province)
+										}
+									})
+									resolve()
+								})
+							}, function(){
+								services.$timeout.cancel(r);
+								r = undefined;
+								b = undefined;
+								ab = undefined
+								if(ab_queue.length){
+									n(ab_queue.shift())
+								} else {
+									$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+									if (!$scope.$$phase) {$scope.$apply()}
+								}
+							})
+						} else {
+							ab_queue.push(village_id)
+						}
+					}
+					n(village_id)
+				})
 			}
 		}
 		, updateTarget = function(){
@@ -278,7 +328,7 @@ define("robotTW2/controllers/SpyController", [
 			}
 			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
 		}
-		
+
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
 			var village = services.VillageService.getVillage(vid)
@@ -360,7 +410,7 @@ define("robotTW2/controllers/SpyController", [
 						if(!list_dist_vills) return;
 
 						let dist_vill;
-						
+
 						let count = 0;
 
 						function next(dist_vill, limit){
