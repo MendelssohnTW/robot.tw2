@@ -93,7 +93,7 @@ define("robotTW2/controllers/SpyController", [
 
 		}
 		, requestVillageProvinceNeighbours = function requestVillageProvinceNeighbours(villageId, callback) {
-			socketService.emit(providers.routeProvider.VILLAGES_IN_PROVINCE,	{'village_id' : villageId}, callback);
+			services.socketService.emit(providers.routeProvider.VILLAGES_IN_PROVINCE,	{'village_id' : villageId}, callback);
 		}
 		, updateValuesSource = function(){
 			if(Object.keys($scope.villages_for_sent).length){
