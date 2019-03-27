@@ -2014,7 +2014,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
 						return robotTW2.controllers;
 					}))
-				}, 10000)
+				}, 5000)
 			}, ["all_villages_ready"])
 		})
 
