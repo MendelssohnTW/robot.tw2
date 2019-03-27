@@ -110,6 +110,11 @@ define("robotTW2/controllers/SpyController", [
 				}
 
 				$scope.village_province = [];
+				
+				
+				/*
+				 * Vefiricar usando provinceService get For player
+				 */
 
 				var lt_vills = Object.keys($scope.villages_for_sent).map(function(vill){
 					return $scope.villages_for_sent[vill]
