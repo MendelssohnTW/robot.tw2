@@ -94,9 +94,6 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 		}
-		, requestVillageProvinceNeighbours = function requestVillageProvinceNeighbours(villageId, callback) {
-			services.socketService.emit(providers.routeProvider.VILLAGES_IN_PROVINCE,	{'village_id' : villageId}, callback);
-		}
 		, updateValuesSource = function(){
 			if(Object.keys($scope.villages_for_sent).length){
 				let get_data = $("#input-date-source").val();
@@ -114,47 +111,47 @@ define("robotTW2/controllers/SpyController", [
 
 				$scope.village_province = [];
 
-				var ab = undefined
-				, ab_queue = []
+				var lt_vills = Object.keys($scope.villages_for_sent).map(function(vill){})
 
-				Object.keys($scope.villages_for_sent).map(function(village){
-					var village_id = $scope.villages_for_sent[village].village_id
-					, b
+				function n(village){
+					let village_id = village.village_id
+					, x = village.x
+					, y = village.y
 					, r
-					function n(village_id){
-						if(!ab){
-							ab = new Promise(function(resolve){
-								r = services.$timeout(function(){
-									resolve()
-								}, conf_conf.LOADING_TIMEOUT);
-								b = requestVillageProvinceNeighbours(village_id, function(responseData){
-									if(!responseData){resolve()}
-									Object.keys(responseData.villages).map(function(vill){
-										let province = responseData.villages[vill].province_name
-										if(!$scope.village_province.find(f=>f==province)){
-											$scope.village_province.push(province)
-										}
-									})
-									resolve()
-								})
-							}, function(){
-								services.$timeout.cancel(r);
-								r = undefined;
-								b = undefined;
-								ab = undefined
-								if(ab_queue.length){
-									n(ab_queue.shift())
-								} else {
-									$scope.data_province = services.MainService.getSelects($scope.local_data_province)
-									if (!$scope.$$phase) {$scope.$apply()}
+
+					if(!ab){
+						ab = new Promise(function(resolve){
+							r = services.$timeout(function(){
+								resolve()
+							}, conf_conf.LOADING_TIMEOUT);
+							let pv = provinceService.getProvinceCoord(x, y)
+							provinceService.getProvinceData(pv.x, pv.y, function(data){
+								if(!$scope.local_data_province.find(f=>f.province_id==data.province_id)){
+									$scope.local_data_province.push(data)
 								}
+								resolve()
 							})
-						} else {
-							ab_queue.push(village_id)
-						}
+						}, function(){
+							services.$timeout.cancel(r);
+							r = undefined;
+							ab = undefined
+							if(lt_vills.length){
+								n(lt_vills.shift())
+							} else {
+								$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+								if (!$scope.$$phase) {$scope.$apply()}
+							}
+						})
+					} else {
+						lt_vills.push(village_id)
 					}
-					n(village_id)
-				})
+				}
+				if(lt_vills.length){
+					n(lt_vills.shift())
+				} else {
+					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+					if (!$scope.$$phase) {$scope.$apply()}
+				}
 			}
 		}
 		, updateTarget = function(){
