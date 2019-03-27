@@ -42,7 +42,7 @@ define("robotTW2/services/ProvinceService", [
 			}
 			var pv_obj = Object.keys(province).map(function(pv){
 				return province[pv].key.l ? province[pv] : undefined 
-			}).filter(f=>f!=undefined)
+			}).filter(f=>f!=undefined)[0]
 
 			if(!pv_obj){
 				return {
