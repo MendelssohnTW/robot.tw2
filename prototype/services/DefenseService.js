@@ -520,7 +520,6 @@ define("robotTW2/services/DefenseService", [
 				params.units = units;
 			};
 			if (lista.length > 0) {
-				console.log("Adicionado timeout resendDefense " + JSON.stringify(params))
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),

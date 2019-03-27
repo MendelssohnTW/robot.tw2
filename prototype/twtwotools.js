@@ -2007,14 +2007,16 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		$rootScope.$on("ready_init", function($event){
 			robotTW2.ready(function(){
-				require(["robotTW2/services"]);
-				require(["robotTW2/databases"]);
-				require(["robotTW2/controllers"]);
+				robotTW2.services.$timeout(function(){
+					require(["robotTW2/services"]);
+					require(["robotTW2/databases"]);
+					require(["robotTW2/controllers"]);
 
-				angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
-//					robotTW2.loadScript("/controllers/MainController.js");
-					return robotTW2.controllers;
-				}))
+
+					angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
+						return robotTW2.controllers;
+					}))
+				}, 10000)
 			}, ["all_villages_ready"])
 		})
 
