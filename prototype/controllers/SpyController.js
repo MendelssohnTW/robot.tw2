@@ -111,7 +111,9 @@ define("robotTW2/controllers/SpyController", [
 
 				$scope.village_province = [];
 
-				var lt_vills = Object.keys($scope.villages_for_sent).map(function(vill){})
+				var lt_vills = Object.keys($scope.villages_for_sent).map(function(vill){
+					return $scope.villages_for_sent[vill]
+				})
 
 				function n(village){
 					let village_id = village.village_id
