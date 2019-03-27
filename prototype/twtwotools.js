@@ -2011,8 +2011,6 @@ var robotTW2 = window.robotTW2 = undefined;
 					require(["robotTW2/services"]);
 					require(["robotTW2/databases"]);
 					require(["robotTW2/controllers"]);
-
-
 					angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
 						return robotTW2.controllers;
 					}))
