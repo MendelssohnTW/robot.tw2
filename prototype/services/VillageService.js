@@ -70,7 +70,6 @@ define("robotTW2/services/VillageService", [
 		, init = function (){
 			isInitialized = !0
 			start();
-			wait();
 		}
 		, start = function (){
 			if(isRunning){return}
