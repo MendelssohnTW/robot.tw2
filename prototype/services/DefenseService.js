@@ -504,7 +504,7 @@ define("robotTW2/services/DefenseService", [
 				var unitInfo = village.unitInfo.units;
 				
 				lista = Object.keys(unitInfo).map(function(unit){
-					return unitInfo[unit].available > 0 ? unit : undefined
+					return unitInfo[unit].available > 0 ? {[unit] : unitInfo[unit].available}: undefined
 				}).filter(f=>f!=undefined)
 				
 //				for(obj in unitInfo){
