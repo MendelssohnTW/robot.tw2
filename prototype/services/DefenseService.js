@@ -502,16 +502,21 @@ define("robotTW2/services/DefenseService", [
 			var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
 			if (village && village.unitInfo != undefined){
 				var unitInfo = village.unitInfo.units;
-				for(obj in unitInfo){
-					if (unitInfo.hasOwnProperty(obj)){
-						if (unitInfo[obj].available > 0){
-							var campo = {[obj]: unitInfo[obj].available};
-							units[Object.keys(campo)[0]] = 
-								Object.keys(campo).map(function(key) {return campo[key]})[0];
-							lista.push(units);
-						}
-					}
-				}
+				
+				lista = Object.keys(unitInfo).map(function(unit){
+					return unitInfo[unit].available > 0
+				}).filter(f=>f!=undefined)
+				
+//				for(obj in unitInfo){
+//					if (unitInfo.hasOwnProperty(obj)){
+//						if (unitInfo[obj].available > 0){
+//							var campo = {[obj]: unitInfo[obj].available};
+//							units[Object.keys(campo)[0]] = 
+//								Object.keys(campo).map(function(key) {return campo[key]})[0];
+//							lista.push(units);
+//						}
+//					}
+//				}
 				params.units = units;
 			};
 			if (lista.length > 0) {
@@ -657,7 +662,9 @@ define("robotTW2/services/DefenseService", [
 					"id_command": id_command
 				})
 
+				console.log("add sendDefense")
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
+					console.log("trigger sendDefense")
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
