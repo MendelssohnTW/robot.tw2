@@ -81,6 +81,9 @@ define("robotTW2/services/VillageService", [
 		, stop = function (){
 			isRunning = !1;
 		}
+		
+		init()
+		
 		return	{
 			init			: init,
 			start 			: start,

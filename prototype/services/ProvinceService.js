@@ -65,14 +65,15 @@ define("robotTW2/services/ProvinceService", [
 				'y': 445
 			});
 		}
-		, init = function (bool) {
+		, init = function () {
 			isInitialized = !0
-			if(bool){return}
 			start();
 		}
 		, stop = function () {
 			isRunning = !1
 		}
+		
+		init()
 
 		return	{
 			init				: init,

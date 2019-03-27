@@ -25,7 +25,6 @@ define("robotTW2/services/SpyService", [
 	return (function SpyService(
 			$rootScope,
 			socketService,
-			VillageService,
 			providers,
 			modelDataService,
 			$timeout,
@@ -184,7 +183,7 @@ define("robotTW2/services/SpyService", [
 			}
 		}
 		, send = function(params){
-			var village = VillageService.getVillage(params.start_village)
+			var village = services.VillageService.getVillage(params.start_village)
 			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
 			if(qtd_spy < params.spys){
 				params.spys = qtd_spy
@@ -328,7 +327,6 @@ define("robotTW2/services/SpyService", [
 	})(
 			robotTW2.services.$rootScope,
 			robotTW2.services.socketService,
-			robotTW2.services.VillageService,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
