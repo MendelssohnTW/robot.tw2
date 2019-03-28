@@ -81,7 +81,7 @@ define("robotTW2/services/ProvinceService", [
 			function d (ps) {
 				let df =  Object.keys(ps).map(function(pts){
 					ps[pts].villages = ps[pts].villages.filter(f=>f.character_id == player.character_id)
-					return ps[pts].villages
+					return ps[pts]
 				})
 				if(typeof(callPlayer) == "function"){
 					callPlayer(df)
