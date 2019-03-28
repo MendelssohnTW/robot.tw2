@@ -109,57 +109,12 @@ define("robotTW2/controllers/SpyController", [
 					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 				}
 
-				$scope.village_province = [];
-				
-				
-				/*
-				 * Vefiricar usando provinceService get For player
-				 */
-
-				var lt_vills = Object.keys($scope.villages_for_sent).map(function(vill){
-					return $scope.villages_for_sent[vill]
-				})
-				, ab = undefined
-
-				function n(village){
-					let village_id = village.village_id
-					, x = village.x
-					, y = village.y
-					, r
-
-					if(!ab){
-						ab = new Promise(function(resolve){
-							r = services.$timeout(function(){
-								resolve()
-							}, conf_conf.LOADING_TIMEOUT);
-							let pv = provinceService.getProvinceCoord(x, y)
-							provinceService.getProvinceData(pv.x, pv.y, function(data){
-								if(!$scope.local_data_province.find(f=>f.province_id==data.province_id)){
-									$scope.local_data_province.push(data)
-								}
-								resolve()
-							})
-						}, function(){
-							services.$timeout.cancel(r);
-							r = undefined;
-							ab = undefined
-							if(lt_vills.length){
-								n(lt_vills.shift())
-							} else {
-								$scope.data_province = services.MainService.getSelects($scope.local_data_province)
-								if (!$scope.$$phase) {$scope.$apply()}
-							}
-						})
-					} else {
-						lt_vills.push(village_id)
-					}
-				}
-				if(lt_vills.length){
-					n(lt_vills.shift())
-				} else {
+				provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
+					$scope.local_data_province = provinces;
 					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
 					if (!$scope.$$phase) {$scope.$apply()}
-				}
+				})
+
 			}
 		}
 		, updateTarget = function(){
