@@ -140,7 +140,7 @@
 								<div id="check_select"
 									class="position-absolute size-34x34 btn-green icon-26x26-check-positive"
 									ng-class="{'btn-green icon-26x26-check-positive': selectAll == true, 'btn-red icon-26x26-check-negative': selectAll == false}"
-									ng-click="toggleOption()"></div>
+									ng-click="toggleOption()" style="margin-bottom: 5px;"></div>
 								<div>
 									<select id="select_province" class="select-handler"
 										ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
