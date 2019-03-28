@@ -188,8 +188,6 @@ define("robotTW2/controllers/SpyController", [
 //		}
 
 		$scope.autoCompleteKey = function(event){
-			$scope.inputValueSpy = event.srcElement.value;
-			
 			let obj_autocomplete = {
 					'type'					: 'village',
 					'placeholder'			: $scope.SEARCH_MAP,
@@ -200,7 +198,6 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-//					"inputValue" 	: event.srcElement.value,
 					"element" 		: $($("#autocomplete_spy")[0]),
 					"id" 			: "autocomplete_spy",
 					"autoComplete" 	: obj_autocomplete
@@ -209,8 +206,6 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.autoCompleteKeyPlayer = function(event){
-			$scope.inputValuePlayer = event.srcElement.value;
-			
 			let obj_autocomplete = {
 					'type'					: 'character',
 					'placeholder'			: $scope.SEARCH_MAP,
@@ -221,7 +216,6 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-//					"inputValue" 	: event.srcElement.value,
 					"element" 		: $($("#autocomplete_spy_player")[0]),
 					"id" 			: "autocomplete_spy_player",
 					"autoComplete" 	: obj_autocomplete
