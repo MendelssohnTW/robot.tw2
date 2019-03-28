@@ -156,9 +156,9 @@ define("robotTW2/controllers/SpyController", [
 			});
 		}
 
-		$scope.requestedTab = TABS.SPY;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
+//		$scope.requestedTab = TABS.SPY;
+//		$scope.TABS = TABS;
+//		$scope.TAB_ORDER = TAB_ORDER;
 
 		$scope.isRunning = services.SpyService.isRunning();
 
