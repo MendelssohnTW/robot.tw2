@@ -156,7 +156,7 @@
 									ng-click="toggleOptionVillage()" style="margin-bottom: 5px;"></div>
 								<div>
 									<select id="select_village" class="select-handler"
-										ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province_village.availableOptions track by item.name"
+										ng-options="item as (item.village_name + ' (' + item.village_x + '|' + item.village_y + ')') for item in data_province_village.availableOptions track by item.village_name"
 										ng-model="data_province_village.selectedOption"></select>
 								</div></td>
 							<td class="cell-right">
