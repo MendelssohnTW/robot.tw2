@@ -206,9 +206,9 @@ define("robotTW2/services/DefenseService", [
 						let limit = Math.trunc(Math.trunc(loyalty) / 30)
 						let count = 0;
 						list.reduce(function(prevVal, elem, index, array) {
+							count++;
 							var b = t == 0 ? prevVal.completedAt : t;
 							if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
-								count++;
 								t = prevVal.completedAt;
 								g.push(elem)
 								return elem;
