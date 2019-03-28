@@ -67,8 +67,8 @@ define("robotTW2/services/ProvinceService", [
 		, getProvinceData = function(x, y, callback){
 			callbk = callback
 			socketService.emit(providers.routeProvider.MAP_GETPROVINCE, {
-				'x': 425,
-				'y': 445
+				'x': x,
+				'y': y
 			});
 		}
 		, getProvinceForPlayer = function(player, callback){
