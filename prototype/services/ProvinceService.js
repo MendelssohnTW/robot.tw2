@@ -100,8 +100,8 @@ define("robotTW2/services/ProvinceService", [
 
 			function n(village){
 				let village_id = village.village_id
-				, x = village.x
-				, y = village.y
+				, x = village.village_x
+				, y = village.village_y
 				, r
 
 				if(!ab){
