@@ -127,6 +127,7 @@ define("robotTW2/controllers/SpyController", [
 		, updateTargetPlayer = function(){
 			$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
 			$scope.download = false;
+			if (!$scope.$$phase) {$scope.$apply()}
 			updateValuesSource();
 		}
 		, updateEnter = function(item, element){
@@ -210,6 +211,7 @@ define("robotTW2/controllers/SpyController", [
 					"autoComplete" 	: obj_autocomplete
 			}
 			$scope.download = true;
+			if (!$scope.$$phase) {$scope.$apply()}
 			autocomplete(object_scope, event);
 		}
 
