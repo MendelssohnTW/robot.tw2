@@ -2115,11 +2115,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.SPY,
 								templateName 		: "spy",
-								classes 			: "",
+								classes 			: "fullsize",
 								url		 			: "/controllers/SpyController.js",
-								style 				: {
-									width:"1080px"
-								}
+								style 				: null
 						}		
 						robotTW2.build(params)
 					})
