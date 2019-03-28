@@ -188,6 +188,8 @@ define("robotTW2/controllers/SpyController", [
 //		}
 
 		$scope.autoCompleteKey = function(event){
+			$scope.inputValueSpy = event.srcElement.value;
+			
 			let obj_autocomplete = {
 					'type'					: 'village',
 					'placeholder'			: $scope.SEARCH_MAP,
@@ -198,15 +200,17 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-					"inputValue" 	: event.srcElement.value,
+//					"inputValue" 	: event.srcElement.value,
 					"element" 		: $($("#autocomplete_spy")[0]),
 					"id" 			: "autocomplete_spy",
 					"autoComplete" 	: obj_autocomplete
 			}
-			autocomplete(object_scope, event);
+			autocomplete(object_scope, event, $scope.inputValueSpy);
 		}
 
 		$scope.autoCompleteKeyPlayer = function(event){
+			$scope.inputValuePlayer = event.srcElement.value;
+			
 			let obj_autocomplete = {
 					'type'					: 'character',
 					'placeholder'			: $scope.SEARCH_MAP,
@@ -217,14 +221,14 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-					"inputValuePlayer" 	: event.srcElement.value,
-					"element" 			: $($("#autocomplete_spy_player")[0]),
-					"id" 				: "autocomplete_spy_player",
-					"autoComplete" 		: obj_autocomplete
+//					"inputValue" 	: event.srcElement.value,
+					"element" 		: $($("#autocomplete_spy_player")[0]),
+					"id" 			: "autocomplete_spy_player",
+					"autoComplete" 	: obj_autocomplete
 			}
-
+			
 			if (!$scope.$$phase) {$scope.$apply()}
-			autocomplete(object_scope, event);
+			autocomplete(object_scope, event, $scope.inputValuePlayer);
 		}
 
 		$scope.getLabelStart = function(param){

@@ -1773,8 +1773,11 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 
-			return function autoCompleteKeyUp(scope, e) {
+			return function autoCompleteKeyUp(scope, e, inputValue) {
 				$scope = scope
+				if(inputValue){
+					$scope.inputValue = inputValue
+				}
 				element = $scope.element
 				id = $scope.id
 				var requestDataParam,
