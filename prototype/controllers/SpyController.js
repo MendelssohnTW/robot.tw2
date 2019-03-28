@@ -40,7 +40,8 @@ define("robotTW2/controllers/SpyController", [
 		$scope.villages_for_sent = {};
 		$scope.local_out_villages = [];
 		$scope.download = false;
-		$scope.selectAll = false;
+		$scope.select_all_province = false;
+		$scope.select_all_village = true;
 
 		var self = this
 //		, TABS = {
@@ -127,10 +128,14 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateTargetPlayer = function(){
 			if(!$scope.item_player) {return}
-			if($scope.selectAll){
+			if($scope.select_all_province){
 				$scope.villages_for_sent = $scope.item_player.villages
 			} else {
-				$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
+				if($scope.select_all_village){
+					$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
+				} else {
+					$scope.villages_for_sent = $scope.data_province_village.selectedOption;
+				}
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
@@ -408,10 +413,19 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.toggleOption = function(){
-			if($scope.selectAll){
-				$scope.selectAll = false
+			if($scope.select_all_province){
+				$scope.select_all_province = false
 			} else {
-				$scope.selectAll = true
+				$scope.select_all_province = true
+			}
+			updateTargetPlayer()
+		}
+
+		$scope.toggleOptionVillage = function(){
+			if($scope.select_all_village){
+				$scope.select_all_village = false
+			} else {
+				$scope.select_all_village = true
 			}
 			updateTargetPlayer()
 		}
@@ -448,6 +462,12 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_province", function(){
 			if(!$scope.data_province){return}
+			$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
+			updateTargetPlayer()
+		}, true)
+		
+		$scope.$watch("data_province_village", function(){
+			if(!$scope.data_province_village){return}
 			updateTargetPlayer()
 		}, true)
 

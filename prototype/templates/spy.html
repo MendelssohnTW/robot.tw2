@@ -44,19 +44,22 @@
 						<col width="*">
 						<col width="32px">
 						<col width="*">
+						<col width="32px">
+						<col width="*">
 						<col width="160px">
 						<col width="100px">
 						<col width="160px">
 					</colgroup>
 					<tbody>
 						<tr>
-							<th class="cell-center selected" colspan="2">{{text_source}}</th>
+							<th class="cell-center selected" colspan="4">{{text_source}}</th>
 							<th class="cell-center selected" colspan="2">{{text_target_village}}</th>
 							<th class="cell-center selected">{{text_data_target}}</th>
 						</tr>
 						<tr>
 							<td><div class="icon icon-34x34-village"></div></td>
-							<td><select id="select_order" class="select-handler"
+							<td colspan="3"><select id="select_order"
+								class="select-handler"
 								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 								ng-model="data_select.selectedOption"></select></td>
 							<td><div class="icon icon-34x34-village"></div></td>
@@ -112,7 +115,7 @@
 
 
 						<tr>
-							<th class="cell-center selected" colspan="4">{{text_target_player}}</th>
+							<th class="cell-center selected" colspan="6">{{text_target_player}}</th>
 							<th class="cell-center selected">{{text_data_source}}</th>
 						</tr>
 						<tr>
@@ -135,18 +138,27 @@
 							</td>
 							<td><div class="icon icon-34x34-province"
 									ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div></td>
-							<td class="cell-center"><label for="check_select" class="with-margin ng-binding"
-								style="top: 21px; left: 100px;">{{text_select_all}}</label>
-								<div id="check_select"
-									class="position-absolute"
-									ng-class="{'btn-green icon-26x26-check-positive': selectAll == true, 'btn-red icon-26x26-check-negative': selectAll == false}"
+							<td class="cell-center"><label for="check_select"
+								class="with-margin ng-binding" style="top: 21px; left: 100px;">{{text_select_all}}</label>
+								<div id="check_select" class="position-absolute"
+									ng-class="{'btn-green icon-26x26-check-positive': select_all_province == true, 'btn-red icon-26x26-check-negative': select_all_province == false}"
 									ng-click="toggleOption()" style="margin-bottom: 5px;"></div>
 								<div>
 									<select id="select_province" class="select-handler"
 										ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
 										ng-model="data_province.selectedOption"></select>
 								</div></td>
-
+							<td><div class="icon icon-34x34-village"></div></td>
+							<td class="cell-center"><label for="check_village"
+								class="with-margin ng-binding" style="top: 21px; left: 100px;">{{text_select_all_village}}</label>
+								<div id="check_village" class="position-absolute"
+									ng-class="{'btn-green icon-26x26-check-positive': select_all_village == true, 'btn-red icon-26x26-check-negative': select_all_village == false}"
+									ng-click="toggleOptionVillage()" style="margin-bottom: 5px;"></div>
+								<div>
+									<select id="select_village" class="select-handler"
+										ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province_village.availableOptions track by item.name"
+										ng-model="data_province_village.selectedOption"></select>
+								</div></td>
 							<td class="cell-right">
 								<div>
 									<label for="input-date-source">{{text_date}}</label><input
