@@ -126,7 +126,6 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateTargetPlayer = function(){
 			$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
-			$scope.download = false;
 			if (!$scope.$$phase) {$scope.$apply()}
 			updateValuesSource();
 		}
@@ -141,6 +140,7 @@ define("robotTW2/controllers/SpyController", [
 			$scope.item_player = item
 			$scope.item = undefined
 			element[0].firstElementChild.value = item.name
+			$scope.download = true;
 			getProfile(item.id, function(data){
 				angular.extend($scope.item_player, data)
 				provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
@@ -148,6 +148,7 @@ define("robotTW2/controllers/SpyController", [
 					$scope.local_data_province.sort(function(a,b){a.name.localeCompare(b.name)})
 					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
 					updateTargetPlayer()
+					$scope.download = false;
 					if (!$scope.$$phase) {$scope.$apply()}
 				})
 			})
@@ -210,7 +211,7 @@ define("robotTW2/controllers/SpyController", [
 					"id" 			: "autocomplete_spy_player",
 					"autoComplete" 	: obj_autocomplete
 			}
-			$scope.download = true;
+			
 			if (!$scope.$$phase) {$scope.$apply()}
 			autocomplete(object_scope, event);
 		}
