@@ -134,7 +134,7 @@ define("robotTW2/controllers/SpyController", [
 				if($scope.select_all_village){
 					$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
 				} else {
-					$scope.villages_for_sent = $scope.data_province_village.selectedOption;
+					$scope.villages_for_sent = [$scope.data_province_village.selectedOption];
 				}
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
