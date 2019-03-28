@@ -224,7 +224,6 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.getClass = function(type){
-			if($scope.activeTab != TABS.SPY){return}
 			var className = "";
 			switch (type) {
 			case "units": 
@@ -238,34 +237,27 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.getHoraSend = function(param){
-			if($scope.activeTab != TABS.SPY){return}
 			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
 		}
 
 		$scope.getDataSend = function(param){
-			if($scope.activeTab != TABS.SPY){return}
 			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "dd/MM/yyyy");
 		}
 
 		$scope.getHoraAlvo = function(param){
-			if($scope.activeTab != TABS.SPY){return}
 			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
 		}
 
 		$scope.getDataAlvo = function(param){
-			if($scope.activeTab != TABS.SPY){return}
-			if($scope.activeTab != TABS.SPY){return}
 			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
 		}
 
 		$scope.getTimeRestSend = function(param){
-			if($scope.activeTab != TABS.SPY){return}
 			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
 			return helper.readableMilliseconds(difTime)
 		}
 
 		$scope.getTimeRest = function(){
-			if($scope.activeTab != TABS.SPY){return}
 			return $scope.data_spy.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_spy.complete - time.convertedTime()) : 0;
 		}
 
@@ -410,7 +402,6 @@ define("robotTW2/controllers/SpyController", [
 		})
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
-			if($scope.activeTab != TABS.SPY){return}
 			document.getElementById("input-hour-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
 			if (!$scope.$$phase) {
 				$scope.$apply();
@@ -418,7 +409,6 @@ define("robotTW2/controllers/SpyController", [
 		})
 
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
-			if($scope.activeTab != TABS.SPY){return}
 			$scope.isRunning = services.SpyService.isRunning();
 			if (!$scope.$$phase) {
 				$scope.$apply();
