@@ -126,9 +126,12 @@ define("robotTW2/controllers/SpyController", [
 			updateValues()
 		}
 		, updateTargetPlayer = function(){
-			$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
+			if($scope.selectAll){
+				$scope.villages_for_sent = $scope.item_player.villages
+			} else {
+				$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
+			}
 			if (!$scope.$$phase) {$scope.$apply()}
-			updateValuesSource();
 		}
 		, updateEnter = function(item, element){
 			$scope.item = item
@@ -406,11 +409,10 @@ define("robotTW2/controllers/SpyController", [
 		$scope.toggleOption = function(){
 			if($scope.selectAll){
 				$scope.selectAll = false
-				$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
 			} else {
 				$scope.selectAll = true
-				$scope.villages_for_sent = $scope.item_player.villages
 			}
+			updateTargetPlayer()
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
