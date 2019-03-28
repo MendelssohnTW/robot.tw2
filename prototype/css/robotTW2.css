@@ -216,19 +216,13 @@
 	border-color: floralwhite;
 }
 
-.robotTW2 .animation-download {
-	animation-name: download;
-	animation-duration: 1s;
-	animation-iteration-count: infinite;
+@keyframes down { 
+    0% {left: 0px; top: -20px;}
+    100% {left: 0px; top: 20px;}
 }
 
-@keyframes download { 
-	0% {
-	   left: 0px;
-	   top: -20px;
-    }
-    100% {
-        left: 0px;
-        top: 20px;
-    }
+.robotTW2 .animation-download {
+	animation-name: down;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
 }
