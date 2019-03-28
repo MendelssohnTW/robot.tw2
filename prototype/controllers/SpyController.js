@@ -40,24 +40,25 @@ define("robotTW2/controllers/SpyController", [
 		$scope.villages_for_sent = {};
 		$scope.local_out_villages = [];
 		$scope.download = false;
+		$scope.selectAll = false;
 
 		var self = this
 //		, TABS = {
-//				SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
-//				COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy")
+//		SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
+//		COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy")
 //		}
 //		, TAB_ORDER = [
-//			TABS.SPY,
-//			TABS.COMP
-//			]
+//		TABS.SPY,
+//		TABS.COMP
+//		]
 //		, setActiveTab = function setActiveTab(tab) {
-//			$scope.activeTab		= tab;
-//			$scope.requestedTab		= null;
+//		$scope.activeTab		= tab;
+//		$scope.requestedTab		= null;
 //		}
 //		, initTab = function initTab() {
-//			if (!$scope.activeTab) {
-//				setActiveTab($scope.requestedTab);
-//			}
+//		if (!$scope.activeTab) {
+//		setActiveTab($scope.requestedTab);
+//		}
 //		}
 		, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
@@ -173,7 +174,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 
 //		$scope.userSetActiveTab = function(tab){
-//			setActiveTab(tab);
+//		setActiveTab(tab);
 //		}
 
 		$scope.autoCompleteKey = function(event){
@@ -211,7 +212,7 @@ define("robotTW2/controllers/SpyController", [
 					"id" 			: "autocomplete_spy_player",
 					"autoComplete" 	: obj_autocomplete
 			}
-			
+
 			if (!$scope.$$phase) {$scope.$apply()}
 			autocomplete(object_scope, event);
 		}
@@ -400,6 +401,10 @@ define("robotTW2/controllers/SpyController", [
 				notify("date_error");
 			}
 			$scope.send_scope = {}
+		}
+
+		$scope.toggleOption = function(){
+			$scope.selectAll ? $scope.selectAll = false : $scope.selectAll = true;
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {

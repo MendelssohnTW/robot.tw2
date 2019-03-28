@@ -257,6 +257,7 @@
 		"units": "Units",
 		"buildings": "Buildings",
 		"text_source": "Source",
+		"text_select_all": "Select all provinces",
         "text_target_village": "Village target",
         "text_target_player": "Player target",
         "text_target_province": "Province target",
