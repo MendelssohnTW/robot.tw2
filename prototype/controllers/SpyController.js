@@ -119,6 +119,7 @@ define("robotTW2/controllers/SpyController", [
 				var lt_vills = Object.keys($scope.villages_for_sent).map(function(vill){
 					return $scope.villages_for_sent[vill]
 				})
+				, ab = undefined
 
 				function n(village){
 					let village_id = village.village_id
@@ -212,6 +213,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.isRunning = services.SpyService.isRunning();
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("spy", "label");
+		$scope.local_data_province = []
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 
