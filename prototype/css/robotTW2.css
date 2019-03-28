@@ -108,11 +108,6 @@
     font-weight: bold;
 }
 
-.robotTW2 .disabled {
-	color: #d8c836;
-	background: #5f482e;
-}
-
 .robotTW2 .inputcreated {
 	width: 60px;
 	min-width: 40px;
