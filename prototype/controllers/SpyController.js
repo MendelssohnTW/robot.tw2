@@ -157,6 +157,7 @@ define("robotTW2/controllers/SpyController", [
 					$scope.local_data_province = provinces;
 					$scope.local_data_province.sort(function(a,b){a.name.localeCompare(b.name)})
 					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+					$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
 					updateTargetPlayer()
 					$scope.download = false;
 					if (!$scope.$$phase) {$scope.$apply()}

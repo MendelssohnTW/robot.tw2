@@ -258,6 +258,7 @@
         "buildings": "Edifícios",
         "text_source": "Origem",
         "text_select_all": "Selecionar todas as províncias",
+        "text_select_all_villages": "Selecionar todas as aldeias",
         "text_target_village": "Aldeia alvo",
         "text_target_player": "Jogador alvo",
         "text_target_province": "Província alvo",
