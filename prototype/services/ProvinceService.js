@@ -74,12 +74,8 @@ define("robotTW2/services/ProvinceService", [
 		, getProvinceForPlayer = function(player, callback){
 			callPlayer = callback
 			var pvs = []
-			let vls = Object.keys(player.villages)
-			if(!player || !vls.lenth){return}
-			
-			var lt_vills = vls.map(function(vill){
-				return player.villages[vill]
-			})
+			let lt_vills = angular.copy(player.villages)
+			if(!player || !lt_vills.lenth){return}
 			
 			function d (ps) {
 				let df =  Object.keys(ps).map(function(pts){
