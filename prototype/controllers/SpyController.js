@@ -142,6 +142,7 @@ define("robotTW2/controllers/SpyController", [
 				angular.extend($scope.item_player, data)
 				provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
 					$scope.local_data_province = provinces;
+					$scope.local_data_province.sort(function(a,b){a.name.localeCompare(b.name)})
 					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
 					updateTargetPlayer()
 					if (!$scope.$$phase) {$scope.$apply()}
