@@ -106,7 +106,7 @@ define("robotTW2/services/ProvinceService", [
 
 				if(!ab){
 					ab = new Promise(function(resolve){
-						r = services.$timeout(function(){
+						r = $timeout(function(){
 							resolve()
 						}, conf_conf.LOADING_TIMEOUT);
 						let pv = getProvinceCoord(x, y)
@@ -117,7 +117,7 @@ define("robotTW2/services/ProvinceService", [
 							resolve()
 						})
 					}, function(){
-						services.$timeout.cancel(r);
+						$timeout.cancel(r);
 						r = undefined;
 						ab = undefined
 						if(lt_vills.length){
@@ -162,7 +162,7 @@ define("robotTW2/services/ProvinceService", [
 			robotTW2.services.$rootScope,
 			robotTW2.services.socketService,
 			robotTW2.providers,
-			robotTW2.services.armyService,
+			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,
 			robotTW2.services.$filter,
 			robotTW2.ready
