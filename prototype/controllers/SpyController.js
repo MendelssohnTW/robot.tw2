@@ -217,10 +217,10 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-					"inputValue" 	: event.srcElement.value,
-					"element" 		: $($("#autocomplete_spy_player")[0]),
-					"id" 			: "autocomplete_spy_player",
-					"autoComplete" 	: obj_autocomplete
+					"inputValuePlayer" 	: event.srcElement.value,
+					"element" 			: $($("#autocomplete_spy_player")[0]),
+					"id" 				: "autocomplete_spy_player",
+					"autoComplete" 		: obj_autocomplete
 			}
 
 			if (!$scope.$$phase) {$scope.$apply()}
