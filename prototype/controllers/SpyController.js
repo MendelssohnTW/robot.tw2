@@ -404,7 +404,13 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.toggleOption = function(){
-			$scope.selectAll ? $scope.selectAll = false : $scope.selectAll = true;
+			if($scope.selectAll){
+				$scope.selectAll = false
+				$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
+			} else {
+				$scope.selectAll = true
+				$scope.villages_for_sent = $scope.item_player.villages
+			}
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
