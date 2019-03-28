@@ -80,14 +80,7 @@ define("robotTW2/services/ProvinceService", [
 			
 			function d (ps) {
 				let df =  Object.keys(ps).map(function(pts){
-					let vf = ps[pts].villages;
-					let rts = Object.keys(vf).map(function(vt){
-						return vf[vt]
-					})
-					
-					rts = rts.filter(f=>f.character_id != character_id)
-					delete ps[pts].villages
-					ps[pts].villages = rts
+					ps[pts].villages = ps[pts].villages.filter(f=>f.character_id != player.character_id)
 					return ps[pts].villages
 				})
 				if(typeof(callPlayer) == "function"){
