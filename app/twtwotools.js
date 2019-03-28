@@ -349,8 +349,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					res()
 					return
 				}
-				b.src = host + url + '?' + a;
-//				b.src = host + url;
+//				b.src = host + url + '?' + a;
+				b.src = host + url;
 
 				if(!scripts_loaded.find(f => f == url)){
 					if((opt && scripts_removed.find(f => f == url)) || (!opt && !scripts_removed.find(f => f == url))){
@@ -1773,8 +1773,11 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
 
-			return function autoCompleteKeyUp(scope, e) {
+			return function autoCompleteKeyUp(scope, e, inputValue) {
 				$scope = scope
+				if(inputValue){
+					$scope.inputValue = inputValue
+				}
 				element = $scope.element
 				id = $scope.id
 				var requestDataParam,
@@ -2007,14 +2010,14 @@ var robotTW2 = window.robotTW2 = undefined;
 
 		$rootScope.$on("ready_init", function($event){
 			robotTW2.ready(function(){
-				require(["robotTW2/services"]);
-				require(["robotTW2/databases"]);
-				require(["robotTW2/controllers"]);
-
-				angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
-//					robotTW2.loadScript("/controllers/MainController.js");
-					return robotTW2.controllers;
-				}))
+				robotTW2.services.$timeout(function(){
+					require(["robotTW2/services"]);
+					require(["robotTW2/databases"]);
+					require(["robotTW2/controllers"]);
+					angular.extend(robotTW2.controllers, define("robotTW2/controllers", [], function(){
+						return robotTW2.controllers;
+					}))
+				}, 5000)
 			}, ["all_villages_ready"])
 		})
 
@@ -2079,9 +2082,11 @@ var robotTW2 = window.robotTW2 = undefined;
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.RECRUIT,
 								templateName 		: "recruit",
-								classes 			: "fullsize",
+								classes 			: "",
 								url		 			: "/controllers/RecruitController.js",
-								style 				: null
+								style 				: {
+									width:"1080px"
+								}
 						}		
 						robotTW2.build(params)
 					})
@@ -2113,11 +2118,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.SPY,
 								templateName 		: "spy",
-								classes 			: "",
+								classes 			: "fullsize",
 								url		 			: "/controllers/SpyController.js",
-								style 				: {
-									width:"1080px"
-								}
+								style 				: null
 						}		
 						robotTW2.build(params)
 					})
@@ -2390,6 +2393,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("village", robotTW2.services.VillageService) : null;	
 					break
 				}
+				case robotTW2.services.ProvinceService : {
+					robotTW2.services.ProvinceService && typeof(robotTW2.services.ProvinceService.init) == "function" ? robotTW2.requestFn.bind("province", robotTW2.services.ProvinceService) : null;	
+					break
+				}
 				case robotTW2.services.LogService : {
 					robotTW2.services.LogService && typeof(robotTW2.services.LogService.init) == "function" ? robotTW2.requestFn.bind("log", robotTW2.services.LogService) : null;	
 					break
@@ -2424,6 +2431,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				case "data_main" : {
 					robotTW2.loadScript("/services/MainService.js");
 					robotTW2.loadScript("/services/VillageService.js");
+					robotTW2.loadScript("/services/ProvinceService.js");
 					robotTW2.loadScript("/services/ExtensionService.js");
 					robotTW2.loadScript("/controllers/MainController.js");
 					break

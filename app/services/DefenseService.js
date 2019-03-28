@@ -10,7 +10,6 @@ define("robotTW2/services/DefenseService", [
 	"conf/conf",
 	"conf/unitTypes",
 	"robotTW2/time",
-	"robotTW2/unitTypesRenameRecon",
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_villages",
 	"robotTW2/CommandDefense",
@@ -22,7 +21,6 @@ define("robotTW2/services/DefenseService", [
 			conf_conf,
 			unitTypes,
 			time,
-			unitTypesRenameRecon,
 			data_defense,
 			data_villages,
 			commandDefense,
@@ -60,7 +58,6 @@ define("robotTW2/services/DefenseService", [
 		, that = this
 		, rt = undefined
 		, promise = undefined
-		, promise_queue = []
 		, loadVillage = function(cmd){
 			this.cmd = cmd;
 			return new Promise(function(res, rej){
@@ -180,7 +177,7 @@ define("robotTW2/services/DefenseService", [
 			angular.extend(units_ret, t);
 			var unitType = units_ret.shift()[1];
 
-			if(unitTypesRenameRecon[unitType]){
+			if(data_defense.list_defense[unitType]){
 				switch (unitType) {
 				case "snob":
 					callback(unitTypes.SNOB, unitType);
@@ -195,83 +192,16 @@ define("robotTW2/services/DefenseService", [
 				callback(false, "");
 			}
 		}
-		, troops_analyze = function(list_snob, list_trebuchet, list_others, list_preserv_others, callback){
-			var sortearSnob = function(list){
-				list.sort(function (a, b) {
-					return a.completedAt - b.completedAt;
-				});
-				return list
-			}
-			, sortear = function(list){
-				list.sort(function (a, b) {
-					return b.completedAt - a.completedAt;
-				});
-				return list
-			}
-			, reduzirSnob = function(list){
-				var g = [];
-				var t = 0;
-				list.length ? list.reduce(function(prevVal, elem, index, array) {
-					var b = t == 0 ? prevVal.completedAt : t;
-					if(b - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT) {
-						t = prevVal.completedAt;
-						g.push(elem)
-						return elem;
-					} else {
-						t = 0;
-						return elem
-					}
-				})
-				: null;
-				return g;
-			}
-			, reduzir = function(listP){
-				var g = [];
-				var t = 0;
-				var list_withSnob = {};
-
-				function next_a(listH){
-					var l = 0;
-					function next_Snob(listB){
-						var cmWithSnob = listB.find(f => f.nob == true);
-						if(cmWithSnob){
-							var indexSnob = listB.indexOf(cmWithSnob);
-							list_withSnob[l] = listB.splice(indexSnob, listB.length);
-							var listC = [];
-							angular.merge(listC, list_withSnob[l])
-							if(listB.length){
-								l++;
-								next_Snob(listC);
-							} else {
-								l = 0;
-								return;
-							}
-						}
-					}
-
-					next_Snob(listH);
-				}
-
-				listP.length ? next_a(listP) : null;
-
-				listP.length 
-				? listP.reduce(function(prevVal, elem, index, array) {
-					var b = t == 0 ? prevVal.completedAt : t;
-					if(b - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT && !elem.nob) {
-						t = prevVal.completedAt;
-						g.push(elem)
-						return elem;
-					} else {
-						t = 0;
-						return elem
-					}
-				})
-				: null
-
-				Object.keys(list_withSnob).map(function(key){
-					var listJ = list_withSnob[key]; 
-					listJ.length 
-					? listJ.reduce(function(prevVal, elem, index, array) {
+		, troops_analyze = function(id, lt){
+			return new Promise(function(resolve){
+				var list_snob = []
+				, list_trebuchet = []
+				, list_others = []
+				, list_preserv_others = []
+				, reduzirSnob = function(list){
+					var g = [];
+					var t = 0;
+					list.length ? list.reduce(function(prevVal, elem, index, array) {
 						var b = t == 0 ? prevVal.completedAt : t;
 						if(b - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT) {
 							t = prevVal.completedAt;
@@ -282,69 +212,117 @@ define("robotTW2/services/DefenseService", [
 							return elem
 						}
 					})
-					: null
-				})
-				return g;
-			}
-			, removerItens =  function(list, g){
-				g.forEach(function(cm){
-					list = list.filter(function(elem, index, array){
-						return elem.id != cm.id
+					: null;
+					return g;
+				}
+				, reduzir = function(list){
+					var g = [];
+					list.length ? list.reduce(function(prevVal, elem, index, array) {
+						if(prevVal.completedAt - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT && !elem.nob) {
+							g.push(elem)
+							return elem;
+						} else {
+							return elem
+						}
 					})
-				})
-//				g.forEach(function(cm){
-//				var cg = list.find(function(elem, index, array){
-//				return elem.id != cm.id
+					: null
+					return g
+				}
+//				, reduzir = function(listP){
+//				var g = [];
+//				var t = 0;
+//				var list_withSnob = {};
+
+//				function next_a(listH){
+//				var l = 0;
+//				function next_Snob(listB){
+//				var cmWithSnob = listB.find(f => f.nob == true);
+//				if(cmWithSnob){
+//				var indexSnob = listB.indexOf(cmWithSnob);
+//				list_withSnob[l] = listB.splice(indexSnob, listB.length);
+//				var listC = [];
+//				angular.merge(listC, list_withSnob[l])
+//				if(listB.length){
+//				l++;
+//				next_Snob(listC);
+//				} else {
+//				l = 0;
+//				return;
+//				}
+//				}
+//				}
+
+//				next_Snob(listH);
+//				}
+
+//				listP.length ? next_a(listP) : null;
+
+//				listP.length 
+//				? listP.reduce(function(prevVal, elem, index, array) {
+//				var b = t == 0 ? prevVal.completedAt : t;
+//				if(b - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT && !elem.nob) {
+//				t = prevVal.completedAt;
+//				g.push(elem)
+//				return elem;
+//				} else {
+//				t = 0;
+//				return elem
+//				}
 //				})
-//				cg ? angular.merge(cg, {"nob":true}): null
+//				: null
+
+//				Object.keys(list_withSnob).map(function(key){
+//				var listJ = list_withSnob[key]; 
+//				listJ.length 
+//				? listJ.reduce(function(prevVal, elem, index, array) {
+//				var b = t == 0 ? prevVal.completedAt : t;
+//				if(b - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT) {
+//				t = prevVal.completedAt;
+//				g.push(elem)
+//				return elem;
+//				} else {
+//				t = 0;
+//				return elem
+//				}
 //				})
-				return list;
-			}
-			, estab = function(list){
-				list = sortear(list);
-				var g = [];
-				angular.extend(g, list);
-				g = reduzir(g);
-				list = removerItens(list, g);
-				return list
-			}
-			, estabSnob = function(list){
-				list = sortearSnob(list)
-				var g = [];
-				angular.extend(g, list);
-				g = reduzirSnob(g);
-				list = removerItens(list, g);
-				list.forEach(function(cg){
-					cg ? angular.merge(cg, {"nob":true}): null
-				})
-				return list
-			};
-
-			list_others = removerItens(list_others, list_preserv_others);
-			list_others = removerItens(list_others, list_snob);
-			list_others = removerItens(list_others, list_trebuchet);
-
-			list_snob = estabSnob(list_snob);
-			list_trebuchet = estabSnob(list_trebuchet);
-
-			list_others = list_others.concat(list_preserv_others)
-			list_others = list_others.concat(list_snob)
-			list_others = list_others.concat(list_trebuchet)
-			list_others = estab(list_others);
-
-
-			list_others.forEach(function(cm){
-				var count_tent = 0;
-				function ct(cmd){
-					if(!promise){
-						promise = loadVillage(cmd).then(function(aldeia){
-							promise = undefined;
-							$timeout.cancel(rt);
-							var timeSniperPost = conf.TIME_SNIPER_POST_SNOB;
-							if(!cmd.nob) {
-								timeSniperPost = data_defense.time_sniper_post;	
-							} else {
-								timeSniperPost = data_defense.time_sniper_post_snob;
+//				: null
+//				})
+//				return g;
+//				}
+				, removerItens =  function(list, g){
+					g.forEach(function(cm){
+						list = list.filter(function(elem, index, array){
+							return elem.id != cm.id
+						})
+					})
+					return list;
+				}
+				, estab = function(list){
+					list = list.sort(function (a, b) {return b.completedAt - a.completedAt})
+					var g = [];
+					angular.extend(g, list);
+					g = reduzir(g);
+					list = removerItens(list, g);
+					return list
+				}
+				, estabSnob = function(list){
+					if(!list.length){return []}
+					list = list.sort(function (a, b) {return a.completedAt - b.completedAt})
+					var g = [];
+					angular.extend(g, list);
+					g = reduzirSnob(g);
+					list = removerItens(list, g);
+					return list
+				}
+				, ct = function (cmd, opt){
+					return new Promise(function(resolve_f){
+						return loadVillage(cmd).then(function(aldeia){
+							if(rt || rt.$$state || rt.$$state.status == 0){
+								$timeout.cancel(rt);
+							}
+							var timeSniperPost = data_defense.time_sniper_post;
+							if(opt) {
+								timeSniperPost = data_defense.time_sniper_post_snob || conf.TIME_SNIPER_POST_SNOB;
 							}
 							var params = {
 									start_village		: cmd.targetVillageId,
@@ -360,31 +338,104 @@ define("robotTW2/services/DefenseService", [
 									id_command 			: cmd.id
 							}
 							addDefense(params);
-							if(promise_queue.length){
-								ct(promise_queue.shift())
-							} else {
-								callback();
-							}
-						}, function(){
-							promise = undefined;
-							count_tent++;
-							if(count_tent <= 3){
-								promise_queue.push(cmd);
-								ct(promise_queue.shift())
-							} else {
-								count_tent = 0;
-								if(promise_queue.length){
-									ct(promise_queue.shift())
-								} else {
-									callback();
-								}
-							}
+							resolve_f()
 						})
-					} else {
-						promise_queue.push(cm)
-					}
+					})
 				}
-				ct(cm)
+				, fg = function fg(list, opt){
+					var promise_queue = []
+					return new Promise(function(res){
+						function f(cm){
+							if(!promise){
+								promise = ct(cm, opt).then(function (){
+									promise = undefined
+									if(promise_queue.length){
+										f(promise_queue.shift())
+									} else {
+										res();
+									}
+								})
+							} else {
+								promise_queue.push(cm)
+							}
+						}
+
+						if(!list.length){
+							res();
+						} else {
+							list.forEach(function(cm){
+								f(cm)
+							})
+						}
+					})
+				}
+
+
+//				lt.forEach(function(cmd){
+//				if(cmd.start_village == id){
+//				list_preserv_others.push(cmd.params)
+//				}
+//				})
+
+				list_preserv_others = lt.filter(cmd => cmd.params.start_village == id)
+
+				var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
+				var comandos_incoming = cmds.incoming;
+				comandos_incoming.sort(function (a, b) {
+					return b.completedAt - a.completedAt;
+				})
+
+				comandos_incoming = comandos_incoming.filter(cmd=>cmd.actionType == "attack" && cmd.isCommand && !cmd.returning)
+
+				var limit = data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
+				var length_incomming = comandos_incoming.length; 
+
+				if(!length_incomming){resolve(); return}
+
+				if(length_incomming > limit){
+					comandos_incoming.splice(0, limit);
+				}
+
+				comandos_incoming.forEach(function(cmd){
+					troops_measure(cmd, function(push , unitType){
+						if(push){
+							switch (unitType) {
+							case "snob":
+								list_snob.push(cmd);
+								break;
+							case "trebuchet":
+								list_trebuchet.push(cmd);
+								break;
+							default:
+								list_others.push(cmd);
+							}
+
+						}
+					})
+				});
+
+				list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;})
+				list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;})
+				list_others.sort(function (a, b) {return b.completedAt - a.completedAt;})
+
+				list_others = removerItens(list_others, list_preserv_others);
+//				list_others = removerItens(list_others, list_snob);
+//				list_others = removerItens(list_others, list_trebuchet);
+
+				list_snob = estabSnob(list_snob);
+				list_trebuchet = estab(list_trebuchet);
+				list_others = estab(list_others);
+
+//				list_others = list_others.concat(list_snob)
+//				list_others = list_others.concat(list_trebuchet)
+
+				fg(list_others).then(function(){
+					fg(list_snob, true).then(function(){
+						fg(list_trebuchet, true).then(function(){
+							resolve()	
+						})
+					})
+				})
 			})
 		}
 		, getAtaques = function(){
@@ -401,67 +452,16 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 
-				var vls = modelDataService.getSelectedCharacter().getVillageList();
-
-				vls = Object.keys(vls).map(function(elem){
-					if(data_villages.villages[vls[elem].data.villageId].defense_activate){
-						return vls[elem]
+				var vls = Object.keys(data_villages.villages).map(function(villageId){
+					if(data_villages.villages[villageId].defense_activate){
+						return villageId
 					}
 				}).filter(f=>f!=undefined)
 
 				function gt(){
 					if (vls.length){
-						var id = vls.shift().data.villageId;
-						var list_snob = [];
-						var list_trebuchet = [];
-						var list_others = [];
-						var list_preserv_others = [];
-
-						lt.forEach(function(cmd){
-							if(cmd.start_village == id){
-								list_preserv_others.push(cmd.params)
-							}
-						})
-						lt = [];
-
-						var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
-						var comandos_incoming = cmds.incoming;
-						comandos_incoming.sort(function (a, b) {
-							return b.completedAt - a.completedAt;
-						})
-
-						var limit = data_defense.limit_commands_defense || conf.LIMIT_COMMANDS_DEFENSE;
-						var length_incomming = comandos_incoming.length; 
-
-						if(!length_incomming){gt(); return}
-
-						if(length_incomming > limit){
-							comandos_incoming.splice(0, limit);
-						}
-
-						comandos_incoming.forEach(function(cmd){
-							if (cmd.actionType == "attack" && cmd.isCommand && !cmd.returning){
-								troops_measure(cmd, function(push , unitType){
-									if(push){
-										switch (unitType) {
-										case "snob":
-											list_snob.push(cmd);
-											break;
-										case "trebuchet":
-											list_trebuchet.push(cmd);
-											break;
-										default:
-											list_others.push(cmd);
-										}
-
-									}
-								})
-							}
-						});
-						list_snob.length ? list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
-						list_trebuchet.length ? list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
-						list_others.length ? list_others.sort(function (a, b) {return b.completedAt - a.completedAt;}) : null;
-						list_snob.length || list_trebuchet.length || list_others.length ? troops_analyze(list_snob, list_trebuchet, list_others, list_preserv_others,  gt) : gt();
+						var id = vls.shift();
+						troops_analyze(id, lt).then(gt) 
 					} else {
 //						upDateTbodySupport();
 						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
@@ -471,20 +471,19 @@ define("robotTW2/services/DefenseService", [
 				gt()
 			})
 		}
-		, verificarAtaques = function (opt){
-			var renew = false;
+		, verificarAtaques = function (){
+			var promise_verify_queue = false
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
-					if(renew || opt) {
-						renew = false;
-						opt = false;
+					if(promise_verify_queue) {
+						promise_verify_queue = false;
 						verificarAtaques()
 					}
 				})
 			} else {
-				renew = true;
+				promise_verify_queue = true
 			}
 		}
 		, sendCancel = function(params){
@@ -503,20 +502,24 @@ define("robotTW2/services/DefenseService", [
 			var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
 			if (village && village.unitInfo != undefined){
 				var unitInfo = village.unitInfo.units;
-				for(obj in unitInfo){
-					if (unitInfo.hasOwnProperty(obj)){
-						if (unitInfo[obj].available > 0){
-							var campo = {[obj]: unitInfo[obj].available};
-							units[Object.keys(campo)[0]] = 
-								Object.keys(campo).map(function(key) {return campo[key]})[0];
-							lista.push(units);
-						}
-					}
-				}
+				
+				lista = Object.keys(unitInfo).map(function(unit){
+					return unitInfo[unit].available > 0 ? {[unit] : unitInfo[unit].available}: undefined
+				}).filter(f=>f!=undefined)
+				
+//				for(obj in unitInfo){
+//					if (unitInfo.hasOwnProperty(obj)){
+//						if (unitInfo[obj].available > 0){
+//							var campo = {[obj]: unitInfo[obj].available};
+//							units[Object.keys(campo)[0]] = 
+//								Object.keys(campo).map(function(key) {return campo[key]})[0];
+//							lista.push(units);
+//						}
+//					}
+//				}
 				params.units = units;
 			};
 			if (lista.length > 0) {
-				console.log("Adicionado timeout resendDefense " + JSON.stringify(params))
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -664,8 +667,6 @@ define("robotTW2/services/DefenseService", [
 							"params"	: params
 					}
 				})
-			} else {
-				console.log("timer_delay < 0")
 			}
 		}
 		, list_timeout = {}
@@ -776,10 +777,16 @@ define("robotTW2/services/DefenseService", [
 			start();
 		}
 		, handlerVerify = function(){
+			verificarAtaques();
 			if(!listener_verify){
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
 					promise_verify = undefined;
+
+//					promise.$$state.status === 0 // pending
+//					promise.$$state.status === 1 // resolved
+//					promise.$$state.status === 2 // rejected
+
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
 						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
 					}
@@ -800,13 +807,12 @@ define("robotTW2/services/DefenseService", [
 					calibrate_time()
 				}
 				if(!listener_lost){
-					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(function(){verificarAtaques(true)} , 60000));
+					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
 				}
 				if(!listener_conquered){
-					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(function(){verificarAtaques(true)} , 60000));
+					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
 				}
 				handlerVerify();
-				verificarAtaques(true);
 			}, ["all_villages_ready"])
 		}
 		, stop = function(){

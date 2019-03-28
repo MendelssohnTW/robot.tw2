@@ -42,6 +42,7 @@ define("robotTW2/services/FarmService", [
 		, isRunning = !1
 		, isPaused = !1
 		, interval_init = null
+		, interval_cicle = null
 		, countCommands = {}
 		, countCicle = 0
 		, commands_for_presets = {}
@@ -246,7 +247,7 @@ define("robotTW2/services/FarmService", [
 
 			var aldeia_commands_lenght = aldeia_commands.length;
 
-			if(!t_obj || aldeia_commands_lenght >= max_cmds){
+			if(!t_obj || t_obj[1] == 0 || aldeia_commands_lenght >= max_cmds){
 				callback(false);
 				return !1;
 			}
@@ -632,7 +633,10 @@ define("robotTW2/services/FarmService", [
 						!data_farm.complete ? data_farm.complete = 0 : null;
 						data_farm.complete = time.convertedTime() + tempo
 						data_farm.set()
-						$timeout(f, tempo)
+						if(interval_cicle){
+							clearTimeout(interval_cicle)
+						}
+						interval_cicle = setTimeout(f, tempo)
 						let gt = tempo
 						if(init_first)
 							gt = 0;

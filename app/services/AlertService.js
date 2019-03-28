@@ -2,10 +2,12 @@ define("robotTW2/services/AlertService", [
 	"robotTW2",
 	"robotTW2/conf",
 	"robotTW2/databases/data_alert",
+	"conf/conf"
 	], function(
 			robotTW2,
 			conf,
-			data_alert
+			data_alert,
+			conf_conf
 	){
 	return (function AlertService(
 			$rootScope,
@@ -19,26 +21,31 @@ define("robotTW2/services/AlertService", [
 		var isInitialized = !1
 		, isRunning = !1
 		, interval_alert = null
+		, t
+		, g
 		, listener_alert_ready = undefined
 		, listener_tab_alert = undefined
 		, notifyAttacks = function() {
 			$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("text_underattack", $rootScope.loc.ale, "alert")})
 		}
 		, verify_alert = function(){
-			try {
-				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
-					$timeout(_ => {
-						var friends = data_alert.friends;
-						if (o.members != undefined){
-							if (o.members.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
-								notifyAttacks();
-							}
+
+			t = $timeout(function(){
+				g = undefined
+			}, conf_conf.LOADING_TIMEOUT);
+
+			!g ? g = socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
+				$timeout.cancel(t);
+				$timeout(_ => {
+					var friends = data_alert.friends;
+					if (o.members != undefined){
+						if (o.members.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
+							notifyAttacks();
 						}
-					}, 2000);
-				});
-			} catch (Error){
-				$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_ERROR, {message: "Erro ao carregar dados dos membros da tribo"})
-			}
+					}
+					g = undefined
+				}, 2000);
+			}): null;
 		}
 		, wait = function(){
 			if(!interval_alert){
