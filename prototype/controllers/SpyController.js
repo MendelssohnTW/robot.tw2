@@ -41,23 +41,23 @@ define("robotTW2/controllers/SpyController", [
 		$scope.local_out_villages = [];
 
 		var self = this
-		, TABS = {
-				SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
-				COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy")
-		}
-		, TAB_ORDER = [
-			TABS.SPY,
-			TABS.COMP
-			]
-		, setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab		= tab;
-			$scope.requestedTab		= null;
-		}
-		, initTab = function initTab() {
-			if (!$scope.activeTab) {
-				setActiveTab($scope.requestedTab);
-			}
-		}
+//		, TABS = {
+//				SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
+//				COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy")
+//		}
+//		, TAB_ORDER = [
+//			TABS.SPY,
+//			TABS.COMP
+//			]
+//		, setActiveTab = function setActiveTab(tab) {
+//			$scope.activeTab		= tab;
+//			$scope.requestedTab		= null;
+//		}
+//		, initTab = function initTab() {
+//			if (!$scope.activeTab) {
+//				setActiveTab($scope.requestedTab);
+//			}
+//		}
 		, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
 				$scope.local_out_villages.push(
@@ -167,9 +167,9 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 
-		$scope.userSetActiveTab = function(tab){
-			setActiveTab(tab);
-		}
+//		$scope.userSetActiveTab = function(tab){
+//			setActiveTab(tab);
+//		}
 
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
@@ -478,7 +478,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.data_type_source = $scope.data_type;
 
-		initTab();
+//		initTab();
 		update();
 		$scope.setCollapse();
 
