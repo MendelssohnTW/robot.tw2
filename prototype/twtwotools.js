@@ -805,6 +805,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"TIME_SNIPER_ANT"			: 30000,
 						"TIME_SNIPER_POST"			: 3000,
 						"TIME_SNIPER_POST_SNOB"		: 1000,
+						"LIMIT_LOYALTY"				: 35,
 						"MAX_TIME_CORRECTION"		: 5000,
 						"MIN_TIME_SNIPER_ANT"		: 5,
 						"MAX_TIME_SNIPER_ANT"		: 600,
