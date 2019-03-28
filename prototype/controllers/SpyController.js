@@ -39,6 +39,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.send_scope = {};
 		$scope.villages_for_sent = {};
 		$scope.local_out_villages = [];
+		$scope.download = false;
 
 		var self = this
 //		, TABS = {
@@ -125,6 +126,7 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateTargetPlayer = function(){
 			$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
+			$scope.download = false;
 			updateValuesSource();
 		}
 		, updateEnter = function(item, element){
@@ -188,7 +190,6 @@ define("robotTW2/controllers/SpyController", [
 					"id" 			: "autocomplete_spy",
 					"autoComplete" 	: obj_autocomplete
 			}
-//			angular.extend($scope, object_scope)
 			autocomplete(object_scope, event);
 		}
 
@@ -208,7 +209,7 @@ define("robotTW2/controllers/SpyController", [
 					"id" 			: "autocomplete_spy_player",
 					"autoComplete" 	: obj_autocomplete
 			}
-//			angular.extend($scope, object_scope)
+			$scope.download = true;
 			autocomplete(object_scope, event);
 		}
 

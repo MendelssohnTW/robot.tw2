@@ -104,8 +104,8 @@
 }
 
 .robotTW2 .selected-green {
-    color: darkgreen;
-    font-weight: bold;
+	color: darkgreen;
+	font-weight: bold;
 }
 
 .robotTW2 .inputcreated {
@@ -214,6 +214,24 @@
 	overflow: hidden;
 	border-style: inset;
 	border-color: floralwhite;
+}
+
+.robotTW2 .animation-download {
+	animation-name: download;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+}
+
+@
+keyframes download { 
+	0% {
+	   left: 0px;
+	   top: -20px;
+    }
+    100% {
+        left: 0px;
+        top: 20px;
+    }
 }
 
 #Minimap .minimap {

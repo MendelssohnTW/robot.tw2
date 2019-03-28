@@ -133,7 +133,7 @@
 										placeholder="{{SEARCH_MAP}}" style="width: 100%;">
 								</div>
 							</td>
-							<td><div class="icon icon-34x34-province"></div></td>
+							<td><div class="icon icon-34x34-province" ng-class="{'animation-download': download}"></div></td>
 							<td><select id="select_province" class="select-handler"
 								ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
 								ng-model="data_province.selectedOption"></select></td>
