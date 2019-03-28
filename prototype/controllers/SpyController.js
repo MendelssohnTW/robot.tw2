@@ -299,7 +299,7 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 		$scope.sendAttackSpyProvince = function(){
-			if(!$scope.itemPlayer){return}
+			if(!$scope.item_player){return}
 			updateValuesSource()
 			if($scope.villages_for_sent.length){
 				var list_proc = [];
