@@ -126,7 +126,7 @@ define("robotTW2/controllers/SpyController", [
 			updateValues()
 		}
 		, updateTargetPlayer = function(){
-			if(!$scope.item_player.villages) {return}
+			if(!$scope.item_player) {return}
 			if($scope.selectAll){
 				$scope.villages_for_sent = $scope.item_player.villages
 			} else {
