@@ -74,6 +74,7 @@ define("robotTW2/services/ProvinceService", [
 		, getProvinceForPlayer = function(player, callback){
 			callPlayer = callback
 			var pvs = []
+			, ab = undefined
 			let lt_vills = angular.copy(player.villages)
 			if(!player || !lt_vills.length){return}
 			
@@ -127,9 +128,7 @@ define("robotTW2/services/ProvinceService", [
 					})
 				}
 			}
-			if(lt_vills.length){
-				n(lt_vills.shift())
-			}
+			n(lt_vills.shift())
 		}
 		, init = function () {
 			isInitialized = !0
