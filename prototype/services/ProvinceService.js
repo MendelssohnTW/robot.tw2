@@ -116,7 +116,7 @@ define("robotTW2/services/ProvinceService", [
 							}
 							resolve()
 						})
-					}, function(){
+					}).then(function(){
 						$timeout.cancel(r);
 						r = undefined;
 						ab = undefined
