@@ -137,7 +137,6 @@ define("robotTW2/controllers/SpyController", [
 					$scope.villages_for_sent = [$scope.data_province_village.selectedOption];
 				}
 			}
-			if (!$scope.$$phase) {$scope.$apply()}
 		}
 		, updateEnter = function(item, element){
 			$scope.item = item
