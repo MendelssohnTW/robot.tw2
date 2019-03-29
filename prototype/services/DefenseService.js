@@ -202,11 +202,13 @@ define("robotTW2/services/DefenseService", [
 					var g = [];
 					var t = 0;
 					if(list.length){
+						
+						let list_units = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).unitInfo.units
 
-						let units_attack = Object.keys(list_units_attack.unitInfo.units).map(
+						let units_attack = Object.keys(list_units.unitInfo.units).map(
 								function(f){
 									if(conf.UNITS_ATTACK.includes(f)){
-										return list_units_attack.unitInfo.units[f]
+										return list_units.unitInfo.units[f]
 									} else {
 										return undefined
 									}
