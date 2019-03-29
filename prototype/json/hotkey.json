@@ -9,6 +9,7 @@
 	"RECON": "shift+r",
 	"RECRUIT": "shift+e",
 	"SPY": "shift+s",
+	"FAKE": "shift+g",
 	"SECONDVILLAGE": "shift+q",
 	"LOG": "shift+m"
 }

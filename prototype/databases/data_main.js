@@ -8,13 +8,13 @@ define("robotTW2/databases/data_main", [
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_deposit",
 	"robotTW2/databases/data_farm",
-//	"robotTW2/databases/data_data",
 	"robotTW2/databases/data_headquarter",
 	"robotTW2/databases/data_log",
 	"robotTW2/databases/data_recon",
 	"robotTW2/databases/data_recruit",
 	"robotTW2/databases/data_secondvillage",
 	"robotTW2/databases/data_spy",
+	"robotTW2/databases/data_fake",
 	"robotTW2/databases/data_villages",
 	], function(
 			database,
@@ -26,13 +26,13 @@ define("robotTW2/databases/data_main", [
 			data_defense,
 			data_deposit,
 			data_farm,
-//			data_data,
 			data_headquarter,
 			data_log,
 			data_recon,
 			data_recruit,
 			data_secondvillage,
 			data_spy,
+			data_fake,
 			data_villages
 	){
 
@@ -42,13 +42,13 @@ define("robotTW2/databases/data_main", [
 			data_defense: 		data_defense,
 			data_deposit: 		data_deposit,
 			data_farm: 			data_farm,
-//			data_data: 			data_data,
 			data_headquarter: 	data_headquarter,
 			data_log: 			data_log,
 			data_recon: 		data_recon,
 			data_recruit: 		data_recruit,
 			data_secondvillage: data_secondvillage,
 			data_spy: 			data_spy,
+			data_fake: 			data_fake,
 			data_villages: 		data_villages
 	}
 	var data_main = database.get("data_main")
@@ -116,7 +116,7 @@ define("robotTW2/databases/data_main", [
 			time_correction_command	: conf.TIME_CORRECTION_STANDARD,
 			auto_calibrate			: true,
 			version					: conf.VERSION.MAIN,
-			pages_excludes			: ["farm", "recruit", "headquarter", "data"],
+			pages_excludes			: ["farm", "recruit", "headquarter"],
 			name					: "data_main"
 	}
 
