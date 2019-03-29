@@ -202,6 +202,29 @@ define("robotTW2/services/DefenseService", [
 					var g = [];
 					var t = 0;
 					if(list.length){
+
+						let units_attack = Object.keys(list_units_attack.unitInfo.units).map(
+								function(f){
+									if(conf.UNITS_ATTACK.includes(f)){
+										return list_units_attack.unitInfo.units[f]
+									} else {
+										return undefined
+									}
+								}
+						).filter(f=>f!=undefined)
+						
+						let units_defense = Object.keys(list_units_attack.unitInfo.units).map(
+								function(f){
+									if(conf.UNITS_DEFENSE.includes(f)){
+										return list_units_attack.unitInfo.units[f]
+									} else {
+										return undefined
+									}
+								}
+						).filter(f=>f!=undefined)
+
+
+
 						let loyalty = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).getLoyalty();
 						let limit = Math.trunc(Math.trunc(loyalty) / conf.LIMIT_LOYALTY)
 						let count = 0;
