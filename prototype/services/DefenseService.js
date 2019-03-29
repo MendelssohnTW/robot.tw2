@@ -215,10 +215,10 @@ define("robotTW2/services/DefenseService", [
 								}
 						).filter(f=>f!=undefined)
 						
-						let units_defense = Object.keys(list_units_attack.unitInfo.units).map(
+						let units_defense = Object.keys(list_units).map(
 								function(f){
 									if(conf.UNITS_DEFENSE.includes(f)){
-										return list_units_attack.unitInfo.units[f]
+										return list_units[f]
 									} else {
 										return undefined
 									}
