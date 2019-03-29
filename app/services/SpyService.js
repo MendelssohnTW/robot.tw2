@@ -183,7 +183,7 @@ define("robotTW2/services/SpyService", [
 			}
 		}
 		, send = function(params){
-			var village = modelDataservice.getSelectedCharacter().getVillage(params.start_village)
+			var village = modelDataService.getSelectedCharacter().getVillage(params.start_village)
 			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
 			if(qtd_spy < params.spys){
 				params.spys = qtd_spy

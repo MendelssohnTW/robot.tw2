@@ -201,18 +201,23 @@ define("robotTW2/services/DefenseService", [
 				, reduzirSnob = function(list){
 					var g = [];
 					var t = 0;
-					list.length ? list.reduce(function(prevVal, elem, index, array) {
-						var b = t == 0 ? prevVal.completedAt : t;
-						if(b - elem.completedAt <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT) {
-							t = prevVal.completedAt;
-							g.push(elem)
-							return elem;
-						} else {
-							t = 0;
-							return elem
-						}
-					})
-					: null;
+					if(list.length){
+						let loyalty = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).getLoyalty();
+						let limit = Math.trunc(Math.trunc(loyalty) / conf.LIMIT_LOYALTY)
+						let count = 0;
+						list.reduce(function(prevVal, elem, index, array) {
+							count++;
+							var b = t == 0 ? prevVal.completedAt : t;
+							if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
+								t = prevVal.completedAt;
+								g.push(elem)
+								return elem;
+							} else {
+								t = 0;
+								return elem
+							}
+						})
+					}
 					return g;
 				}
 				, reduzir = function(list){
@@ -502,20 +507,20 @@ define("robotTW2/services/DefenseService", [
 			var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
 			if (village && village.unitInfo != undefined){
 				var unitInfo = village.unitInfo.units;
-				
+
 				lista = Object.keys(unitInfo).map(function(unit){
 					return unitInfo[unit].available > 0 ? {[unit] : unitInfo[unit].available}: undefined
 				}).filter(f=>f!=undefined)
-				
+
 //				for(obj in unitInfo){
-//					if (unitInfo.hasOwnProperty(obj)){
-//						if (unitInfo[obj].available > 0){
-//							var campo = {[obj]: unitInfo[obj].available};
-//							units[Object.keys(campo)[0]] = 
-//								Object.keys(campo).map(function(key) {return campo[key]})[0];
-//							lista.push(units);
-//						}
-//					}
+//				if (unitInfo.hasOwnProperty(obj)){
+//				if (unitInfo[obj].available > 0){
+//				var campo = {[obj]: unitInfo[obj].available};
+//				units[Object.keys(campo)[0]] = 
+//				Object.keys(campo).map(function(key) {return campo[key]})[0];
+//				lista.push(units);
+//				}
+//				}
 //				}
 				params.units = units;
 			};

@@ -290,11 +290,6 @@ define("robotTW2/services/FarmService", [
 										type: "attack"
 								}
 								countCommands[cicle][village_id][preset_id].push(bb);
-								result_units = units_subtract(preset_units, aldeia_units)
-								aldeia_units = result_units[1];
-								var permit_send = result_units[0];
-
-								//text_preset
 								let text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + params.army_preset_id
 								$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + params.start_village + 
 								$filter("i18n")("text_target", $rootScope.loc.ale, "farm") + ": " + params.target_village
@@ -302,6 +297,11 @@ define("robotTW2/services/FarmService", [
 								data_log.set()
 								socketService.emit(providers.routeProvider.SEND_PRESET, params);
 								count_command_sent++;
+								
+								result_units = units_subtract(preset_units, aldeia_units)
+								aldeia_units = result_units[1];
+								var permit_send = !!result_units[0];
+								
 								resolve_send(permit_send)
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
