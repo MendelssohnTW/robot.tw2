@@ -2433,6 +2433,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_farm.js");
 								robotTW2.loadScript("/databases/data_deposit.js");
 								robotTW2.loadScript("/databases/data_spy.js");
+								robotTW2.loadScript("/databases/data_fake.js");
 								robotTW2.loadScript("/databases/data_alert.js");
 								robotTW2.loadScript("/databases/data_attack.js");
 								robotTW2.loadScript("/databases/data_recon.js");
