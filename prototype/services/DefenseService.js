@@ -205,18 +205,20 @@ define("robotTW2/services/DefenseService", [
 						let loyalty = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).getLoyalty();
 						let limit = Math.trunc(Math.trunc(loyalty) / conf.LIMIT_LOYALTY)
 						let count = 0;
-						list.reduce(function(prevVal, elem, index, array) {
-							count++;
-							var b = t == 0 ? prevVal.completedAt : t;
-							if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
-								t = prevVal.completedAt;
-								g.push(elem)
-								return elem;
-							} else {
-								t = 0;
-								return elem
-							}
-						})
+						if(loyalty > conf.LIMIT_LOYALTY){
+							list.reduce(function(prevVal, elem, index, array) {
+								count++;
+								var b = t == 0 ? prevVal.completedAt : t;
+								if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
+									t = prevVal.completedAt;
+									g.push(elem)
+									return elem;
+								} else {
+									t = 0;
+									return elem
+								}
+							})
+						}
 					}
 					return g;
 				}
