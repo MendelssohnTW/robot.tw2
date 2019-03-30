@@ -528,6 +528,7 @@ define("robotTW2/services/DefenseService", [
 //				})
 
 				params.units = units;
+				console.log(params)
 			};
 			if (lista.length > 0) {
 				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
