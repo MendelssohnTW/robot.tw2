@@ -558,6 +558,7 @@ define("robotTW2/services/DefenseService", [
 			resend = false;
 			var r = {};
 			r[params.id_command] = $timeout(function(){
+				console.log("timeout LOADING_TIMEOUT")
 				removeCommandDefense(params.id_command);
 			}, conf_conf.LOADING_TIMEOUT);
 
@@ -593,7 +594,6 @@ define("robotTW2/services/DefenseService", [
 				return 
 			}
 			resend = true;
-			console.log("resend timer delay post passed 30000")
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
