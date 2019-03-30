@@ -120,6 +120,8 @@ define("robotTW2/databases/data_villages", [
 						defense_activate 		: true,
 						headquarter_activate	: true,
 						recruit_activate		: true,
+						sniper_defense			: false,
+						sniper_attack			: true,
 						presets					: getPst(m),
 						selected				: null//selects.find(f=>f.name=="standard")
 					})

@@ -202,36 +202,6 @@ define("robotTW2/services/DefenseService", [
 					var g = [];
 					var t = 0;
 					if(list.length){
-						
-						
-						/*
-						 * Analise tropas defensivas ou ofensivas
-						 */
-						
-						let list_units = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).unitInfo.units
-
-						let units_attack = Object.keys(list_units).map(
-								function(f){
-									if(conf.UNITS_ATTACK.includes(f)){
-										return list_units[f]
-									} else {
-										return undefined
-									}
-								}
-						).filter(f=>f!=undefined)
-						
-						let units_defense = Object.keys(list_units).map(
-								function(f){
-									if(conf.UNITS_DEFENSE.includes(f)){
-										return list_units[f]
-									} else {
-										return undefined
-									}
-								}
-						).filter(f=>f!=undefined)
-
-
-
 						let loyalty = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).getLoyalty();
 						let limit = Math.trunc(Math.trunc(loyalty) / conf.LIMIT_LOYALTY)
 						let count = 0;
@@ -349,8 +319,8 @@ define("robotTW2/services/DefenseService", [
 
 				list_preserv_others = lt.filter(cmd => cmd.params.start_village == id)
 
-				var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel();
-				var comandos_incoming = cmds.incoming;
+				var cmds = modelDataService.getSelectedCharacter().getVillage(id).getCommandListModel()
+				, comandos_incoming = cmds.incoming;
 				comandos_incoming.sort(function (a, b) {
 					return b.completedAt - a.completedAt;
 				})
@@ -371,15 +341,19 @@ define("robotTW2/services/DefenseService", [
 						if(push){
 							switch (unitType) {
 							case "snob":
+								data_village.villages[id].sniper_defense = true
+								data_village.villages[id].sniper_attack = true
 								list_snob.push(cmd);
 								break;
 							case "trebuchet":
+								data_village.villages[id].sniper_defense = true
+								data_village.villages[id].sniper_attack = true
 								list_trebuchet.push(cmd);
 								break;
 							default:
 								list_others.push(cmd);
 							}
-
+							data_village.set();
 						}
 					})
 				});
@@ -461,28 +435,55 @@ define("robotTW2/services/DefenseService", [
 			}, timer_delay);
 		}
 		, units_to_send = function(params){
-			var lista = [],
-			units = {};
-			var village = modelDataService.getSelectedCharacter().getVillage(params.start_village);
-			if (village && village.unitInfo != undefined){
-				var unitInfo = village.unitInfo.units;
 
-				lista = Object.keys(unitInfo).map(function(unit){
-					return unitInfo[unit].available > 0 ? units[unit] = unitInfo[unit].available : undefined
-				}).filter(f=>f!=undefined)
+			let units = {}
+			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).unitInfo.units;
 
-				params.units = units;
-			};
-			if (lista.length > 0) {
-				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
-					commandDefense[params.id_command] = {
-							"timeout" 	: fns.fn.apply(this, [fns.params]),
-							"params"	: params
-					}
-				})
-			} else {
+			if(!list_units){
 				removeCommandDefense(params.id_command)
+				return
 			}
+
+			let units_attack = Object.keys(list_units).map(
+					function(f){
+						if(conf.UNITS_ATTACK.includes(f)){
+							return list_units[f]
+						} else {
+							return undefined
+						}
+					}
+			).filter(f=>f!=undefined)
+
+			let units_defense = Object.keys(list_units).map(
+					function(f){
+						if(conf.UNITS_DEFENSE.includes(f)){
+							return list_units[f]
+						} else {
+							return undefined
+						}
+					}
+			).filter(f=>f!=undefined)
+
+			if(data_village.villages[params.start_village].sniper_defense || params.nob){
+				angular.extend(units, units_defense)
+			}
+			if(data_village.villages[params.start_village].sniper_attack || params.nob){
+				angular.extend(units, units_attack)
+			}
+
+			if([data_village.villages[params.start_village].sniper_defense, data_village.villages[params.start_village].sniper_attack].every(f=>f==false)){
+				removeCommandDefense(params.id_command)
+				return
+			}
+
+			params.units = units;
+
+			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
+				commandDefense[params.id_command] = {
+						"timeout" 	: fns.fn.apply(this, [fns.params]),
+						"params"	: params
+				}
+			})
 		}
 		, sendDefense = function(params){
 			return $timeout(units_to_send.bind(null, params), params.timer_delay);
