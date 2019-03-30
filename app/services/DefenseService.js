@@ -509,19 +509,24 @@ define("robotTW2/services/DefenseService", [
 				var unitInfo = village.unitInfo.units;
 
 				lista = Object.keys(unitInfo).map(function(unit){
-					return unitInfo[unit].available > 0 ? {[unit] : unitInfo[unit].available}: undefined
+					return unitInfo[unit].available > 0 ? units[unit] = unitInfo[unit].available : undefined
 				}).filter(f=>f!=undefined)
 
-//				for(obj in unitInfo){
-//				if (unitInfo.hasOwnProperty(obj)){
-//				if (unitInfo[obj].available > 0){
-//				var campo = {[obj]: unitInfo[obj].available};
-//				units[Object.keys(campo)[0]] = 
-//				Object.keys(campo).map(function(key) {return campo[key]})[0];
-//				lista.push(units);
-//				}
-//				}
-//				}
+				for(obj in unitInfo){
+					if (unitInfo.hasOwnProperty(obj)){
+						if (unitInfo[obj].available > 0){
+							var campo = {[obj]: unitInfo[obj].available};
+							units[Object.keys(campo)[0]] = 
+								Object.keys(campo).map(function(key) {return campo[key]})[0];
+							lista.push(units);
+						}
+					}
+				}
+
+//				lista.forEach(function(f){
+//					units[Object.keys(f)[0]] = Object.values(f)[0]
+//				})
+
 				params.units = units;
 			};
 			if (lista.length > 0) {
