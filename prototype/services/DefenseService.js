@@ -562,6 +562,8 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command);
 			}, conf_conf.LOADING_TIMEOUT);
 
+			console.log("socketService.emit")
+			console.log(params)
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
 				target_village		: params.target_village,
