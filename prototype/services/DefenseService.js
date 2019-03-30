@@ -341,19 +341,19 @@ define("robotTW2/services/DefenseService", [
 						if(push){
 							switch (unitType) {
 							case "snob":
-								data_village.villages[id].sniper_defense = true
-								data_village.villages[id].sniper_attack = true
+								data_villages.villages[id].sniper_defense = true
+								data_villages.villages[id].sniper_attack = true
 								list_snob.push(cmd);
 								break;
 							case "trebuchet":
-								data_village.villages[id].sniper_defense = true
-								data_village.villages[id].sniper_attack = true
+								data_villages.villages[id].sniper_defense = true
+								data_villages.villages[id].sniper_attack = true
 								list_trebuchet.push(cmd);
 								break;
 							default:
 								list_others.push(cmd);
 							}
-							data_village.set();
+							data_villages.set();
 						}
 					})
 				});
@@ -464,14 +464,14 @@ define("robotTW2/services/DefenseService", [
 					}
 			).filter(f=>f!=undefined)
 
-			if(data_village.villages[params.start_village].sniper_defense || params.nob){
+			if(data_villages.villages[params.start_village].sniper_defense || params.nob){
 				angular.extend(units, units_defense)
 			}
-			if(data_village.villages[params.start_village].sniper_attack || params.nob){
+			if(data_villages.villages[params.start_village].sniper_attack || params.nob){
 				angular.extend(units, units_attack)
 			}
 
-			if([data_village.villages[params.start_village].sniper_defense, data_village.villages[params.start_village].sniper_attack].every(f=>f==false)){
+			if([data_villages.villages[params.start_village].sniper_defense, data_villages.villages[params.start_village].sniper_attack].every(f=>f==false)){
 				removeCommandDefense(params.id_command)
 				return
 			}
