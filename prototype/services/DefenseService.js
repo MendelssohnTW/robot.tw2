@@ -481,7 +481,6 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 			} else {
-				console.log("Comando removido sem unidades para o timeout sendDefense")
 				removeCommandDefense(params.id_command)
 			}
 		}
@@ -612,7 +611,7 @@ define("robotTW2/services/DefenseService", [
 
 			if(timer_delay >= 0){
 				angular.extend(params, {
-					"timer_delay" : timer_delay - conf.TIME_DELAY_UPDAT,
+					"timer_delay" : timer_delay - conf.TIME_DELAY_UPDATE,
 					"id_command": id_command
 				})
 
