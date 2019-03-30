@@ -28,7 +28,6 @@ define("robotTW2/databases/data_spy", [
 			hotkey					: conf.HOTKEY.SPY,
 			version					: conf.VERSION.SPY,
 			interval				: conf.INTERVAL.SPY,
-			completed_at			: 0,
 			commands				: {}
 	}
 

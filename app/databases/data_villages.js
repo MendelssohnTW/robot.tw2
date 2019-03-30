@@ -120,6 +120,8 @@ define("robotTW2/databases/data_villages", [
 						defense_activate 		: true,
 						headquarter_activate	: true,
 						recruit_activate		: true,
+						sniper_defense			: false,
+						sniper_attack			: true,
 						presets					: getPst(m),
 						selected				: null//selects.find(f=>f.name=="standard")
 					})
@@ -190,8 +192,8 @@ define("robotTW2/databases/data_villages", [
 		db_villages.set();
 	}
 
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
+//	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
+//	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
 
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, db_villages.updateVillages);

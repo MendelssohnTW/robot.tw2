@@ -365,7 +365,7 @@ define("robotTW2/services/RecruitService", [
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
 					list.push(getFinishedForFree(vls[elem]))
 				}
-				if(data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots || tam < 1){
+				if(!!data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots || tam < 1){
 					return vls[elem].data.villageId
 				}
 			}).filter(f=>f!=undefined)

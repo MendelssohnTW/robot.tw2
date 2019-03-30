@@ -805,6 +805,9 @@ var robotTW2 = window.robotTW2 = undefined;
 						"TIME_SNIPER_ANT"			: 30000,
 						"TIME_SNIPER_POST"			: 3000,
 						"TIME_SNIPER_POST_SNOB"		: 1000,
+						"LIMIT_LOYALTY"				: 35,
+						"UNITS_ATTACK"				: ["axe", "light_cavalry", "mounted_archer", "doppelsoldner", "ram", "catapult", "snob"],
+						"UNITS_DEFENSE"				: ["spear", "sword", "archer", "heavy_cavalry", "trebuchet"],
 						"MAX_TIME_CORRECTION"		: 5000,
 						"MIN_TIME_SNIPER_ANT"		: 5,
 						"MAX_TIME_SNIPER_ANT"		: 600,
@@ -930,6 +933,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				"OPEN_RECRUIT"					: "Internal/robotTW2/open_recruit",
 				"OPEN_HEADQUARTER"				: "Internal/robotTW2/open_headquarter",
 				"OPEN_SPY"						: "Internal/robotTW2/open_spy",
+				"OPEN_FAKE"						: "Internal/robotTW2/open_fake",
 				"OPEN_DEFENSE"					: "Internal/robotTW2/open_defense",
 				"OPEN_RECON"					: "Internal/robotTW2/open_recon",
 				"OPEN_ATTACK"					: "Internal/robotTW2/open_attack",
@@ -2035,6 +2039,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/ReconController.js");
 					robotTW2.loadScript("/controllers/AlertController.js");
 					robotTW2.loadScript("/controllers/SpyController.js");
+					robotTW2.loadScript("/controllers/FakeController.js");
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
@@ -2120,6 +2125,23 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 		: "spy",
 								classes 			: "fullsize",
 								url		 			: "/controllers/SpyController.js",
+								style 				: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
+				case robotTW2.controllers.FakeController : {
+					robotTW2.createScopeLang("fake", function(scopeLang){
+						var params = {
+								controller			: robotTW2.controllers.FakeController,
+								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_FAKE,
+								build_open			: true,
+								scopeLang 			: scopeLang,
+								hotkey 				: conf.HOTKEY.FAKE,
+								templateName 		: "spy",
+								classes 			: "fullsize",
+								url		 			: "/controllers/FakeController.js",
 								style 				: null
 						}		
 						robotTW2.build(params)
@@ -2385,6 +2407,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.SpyService && typeof(robotTW2.services.SpyService.init) == "function" ? robotTW2.requestFn.bind("spy", robotTW2.services.SpyService) : null;	
 					break
 				}
+				case robotTW2.services.FakeService : {
+					robotTW2.services.FakeService && typeof(robotTW2.services.FakeService.init) == "function" ? robotTW2.requestFn.bind("fake", robotTW2.services.FakeService) : null;	
+					break
+				}
 				case robotTW2.services.SecondVillageService : {
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
@@ -2409,6 +2435,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_farm.js");
 								robotTW2.loadScript("/databases/data_deposit.js");
 								robotTW2.loadScript("/databases/data_spy.js");
+								robotTW2.loadScript("/databases/data_fake.js");
 								robotTW2.loadScript("/databases/data_alert.js");
 								robotTW2.loadScript("/databases/data_attack.js");
 								robotTW2.loadScript("/databases/data_recon.js");
@@ -2470,6 +2497,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_spy" : {
 					robotTW2.loadScript("/services/SpyService.js");
+					break
+				}
+				case "data_fake" : {
+					robotTW2.loadScript("/services/FakeService.js");
 					break
 				}
 				case "data_secondvillage" : {
