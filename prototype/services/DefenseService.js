@@ -486,7 +486,7 @@ define("robotTW2/services/DefenseService", [
 			})
 		}
 		, sendDefense = function(params){
-			return $timeout(units_to_send.bind(null, params), params.timer_delay);
+			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
 		, listener_command_cancel = function($event, data){
 			if(!$event.currentScope){
