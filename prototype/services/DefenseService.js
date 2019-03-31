@@ -612,9 +612,9 @@ define("robotTW2/services/DefenseService", [
 					"id_command": id_command
 				})
 
-				console.log("sendDefense bind " + params)
+				console.log("sendDefense bind " + JSON.stringify(params))
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
-					console.log("sendDefense trigger " + params)
+					console.log("sendDefense trigger " + JSON.stringify(params))
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
