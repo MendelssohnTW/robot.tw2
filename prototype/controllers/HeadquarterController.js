@@ -278,18 +278,10 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		update();
 
-
-//		$scope.$on(providers.eventTypeProvider.SELECT_SELECTED, setFilters);
-
 		$scope.$watch("data_logs.headquarter", function(){
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {$scope.$apply()}
 		}, true)
-
-//		$scope.$watch("data_villages", function($event, data){
-//		if(!$scope.data_villages){return}
-//		$scope.data_villages.set();
-//		}, true)
 
 		$scope.$watch("data_headquarter", function(){
 			if(!$scope.data_headquarter){return}
@@ -305,6 +297,14 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
+			if($scope.data_select.selectedOption == "standard"){
+				$scope.local_data_villages.forEach(function(vill){
+					if($scope.local_data_villages.hasOwnProperty(vill)){
+						vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
+						vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinlimit
+					}
+				})
+			}
 			update_select()
 		}, true)
 
@@ -319,6 +319,14 @@ define("robotTW2/controllers/HeadquarterController", [
 		})
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
+		
+		$scope.local_data_villages.forEach(function(vill){
+			if($scope.local_data_villages.hasOwnProperty(vill)){
+				vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
+				vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinlimit
+			}
+		})
+		
 		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
