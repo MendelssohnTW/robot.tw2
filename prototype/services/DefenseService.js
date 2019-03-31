@@ -447,7 +447,7 @@ define("robotTW2/services/DefenseService", [
 			let units_attack = Object.keys(list_units).map(
 					function(f){
 						if(conf.UNITS_ATTACK.includes(f)){
-							list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
+							return list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
 						} else {
 							return undefined
 						}
@@ -457,7 +457,7 @@ define("robotTW2/services/DefenseService", [
 			let units_defense = Object.keys(list_units).map(
 					function(f){
 						if(conf.UNITS_DEFENSE.includes(f)){
-							list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
+							return list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
 						} else {
 							return undefined
 						}
