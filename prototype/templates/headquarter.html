@@ -154,10 +154,10 @@
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right"><div ng-show="getMax(item)"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-														ng-click="levelupstandard(key)"></div>
+														ng-click="levelupstandard(item.name)"></div>
 													<div ng-show="item.value > 0"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-														ng-click="leveldownstandard(key)"></div></td>
+														ng-click="leveldownstandard(item.name)"></div></td>
 											</tr>
 										</tbody>
 									</table>
