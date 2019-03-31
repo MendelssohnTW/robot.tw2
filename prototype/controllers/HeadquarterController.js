@@ -203,15 +203,15 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.levelupstandard = function(key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
-			var level = $scope.obj_standard.buildinglimit[key] += 1;
+			var level = $scope.data_headquarter.standard.buildinglimit[key] += 1;
 			if(level > max_level){
-				$scope.obj_standard.buildinglimit[key] -= 1
+				$scope.data_headquarter.standard.buildinglimit[key] -= 1
 			}
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
 		$scope.leveldownstandard = function(key){
-			$scope.obj_standard.buildinglimit[key] -= 1
+			$scope.data_headquarter.standard.buildinglimit[key] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
