@@ -143,14 +143,14 @@ define("robotTW2/controllers/HeadquarterController", [
 			var ant = $scope.local_data_select_order.find(f => f.value == item.value - 1)
 			$scope.data_select_villages.selectedOption.value.buildingorder[item.name] -= 1
 			$scope.data_select_villages.selectedOption.value.buildingorder[ant.name] += 1
-			update_standard();
+			update_select();
 		}
 
 		$scope.downselect = function(key_vill, vill, key, value){
 			var prox = $scope.local_data_select_order.find(f => f.value == item.value + 1)
 			$scope.data_select_villages.selectedOption.value.buildingorder[item.name] += 1
 			$scope.data_select_villages.selectedOption.value.buildingorder[ant.name] -= 1
-			update_standard();
+			update_select();
 		}
 
 		$scope.levelupselect = function(key){
