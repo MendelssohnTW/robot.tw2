@@ -425,6 +425,7 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, sendCancel = function(params){
+			console.log("sendCancel " + new Date(time.convertedTime()))
 			var timer_delay = params.timer_delay,
 			id = params.id_command;
 			return $timeout(function () {
@@ -471,6 +472,7 @@ define("robotTW2/services/DefenseService", [
 
 			params.units = units;
 
+			
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -479,6 +481,7 @@ define("robotTW2/services/DefenseService", [
 			})
 		}
 		, sendDefense = function(params){
+			console.log("sendDefense " + new Date(time.convertedTime()))
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
 		, listener_command_cancel = function($event, data){
@@ -549,6 +552,7 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, send = function(params){
+			console.log("send " + new Date(time.convertedTime()))
 			resend = false;
 			var r = {};
 			r[params.id_command] = $timeout(function(){
@@ -580,6 +584,7 @@ define("robotTW2/services/DefenseService", [
 
 		}
 		, resendDefense = function(params){
+			console.log("resendDefense " + new Date(time.convertedTime()))
 			var expires_send = params.data_escolhida - params.time_sniper_ant
 			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
 
