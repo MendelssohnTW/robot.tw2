@@ -43,6 +43,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, set_list = function(obj, str, desc){
+			if(!obj){return}
 			let list = []
 			Object.keys(obj).map(function(key){
 				list.push({
@@ -50,12 +51,12 @@ define("robotTW2/controllers/HeadquarterController", [
 					"label": services.$filter("i18n")(key, services.$rootScope.loc.ale, str),
 					"value": obj[key],
 				})
-				if(desc){
-					list.sort(function(a,b){return b.value - a.value})
-				} else {
-					list.sort(function(a,b){return a.value - b.value})
-				}
 			})
+			if(desc){
+				list.sort(function(a,b){return b.value - a.value})
+			} else {
+				list.sort(function(a,b){return a.value - b.value})
+			}
 			return list;
 		}
 		, update_standard = function(){
