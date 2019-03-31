@@ -444,31 +444,24 @@ define("robotTW2/services/DefenseService", [
 				return
 			}
 
-			let units_attack = Object.keys(list_units).map(
-					function(f){
-						if(conf.UNITS_ATTACK.includes(f)){
-							return list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
-						} else {
-							return undefined
-						}
-					}
-			).filter(f=>f!=undefined)
-
-			let units_defense = Object.keys(list_units).map(
-					function(f){
-						if(conf.UNITS_DEFENSE.includes(f)){
-							return list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
-						} else {
-							return undefined
-						}
-					}
-			).filter(f=>f!=undefined)
-
 			if(data_villages.villages[params.start_village].sniper_defense || params.nob){
-				angular.extend(units, units_defense)
+				Object.keys(list_units).map(
+						function(f){
+							if(conf.UNITS_DEFENSE.includes(f)){
+								units[f] = list_units[f].available;
+							}
+						}
+				)
 			}
 			if(data_villages.villages[params.start_village].sniper_attack || params.nob){
-				angular.extend(units, units_attack)
+				Object.keys(list_units).map(
+						function(f){
+							if(conf.UNITS_ATTACK.includes(f)){
+								units[f] = list_units[f].available;
+								return
+							}
+						}
+				)
 			}
 
 			if([data_villages.villages[params.start_village].sniper_defense, data_villages.villages[params.start_village].sniper_attack].every(f=>f==false)){
@@ -477,7 +470,7 @@ define("robotTW2/services/DefenseService", [
 			}
 
 			params.units = units;
-			
+
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
