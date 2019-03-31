@@ -272,9 +272,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.$watch("data_logs.headquarter", function(){
 			$scope.recalcScrollbar();
-			if (!$scope.$$phase) {
-				$scope.$apply();
-			}
+			if (!$scope.$$phase) {$scope.$apply()}
 		}, true)
 
 //		$scope.$watch("data_villages", function($event, data){
@@ -291,6 +289,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.$watch("data_select_villages", function(){
 			if(!$scope.data_select_villages){return}
 			$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
+			if (!$scope.$$phase) {$scope.$apply()}
 		}, true)
 
 		$scope.$watch("data_select", function(){
