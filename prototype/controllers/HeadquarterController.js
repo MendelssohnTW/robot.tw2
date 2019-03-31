@@ -72,7 +72,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_select_limit = []
 
 			$scope.data_select_villages.selectedOption.value.selected = $scope.data_select.selectedOption
-			
+
 			$scope.local_data_select_order = set_list($scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
 			$scope.local_data_select_limit = set_list($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
 
@@ -299,10 +299,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_select){return}
 			if($scope.data_select.selectedOption == "standard"){
 				$scope.local_data_villages.forEach(function(vill){
-					if($scope.local_data_villages.hasOwnProperty(vill)){
-						vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
-						vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinlimit
-					}
+					vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
+					vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinlimit
 				})
 			}
 			update_select()
@@ -319,14 +317,12 @@ define("robotTW2/controllers/HeadquarterController", [
 		})
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
-		
+
 		$scope.local_data_villages.forEach(function(vill){
-			if($scope.local_data_villages.hasOwnProperty(vill)){
-				vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
-				vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinlimit
-			}
+			vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
+			vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinlimit
 		})
-		
+
 		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
