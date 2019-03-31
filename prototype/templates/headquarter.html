@@ -214,7 +214,6 @@
 											<tr>
 												<td></td>
 												<td class="cell-rigth cell-top">
-													<h5 class="twx-section">{{priority}}</h5>
 													<table id="preset-list">
 														<colgroup>
 															<col width="*">
@@ -222,6 +221,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
+														<tr><th colspan="3">{{priority}}</th></tr>
 															<tr ng-repeat="item in local_data_select_order"
 																style="height: 68px">
 																<td class="content cell-left"><div
@@ -245,7 +245,6 @@
 													</table>
 												</td>
 												<td class="cell-right cell-top">
-													<h5 class="twx-section">{{levels}}</h5>
 													<table id="preset-list">
 														<colgroup>
 															<col width="*">
@@ -253,6 +252,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
+														<tr><th colspan="3">{{levels}}</th></tr>
 															<tr ng-repeat="item in local_data_select_limit"
 																style="height: 68px">
 																<td class="content cell-left">
