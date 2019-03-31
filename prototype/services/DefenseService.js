@@ -54,7 +54,6 @@ define("robotTW2/services/DefenseService", [
 		, listener_received = undefined
 		, listener_conquered = undefined
 		, promise_verify = undefined
-		, queue_verifiy = []
 		, that = this
 		, rt = undefined
 		, promise = undefined
@@ -556,10 +555,10 @@ define("robotTW2/services/DefenseService", [
 			console.log("send " + new Date(time.convertedTime()))
 			resend = false;
 			var r = {};
-			r[params.id_command] = $timeout(function(){
-				console.log("timeout LOADING_TIMEOUT")
-				removeCommandDefense(params.id_command);
-			}, conf_conf.LOADING_TIMEOUT);
+//			r[params.id_command] = $timeout(function(){
+//				console.log("timeout LOADING_TIMEOUT")
+//				removeCommandDefense(params.id_command);
+//			}, conf_conf.LOADING_TIMEOUT);
 
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
@@ -570,16 +569,18 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
+			
+			removeCommandDefense(params.id_command);
 
-			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function($event, data){
-				if(data){
-					if(r[data.id_command] && r[data.id_command].$$state.status == 0){
-						$timeout.cancel(r[data.id_command])	
-					}
-					delete r[data.id_command]
-					removeCommandDefense(data.id_command);
-				}
-			}): listener_received;
+//			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function($event, data){
+//				if(data){
+//					if(r[data.id_command] && r[data.id_command].$$state.status == 0){
+//						$timeout.cancel(r[data.id_command])	
+//					}
+//					delete r[data.id_command]
+//					removeCommandDefense(data.id_command);
+//				}
+//			}): listener_received;
 
 		}
 		, resendDefense = function(params){
@@ -767,12 +768,17 @@ define("robotTW2/services/DefenseService", [
 				handlerVerify();
 			}, ["all_villages_ready"])
 		}
+		, clear = function(){
+			removeAll()
+			promise_verify = undefined
+			$timeout.cancel(timeout);
+			timeout = undefined;
+		}
 		, stop = function(){
 			if(!resend){
 				isRunning = !1;
 				commandQueue.unbindAll("support");
 				promise_verify = undefined
-				queue_verifiy = [];
 				$timeout.cancel(timeout);
 				timeout = undefined;
 				typeof(listener_verify) == "function" ? listener_verify(): null;
