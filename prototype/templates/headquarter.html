@@ -109,11 +109,9 @@
 											<col width="26">
 										</colgroup>
 										<tbody>
-											<tr ng-repeat="item in data_standard_order.availableOptions"
-												style="height: 68px"
-												ng-click="data_standard_order.selectedOption = item">
-												<td class="content cell-left"
-													ng-class="{'selected': data_standard_order.selectedOption == item}"><div
+											<tr ng-repeat="item in local_data_standard_order.availableOptions"
+												style="height: 68px">
+												<td class="content cell-left"><div
 														class="name-wrapper">
 														<div class="span-icon" ng-class="getClass(item.name)"></div>
 														{{item.label}}
@@ -123,10 +121,10 @@
 													<div>
 														<div ng-show="item.value > 1"
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-															ng-click="upstandard(item)" ng-click="data_standard_limit.selectedOption = item"></div>
+															ng-click="upstandard(item)"></div>
 														<div ng-show="item.value < 17"
 															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-															ng-click="downstandard(item)" ng-click="data_standard_limit.selectedOption = item"></div>
+															ng-click="downstandard(item)"></div>
 													</div>
 												</td>
 											</tr>
@@ -142,10 +140,9 @@
 											<col width="26">
 										</colgroup>
 										<tbody>
-											<tr ng-repeat="item in data_standard_limit.availableOptions"
+											<tr ng-repeat="item in local_data_standard_limit.availableOptions"
 												style="height: 68px">
-												<td class="content cell-left"
-													ng-class="{'selected': data_standard_limit.selectedOption == item}">
+												<td class="content cell-left">
 													<div class="name-wrapper">
 														<div class="span-icon" ng-class="getClass(item.name)"></div>
 														{{item.label}}
@@ -154,10 +151,10 @@
 												<td class="cell-right"><div>{{item.value}}</div></td>
 												<td class="cell-right"><div ng-show="getMax(item)"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-														ng-click="levelupstandard(item.name)" ng-click="data_standard_limit.selectedOption = item"></div>
+														ng-click="levelupstandard(item.name)"></div>
 													<div ng-show="item.value > 0"
 														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-														ng-click="leveldownstandard(item.name)"  ng-click="data_standard_limit.selectedOption = item"></div></td>
+														ng-click="leveldownstandard(item.name)"></div></td>
 											</tr>
 										</tbody>
 									</table>

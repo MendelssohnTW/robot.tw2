@@ -65,21 +65,19 @@ define("robotTW2/controllers/HeadquarterController", [
 				return $scope.local_data_standard_limit;
 			})
 
-			$scope.data_standard_order = services.MainService.getSelects($scope.local_data_standard_order)
-			$scope.data_standard_limit = services.MainService.getSelects($scope.local_data_standard_limit)
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, save_order = function(){
-			if(!$scope.data_standard_order){return}
+			if(!$scope.local_data_standard_order){return}
 			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
-				$scope.data_headquarter.standard.buildingorder[elem] = $scope.data_standard_order.availableOptions.find(f=>f.name==elem).value;
+				$scope.data_headquarter.standard.buildingorder[elem] = $scope.local_data_standard_order.find(f=>f.name==elem).value;
 			})
 			updateAll();
 		}
 		, save_limit = function(){
-			if(!$scope.data_standard_limit){return}
+			if(!$scope.local_data_standard_limit){return}
 			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(elem){
-				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.data_standard_limit.availableOptions.find(f=>f.name==elem).value;
+				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.local_data_standard_limit.find(f=>f.name==elem).value;
 			})
 			updateAll();
 		}
@@ -186,7 +184,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.upstandard = function(item){
-			var ant = $scope.data_standard_order.availableOptions.find(f => f.value == item.value - 1)
+			var ant = $scope.local_data_standard_order.find(f => f.value == item.value - 1)
 			ant.value += 1
 			item.value -= 1
 //			$scope.data_standard_order.selectedOption = item
@@ -194,7 +192,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.downstandard = function(item){
-			var prox = $scope.data_standard_order.availableOptions.find(f => f.value == item.value + 1)
+			var prox = $scope.local_data_standard_order.find(f => f.value == item.value + 1)
 			prox.value -= 1
 			item.value += 1
 //			$scope.data_standard_order.selectedOption = item
