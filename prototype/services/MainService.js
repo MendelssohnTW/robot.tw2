@@ -48,10 +48,12 @@ define("robotTW2/services/MainService", [
 			
 			return extensions
 		}
-		, service.getSelects = function(obj){
+		, service.getSelects = function(obj, selected){
+			if(!obj) {return}
+			
 			var select = {
 				"availableOptions" : obj,
-				"selectedOption" : obj[0]
+				"selectedOption" : selected || obj[0]
 			}
 			
 			return select
