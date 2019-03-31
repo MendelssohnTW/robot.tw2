@@ -182,16 +182,17 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.levelupselect = function(vill, key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
-			var level = vill.buildinglimit[vill.selected.value][key] += 1;
-			if(level > max_level){
-				vill.buildinglimit[vill.selected.value][key] -= 1
+			if($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] < max_level){
+				$scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] += 1
 			}
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.leveldownselect = function(vill, key){
-			vill.buildinglimit[vill.selected.value][key] -= 1
+		$scope.leveldownselect = function(key){
+			if($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] > 0){
+				$scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] -= 1
+			}
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
