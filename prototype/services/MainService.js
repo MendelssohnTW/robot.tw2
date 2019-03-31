@@ -53,7 +53,7 @@ define("robotTW2/services/MainService", [
 			
 			var select = {
 				"availableOptions" : obj,
-				"selectedOption" : selected || obj[0]
+				"selectedOption" : obj.find(f=>f.value==selected.value) || obj[0]
 			}
 			
 			return select
