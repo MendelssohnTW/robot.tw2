@@ -111,8 +111,7 @@
 										<tbody>
 											<tr ng-repeat="item in local_data_standard_order"
 												style="height: 68px">
-												<td class="content cell-left"><div
-														class="name-wrapper">
+												<td class="content cell-left"><div class="name-wrapper">
 														<div class="span-icon" ng-class="getClass(item.name)"></div>
 														{{item.label}}
 													</div></td>
@@ -172,16 +171,31 @@
 						id="preset-list">
 						<colgroup>
 							<col width="300px">
+							<col width="64px">
 							<col width="150px">
 							<col width="*">
 						</colgroup>
 						<tbody>
 							<tr>
-							<td class="cell-center cell-top"><select id="select_village"
-                                    class="select-wrapper"
-                                    ng-options="item as item.name for item in data_select_villages.availableOptions"
-                                    ng-model="data_select_villages.selectedOption"></select></td>
-							
+								<td class="cell-center cell-top"><select
+									id="select_village" class="select-wrapper"
+									ng-options="item as item.name for item in data_select_villages.availableOptions"
+									ng-model="data_select_villages.selectedOption"></select></td>
+								<td class="cell-center"><div switch-slider="" border="true"
+										enabled="true" value="data_select_villages.selectedOption.value.headquarter_activate" vertical="false"
+										size="'56x28'">
+										<div ng-class="{'box-border-dark box-filter': border}"
+											class="box-border-dark box-filter">
+											<div class="switch switch-56x28 switch-horizontal"
+												ng-class="{'switch-checked': value}">
+												<div class="size-26x26 switch-thumb">
+													<span class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+												</div>
+											</div>
+										</div>
+									</div></td>
+
 								<td class="cell-center cell-top"><select id="select_order"
 									class="select-wrapper"
 									ng-options="item as item.name for item in data_select.availableOptions"
@@ -208,8 +222,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr
-																ng-repeat="item in local_data_select_order"
+															<tr ng-repeat="item in local_data_select_order"
 																style="height: 68px">
 																<td class="content cell-left"><div
 																		class="name-wrapper">
@@ -240,8 +253,7 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-															<tr
-																ng-repeat="item in local_data_select_limit"
+															<tr ng-repeat="item in local_data_select_limit"
 																style="height: 68px">
 																<td class="content cell-left">
 																	<div class="name-wrapper">
