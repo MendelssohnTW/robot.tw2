@@ -106,7 +106,7 @@
         "ext_all": "All",
         "headquarter_running": "Current state of the barracks",
 		"title": "Automation of the Barracks",
-		"settings": "Global settings",
+		"settings": "Settings",
 		"settings_for_villages": "Settings by village",
 		"settings_standard": "Default Settings",
 		"init_standard": "Auto",
