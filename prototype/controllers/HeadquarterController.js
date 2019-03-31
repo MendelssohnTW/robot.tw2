@@ -203,16 +203,17 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.levelupstandard = function(key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
-			var level = $scope.data_headquarter.standard.buildinglimit[key] += 1;
-			if(level > max_level){
-				$scope.data_headquarter.standard.buildinglimit[key] -= 1
+			if($scope.data_headquarter.standard.buildinglimit[key] < max_level){
+				$scope.data_headquarter.standard.buildinglimit[key] += 1;
 			}
-			if (!$scope.$$phase) {$scope.$apply();}
+			updateAll();
 		}
 
 		$scope.leveldownstandard = function(key){
-			$scope.data_headquarter.standard.buildinglimit[key] -= 1
-			if (!$scope.$$phase) {$scope.$apply();}
+			if($scope.data_headquarter.standard.buildinglimit[key] > 0){
+				$scope.data_headquarter.standard.buildinglimit[key] -= 1
+			}
+			updateAll();
 		}
 
 		$scope.start_headquarter = function(){
@@ -288,12 +289,12 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_headquarter = $scope.data_headquarter;
 			data_headquarter.set();
 		}, true)
-		
+
 		$scope.$watch("data_select_villages", function(){
 			if(!$scope.data_select_villages){return}
 			$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
 		}, true)
-		
+
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			$scope.local_data_select_order = $scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select_villages.selectedOption.value.selected.value]
@@ -314,9 +315,9 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
 		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
-		
+
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
-		
+
 		updateAll()
 
 		$scope.setCollapse();
