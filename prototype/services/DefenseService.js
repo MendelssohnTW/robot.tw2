@@ -572,7 +572,7 @@ define("robotTW2/services/DefenseService", [
 				catapult_target		: params.catapult_target
 			});
 
-			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function(data){
+			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function($event, data){
 				if(data){
 					if(r[data.id_command] && r[data.id_command].$$state.status == 0){
 						$timeout.cancel(r[data.id_command])	
@@ -590,7 +590,6 @@ define("robotTW2/services/DefenseService", [
 
 			if(timer_delay_send <= 0){
 				console.log("removed command timer delay < 0")
-				console.log(params)
 				removeCommandDefense(params.id_command)
 				return 
 			}
