@@ -55,13 +55,13 @@ define("robotTW2/controllers/HeadquarterController", [
 				} else {
 					list.sort(function(a,b){return a.value - b.value})
 				}
-				return list;
 			})
+			return list;
 		}
 		, updateAll = function(){
 			$scope.local_data_standard_order = []
 			$scope.local_data_standard_limit = []
-			
+
 			$scope.local_data_standard_order = set_list($scope.data_headquarter.standard.buildingorder, "buildings")
 			$scope.local_data_standard_limit = set_list($scope.data_headquarter.standard.buildinglimit, "buildings")
 
