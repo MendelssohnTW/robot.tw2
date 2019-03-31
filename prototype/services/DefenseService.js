@@ -560,8 +560,6 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command);
 			}, conf_conf.LOADING_TIMEOUT);
 
-			console.log("socketService.emit")
-			console.log(params)	
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
 				target_village		: params.target_village,
@@ -584,12 +582,10 @@ define("robotTW2/services/DefenseService", [
 
 		}
 		, resendDefense = function(params){
-			console.log("resendDefense " + new Date(time.convertedTime()))
 			var expires_send = params.data_escolhida - params.time_sniper_ant
 			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
 
 			if(timer_delay_send <= 0){
-				console.log("removed command timer delay < 0")
 				removeCommandDefense(params.id_command)
 				return 
 			}
