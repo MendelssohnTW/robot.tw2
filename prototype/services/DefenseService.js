@@ -447,7 +447,7 @@ define("robotTW2/services/DefenseService", [
 			let units_attack = Object.keys(list_units).map(
 					function(f){
 						if(conf.UNITS_ATTACK.includes(f)){
-							return list_units[f]
+							list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
 						} else {
 							return undefined
 						}
@@ -457,7 +457,7 @@ define("robotTW2/services/DefenseService", [
 			let units_defense = Object.keys(list_units).map(
 					function(f){
 						if(conf.UNITS_DEFENSE.includes(f)){
-							return list_units[f]
+							list_units[f].available > 0 ? {[f] : list_units[f].available} : undefined
 						} else {
 							return undefined
 						}
@@ -477,7 +477,7 @@ define("robotTW2/services/DefenseService", [
 			}
 
 			params.units = units;
-
+			
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -564,7 +564,7 @@ define("robotTW2/services/DefenseService", [
 			}, conf_conf.LOADING_TIMEOUT);
 
 			console.log("socketService.emit")
-			console.log(params)
+			console.log(params)	
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
 				target_village		: params.target_village,
