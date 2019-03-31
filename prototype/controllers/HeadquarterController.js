@@ -277,8 +277,15 @@ define("robotTW2/controllers/HeadquarterController", [
 			vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinglimit
 		})
 
-		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
+		Object.keys($scope.data_headquarter.selects).map(
+				function(key){ 
+					$scope.local_data_select.push($scope.data_headquarter.selects[key]) 
+					$scope.local_data_select.sort(function(a,b){return a.name.localeCompare(b.name)}) 
+					return $scope.local_data_select; 
+				}
+		)
 
+		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
 
 		update_standard()
