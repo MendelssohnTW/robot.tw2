@@ -379,6 +379,8 @@ define("robotTW2/services/DefenseService", [
 		, getAtaques = function(){
 			return new Promise(function(resolve){
 
+				clear();
+				
 				var lt = []
 
 				Object.keys(commandDefense).map(function(key){
@@ -769,7 +771,7 @@ define("robotTW2/services/DefenseService", [
 			}, ["all_villages_ready"])
 		}
 		, clear = function(){
-			removeAll()
+			commandDefense = {};
 			promise_verify = undefined
 			$timeout.cancel(timeout);
 			timeout = undefined;
