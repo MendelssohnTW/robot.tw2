@@ -58,7 +58,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			})
 			return list;
 		}
-		, updateAll = function(){
+		, update_standard = function(){
 			$scope.local_data_standard_order = []
 			$scope.local_data_standard_limit = []
 
@@ -67,19 +67,28 @@ define("robotTW2/controllers/HeadquarterController", [
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
+		, update_select = function(){
+			$scope.local_data_select_order = []
+			$scope.local_data_select_limit = []
+
+			$scope.local_data_select_order = set_list($scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
+			$scope.local_data_select_limit = set_list($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
+
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
 		, save_order = function(){
 			if(!$scope.local_data_standard_order){return}
 			Object.keys($scope.data_headquarter.standard.buildingorder).map(function(elem){
 				$scope.data_headquarter.standard.buildingorder[elem] = $scope.local_data_standard_order.find(f=>f.name==elem).value;
 			})
-			updateAll();
+			update_standard();
 		}
 		, save_limit = function(){
 			if(!$scope.local_data_standard_limit){return}
 			Object.keys($scope.data_headquarter.standard.buildinglimit).map(function(elem){
 				$scope.data_headquarter.standard.buildinglimit[elem] = $scope.local_data_standard_limit.find(f=>f.name==elem).value;
 			})
-			updateAll();
+			update_standard();
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
@@ -204,14 +213,14 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_headquarter.standard.buildinglimit[key] < max_level){
 				$scope.data_headquarter.standard.buildinglimit[key] += 1;
 			}
-			updateAll();
+			update_standard();
 		}
 
 		$scope.leveldownstandard = function(key){
 			if($scope.data_headquarter.standard.buildinglimit[key] > 0){
 				$scope.data_headquarter.standard.buildinglimit[key] -= 1
 			}
-			updateAll();
+			update_standard();
 		}
 
 		$scope.start_headquarter = function(){
@@ -289,17 +298,12 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.$watch("data_select_villages", function(){
 			if(!$scope.data_select_villages){return}
 			$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
-			if (!$scope.$$phase) {$scope.$apply()}
+			update_select()
 		}, true)
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			$scope.local_data_select_order = []
-			$scope.local_data_select_limit = []
-
-			$scope.local_data_select_order = set_list($scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
-			$scope.local_data_select_limit = set_list($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
-
+			update_select()
 		}, true)
 
 		$scope.$on("$destroy", function() {
@@ -317,7 +321,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
 
-		updateAll()
+		update_standard()
 
 		$scope.setCollapse();
 
