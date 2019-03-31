@@ -210,10 +210,8 @@
 														<tbody>
 															<tr
 																ng-repeat="item in local_data_select_order"
-																style="height: 68px"
-																ng-click="local_data_select_order.selectedOption = item">
-																<td class="content cell-left"
-																	ng-class="{'selected': local_data_select_order.selectedOption == item}"><div
+																style="height: 68px">
+																<td class="content cell-left"><div
 																		class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
 																		{{item.label}}
@@ -245,8 +243,7 @@
 															<tr
 																ng-repeat="item in local_data_select_limit"
 																style="height: 68px">
-																<td class="content cell-left"
-																	ng-class="{'selected': local_data_select_limit.selectedOption == item}">
+																<td class="content cell-left">
 																	<div class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
 																		{{item.label}}
