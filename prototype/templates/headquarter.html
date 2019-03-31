@@ -170,40 +170,56 @@
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
 						id="preset-list">
 						<colgroup>
-							<col width="300px">
-							<col width="64px">
-							<col width="150px">
-							<col width="*">
+							<col width="40%">
+							<col width="60%">
 						</colgroup>
 						<tbody>
-							<tr><th></th><th></th><th></th></tr>
 							<tr>
-								<td class="cell-center cell-top"><select
-									id="select_village" class="select-wrapper"
-									ng-options="item as item.name for item in data_select_villages.availableOptions"
-									ng-model="data_select_villages.selectedOption"></select></td>
-								<td class="cell-center"><div switch-slider="" border="true"
-										enabled="true" value="data_select_villages.selectedOption.value.headquarter_activate" vertical="false"
-										size="'56x28'">
-										<div ng-class="{'box-border-dark box-filter': border}"
-											class="box-border-dark box-filter">
-											<div class="switch switch-56x28 switch-horizontal"
-												ng-class="{'switch-checked': value}">
-												<div class="size-26x26 switch-thumb">
-													<span class="simple icon-26x26-switch-off"
-														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-												</div>
-											</div>
-										</div>
-									</div></td>
+								<td>
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
+										id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="64px">
+											<col width="150px">
+										</colgroup>
+										<tbody>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+											</tr>
+											<tr>
+												<td class="cell-center cell-top"><select
+													id="select_village" class="select-wrapper"
+													ng-options="item as item.name for item in data_select_villages.availableOptions"
+													ng-model="data_select_villages.selectedOption"></select></td>
+												<td class="cell-center cell-top"><div switch-slider=""
+														border="true" enabled="true"
+														value="data_select_villages.selectedOption.value.headquarter_activate"
+														vertical="false" size="'56x28'">
+														<div ng-class="{'box-border-dark box-filter': border}"
+															class="box-border-dark box-filter">
+															<div class="switch switch-56x28 switch-horizontal"
+																ng-class="{'switch-checked': value}">
+																<div class="size-26x26 switch-thumb">
+																	<span class="simple icon-26x26-switch-off"
+																		ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																</div>
+															</div>
+														</div>
+													</div></td>
 
-								<td class="cell-center cell-top"><select id="select_order"
-									class="select-wrapper"
-									ng-options="item as item.name for item in data_select.availableOptions"
-									ng-model="data_select.selectedOption"></select></td>
-
-								<td class="cell-center cell-top">
-									<table id="preset-list"
+												<td class="cell-center cell-top"><select
+													id="select_order" class="select-wrapper"
+													ng-options="item as item.name for item in data_select.availableOptions"
+													ng-model="data_select.selectedOption"></select></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="cell-center cell-top"><table id="preset-list"
 										class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
 										<colgroup>
 											<col width="20px">
@@ -222,7 +238,9 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-														<tr><th colspan="3">{{priority}}</th></tr>
+															<tr>
+																<th colspan="3">{{priority}}</th>
+															</tr>
 															<tr ng-repeat="item in local_data_select_order"
 																style="height: 68px">
 																<td class="content cell-left"><div
@@ -253,7 +271,9 @@
 															<col width="26">
 														</colgroup>
 														<tbody>
-														<tr><th colspan="3">{{levels}}</th></tr>
+															<tr>
+																<th colspan="3">{{levels}}</th>
+															</tr>
 															<tr ng-repeat="item in local_data_select_limit"
 																style="height: 68px">
 																<td class="content cell-left">
@@ -277,8 +297,7 @@
 											</tr>
 
 										</tbody>
-									</table>
-								</td>
+									</table></td>
 							</tr>
 						</tbody>
 					</table>
