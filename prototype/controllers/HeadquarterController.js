@@ -318,7 +318,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
 		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
 		
-		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected.value)
+		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
 		
 		updateAll()
 
