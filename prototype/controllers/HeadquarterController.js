@@ -288,6 +288,22 @@ define("robotTW2/controllers/HeadquarterController", [
 			data_headquarter = $scope.data_headquarter;
 			data_headquarter.set();
 		}, true)
+		
+		$scope.$watch("data_select_villages", function(){
+			if(!$scope.data_select_villages){return}
+			$scope.local_data_select_order = $scope.data_select.selectedOption.buildingorder
+			$scope.local_data_select_limit = $scope.data_select.selectedOption.buildinglimit
+			$scope.data_select_order = services.MainService.getSelects($scope.local_data_select_order)
+			$scope.data_select_limit = services.MainService.getSelects($scope.local_data_select_limit)
+		}, true)
+		
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			$scope.local_data_select_order = $scope.data_select.selectedOption.buildingorder
+			$scope.local_data_select_limit = $scope.data_select.selectedOption.buildinglimit
+			$scope.data_select_order = services.MainService.getSelects($scope.local_data_select_order)
+			$scope.data_select_limit = services.MainService.getSelects($scope.local_data_select_limit)
+		}, true)
 
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();
@@ -302,7 +318,9 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_select)
-
+		
+		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
+		
 		updateAll()
 
 		$scope.setCollapse();
