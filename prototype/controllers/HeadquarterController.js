@@ -149,11 +149,6 @@ define("robotTW2/controllers/HeadquarterController", [
 			return "icon-20x20-building-" + key;
 		}
 
-//		$scope.getValue = function(key){
-//		if(!key){return}
-//		return Object.values(key)[0];
-//		}
-
 		$scope.upselect = function(key_vill, vill, key, value){
 			$scope.selected_village_buildingorder[key_vill] = value;
 			var ant = Object.keys(vill.buildingorder).map(
@@ -200,7 +195,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			ant.value += 1
 			item.value -= 1
 //			$scope.data_standard_order.selectedOption = item
-			save_order()
+//			save_order()
 		}
 
 		$scope.downstandard = function(item){
@@ -208,7 +203,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			prox.value -= 1
 			item.value += 1
 //			$scope.data_standard_order.selectedOption = item
-			save_order()
+//			save_order()
 		}
 
 		$scope.levelupstandard = function(key){
