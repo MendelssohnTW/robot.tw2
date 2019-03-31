@@ -60,6 +60,10 @@ define("robotTW2/controllers/HeadquarterController", [
 			return list;
 		}
 		, update_standard = function(){
+			$scope.local_data_villages.forEach(function(vill){
+				vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
+				vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinglimit
+			})
 			$scope.local_data_standard_order = []
 			$scope.local_data_standard_limit = []
 
@@ -291,24 +295,12 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			if($scope.data_select.selectedOption == "standard"){
-				$scope.local_data_villages.forEach(function(vill){
-					vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
-					vill.value.buildinglimit.standard = $scope.data_headquarter.standard.buildinglimit
-				})
-			}
 			update_select()
 		}, true)
 
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();
 		});
-
-		Object.keys($scope.data_headquarter.selects).map(function(key){
-			$scope.local_data_select.push($scope.data_headquarter.selects[key])
-			$scope.local_data_select.sort(function(a,b){return a.name.localeCompare(b.name)})
-			return $scope.local_data_select;
-		})
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
 

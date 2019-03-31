@@ -171,7 +171,7 @@
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
 						id="preset-list">
 						<colgroup>
-							<col width="150px">
+							<col width="300px">
 							<col width="150px">
 							<col width="*">
 						</colgroup>
@@ -267,118 +267,6 @@
 									</table>
 								</td>
 							</tr>
-							<!-- 
-							<tr ng-repeat="vill in local_data_villages">
-								<td class="cell-top">
-									<div class="village">
-										<div class="name-coord" ng-click="jumpToVillage(vill.id)">
-											{{getLabel(vill.id)}}</div>
-									</div>
-								</td>
-								<td class="cell-top">
-									<div class="checkbox box-border-dark">
-										<div tooltip tooltip-content="{{text_executebuildingorder}}"
-											switch-slider="" border="true" enabled="true"
-											value="vill.headquarter_activate" vertical="false"
-											size="'56x28'">
-											<div ng-class="{'box-border-dark box-filter': border}"
-												class="box-border-dark box-filter">
-												<div class="switch switch-56x28 switch-horizontal"
-													ng-class="{'switch-checked': value, 'switch-inactive': enabled == false}">
-													<span class="size-26x26 switch-thumb"> <span
-														class="simple icon-26x26-switch-off"
-														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td class="cell-top cell-center"><select id="select_order"
-									class="select-wrapper"
-									ng-options="item as item.name for item in data_headquarter.selects track by item.id"
-									ng-model="vill.selected"></select></td>
-								<td class="cell-space">
-									<h5 class="twx-section collapse hidden-content">{{getName(vill.villageId)}}</h5>
-									<div>
-										<table id="preset-list">
-											<colgroup>
-												<col width="50%">
-												<col width="50%">
-											</colgroup>
-											<tbody>
-												<tr>
-													<td class="cell-rigth cell-top">
-														<h5 class="twx-section">{{priority}}</h5>
-														<table id="preset-list">
-															<colgroup>
-																<col width="*">
-																<col width="20">
-																<col width="26">
-															</colgroup>
-															<tbody>
-																<tr
-																	ng-repeat="(key, value) in vill.buildingorder[vill.selected.value]"
-																	style="height: 68px">
-																	<td class="content"
-																		ng-class="{'resource-text' : selected_village_buildingorder[key] == value}">
-																		<div class="name-wrapper">
-																			<span class="name">{{getKey(key)}}</span>
-																		</div>
-																		<div class="span-icon" ng-class="getClass(key)"></div>
-																	</td>
-																	<td class="cell-right"><div>{{value}}</div></td>
-																	<td class="cell-right">
-																		<div>
-																			<div ng-show="value > 1 "
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																				ng-click="up(vill.villageId, vill, key, value)"></div>
-																			<div ng-show="value < 17"
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																				ng-click="down(vill.villageId, vill, key, value)"></div>
-																		</div>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</td>
-													<td class="cell-right cell-top">
-														<h5 class="twx-section">{{levels}}</h5>
-														<table id="preset-list">
-															<colgroup>
-																<col width="*">
-																<col width="20">
-																<col width="26">
-															</colgroup>
-															<tbody>
-																<tr
-																	ng-repeat="(key, value) in vill.buildinglimit[vill.selected.value]"
-																	style="height: 68px">
-																	<td class="content">
-																		<div class="name-wrapper">
-																			<span class="name">{{getKey(key)}}</span>
-																		</div>
-																		<div class="span-icon" ng-class="getClass(key)"></div>
-																	</td>
-																	<td class="cell-right"><div>{{value}}</div></td>
-																	<td class="cell-right"><div
-																			ng-show="getMax(key, value)"
-																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																			ng-click="levelup(vill, key)"></div>
-																		<div ng-show="value > 0"
-																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																			ng-click="leveldown(vill, key)"></div></td>
-																</tr>
-															</tbody>
-														</table>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</td>
-							</tr>
-							 -->
 						</tbody>
 					</table>
 				</div>
