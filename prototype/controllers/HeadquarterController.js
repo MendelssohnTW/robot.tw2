@@ -299,8 +299,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			$scope.local_data_select_order = $scope.data_select.selectedOption.buildingorder
-			$scope.local_data_select_limit = $scope.data_select.selectedOption.buildinglimit
+			$scope.local_data_select_order = $scope.data_select_villages.selectedOption.value.buildingorder
+			$scope.local_data_select_limit = $scope.data_select_villages.selectedOption.value.buildinglimit
 			$scope.data_select_order = services.MainService.getSelects($scope.local_data_select_order)
 			$scope.data_select_limit = services.MainService.getSelects($scope.local_data_select_limit)
 		}, true)
