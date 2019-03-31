@@ -471,7 +471,8 @@ define("robotTW2/services/DefenseService", [
 			}
 
 			params.units = units;
-
+			
+			console.log(JSON.stringify(units))
 			
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
@@ -481,7 +482,6 @@ define("robotTW2/services/DefenseService", [
 			})
 		}
 		, sendDefense = function(params){
-			console.log("sendDefense " + new Date(time.convertedTime()))
 			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE);
 		}
 		, listener_command_cancel = function($event, data){
