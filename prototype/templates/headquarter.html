@@ -212,11 +212,11 @@
 														</colgroup>
 														<tbody>
 															<tr
-																ng-repeat="item in data_select_order.availableOptions"
+																ng-repeat="item in local_data_select_order.availableOptions"
 																style="height: 68px"
-																ng-click="data_select_order.selectedOption = item">
+																ng-click="local_data_select_order.selectedOption = item">
 																<td class="content cell-left"
-																	ng-class="{'selected': data_select_order.selectedOption == item}"><div
+																	ng-class="{'selected': local_data_select_order.selectedOption == item}"><div
 																		class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
 																		{{item.label}}
@@ -246,17 +246,17 @@
 														</colgroup>
 														<tbody>
 															<tr
-																ng-repeat="item in data_select_limit.availableOptions"
+																ng-repeat="item in local_data_select_limit.availableOptions"
 																style="height: 68px">
 																<td class="content cell-left"
-																	ng-class="{'selected': data_select_limit.selectedOption == item}">
+																	ng-class="{'selected': local_data_select_limit.selectedOption == item}">
 																	<div class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
 																		{{item.label}}
 																	</div>
 																</td>
 																<td class="cell-right"><div>{{item.value}}</div></td>
-																<td class="cell-right"><div ng-show="getMax(item.name)"
+																<td class="cell-right"><div ng-show="getMax(item)"
 																		class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																		ng-click="levelupselect(item.name)"></div>
 																	<div ng-show="item.value > 0"
