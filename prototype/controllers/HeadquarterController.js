@@ -154,7 +154,7 @@ define("robotTW2/controllers/HeadquarterController", [
 //		return Object.values(key)[0];
 //		}
 
-		$scope.up = function(key_vill, vill, key, value){
+		$scope.upselect = function(key_vill, vill, key, value){
 			$scope.selected_village_buildingorder[key_vill] = value;
 			var ant = Object.keys(vill.buildingorder).map(
 					function(elem){
@@ -167,7 +167,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.down = function(key_vill, vill, key, value){
+		$scope.downselect = function(key_vill, vill, key, value){
 			$scope.selected_village_buildingorder[key_vill] = value;
 			var prox = Object.keys(vill.buildingorder).map(
 					function(elem){
@@ -180,7 +180,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.levelup = function(vill, key){
+		$scope.levelupselect = function(vill, key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
 			var level = vill.buildinglimit[vill.selected.value][key] += 1;
 			if(level > max_level){
@@ -190,7 +190,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
-		$scope.leveldown = function(vill, key){
+		$scope.leveldownselect = function(vill, key){
 			vill.buildinglimit[vill.selected.value][key] -= 1
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
