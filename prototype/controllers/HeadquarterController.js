@@ -71,6 +71,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_select_order = []
 			$scope.local_data_select_limit = []
 
+			$scope.data_select_villages.selectedOption.value.selected = $scope.data_select.selectedOption
+			
 			$scope.local_data_select_order = set_list($scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
 			$scope.local_data_select_limit = set_list($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
 
