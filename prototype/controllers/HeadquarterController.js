@@ -192,15 +192,15 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.upstandard = function(item){
 			var ant = $scope.local_data_standard_order.find(f => f.value == item.value - 1)
-			$scope.data_headquarter.standard.buildingorder[item.name].value -= 1
-			$scope.data_headquarter.standard.buildingorder[ant.name].value += 1
+			$scope.data_headquarter.standard.buildingorder[item.name] -= 1
+			$scope.data_headquarter.standard.buildingorder[ant.name] += 1
 			update_standard();
 		}
 
 		$scope.downstandard = function(item){
 			var prox = $scope.local_data_standard_order.find(f => f.value == item.value + 1)
-			$scope.data_headquarter.standard.buildingorder[item.name].value += 1
-			$scope.data_headquarter.standard.buildingorder[prox.name].value -= 1
+			$scope.data_headquarter.standard.buildingorder[item.name] += 1
+			$scope.data_headquarter.standard.buildingorder[prox.name] -= 1
 			update_standard();
 		}
 
