@@ -43,7 +43,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, set_list = function(obj, str, desc){
-			let list
+			let list = []
 			Object.keys(obj).map(function(key){
 				list.push({
 					"name": key,
