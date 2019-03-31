@@ -185,15 +185,14 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] < max_level){
 				$scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] += 1
 			}
-
-			if (!$scope.$$phase) {$scope.$apply();}
+			update_select();
 		}
 
 		$scope.leveldownselect = function(key){
 			if($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] > 0){
 				$scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] -= 1
 			}
-			if (!$scope.$$phase) {$scope.$apply();}
+			update_select();
 		}
 
 		$scope.upstandard = function(item){
