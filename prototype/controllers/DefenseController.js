@@ -188,7 +188,6 @@ define("robotTW2/controllers/DefenseController", [
 		update();
 
 		$scope.setCollapse();
-		$scope.recalcScrollbar();
 
 		return $scope;
 	}
