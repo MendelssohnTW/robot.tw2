@@ -31,7 +31,6 @@ define("robotTW2/services/HeadquarterService", [
 		, interval_builder
 		, interval_cicle
 		, q
-		, character
 		, s
 		, isInitialized = !1
 		, isRunning = !1
@@ -56,7 +55,7 @@ define("robotTW2/services/HeadquarterService", [
 			Object.keys(buildingLevels).forEach(function(key_level){
 				if(buildingLimit){
 					Object.keys(buildingLimit).forEach(function(key_limit){
-						if(Object.keys(buildingLevels[key_level])[0] == key_limit && Object.values(buildingLevels[key_level])[0] < buildingLimit[key_limit] && Object.values(buildingLevels[key_level])[0] > 0){
+						if(buildingLevels[key_level][key_limit] < buildingLimit[key_limit] && buildingLimit[key_limit] > 0){
 							builds.push({[Object.keys(buildingLevels[key_level])[0]] : Object.values(buildingLevels[key_level])[0]})
 						}
 					})
@@ -77,8 +76,6 @@ define("robotTW2/services/HeadquarterService", [
 			, nextLevelCosts = buildingData.nextLevelCosts
 			, not_enough_resources = false
 			, firstQueue = village.getBuildingQueue().getQueue()[0];
-			
-			
 
 			if(firstQueue && firstQueue.canBeFinishedForFree){
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
@@ -157,9 +154,8 @@ define("robotTW2/services/HeadquarterService", [
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
 		, upgradeBuilding = function(village_id, resolve){
-			character = modelDataService.getSelectedCharacter();
 			return new Promise(function(resolve){
-				var village = character.getVillage(village_id);
+				var village = modelDataService.getSelectedCharacter().getVillage(village_id);
 				buildingService.compute(village)
 				var buildingQueue = village.getBuildingQueue()
 				, buildingData = village.getBuildingData()
@@ -171,7 +167,7 @@ define("robotTW2/services/HeadquarterService", [
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];
-				
+
 				var premiumActionService = injector.get("premiumActionService");
 
 				if(firstQueue && firstQueue.canBeFinishedForFree){
@@ -233,7 +229,7 @@ define("robotTW2/services/HeadquarterService", [
 					.filter(f => f != undefined)[0]
 					)
 				})
-				
+
 				g.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 
 				g.forEach(function(b) {
@@ -248,7 +244,10 @@ define("robotTW2/services/HeadquarterService", [
 										if (success) {
 											++buildAmounts;
 										} else if(data == "instant"){
+											console.log(data)
 											res(true);
+										} else {
+											console.log(data)
 										}
 										res()
 									})
@@ -281,9 +280,9 @@ define("robotTW2/services/HeadquarterService", [
 				if(!promise){
 					promise = new Promise(function(res){
 						upgradeBuilding(vill_id).then(function(repeat){
-//							data_villages.set();
 							if(repeat){
-								f(vill_id)
+								promise_queue.unshift(vill_id)
+								$timeout(function(){res()}, 2000)
 							} else {
 								res()
 							}
@@ -306,7 +305,8 @@ define("robotTW2/services/HeadquarterService", [
 		, cicle_building = function($event, data){
 			if (!isInitialized)
 				return;
-			Object.keys(data_villages.villages).map(function(village_id){seq_cicle(village_id)})
+			var villages = modelDataService.getSelectedCharacter().getVillages();
+			Object.keys(villages).map(function(village_id){seq_cicle(village_id)})
 		}
 		, wait = function(){
 			setList(function(tm){
