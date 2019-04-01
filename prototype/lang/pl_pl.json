@@ -355,7 +355,11 @@
         "text_defense":"Defense",
         "text_attack":"Attack",
         "text_village":"Village",
-        "text_troops":"Troops type for defense"
+        "text_troops":"Troops type for defense",
+        "text_time_sniper_ant":"Time in milliseconds for troop withdrawal",
+        "text_time_sniper_post":"Time in milliseconds for troop return",
+        "text_time_sniper_post_snob":"Time in milliseconds for troop return in nobles",
+        "text_loyalt":"Loyalty for calculation"
 	},
 	"log": {
         "title": "Log"

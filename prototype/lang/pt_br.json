@@ -355,7 +355,11 @@
         "text_defense":"Defesa",
         "text_attack":"Ataque",
         "text_village":"Aldeia",
-        "text_troops":"Tipo de tropas para defesa"
+        "text_troops":"Tipo de tropas para defesa",
+        "text_time_sniper_ant":"Tempo em milisegundos para retirada de tropas",
+        "text_time_sniper_post":"Tempo em milisegundos para retorno de tropas",
+        "text_time_sniper_post_snob":"Tempo em milisegundos para retirada de tropas em nobres",
+        "text_loyalt":"Lealdade para cálculo"
        
     },
     "log": {
