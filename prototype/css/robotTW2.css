@@ -227,8 +227,12 @@
 	animation-iteration-count: infinite;
 }
 
-.robotTW2 .defense .box-paper {
+.robotTW2 .defense.box-paper {
 	min-height: 100px;
 	height: 285px;
 	margin: 0 2px;
+}
+
+.robotTW2 .defense.win-main.twx-section {
+    margin: 0 3px 0 3px;
 }
