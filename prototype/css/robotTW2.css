@@ -226,3 +226,9 @@
 	animation-duration: 1s;
 	animation-iteration-count: infinite;
 }
+
+.robotTW2 .defense .box-paper {
+	min-height: 100px;
+	height: 285px;
+	margin: 0 2px;
+}
