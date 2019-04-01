@@ -145,7 +145,6 @@
 						<col width="*">
 						<col width="64px">
 						<col width="160px">
-						<col width="160px">
 						<col width="64px">
 						<col width="64px">
 
@@ -153,7 +152,7 @@
 					<tr>
 						<th colspan="2">{{text_troops}}</th>
 						<th>{{text_status}}</th>
-						<th colspan="2"></th>
+						<th></th>
 						<th></th>
 						<th></th>
 					</tr>
@@ -181,17 +180,13 @@
 							class="btn-orange btn-form btn-border no-padding"
 							ng-click="selectAllUnits()"><span style="position: relative;"
 								id="span-text" class="text">{{select_all}}</span></a></td>
-						<td><a href="#" tooltip tooltip-content=""
-							class="btn-orange btn-form btn-border no-padding"
-							ng-click="unselectAllUnits()"><span
-								style="position: relative;" id="span-text" class="text">{{unselect_all}}</span></a></td>
 
 					</tr>
 
                     <tr>
                         <th colspan="2">{{text_troops}}</th>
                         <th>{{text_status}}</th>
-                        <th colspan="2"></th>
+                        <th></th>
                         <th>{{text_defense}}</th>
                         <th>{{text_attack}}</th>
                     </tr>
@@ -220,10 +215,6 @@
 							class="btn-orange btn-form btn-border no-padding"
 							ng-click="selectAllVillages()"><span
 								style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
-						<td><a href="#" tooltip tooltip-content=""
-							class="btn-orange btn-form btn-border no-padding"
-							ng-click="unselectAllVillages()"><span
-								style="position: relative;" id="span-text" class="text">{{unselect_all}}</span></a></td>
 						<td><div id="switch" switch-slider="" border="true"
 								enabled="true"
 								value="data_villages.villages[data_select.selectedOption.id].sniper_defense"
