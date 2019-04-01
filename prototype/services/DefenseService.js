@@ -576,8 +576,6 @@ define("robotTW2/services/DefenseService", [
 				catapult_target		: params.catapult_target
 			});
 
-			removeCommandDefense(params.id_command);
-
 //			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function($event, data){
 //			if(data){
 //			if(r[data.id_command] && r[data.id_command].$$state.status == 0){
