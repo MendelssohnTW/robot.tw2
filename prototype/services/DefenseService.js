@@ -455,7 +455,7 @@ define("robotTW2/services/DefenseService", [
 			if(data_villages.villages[params.start_village].sniper_defense || params.nob){
 				Object.keys(list_units).map(
 						function(f){
-							if(conf.UNITS_DEFENSE.includes(f)){
+							if(conf.UNITS_DEFENSE.includes(f) && list_units[f].available > 0){
 								units[f] = list_units[f].available;
 							}
 						}
@@ -464,7 +464,7 @@ define("robotTW2/services/DefenseService", [
 			if(data_villages.villages[params.start_village].sniper_attack || params.nob){
 				Object.keys(list_units).map(
 						function(f){
-							if(conf.UNITS_ATTACK.includes(f)){
+							if(conf.UNITS_ATTACK.includes(f) && list_units[f].available > 0){
 								units[f] = list_units[f].available;
 								return
 							}
@@ -480,6 +480,9 @@ define("robotTW2/services/DefenseService", [
 			params.units = units;
 
 			console.log(JSON.stringify(units))
+			if(!Object.keys(units).length){
+				return
+			}
 
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
@@ -561,10 +564,6 @@ define("robotTW2/services/DefenseService", [
 		, send = function(params){
 			resend = false;
 			var r = {};
-//			r[params.id_command] = $timeout(function(){
-//			console.log("timeout LOADING_TIMEOUT")
-//			removeCommandDefense(params.id_command);
-//			}, conf_conf.LOADING_TIMEOUT);
 
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
@@ -575,16 +574,6 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-
-//			!listener_received ? listener_received = $rootScope.$on("command_sent_received", function($event, data){
-//			if(data){
-//			if(r[data.id_command] && r[data.id_command].$$state.status == 0){
-//			$timeout.cancel(r[data.id_command])	
-//			}
-//			delete r[data.id_command]
-//			removeCommandDefense(data.id_command);
-//			}
-//			}): listener_received;
 
 		}
 		, resendDefense = function(params){
