@@ -483,8 +483,8 @@ define("robotTW2/services/DefenseService", [
 
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
-					"timeout" 	: fns.fn.apply(this, [fns.params]),
-					"params"	: params
+						"timeout" 	: fns.fn.apply(this, [fns.params]),
+						"params"	: params
 				}
 			})
 		}
@@ -773,6 +773,13 @@ define("robotTW2/services/DefenseService", [
 			}, ["all_villages_ready"])
 		}
 		, clear = function(){
+			Object.keys(commandDefense).map(function(cmd){
+				if(commandDefense[cmd].timeout){
+					if(commandDefense[cmd].timeout.$$state || commandDefense[cmd].timeout.$$state.status == 0){
+						$timeout.cancel(commandDefense[cmd].timeout);
+					}
+				}
+			})
 			commandDefense = {};
 			promise_verify = undefined
 			$timeout.cancel(timeout);
