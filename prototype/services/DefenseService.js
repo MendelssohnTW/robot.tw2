@@ -481,6 +481,7 @@ define("robotTW2/services/DefenseService", [
 
 			console.log(JSON.stringify(units))
 			if(!Object.keys(units).length){
+				removeCommandDefense(params.id_command)
 				return
 			}
 
