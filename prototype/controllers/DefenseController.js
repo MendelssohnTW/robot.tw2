@@ -34,23 +34,6 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.text_version = $scope.version + " " + data_defense.version;
 
 		var self = this
-		,TABS = {
-				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
-				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense")
-		}
-		, TAB_ORDER = [
-			TABS.DEFENSE,
-			TABS.TROOPS
-			]
-		, setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab								= tab;
-			$scope.requestedTab								= null;
-		}
-		, initTab = function initTab() {
-			if (!$scope.activeTab) {
-				setActiveTab($scope.requestedTab);
-			}
-		}
 		, update = function(){
 			$scope.comandos = services.DefenseService.get_commands();
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.time_sniper_ant) - (b.data_escolhida - time.convertedTime() - b.time_sniper_ant)})
@@ -79,10 +62,6 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_units = services.MainService.getSelects($scope.local_list_defense)
 			$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 
-		}
-
-		$scope.userSetActiveTab = function(tab){
-			setActiveTab(tab);
 		}
 
 		$scope.jumpToVillage = function(vid){
@@ -205,12 +184,7 @@ define("robotTW2/controllers/DefenseController", [
 			services.DefenseService.start(true);
 		}, true)
 
-		$scope.requestedTab = TABS.DEFENSE;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
-
 		update_all();
-		initTab();
 		update();
 
 		$scope.setCollapse();
