@@ -789,9 +789,7 @@ define("robotTW2/services/DefenseService", [
 			if(!resend){
 				isRunning = !1;
 				commandQueue.unbindAll("support");
-				promise_verify = undefined
-				$timeout.cancel(timeout);
-				timeout = undefined;
+				clear();
 				typeof(listener_verify) == "function" ? listener_verify(): null;
 				typeof(listener_lost) == "function" ? listener_lost(): null;
 				typeof(listener_conquered) == "function" ? listener_conquered(): null;
