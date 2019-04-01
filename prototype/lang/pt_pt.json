@@ -350,7 +350,12 @@
         "time_arrival":"Tempo de chegada do ataque",
         "time_return":"Tempo de retorno da manobra",
         "sec_ant":"Segundos anteriores",
-        "sec_post":"Segundo posteriores"
+        "sec_post":"Segundo posteriores",
+        "text_status":"Estados",
+        "text_defense":"Defesa",
+        "text_attack":"Ataque",
+        "text_village":"Aldeia",
+        "text_troops":"Tipo de tropas para defesa"
        
     },
     "log": {

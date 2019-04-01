@@ -350,7 +350,12 @@
         "time_arrival":"Attack arrival time",
         "time_return":"Return time of maneuver",
         "sec_ant":"Previous seconds",
-        "sec_post":"Seconds after"
+        "sec_post":"Seconds after",
+        "text_status":"Status",
+        "text_defense":"Defense",
+        "text_attack":"Attack",
+        "text_village":"Village",
+        "text_troops":"Troops type for defense"
 	},
 	"log": {
         "title": "Log"
