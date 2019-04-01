@@ -282,8 +282,10 @@ define("robotTW2/services/HeadquarterService", [
 						upgradeBuilding(vill_id).then(function(repeat){
 							if(repeat){
 								promise_queue.unshift(vill_id)
+								$timeout(function(){res()}, 2000)
+							} else {
+								res()
 							}
-							res()
 						})
 					}).then(function(){
 						promise = undefined;
