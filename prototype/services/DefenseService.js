@@ -396,7 +396,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 
-				var villages = modelDataService.getSelecetedCharacter().getVillages();
+				var villages = modelDataService.getSelectedCharacter().getVillages();
 
 				var vls = Object.keys(villages).map(function(villageId){
 					if(data_villages.villages[villageId].defense_activate){
