@@ -176,6 +176,7 @@
 									</div>
 								</div>
 							</div></td>
+						<td colspan="2"></td>
 						<td><a href="#" tooltip tooltip-content=""
 							class="btn-orange btn-form btn-border no-padding"
 							ng-click="selectAllUnits()"><span style="position: relative;"
@@ -183,13 +184,13 @@
 
 					</tr>
 
-                    <tr>
-                        <th colspan="2">{{text_troops}}</th>
-                        <th>{{text_status}}</th>
-                        <th></th>
-                        <th>{{text_defense}}</th>
-                        <th>{{text_attack}}</th>
-                    </tr>
+					<tr>
+						<th colspan="2">{{text_troops}}</th>
+						<th>{{text_status}}</th>
+						<th></th>
+						<th>{{text_defense}}</th>
+						<th>{{text_attack}}</th>
+					</tr>
 
 					<tr>
 						<td><div class="icon icon-34x34-village"></div></td>
@@ -211,10 +212,7 @@
 									</div>
 								</div>
 							</div></td>
-						<td><a href="#" tooltip tooltip-content=""
-							class="btn-orange btn-form btn-border no-padding"
-							ng-click="selectAllVillages()"><span
-								style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
+
 						<td><div id="switch" switch-slider="" border="true"
 								enabled="true"
 								value="data_villages.villages[data_select.selectedOption.id].sniper_defense"
@@ -245,6 +243,10 @@
 									</div>
 								</div>
 							</div></td>
+						<td><a href="#" tooltip tooltip-content=""
+							class="btn-orange btn-form btn-border no-padding"
+							ng-click="selectAllVillages()"><span
+								style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
 					</tr>
 				</table>
 			</div>
