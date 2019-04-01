@@ -167,7 +167,7 @@ define("robotTW2/services/HeadquarterService", [
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];
-				
+
 				var premiumActionService = injector.get("premiumActionService");
 
 				if(firstQueue && firstQueue.canBeFinishedForFree){
@@ -229,7 +229,7 @@ define("robotTW2/services/HeadquarterService", [
 					.filter(f => f != undefined)[0]
 					)
 				})
-				
+
 				g.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 
 				g.forEach(function(b) {
@@ -280,12 +280,10 @@ define("robotTW2/services/HeadquarterService", [
 				if(!promise){
 					promise = new Promise(function(res){
 						upgradeBuilding(vill_id).then(function(repeat){
-//							data_villages.set();
 							if(repeat){
-								f(vill_id)
-							} else {
-								res()
+								promise_queue.unshift(vill_id)
 							}
+							res()
 						})
 					}).then(function(){
 						promise = undefined;
