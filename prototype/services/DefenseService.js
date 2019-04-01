@@ -432,11 +432,11 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, sendCancel = function(params){
-			console.log("sendCancel " + new Date(time.convertedTime()))
 			var timer_delay = params.timer_delay,
 			id = params.id_command;
 			return $timeout(function () {
 				removeCommandDefense(id)
+				console.log("sendCancel " + id + " " + new Date(time.convertedTime()))
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
 				})
@@ -482,7 +482,6 @@ define("robotTW2/services/DefenseService", [
 			console.log(JSON.stringify(units))
 
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
-				console.log("trigger resendDefesnse " + JSON.stringify(params))
 				commandDefense[params.id_command] = {
 					"timeout" 	: fns.fn.apply(this, [fns.params]),
 					"params"	: params
@@ -560,7 +559,6 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, send = function(params){
-			console.log("send " + new Date(time.convertedTime()))
 			resend = false;
 			var r = {};
 //			r[params.id_command] = $timeout(function(){
