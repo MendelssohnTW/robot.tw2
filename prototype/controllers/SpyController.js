@@ -220,7 +220,7 @@ define("robotTW2/controllers/SpyController", [
 					"id" 			: "autocomplete_spy_player",
 					"autoComplete" 	: obj_autocomplete
 			}
-			
+
 			if (!$scope.$$phase) {$scope.$apply()}
 			autocomplete(object_scope, event, $scope.inputValuePlayer);
 		}
@@ -464,7 +464,7 @@ define("robotTW2/controllers/SpyController", [
 			$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
 			updateTargetPlayer()
 		}, true)
-		
+
 		$scope.$watch("data_province_village", function(){
 			if(!$scope.data_province_village){return}
 			updateTargetPlayer()
@@ -473,6 +473,10 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			var village = services.VillageService.getVillage($scope.data_select.selectedOption.id)
+			let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+			let order = undefined;
+			if(preceptory)
+				order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
 			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
 			let lts = [];
 			for (let i = 0; i < qtd_spy; i++){
@@ -482,6 +486,28 @@ define("robotTW2/controllers/SpyController", [
 			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
 			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
 
+			$scope.data_type = services.MainService.getSelects([
+				{
+					"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+					"value" : "units"
+				},
+				{
+					"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+					"value" : "buildings"
+
+				}]
+			)
+
+			if(order && order == "thieves"){
+				$scope.data_type.push( 
+						{
+							"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
+							"value" : "sabotage"
+						}
+				)
+			}
+
+			$scope.data_type_source = $scope.data_type;
 			updateValues();
 		}, true)
 
@@ -492,19 +518,6 @@ define("robotTW2/controllers/SpyController", [
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])
-		$scope.data_type = services.MainService.getSelects([
-			{
-				"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
-				"value" : "units"
-			},
-			{
-				"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
-				"value" : "buildings"
-
-			}]
-		)
-
-		$scope.data_type_source = $scope.data_type;
 
 //		initTab();
 		update();
