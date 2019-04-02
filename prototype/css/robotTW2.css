@@ -210,6 +210,16 @@
     margin: 0 2px;
 }
 
+.robotTW2 .spy.win-main {
+    height: 340px;
+}
+
+.robotTW2 .spy.box-paper {
+    min-height: 100px;
+    height: 315px;
+    margin: 0 2px;
+}
+
 .robotTW2 .box-border-dark {
 	width: fit-content;
 }
