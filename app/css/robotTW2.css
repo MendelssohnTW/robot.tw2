@@ -186,6 +186,40 @@
 	position: relative;
 }
 
+.robotTW2 .twx-section {
+    margin: 0 3px 0 3px;
+}
+
+.robotTW2 .defense.win-main {
+    height: 450px;
+}
+
+.robotTW2 .defense.box-paper {
+    min-height: 100px;
+    height: 205px;
+    margin: 0 2px;
+}
+
+.robotTW2 .headquarter.win-main {
+    height: 450px;
+}
+
+.robotTW2 .headquarter.box-paper {
+    min-height: 100px;
+    height: 180px;
+    margin: 0 2px;
+}
+
+.robotTW2 .spy.win-main {
+    height: 340px;
+}
+
+.robotTW2 .spy.box-paper {
+    min-height: 100px;
+    height: 315px;
+    margin: 0 2px;
+}
+
 .robotTW2 .box-border-dark {
 	width: fit-content;
 }
@@ -226,3 +260,5 @@
 	animation-duration: 1s;
 	animation-iteration-count: infinite;
 }
+
+

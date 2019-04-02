@@ -244,10 +244,7 @@ define("robotTW2/services/HeadquarterService", [
 										if (success) {
 											++buildAmounts;
 										} else if(data == "instant"){
-											console.log(data)
 											res(true);
-										} else {
-											console.log(data)
 										}
 										res()
 									})

@@ -102,6 +102,7 @@
         "standard": "Standard",
         "attack": "Attack",
         "defense": "Defense",
+        "hall": "Hall of order",
         "database": "Database",
         "ext_all": "All",
         "headquarter_running": "Current state of the barracks",
@@ -256,6 +257,7 @@
 		"spy": "Spy",
 		"units": "Units",
 		"buildings": "Buildings",
+        "sabotage": "Sabotage",
 		"text_source": "Source",
 		"text_select_all": "Select all provinces",
 		"text_select_all_village": "Select all villages",
@@ -350,7 +352,16 @@
         "time_arrival":"Attack arrival time",
         "time_return":"Return time of maneuver",
         "sec_ant":"Previous seconds",
-        "sec_post":"Seconds after"
+        "sec_post":"Seconds after",
+        "text_status":"Status",
+        "text_defense":"Defense",
+        "text_attack":"Attack",
+        "text_village":"Village",
+        "text_troops":"Troops type for defense",
+        "text_time_sniper_ant":"Time in milliseconds for troop withdrawal",
+        "text_time_sniper_post":"Time in milliseconds for troop return",
+        "text_time_sniper_post_snob":"Time in milliseconds for troop return in nobles",
+        "text_loyalt":"Loyalty for calculation"
 	},
 	"log": {
         "title": "Log"

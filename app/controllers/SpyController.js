@@ -44,23 +44,6 @@ define("robotTW2/controllers/SpyController", [
 		$scope.select_all_village = true;
 
 		var self = this
-//		, TABS = {
-//		SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
-//		COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy")
-//		}
-//		, TAB_ORDER = [
-//		TABS.SPY,
-//		TABS.COMP
-//		]
-//		, setActiveTab = function setActiveTab(tab) {
-//		$scope.activeTab		= tab;
-//		$scope.requestedTab		= null;
-//		}
-//		, initTab = function initTab() {
-//		if (!$scope.activeTab) {
-//		setActiveTab($scope.requestedTab);
-//		}
-//		}
 		, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
 				$scope.local_out_villages.push(
@@ -172,20 +155,12 @@ define("robotTW2/controllers/SpyController", [
 			});
 		}
 
-//		$scope.requestedTab = TABS.SPY;
-//		$scope.TABS = TABS;
-//		$scope.TAB_ORDER = TAB_ORDER;
-
 		$scope.isRunning = services.SpyService.isRunning();
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("spy", "label");
 		$scope.local_data_province = []
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
-
-//		$scope.userSetActiveTab = function(tab){
-//		setActiveTab(tab);
-//		}
 
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
@@ -220,7 +195,7 @@ define("robotTW2/controllers/SpyController", [
 					"id" 			: "autocomplete_spy_player",
 					"autoComplete" 	: obj_autocomplete
 			}
-			
+
 			if (!$scope.$$phase) {$scope.$apply()}
 			autocomplete(object_scope, event, $scope.inputValuePlayer);
 		}
@@ -320,6 +295,16 @@ define("robotTW2/controllers/SpyController", [
 				Object.keys($scope.villages_for_sent).map(function(elem){
 					let target = $scope.villages_for_sent[elem]
 					, list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
+						let village = services.VillageService.getVillage($scope.local_data_villages[vill].id)
+						let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+						let order = undefined;
+						let sabotage = false;
+						if(preceptory)
+							order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
+
+						if(order && order == "thieves") 
+							sabotage = true;
+
 						return {
 							"id": $scope.local_data_villages[vill].id, 
 							"dist" : math.actualDistance(
@@ -331,18 +316,21 @@ define("robotTW2/controllers/SpyController", [
 										'x' : target.village_x, 
 										'y' : target.village_y
 									}
-							)
+							),
+							"sabotage" : sabotage
 						}
 					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
 
 					list_dist_vills = list_dist_vills.map(function(elem){
 						let td = list_proc.find(f=>f.id==elem.id); 
-						if(!td){
-							return elem;
-						} else {
-							if(td.spies < elem.spies){
-								elem.spies = elem.spies - td.spies
-								return elem
+						if($scope.data_type_source.selectedOption.value == "sabotage" && dist_vill.sabotage || $scope.data_type_source.selectedOption.value != "sabotage"){
+							if(!td){
+								return elem;
+							} else {
+								if(td.spies < elem.spies){
+									elem.spies = elem.spies - td.spies
+									return elem
+								}
 							}
 						}
 					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
@@ -353,7 +341,6 @@ define("robotTW2/controllers/SpyController", [
 
 					function next(dist_vill, limit){
 						count++;
-
 						let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
 						$scope.send_scope.tempo_escolhido = vt + 200;
 						$scope.send_scope.startId = dist_vill.id
@@ -362,7 +349,7 @@ define("robotTW2/controllers/SpyController", [
 						$scope.send_scope.targetVillage = target.village_name
 						$scope.send_scope.targetX = target.village_x
 						$scope.send_scope.targetY = target.village_y
-						$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
+						$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption //qtd
 
 						services.SpyService.sendCommandAttackSpy($scope.send_scope);
 						let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
@@ -402,7 +389,7 @@ define("robotTW2/controllers/SpyController", [
 				$scope.send_scope.targetVillage = $scope.item.name
 				$scope.send_scope.targetX = $scope.item.x
 				$scope.send_scope.targetY = $scope.item.y
-				$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
+				$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
 
 				services.SpyService.sendCommandAttackSpy($scope.send_scope);
 			} else {
@@ -464,7 +451,7 @@ define("robotTW2/controllers/SpyController", [
 			$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
 			updateTargetPlayer()
 		}, true)
-		
+
 		$scope.$watch("data_province_village", function(){
 			if(!$scope.data_province_village){return}
 			updateTargetPlayer()
@@ -473,6 +460,10 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			var village = services.VillageService.getVillage($scope.data_select.selectedOption.id)
+			let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+			let order = undefined;
+			if(preceptory)
+				order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
 			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
 			let lts = [];
 			for (let i = 0; i < qtd_spy; i++){
@@ -482,6 +473,28 @@ define("robotTW2/controllers/SpyController", [
 			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
 			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
 
+			$scope.data_type = services.MainService.getSelects([
+				{
+					"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+					"value" : "units"
+				},
+				{
+					"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+					"value" : "buildings"
+
+				}]
+			)
+
+			if(order && order == "thieves"){
+				$scope.data_type.push( 
+						{
+							"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
+							"value" : "sabotage"
+						}
+				)
+			}
+
+			$scope.data_type_source = $scope.data_type;
 			updateValues();
 		}, true)
 
@@ -492,21 +505,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])
-		$scope.data_type = services.MainService.getSelects([
-			{
-				"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
-				"value" : "units"
-			},
-			{
-				"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
-				"value" : "buildings"
 
-			}]
-		)
-
-		$scope.data_type_source = $scope.data_type;
-
-//		initTab();
 		update();
 		$scope.setCollapse();
 

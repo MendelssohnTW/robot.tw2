@@ -573,9 +573,9 @@ var robotTW2 = window.robotTW2 = undefined;
 			});
 
 			self.$window = rootnode;
-			$(".win-main").removeClass("jssb-focus")
-			$(".win-main").removeClass("jssb-applied")
-			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".win-main")) : null;
+			$(".robotTW2 .win-main").removeClass("jssb-focus")
+			$(".robotTW2 .win-main").removeClass("jssb-applied")
+			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".robotTW2 .win-main")) : null;
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
 				if(!self.$scrollbar.recalc) return;
@@ -587,7 +587,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				self.$scrollbar.disable()
 			};
 			self.setCollapse = function() {
-				self.$window.querySelectorAll(".twx-section.collapse").forEach(function(b) {
+				self.$window.querySelectorAll(".robotTW2 .twx-section.collapse").forEach(function(b) {
 					var c = !b.classList.contains("hidden-content")
 					, d = document.createElement("span");
 					d.className = "min-max-btn";
@@ -2157,11 +2157,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.FARM,
 								templateName 		: "farm",
-								classes 			: "",
+								classes 			: "fullsize",
 								url		 			: "/controllers/FarmController.js",
-								style 				: {
-									width:"1080px"
-								}
+								style 				: null
 						}		
 						robotTW2.build(params)
 					})

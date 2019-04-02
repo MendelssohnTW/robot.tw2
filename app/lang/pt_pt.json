@@ -102,6 +102,7 @@
         "standard": "Padrão",
         "attack": "Ataque",
         "defense": "Defesa",
+        "hall": "Salão das ordens",
         "database": "Banco de dados",
         "ext_all": "Todos",
         "headquarter_running": "Estado atual do quartel",
@@ -256,6 +257,7 @@
         "spy": "Espiões",
         "units": "Unidades",
         "buildings": "Edifícios",
+        "sabotage": "Sabotagem",
         "text_source": "Origem",
         "text_select_all": "Selecionar todas as províncias",
         "text_select_all_village": "Selecionar todas as aldeias",
@@ -350,7 +352,16 @@
         "time_arrival":"Tempo de chegada do ataque",
         "time_return":"Tempo de retorno da manobra",
         "sec_ant":"Segundos anteriores",
-        "sec_post":"Segundo posteriores"
+        "sec_post":"Segundo posteriores",
+        "text_status":"Estados",
+        "text_defense":"Defesa",
+        "text_attack":"Ataque",
+        "text_village":"Aldeia",
+        "text_troops":"Tipo de tropas para defesa",
+        "text_time_sniper_ant":"Tempo em milisegundos para retirada de tropas",
+        "text_time_sniper_post":"Tempo em milisegundos para retorno de tropas",
+        "text_time_sniper_post_snob":"Tempo em milisegundos para retirada de tropas em nobres",
+        "text_loyalt":"Lealdade para cálculo"
        
     },
     "log": {
