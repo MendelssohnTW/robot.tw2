@@ -190,6 +190,22 @@
     height: 450px;
 }
 
+.robotTW2 .defense.box-paper {
+    min-height: 100px;
+    height: 205px;
+    margin: 0 2px;
+}
+
+.robotTW2 .headquarter.win-main {
+    height: 450px;
+}
+
+.robotTW2 .headquarter.box-paper {
+    min-height: 100px;
+    height: 180px;
+    margin: 0 2px;
+}
+
 .robotTW2 .box-border-dark {
 	width: fit-content;
 }
@@ -231,11 +247,7 @@
 	animation-iteration-count: infinite;
 }
 
-.robotTW2 .defense.box-paper {
-	min-height: 100px;
-	height: 205px;
-	margin: 0 2px;
-}
+
 
 .robotTW2 .twx-section {
     margin: 0 3px 0 3px;
