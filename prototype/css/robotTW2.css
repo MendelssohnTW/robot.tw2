@@ -191,7 +191,7 @@
 }
 
 .robotTW2 .headquarter .twx-section {
-    margin: 0px;
+    margin: 0 3px 0 3px;
 }
 
 .robotTW2 .defense.win-main {
@@ -212,7 +212,6 @@
     min-height: 100px;
     height: 180px;
     margin: 0 2px;
-    padding: 0px;
 }
 
 .robotTW2 .box-border-dark {
