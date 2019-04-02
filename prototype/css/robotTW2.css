@@ -186,11 +186,7 @@
 	position: relative;
 }
 
-.robotTW2 .defense .twx-section {
-    margin: 0 3px 0 3px;
-}
-
-.robotTW2 .headquarter .twx-section {
+.robotTW2 .twx-section {
     margin: 0 3px 0 3px;
 }
 

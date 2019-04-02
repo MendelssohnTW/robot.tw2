@@ -2157,11 +2157,9 @@ var robotTW2 = window.robotTW2 = undefined;
 								scopeLang 			: scopeLang,
 								hotkey 				: conf.HOTKEY.FARM,
 								templateName 		: "farm",
-								classes 			: "",
+								classes 			: "fullsize",
 								url		 			: "/controllers/FarmController.js",
-								style 				: {
-									width:"1080px"
-								}
+								style 				: null
 						}		
 						robotTW2.build(params)
 					})
