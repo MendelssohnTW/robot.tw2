@@ -187,7 +187,7 @@
 }
 
 .robotTW2 .defense.win-main {
-    height: 370px;
+    height: 450px;
 }
 
 .robotTW2 .box-border-dark {
@@ -233,7 +233,7 @@
 
 .robotTW2 .defense.box-paper {
 	min-height: 100px;
-	height: 285px;
+	height: 205px;
 	margin: 0 2px;
 }
 
