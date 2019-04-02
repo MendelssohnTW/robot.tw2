@@ -320,6 +320,16 @@ define("robotTW2/controllers/SpyController", [
 				Object.keys($scope.villages_for_sent).map(function(elem){
 					let target = $scope.villages_for_sent[elem]
 					, list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
+						let village = services.VillageService.getVillage($scope.local_data_villages[vill].id)
+						let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+						let order = undefined;
+						let sabotage = false;
+						if(preceptory)
+							order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
+
+						if(order && order == "thieves") 
+							sabotage = true;
+
 						return {
 							"id": $scope.local_data_villages[vill].id, 
 							"dist" : math.actualDistance(
@@ -331,7 +341,8 @@ define("robotTW2/controllers/SpyController", [
 										'x' : target.village_x, 
 										'y' : target.village_y
 									}
-							)
+							),
+							"sabotage" : sabotage
 						}
 					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
 
@@ -352,31 +363,32 @@ define("robotTW2/controllers/SpyController", [
 					, count = 0;
 
 					function next(dist_vill, limit){
-						count++;
+						if($scope.data_type_source.selectedOption.value == "sabotage" && dist_vill.sabotage || $scope.data_type_source.selectedOption.value != "sabotage"){
+							count++;
+							let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
+							$scope.send_scope.tempo_escolhido = vt + 200;
+							$scope.send_scope.startId = dist_vill.id
+							$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
+							$scope.send_scope.targetId = target.village_id
+							$scope.send_scope.targetVillage = target.village_name
+							$scope.send_scope.targetX = target.village_x
+							$scope.send_scope.targetY = target.village_y
+							$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
 
-						let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
-						$scope.send_scope.tempo_escolhido = vt + 200;
-						$scope.send_scope.startId = dist_vill.id
-						$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
-						$scope.send_scope.targetId = target.village_id
-						$scope.send_scope.targetVillage = target.village_name
-						$scope.send_scope.targetX = target.village_x
-						$scope.send_scope.targetY = target.village_y
-						$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
-
-						services.SpyService.sendCommandAttackSpy($scope.send_scope);
-						let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
-						if(vill_local){
-							vill_local.spies--
-						}
-						if(vill_local.spies > 0){
-							list_dist_vills.unshift(dist_vill)
-						} else {
-							list_proc.push({
-								"id": dist_vill.id, 
-								"spies": count
-							})
-							count = 0;
+							services.SpyService.sendCommandAttackSpy($scope.send_scope);
+							let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
+							if(vill_local){
+								vill_local.spies--
+							}
+							if(vill_local.spies > 0){
+								list_dist_vills.unshift(dist_vill)
+							} else {
+								list_proc.push({
+									"id": dist_vill.id, 
+									"spies": count
+								})
+								count = 0;
+							}
 						}
 					}
 
