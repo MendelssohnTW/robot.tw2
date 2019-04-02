@@ -136,7 +136,7 @@ define("robotTW2/controllers/DefenseController", [
 		}
 
 		$scope.selectAllVillages = function(){
-			let value = $scope.data_villages.villages[data_select.selectedOption.id].defense_activate
+			let value = $scope.data_villages.villages[$scope.data_select.selectedOption.id].defense_activate
 			Object.keys($scope.data_villages.villages).map(function(key){
 				$scope.data_villages.villages[key].defense_activate = value;
 			})
