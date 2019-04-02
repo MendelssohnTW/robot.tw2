@@ -25,7 +25,7 @@ define("robotTW2/databases/data_villages", [
 		return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
 	}
 	, getPst = function (v) {
-		var presets_d = services.presetListService.getPresetsForVillageId(v)
+		var presets_d = angular.copy(services.presetListService.getPresetsForVillageId(v))
 		if(!Object.keys(presets_d).length) {return {}}
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 		Object.keys(presets_d).forEach(function (pst) {
