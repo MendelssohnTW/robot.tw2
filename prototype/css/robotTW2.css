@@ -186,6 +186,10 @@
 	position: relative;
 }
 
+.robotTW2 .defense.win-main {
+    height: 370px;
+}
+
 .robotTW2 .box-border-dark {
 	width: fit-content;
 }
