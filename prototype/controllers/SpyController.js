@@ -44,23 +44,6 @@ define("robotTW2/controllers/SpyController", [
 		$scope.select_all_village = true;
 
 		var self = this
-//		, TABS = {
-//		SPY 	: services.$filter("i18n")("spy", services.$rootScope.loc.ale, "spy"),
-//		COMP	: services.$filter("i18n")("comp", services.$rootScope.loc.ale, "spy")
-//		}
-//		, TAB_ORDER = [
-//		TABS.SPY,
-//		TABS.COMP
-//		]
-//		, setActiveTab = function setActiveTab(tab) {
-//		$scope.activeTab		= tab;
-//		$scope.requestedTab		= null;
-//		}
-//		, initTab = function initTab() {
-//		if (!$scope.activeTab) {
-//		setActiveTab($scope.requestedTab);
-//		}
-//		}
 		, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
 				$scope.local_out_villages.push(
@@ -172,20 +155,12 @@ define("robotTW2/controllers/SpyController", [
 			});
 		}
 
-//		$scope.requestedTab = TABS.SPY;
-//		$scope.TABS = TABS;
-//		$scope.TAB_ORDER = TAB_ORDER;
-
 		$scope.isRunning = services.SpyService.isRunning();
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("spy", "label");
 		$scope.local_data_province = []
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
-
-//		$scope.userSetActiveTab = function(tab){
-//		setActiveTab(tab);
-//		}
 
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
@@ -374,7 +349,7 @@ define("robotTW2/controllers/SpyController", [
 						$scope.send_scope.targetVillage = target.village_name
 						$scope.send_scope.targetX = target.village_x
 						$scope.send_scope.targetY = target.village_y
-						$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption//qtd
+						$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption //qtd
 
 						services.SpyService.sendCommandAttackSpy($scope.send_scope);
 						let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
@@ -414,7 +389,7 @@ define("robotTW2/controllers/SpyController", [
 				$scope.send_scope.targetVillage = $scope.item.name
 				$scope.send_scope.targetX = $scope.item.x
 				$scope.send_scope.targetY = $scope.item.y
-				$scope.send_scope.qtd = $scope.data_qtd.selectedOption//qtd
+				$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
 
 				services.SpyService.sendCommandAttackSpy($scope.send_scope);
 			} else {
@@ -531,7 +506,6 @@ define("robotTW2/controllers/SpyController", [
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])
 
-//		initTab();
 		update();
 		$scope.setCollapse();
 
