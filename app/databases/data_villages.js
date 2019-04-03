@@ -142,10 +142,9 @@ define("robotTW2/databases/data_villages", [
 			callback(update)
 			return;
 		} else {
-			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){return db_villages.verifyVillages(villagesExtended, callback)});
-//			return services.$timeout(function(){
-//			return db_villages.verifyVillages(villagesExtended, callback)
-//			}, 5000)
+			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+				return db_villages.verifyVillages(villagesExtended, callback)
+			});
 		}
 	}
 
@@ -174,7 +173,7 @@ define("robotTW2/databases/data_villages", [
 			}
 			db_villages.set();
 		}, function(){
-			
+
 			if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
 				data_villages = {};
 				data_villages.version = conf.VERSION.VILLAGES
@@ -192,8 +191,17 @@ define("robotTW2/databases/data_villages", [
 		db_villages.set();
 	}
 
-//	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
-//	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, function(){
+		services.$timeout(function(){
+			db_villages.updateVillages()
+		}, 10000)
+		
+	});
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, function(){
+		services.$timeout(function(){
+			db_villages.updateVillages()	
+		}, 10000)
+	});
 
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, db_villages.updateVillages);

@@ -360,6 +360,9 @@ define("robotTW2/services/RecruitService", [
 			data_log.recruit.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 			var vls = modelDataService.getSelectedCharacter().getVillageList();
 			vls = Object.keys(vls).map(function(elem){
+				if(!data_villages.villages[vls[elem].data.villageId]){
+					return undefined
+				}
 				let tam = vls[elem].getRecruitingQueue("barracks").length || 0;
 				let gt = getFinishedForFree(vls[elem]);
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
