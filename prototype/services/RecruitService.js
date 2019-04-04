@@ -90,6 +90,7 @@ define("robotTW2/services/RecruitService", [
 							, villageUnits = {}
 							, ltz = []
 							, grs_units = {}
+							, gf_units = {}
 							
 							for (let unit in units) {
 								villageUnits[unit] = units[unit].total + units[unit].recruiting;
@@ -121,14 +122,7 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
-
-							let gf_units = {}
-							, gf_units_list = sort_max(gf_units)
-							, unit_gf = gf_units_list[0]
-							, unit_type = Object.keys(unit_gf)[0]
-							, amount = unit_gf[unit_type]
 							
-
 							Object.keys(grs_units).map(function(gr){
 								return gf_units[gr] = Math.trunc(
 										Math.min.apply(null, [
@@ -141,7 +135,11 @@ define("robotTW2/services/RecruitService", [
 								)
 							})
 							
-							let remaining = grs_units[unit_type] - (amount + villageUnits[unit_type])
+							, gf_units_list = sort_max(gf_units)
+							, unit_gf = gf_units_list[0]
+							, unit_type = Object.keys(unit_gf)[0]
+							, amount = unit_gf[unit_type]
+							, remaining = grs_units[unit_type] - (amount + villageUnits[unit_type])
 							
 							if (remaining <= 0) {
 								console.log(unit_type + " cheio")
