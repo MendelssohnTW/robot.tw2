@@ -126,8 +126,6 @@ define("robotTW2/services/RecruitService", [
 							let gf_units = {}
 
 							Object.keys(grs_units).map(function(gr){
-								let unit = gr
-								let value = grs_units[gr]
 								return gf_units[gr] = Math.trunc(
 										Math.min.apply(null, [
 											(resources.wood - data_recruit.reserva.wood) / prices[unit][0], 
