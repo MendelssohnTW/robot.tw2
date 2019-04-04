@@ -576,7 +576,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			$(".robotTW2 .win-main").removeClass("jssb-focus")
 			$(".robotTW2 .win-main").removeClass("jssb-applied")
 			$(".robotTW2 .win-main").forEach(function(tr){
-				if(!tr.classList.contains("jssb-scrolly")){
+				if(!tr.classList.contains("jssb-applied")){
 					!self.$scrollbar ? self.$scrollbar = new jsScrollbar(tr) : null;
 				}
 			})
