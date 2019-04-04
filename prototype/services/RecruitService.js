@@ -90,7 +90,6 @@ define("robotTW2/services/RecruitService", [
 							, unit
 							, villageUnits = {}
 							, amount
-							, villageUnits = villageUnits
 							, ltz = []
 							, grs_units = {}
 							
