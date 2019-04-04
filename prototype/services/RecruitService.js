@@ -140,9 +140,9 @@ define("robotTW2/services/RecruitService", [
 							})
 
 							let gf_units_list = sort_max(gf_units)
-							var unit = gf_units_list[0]
-							unit_type = Object.keys(unit)[0];
-							amount = unit[unit_type]
+							, unit_gf = gf_units_list[0]
+							unit_type = Object.keys(unit_gf)[0];
+							amount = unit_gf[unit_type]
 							remaining = grs_units[unit_type] - (amount + villageUnits[unit_type]);
 							if (remaining <= 0) {
 								console.log(unit_type + " cheio")
