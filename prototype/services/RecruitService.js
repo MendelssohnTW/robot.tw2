@@ -138,55 +138,52 @@ define("robotTW2/services/RecruitService", [
 					})
 
 					let gf_units_list = sort_max(gf_units)
-
-					for (let i = 0; i < gf_units_list.length; i++){
-						var unit = gf_units_list[i]
-						unit_type = Object.keys(unit)[0];
-						amount = unit[unit_type]
-						remaining = grs_units[unit_type] - (amount + villageUnits[unit_type]);
-						if (remaining <= 0) {
-							console.log(unit_type + " cheio")
+					var unit = gf_units_list[0]
+					unit_type = Object.keys(unit)[0];
+					amount = unit[unit_type]
+					remaining = grs_units[unit_type] - (amount + villageUnits[unit_type]);
+					if (remaining <= 0) {
+						console.log(unit_type + " cheio")
+						continue
+					};
+					if (amount > remaining) {
+						amount = remaining;
+					} else {
+						if (amount < 1) {
+							console.log(unit_type + " sem unidades previstas")
 							continue
 						};
-						if (amount > remaining) {
-							amount = remaining;
-						} else {
-							if (amount < 1) {
-								console.log(unit_type + " sem unidades previstas")
-								continue
-							};
-						};
+					};
 
-						let data_rec = {
-								"village_id": village_id,
-								"unit_type": unit_type,
-								"amount": amount
-						}
-
-						var recruit_promise = function(data_rec){
-							if(!promise_recruitRequest){
-								promise_recruitRequest = new Promise(function(res, rej){
-									data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
-									socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
-										res()
-									});
-								}). then(function(data){
-									promise_recruitRequest = undefined
-									if(queue_recruitRequest.length){
-										data_rec = queue_recruitRequest.shift()
-										recruit_promise(data_rec)
-									} else {
-										console.log("terminou recruit")
-										data_log.recruit.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
-									}
-								})
-							} else {
-								queue_recruitRequest.push(data_rec);
-							}
-						}
-
-						recruit_promise(data_rec)
+					let data_rec = {
+							"village_id": village_id,
+							"unit_type": unit_type,
+							"amount": amount
 					}
+
+					var recruit_promise = function(data_rec){
+						if(!promise_recruitRequest){
+							promise_recruitRequest = new Promise(function(res, rej){
+								data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
+								socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
+									res()
+								});
+							}). then(function(data){
+								promise_recruitRequest = undefined
+								if(queue_recruitRequest.length){
+									data_rec = queue_recruitRequest.shift()
+									recruit_promise(data_rec)
+								} else {
+									console.log("terminou recruit")
+									data_log.recruit.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
+								}
+							})
+						} else {
+							queue_recruitRequest.push(data_rec);
+						}
+					}
+
+					recruit_promise(data_rec)
 				}
 				, sec_promise = function (village_id){
 					if(!promise_UnitsAndResources){
