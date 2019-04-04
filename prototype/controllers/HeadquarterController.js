@@ -253,8 +253,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.$watch("data_headquarter", function(){
 			if(!$scope.data_headquarter){return}
-			data_headquarter = $scope.data_headquarter;
-			data_headquarter.set();
+			$scope.data_headquarter.set();
 		}, true)
 
 		$scope.$watch("data_select_villages", function(){
@@ -270,6 +269,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();
+			$scope.data_headquarter.set();
 		});
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
