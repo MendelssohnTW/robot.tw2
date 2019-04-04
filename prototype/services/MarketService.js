@@ -86,9 +86,6 @@ define("robotTW2/services/MarketService", [
 			init						: init,
 			start						: start,
 			stop 						: stop,
-			sendCommandAttackMarket 	: sendCommandAttackMarket,
-			removeCommandAttackMarket	: removeCommandAttackMarket,
-			removeAll					: removeAll,
 			isRunning					: function() {
 				return isRunning
 			},
