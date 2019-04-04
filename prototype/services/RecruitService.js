@@ -104,6 +104,7 @@ define("robotTW2/services/RecruitService", [
 							});
 
 					if (ltz.some(f => f == true)) {
+						console.log("limite de recursos")
 						return;
 					};
 
@@ -144,12 +145,14 @@ define("robotTW2/services/RecruitService", [
 						amount = unit[unit_type]
 						remaing = grs_units[unit_type] - (amount + villageUnits[unit_type]);
 						if (remaing <= 0) {
+							console.log(unit_type + " cheio")
 							continue
 						};
 						if (amount > remaing) {
 							amount = remaing;
 						} else {
 							if (amount < 1) {
+								console.log(unit_type + " sem unidades previstas")
 								continue
 							};
 						};
@@ -163,18 +166,17 @@ define("robotTW2/services/RecruitService", [
 						var recruit_promise = function(data_rec){
 							if(!promise_recruitRequest){
 								promise_recruitRequest = new Promise(function(res, rej){
-									if (village_id && unit_type){
-										data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
-										socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
-											res()
-										});
-									};
+									data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
+									socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
+										res()
+									});
 								}). then(function(data){
 									promise_recruitRequest = undefined
 									if(queue_recruitRequest.length){
 										data_rec = queue_recruitRequest.shift()
 										recruit_promise(data_rec)
 									} else {
+										console.log("terminou recruit")
 										data_log.recruit.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 									}
 								})
@@ -281,6 +283,8 @@ define("robotTW2/services/RecruitService", [
 				}
 				if(!!data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots){
 					return vls[elem].data.villageId
+				} else {
+					console.log("sem slots ou desativado")
 				}
 			}).filter(f=>f!=undefined)
 
