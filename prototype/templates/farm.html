@@ -326,17 +326,34 @@
 												ng-blur="blur()" ng-disabled="infinite"></td>
 										</tr>
 										<tr>
-											<td class="cell-left" colspan="2">
+											<td class="cell-left">
 												<div>
-													<span id="cicle_status"
-														ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span><label
-														for="cicle_status"
-														style="margin-left: 12px; margin-right: 12px;">{{farm_running}}</label>
+													<span for="cicle_status"
+														style="margin-left: 12px; margin-right: 12px;">{{farm_running}}<span
+														id="cicle_status"
+														ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></span></span>
 												</div>
 											</td>
 											<td class="cell-center"><label for="interval_farm">{{getStatus()}}</label><input
 												id="interval_farm" class="input-border inpt disabled"
 												type=text value="{{getTimeRest()}}" disabled></td>
+											<td class="cell-center">
+												<div class="checkbox box-border-dark">
+													<div switch-slider="" border="true" enabled="true"
+														value="data_farm.attacked" vertical="false" size="'56x28'">
+														<div ng-class="{'box-border-dark box-filter': border}"
+															class="box-border-dark box-filter">
+															<div class="switch switch-56x28 switch-horizontal"
+																ng-class="{'switch-checked': value}">
+																<span class="size-26x26 switch-thumb"> <span
+																	class="simple icon-26x26-switch-off"
+																	ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
+																</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</td>
 										</tr>
 									</tbody>
 								</table>
