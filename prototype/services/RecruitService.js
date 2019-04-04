@@ -169,7 +169,6 @@ define("robotTW2/services/RecruitService", [
 										});
 									};
 								}). then(function(data){
-									groupLoop()
 									promise_recruitRequest = undefined
 									if(queue_recruitRequest.length){
 										data_rec = queue_recruitRequest.shift()
