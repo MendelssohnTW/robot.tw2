@@ -915,10 +915,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			});
 			robotTW2.register("providers", "eventTypeProvider", {
 				"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
-				"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
-				"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
 				"INTERVAL_CHANGE_RECRUIT"		: "Internal/robotTW2/interval_change_recruit",
-				"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
+				"INTERVAL_CHANGE_ALERT"			: "Internal/robotTW2/interval_change_alert",
+				"INTERVAL_CHANGE_SPY"			: "Internal/robotTW2/interval_change_spy",
+				"INTERVAL_CHANGE_MARKET"		: "Internal/robotTW2/interval_change_market",
 				"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
 				"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
 				"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
@@ -2040,6 +2040,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/AlertController.js");
 					robotTW2.loadScript("/controllers/SpyController.js");
 					robotTW2.loadScript("/controllers/FakeController.js");
+					robotTW2.loadScript("/controllers/MarketController.js");
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
@@ -2125,6 +2126,23 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 		: "spy",
 								classes 			: "fullsize",
 								url		 			: "/controllers/SpyController.js",
+								style 				: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
+				case robotTW2.controllers.MarketController : {
+					robotTW2.createScopeLang("market", function(scopeLang){
+						var params = {
+								controller			: robotTW2.controllers.MarketController,
+								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_MARKET,
+								build_open			: true,
+								scopeLang 			: scopeLang,
+								hotkey 				: conf.HOTKEY.MARKET,
+								templateName 		: "market",
+								classes 			: "fullsize",
+								url		 			: "/controllers/MarketController.js",
 								style 				: null
 						}		
 						robotTW2.build(params)
@@ -2409,6 +2427,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.FakeService && typeof(robotTW2.services.FakeService.init) == "function" ? robotTW2.requestFn.bind("fake", robotTW2.services.FakeService) : null;	
 					break
 				}
+				case robotTW2.services.MarketService : {
+					robotTW2.services.MarketService && typeof(robotTW2.services.MarketService.init) == "function" ? robotTW2.requestFn.bind("market", robotTW2.services.MarketService) : null;	
+					break
+				}
 				case robotTW2.services.SecondVillageService : {
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
@@ -2434,6 +2456,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_deposit.js");
 								robotTW2.loadScript("/databases/data_spy.js");
 								robotTW2.loadScript("/databases/data_fake.js");
+								robotTW2.loadScript("/databases/data_market.js");
 								robotTW2.loadScript("/databases/data_alert.js");
 								robotTW2.loadScript("/databases/data_attack.js");
 								robotTW2.loadScript("/databases/data_recon.js");
@@ -2499,6 +2522,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_fake" : {
 					robotTW2.loadScript("/services/FakeService.js");
+					break
+				}
+				case "data_market" : {
+					robotTW2.loadScript("/services/MarketService.js");
 					break
 				}
 				case "data_secondvillage" : {
