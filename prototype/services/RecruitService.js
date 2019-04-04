@@ -106,7 +106,6 @@ define("robotTW2/services/RecruitService", [
 									});
 
 							if (ltz.some(f => f == true)) {
-								console.log("limite de recursos")
 								res()
 								return
 							};
@@ -126,10 +125,10 @@ define("robotTW2/services/RecruitService", [
 							Object.keys(grs_units).map(function(gr){
 								return gf_units[gr] = Math.trunc(
 										Math.min.apply(null, [
-											(resources.wood - data_recruit.reserva.wood) / prices[grs_units[gr]][0], 
-											(resources.clay - data_recruit.reserva.clay) / prices[grs_units[gr]][1], 
-											(resources.iron - data_recruit.reserva.iron) / prices[grs_units[gr]][2],
-											(resources.food - data_recruit.reserva.food) / prices[grs_units[gr]][3]
+											(resources.wood - data_recruit.reserva.wood) / prices[gr][0], 
+											(resources.clay - data_recruit.reserva.clay) / prices[gr][1], 
+											(resources.iron - data_recruit.reserva.iron) / prices[gr][2],
+											(resources.food - data_recruit.reserva.food) / prices[gr][3]
 											]
 										)
 								)
