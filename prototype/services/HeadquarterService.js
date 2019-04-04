@@ -81,8 +81,7 @@ define("robotTW2/services/HeadquarterService", [
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 				callback(!1, "instant")
 			} else {
-				let village = modelDataService.getSelectedCharacter().getVillage(village.data.villageId)
-				, resources = village.getResources().data.resources
+				let resources = village.getResources().data.resources
 
 					if(!resources){
 						not_enough_resources = true
