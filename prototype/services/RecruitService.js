@@ -108,7 +108,8 @@ define("robotTW2/services/RecruitService", [
 
 							if (ltz.some(f => f == true)) {
 								console.log("limite de recursos")
-								return;
+								res()
+								return
 							};
 
 							listGroups.map(function(gr){
@@ -144,14 +145,16 @@ define("robotTW2/services/RecruitService", [
 							remaining = grs_units[unit_type] - (amount + villageUnits[unit_type]);
 							if (remaining <= 0) {
 								console.log(unit_type + " cheio")
-								continue
+								res()
+								return
 							};
 							if (amount > remaining) {
 								amount = remaining;
 							} else {
 								if (amount < 1) {
 									console.log(unit_type + " sem unidades previstas")
-									continue
+									res()
+									return
 								};
 							};
 
@@ -164,8 +167,7 @@ define("robotTW2/services/RecruitService", [
 							data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
 							socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
 							res()
-						})
-						.then(function(){
+						}).then(function(){
 							promise_UnitsAndResources = undefined
 							if(queue_UnitsAndResources.length){
 								village_id = queue_UnitsAndResources.shift()
@@ -240,8 +242,6 @@ define("robotTW2/services/RecruitService", [
 				}
 				if(!!data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots){
 					return vls[elem].data.villageId
-				} else {
-					console.log("sem slots ou desativado")
 				}
 			}).filter(f=>f!=undefined)
 
