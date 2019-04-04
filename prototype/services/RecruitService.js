@@ -103,7 +103,7 @@ define("robotTW2/services/RecruitService", [
 								}
 							});
 
-					if (!ltz.every(f => f == true)) {
+					if (ltz.some(f => f == true)) {
 						return;
 					};
 
