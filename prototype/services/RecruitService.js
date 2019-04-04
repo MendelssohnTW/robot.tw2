@@ -135,7 +135,7 @@ define("robotTW2/services/RecruitService", [
 								)
 							})
 							
-							, gf_units_list = sort_max(gf_units)
+							let gf_units_list = sort_max(gf_units)
 							, unit_gf = gf_units_list[0]
 							, unit_type = Object.keys(unit_gf)[0]
 							, amount = unit_gf[unit_type]
