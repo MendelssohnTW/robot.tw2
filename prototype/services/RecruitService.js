@@ -143,13 +143,13 @@ define("robotTW2/services/RecruitService", [
 						var unit = gf_units_list[i]
 						unit_type = Object.keys(unit)[0];
 						amount = unit[unit_type]
-						remaing = grs_units[unit_type] - (amount + villageUnits[unit_type]);
-						if (remaing <= 0) {
+						remaining = grs_units[unit_type] - (amount + villageUnits[unit_type]);
+						if (remaining <= 0) {
 							console.log(unit_type + " cheio")
 							continue
 						};
-						if (amount > remaing) {
-							amount = remaing;
+						if (amount > remaining) {
+							amount = remaining;
 						} else {
 							if (amount < 1) {
 								console.log(unit_type + " sem unidades previstas")
@@ -191,7 +191,7 @@ define("robotTW2/services/RecruitService", [
 				, sec_promise = function (village_id){
 					if(!promise_UnitsAndResources){
 						promise_UnitsAndResources = new Promise(function(res, rej){
-							let village = modelDataService.getSelectedCharacter().getSelectedVillage(village_id)
+							let village = modelDataService.getSelectedCharacter().getVillage(village_id)
 							, units = village.getUnitInfo().units
 							, resources = village.getResources().data.resources
 							, unit
