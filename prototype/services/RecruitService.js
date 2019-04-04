@@ -87,13 +87,12 @@ define("robotTW2/services/RecruitService", [
 							, units = village.getUnitInfo().units
 							, resources = village.getResources().data.resources
 							, listGroups = modelDataService.getGroupList().getVillageGroups(village_id)
-							, unit
 							, villageUnits = {}
 							, amount
 							, ltz = []
 							, grs_units = {}
 							
-							for (unit in units) {
+							for (let unit in units) {
 								villageUnits[unit] = units[unit].total + units[unit].recruiting;
 							}
 
@@ -129,10 +128,10 @@ define("robotTW2/services/RecruitService", [
 							Object.keys(grs_units).map(function(gr){
 								return gf_units[gr] = Math.trunc(
 										Math.min.apply(null, [
-											(resources.wood - data_recruit.reserva.wood) / prices[unit][0], 
-											(resources.clay - data_recruit.reserva.clay) / prices[unit][1], 
-											(resources.iron - data_recruit.reserva.iron) / prices[unit][2],
-											(resources.food - data_recruit.reserva.food) / prices[unit][3]
+											(resources.wood - data_recruit.reserva.wood) / prices[grs_units[gr]][0], 
+											(resources.clay - data_recruit.reserva.clay) / prices[grs_units[gr]][1], 
+											(resources.iron - data_recruit.reserva.iron) / prices[grs_units[gr]][2],
+											(resources.food - data_recruit.reserva.food) / prices[grs_units[gr]][3]
 											]
 										)
 								)
