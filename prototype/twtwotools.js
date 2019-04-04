@@ -575,21 +575,28 @@ var robotTW2 = window.robotTW2 = undefined;
 			self.$window = rootnode;
 			$(".robotTW2 .win-main").removeClass("jssb-focus")
 			$(".robotTW2 .win-main").removeClass("jssb-applied")
+			var count = 0;
 			$(".robotTW2 .win-main").forEach(function(tr){
 				if(!tr.classList.contains("jssb-applied")){
-					!self.$scrollbar ? self.$scrollbar = new jsScrollbar(tr) : null;
+					count++
+					!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
+					!self.$scrollbar[count] ? self.$scrollbar[count] = new jsScrollbar(tr) : self.$scrollbar[count];
 				}
 			})
 //			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".robotTW2 .win-main")) : null;
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
-				if(!self.$scrollbar.recalc) return;
-				self.$scrollbar.recalc()
+				for(let i = 0; i < self.$scrollbar.length; i++){
+					if(!self.$scrollbar[i].recalc) continue;
+					self.$scrollbar[i].recalc()
+				}
 			};
 			self.disableScrollbar = function() {
 				if(!self.$scrollbar) return;
-				if(!self.$scrollbar.disable) return;
-				self.$scrollbar.disable()
+				for(let i = 0; i < self.$scrollbar.length; i++){
+					if(!self.$scrollbar[i].disable) continue;
+					self.$scrollbar[i].disable()
+				}
 			};
 			self.setCollapse = function() {
 				self.$window.querySelectorAll(".robotTW2 .twx-section.collapse").forEach(function(b) {
