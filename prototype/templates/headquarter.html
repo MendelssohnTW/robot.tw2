@@ -89,81 +89,86 @@
 			</div>
 		</div>
 		<h5 class="twx-section collapse hidden-content">{{settings_standard}}</h5>
-		<div>
-			<table id="preset-list"
-				class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-				<colgroup>
-					<col width="200px">
-					<col width="50%">
-					<col width="50%">
-					<col width="200px">
-				</colgroup>
-				<tbody>
-					<tr>
-						<td></td>
-						<td class="cell-rigth cell-top">
-							<h5 class="twx-section">{{priority}}</h5>
-							<table id="preset-list">
-								<colgroup>
-									<col width="*">
-									<col width="20">
-									<col width="26">
-								</colgroup>
-								<tbody>
-									<tr ng-repeat="item in local_data_standard_order"
-										style="height: 68px">
-										<td class="content cell-left"><div class="name-wrapper">
-												<div class="span-icon" ng-class="getClass(item.name)"></div>
-												{{item.label}}
-											</div></td>
-										<td class="cell-right"><div>{{item.value}}</div></td>
-										<td class="cell-right">
-											<div>
-												<div ng-show="item.value > 1"
-													class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-													ng-click="upstandard(item)"></div>
-												<div ng-show="item.value < 17"
-													class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-													ng-click="downstandard(item)"></div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-						<td class="cell-right cell-top">
-							<h5 class="twx-section">{{levels}}</h5>
-							<table id="preset-list">
-								<colgroup>
-									<col width="*">
-									<col width="20">
-									<col width="26">
-								</colgroup>
-								<tbody>
-									<tr ng-repeat="item in local_data_standard_limit"
-										style="height: 68px">
-										<td class="content cell-left">
-											<div class="name-wrapper">
-												<div class="span-icon" ng-class="getClass(item.name)"></div>
-												{{item.label}}
-											</div>
-										</td>
-										<td class="cell-right"><div>{{item.value}}</div></td>
-										<td class="cell-right"><div ng-show="getMax(item)"
-												class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-												ng-click="levelupstandard(item.name)"></div>
-											<div ng-show="item.value > 0"
-												class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-												ng-click="leveldownstandard(item.name)"></div></td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-						<td></td>
-					</tr>
+		<div class="headquarter win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table id="preset-list"
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+						<colgroup>
+							<col width="200px">
+							<col width="50%">
+							<col width="50%">
+							<col width="200px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<td></td>
+								<td class="cell-rigth cell-top">
+									<h5 class="twx-section">{{priority}}</h5>
+									<table id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr ng-repeat="item in local_data_standard_order"
+												style="height: 68px">
+												<td class="content cell-left"><div class="name-wrapper">
+														<div class="span-icon" ng-class="getClass(item.name)"></div>
+														{{item.label}}
+													</div></td>
+												<td class="cell-right"><div>{{item.value}}</div></td>
+												<td class="cell-right">
+													<div>
+														<div ng-show="item.value > 1"
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+															ng-click="upstandard(item)"></div>
+														<div ng-show="item.value < 17"
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+															ng-click="downstandard(item)"></div>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="cell-right cell-top">
+									<h5 class="twx-section">{{levels}}</h5>
+									<table id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="20">
+											<col width="26">
+										</colgroup>
+										<tbody>
+											<tr ng-repeat="item in local_data_standard_limit"
+												style="height: 68px">
+												<td class="content cell-left">
+													<div class="name-wrapper">
+														<div class="span-icon" ng-class="getClass(item.name)"></div>
+														{{item.label}}
+													</div>
+												</td>
+												<td class="cell-right"><div>{{item.value}}</div></td>
+												<td class="cell-right"><div ng-show="getMax(item)"
+														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+														ng-click="levelupstandard(item.name)"></div>
+													<div ng-show="item.value > 0"
+														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+														ng-click="leveldownstandard(item.name)"></div></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+								<td></td>
+							</tr>
 
-				</tbody>
-			</table>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 
 		<h5 class="twx-section">{{settings_for_villages}}</h5>
