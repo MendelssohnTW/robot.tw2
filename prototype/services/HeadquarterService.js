@@ -71,6 +71,7 @@ define("robotTW2/services/HeadquarterService", [
 				if(typeof(callback) == "function") {callback(data.resources)} else {return}
 			})
 		}
+		, RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes()
 		, isUpgradeable = function(village, build, callback) {
 			var buildingData = village.getBuildingData().getDataForBuilding(build)
 			, nextLevelCosts = buildingData.nextLevelCosts
@@ -83,38 +84,30 @@ define("robotTW2/services/HeadquarterService", [
 			} else {
 				let resources = village.getResources().data.resources
 
-					if(!resources){
-						not_enough_resources = true
-					} else {
-						Object.keys(resources).forEach(function(resource_type){
-							if(resources[resource_type] + data_headquarter.reserva[resource_type.toLowerCase()] < nextLevelCosts[resource_type]){
-								not_enough_resources = true;
-							}
-						})
-					}
-
-					if(not_enough_resources){
+				Object.keys(RESOURCE_TYPES).forEach(function(name){
+					if (resources[RESOURCE_TYPES[name]] + data_headquarter.reserva[name.toLowerCase()] < nextLevelCosts[name]){
 						callback(!1, {[village.data.name] : "not_enough_resources for " + build})
-					} else{
-
-						if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
-
-							socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
-								building: build,
-								village_id: village.getId(),
-								location: locationTypes.MASS_SCREEN,
-								premium: !1
-							}, function(data, b) {
-								if(data.code == "Route/notPublic") {
-									callback(!1)
-								} else {
-									callback(!0, data)	
-								}
-							}) 
-						} else {
-							callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
-						}
+						return
 					}
+				});
+
+				if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
+
+					socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
+						building: build,
+						village_id: village.getId(),
+						location: locationTypes.MASS_SCREEN,
+						premium: !1
+					}, function(data, b) {
+						if(data.code == "Route/notPublic") {
+							callback(!1)
+						} else {
+							callback(!0, data)	
+						}
+					}) 
+				} else {
+					callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
+				}
 			}
 		}
 		, canBeFinishedForFree = function(village){

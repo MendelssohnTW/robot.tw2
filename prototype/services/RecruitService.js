@@ -91,19 +91,18 @@ define("robotTW2/services/RecruitService", [
 							, ltz = []
 							, grs_units = {}
 							, gf_units = {}
-							
+
 							for (let unit in units) {
 								villageUnits[unit] = units[unit].total + units[unit].recruiting;
 							}
 
-							Object.keys(RESOURCE_TYPES).forEach(
-									function(name){
-										if (resources[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toLowerCase()]){
-											ltz.push(true);
-										} else {
-											ltz.push(false);
-										}
-									});
+							Object.keys(RESOURCE_TYPES).forEach(function(name){
+								if (resources[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toLowerCase()]){
+									ltz.push(true);
+								} else {
+									ltz.push(false);
+								}
+							});
 
 							if (ltz.some(f => f == true)) {
 								res()
@@ -121,7 +120,7 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
-							
+
 							Object.keys(grs_units).map(function(gr){
 								return gf_units[gr] = Math.trunc(
 										Math.min.apply(null, [
@@ -133,13 +132,13 @@ define("robotTW2/services/RecruitService", [
 										)
 								)
 							})
-							
+
 							let gf_units_list = sort_max(gf_units)
 							, unit_gf = gf_units_list[0]
 							, unit_type = Object.keys(unit_gf)[0]
 							, amount = unit_gf[unit_type]
 							, remaining = grs_units[unit_type] - (amount + villageUnits[unit_type])
-							
+
 							if (remaining <= 0) {
 								console.log(unit_type + " cheio")
 								res()
