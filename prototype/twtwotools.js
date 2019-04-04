@@ -573,17 +573,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			});
 
 			self.$window = rootnode;
-			$(".robotTW2 .win-main").removeClass("jssb-focus")
-			$(".robotTW2 .win-main").removeClass("jssb-applied")
-			var count = 0;
-			$(".robotTW2 .win-main").forEach(function(tr){
-				if(!tr.classList.contains("jssb-applied")){
-					!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
-					!self.$scrollbar[count] ? self.$scrollbar[count] = new jsScrollbar(tr) : self.$scrollbar[count];
-					count++
+			var obj_main = $(".robotTW2 .win-main");
+			obj_main.removeClass("jssb-focus")
+			obj_main.removeClass("jssb-applied")
+			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
+			for(let i = 0; i < obj_main.length; i++){
+				if(!obj_main[i].classList.contains("jssb-applied")){
+					!self.$scrollbar[count] ? self.$scrollbar[count] = new jsScrollbar(obj_main[i]) : self.$scrollbar[count];
 				}
-			})
-//			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".robotTW2 .win-main")) : null;
+			}
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
 				for(let i = 0; i < self.$scrollbar.length; i++){
