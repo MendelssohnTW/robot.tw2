@@ -339,6 +339,7 @@
 												type=text value="{{getTimeRest()}}" disabled></td>
 											<td class="cell-center">
 												<div class="checkbox box-border-dark">
+												<span class="cell-center selected">{{villages_attacked}}</span>
 													<div switch-slider="" border="true" enabled="true"
 														value="data_farm.attacked" vertical="false" size="'56x28'">
 														<div ng-class="{'box-border-dark box-filter': border}"
@@ -486,34 +487,23 @@
 												id="max_dist" step="1" min="5" max="200"
 												ng-model="data.selectedOption.max_journey_distance" disabled></td>
 											<td class="cell-center">
-												<table
-													class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-													<tbody>
-														<tr>
-															<td class="cell-center selected">{{villages_selections}}</td>
-														</tr>
-														<tr>
-															<td class="cell-center">
-																<div class="checkbox box-border-dark">
-																	<div switch-slider="" border="true" enabled="true"
-																		value="data_villages.villages[village_selected.id].farm_activate"
-																		vertical="false" size="'56x28'">
-																		<div ng-class="{'box-border-dark box-filter': border}"
-																			class="box-border-dark box-filter">
-																			<div class="switch switch-56x28 switch-horizontal"
-																				ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
-																				<span class="size-26x26 switch-thumb"> <span
-																					class="simple icon-26x26-switch-off"
-																					ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
-																				</span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</td>
-														</tr>
-													</tbody>
-												</table>
+												<div class="checkbox box-border-dark">
+													<span class="cell-center selected">{{villages_selections}}</span>
+													<div switch-slider="" border="true" enabled="true"
+														value="data_villages.villages[village_selected.id].farm_activate"
+														vertical="false" size="'56x28'">
+														<div ng-class="{'box-border-dark box-filter': border}"
+															class="box-border-dark box-filter">
+															<div class="switch switch-56x28 switch-horizontal"
+																ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																<span class="size-26x26 switch-thumb"> <span
+																	class="simple icon-26x26-switch-off"
+																	ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
+																</span>
+															</div>
+														</div>
+													</div>
+												</div>
 											</td>
 										</tr>
 									</tbody>

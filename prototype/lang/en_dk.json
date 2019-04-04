@@ -210,7 +210,8 @@
 		"text_selection": "Selected",
 		"text_check": "Add village in farm exception list",
 		"exceptions": "Exception list",
-		"villages_selections": "Activation / deactivation"
+		"villages_selections": "Activation / deactivation",
+		"villages_attacked": "Farm in villages under attack"
 	},
 	"recruit": {
 		"recruit": "Recruitment",

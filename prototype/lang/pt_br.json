@@ -210,7 +210,8 @@
 		"text_selection": "Selecionado",
 		"text_check": "Adicionar aldeia na lista de excessão de farm",
 		"exceptions": "Lista de excessões",
-		"villages_selections": "Ativação / desativação"
+		"villages_selections": "Ativação / desativação",
+        "villages_attacked": "Farm em aldeias sob ataque"
 	},
 	"recruit": {
 		"recruit": "Recrutamento",
