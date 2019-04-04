@@ -399,7 +399,7 @@ define("robotTW2/services/DefenseService", [
 				var villages = modelDataService.getSelectedCharacter().getVillages();
 
 				var vls = Object.keys(villages).map(function(villageId){
-					let vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5)
+					let vill_attacked = modelDataService.getGroupList().getVillageGroups(villageId).some(f=>f.id==-5)
 					if(data_villages.villages[villageId].defense_activate && vill_attacked){
 						return villageId
 					}
