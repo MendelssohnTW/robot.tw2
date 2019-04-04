@@ -28,8 +28,6 @@ define("robotTW2/services/RecruitService", [
 		, isPaused = !1
 		, promise_UnitsAndResources = undefined 
 		, queue_UnitsAndResources = []
-		, promise_recruitRequest = undefined 
-		, queue_recruitRequest = []
 		, interval_recruit = null
 		, interval_cicle = null
 		, listener_recruit = undefined
@@ -73,6 +71,7 @@ define("robotTW2/services/RecruitService", [
 
 			return;
 		}
+		, RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes()
 		, recruitSteps = function(list_recruit){
 			if(!list_recruit.length){return}
 			list_recruit.forEach(function(village_id){
@@ -81,130 +80,95 @@ define("robotTW2/services/RecruitService", [
 						return {[res]: obj[res]}
 					}).filter(f=>f!=undefined)
 				}
-				, sec_groups = function (data){
-					var listGroups = modelDataService.getGroupList().getVillageGroups(data.village_id)
-					, amount
-					, requests = 0
-					, requestsReadys = 0
-					, copia_listGroups = angular.extend({}, listGroups)
-					, copia_res = angular.extend({}, data.resources)
-					, villageUnits = data.villageUnits
-					, keys_listGroups = Object.keys(copia_listGroups)
-					, village_id = data.village_id;
-
-					var RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes()
-					, ltz = [];
-					Object.keys(RESOURCE_TYPES).forEach(
-							function(name){
-								if (copia_res[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toLowerCase()]){
-									ltz.push(true);
-								} else {
-									ltz.push(false);
-								}
-							});
-
-					if (ltz.some(f => f == true)) {
-						console.log("limite de recursos")
-						return;
-					};
-
-					let grs_units = {}
-					modelDataService.getGroupList().getVillageGroups(village_id).map(function(gr){
-						if(!data_recruit.Groups[gr.id]){return}
-						if(Object.values(data_recruit.Groups[gr.id].units).some(f=>f>0)){
-							Object.keys(data_recruit.Groups[gr.id].units).map(function(gt){
-								if(data_recruit.Groups[gr.id].units[gt] > 0){
-									return grs_units[gt] = data_recruit.Groups[gr.id].units[gt]
-								}
-							})
-							return
-						}
-					})
-
-					let gf_units = {}
-
-					Object.keys(grs_units).map(function(gr){
-						let unit = gr
-						let value = grs_units[gr]
-						return gf_units[gr] = Math.trunc(
-								Math.min.apply(null, [
-									(copia_res.wood - data_recruit.reserva.wood) / prices[unit][0], 
-									(copia_res.clay - data_recruit.reserva.clay) / prices[unit][1], 
-									(copia_res.iron - data_recruit.reserva.iron) / prices[unit][2],
-									(copia_res.food - data_recruit.reserva.food) / prices[unit][3]
-									]
-								)
-						)
-					})
-
-					let gf_units_list = sort_max(gf_units)
-					var unit = gf_units_list[0]
-					unit_type = Object.keys(unit)[0];
-					amount = unit[unit_type]
-					remaining = grs_units[unit_type] - (amount + villageUnits[unit_type]);
-					if (remaining <= 0) {
-						console.log(unit_type + " cheio")
-						continue
-					};
-					if (amount > remaining) {
-						amount = remaining;
-					} else {
-						if (amount < 1) {
-							console.log(unit_type + " sem unidades previstas")
-							continue
-						};
-					};
-
-					let data_rec = {
-							"village_id": village_id,
-							"unit_type": unit_type,
-							"amount": amount
-					}
-
-					var recruit_promise = function(data_rec){
-						if(!promise_recruitRequest){
-							promise_recruitRequest = new Promise(function(res, rej){
-								data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
-								socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
-								res()
-							}). then(function(data){
-								promise_recruitRequest = undefined
-								if(queue_recruitRequest.length){
-									data_rec = queue_recruitRequest.shift()
-									recruit_promise(data_rec)
-								} else {
-									console.log("terminou recruit")
-									data_log.recruit.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
-								}
-							})
-						} else {
-							queue_recruitRequest.push(data_rec);
-						}
-					}
-
-					recruit_promise(data_rec)
-				}
 				, sec_promise = function (village_id){
 					if(!promise_UnitsAndResources){
 						promise_UnitsAndResources = new Promise(function(res, rej){
 							let village = modelDataService.getSelectedCharacter().getVillage(village_id)
 							, units = village.getUnitInfo().units
 							, resources = village.getResources().data.resources
+							, listGroups = modelDataService.getGroupList().getVillageGroups(village_id)
 							, unit
-							, i
-							, villageUnits = {};
-
+							, villageUnits = {}
+							, amount
+							, villageUnits = villageUnits
+							, ltz = []
+							, grs_units = {}
+							
 							for (unit in units) {
 								villageUnits[unit] = units[unit].total + units[unit].recruiting;
 							}
-							res({
-								"village_id": village_id,
-								"villageUnits": villageUnits, 
-								"resources": resources
+
+							Object.keys(RESOURCE_TYPES).forEach(
+									function(name){
+										if (resources[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toLowerCase()]){
+											ltz.push(true);
+										} else {
+											ltz.push(false);
+										}
+									});
+
+							if (ltz.some(f => f == true)) {
+								console.log("limite de recursos")
+								return;
+							};
+
+							listGroups.map(function(gr){
+								if(!data_recruit.Groups[gr.id]){return}
+								if(Object.values(data_recruit.Groups[gr.id].units).some(f=>f>0)){
+									Object.keys(data_recruit.Groups[gr.id].units).map(function(gt){
+										if(data_recruit.Groups[gr.id].units[gt] > 0){
+											return grs_units[gt] = data_recruit.Groups[gr.id].units[gt]
+										}
+									})
+									return
+								}
 							})
+
+							let gf_units = {}
+
+							Object.keys(grs_units).map(function(gr){
+								let unit = gr
+								let value = grs_units[gr]
+								return gf_units[gr] = Math.trunc(
+										Math.min.apply(null, [
+											(resources.wood - data_recruit.reserva.wood) / prices[unit][0], 
+											(resources.clay - data_recruit.reserva.clay) / prices[unit][1], 
+											(resources.iron - data_recruit.reserva.iron) / prices[unit][2],
+											(resources.food - data_recruit.reserva.food) / prices[unit][3]
+											]
+										)
+								)
+							})
+
+							let gf_units_list = sort_max(gf_units)
+							var unit = gf_units_list[0]
+							unit_type = Object.keys(unit)[0];
+							amount = unit[unit_type]
+							remaining = grs_units[unit_type] - (amount + villageUnits[unit_type]);
+							if (remaining <= 0) {
+								console.log(unit_type + " cheio")
+								continue
+							};
+							if (amount > remaining) {
+								amount = remaining;
+							} else {
+								if (amount < 1) {
+									console.log(unit_type + " sem unidades previstas")
+									continue
+								};
+							};
+
+							let data_rec = {
+									"village_id": village_id,
+									"unit_type": unit_type,
+									"amount": amount
+							}
+
+							data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
+							socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
+							res()
 						})
-						.then(function(data){
-							sec_groups(data)
+						.then(function(){
 							promise_UnitsAndResources = undefined
 							if(queue_UnitsAndResources.length){
 								village_id = queue_UnitsAndResources.shift()
@@ -319,8 +283,6 @@ define("robotTW2/services/RecruitService", [
 			listener_group_destroyed = undefined;
 			promise_UnitsAndResources = undefined 
 			queue_UnitsAndResources = []
-			promise_recruitRequest = undefined 
-			queue_recruitRequest = []
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 			$timeout.cancel(listener_recruit);
