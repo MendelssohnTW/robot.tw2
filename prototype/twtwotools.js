@@ -579,7 +579,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
 			for(let i = 0; i < obj_main.length; i++){
 				if(!obj_main[i].classList.contains("jssb-applied")){
-					!self.$scrollbar[count] ? self.$scrollbar[count] = new jsScrollbar(obj_main[i]) : self.$scrollbar[count];
+					!self.$scrollbar[i] ? self.$scrollbar[i] = new jsScrollbar(obj_main[i]) : self.$scrollbar[i];
 				}
 			}
 			self.recalcScrollbar = function() {
