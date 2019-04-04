@@ -81,7 +81,7 @@
 							<tr ng-repeat="ext in extensions" ng-show="ext.activated">
 								<td class="cell-right">{{ext.name}}</td>
 								<td class="cell-center">
-									<div class="checkbox box-border-dark">
+									<div class="checkbox">
 										<div tooltip
 											tooltip-content="{{ext.init_initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
 											switch-slider="" border="true" enabled="ext.activated && ext.name!='log'"
@@ -100,7 +100,7 @@
 									</div>
 								</td>
 								<td class="cell-center">
-									<div class="checkbox box-border-dark">
+									<div class="checkbox">
 										<div switch-slider="" border="true"
 											enabled="ext.init_initialized && ext.name!='log'" value="ext.auto_start"
 											vertical="false" size="'56x28'">
@@ -125,7 +125,7 @@
 									</div>
 								</td>
 								<td>
-									<div class="checkbox box-border-dark">
+									<div class="checkbox">
 										<div tooltip
 											tooltip-content="{{extensions_status[ext.name] ? STOP : START}}"
 											switch-slider="" border="true" enabled="ext.init_initialized && ext.name!='log'"
