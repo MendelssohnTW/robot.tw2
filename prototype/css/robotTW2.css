@@ -200,14 +200,18 @@
     margin: 0 2px;
 }
 
-.robotTW2 .headquarter.win-main {
-    height: 450px;
-}
-
 .robotTW2 .headquarter.box-paper {
     min-height: 100px;
     height: 180px;
     margin: 0 2px;
+}
+
+.robotTW2 .farm.box-paper {
+    margin: 0 2px;
+}
+
+.robotTW2 .farm.win-main {
+    height: 670px;
 }
 
 .robotTW2 .spy.win-main {
