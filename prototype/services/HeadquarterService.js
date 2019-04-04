@@ -65,12 +65,6 @@ define("robotTW2/services/HeadquarterService", [
 			return builds
 
 		}
-		, getResources = function (village_id, callback) { 
-			return socketService.emit(providers.routeProvider.VILLAGE_GET_VILLAGE, {village_id: village_id}, function (data) {
-				if(!data){callback(null)}
-				if(typeof(callback) == "function") {callback(data.resources)} else {return}
-			})
-		}
 		, RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes()
 		, isUpgradeable = function(village, build, callback) {
 			var buildingData = village.getBuildingData().getDataForBuilding(build)

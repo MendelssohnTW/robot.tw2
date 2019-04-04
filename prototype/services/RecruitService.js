@@ -140,7 +140,6 @@ define("robotTW2/services/RecruitService", [
 							, remaining = grs_units[unit_type] - (amount + villageUnits[unit_type])
 
 							if (remaining <= 0) {
-								console.log(unit_type + " cheio")
 								res()
 								return
 							};
@@ -148,7 +147,6 @@ define("robotTW2/services/RecruitService", [
 								amount = remaining;
 							} else {
 								if (amount < 1) {
-									console.log(unit_type + " sem unidades previstas")
 									res()
 									return
 								};
