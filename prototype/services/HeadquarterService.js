@@ -81,7 +81,8 @@ define("robotTW2/services/HeadquarterService", [
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 				callback(!1, "instant")
 			} else {
-				getResources(village.data.villageId, function(resources){
+				let village = modelDataService.getSelectedCharacter().getVillage(village.data.villageId)
+				, resources = village.getResources().data.resources
 
 					if(!resources){
 						not_enough_resources = true
@@ -115,7 +116,6 @@ define("robotTW2/services/HeadquarterService", [
 							callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
 						}
 					}
-				})
 			}
 		}
 		, canBeFinishedForFree = function(village){
