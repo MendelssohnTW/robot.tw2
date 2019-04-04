@@ -26,7 +26,6 @@
 	text-shadow: 1px 1px 0 #000
 }
 
-}
 .robotTW2 .center {
 	display: flex;
 	justify-content: center
@@ -198,6 +197,11 @@
     min-height: 100px;
     height: 205px;
     margin: 0 2px;
+}
+
+.robotTW2 .win-main {
+    position: relative;
+    height: 440px;
 }
 
 .robotTW2 .headquarter.box-paper {
