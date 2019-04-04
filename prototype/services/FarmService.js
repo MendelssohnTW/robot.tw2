@@ -563,13 +563,15 @@ define("robotTW2/services/FarmService", [
 					clear_partial()
 					commands_for_presets[cicle] = []
 					let villages = modelDataService.getSelectedCharacter().getVillageList();
-
+					
 					villages.forEach(function(village){
 						var village_id = village.data.villageId
 						, presets
 						, aldeia_units;
+						
+						let vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5)
 
-						if(!village_id || !isRunning || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate) {
+						if(!village_id || !isRunning || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked) {
 							resol();
 							return;
 						} else {
