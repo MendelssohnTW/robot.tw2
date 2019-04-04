@@ -109,6 +109,7 @@ define("robotTW2/services/RecruitService", [
 
 					let grs_units = {}
 					modelDataService.getGroupList().getVillageGroups(village_id).map(function(gr){
+						if(!data_recruit.Groups[gr.id]){return}
 						if(Object.values(data_recruit.Groups[gr.id].units).some(f=>f>0)){
 							Object.keys(data_recruit.Groups[gr.id].units).map(function(gt){
 								if(data_recruit.Groups[gr.id].units[gt] > 0){
