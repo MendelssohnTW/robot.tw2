@@ -52,8 +52,10 @@ define("robotTW2/controllers/HeadquarterController", [
 					"value": obj[key],
 				})
 			})
-			if(desc){
-				list.sort(function(a,b){return b.value - a.value})
+			if(desc == "name"){
+				list.sort(function(a,b){return a.name.localeCompare(b.name)})
+			} else if(desc == true){
+				list.sort(function(a,b){return a.value - b.value})
 			} else {
 				list.sort(function(a,b){return a.value - b.value})
 			}
@@ -68,7 +70,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_standard_limit = []
 
 			$scope.local_data_standard_order = set_list($scope.data_headquarter.standard.buildingorder, "buildings")
-			$scope.local_data_standard_limit = set_list($scope.data_headquarter.standard.buildinglimit, "buildings")
+			$scope.local_data_standard_limit = set_list($scope.data_headquarter.standard.buildinglimit, "buildings", "name")
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
@@ -79,7 +81,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_select_villages.selectedOption.value.selected = $scope.data_select.selectedOption
 
 			$scope.local_data_select_order = set_list($scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
-			$scope.local_data_select_limit = set_list($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
+			$scope.local_data_select_limit = set_list($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select_villages.selectedOption.value.selected.value], "buildings", "name")
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
