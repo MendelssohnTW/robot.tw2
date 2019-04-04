@@ -137,7 +137,7 @@ define("robotTW2/services/RecruitService", [
 							, unit_gf = gf_units_list[0]
 							, unit_type = Object.keys(unit_gf)[0]
 							, amount = unit_gf[unit_type]
-							, remaining = grs_units[unit_type] - (amount + villageUnits[unit_type])
+							, remaining = grs_units[unit_type] - villageUnits[unit_type]
 
 							if (remaining <= 0) {
 								res()
