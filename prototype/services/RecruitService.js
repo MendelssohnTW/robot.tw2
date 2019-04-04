@@ -191,7 +191,7 @@ define("robotTW2/services/RecruitService", [
 						promise_UnitsAndResources = new Promise(function(res, rej){
 							let village = modelDataService.getSelectedCharacter().getSelectedVillage(village_id)
 							, units = village.getUnitInfo().data.units
-							, resouces = village.getResources().data.resources
+							, resources = village.getResources().data.resources
 							, unit
 							, i
 							, villageUnits = {};
