@@ -46,7 +46,7 @@ define("robotTW2/services/HeadquarterService", [
 		, listener_resume = undefined
 		, checkBuildingOrderLimit = function(vill) {
 			if(!vill.selected){
-				vill.selected = data_headquarter.selects.find(f=>f.name ="standard");
+				vill.selected = data_headquarter.selects.find(f=>f.value ="standard");
 			}
 			var buildingLevels = vill.buildinglevels
 			, buildingLimit = vill.buildinglimit[vill.selected.value]
