@@ -21,8 +21,6 @@ define("robotTW2/services/AlertService", [
 		var isInitialized = !1
 		, isRunning = !1
 		, interval_alert = null
-		, t
-		, g
 		, listener_alert_ready = undefined
 		, listener_tab_alert = undefined
 		, notifyAttacks = function() {
@@ -30,22 +28,13 @@ define("robotTW2/services/AlertService", [
 		}
 		, verify_alert = function(){
 
-			t = $timeout(function(){
-				g = undefined
-			}, conf_conf.LOADING_TIMEOUT);
-
-			!g ? g = socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': robotTW2.services.modelDataService.getSelectedCharacter().getTribeId()}, function (o) {
-				$timeout.cancel(t);
-				$timeout(_ => {
-					var friends = data_alert.friends;
-					if (o.members != undefined){
-						if (o.members.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
-							notifyAttacks();
-						}
-					}
-					g = undefined
-				}, 2000);
-			}): null;
+			let members = services.modelDataService.getSelectedCharacter().getTribeMemberModel().data
+			, friends = data_alert.friends;
+			if (members != undefined){
+				if (members.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
+					notifyAttacks();
+				}
+			}
 		}
 		, wait = function(){
 			if(!interval_alert){

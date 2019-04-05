@@ -120,9 +120,11 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
+							
+							Math.max.apply(null, resources.wood, resources.clay, resources.iron)
 
 							Object.keys(grs_units).map(function(gr){
-								return gf_units[gr] = Math.trunc(
+								let min_resources = Math.trunc(
 										Math.min.apply(null, [
 											(resources.wood - data_recruit.reserva.wood) / prices[gr][0], 
 											(resources.clay - data_recruit.reserva.clay) / prices[gr][1], 
@@ -131,6 +133,7 @@ define("robotTW2/services/RecruitService", [
 											]
 										)
 								)
+								return gf_units[gr] = min_resources
 							})
 
 							let gf_units_list = sort_max(gf_units)
