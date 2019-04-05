@@ -91,6 +91,7 @@ define("robotTW2/services/RecruitService", [
 							, ltz = []
 							, grs_units = {}
 							, gf_units = {}
+							, gf_units_prov = {}
 
 							for (let unit in units) {
 								villageUnits[unit] = units[unit].total + units[unit].recruiting;
@@ -120,9 +121,9 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
-
+							
 							Object.keys(grs_units).map(function(gr){
-								return gf_units[gr] = Math.trunc(
+								let min_resources = Math.trunc(
 										Math.min.apply(null, [
 											(resources.wood - data_recruit.reserva.wood) / prices[gr][0], 
 											(resources.clay - data_recruit.reserva.clay) / prices[gr][1], 
@@ -131,12 +132,16 @@ define("robotTW2/services/RecruitService", [
 											]
 										)
 								)
+								, prov = min_resources * prices[gr][3]
+								gf_units[gr] = min_resources
+								gf_units_prov[gr] = prov
+								return 
 							})
 
-							let gf_units_list = sort_max(gf_units)
+							let gf_units_list = sort_max(gf_units_prov)
 							, unit_gf = gf_units_list[0]
 							, unit_type = Object.keys(unit_gf)[0]
-							, amount = unit_gf[unit_type]
+							, amount = gf_units[unit_type]
 							, remaining = grs_units[unit_type] - villageUnits[unit_type]
 
 							if (remaining <= 0) {
