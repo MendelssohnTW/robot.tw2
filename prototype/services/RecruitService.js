@@ -121,8 +121,6 @@ define("robotTW2/services/RecruitService", [
 								}
 							})
 							
-							Math.max.apply(null, resources.wood, resources.clay, resources.iron)
-
 							Object.keys(grs_units).map(function(gr){
 								let min_resources = Math.trunc(
 										Math.min.apply(null, [
