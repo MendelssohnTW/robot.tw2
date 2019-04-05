@@ -295,7 +295,8 @@ define("robotTW2/controllers/SpyController", [
 				var villages = services.modelDataService.getSelectedCharacter().getVillages();
 				Object.keys($scope.villages_for_sent).map(function(elem){
 					let target = $scope.villages_for_sent[elem]
-					, list_dist_vills = Object.keys(villages).map(function(village){
+					, list_dist_vills = Object.keys(villages).map(function(vill){
+						let village = villages[vill]
 //						let village = services.VillageService.getVillage($scope.local_data_villages[vill].id)
 						let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
 						let order = undefined;
