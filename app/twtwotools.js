@@ -573,18 +573,28 @@ var robotTW2 = window.robotTW2 = undefined;
 			});
 
 			self.$window = rootnode;
-			$(".robotTW2 .win-main").removeClass("jssb-focus")
-			$(".robotTW2 .win-main").removeClass("jssb-applied")
-			!self.$scrollbar ? self.$scrollbar = new jsScrollbar(document.querySelector(".robotTW2 .win-main")) : null;
+			var obj_main = $(".robotTW2 .win-main");
+			obj_main.removeClass("jssb-focus")
+			obj_main.removeClass("jssb-applied")
+			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
+			for(let i = 0; i < obj_main.length; i++){
+				if(!obj_main[i].classList.contains("jssb-applied")){
+					!self.$scrollbar[i] ? self.$scrollbar[i] = new jsScrollbar(obj_main[i]) : self.$scrollbar[i];
+				}
+			}
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
-				if(!self.$scrollbar.recalc) return;
-				self.$scrollbar.recalc()
+				for(let i = 0; i < self.$scrollbar.length; i++){
+					if(!self.$scrollbar[i].recalc) continue;
+					self.$scrollbar[i].recalc()
+				}
 			};
 			self.disableScrollbar = function() {
 				if(!self.$scrollbar) return;
-				if(!self.$scrollbar.disable) return;
-				self.$scrollbar.disable()
+				for(let i = 0; i < self.$scrollbar.length; i++){
+					if(!self.$scrollbar[i].disable) continue;
+					self.$scrollbar[i].disable()
+				}
 			};
 			self.setCollapse = function() {
 				self.$window.querySelectorAll(".robotTW2 .twx-section.collapse").forEach(function(b) {
@@ -798,7 +808,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"MIN_POINTS_FARM"			: 0,
 						"MAX_POINTS_FARM"			: 12000,
 						"MAP_CHUNCK_LEN"			: 15,
-						"TIME_CORRECTION_COMMAND"	: 775,
+						"TIME_CORRECTION_COMMAND"	: 1550,
 						"TIME_CORRECTION_STANDARD"	: -225,
 						"TIME_DELAY_UPDATE"			: 30000,
 						"TIME_DELAY_FARM"			: 2000,
@@ -915,10 +925,10 @@ var robotTW2 = window.robotTW2 = undefined;
 			});
 			robotTW2.register("providers", "eventTypeProvider", {
 				"ISRUNNING_CHANGE"				: "Internal/robotTW2/isrunning_change",
-				"RESUME_CHANGE_FARM"			: "Internal/robotTW2/resume_change_farm",
-				"RESUME_CHANGE_RECRUIT"			: "Internal/robotTW2/resume_change_recruit",
 				"INTERVAL_CHANGE_RECRUIT"		: "Internal/robotTW2/interval_change_recruit",
-				"RESUME_CHANGE_HEADQUARTER"		: "Internal/robotTW2/resume_change_headquarter",
+				"INTERVAL_CHANGE_ALERT"			: "Internal/robotTW2/interval_change_alert",
+				"INTERVAL_CHANGE_SPY"			: "Internal/robotTW2/interval_change_spy",
+				"INTERVAL_CHANGE_MARKET"		: "Internal/robotTW2/interval_change_market",
 				"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
 				"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
 				"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
@@ -952,192 +962,6 @@ var robotTW2 = window.robotTW2 = undefined;
 			$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.OPEN_REPORT);
 			new_extendScopeWithReportData($scope, report)
 		}
-
-		define("robotTW2/base", function () {
-
-			switch ($rootScope.loc.ale) {
-//			case "pl_pl" : {
-//			return {
-//			URL_BASE			: "https://avebnt.nazwa.pl/endpointbandits/",
-//			URL_SOCKET			: "wss://avebnt.nazwa.pl/endpointbandits/endpoint_server"
-//			}
-//			break
-//			}
-			default : {
-				return {
-					URL_BASE			: "https://www.ipatapp.com.br/endpoint/",
-					URL_SOCKET			: "wss://www.ipatapp.com.br/endpoint/endpoint_server"
-				}
-				break
-			}
-			}
-
-		})
-
-//		define("robotTW2/socket", ["robotTW2/base"], function(base) {
-//		var service = {},
-//		id = 0,
-//		count = 0,
-//		timeouts = {}
-//		callbacks = {},
-//		onopen = function onopen(){
-//		connect.call(true);
-//		},
-//		onmessage = function onmessage(message){
-//		var msg;
-//		try {
-//		msg = angular.fromJson(message.data);
-//		} catch (err) {
-//		msg = message.data;
-//		}
-
-//		var id_return = msg.id
-//		if(timeouts[id_return]){
-//		robotTW2.services.$timeout.cancel(timeouts[id_return])
-//		delete timeouts[id_return];
-//		}
-//		var opt_callback = callbacks[id_return];
-//		if(typeof(opt_callback) == "function"){
-//		opt_callback(msg);
-//		}
-//		},
-//		onclose = function onclose($event){
-//		if($event.code == 1006 && $event.type == "close"){
-//		console.log($event)
-////		robotTW2.loadScript("/controllers/ConfirmController.js");
-//		}
-//		},
-//		onerror = function onerror($event, url, data){
-//		if($event == "Uncaught TypeError: Illegal invocation") {
-//		return
-//		}
-//		count++;
-//		if(count < 10) {
-//		service = new WebSocket(base.URL_SOCKET);
-//		} else {
-//		count = 0
-//		if($rootScope.data_data){
-//		$rootScope.data_data.possible = false;
-//		$rootScope.data_data.activated = false;
-//		}
-//		console.log("Socket error ... \n");
-//		console.log($event);
-//		}
-//		},
-//		connect = function connect(callback){
-//		switch (service.readyState){
-//		case 1 : //Aberta
-//		if($rootScope.data_data){
-//		$rootScope.data_data.possible = true;
-//		}
-//		if (typeof callback === "function") {
-//		callback(true);
-//		};
-//		break;
-//		case 3 : //Fechada
-//		service = new WebSocket(base.URL_SOCKET);
-//		break;
-//		}
-//		},
-//		disconnect = function disconnect(){
-//		if (service) {
-//		service.close();
-//		}
-//		}
-//		, createTimeout = function (id, type, opt_callback){
-//		if(!timeouts[id]){
-//		timeouts[id] = robotTW2.services.$timeout(function(){
-//		if(typeof(opt_callback) == "function"){
-//		opt_callback({"type" : type, "data": "Timeout"})
-//		}
-//		}, 15000)
-//		}
-//		}
-//		, sendMsg = function sendMsg(type, data, opt_callback){
-//		if(robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data){
-//		id = ++id;
-//		createTimeout(id, type, opt_callback)
-//		var dw = null
-//		var dt = null
-//		if(data.world_id)
-//		dw = data.world.id;
-//		if(data.tribe_id)
-//		dt = data.tribe_id;
-//		if(data){
-//		if(data.user){
-//		angular.extend(data.user, {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()})
-//		} else {
-//		data.user = {"pui": robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId()}
-//		}
-//		angular.extend(data, {
-//		"world_id": dw || robotTW2.services.modelDataService.getSelectedCharacter().getWorldId(),
-//		"member_id": robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-//		"tribe_id": dt || robotTW2.services.modelDataService.getSelectedCharacter().getTribeId(),
-//		});
-//		}
-//		callbacks[id] = opt_callback;
-
-//		service.send(
-//		angular.toJson({
-//		'type'		: type,
-//		'data'		: data,
-//		'pui'		: robotTW2.services.modelDataService.getSelectedCharacter().getWorldId() + "_" + robotTW2.services.modelDataService.getSelectedCharacter().getId(),
-//		'id'		: id,
-//		'local'		: robotTW2.services.modelDataService.getSelectedCharacter().getTribe().data.name.toLowerCase()
-//		})
-//		)
-//		} else {
-//		if(typeof(opt_callback) == "function"){
-//		opt_callback({"type": type, "resp": "noTribe"});
-//		}
-//		}
-//		}
-
-//		service = new WebSocket(base.URL_SOCKET);
-//		service.onopen = onopen;
-//		service.onmessage = onmessage;
-//		service.onclose = onclose;
-//		service.onerror = onerror;
-//		service.connect = connect;
-//		service.sendMsg = sendMsg;
-
-//		return service;
-
-//		})
-
-//		define("robotTW2/socketSend", ["robotTW2/socket"], function(socket) {
-
-//		var service = {},
-//		count = 0;
-//		return service.emit = function (route, data, opt_callback){
-//		var cal = function cal(connected){
-//		count++;
-//		if (connected && route != undefined){
-//		socket.sendMsg(route.type, data, opt_callback);
-//		return;
-//		} else {
-//		if (count < 10){
-//		socket.connect(
-//		function(connected){
-//		cal(connected)
-//		}
-//		);
-//		return;
-//		} else {
-//		count = 0;
-//		return;
-//		}
-//		}
-//		};
-//		socket.connect(
-//		function(connected){
-//		cal(connected)
-//		}
-//		);
-
-//		}
-//		, service;
-//		})
 
 		define("robotTW2/zerofill", function(){
 			return function (n, opt_len) {
@@ -2040,6 +1864,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.loadScript("/controllers/AlertController.js");
 					robotTW2.loadScript("/controllers/SpyController.js");
 					robotTW2.loadScript("/controllers/FakeController.js");
+					robotTW2.loadScript("/controllers/MarketController.js");
 					robotTW2.loadScript("/controllers/DepositController.js");
 					robotTW2.loadScript("/controllers/RecruitController.js");
 					robotTW2.loadScript("/controllers/SecondVillageController.js");
@@ -2060,19 +1885,6 @@ var robotTW2 = window.robotTW2 = undefined;
 								style 				: {
 									width:"900px"
 								}
-						}		
-						robotTW2.build(params)
-					})
-					break
-				}
-				case robotTW2.controllers.ConfirmController : {
-					robotTW2.createScopeLang("confirm", function(scopeLang){
-						var params = {
-								controller		: robotTW2.controllers.ConfirmController,
-								scopeLang 		: scopeLang,
-								hotkey 			: "open",
-								templateName 	: "confirm",
-								url		 		: "/controllers/ConfirmController.js",
 						}		
 						robotTW2.build(params)
 					})
@@ -2125,6 +1937,23 @@ var robotTW2 = window.robotTW2 = undefined;
 								templateName 		: "spy",
 								classes 			: "fullsize",
 								url		 			: "/controllers/SpyController.js",
+								style 				: null
+						}		
+						robotTW2.build(params)
+					})
+					break
+				}
+				case robotTW2.controllers.MarketController : {
+					robotTW2.createScopeLang("market", function(scopeLang){
+						var params = {
+								controller			: robotTW2.controllers.MarketController,
+								provider_listener	: robotTW2.providers.eventTypeProvider.OPEN_MARKET,
+								build_open			: true,
+								scopeLang 			: scopeLang,
+								hotkey 				: conf.HOTKEY.MARKET,
+								templateName 		: "market",
+								classes 			: "fullsize",
+								url		 			: "/controllers/MarketController.js",
 								style 				: null
 						}		
 						robotTW2.build(params)
@@ -2409,6 +2238,10 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.FakeService && typeof(robotTW2.services.FakeService.init) == "function" ? robotTW2.requestFn.bind("fake", robotTW2.services.FakeService) : null;	
 					break
 				}
+				case robotTW2.services.MarketService : {
+					robotTW2.services.MarketService && typeof(robotTW2.services.MarketService.init) == "function" ? robotTW2.requestFn.bind("market", robotTW2.services.MarketService) : null;	
+					break
+				}
 				case robotTW2.services.SecondVillageService : {
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
@@ -2434,6 +2267,7 @@ var robotTW2 = window.robotTW2 = undefined;
 								robotTW2.loadScript("/databases/data_deposit.js");
 								robotTW2.loadScript("/databases/data_spy.js");
 								robotTW2.loadScript("/databases/data_fake.js");
+								robotTW2.loadScript("/databases/data_market.js");
 								robotTW2.loadScript("/databases/data_alert.js");
 								robotTW2.loadScript("/databases/data_attack.js");
 								robotTW2.loadScript("/databases/data_recon.js");
@@ -2499,6 +2333,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_fake" : {
 					robotTW2.loadScript("/services/FakeService.js");
+					break
+				}
+				case "data_market" : {
+					robotTW2.loadScript("/services/MarketService.js");
 					break
 				}
 				case "data_secondvillage" : {

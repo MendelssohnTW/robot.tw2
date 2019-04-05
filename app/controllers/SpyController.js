@@ -395,6 +395,7 @@ define("robotTW2/controllers/SpyController", [
 					}
 				})
 				$scope.send_scope = {}
+				$scope.recalcScrollbar();
 			} else {
 				notify("villages_error");
 			}
@@ -418,6 +419,7 @@ define("robotTW2/controllers/SpyController", [
 				notify("date_error");
 			}
 			$scope.send_scope = {}
+			$scope.recalcScrollbar();
 		}
 
 		$scope.toggleOption = function(){
