@@ -145,7 +145,6 @@ define("robotTW2/controllers/FarmController", [
 			}
 			triggerUpdate();
 
-			if (!$scope.$$phase) {$scope.$apply();}
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function blurPreset(){
@@ -398,8 +397,10 @@ define("robotTW2/controllers/FarmController", [
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
 				break;
 			case "check_all":
-				$scope.data.selectedOption.max_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.data.selectedOption.max_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.max_journey_time, $scope.data.selectedOption.units)
+				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
+					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_time = helper.unreadableSeconds(r) * 1000
+					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_distance = get_dist(services.VillageService.getVillage($scope.village_selected.id).data.villageId, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units)
+				})
 				break;
 			case "check_all_villages":
 				Object.keys($scope.data_villages.villages).map(function(village){
@@ -543,7 +544,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {$scope.$apply()}
 		}, true)
-		
+
 		$scope.$watch("data.selectedOption", function(){
 			if(!$scope.data.selectedOption){return}
 			blurPreset()

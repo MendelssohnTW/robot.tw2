@@ -33,6 +33,7 @@ define("robotTW2/databases/data_main", [
 			data_secondvillage,
 			data_spy,
 			data_fake,
+			data_market,
 			data_villages
 	){
 
@@ -49,6 +50,7 @@ define("robotTW2/databases/data_main", [
 			data_secondvillage: data_secondvillage,
 			data_spy: 			data_spy,
 			data_fake: 			data_fake,
+			data_market: 		data_market,
 			data_villages: 		data_villages
 	}
 	var data_main = database.get("data_main")
