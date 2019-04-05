@@ -375,7 +375,7 @@ define("robotTW2/controllers/SpyController", [
 					}
 
 					function fnext(dist_vill){
-						let vlg = modelDataService.getVillage(dist_vill.id)
+						let vlg = services.modelDataService.getVillage(dist_vill.id)
 						, qtd_spy = vlg.getScoutingInfo().getNumAvailableSpies();
 						if(qtd_spy > 0){
 							next(dist_vill)
