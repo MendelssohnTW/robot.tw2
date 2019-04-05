@@ -34,6 +34,8 @@ define("robotTW2/services/AlertService", [
 				if (members.data.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
 					notifyAttacks();
 				}
+			} else {
+				socketService.emit(providers.routeProvider.TRIBE_GET_MEMBERLIST, {'tribe': modelDataService.getSelectedCharacter().getTribeId()});
 			}
 		}
 		, wait = function(){
