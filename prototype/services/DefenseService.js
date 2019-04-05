@@ -536,7 +536,7 @@ define("robotTW2/services/DefenseService", [
 					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
 					var cmd = cmds.pop()
 					, expires = cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post
-					, timer_delay = (expires / 2) + robotTW2.databases.data_main.time_correction_command
+					, timer_delay = (expires / 2) + robotTW2.databases.data_main.time_correction_command - 775
 					, params = {
 						"timer_delay" 	: timer_delay,
 						"id_command" 	: data.id
