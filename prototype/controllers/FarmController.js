@@ -145,7 +145,6 @@ define("robotTW2/controllers/FarmController", [
 			}
 			triggerUpdate();
 
-			if (!$scope.$$phase) {$scope.$apply();}
 			services.$timeout(blurPreset, 1500)
 		}
 		, blurPreset = function blurPreset(){
