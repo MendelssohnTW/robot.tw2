@@ -91,6 +91,7 @@ define("robotTW2/services/RecruitService", [
 							, ltz = []
 							, grs_units = {}
 							, gf_units = {}
+							, gf_units_prov = {}
 
 							for (let unit in units) {
 								villageUnits[unit] = units[unit].total + units[unit].recruiting;
@@ -131,10 +132,13 @@ define("robotTW2/services/RecruitService", [
 											]
 										)
 								)
-								return gf_units[gr] = min_resources
+								, prov = min_resources * prices[gr][3]
+								gf_units[gr] = min_resources
+								gf_units_prov[gr] = prov
+								return 
 							})
 
-							let gf_units_list = sort_max(gf_units)
+							let gf_units_list = sort_max(gf_units_prov)
 							, unit_gf = gf_units_list[0]
 							, unit_type = Object.keys(unit_gf)[0]
 							, amount = unit_gf[unit_type]
