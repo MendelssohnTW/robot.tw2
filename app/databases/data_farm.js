@@ -80,7 +80,8 @@ define("robotTW2/databases/data_farm", [
 			commands				: {},
 			troops_not				: conf.TROOPS_NOT.FARM,
 			name					: "data_farm",
-			infinite				: true
+			infinite				: true,
+			attacked				: false
 	}
 
 	if(!data_farm){

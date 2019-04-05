@@ -37,7 +37,6 @@ define("robotTW2/services/AttackService", [
 		, isPaused = !1
 		, isInitialized = !1
 		, listener = undefined
-		, interval_reload = undefined
 		, that = this
 		, timetable = modelDataService.getGameData().data.units.map(function(obj, index, array){
 			return [obj.speed * 60, obj.name]
@@ -213,8 +212,6 @@ define("robotTW2/services/AttackService", [
 		, stop = function(){
 			robotTW2.removeScript("/controllers/AttackCompletionController.js");
 			commandQueue.unbindAll("attack", data_attack)
-			interval_reload ? $timeout.cancel(interval_reload): null;
-			interval_reload = undefined;
 			isRunning = !1;
 			typeof(listener) == "function" ? listener(): null
 		}

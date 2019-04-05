@@ -26,7 +26,6 @@
 	text-shadow: 1px 1px 0 #000
 }
 
-}
 .robotTW2 .center {
 	display: flex;
 	justify-content: center
@@ -174,7 +173,7 @@
 }
 
 .robotTW2 .checkbox {
-	width: 64px;
+	width: fit-content;
 }
 
 .robotTW2 .icon .text {
@@ -200,14 +199,27 @@
     margin: 0 2px;
 }
 
+.robotTW2 .attack.box-paper {
+    margin: 0 2px;
+}
+
 .robotTW2 .headquarter.win-main {
-    height: 450px;
+    position: relative;
+    height: 440px;
 }
 
 .robotTW2 .headquarter.box-paper {
     min-height: 100px;
     height: 180px;
     margin: 0 2px;
+}
+
+.robotTW2 .farm.box-paper {
+    margin: 0 2px;
+}
+
+.robotTW2 .farm.win-main {
+    height: 670px;
 }
 
 .robotTW2 .spy.win-main {

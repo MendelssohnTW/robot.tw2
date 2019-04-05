@@ -31,6 +31,8 @@ define("robotTW2/databases/data_log", [
 			data		: [],
 			recruit		: [],
 			spy			: [],
+			fake		: [],
+			market		: [],
 			version		: conf.VERSION.LOG,
 	}
 

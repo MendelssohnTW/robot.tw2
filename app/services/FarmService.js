@@ -569,7 +569,7 @@ define("robotTW2/services/FarmService", [
 						, presets
 						, aldeia_units;
 						
-						let vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5)
+						let vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5) && data_farm.attacked
 
 						if(!village_id || !isRunning || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked) {
 							resol();

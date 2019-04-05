@@ -204,7 +204,7 @@ define("robotTW2/services/DefenseService", [
 						let loyalty = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).getLoyalty();
 						let limit = Math.trunc(Math.trunc(loyalty) / data_defense.loyalt)
 						let count = 0;
-						if(loyalty > conf.LIMIT_LOYALTY){
+						if(loyalty > data_defense.loyalt){
 							list.reduce(function(prevVal, elem, index, array) {
 								count++;
 								var b = t == 0 ? prevVal.completedAt : t;
@@ -399,7 +399,8 @@ define("robotTW2/services/DefenseService", [
 				var villages = modelDataService.getSelectedCharacter().getVillages();
 
 				var vls = Object.keys(villages).map(function(villageId){
-					if(data_villages.villages[villageId].defense_activate){
+					let vill_attacked = modelDataService.getGroupList().getVillageGroups(villageId).some(f=>f.id==-5)
+					if(data_villages.villages[villageId].defense_activate && vill_attacked){
 						return villageId
 					}
 				}).filter(f=>f!=undefined)
