@@ -808,7 +808,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"MIN_POINTS_FARM"			: 0,
 						"MAX_POINTS_FARM"			: 12000,
 						"MAP_CHUNCK_LEN"			: 15,
-						"TIME_CORRECTION_COMMAND"	: 775,
+						"TIME_CORRECTION_COMMAND"	: 1550,
 						"TIME_CORRECTION_STANDARD"	: -225,
 						"TIME_DELAY_UPDATE"			: 30000,
 						"TIME_DELAY_FARM"			: 2000,
