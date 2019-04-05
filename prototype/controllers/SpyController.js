@@ -292,25 +292,26 @@ define("robotTW2/controllers/SpyController", [
 			updateValuesSource()
 			if($scope.villages_for_sent.length){
 				var list_proc = [];
+				var villages = modelDataService.getSelectedCharacter().getVillages();
 				Object.keys($scope.villages_for_sent).map(function(elem){
 					let target = $scope.villages_for_sent[elem]
-					, list_dist_vills = Object.keys($scope.local_data_villages).map(function(vill){
-						let village = services.VillageService.getVillage($scope.local_data_villages[vill].id)
+					, list_dist_vills = Object.keys(villages).map(function(village){
+//						let village = services.VillageService.getVillage($scope.local_data_villages[vill].id)
 						let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
 						let order = undefined;
 						let sabotage = false;
 						if(preceptory)
-							order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
+							order = preceptory.selectedOrder;
 
 						if(order && order == "thieves") 
 							sabotage = true;
 
 						return {
-							"id": $scope.local_data_villages[vill].id, 
+							"id": village.getId(), 
 							"dist" : math.actualDistance(
 									{
-										'x' : $scope.local_data_villages[vill].x,
-										'y' : $scope.local_data_villages[vill].y
+										'x' : village.getX(),
+										'y' : village.getY()
 									}, 
 									{
 										'x' : target.village_x, 
@@ -321,15 +322,15 @@ define("robotTW2/controllers/SpyController", [
 						}
 					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
 
-					list_dist_vills = list_dist_vills.map(function(elem){
-						let td = list_proc.find(f=>f.id==elem.id); 
+					list_dist_vills = list_dist_vills.map(function(etm){
+						let td = list_proc.find(f=>f.id==etm.id); 
 						if($scope.data_type_source.selectedOption.value == "sabotage" && dist_vill.sabotage || $scope.data_type_source.selectedOption.value != "sabotage"){
 							if(!td){
-								return elem;
+								return etm;
 							} else {
-								if(td.spies < elem.spies){
-									elem.spies = elem.spies - td.spies
-									return elem
+								if(td.spies < etm.spies){
+									etm.spies = etm.spies - td.spies
+									return etm
 								}
 							}
 						}
@@ -339,17 +340,17 @@ define("robotTW2/controllers/SpyController", [
 					let dist_vill
 					, count = 0;
 
-					function next(dist_vill, limit){
+					function next(dist_vill){
 						count++;
 						let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
-						$scope.send_scope.tempo_escolhido = vt + 200;
+						$scope.send_scope.tempo_escolhido = vt + 2000;
 						$scope.send_scope.startId = dist_vill.id
 						$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
 						$scope.send_scope.targetId = target.village_id
 						$scope.send_scope.targetVillage = target.village_name
 						$scope.send_scope.targetX = target.village_x
 						$scope.send_scope.targetY = target.village_y
-						$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption //qtd
+						$scope.send_scope.qtd = 1//$scope.data_qtd_source.selectedOption //qtd
 
 						services.SpyService.sendCommandAttackSpy($scope.send_scope);
 						let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
@@ -367,9 +368,29 @@ define("robotTW2/controllers/SpyController", [
 						}
 					}
 
+					let qtc = []
 					for (t = 0; t < $scope.data_qtd_source.selectedOption; t++){
-						dist_vill = list_dist_vills.shift();
-						next(dist_vill, $scope.data_qtd_source.selectedOption)
+						qtc.push(t)
+					}
+
+					function fnext(dist_vill){
+						let vlg = modelDataService.getVillage(dist_vill.id)
+						, qtd_spy = vlg.getScoutingInfo().getNumAvailableSpies();
+						if(qtd_spy > 0){
+							next(dist_vill)
+							if(qtc.length && list_dist_vills.length){
+								qtc.shift()
+								fnext(list_dist_vills.shift())
+							}
+						} else {
+							if(list_dist_vills.length){
+								fnext(list_dist_vills.shift())
+							}
+						}	
+					}
+					if(qtc.length && list_dist_vills.length){
+						qtc.shift()
+						fnext(list_dist_vills.shift())
 					}
 				})
 				$scope.send_scope = {}
