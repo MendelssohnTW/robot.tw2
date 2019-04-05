@@ -292,7 +292,7 @@ define("robotTW2/controllers/SpyController", [
 			updateValuesSource()
 			if($scope.villages_for_sent.length){
 				var list_proc = [];
-				var villages = modelDataService.getSelectedCharacter().getVillages();
+				var villages = services.modelDataService.getSelectedCharacter().getVillages();
 				Object.keys($scope.villages_for_sent).map(function(elem){
 					let target = $scope.villages_for_sent[elem]
 					, list_dist_vills = Object.keys(villages).map(function(village){
