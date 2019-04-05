@@ -28,7 +28,7 @@ define("robotTW2/services/AlertService", [
 		}
 		, verify_alert = function(){
 
-			let members = services.modelDataService.getSelectedCharacter().getTribeMemberModel().data
+			let members = modelDataService.getSelectedCharacter().getTribeMemberModel().data
 			, friends = data_alert.friends;
 			if (members != undefined){
 				if (members.filter(f => f.under_attack && friends.some(s => s === f.name)).length) {
