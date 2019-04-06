@@ -375,7 +375,7 @@ define("robotTW2/services/FarmService", [
 					let villages = modelDataService.getSelectedCharacter().getVillageList();
 
 					for(let i = 0; i < villages.length; i++){
-						let village_id = villages[i].data.villageId
+						let village_id = villages[i].getId()
 						, presets
 						, aldeia_units
 						, vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5) && data_farm.attacked
@@ -387,7 +387,7 @@ define("robotTW2/services/FarmService", [
 							continue
 						} else {
 							presets = data_villages.villages[village_id].presets
-							aldeia_units = angular.copy(villages[i].unitInfo.units)
+							aldeia_units = angular.copy(villages[i].getUnitInfo().getUnits())
 						}
 
 						var presets_order = Object.keys(presets).map(function(preset){
