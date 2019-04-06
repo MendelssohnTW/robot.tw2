@@ -507,10 +507,9 @@ define("robotTW2/services/DefenseService", [
 				if(cmds.length){
 					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
 					var cmd = cmds.pop()
-					, expires = cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post
-					, timer_delay = (expires / 2)
+					, expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
 					, params = {
-						"timer_delay" 	: timer_delay,
+						"timer_delay" 	: expires,
 						"id_command" 	: data.id
 					}
 					if(timer_delay >= 0){
