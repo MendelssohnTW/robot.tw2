@@ -309,13 +309,13 @@ define("robotTW2/services/FarmService", [
 				villages = villages.filter(f => f.points < data_villages.villages[village_id].presets[preset_id].max_points_farm)
 				villages = villages.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
 
-				listaVil.sort(function (a, b) {
+				villages.sort(function (a, b) {
 					return get_act_time(village_id, a, units) - get_act_time(village_id, b, units)
 				});
 
-				for (j = 0; j < listaVil.length; j++) {
-					if (!check_village(listaVil[j], cmd_preset)) {
-						villages = villages.filter(f=> f.id != listaVil[j])
+				for (j = 0; j < villages.length; j++) {
+					if (!check_village(villages[j], cmd_preset)) {
+						villages = villages.filter(f=> f.id != villages[j])
 					}
 				}
 
