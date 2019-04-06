@@ -268,14 +268,14 @@ define("robotTW2/services/FarmService", [
 				return false
 			}
 		}
-		, get_act_time = function (village_id, bb) {
+		, get_act_time = function (village_id, bb, units) {
 			var village = modelDataService.getVillage(village_id);
 			let dt =  math.actualDistance(village.getPosition(), {
 				'x'			: bb.x,
 				'y'			: bb.y
 			})
 
-			return get_time(village_id, dt, cmd_preset.preset_units)
+			return get_time(village_id, dt, units)
 		}
 		, loadVillages = function(cmd_preset, cicle){
 			return new Promise(function(resol){
@@ -285,6 +285,7 @@ define("robotTW2/services/FarmService", [
 				, x = cmd_preset.x
 				, y = cmd_preset.y
 				, preset_id = cmd_preset.preset_id
+				, units = cmd_preset.preset_units
 				, village_id = cmd_preset.village_id
 				, dist = get_dist(village_id, cmd_preset.max_journey_time, cmd_preset.preset_units)
 
@@ -303,14 +304,14 @@ define("robotTW2/services/FarmService", [
 				})
 
 				villages = villages.filter(f => f.affiliation == "barbarian")
-				villages = villages.filter(f => get_act_time(village_id, f) > data_villages.villages[village_id].presets[preset_id].min_journey_time)
-				villages = villages.filter(f => get_act_time(village_id, f) < data_villages.villages[village_id].presets[preset_id].max_journey_time)
+				villages = villages.filter(f => get_act_time(village_id, f, units) > data_villages.villages[village_id].presets[preset_id].min_journey_time)
+				villages = villages.filter(f => get_act_time(village_id, f, units) < data_villages.villages[village_id].presets[preset_id].max_journey_time)
 				villages = villages.filter(f => f.points > data_villages.villages[village_id].presets[preset_id].min_points_farm)
 				villages = villages.filter(f => f.points < data_villages.villages[village_id].presets[preset_id].max_points_farm)
 				villages = villages.filter(f => !data_farm.list_exceptions.find(g => g == f.id))
 
 				listaVil.sort(function (a, b) {
-					return get_act_time(village_id, a) - get_act_time(village_id, b)
+					return get_act_time(village_id, a, units) - get_act_time(village_id, b, units)
 				});
 
 				for (j = 0; j < listaVil.length; j++) {
