@@ -339,20 +339,7 @@ define("robotTW2/services/FarmService", [
 					var t = function(cmd_preset){
 						if(!promise_preset){
 							promise_preset = new Promise(function(resolve_presets){
-								var load_exec = exec(cmd_preset)
-								, listaGrid = load_exec.listaGrid
-								if(!listaGrid.length){
-									if(promise_preset_queue.length){
-										cmd_preset = promise_preset_queue.shift();
-										t(cmd_preset)
-									} else {
-										data_log.farm.push({"text":$filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
-										data_log.set()
-										resol()
-									}
-								} else {
-									loadVillages(cmd_preset, cicle).then(resolve_presets);
-								}
+								loadVillages(cmd_preset, cicle).then(resolve_presets);
 							})
 							.then(function(c_preset){
 								promise_preset = undefined
