@@ -274,7 +274,6 @@ define("robotTW2/services/FarmService", [
 				'x'			: bb.x,
 				'y'			: bb.y
 			})
-
 			return get_time(village_id, dt, units)
 		}
 		, loadVillages = function(cmd_preset, cicle){
