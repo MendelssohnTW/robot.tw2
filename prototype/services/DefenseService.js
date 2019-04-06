@@ -405,7 +405,7 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, sendCancel = function(params){
-			var timer_delay = params.timer_delay,
+			var timer_delay = params.timer_delay + robotTW2.databases.data_main.time_correction_command,
 			id = params.id_command;
 			return $timeout(function () {
 				removeCommandDefense(id)
@@ -418,7 +418,7 @@ define("robotTW2/services/DefenseService", [
 		, units_to_send = function(params){
 
 			let units = {}
-			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).unitInfo.units;
+			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).getUnitInfo().getUnits();
 
 			if(!list_units){
 				removeCommandDefense(params.id_command)
@@ -508,7 +508,7 @@ define("robotTW2/services/DefenseService", [
 					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
 					var cmd = cmds.pop()
 					, expires = cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post
-					, timer_delay = (expires / 2) + robotTW2.databases.data_main.time_correction_command
+					, timer_delay = (expires / 2)
 					, params = {
 						"timer_delay" 	: timer_delay,
 						"id_command" 	: data.id
