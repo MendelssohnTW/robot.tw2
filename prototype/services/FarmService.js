@@ -126,7 +126,7 @@ define("robotTW2/services/FarmService", [
 			}).every(f=>f==true)
 			return lt
 		}
-		, sendCmd = function (cmd_preset, lt_bb, cicle, callback) {
+		, sendCmd = function (cmd_preset, villages, cicle, callback) {
 			var result_units = []
 			, village_id = cmd_preset.village_id
 			, preset_id = cmd_preset.preset_id
@@ -134,8 +134,10 @@ define("robotTW2/services/FarmService", [
 			, aldeia_units = angular.copy(village.unitInfo.units)
 			, preset_units = cmd_preset.preset_units
 			, aldeia_commands = village.getCommandListModel().data
-			, t_obj = units_analyze(preset_units, aldeia_units);
-
+			, t_obj = units_analyze(preset_units, aldeia_units)
+			, lt_bb = Object.values(villages).map(function(el){
+				return el.id
+			})
 
 			if(!countCommands[cicle]) {countCommands[cicle] = {}}
 			if(!countCommands[cicle][village_id]) {countCommands[cicle][village_id] = {}}
