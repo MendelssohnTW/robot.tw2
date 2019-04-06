@@ -512,7 +512,7 @@ define("robotTW2/services/DefenseService", [
 						"timer_delay" 	: expires,
 						"id_command" 	: data.id
 					}
-					if(timer_delay >= 0){
+					if(expires >= 0){
 						$rootScope.$broadcast("command_sent_received", params)
 						console.log("Enviado sendCancel " + JSON.stringify(params))
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
