@@ -387,7 +387,7 @@ define("robotTW2/services/FarmService", [
 							continue
 						} else {
 							presets = data_villages.villages[village_id].presets
-							aldeia_units = angular.copy(village.unitInfo.units)
+							aldeia_units = angular.copy(villages[i].unitInfo.units)
 						}
 
 						var presets_order = Object.keys(presets).map(function(preset){
