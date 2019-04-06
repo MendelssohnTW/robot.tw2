@@ -11,6 +11,7 @@ define("robotTW2/services/FarmService", [
 	"robotTW2/services/villages_town",
 	"robotTW2/services/grid_town",
 	"conf/reportTypes",
+	"struct/MapData"
 	], function(
 			robotTW2,
 			time,
@@ -23,7 +24,8 @@ define("robotTW2/services/FarmService", [
 			data_farm,
 			villages_town,
 			grid_town,
-			REPORT_TYPE_CONF
+			REPORT_TYPE_CONF,
+			mapData
 	){
 	return (function FarmService(
 			$rootScope,
