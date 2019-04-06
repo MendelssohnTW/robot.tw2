@@ -292,7 +292,7 @@ define("robotTW2/services/FarmService", [
 
 				var dt = data.map(function(elem){
 					return elem.data
-				})
+				}).filter(f=>f!=null)
 
 				dt.map(function(a){
 					return Object.keys(a).map(function(x){
