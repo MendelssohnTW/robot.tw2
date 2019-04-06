@@ -73,17 +73,17 @@ define("robotTW2/services/DefenseService", [
 				villages.sort(function (a, b) {
 					if (Math.abs(a.getX() - x) != Math.abs(b.getX() - x)) {
 						if (Math.abs(a.getX() - x) < Math.abs(b.getX() - x)) {
-							return 1;
+							return -1;
 						};
 						if (Math.abs(a.getX() - x) > Math.abs(b.getX() - x)) {
-							return -1;
+							return 1;
 						};
 					} else if (Math.abs(a.getY() - y) != Math.abs(b.getY() - y)) {
 						if (Math.abs(a.getY() - y) < Math.abs(b.getY() - y)) {
-							return 1;
+							return -1;
 						};
 						if (Math.abs(a.getY() - y) > Math.abs(b.getY() - y)) {
-							return -1;
+							return 1;
 						};
 					} else {
 						return 0;
@@ -96,17 +96,17 @@ define("robotTW2/services/DefenseService", [
 
 					if (Math.abs(a.getY() - y) != Math.abs(b.getY() - y)) {
 						if (Math.abs(a.getY() - y) < Math.abs(b.getY() - y)) {
-							return 1;
+							return -1;
 						};
 						if (Math.abs(a.getY() - y) > Math.abs(b.getY() - y)) {
-							return -1;
+							return 1;
 						};
 					} else if (Math.abs(a.getX() - x) != Math.abs(b.getX() - x)) {
 						if (Math.abs(a.getX() - x) < Math.abs(b.getX() - x)) {
-							return 1;
+							return -1;
 						};
 						if (Math.abs(a.getX() - x) > Math.abs(b.getX() - x)) {
-							return -1;
+							return 1;
 						};
 					} else {
 						return 0;
