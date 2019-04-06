@@ -90,7 +90,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				});
 				
-				let aldeiaX = lista_aldeias[1]
+				let aldeiaX = villages[1]
 
 				lista_aldeiasY.sort(function (a, b) {
 
