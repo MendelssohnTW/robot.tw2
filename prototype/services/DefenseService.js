@@ -56,7 +56,6 @@ define("robotTW2/services/DefenseService", [
 		, promise_verify = undefined
 		, villages = modelDataService.getSelectedCharacter().getVillageList()
 		, that = this
-		, rt = undefined
 		, promise = undefined
 		, loadVillage = function(cmd){
 			this.cmd = cmd;
@@ -238,19 +237,16 @@ define("robotTW2/services/DefenseService", [
 				, ct = function (cmd, opt){
 					return new Promise(function(resolve_f){
 						return loadVillage(cmd).then(function(aldeia){
-							if(rt || rt.$$state || rt.$$state.status == 0){
-								$timeout.cancel(rt);
-							}
 							var timeSniperPost = data_defense.time_sniper_post;
 							if(opt) {
 								timeSniperPost = data_defense.time_sniper_post_snob || conf.TIME_SNIPER_POST_SNOB;
 							}
 							var params = {
 									start_village		: cmd.targetVillageId,
-									target_village		: aldeia.id,
-									target_name			: aldeia.name,
-									target_x			: aldeia.x,
-									target_y			: aldeia.y,
+									target_village		: aldeia.getId(),
+									target_name			: aldeia.getName(),
+									target_x			: aldeia.getX(),
+									target_y			: aldeia.getY(),
 									type				: "support",
 									data_escolhida		: time.convertMStoUTC(cmd.completedAt),
 									time_sniper_ant		: data_defense.time_sniper_ant,
