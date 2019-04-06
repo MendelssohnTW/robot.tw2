@@ -369,21 +369,22 @@ define("robotTW2/services/FarmService", [
 				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
-				var g = $timeout(function(){
+				$timeout(function(){
 					clear_partial()
 					commands_for_presets[cicle] = []
 					let villages = modelDataService.getSelectedCharacter().getVillageList();
 
-					villages.forEach(function(village){
-						var village_id = village.data.villageId
+					for(let i = 0; i < villages.length; i++){
+						let village_id = villages[i].data.villageId
 						, presets
-						, aldeia_units;
+						, aldeia_units
+						, vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5) && data_farm.attacked
 
-						let vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5) && data_farm.attacked
-
-						if(!village_id || !isRunning || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked) {
-							resol();
-							return;
+						if(!isRunning){
+							break;
+						}
+						if(!village_id || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked) {
+							continue
 						} else {
 							presets = data_villages.villages[village_id].presets
 							aldeia_units = angular.copy(village.unitInfo.units)
@@ -414,11 +415,13 @@ define("robotTW2/services/FarmService", [
 								}
 							}
 						})
-					})
+					}
 
-					execute_presets(commands_for_presets[cicle], cicle).then(resol)
-					if(g.$$state && g.$$state.status == 0)
-						$timeout.cancel(g),	g = undefined;
+					if(commands_for_presets[cicle].lenght){
+						execute_presets(commands_for_presets[cicle], cicle).then(resol)
+					} else {
+						resol()
+					}
 				}, tempo)
 			})
 		}
