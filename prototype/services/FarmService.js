@@ -404,8 +404,8 @@ define("robotTW2/services/FarmService", [
 										village_id				: village_id,
 										preset_id				: preset.id,
 										preset_units			: preset.units,
-										x						: village.data.x,
-										y						: village.data.y,
+										x						: villages[i].data.x,
+										y						: villages[i].data.y,
 										max_journey_time		: preset.max_journey_time,
 										min_journey_time		: preset.min_journey_time
 
