@@ -417,7 +417,7 @@ define("robotTW2/services/FarmService", [
 						})
 					}
 
-					if(commands_for_presets[cicle].lenght){
+					if(commands_for_presets[cicle].length){
 						execute_presets(commands_for_presets[cicle], cicle).then(resol)
 					} else {
 						resol()
