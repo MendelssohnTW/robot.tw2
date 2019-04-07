@@ -54,98 +54,73 @@ define("robotTW2/services/DefenseService", [
 		, listener_received = undefined
 		, listener_conquered = undefined
 		, promise_verify = undefined
+		, villages = modelDataService.getSelectedCharacter().getVillageList()
 		, that = this
-		, rt = undefined
 		, promise = undefined
 		, loadVillage = function(cmd){
 			this.cmd = cmd;
 			return new Promise(function(res, rej){
-				rt = $timeout(function(){
-					rej()
-				}, conf_conf.LOADING_TIMEOUT);
-				var g = 20;
-				var x = this.cmd.targetX || this.cmd.target_x;
-				var y = this.cmd.targetY || this.cmd.target_y;
-				var id = this.cmd.id || this.cmd.command_id;
 				loadIsRunning = !1
-				var lista_aldeiasY = [];
-				var lista_aldeias = [];
-				var lista_barbaras = [];
-				return socketService.emit(providers.routeProvider.MAP_GETVILLAGES,{x:(x - g), y:(y - g), width: 2 * g, height: 2 * g}, function(data){
-					lista_barbaras = [];
-					lista_aldeias = [];
-					lista_aldeiasY = [];
-					if (data != undefined && data.villages != undefined && data.villages.length > 0){
-						var listaVil = angular.copy(data.villages);
-						var p = 0;
-						for (j = 0; j < listaVil.length; j++){
-							if (listaVil[j].affiliation == "own" ){
-								lista_aldeias.push(listaVil[j]);
-								p++;
-							}
-						}
-						angular.extend(lista_aldeiasY, lista_aldeias);
-						lista_aldeias.sort(function (a, b) {
-							if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
-								if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
-									return 1;
-								};
-								if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
-									return -1;
-								};
-							} else if (Math.abs(a.y - y) != Math.abs(b.y - y)) {
-								if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
-									return 1;
-								};
-								if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
-									return -1;
-								};
-							} else {
-								return 0;
-							}
-						});
-
-						lista_aldeiasY.sort(function (a, b) {
-
-							if (Math.abs(a.y - y) != Math.abs(b.y - y)) {
-								if (Math.abs(a.y - y) < Math.abs(b.y - y)) {
-									return 1;
-								};
-								if (Math.abs(a.y - y) > Math.abs(b.y - y)) {
-									return -1;
-								};
-							} else if (Math.abs(a.x - x) != Math.abs(b.x - x)) {
-								if (Math.abs(a.x - x) < Math.abs(b.x - x)) {
-									return 1;
-								};
-								if (Math.abs(a.x - x) > Math.abs(b.x - x)) {
-									return -1;
-								};
-							} else {
-								return 0;
-							}
-						});
-
-					} 
-					loadIsRunning = !1
-					lista_aldeias && lista_aldeias.length ? lista_aldeias.pop() : null;
-					lista_aldeias && lista_aldeias.length ? aldeiaX = lista_aldeias.pop() : aldeiaX = null;
-
-					lista_aldeiasY && lista_aldeiasY.length ? lista_aldeiasY.pop() : null;
-					lista_aldeiasY && lista_aldeiasY.length ? aldeiaY = lista_aldeiasY.pop() : aldeiaY = null;
-
-					(aldeiaX ? Math.abs(aldeiaX.x - x) : 0) + 
-					(aldeiaX ? Math.abs(aldeiaX.y - y) : 0) <= 
-						(aldeiaY ? Math.abs(aldeiaY.x - x) : 0) + 
-						(aldeiaY ? Math.abs(aldeiaY.y - y) : 0) ? aldeia = aldeiaX : aldeia = aldeiaY;
-
-//					typeof(callback) == "function" ? callback(aldeia, this.cmd): null;
-					if(aldeia){
-						res(aldeia)
+				let g = 20
+				, x = this.cmd.targetX || this.cmd.target_x
+				, y = this.cmd.targetY || this.cmd.target_y
+				, id = this.cmd.id || this.cmd.command_id
+				, lista_aldeiasY = []
+				, lista_aldeias = []
+				, lista_barbaras = []
+				angular.extend(lista_aldeiasY, villages);
+				villages.sort(function (a, b) {
+					if (Math.abs(a.getX() - x) != Math.abs(b.getX() - x)) {
+						if (Math.abs(a.getX() - x) < Math.abs(b.getX() - x)) {
+							return -1;
+						};
+						if (Math.abs(a.getX() - x) > Math.abs(b.getX() - x)) {
+							return 1;
+						};
+					} else if (Math.abs(a.getY() - y) != Math.abs(b.getY() - y)) {
+						if (Math.abs(a.getY() - y) < Math.abs(b.getY() - y)) {
+							return -1;
+						};
+						if (Math.abs(a.getY() - y) > Math.abs(b.getY() - y)) {
+							return 1;
+						};
 					} else {
-						rej()
+						return 0;
 					}
-				})
+				});
+				
+				let aldeiaX = villages[1]
+
+				lista_aldeiasY.sort(function (a, b) {
+
+					if (Math.abs(a.getY() - y) != Math.abs(b.getY() - y)) {
+						if (Math.abs(a.getY() - y) < Math.abs(b.getY() - y)) {
+							return -1;
+						};
+						if (Math.abs(a.getY() - y) > Math.abs(b.getY() - y)) {
+							return 1;
+						};
+					} else if (Math.abs(a.getX() - x) != Math.abs(b.getX() - x)) {
+						if (Math.abs(a.getX() - x) < Math.abs(b.getX() - x)) {
+							return -1;
+						};
+						if (Math.abs(a.getX() - x) > Math.abs(b.getX() - x)) {
+							return 1;
+						};
+					} else {
+						return 0;
+					}
+				});
+				
+				let aldeiaY = lista_aldeiasY[1]
+				, aldeia
+
+				(aldeiaX ? Math.abs(aldeiaX.getX() - x) : 0) + 
+				(aldeiaX ? Math.abs(aldeiaX.getY() - y) : 0) <= 
+					(aldeiaY ? Math.abs(aldeiaY.getX() - x) : 0) + 
+					(aldeiaY ? Math.abs(aldeiaY.getY() - y) : 0) ? aldeia = aldeiaX : aldeia = aldeiaY;
+
+				aldeia ? res(aldeia) : rej()
 			});
 		}
 		, troops_measure = function(command, callback){
@@ -262,19 +237,16 @@ define("robotTW2/services/DefenseService", [
 				, ct = function (cmd, opt){
 					return new Promise(function(resolve_f){
 						return loadVillage(cmd).then(function(aldeia){
-							if(rt || rt.$$state || rt.$$state.status == 0){
-								$timeout.cancel(rt);
-							}
 							var timeSniperPost = data_defense.time_sniper_post;
 							if(opt) {
 								timeSniperPost = data_defense.time_sniper_post_snob || conf.TIME_SNIPER_POST_SNOB;
 							}
 							var params = {
 									start_village		: cmd.targetVillageId,
-									target_village		: aldeia.id,
-									target_name			: aldeia.name,
-									target_x			: aldeia.x,
-									target_y			: aldeia.y,
+									target_village		: aldeia.getId(),
+									target_name			: aldeia.getName(),
+									target_x			: aldeia.getX(),
+									target_y			: aldeia.getY(),
 									type				: "support",
 									data_escolhida		: time.convertMStoUTC(cmd.completedAt),
 									time_sniper_ant		: data_defense.time_sniper_ant,
@@ -433,7 +405,7 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, sendCancel = function(params){
-			var timer_delay = params.timer_delay,
+			var timer_delay = params.timer_delay + robotTW2.databases.data_main.time_correction_command,
 			id = params.id_command;
 			return $timeout(function () {
 				removeCommandDefense(id)
@@ -446,7 +418,7 @@ define("robotTW2/services/DefenseService", [
 		, units_to_send = function(params){
 
 			let units = {}
-			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).unitInfo.units;
+			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).getUnitInfo().getUnits();
 
 			if(!list_units){
 				removeCommandDefense(params.id_command)
@@ -535,13 +507,12 @@ define("robotTW2/services/DefenseService", [
 				if(cmds.length){
 					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
 					var cmd = cmds.pop()
-					, expires = cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post
-					, timer_delay = (expires / 2) + robotTW2.databases.data_main.time_correction_command
+					, expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
 					, params = {
-						"timer_delay" 	: timer_delay,
+						"timer_delay" 	: expires,
 						"id_command" 	: data.id
 					}
-					if(timer_delay >= 0){
+					if(expires >= 0){
 						$rootScope.$broadcast("command_sent_received", params)
 						console.log("Enviado sendCancel " + JSON.stringify(params))
 						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
