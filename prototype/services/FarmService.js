@@ -76,10 +76,18 @@ define("robotTW2/services/FarmService", [
 
 			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
 		}
+		, units_has_exception = function (units) {
+			return Object.keys(units).map(function(unit){
+				return data_farm.troops_not.some(elem => elem == unit)
+			}).some(elem => elem == true)
+		}
 		, units_has_unit_search = function (unit_search, units) {
 			return Object.keys(units).some(unit => unit == unit_search && units[unit].available != undefined && units[unit].available >= 2)
 		}
 		, units_analyze = function (preset_units, aldeia_units, opt) {
+			/*
+			 * Verificar se há nobres e retornar false se haver
+			 */
 			var f = Object.keys(preset_units).map(function(unit_preset){
 				if(preset_units[unit_preset] >= 2 && !data_farm.troops_not.some(elem => elem == unit_preset)) {
 					if (units_has_unit_search(unit_preset, aldeia_units) && aldeia_units[unit_preset].available >= preset_units[unit_preset]) {
@@ -400,7 +408,7 @@ define("robotTW2/services/FarmService", [
 						}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
 						presets_order.forEach(function(preset){
-							if(units_analyze(preset.units, aldeia_units, true)) {
+							if(!units_has_exception(preset.units) && units_analyze(preset.units, aldeia_units, true)) {
 								var comando = {
 										village_id				: village_id,
 										preset_id				: preset.id,
