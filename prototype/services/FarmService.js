@@ -154,15 +154,13 @@ define("robotTW2/services/FarmService", [
 				return data_villages.villages[village_id].presets[elem].max_commands_farm
 			})) || 0;
 
-			var aldeia_commands_lenght = aldeia_commands.length;
-
-			if(!t_obj || t_obj[1] == 0 || aldeia_commands_lenght >= max_cmds){
+			if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
 				callback(false);
 				return !1;
 			}
 
-			var cmd_rest_preset = max_cmds - aldeia_commands_lenght
-			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght
+			var cmd_rest_preset = max_cmds - aldeia_commands.length
+			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
 			, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 			, r = undefined
 			, promise_send = undefined
@@ -291,8 +289,7 @@ define("robotTW2/services/FarmService", [
 				, dist = get_dist(village_id, cmd_preset.max_journey_time, cmd_preset.preset_units)
 
 				var data = mapData.loadTownData(x, y, dist, dist)
-
-				var dt = data.map(function(elem){
+				, dt = data.map(function(elem){
 					return elem.data
 				}).filter(f=>f!=null)
 
@@ -321,9 +318,13 @@ define("robotTW2/services/FarmService", [
 					}
 				}
 
-				sendCmd(cmd_preset, villages, cicle, function (permited) {
-					resol()
-				});
+				if(villages.length){
+					sendCmd(cmd_preset, villages, cicle, function (permited) {
+						resol()
+					});
+				} else {
+					console.log("no villages.length " + JSON.stringify(cmd_preset))
+				}
 
 			})
 		}
