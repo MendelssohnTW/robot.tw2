@@ -78,7 +78,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, units_has_exception = function (units) {
 			return Object.keys(units).map(function(unit){
-				return data_farm.troops_not.some(elem => elem == unit)
+				return data_farm.troops_not.some(elem => elem == unit && units[elem] > 0)
 			}).some(elem => elem == true)
 		}
 		, units_has_unit_search = function (unit_search, units) {
