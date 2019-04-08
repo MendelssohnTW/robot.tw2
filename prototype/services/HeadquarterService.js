@@ -139,9 +139,8 @@ define("robotTW2/services/HeadquarterService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
-		, upgradeBuilding = function(village_id, resolve){
+		, upgradeBuilding = function(village, resolve){
 			return new Promise(function(resolve){
-				var village = modelDataService.getSelectedCharacter().getVillage(village_id);
 				buildingService.compute(village)
 				var buildingQueue = village.getBuildingQueue()
 				, buildingData = village.getBuildingData()
@@ -258,13 +257,13 @@ define("robotTW2/services/HeadquarterService", [
 				})
 			})
 		}
-		, seq_cicle = function(village_id){
-			function f(vill_id){
+		, seq_cicle = function(village){
+			function f(vill){
 				if(!promise){
 					promise = new Promise(function(res){
-						upgradeBuilding(vill_id).then(function(repeat){
+						upgradeBuilding(vill).then(function(repeat){
 							if(repeat){
-								promise_queue.unshift(vill_id)
+								promise_queue.unshift(vill)
 								$timeout(function(){res()}, 2000)
 							} else {
 								res()
@@ -273,23 +272,23 @@ define("robotTW2/services/HeadquarterService", [
 					}).then(function(){
 						promise = undefined;
 						if (promise_queue.length){
-							vill_id = promise_queue.shift();
-							f(vill_id);	
+							vill = promise_queue.shift();
+							f(vill);	
 						} else {
 							wait()
 						}
 					})
 				} else {
-					promise_queue.push(vill_id)
+					promise_queue.push(vill)
 				}
 			}
-			f(village_id)
+			f(village)
 		}
 		, cicle_building = function($event, data){
 			if (!isInitialized)
 				return;
 			var villages = modelDataService.getSelectedCharacter().getVillages();
-			Object.keys(villages).map(function(village_id){seq_cicle(village_id)})
+			Object.values(villages).map(function(village){seq_cicle(village)})
 		}
 		, wait = function(){
 			setList(function(tm){
