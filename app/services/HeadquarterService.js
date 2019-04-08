@@ -139,17 +139,15 @@ define("robotTW2/services/HeadquarterService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
-		, upgradeBuilding = function(village_id, resolve){
+		, upgradeBuilding = function(village, resolve){
 			return new Promise(function(resolve){
-				var village = modelDataService.getSelectedCharacter().getVillage(village_id);
 				buildingService.compute(village)
 				var buildingQueue = village.getBuildingQueue()
-				, buildingData = village.getBuildingData()
-				, levels = buildingData.getBuildingLevels()
+				, levels = village.getBuildingData().getBuildingLevels()
 				, buildingLevels = angular.copy(Object.keys(levels).map(function(key){return {[key] : levels[key]}}))
 				, queues = village.buildingQueue.getQueue()
 				, readyState = village.checkReadyState()
-				, buildState = data_villages.villages[village_id].headquarter_activate
+				, buildState = data_villages.villages[village.getId()].headquarter_activate
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
 				, firstQueue = queues[0];
@@ -180,34 +178,34 @@ define("robotTW2/services/HeadquarterService", [
 					return;
 				}
 
-				data_villages.villages[village_id].buildinglevels = buildingLevels;
+				data_villages.villages[village.getId()].buildinglevels = buildingLevels;
 				if (queues.length) {
 					queues.forEach(
 							function(queue) {
-								data_villages.villages[village_id].buildinglevels.map(function(value){
+								data_villages.villages[village.getId()].buildinglevels.map(function(value){
 									Object.keys(value)[0] == queue.building ? value[queue.building]++ :undefined;
 								})
 							}
 					)
 				}
 
-				data_villages.villages[village_id].builds = checkBuildingOrderLimit(data_villages.villages[village_id]);
+				data_villages.villages[village.getId()].builds = checkBuildingOrderLimit(data_villages.villages[village.getId()]);
 
-				if(!data_villages.villages[village_id].builds.length) {
+				if(!data_villages.villages[village.getId()].builds.length) {
 					resolve();
 					return;
 				}
 
-				var bd = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value]
+				var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
 				var reBuilds = Object.keys(bd).map(function(key_db){
-					return data_villages.villages[village_id].builds.map(function(key){
+					return data_villages.villages[village.getId()].builds.map(function(key){
 						return Object.keys(key)[0]
 					}).find(f=>f==key_db)
 				}).filter(f => f != undefined)
 				, g = [];
 
 				reBuilds.forEach(function(i){
-					g.push(data_villages.villages[village_id].builds.map(
+					g.push(data_villages.villages[village.getId()].builds.map(
 							function(key){
 								return Object.keys(key)[0] == i ? {[Object.keys(key)[0]] : Object.values(key)[0]} : undefined
 							}
@@ -258,13 +256,13 @@ define("robotTW2/services/HeadquarterService", [
 				})
 			})
 		}
-		, seq_cicle = function(village_id){
-			function f(vill_id){
+		, seq_cicle = function(village){
+			function f(vill){
 				if(!promise){
 					promise = new Promise(function(res){
-						upgradeBuilding(vill_id).then(function(repeat){
+						upgradeBuilding(vill).then(function(repeat){
 							if(repeat){
-								promise_queue.unshift(vill_id)
+								promise_queue.unshift(vill)
 								$timeout(function(){res()}, 2000)
 							} else {
 								res()
@@ -273,23 +271,23 @@ define("robotTW2/services/HeadquarterService", [
 					}).then(function(){
 						promise = undefined;
 						if (promise_queue.length){
-							vill_id = promise_queue.shift();
-							f(vill_id);	
+							vill = promise_queue.shift();
+							f(vill);	
 						} else {
 							wait()
 						}
 					})
 				} else {
-					promise_queue.push(vill_id)
+					promise_queue.push(vill)
 				}
 			}
-			f(village_id)
+			f(village)
 		}
 		, cicle_building = function($event, data){
 			if (!isInitialized)
 				return;
 			var villages = modelDataService.getSelectedCharacter().getVillages();
-			Object.keys(villages).map(function(village_id){seq_cicle(village_id)})
+			Object.values(villages).map(function(village){seq_cicle(village)})
 		}
 		, wait = function(){
 			setList(function(tm){

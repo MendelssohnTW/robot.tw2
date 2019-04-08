@@ -8,17 +8,26 @@ define("robotTW2/services/MainService", [
 			data_main
 	){
 	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService, providers) {
-
+		var timeout = undefined;
+		
 		function onError (){
+			if(timeout && timeout.$$state && timeout.$$state.status == 0){
+				robotTW2.services.$timeout.cancel(timeout)
+			}
 			location.reload()
+		}
+		
+		function onErrorTimeout (){
+			if(timeout && timeout.$$state && timeout.$$state.status == 0){
+				robotTW2.services.$timeout.cancel(timeout)
+			}
+			timeout = robotTW2.services.$timeout(function(){
+				onError()
+			}, 30000)
 		}
 		
 		var service = {};
 		return service.initExtensions = function(){
-			
-//			var interval_reload = setInterval(function(){
-//				location.reload()	
-//			}, 3 * 60 * 60 * 1000)
 			
 			var extensions = data_main.getExtensions();
 			for (var extension in extensions) {
@@ -43,6 +52,7 @@ define("robotTW2/services/MainService", [
 			}
 			data_main.setExtensions(extensions);
 			
+			$rootScope.$on(providers.eventTypeProvider.SOCKET_ERROR,				onErrorTimeout);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_ERROR,		onError);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
 			

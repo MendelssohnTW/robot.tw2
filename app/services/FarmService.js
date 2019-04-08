@@ -76,6 +76,11 @@ define("robotTW2/services/FarmService", [
 
 			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
 		}
+		, units_has_exception = function (units) {
+			return Object.keys(units).map(function(unit){
+				return data_farm.troops_not.some(elem => elem == unit)
+			}).some(elem => elem == true)
+		}
 		, units_has_unit_search = function (unit_search, units) {
 			return Object.keys(units).some(unit => unit == unit_search && units[unit].available != undefined && units[unit].available >= 2)
 		}
@@ -154,15 +159,13 @@ define("robotTW2/services/FarmService", [
 				return data_villages.villages[village_id].presets[elem].max_commands_farm
 			})) || 0;
 
-			var aldeia_commands_lenght = aldeia_commands.length;
-
-			if(!t_obj || t_obj[1] == 0 || aldeia_commands_lenght >= max_cmds){
+			if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
 				callback(false);
 				return !1;
 			}
 
-			var cmd_rest_preset = max_cmds - aldeia_commands_lenght
-			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands_lenght
+			var cmd_rest_preset = max_cmds - aldeia_commands.length
+			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
 			, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 			, r = undefined
 			, promise_send = undefined
@@ -291,8 +294,7 @@ define("robotTW2/services/FarmService", [
 				, dist = get_dist(village_id, cmd_preset.max_journey_time, cmd_preset.preset_units)
 
 				var data = mapData.loadTownData(x, y, dist, dist)
-
-				var dt = data.map(function(elem){
+				, dt = data.map(function(elem){
 					return elem.data
 				}).filter(f=>f!=null)
 
@@ -321,9 +323,13 @@ define("robotTW2/services/FarmService", [
 					}
 				}
 
-				sendCmd(cmd_preset, villages, cicle, function (permited) {
-					resol()
-				});
+				if(villages.length){
+					sendCmd(cmd_preset, villages, cicle, function (permited) {
+						resol()
+					});
+				} else {
+					console.log("no villages.length " + JSON.stringify(cmd_preset))
+				}
 
 			})
 		}
@@ -399,7 +405,7 @@ define("robotTW2/services/FarmService", [
 						}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 
 						presets_order.forEach(function(preset){
-							if(units_analyze(preset.units, aldeia_units, true)) {
+							if(!units_has_exception(preset.units) && units_analyze(preset.units, aldeia_units, true)) {
 								var comando = {
 										village_id				: village_id,
 										preset_id				: preset.id,
