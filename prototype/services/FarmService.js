@@ -376,7 +376,7 @@ define("robotTW2/services/FarmService", [
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 
 				$timeout(function(){
-					clear_partial()
+					clear_partial(cicle)
 					commands_for_presets[cicle] = []
 					let villages = modelDataService.getSelectedCharacter().getVillageList();
 
