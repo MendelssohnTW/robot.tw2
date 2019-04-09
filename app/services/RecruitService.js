@@ -84,8 +84,8 @@ define("robotTW2/services/RecruitService", [
 					if(!promise_UnitsAndResources){
 						promise_UnitsAndResources = new Promise(function(res, rej){
 							let village = modelDataService.getSelectedCharacter().getVillage(village_id)
-							, units = village.getUnitInfo().units
-							, resources = village.getResources().data.resources
+							, units = village.getUnitInfo().getUnits()
+							, resources = village.getResources().getResources()
 							, listGroups = modelDataService.getGroupList().getVillageGroups(village_id)
 							, villageUnits = {}
 							, ltz = []
@@ -105,7 +105,7 @@ define("robotTW2/services/RecruitService", [
 								}
 							});
 
-							if (ltz.some(f => f == true)) {
+							if (ltz.some(f => f == true || !Object.keys(listGroups).length)) {
 								res()
 								return
 							};
@@ -121,7 +121,7 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
-							
+
 							Object.keys(grs_units).map(function(gr){
 								let min_resources = Math.trunc(
 										Math.min.apply(null, [
@@ -139,33 +139,42 @@ define("robotTW2/services/RecruitService", [
 							})
 
 							let gf_units_list = sort_max(gf_units_prov)
-							, unit_gf = gf_units_list[0]
-							, unit_type = Object.keys(unit_gf)[0]
-							, amount = gf_units[unit_type]
-							, remaining = grs_units[unit_type] - villageUnits[unit_type]
 
-							if (remaining <= 0) {
-								res()
-								return
-							};
-							if (amount > remaining) {
-								amount = remaining;
-							} else {
-								if (amount < 1) {
+
+							function nt(){
+								if(gf_units_list.length){
+									let unit_gf = gf_units_list.shift()
+									, unit_type = Object.keys(unit_gf)[0]
+									, amount = gf_units[unit_type]
+									, remaining = grs_units[unit_type] - villageUnits[unit_type]
+
+									if (remaining <= 0) {
+										return nt()
+										
+									};
+									if (amount > remaining) {
+										amount = remaining;
+									} else {
+										if (amount < 1) {
+											return nt()
+										};
+									};
+
+									let data_rec = {
+											"village_id": village_id,
+											"unit_type": unit_type,
+											"amount": amount
+									}
+
+									data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
+									socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
 									res()
-									return
-								};
-							};
-
-							let data_rec = {
-									"village_id": village_id,
-									"unit_type": unit_type,
-									"amount": amount
+								} else {
+									res()
+								}
 							}
+							nt()
 
-							data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
-							socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
-							res()
 						}).then(function(){
 							promise_UnitsAndResources = undefined
 							if(queue_UnitsAndResources.length){
@@ -231,7 +240,7 @@ define("robotTW2/services/RecruitService", [
 			data_log.recruit.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 			var vls = modelDataService.getSelectedCharacter().getVillageList();
 			vls = Object.keys(vls).map(function(elem){
-				if(!data_villages.villages[vls[elem].data.villageId]){
+				if(!data_villages.villages[vls[elem].getId()]){
 					return undefined
 				}
 				let tam = vls[elem].getRecruitingQueue("barracks").length || 0;
@@ -239,8 +248,8 @@ define("robotTW2/services/RecruitService", [
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
 					list.push(getFinishedForFree(vls[elem]))
 				}
-				if(!!data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots){
-					return vls[elem].data.villageId
+				if(!!data_villages.villages[vls[elem].getId()].recruit_activate && tam < data_recruit.reserva.slots){
+					return vls[elem].getId()
 				}
 			}).filter(f=>f!=undefined)
 
