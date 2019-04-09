@@ -105,11 +105,11 @@ define("robotTW2/services/RecruitService", [
 								}
 							});
 
-							if (ltz.some(f => f == true)) {
+							if (ltz.some(f => f == true || !Object.keys(listGroups).length)) {
 								res()
 								return
 							};
-
+							
 							listGroups.map(function(gr){
 								if(!data_recruit.Groups[gr.id]){return}
 								if(Object.values(data_recruit.Groups[gr.id].units).some(f=>f>0)){
@@ -121,11 +121,6 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
-							
-							if(!grs_units.length){
-								res()
-								return
-							}
 							
 							Object.keys(grs_units).map(function(gr){
 								let min_resources = Math.trunc(
