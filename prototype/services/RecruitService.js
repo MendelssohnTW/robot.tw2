@@ -250,8 +250,6 @@ define("robotTW2/services/RecruitService", [
 				}
 				if(!!data_villages.villages[vls[elem].getId()].recruit_activate && tam < data_recruit.reserva.slots){
 					return vls[elem].getId()
-				} else {
-					console.log(vls[elem].getName() + " tam " + tam + " activate " + data_villages.villages[vls[elem].getId()].recruit_activate)
 				}
 			}).filter(f=>f!=undefined)
 
