@@ -168,7 +168,7 @@ define("robotTW2/services/RecruitService", [
 
 									data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
 									socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
-									nt()
+									res()
 								} else {
 									res()
 								}
