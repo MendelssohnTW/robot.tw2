@@ -84,8 +84,8 @@ define("robotTW2/services/RecruitService", [
 					if(!promise_UnitsAndResources){
 						promise_UnitsAndResources = new Promise(function(res, rej){
 							let village = modelDataService.getSelectedCharacter().getVillage(village_id)
-							, units = village.getUnitInfo().units
-							, resources = village.getResources().data.resources
+							, units = village.getUnitInfo().getUnits()
+							, resources = village.getResources().getResources()
 							, listGroups = modelDataService.getGroupList().getVillageGroups(village_id)
 							, villageUnits = {}
 							, ltz = []
@@ -121,6 +121,11 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
+							
+							if(!grs_units.length){
+								res()
+								return
+							}
 							
 							Object.keys(grs_units).map(function(gr){
 								let min_resources = Math.trunc(
