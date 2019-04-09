@@ -109,7 +109,7 @@ define("robotTW2/services/RecruitService", [
 								res()
 								return
 							};
-							
+
 							listGroups.map(function(gr){
 								if(!data_recruit.Groups[gr.id]){return}
 								if(Object.values(data_recruit.Groups[gr.id].units).some(f=>f>0)){
@@ -121,7 +121,7 @@ define("robotTW2/services/RecruitService", [
 									return
 								}
 							})
-							
+
 							Object.keys(grs_units).map(function(gr){
 								let min_resources = Math.trunc(
 										Math.min.apply(null, [
@@ -139,33 +139,42 @@ define("robotTW2/services/RecruitService", [
 							})
 
 							let gf_units_list = sort_max(gf_units_prov)
-							, unit_gf = gf_units_list[0]
-							, unit_type = Object.keys(unit_gf)[0]
-							, amount = gf_units[unit_type]
-							, remaining = grs_units[unit_type] - villageUnits[unit_type]
 
-							if (remaining <= 0) {
-								res()
-								return
-							};
-							if (amount > remaining) {
-								amount = remaining;
-							} else {
-								if (amount < 1) {
+
+							function nt(){
+								if(gf_units_list.length){
+									let unit_gf = gf_units_list.shift()
+									, unit_type = Object.keys(unit_gf)[0]
+									, amount = gf_units[unit_type]
+									, remaining = grs_units[unit_type] - villageUnits[unit_type]
+
+									if (remaining <= 0) {
+										return nt()
+										
+									};
+									if (amount > remaining) {
+										amount = remaining;
+									} else {
+										if (amount < 1) {
+											return nt()
+										};
+									};
+
+									let data_rec = {
+											"village_id": village_id,
+											"unit_type": unit_type,
+											"amount": amount
+									}
+
+									data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
+									socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
+									nt()
+								} else {
 									res()
-									return
-								};
-							};
-
-							let data_rec = {
-									"village_id": village_id,
-									"unit_type": unit_type,
-									"amount": amount
+								}
 							}
+							nt()
 
-							data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
-							socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
-							res()
 						}).then(function(){
 							promise_UnitsAndResources = undefined
 							if(queue_UnitsAndResources.length){
