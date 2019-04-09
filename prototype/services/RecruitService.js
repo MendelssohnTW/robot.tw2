@@ -231,7 +231,7 @@ define("robotTW2/services/RecruitService", [
 			data_log.recruit.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 			var vls = modelDataService.getSelectedCharacter().getVillageList();
 			vls = Object.keys(vls).map(function(elem){
-				if(!data_villages.villages[vls[elem].data.villageId]){
+				if(!data_villages.villages[vls[elem].getId()]){
 					return undefined
 				}
 				let tam = vls[elem].getRecruitingQueue("barracks").length || 0;
@@ -239,8 +239,10 @@ define("robotTW2/services/RecruitService", [
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
 					list.push(getFinishedForFree(vls[elem]))
 				}
-				if(!!data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots){
-					return vls[elem].data.villageId
+				if(!!data_villages.villages[vls[elem].getId()].recruit_activate && tam < data_recruit.reserva.slots){
+					return vls[elem].getId()
+				} else {
+					console.log(vls[elem].getName())
 				}
 			}).filter(f=>f!=undefined)
 
