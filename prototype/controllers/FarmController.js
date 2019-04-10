@@ -217,6 +217,7 @@ define("robotTW2/controllers/FarmController", [
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, update_all = function update_all(){
+			$scope.data_select.selectedOption = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
 			triggerUpdate();
 			services.$timeout(blurPreset, 1500)
 		}
@@ -598,7 +599,7 @@ define("robotTW2/controllers/FarmController", [
 				"selectedOptionOut"	: {}
 		}
 
-		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
+		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 
 		$scope.data_exception = {
 			"availableOptions" : [],
