@@ -120,7 +120,7 @@ define("robotTW2/services/FarmService", [
 			}).some(f=>f==true)
 			return !lt
 		}
-		, check_commands_for_bb = function(bb, cicle){
+		, check_commands_for_bb = function(bb){
 			let lt = false;
 			lt = Object.keys(countCommands).map(function(cicle){
 				return Object.keys(countCommands[cicle]).map(function(village_id){
@@ -177,7 +177,7 @@ define("robotTW2/services/FarmService", [
 			}
 
 			lt_bb = Object.keys(lt_bb).map(function (barbara) {
-				if (check_commands_for_bb(lt_bb[barbara], cicle)) {
+				if (check_commands_for_bb(lt_bb[barbara])) {
 					return lt_bb[barbara]
 				}
 			}).filter(f=>f!=undefined)
