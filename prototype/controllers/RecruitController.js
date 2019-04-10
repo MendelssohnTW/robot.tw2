@@ -148,7 +148,7 @@ define("robotTW2/controllers/RecruitController", [
 		
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			let village = services.villageService.getVillage($scope.data_select.selectedOption.id)
+			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			if(!village){return}
 			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(village.getX(), village.getY());
