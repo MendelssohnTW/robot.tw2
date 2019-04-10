@@ -231,7 +231,7 @@ define("robotTW2/services/FarmService", [
 							g = undefined;
 							promise_send = undefined;
 							let tot = Object.keys(countCommands[cicle][village_id]).reduce(function(a, b){
-								return countCommands[cicle][village_id][a].length ? countCommands[cicle][village_id][a].length : 0 + countCommands[cicle][village_id][b] ? countCommands[cicle][village_id][b].length : 0
+								return countCommands[cicle][village_id][a] ? countCommands[cicle][village_id][a].length : 0 + countCommands[cicle][village_id][b] ? countCommands[cicle][village_id][b].length : 0
 							})
 							, parc = countCommands[cicle][village_id][preset_id].length
 							if(promise_send_queue.length && permited && parc <= cmd_ind && tot <= max_cmds){
@@ -444,7 +444,7 @@ define("robotTW2/services/FarmService", [
 		, start = function () {
 
 			if(isRunning) {return}
-			clear()
+//			clear()
 
 			function execute_init(opt){
 				isRunning = !0
