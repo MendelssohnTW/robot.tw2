@@ -176,7 +176,8 @@ define("robotTW2/controllers/DefenseController", [
 			if(!$scope.data_select){return}
 			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			if(!village){return}
-			services.villageService.setSelectedVillage(village)
+//			services.villageService.setSelectedVillage(village)
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 		}, true)
 
