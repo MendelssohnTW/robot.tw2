@@ -66,10 +66,8 @@ define("robotTW2/controllers/DefenseController", [
 			if(!vid){return}
 			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
-			let x = village.data.x
-			let y = village.data.y
-			services.villageService.setSelectedVillage(village)
-			services.mapService.jumpToVillage(x, y);
+			services.villageService.setSelectedVillage(village.getId())
+			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
 

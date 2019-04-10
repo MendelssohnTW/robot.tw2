@@ -271,10 +271,8 @@ define("robotTW2/controllers/SpyController", [
 			if(!vid){return}
 			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
-			let x = village.data.x
-			let y = village.data.y
-			services.villageService.setSelectedVillage(village)
-			services.mapService.jumpToVillage(x, y);
+			services.villageService.setSelectedVillage(village.getId())
+			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
 
@@ -483,6 +481,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
 			let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
 			let order = undefined;
 			if(preceptory)
@@ -525,7 +524,11 @@ define("robotTW2/controllers/SpyController", [
 			$scope.data_spy.set();
 		});
 
-		$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, function(){
+			$scope.data_select.selectedOption = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
+		});
+		
+		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])
 
