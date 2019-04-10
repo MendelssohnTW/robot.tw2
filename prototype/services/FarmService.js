@@ -138,7 +138,7 @@ define("robotTW2/services/FarmService", [
 			, village = modelDataService.getSelectedCharacter().getVillage(village_id)
 			, aldeia_units = angular.copy(village.unitInfo.units)
 			, preset_units = cmd_preset.preset_units
-			, aldeia_commands = village.getCommandListModel().data
+			, aldeia_commands = village.getCommandListModel().getCommands()
 			, t_obj = units_analyze(preset_units, aldeia_units)
 			, lt_bb = Object.values(villages).map(function(el){
 				return el.id
@@ -149,11 +149,11 @@ define("robotTW2/services/FarmService", [
 			if(!countCommands[cicle][village_id]["village"]) {countCommands[cicle][village_id]["village"] = []}
 			if(!countCommands[cicle][village_id][preset_id]) {countCommands[cicle][village_id][preset_id] = []}
 
-			Object.keys(aldeia_commands).map(function (cmd) {
-				if(check_commands(aldeia_commands[cmd], village_id, preset_id, cicle)){
-					countCommands[cicle][village_id]["village"].push(aldeia_commands[cmd].targetVillageId);
+			aldeia_commands.lenght ? aldeia_commands.forEach(function (cmd) {
+				if(check_commands(cmd, village_id, preset_id, cicle)){
+					countCommands[cicle][village_id]["village"].push(cmd.targetVillageId);
 				}
-			})
+			}) : aldeia_commands = [];
 
 			let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[village_id].presets).map(function(elem){
 				return data_villages.villages[village_id].presets[elem].max_commands_farm
@@ -170,7 +170,11 @@ define("robotTW2/services/FarmService", [
 			, r = undefined
 			, promise_send = undefined
 			, promise_send_queue = []
-			, count_command_sent = 0;
+			
+			if(!lt_bb.length){
+				callback(true);
+				return !0;
+			}
 
 			lt_bb = Object.keys(lt_bb).map(function (barbara) {
 				if (check_commands_for_bb(lt_bb[barbara], cicle)) {
@@ -179,12 +183,7 @@ define("robotTW2/services/FarmService", [
 			}).filter(f=>f!=undefined)
 
 			lt_bb = lt_bb.splice(0, cmd_ind)
-
-			if(!lt_bb.length){
-				callback(true);
-				return !0;
-			}
-
+			
 			lt_bb.forEach(function (barbara) {
 				var g = undefined
 				, f = function(bb){
@@ -201,19 +200,27 @@ define("robotTW2/services/FarmService", [
 										army_preset_id: preset_id,
 										type: "attack"
 								}
-								countCommands[cicle][village_id][preset_id].push(bb);
-								let text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + params.army_preset_id
+								
+								let text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + params.army_preset_id +
 								$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + params.start_village + 
 								$filter("i18n")("text_target", $rootScope.loc.ale, "farm") + ": " + params.target_village
 								data_log.farm.push({"text":text, "date": (new Date(time.convertedTime())).toString()})
 								data_log.set()
+								if(!countCommands[cicle][village_id]){
+									console.log("no village_id")
+									resolve_send(true)
+									return
+								}
+								if(!preset_id){
+									console.log("no preset_id")
+									resolve_send(true)
+									return
+								}
+								countCommands[cicle][village_id][preset_id].push(bb);
 								socketService.emit(providers.routeProvider.SEND_PRESET, params);
-								count_command_sent++;
-
 								result_units = units_subtract(preset_units, aldeia_units)
 								aldeia_units = result_units[1];
 								var permit_send = !!result_units[0];
-
 								resolve_send(permit_send)
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
@@ -223,7 +230,7 @@ define("robotTW2/services/FarmService", [
 							$timeout.cancel(g);
 							g = undefined;
 							promise_send = undefined;
-							if(promise_send_queue.length && permited && count_command_sent <= cmd_ind){
+							if(promise_send_queue.length && permited && countCommands[cicle][village_id][preset_id].length <= cmd_ind && countCommands[cicle][village_id].length <= max_cmds){
 								barbara = promise_send_queue.shift()
 								f(barbara)
 							} else {
@@ -292,8 +299,7 @@ define("robotTW2/services/FarmService", [
 				, units = cmd_preset.preset_units
 				, village_id = cmd_preset.village_id
 				, dist = get_dist(village_id, cmd_preset.max_journey_time, cmd_preset.preset_units)
-
-				var data = mapData.loadTownData(x, y, dist, dist)
+				, data = mapData.loadTownData(x, y, dist, dist)
 				, dt = data.map(function(elem){
 					return elem.data
 				}).filter(f=>f!=null)
@@ -329,17 +335,13 @@ define("robotTW2/services/FarmService", [
 					});
 				} else {
 					console.log("no villages.length " + JSON.stringify(cmd_preset))
+					resol()
 				}
 
 			})
 		}
 		, execute_presets = function(commands_for_presets, cicle){
 			return new Promise(function(resol){
-				if(!isRunning || !commands_for_presets.length){
-					resol()
-					return;
-				}
-
 				var promise_preset = undefined
 				, promise_preset_queue = [];
 
@@ -374,9 +376,7 @@ define("robotTW2/services/FarmService", [
 			return new Promise(function(resol){
 				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
-
 				$timeout(function(){
-					clear_partial(cicle)
 					commands_for_presets[cicle] = []
 					let villages = modelDataService.getSelectedCharacter().getVillageList();
 
@@ -396,7 +396,7 @@ define("robotTW2/services/FarmService", [
 							aldeia_units = angular.copy(villages[i].getUnitInfo().getUnits())
 						}
 
-						var presets_order = Object.keys(presets).map(function(preset){
+						let presets_order = Object.keys(presets).map(function(preset){
 							return Object.keys(presets[preset].units).map(function(key){
 								return modelDataService.getGameData().data.units.map(function(obj, index, array){
 									return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
@@ -423,7 +423,7 @@ define("robotTW2/services/FarmService", [
 						})
 					}
 
-					if(commands_for_presets[cicle].length){
+					if(!isRunning || commands_for_presets[cicle].length){
 						execute_presets(commands_for_presets[cicle], cicle).then(resol)
 					} else {
 						resol()
