@@ -183,6 +183,8 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_villages.set();
 			services.DefenseService.start(true);
 		}, true)
+		
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
 
 		update_all();
 		update();
