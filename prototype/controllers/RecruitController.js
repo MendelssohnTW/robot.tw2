@@ -150,7 +150,11 @@ define("robotTW2/controllers/RecruitController", [
 			if(!$scope.data_select){return}
 			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			if(!village){return}
-			services.villageService.setSelectedVillage(village)
+			if($(".twx-window.fullsize").length){
+				services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			} else {
+				services.villageService.setSelectedVillage(village)
+			}
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 		}, true)
 		

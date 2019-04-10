@@ -556,7 +556,11 @@ define("robotTW2/controllers/FarmController", [
 			$scope.village_selected = $scope.data_select.selectedOption;
 			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			if(!village){return}
-			services.villageService.setSelectedVillage(village)
+			if($(".twx-window.fullsize").length){
+				services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			} else {
+				services.villageService.setSelectedVillage(village)
+			}
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 			update_all()
 		}, true)
