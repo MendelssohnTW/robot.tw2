@@ -57,7 +57,7 @@ define("robotTW2/controllers/DefenseController", [
 				return $scope.local_list_defense;
 			})
 
-			$scope.village_selected = $scope.local_data_villages.find(f=>f.id==services.modelDataservice.getSelectedCharacter().getSelectedVillage().getId())
+			$scope.village_selected = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
 
 			$scope.data_units = services.MainService.getSelects($scope.local_list_defense)
 			$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
