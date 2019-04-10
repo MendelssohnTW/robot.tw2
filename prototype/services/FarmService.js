@@ -125,11 +125,11 @@ define("robotTW2/services/FarmService", [
 		, check_commands_for_bb = function(bb, cicle){
 			let lt = false;
 //			lt = Object.keys(countCommands).map(function(cicle){
-				lt = Object.keys(countCommands[cicle]).map(function(village_id){
-					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-						return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
-					}).every(f=>f==false)
-				}).every(f=>f==true)
+			lt = Object.keys(countCommands[cicle]).map(function(village_id){
+				return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+					return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
+				}).every(f=>f==false)
+			}).every(f=>f==true)
 //			}).every(f=>f==true)
 			return lt
 		}
@@ -171,8 +171,8 @@ define("robotTW2/services/FarmService", [
 			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
 			, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 			, r = undefined
-			
-			
+
+
 			if(cmd_ind <= 0){
 				callback(true);
 				return !0;
@@ -185,24 +185,27 @@ define("robotTW2/services/FarmService", [
 			}).filter(f=>f!=undefined)
 
 			lt_bb = lt_bb.splice(0, cmd_ind)
-			
+
 			lt_bb.forEach(function (barbara) {
 				var g = undefined
 				, f = function(bb){
 					if(!promise_send[cicle]){
-						promise_send[cicle] = new Promise(function(resolve_send){
+						promise_send[cicle] = new Promise(function(resolve_send, reject_send){
 							g = $timeout(function () {
 								r = $timeout(function(){
 									resolve_send(true)
 								}, conf_conf.LOADING_TIMEOUT);
-								if(!isRunning){return}
+								if(!isRunning){
+									reject_send()
+									return
+								}
 								var params =  {
 										start_village: village_id,
 										target_village: bb,
 										army_preset_id: preset_id,
 										type: "attack"
 								}
-								
+
 								let text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + params.army_preset_id +
 								$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + params.start_village + 
 								$filter("i18n")("text_target", $rootScope.loc.ale, "farm") + ": " + params.target_village
@@ -244,6 +247,9 @@ define("robotTW2/services/FarmService", [
 								callback(true);
 								return !0
 							}
+						}
+						, function(){
+							callback();
 						})
 					} else {
 						promise_send_queue[cicle].push(barbara)
@@ -290,7 +296,7 @@ define("robotTW2/services/FarmService", [
 			return get_time(village_id, dt, units)
 		}
 		, loadVillages = function(cmd_preset, cicle){
-			return new Promise(function(resol){
+			return new Promise(function(resol, rejec){
 				var promise_grid = undefined
 				, promise_grid_queue = []
 				, villages = []
@@ -332,7 +338,11 @@ define("robotTW2/services/FarmService", [
 
 				if(villages.length){
 					sendCmd(cmd_preset, villages, cicle, function (permited) {
-						resol()
+						if(isRunning){
+							resol()
+						} else {
+							rejec()
+						}
 					});
 				} else {
 					console.log("no villages.length " + JSON.stringify(cmd_preset))
@@ -342,15 +352,15 @@ define("robotTW2/services/FarmService", [
 			})
 		}
 		, execute_presets = function(commands_for_presets, cicle){
-			return new Promise(function(resol){
+			return new Promise(function(resol, rejec){
 				var promise_preset = undefined
 				, promise_preset_queue = [];
 
 				commands_for_presets.forEach(function(cmd_preset){
 					var t = function(cmd_preset){
 						if(!promise_preset){
-							promise_preset = new Promise(function(resolve_presets){
-								loadVillages(cmd_preset, cicle).then(resolve_presets);
+							promise_preset = new Promise(function(resolve_presets, reject_presets){
+								loadVillages(cmd_preset, cicle).then(resolve_presets, reject_presets);
 							})
 							.then(function(c_preset){
 								promise_preset = undefined
@@ -362,6 +372,9 @@ define("robotTW2/services/FarmService", [
 									data_log.set()
 									resol()
 								}
+							}
+							, function(){
+								rejec()
 							})
 						} else {
 							promise_preset_queue.push(cmd_preset)
@@ -374,7 +387,7 @@ define("robotTW2/services/FarmService", [
 			})
 		}
 		, execute_cicle = function(tempo, cicle){
-			return new Promise(function(resol){
+			return new Promise(function(resol, rejec){
 				angular.extend(data_villages, data_villages.get());
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"FARM"})
 				$timeout(function(){
@@ -425,7 +438,7 @@ define("robotTW2/services/FarmService", [
 					}
 
 					if(!isRunning || commands_for_presets[cicle].length){
-						execute_presets(commands_for_presets[cicle], cicle).then(resol)
+						execute_presets(commands_for_presets[cicle], cicle).then(resol, rejec)
 					} else {
 						resol()
 					}
@@ -468,6 +481,11 @@ define("robotTW2/services/FarmService", [
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							data_log.set()
 							clear_partial(cCicle)
+						}
+						, function(){
+							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
+							clear_partial(cCicle)
+							console.log("reject promise")
 						})
 					} else {
 						clear_partial(countCicle)
@@ -539,9 +557,25 @@ define("robotTW2/services/FarmService", [
 			delete commands_for_presets[cicle]
 		}
 		, stop = function () {
+
+//			promise.$$state.status === 0 // pending
+//			promise.$$state.status === 1 // resolved
+//			promise.$$state.status === 2 // rejected
+
+
 			if(completion_loaded){
 				completion_loaded = !1;
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
+			}
+
+			Object.keys(promise_send).map(function(cicle_p){
+				if(cicle_p && cicle_p.$$state.status === 0){
+					cicle_p.reject()
+				}
+			})
+
+			if(promise_preset && promise_preset.$$state.status === 0){
+				promise_preset.reject()
 			}
 
 			typeof(listener_report) == "function" ? listener_report(): null;
