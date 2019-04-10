@@ -51,6 +51,7 @@ define("robotTW2/services/RecruitService", [
 		, verifyGroups = function (){
 			var groups = groupService.getGroups();
 			Object.keys(groups).forEach(function(id){
+				if(!data_recruit.groups){data_recruit.groups = {}}
 				if (!data_recruit.groups[id]){
 					data_recruit.groups[id] = groups[id]; 
 				}

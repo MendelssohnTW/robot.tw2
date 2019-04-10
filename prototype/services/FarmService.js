@@ -447,11 +447,11 @@ define("robotTW2/services/FarmService", [
 //			clear()
 
 			function execute_init(opt){
+				this.opt = opt;
 				isRunning = !0
 				var init_first = true;
 				var f = function(){
 					if(!isRunning) {return}
-					this.opt = opt;
 					countCicle++
 					if((time.convertedTime() + data_farm.farm_time < data_farm.farm_time_stop) || this.opt){
 						let tempo = Math.round((data_farm.farm_time / 2) + (data_farm.farm_time * Math.random()))
