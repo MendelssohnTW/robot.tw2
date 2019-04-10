@@ -103,10 +103,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!vid){return}
 			var data = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!data){return}
-			var x = data.x
-			var y = data.y
-			services.villageService.setSelectedVillage(village)
-			services.mapService.jumpToVillage(x, y);
+			services.villageService.setSelectedVillage(village.getId())
+			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
 
@@ -264,6 +262,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
+			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
 			update_select()
 		}, true)
 
@@ -287,8 +286,12 @@ define("robotTW2/controllers/HeadquarterController", [
 				}
 		)
 
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, function(){
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
+		});
+		
 		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
-		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
+		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 
 		update_standard()
 
