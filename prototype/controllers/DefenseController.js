@@ -178,8 +178,7 @@ define("robotTW2/controllers/DefenseController", [
 			if(!$scope.data_select){
 				return
 			}
-			let v = services.modelDataService.getSelectedCharacter().getSelectedVillage($scope.data_select.selectedOption.id)
-			services.modelDataService.getSelectedCharacter().setSelectedVillage(v)
+			$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, $scope.data_select.selectedOption.id);
 		}, true)
 		
 
