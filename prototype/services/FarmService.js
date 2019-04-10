@@ -573,10 +573,6 @@ define("robotTW2/services/FarmService", [
 				}
 			})
 
-			if(promise_preset && promise_preset.$$state.status === 0){
-				promise_preset.reject()
-			}
-
 			typeof(listener_report) == "function" ? listener_report(): null;
 			listener_report = undefined
 
