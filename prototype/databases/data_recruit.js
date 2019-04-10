@@ -45,10 +45,7 @@ define("robotTW2/databases/data_recruit", [
 				slots			: conf.RESERVA.RECRUIT.SLOTS
 			},
 			troops_not				: conf.TROOPS_NOT.RECRUIT,
-			Groups					: services.groupService.getGroups(),
-			GroupsKeys				: Object.keys(services.groupService.getGroups()),
-			GroupsName				: Object.keys(services.groupService.getGroups()).map(m => services.groupService.getGroups()[m].name),
-			GroupsCount				: Object.keys(services.groupService.getGroups()).length
+			groups					: services.groupService.getGroups(),
 	}
 
 	if(!data_recruit){
