@@ -104,6 +104,10 @@ define("robotTW2/services/RecruitService", [
 								res()
 								return
 							};
+							
+							if(!Object.keys(listGroups).length){
+								return
+							}
 
 							listGroups.map(function(gr){
 								if(!data_recruit.groups[gr.id]){return}
