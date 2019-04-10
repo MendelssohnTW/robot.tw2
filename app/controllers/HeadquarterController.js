@@ -78,10 +78,10 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_select_order = []
 			$scope.local_data_select_limit = []
 
-			$scope.data_select_villages.selectedOption.value.selected = $scope.data_select.selectedOption
+			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
 
-			$scope.local_data_select_order = set_list($scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select_villages.selectedOption.value.selected.value], "buildings")
-			$scope.local_data_select_limit = set_list($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select_villages.selectedOption.value.selected.value], "buildings", "name")
+			$scope.local_data_select_order = set_list($scope.data_select.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value.selected.value], "buildings")
+			$scope.local_data_select_limit = set_list($scope.data_select.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value.selected.value], "buildings", "name")
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
@@ -101,12 +101,10 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = services.VillageService.getVillage(vid)
+			var data = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!data){return}
-			var x = data.x
-			var y = data.y
-			services.VillageService.setVillage(village)
-			services.mapService.jumpToVillage(x, y);
+			services.villageService.setSelectedVillage(village.getId())
+			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
 
@@ -143,29 +141,29 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.upselect = function(item){
 			var ant = $scope.local_data_select_order.find(f => f.value == item.value - 1)
-			$scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value][item.name] -= 1
-			$scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value][ant.name] += 1
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][item.name] -= 1
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][ant.name] += 1
 			update_select();
 		}
 
 		$scope.downselect = function(item){
 			var prox = $scope.local_data_select_order.find(f => f.value == item.value + 1)
-			$scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value][item.name] += 1
-			$scope.data_select_villages.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value][prox.name] -= 1
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][item.name] += 1
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][prox.name] -= 1
 			update_select();
 		}
 
 		$scope.levelupselect = function(key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
-			if($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] < max_level){
-				$scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] += 1
+			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] < max_level){
+				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] += 1
 			}
 			update_select();
 		}
 
 		$scope.leveldownselect = function(key){
-			if($scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] > 0){
-				$scope.data_select_villages.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value][key] -= 1
+			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] > 0){
+				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] -= 1
 			}
 			update_select();
 		}
@@ -256,14 +254,15 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_headquarter.set();
 		}, true)
 
-		$scope.$watch("data_select_villages", function(){
-			if(!$scope.data_select_villages){return}
-			$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			$scope.data_type = services.MainService.getSelects($scope.local_data_select, $scope.data_select.selectedOption.value.selected)
+			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
 			update_select()
 		}, true)
 
-		$scope.$watch("data_select", function(){
-			if(!$scope.data_select){return}
+		$scope.$watch("data_type", function(){
+			if(!$scope.data_type){return}
 			update_select()
 		}, true)
 
@@ -272,7 +271,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_headquarter.set();
 		});
 
-		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
+		$scope.local_data_villages = services.VillService.getLocalVillages("headquarter", "label");
 
 		$scope.local_data_villages.forEach(function(vill){
 			vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder
@@ -287,8 +286,12 @@ define("robotTW2/controllers/HeadquarterController", [
 				}
 		)
 
-		$scope.data_select_villages = services.MainService.getSelects($scope.local_data_villages)
-		$scope.data_select = services.MainService.getSelects($scope.local_data_select, $scope.data_select_villages.selectedOption.value.selected)
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, function(){
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
+		});
+		
+		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
+		$scope.data_type = services.MainService.getSelects($scope.local_data_select, $scope.data_select.selectedOption.value.selected)
 
 		update_standard()
 

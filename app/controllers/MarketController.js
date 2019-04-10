@@ -33,7 +33,7 @@ define("robotTW2/controllers/MarketController", [
 		
 		$scope.isRunning = services.SpyService.isRunning();
 
-		$scope.local_data_villages = services.VillageService.getLocalVillages("market", "label");
+		$scope.local_data_villages = services.VillService.getLocalVillages("market", "label");
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
 

@@ -80,7 +80,7 @@ define("robotTW2/controllers/AttackController", [
 			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
-			services.VillageService.setVillage(village)
+			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
