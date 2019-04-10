@@ -44,7 +44,7 @@ define("robotTW2/controllers/DefenseController", [
 		, update_all = function(){
 
 			$scope.local_list_defense = [];
-			$scope.local_data_villages = services.VillageService.getLocalVillages("defense", "label");
+			$scope.local_data_villages = services.VillService.getLocalVillages("defense", "label");
 
 			var id = 0;
 
@@ -64,11 +64,11 @@ define("robotTW2/controllers/DefenseController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var village = services.VillageService.getVillage(vid)
+			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
-			services.VillageService.setVillage(village)
+			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
@@ -176,7 +176,7 @@ define("robotTW2/controllers/DefenseController", [
 			if(!$scope.data_select){return}
 			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			if(!village){return}
-			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 		}, true)
 

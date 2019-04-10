@@ -2246,8 +2246,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					robotTW2.services.SecondVillageService && typeof(robotTW2.services.SecondVillageService.init) == "function" ? robotTW2.requestFn.bind("secondvillage", robotTW2.services.SecondVillageService) : null;	
 					break
 				}
-				case robotTW2.services.VillageService : {
-					robotTW2.services.VillageService && typeof(robotTW2.services.VillageService.init) == "function" ? robotTW2.requestFn.bind("village", robotTW2.services.VillageService) : null;	
+				case robotTW2.services.VillService : {
+					robotTW2.services.VillService && typeof(robotTW2.services.VillService.init) == "function" ? robotTW2.requestFn.bind("village", robotTW2.services.VillService) : null;	
 					break
 				}
 				case robotTW2.services.ProvinceService : {
@@ -2289,7 +2289,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				}
 				case "data_main" : {
 					robotTW2.loadScript("/services/MainService.js");
-					robotTW2.loadScript("/services/VillageService.js");
+					robotTW2.loadScript("/services/VillService.js");
 					robotTW2.loadScript("/services/ProvinceService.js");
 					robotTW2.loadScript("/services/ExtensionService.js");
 					robotTW2.loadScript("/controllers/MainController.js");

@@ -51,7 +51,7 @@ define("robotTW2/controllers/RecruitController", [
 			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
 		}
 		, update_all = function(){
-			$scope.local_data_villages = services.VillageService.getLocalVillages("recruit", "label");
+			$scope.local_data_villages = services.VillService.getLocalVillages("recruit", "label");
 			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		}
 
@@ -148,9 +148,9 @@ define("robotTW2/controllers/RecruitController", [
 		
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+			let village = services.villageService.getVillage($scope.data_select.selectedOption.id)
 			if(!village){return}
-			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 		}, true)
 		

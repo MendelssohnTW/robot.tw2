@@ -161,7 +161,7 @@ define("robotTW2/controllers/FakeController", [
 
 		$scope.isRunning = services.FakeService.isRunning();
 
-		$scope.local_data_villages = services.VillageService.getLocalVillages("fake", "label");
+		$scope.local_data_villages = services.VillService.getLocalVillages("fake", "label");
 		$scope.local_data_province = []
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
@@ -278,11 +278,11 @@ define("robotTW2/controllers/FakeController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var village = services.VillageService.getVillage(vid)
+			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
-			services.VillageService.setVillage(village)
+			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
@@ -455,7 +455,7 @@ define("robotTW2/controllers/FakeController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			var village = services.VillageService.getVillage($scope.data_select.selectedOption.id)
+			var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
 			let lts = [];
 			for (let i = 0; i < qtd_spy; i++){

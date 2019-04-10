@@ -101,11 +101,11 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var data = services.VillageService.getVillage(vid)
+			var data = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!data){return}
 			var x = data.x
 			var y = data.y
-			services.VillageService.setVillage(village)
+			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
@@ -272,7 +272,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_headquarter.set();
 		});
 
-		$scope.local_data_villages = services.VillageService.getLocalVillages("headquarter", "label");
+		$scope.local_data_villages = services.VillService.getLocalVillages("headquarter", "label");
 
 		$scope.local_data_villages.forEach(function(vill){
 			vill.value.buildingorder.standard = $scope.data_headquarter.standard.buildingorder

@@ -76,7 +76,7 @@ define("robotTW2/controllers/AttackController", [
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var village = services.VillageService.getVillage(vid)
+			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
@@ -149,7 +149,7 @@ define("robotTW2/controllers/AttackController", [
 			$scope.data_attack.set();
 		});
 
-		$scope.local_data_villages = services.VillageService.getLocalVillages("attack", "label");
+		$scope.local_data_villages = services.VillService.getLocalVillages("attack", "label");
 
 		update();
 

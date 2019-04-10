@@ -1,4 +1,4 @@
-define("robotTW2/services/VillageService", [
+define("robotTW2/services/VillService", [
 	"robotTW2",
 	"robotTW2/conf",
 	"robotTW2/databases/data_alert",
@@ -11,7 +11,7 @@ define("robotTW2/services/VillageService", [
 			data_villages,
 			formatHelper
 	){
-	return (function VillageService(
+	return (function VillService(
 			$rootScope,
 			socketService,
 			providers,

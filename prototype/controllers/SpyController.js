@@ -157,7 +157,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.isRunning = services.SpyService.isRunning();
 
-		$scope.local_data_villages = services.VillageService.getLocalVillages("spy", "label");
+		$scope.local_data_villages = services.VillService.getLocalVillages("spy", "label");
 		$scope.local_data_province = []
 
 		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
@@ -267,14 +267,13 @@ define("robotTW2/controllers/SpyController", [
 			}
 			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
 		}
-
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var village = services.VillageService.getVillage(vid)
+			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
-			services.VillageService.setVillage(village)
+			services.villageService.setSelectedVillage(village)
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
@@ -297,7 +296,7 @@ define("robotTW2/controllers/SpyController", [
 					let target = $scope.villages_for_sent[elem]
 					, list_dist_vills = Object.keys(villages).map(function(vill){
 						let village = villages[vill]
-//						let village = services.VillageService.getVillage($scope.local_data_villages[vill].id)
+//						let village = services.modelDataService.getSelectedCharacter().getVillage($scope.local_data_villages[vill].id)
 						let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
 						let order = undefined;
 						let sabotage = false;
@@ -483,7 +482,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			var village = services.VillageService.getVillage($scope.data_select.selectedOption.id)
+			var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
 			let order = undefined;
 			if(preceptory)
