@@ -203,11 +203,11 @@
 											<tr>
 												<td class="cell-center cell-top"><select
 													id="select_village" class="select-wrapper"
-													ng-options="item as item.name for item in data_select_villages.availableOptions"
-													ng-model="data_select_villages.selectedOption"></select></td>
+													ng-options="item as item.name for item in data_select.availableOptions"
+													ng-model="data_select.selectedOption"></select></td>
 												<td class="cell-center cell-top"><div switch-slider=""
 														border="true" enabled="true"
-														value="data_select_villages.selectedOption.value.headquarter_activate"
+														value="data_select.selectedOption.value.headquarter_activate"
 														vertical="false" size="'56x28'">
 														<div ng-class="{'box-border-dark box-filter': border}"
 															class="box-border-dark box-filter">
@@ -223,8 +223,8 @@
 
 												<td class="cell-center cell-top"><select
 													id="select_order" class="select-wrapper"
-													ng-options="item as item.name for item in data_select.availableOptions"
-													ng-model="data_select.selectedOption"></select></td>
+													ng-options="item as item.name for item in data_type.availableOptions"
+													ng-model="data_type.selectedOption"></select></td>
 											</tr>
 										</tbody>
 									</table>
