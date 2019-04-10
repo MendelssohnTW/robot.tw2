@@ -538,7 +538,7 @@ define("robotTW2/services/FarmService", [
 			countCicle = 0;
 		}
 		, clear_partial = function(cicle){
-			delete countCommands[cicle]
+//			delete countCommands[cicle]
 			delete commands_for_presets[cicle]
 		}
 		, stop = function () {
