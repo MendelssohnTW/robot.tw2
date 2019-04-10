@@ -568,8 +568,8 @@ define("robotTW2/services/FarmService", [
 			}
 
 			Object.keys(promise_send).map(function(cicle_p){
-				if(cicle_p && cicle_p.$$state.status === 0){
-					cicle_p.reject()
+				if(promise_send[cicle_p] && promise_send[cicle_p].$$state.status === 0){
+					promise_send[cicle_p].reject()
 				}
 			})
 
