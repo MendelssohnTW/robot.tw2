@@ -192,7 +192,7 @@ define("robotTW2/databases/data_villages", [
 	}
 	
 	db_villages.getQuadrants = function(village_id, preset_id){
-		return db_villages.villages[village_id].presets[preset_id].quadrants
+		return data_villages.villages[village_id].presets[preset_id].quadrants
 	}
 
 	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, function(){
