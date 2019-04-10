@@ -148,9 +148,7 @@ define("robotTW2/controllers/RecruitController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
-			if(!village){return}
-			services.villageService.setSelectedVillage(village)
+			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
 		}, true)
 
 		$scope.isRunning = services.RecruitService.isRunning();

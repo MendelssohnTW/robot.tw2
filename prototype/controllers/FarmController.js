@@ -554,9 +554,7 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			$scope.village_selected = $scope.data_select.selectedOption;
-			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
-			if(!village){return}
-			services.villageService.setSelectedVillage(village)
+			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
 			update_all()
 		}, true)
 
