@@ -334,7 +334,7 @@ define("robotTW2/services/FarmService", [
 
 				for (j = 0; j < villages.length; j++) {
 					if (!check_village(villages[j], cmd_preset)) {
-						villages = villages.filter(f=> f.id != villages[j])
+						villages = villages.filter(f=> f.id != villages[j].id)
 					}
 				}
 
