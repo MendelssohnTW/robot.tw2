@@ -569,7 +569,7 @@ define("robotTW2/services/FarmService", [
 
 			Object.keys(promise_send).map(function(cicle_p){
 				if(promise_send[cicle_p]){
-					promise_send[cicle_p].reject()
+					promise_send[cicle_p] = undefined
 				}
 			})
 
