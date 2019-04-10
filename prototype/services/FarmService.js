@@ -274,16 +274,11 @@ define("robotTW2/services/FarmService", [
 				quadrant = 3
 			}
 
-			var existQuadrant = false;
-			if(data_villages.villages[village_id].presets[preset_id].quadrants){
-				existQuadrant = data_villages.villages[village_id].presets[preset_id].quadrants.includes(quadrant);
+			let quads = data_villages.getQuadrants(village_id, preset_id)
+			if(quads){
+				return !!quads.includes(quadrant);
 			} else {
-				existQuadrant = [1, 2, 3, 4].includes(quadrant);
-			}
-			if(existQuadrant) {
-				return true
-			} else {
-				return false
+				return !![1, 2, 3, 4].includes(quadrant);
 			}
 		}
 		, get_act_time = function (village_id, bb, units) {
