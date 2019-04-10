@@ -221,11 +221,13 @@ define("robotTW2/services/FarmService", [
 									resolve_send(true)
 									return
 								}
-								countCommands[cicle][village_id][preset_id].push(bb);
-								socketService.emit(providers.routeProvider.SEND_PRESET, params);
 								result_units = units_subtract(preset_units, aldeia_units)
 								aldeia_units = result_units[1];
 								var permit_send = !!result_units[0];
+								if(permit_send) {
+									countCommands[cicle][village_id][preset_id].push(bb);
+									socketService.emit(providers.routeProvider.SEND_PRESET, params);
+								}
 								resolve_send(permit_send)
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
@@ -484,7 +486,7 @@ define("robotTW2/services/FarmService", [
 						, function(){
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							clear_partial(countCicle)
-							console.log("reject promise")
+							console.log("farm stopped")
 						})
 					} else {
 						clear_partial(countCicle)
@@ -556,10 +558,6 @@ define("robotTW2/services/FarmService", [
 			delete commands_for_presets[cicle]
 		}
 		, stop = function () {
-
-//			promise.$$state.status === 0 // pending
-//			promise.$$state.status === 1 // resolved
-//			promise.$$state.status === 2 // rejected
 
 			data_farm.complete = 0
 			data_farm.set()
