@@ -171,7 +171,7 @@ define("robotTW2/services/FarmService", [
 			, promise_send = undefined
 			, promise_send_queue = []
 			
-			if(!lt_bb.length){
+			if(cmd_ind <= 0){
 				callback(true);
 				return !0;
 			}
@@ -311,7 +311,7 @@ define("robotTW2/services/FarmService", [
 				dt.map(function(a){
 					return Object.keys(a).map(function(x){
 						return Object.keys(a[x]).map(function(y){
-							return villages.push(a[x][y])
+							return !villages.find(f => f.id == a[x][y].id) ? villages.push(a[x][y]) : undefined
 						})
 					})
 				})
