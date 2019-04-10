@@ -163,7 +163,7 @@ define("robotTW2/services/FarmService", [
 			})) || 0;
 
 			if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
-				callback(false);
+				callback();
 				return !1;
 			}
 
@@ -174,7 +174,7 @@ define("robotTW2/services/FarmService", [
 
 
 			if(cmd_ind <= 0){
-				callback(true);
+				callback();
 				return !0;
 			}
 
@@ -228,7 +228,7 @@ define("robotTW2/services/FarmService", [
 									countCommands[cicle][village_id][preset_id].push(bb);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 								}
-								resolve_send(permit_send)
+								resolve_send()
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
 						.then(function(permited){
@@ -241,12 +241,12 @@ define("robotTW2/services/FarmService", [
 								return countCommands[cicle][village_id][a] ? countCommands[cicle][village_id][a].length : 0 + countCommands[cicle][village_id][b] ? countCommands[cicle][village_id][b].length : 0
 							})
 							, parc = countCommands[cicle][village_id][preset_id].length
-							if(promise_send_queue[cicle].length && permited && parc <= cmd_ind && tot <= max_cmds){
+							if(promise_send_queue[cicle].length && parc <= cmd_ind && tot <= max_cmds){
 								barbara = promise_send_queue[cicle].shift()
 								f(barbara)
 							} else {
 								promise_send_queue[cicle] = [];
-								callback(true);
+								callback();
 								return !0
 							}
 						}
@@ -339,7 +339,7 @@ define("robotTW2/services/FarmService", [
 				}
 
 				if(villages.length){
-					sendCmd(cmd_preset, villages, cicle, function (permited) {
+					sendCmd(cmd_preset, villages, cicle, function () {
 						if(isRunning){
 							resol()
 						} else {
