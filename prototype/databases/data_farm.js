@@ -41,7 +41,7 @@ define("robotTW2/databases/data_farm", [
 		});
 
 		let qtd = Object.values(preset)[0];
-		let unit = cccccc;
+		let unit = Object.keys(preset)[0];
 		units[unit] = qtd;
 		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
 
