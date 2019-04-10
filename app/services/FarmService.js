@@ -149,7 +149,7 @@ define("robotTW2/services/FarmService", [
 			if(!countCommands[cicle][village_id]["village"]) {countCommands[cicle][village_id]["village"] = []}
 			if(!countCommands[cicle][village_id][preset_id]) {countCommands[cicle][village_id][preset_id] = []}
 
-			aldeia_commands.lenght ? aldeia_commands.forEach(function (cmd) {
+			aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
 				if(check_commands(cmd, village_id, preset_id, cicle)){
 					countCommands[cicle][village_id]["village"].push(cmd.targetVillageId);
 				}
@@ -230,7 +230,11 @@ define("robotTW2/services/FarmService", [
 							$timeout.cancel(g);
 							g = undefined;
 							promise_send = undefined;
-							if(promise_send_queue.length && permited && countCommands[cicle][village_id][preset_id].length <= cmd_ind && countCommands[cicle][village_id].length <= max_cmds){
+							let tot = Object.keys(countCommands[cicle][village_id]).reduce(function(a, b){
+								return countCommands[cicle][village_id][a].length + countCommands[cicle][village_id][b].length
+							})
+							, parc = countCommands[cicle][village_id][preset_id].length
+							if(promise_send_queue.length && permited && parc <= cmd_ind && tot <= max_cmds){
 								barbara = promise_send_queue.shift()
 								f(barbara)
 							} else {
