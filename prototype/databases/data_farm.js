@@ -27,9 +27,8 @@ define("robotTW2/databases/data_farm", [
 	}
 
 	var presets_load = angular.copy(services.presetListService.getPresets())
-	var presets_created = [];
-
-	var create_preset = function create_preset(preset, pri_vill){
+	, presets_created = []
+	,  create_preset = function create_preset(preset, pri_vill){
 
 		let units = {};
 		let officers = {};
@@ -42,7 +41,7 @@ define("robotTW2/databases/data_farm", [
 		});
 
 		let qtd = Object.values(preset)[0];
-		let unit = Object.keys(preset)[0];
+		let unit = cccccc;
 		units[unit] = qtd;
 		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
 
@@ -86,67 +85,6 @@ define("robotTW2/databases/data_farm", [
 
 	if(!data_farm){
 		data_farm = dataNew
-
-		let list_presets = [
-			{"spear": 5},
-			{"sword": 5},
-			{"archer": 5},
-			{"axe": 5},
-			{"light_cavalry": 5},
-			{"mounted_archer": 5},
-			{"heavy_cavalry": 5}
-			]
-
-		function df(){
-
-			let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
-			try{
-				Object.keys(villages).map(function(village_id){
-					let vill = services.villageService.getInitializedVillage(village_id)
-				})
-			} catch (err){
-				return
-			}
-
-			let pri_vill = villages[0]
-			for (var preset in list_presets){
-				if(list_presets.hasOwnProperty(preset))
-					create_preset(list_presets[preset], pri_vill)
-			}
-			
-			if(services.modelDataService.getPresetList().isLoadedValue){
-				return df()
-			} else {
-				services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
-					return df()
-				});
-			}
-
-			services.$timeout(function(){
-				presets_load = angular.copy(services.presetListService.getPresets())
-
-				var list_loaded = Object.values(presets_load).map(function(value){
-					if(presets_created.find(f=>f==value.name))
-						return value.id
-				})
-				if(list_loaded.length){
-					list_loaded = list_loaded.filter(f=>f!=false);
-				}
-
-				if(list_loaded.length){
-					for (village in villages){
-						if(villages.hasOwnProperty(village))
-							services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-								'village_id': villages[village],
-								'preset_ids': list_loaded
-							});
-					}
-				}
-			},10000)
-		}
-		
-		df()
-
 	} else {
 		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
 			data_farm = dataNew
@@ -157,6 +95,67 @@ define("robotTW2/databases/data_farm", [
 			database.set("data_farm", data_farm, true)		
 		}
 	}
+	
+	let list_presets = [
+		{"spear": 5},
+		{"sword": 5},
+		{"archer": 5},
+		{"axe": 5},
+		{"light_cavalry": 5},
+		{"mounted_archer": 5},
+		{"heavy_cavalry": 5}
+		]
+
+	function df(){
+
+		let villages = services.modelDataService.getSelectedCharacter().getVillageList()
+		
+		try{
+			Object.keys(villages).map(function(village_id){
+				let vill = services.villageService.getInitializedVillage(village_id)
+			})
+		} catch (err){
+			return
+		}
+
+		let pri_vill = villages[0]
+		for (var preset in list_presets){
+			if(list_presets.hasOwnProperty(preset))
+				create_preset(list_presets[preset], pri_vill)
+		}
+		
+		if(services.modelDataService.getPresetList().isLoadedValue){
+			return df()
+		} else {
+			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+				return df()
+			});
+		}
+
+		services.$timeout(function(){
+			presets_load = angular.copy(services.presetListService.getPresets())
+
+			var list_loaded = Object.values(presets_load).map(function(value){
+				if(presets_created.find(f=>f==value.name))
+					return value.id
+			})
+			if(list_loaded.length){
+				list_loaded = list_loaded.filter(f=>f!=false);
+			}
+
+			if(list_loaded.length){
+				for (village in villages){
+					if(villages.hasOwnProperty(village))
+						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+							'village_id': villages[village],
+							'preset_ids': list_loaded
+						});
+				}
+			}
+		},10000)
+	}
+	
+	df()
 
 
 	Object.setPrototypeOf(data_farm, db_farm);
