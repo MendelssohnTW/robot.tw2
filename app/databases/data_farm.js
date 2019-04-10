@@ -27,9 +27,8 @@ define("robotTW2/databases/data_farm", [
 	}
 
 	var presets_load = angular.copy(services.presetListService.getPresets())
-	var presets_created = [];
-
-	var create_preset = function create_preset(preset, pri_vill){
+	, presets_created = []
+	,  create_preset = function create_preset(preset, pri_vill){
 
 		let units = {};
 		let officers = {};
@@ -47,7 +46,7 @@ define("robotTW2/databases/data_farm", [
 		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
 
 		var ll = Object.values(presets_load).map(function(elem){
-			return elem.name == "Farm " + qtd.toString() + " " + trad_unit
+			return elem.name == "*Farm " + trad_unit
 		}).filter(f=>f!=false)
 
 		if(!ll || !ll.length){
@@ -65,8 +64,7 @@ define("robotTW2/databases/data_farm", [
 			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 		}
 	}
-
-	var dataNew = {
+	, dataNew = {
 			auto_start				: false, 
 			init_initialized		: false, 
 			activated				: false,
@@ -86,7 +84,6 @@ define("robotTW2/databases/data_farm", [
 
 	if(!data_farm){
 		data_farm = dataNew
-
 		let list_presets = [
 			{"spear": 5},
 			{"sword": 5},
@@ -99,10 +96,11 @@ define("robotTW2/databases/data_farm", [
 
 		function df(){
 
-			let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
+			let villages = services.modelDataService.getSelectedCharacter().getVillageList()
+			
 			try{
 				Object.keys(villages).map(function(village_id){
-					let vill = services.villageService.getInitializedVillage(village_id)
+					let vill = services.villageService.getInitializedVillage(villages[village_id].getId())
 				})
 			} catch (err){
 				return
@@ -146,7 +144,6 @@ define("robotTW2/databases/data_farm", [
 		}
 		
 		df()
-
 	} else {
 		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
 			data_farm = dataNew
@@ -157,7 +154,6 @@ define("robotTW2/databases/data_farm", [
 			database.set("data_farm", data_farm, true)		
 		}
 	}
-
 
 	Object.setPrototypeOf(data_farm, db_farm);
 
