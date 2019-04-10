@@ -216,7 +216,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
-		, updateAll = function updateAll(){
+		, update_all = function update_all(){
 			triggerUpdate();
 			services.$timeout(blurPreset, 1500)
 		}
@@ -553,7 +553,11 @@ define("robotTW2/controllers/FarmController", [
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			$scope.village_selected = $scope.data_select.selectedOption;
-			updateAll()
+			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+			if(!village){return}
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			services.mapService.jumpToVillage(village.getX(), village.getY());
+			update_all()
 		}, true)
 
 		$scope.$watch("data_farm", function(){
@@ -565,10 +569,12 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_villages.set();
 			$scope.data_farm.set();
 		});
+		
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("farm", "label");
 
-		$scope.village_selected = $scope.local_data_villages[0]
+		$scope.village_selected = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
 		$scope.infinite = $scope.data_farm.infinite;
 		$scope.toggle_option = "check_one";

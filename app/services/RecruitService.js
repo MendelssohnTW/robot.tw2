@@ -48,22 +48,18 @@ define("robotTW2/services/RecruitService", [
 			});
 			return prices;
 		})()
-		, verificarGroups = function (){
-			var game = {}
-			game.Groups = groupService.getGroups();
-			game.GroupsKeys = Object.keys(game.Groups);
-			game.GroupsName = game.GroupsKeys.map(m => game.Groups[m].name);
-			game.GroupsCount = game.GroupsKeys.length;
-
-			game.GroupsKeys.forEach(function(id){
-				if (!data_recruit.Groups[id]){
-					data_recruit.Groups[id] = game.Groups[id]; 
+		, verifyGroups = function (){
+			var groups = groupService.getGroups();
+			Object.keys(groups).forEach(function(id){
+				if(!data_recruit.groups){data_recruit.groups = {}}
+				if (!data_recruit.groups[id]){
+					data_recruit.groups[id] = groups[id]; 
 				}
 			});
 
-			data_recruit.GroupsKeys.forEach(function(id){
-				if (!game.Groups[id]){
-					delete data_recruit.Groups[id];
+			Object.keys(data_recruit.groups).forEach(function(id){
+				if (!groups[id]){
+					delete data_recruit.groups[id];
 				}
 			});
 
@@ -109,19 +105,27 @@ define("robotTW2/services/RecruitService", [
 								res()
 								return
 							};
+							
+							if(!Object.keys(listGroups).length){
+								return
+							}
 
 							listGroups.map(function(gr){
-								if(!data_recruit.Groups[gr.id]){return}
-								if(Object.values(data_recruit.Groups[gr.id].units).some(f=>f>0)){
-									Object.keys(data_recruit.Groups[gr.id].units).map(function(gt){
-										if(data_recruit.Groups[gr.id].units[gt] > 0){
-											return grs_units[gt] = data_recruit.Groups[gr.id].units[gt]
+								if(!data_recruit.groups[gr.id]){return}
+								if(Object.values(data_recruit.groups[gr.id].units).some(f=>f>0)){
+									Object.keys(data_recruit.groups[gr.id].units).map(function(gt){
+										if(data_recruit.groups[gr.id].units[gt] > 0){
+											return grs_units[gt] = data_recruit.groups[gr.id].units[gt]
 										}
 									})
 									return
 								}
 							})
 
+							if(!Object.keys(grs_units).length){
+								return
+							}
+							
 							Object.keys(grs_units).map(function(gr){
 								let min_resources = Math.trunc(
 										Math.min.apply(null, [
@@ -248,7 +252,7 @@ define("robotTW2/services/RecruitService", [
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
 					list.push(getFinishedForFree(vls[elem]))
 				}
-				if(!!data_villages.villages[vls[elem].getId()].recruit_activate && tam < data_recruit.reserva.slots){
+				if(data_villages.villages[vls[elem].getId()].recruit_activate && tam < data_recruit.reserva.slots){
 					return vls[elem].getId()
 				}
 			}).filter(f=>f!=undefined)
@@ -266,11 +270,11 @@ define("robotTW2/services/RecruitService", [
 			if(isRunning){return}
 			ready(function(){
 				interval_cicle = setInterval(recruit, 60 * 60 * 1000)
-				verificarGroups();
+				verifyGroups();
 				listener_recruit = $rootScope.$on(providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
-				listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
-				listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
-				listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verificarGroups)
+				listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verifyGroups)
+				listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verifyGroups)
+				listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verifyGroups)
 				isRunning = !0;
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 				wait();

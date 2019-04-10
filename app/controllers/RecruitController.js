@@ -52,7 +52,7 @@ define("robotTW2/controllers/RecruitController", [
 		}
 		, update_all = function(){
 			$scope.local_data_villages = services.VillageService.getLocalVillages("recruit", "label");
-			$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		}
 
 		$scope.getTimeRest = function(){
@@ -128,11 +128,11 @@ define("robotTW2/controllers/RecruitController", [
 			update_all();
 		}
 		
-		Object.keys($scope.data_recruit.Groups).map(function(key){
-			if(!$scope.data_recruit.Groups[key].units){
-				$scope.data_recruit.Groups[key].units = return_units();
+		Object.keys($scope.data_recruit.groups).map(function(key){
+			if(!$scope.data_recruit.groups[key].units){
+				$scope.data_recruit.groups[key].units = return_units();
 			}
-			$scope.local_data_groups.push($scope.data_recruit.Groups[key])
+			$scope.local_data_groups.push($scope.data_recruit.groups[key])
 			$scope.local_data_groups.sort(function(a,b){return a.name.localeCompare(b.name)})
 			return $scope.local_data_groups;
 		})
@@ -146,6 +146,14 @@ define("robotTW2/controllers/RecruitController", [
 			services.DefenseService.start(true);
 		}, true)
 		
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+			if(!village){return}
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			services.mapService.jumpToVillage(village.getX(), village.getY());
+		}, true)
+		
 		$scope.isRunning = services.RecruitService.isRunning();
 		$scope.isPaused = services.RecruitService.isPaused();
 
@@ -154,6 +162,8 @@ define("robotTW2/controllers/RecruitController", [
 			data_recruit = $scope.data_recruit;
 			data_recruit.set();
 		}, true)
+		
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
 		
 		update_all();
 		

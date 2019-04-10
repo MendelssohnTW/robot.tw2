@@ -57,10 +57,8 @@ define("robotTW2/controllers/DefenseController", [
 				return $scope.local_list_defense;
 			})
 
-			$scope.village_selected = $scope.local_data_villages[0]
-
 			$scope.data_units = services.MainService.getSelects($scope.local_list_defense)
-			$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 
 		}
 
@@ -174,6 +172,14 @@ define("robotTW2/controllers/DefenseController", [
 			services.DefenseService.start();
 		}, true)
 
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+			if(!village){return}
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			services.mapService.jumpToVillage(village.getX(), village.getY());
+		}, true)
+
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages || first_2) {
 				first_2 = undefined
@@ -183,6 +189,8 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_villages.set();
 			services.DefenseService.start(true);
 		}, true)
+
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
 
 		update_all();
 		update();
