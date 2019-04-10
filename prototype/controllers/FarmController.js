@@ -556,11 +556,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.village_selected = $scope.data_select.selectedOption;
 			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			if(!village){return}
-			if($(".twx-window.fullsize").length){
-				services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
-			} else {
-				services.villageService.setSelectedVillage(village)
-			}
+			services.villageService.setSelectedVillage(village)
 			update_all()
 		}, true)
 
@@ -573,7 +569,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_villages.set();
 			$scope.data_farm.set();
 		});
-		
+
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
 
 		$scope.local_data_villages = services.VillService.getLocalVillages("farm", "label");
