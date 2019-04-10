@@ -561,6 +561,8 @@ define("robotTW2/services/FarmService", [
 //			promise.$$state.status === 1 // resolved
 //			promise.$$state.status === 2 // rejected
 
+			data_farm.complete = 0
+			data_farm.set()
 
 			if(completion_loaded){
 				completion_loaded = !1;
