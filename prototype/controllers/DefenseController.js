@@ -173,6 +173,15 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_defense.set();
 			services.DefenseService.start();
 		}, true)
+		
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){
+				return
+			}
+			
+			services.modelDataService.getSelectedCharacter().setSelectedVillage($scope.data_select.selectedOption.id)
+		}, true)
+		
 
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages || first_2) {
