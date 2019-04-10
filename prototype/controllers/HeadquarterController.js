@@ -287,7 +287,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		)
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, function(){
-			$scope.data_type = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		});
 		
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
