@@ -122,7 +122,7 @@ define("robotTW2/services/RecruitService", [
 								}
 							})
 
-							if(!grs_units.length){
+							if(!Object.keys(grs_units).length){
 								return
 							}
 							
