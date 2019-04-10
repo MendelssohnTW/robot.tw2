@@ -112,7 +112,7 @@ define("robotTW2/databases/data_farm", [
 		
 		try{
 			Object.keys(villages).map(function(village_id){
-				let vill = services.villageService.getInitializedVillage(village_id)
+				let vill = services.villageService.getInitializedVillage(villages[village_id].getId())
 			})
 		} catch (err){
 			return
