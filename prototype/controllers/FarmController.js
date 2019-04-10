@@ -571,7 +571,7 @@ define("robotTW2/controllers/FarmController", [
 			$scope.data_farm.set();
 		});
 		
-		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
 
 		$scope.local_data_villages = services.VillageService.getLocalVillages("farm", "label");
 

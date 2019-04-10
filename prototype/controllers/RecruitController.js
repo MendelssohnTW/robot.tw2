@@ -163,7 +163,7 @@ define("robotTW2/controllers/RecruitController", [
 			data_recruit.set();
 		}, true)
 		
-		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
 		
 		update_all();
 		

@@ -190,7 +190,7 @@ define("robotTW2/controllers/DefenseController", [
 			services.DefenseService.start(true);
 		}, true)
 
-		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
 
 		update_all();
 		update();
