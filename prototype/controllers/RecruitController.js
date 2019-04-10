@@ -155,7 +155,6 @@ define("robotTW2/controllers/RecruitController", [
 			} else {
 				services.villageService.setSelectedVillage(village)
 			}
-			services.mapService.jumpToVillage(village.getX(), village.getY());
 		}, true)
 		
 		$scope.isRunning = services.RecruitService.isRunning();

@@ -178,7 +178,9 @@ define("robotTW2/controllers/DefenseController", [
 			if(!village){return}
 //			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
 			services.villageService.setSelectedVillage(village)
-			services.mapService.jumpToVillage(village.getX(), village.getY());
+			services.$rootScope.$broadcast(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, {
+				'id' : village.getId()
+			});
 		}, true)
 
 		$scope.$watch("data_villages", function () {

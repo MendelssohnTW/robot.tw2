@@ -561,7 +561,6 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				services.villageService.setSelectedVillage(village)
 			}
-			services.mapService.jumpToVillage(village.getX(), village.getY());
 			update_all()
 		}, true)
 
