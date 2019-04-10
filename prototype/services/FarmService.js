@@ -477,14 +477,13 @@ define("robotTW2/services/FarmService", [
 							gt = 0;
 						execute_cicle(gt, countCicle).then(function(){
 							init_first = false;
-							let cCicle = countCicle;
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							data_log.set()
-							clear_partial(cCicle)
+							clear_partial(countCicle)
 						}
 						, function(){
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
-							clear_partial(cCicle)
+							clear_partial(countCicle)
 							console.log("reject promise")
 						})
 					} else {
