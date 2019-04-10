@@ -178,7 +178,7 @@ define("robotTW2/controllers/DefenseController", [
 			if(!$scope.data_select){
 				return
 			}
-			$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, $scope.data_select.selectedOption.id);
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, $scope.data_select.selectedOption.id);
 		}, true)
 		
 
