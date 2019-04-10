@@ -263,7 +263,7 @@ define("robotTW2/services/HeadquarterService", [
 						upgradeBuilding(vill).then(function(repeat){
 							if(repeat){
 								promise_queue.unshift(vill)
-								$timeout(function(){res()}, 2000)
+								$timeout(function(){res()}, 5000)
 							} else {
 								res()
 							}
