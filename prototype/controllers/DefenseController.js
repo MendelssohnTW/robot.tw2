@@ -173,14 +173,16 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_defense.set();
 			services.DefenseService.start();
 		}, true)
-		
+
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){
 				return
 			}
-			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, $scope.data_select.selectedOption.id);
+			let village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+			if(!village){return}
+			services.modelDataService.getSelectedCharacter().setSelectedVillage(village)
+			services.mapService.jumpToVillage(village.getX(), village.getY());
 		}, true)
-		
 
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages || first_2) {
@@ -191,7 +193,7 @@ define("robotTW2/controllers/DefenseController", [
 			$scope.data_villages.set();
 			services.DefenseService.start(true);
 		}, true)
-		
+
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SWITCH, update_all);
 
 		update_all();
