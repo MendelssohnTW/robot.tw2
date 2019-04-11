@@ -225,16 +225,16 @@ define("robotTW2/services/FarmService", [
 									resolve_send(true)
 									return
 								}
-								result_units = units_subtract(preset_units, aldeia_units)
-								aldeia_units = result_units[1];
-								var permit_send = !!result_units[0];
-								if(permit_send) {
+//								result_units = units_subtract(preset_units, aldeia_units)
+//								aldeia_units = result_units[1];
+//								var permit_send = !!result_units[0];
+//								if(permit_send) {
 									countCommands[cicle_internal][village_id][preset_id].push(bb);
 									console.log("send")
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-								} else {
-									console.log("no permited send")
-								}
+//								} else {
+//									console.log("no permited send")
+//								}
 								resolve_send()
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
