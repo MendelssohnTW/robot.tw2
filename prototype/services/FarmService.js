@@ -176,14 +176,12 @@ define("robotTW2/services/FarmService", [
 			
 			console.log("comandos " + cmd_ind)
 			
-			if(cmd_ind <= 0){
+			if(cmd_ind <= 0 || !lt_bb.length){
 				console.log("callback cmd_ind <= 0")
 				callback();
 				return !0;
 			}
 			
-			console.log("lt_bb.length " + lt_bb.length)
-
 			lt_bb = Object.keys(lt_bb).map(function (barbara) {
 				if (check_commands_for_bb(lt_bb[barbara], cicle)) {
 					return lt_bb[barbara]
