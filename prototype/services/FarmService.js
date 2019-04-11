@@ -234,7 +234,7 @@ define("robotTW2/services/FarmService", [
 										}
 										var params =  {
 												start_village: village_id,
-												target_village: bb,
+												target_village: bb.id,
 												army_preset_id: preset_id,
 												type: "attack"
 										}
