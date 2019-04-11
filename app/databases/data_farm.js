@@ -143,7 +143,7 @@ define("robotTW2/databases/data_farm", [
 			},10000)
 		}
 		
-		df()
+		
 	} else {
 		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
 			data_farm = dataNew
