@@ -246,9 +246,7 @@ define("robotTW2/services/FarmService", [
 
 									countCommands[cicle_internal][cmd_preset.village_id][preset_id].push(bb);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-									$timeout(function () {
-										resolve_send()
-									}, 3000)
+									resolve_send()
 								}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 							})
 							.then(function(){
@@ -261,7 +259,9 @@ define("robotTW2/services/FarmService", [
 								, parc = countCommands[cicle_internal][cmd_preset.village_id][preset_id].length
 								if(promise_send_queue.length && parc <= cmd_rest && tot <= max_cmds){
 									let reg = promise_send_queue.shift()
-									f(reg[0], reg[1])
+									$timeout(function () {
+										f(reg[0], reg[1])
+									}, 3000)
 								} else {
 									resv();
 								}
