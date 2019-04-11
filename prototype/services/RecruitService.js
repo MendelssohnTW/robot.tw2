@@ -107,6 +107,7 @@ define("robotTW2/services/RecruitService", [
 							};
 							
 							if(!Object.keys(listGroups).length){
+								res()
 								return
 							}
 
@@ -123,6 +124,7 @@ define("robotTW2/services/RecruitService", [
 							})
 
 							if(!Object.keys(grs_units).length){
+								res()
 								return
 							}
 							
