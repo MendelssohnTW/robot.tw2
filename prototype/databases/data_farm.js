@@ -121,7 +121,7 @@ define("robotTW2/databases/data_farm", [
 				if(list_presets.hasOwnProperty(preset)){
 					if(presets_load != undefined || Object.values(presets_load).length == 0 || !Object.values(presets_load).map(function(elem){
 						return elem.name
-					}).find(f => f.name == "*Farm " + Object.keys(preset)[0])){
+					}).find(f => f == "*Farm " + Object.keys(preset)[0])){
 						create_preset(list_presets[preset], pri_vill.getId())
 					}
 				}
