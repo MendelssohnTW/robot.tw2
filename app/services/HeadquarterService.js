@@ -150,15 +150,6 @@ define("robotTW2/services/HeadquarterService", [
 				, buildState = data_villages.villages[village.getId()].headquarter_activate
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
-				, firstQueue = queues[0];
-
-				var premiumActionService = injector.get("premiumActionService");
-
-				if(firstQueue && firstQueue.canBeFinishedForFree){
-					premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
-					resolve(true);
-					return;
-				}
 
 				var gt = getFinishedForFree(village);
 				if(gt != Infinity && gt != 0 && !isNaN(gt) && gt > conf.MIN_INTERVAL){
