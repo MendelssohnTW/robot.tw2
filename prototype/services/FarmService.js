@@ -174,7 +174,7 @@ define("robotTW2/services/FarmService", [
 					return !0;
 				}
 
-				if(!countCommands[cicle_intcicle_internal][village_id]){
+				if(!countCommands[cicle_internal][village_id]){
 					resolve_send(true)
 					return
 				}
