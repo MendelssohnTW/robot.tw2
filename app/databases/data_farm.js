@@ -53,7 +53,7 @@ define("robotTW2/databases/data_farm", [
 			let d_preset = {
 					"catapult_target": null,
 					"icon": parseInt("0c0b0c", 16),
-					"name": "Farm " + qtd.toString() + " " + trad_unit,
+					"name": "Farm " + trad_unit,
 					"officers": officers,
 					"units": units,
 					"village_id": pri_vill
