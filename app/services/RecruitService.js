@@ -107,6 +107,7 @@ define("robotTW2/services/RecruitService", [
 							};
 							
 							if(!Object.keys(listGroups).length){
+								res()
 								return
 							}
 
