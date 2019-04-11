@@ -2,6 +2,7 @@ define("robotTW2/services/HeadquarterService", [
 	"robotTW2",
 	"robotTW2/time",
 	"robotTW2/conf",
+	"conf/conf",
 	"conf/upgradeabilityStates",
 	"conf/locationTypes",
 	"robotTW2/databases/data_villages",
@@ -10,6 +11,7 @@ define("robotTW2/services/HeadquarterService", [
 			robotTW2,
 			time,
 			conf,
+			conf_conf,
 			upgradeabilityStates,
 			locationTypes,
 			data_villages,
@@ -32,6 +34,7 @@ define("robotTW2/services/HeadquarterService", [
 		, interval_cicle
 		, q
 		, s
+		, r = undefined
 		, isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
@@ -87,12 +90,18 @@ define("robotTW2/services/HeadquarterService", [
 
 				if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
 
+					r = $timeout(function(){
+						callback(!1)
+					}, conf_conf.LOADING_TIMEOUT);
+
 					socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
 						building: build,
 						village_id: village.getId(),
 						location: locationTypes.MASS_SCREEN,
 						premium: !1
 					}, function(data, b) {
+						$timeout.cancel(r);
+						r = undefined;
 						if(data.code == "Route/notPublic") {
 							callback(!1)
 						} else {
