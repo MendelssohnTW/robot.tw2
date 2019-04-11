@@ -87,6 +87,7 @@ define("robotTW2/databases/data_farm", [
 						return df(true)
 					});
 				}
+				return
 			}
 
 			let villages = services.modelDataService.getSelectedCharacter().getVillageList()
