@@ -44,7 +44,6 @@ define("robotTW2/databases/data_farm", [
 			infinite				: true,
 			attacked				: false
 	}
-	, init_pri = true
 
 	if(!data_farm){
 		data_farm = dataNew
@@ -73,20 +72,21 @@ define("robotTW2/databases/data_farm", [
 				"units": units,
 				"village_id": id
 			}
-			
+
 
 			presets_created.push(d_preset.name);
 
 			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 		}
 
-		function df(){
+		function df(opt){
 
-			if(init_pri && !services.modelDataService.getPresetList().isLoadedValue){
-				services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
-					init_pri = false;
-					return df()
-				});
+			if(!opt){
+				if(!services.modelDataService.getPresetList().isLoadedValue){
+					services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+						return df(true)
+					});
+				}
 			}
 
 			let villages = services.modelDataService.getSelectedCharacter().getVillageList()
