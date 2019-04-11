@@ -246,7 +246,9 @@ define("robotTW2/services/FarmService", [
 
 									countCommands[cicle_internal][cmd_preset.village_id][preset_id].push(bb);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-									resolve_send()
+									$timeout(function () {
+										resolve_send()
+									}, 3000)
 								}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 							})
 							.then(function(){
