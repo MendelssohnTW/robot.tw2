@@ -135,7 +135,8 @@ define("robotTW2/services/FarmService", [
 		}
 		, sendCmd = function (cmd_preset, cicle_internal) {
 			new Promise(function(resv, rejc){
-				var result_units = []
+				var that = this
+				, result_units = []
 				, village_id = cmd_preset.village_id
 				, preset_id = cmd_preset.preset_id
 				, village = modelDataService.getSelectedCharacter().getVillage(village_id)
@@ -143,6 +144,9 @@ define("robotTW2/services/FarmService", [
 				, preset_units = cmd_preset.preset_units
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
+				
+				that.resv = resv
+				that.rejc = rejc
 
 				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
 				if(!countCommands[cicle_internal][village_id]) {countCommands[cicle_internal][village_id] = {}}
@@ -160,7 +164,7 @@ define("robotTW2/services/FarmService", [
 				})) || 0;
 
 				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
-					resv();
+					that.resv();
 					return !1;
 				}
 
@@ -170,7 +174,7 @@ define("robotTW2/services/FarmService", [
 				, r = undefined
 
 				if(cmd_ind <= 0){
-					resv();
+					that.resv();
 					return !0;
 				}
 
@@ -212,7 +216,7 @@ define("robotTW2/services/FarmService", [
 					villages = villages.splice(0, cmd_ind) // separa somentes as aldeias possiveis de comandos
 
 					if(!villages.length){
-						resv();
+						that.resv();
 						return !0;
 					}
 
@@ -258,10 +262,10 @@ define("robotTW2/services/FarmService", [
 										let reg = promise_send_queue.shift()
 										f(reg[0], reg[1])
 									} else {
-										resv();
+										that.resv();
 									}
 								}, function(){
-									rejc();
+									that.rejc();
 								})
 							} else {
 								promise_send_queue.push([barbara, cicle_internal])
@@ -270,7 +274,7 @@ define("robotTW2/services/FarmService", [
 						f(barbara, cicle_internal)
 					});
 				}, function(){ //rejected
-					rejc()
+					that.rejc()
 				});
 			});
 		}
