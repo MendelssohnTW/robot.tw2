@@ -175,18 +175,9 @@ define("robotTW2/services/FarmService", [
 					return elem.data
 				}).filter(f=>f!=null)
 
-				if(cmd_ind <= 0){
+				if(cmd_ind <= 0 || !countCommands[cicle_internal][cmd_preset.village_id] || !preset_id){
 					resv();
-					return !0;
-				}
-
-				if(!countCommands[cicle_internal][cmd_preset.village_id]){
-					resv()
-					return
-				}
-				if(!preset_id){
-					resv()
-					return
+					return;
 				}
 
 				dt.map(function(a){
