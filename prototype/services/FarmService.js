@@ -259,11 +259,11 @@ define("robotTW2/services/FarmService", [
 								, parc = countCommands[cicle_internal][cmd_preset.village_id][preset_id].length
 								if(promise_send_queue.length && parc <= cmd_rest && tot <= max_cmds){
 									let reg = promise_send_queue.shift()
-									$timeout(function () {
-										f(reg[0], reg[1])
-									}, 3000)
+									f(reg[0], reg[1])
 								} else {
-									resv();
+									$timeout(function () {
+										resv();
+									}, 3000)
 								}
 							}, function(){
 								rejc();
