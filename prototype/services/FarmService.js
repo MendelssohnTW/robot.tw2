@@ -181,6 +181,8 @@ define("robotTW2/services/FarmService", [
 				callback();
 				return !0;
 			}
+			
+			console.log("lt_bb.length " + lt_bb.length)
 
 			lt_bb = Object.keys(lt_bb).map(function (barbara) {
 				if (check_commands_for_bb(lt_bb[barbara], cicle)) {
