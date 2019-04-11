@@ -235,7 +235,7 @@ define("robotTW2/services/FarmService", [
 							r = undefined;
 							$timeout.cancel(g);
 							g = undefined;
-							promise_send = undefined;
+							promise_send[cicle_internal] = undefined;
 							let tot = Object.keys(countCommands[cicle_internal][village_id]).reduce(function(a, b){
 								return countCommands[cicle_internal][village_id][a] ? countCommands[cicle_internal][village_id][a].length : 0 + countCommands[cicle_internal][village_id][b] ? countCommands[cicle_internal][village_id][b].length : 0
 							})
