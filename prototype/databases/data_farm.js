@@ -44,6 +44,7 @@ define("robotTW2/databases/data_farm", [
 			infinite				: true,
 			attacked				: false
 	}
+	, init_pri = true
 
 	if(!data_farm){
 		data_farm = dataNew
@@ -81,10 +82,9 @@ define("robotTW2/databases/data_farm", [
 
 		function df(){
 
-			if(services.modelDataService.getPresetList().isLoadedValue){
-				return df()
-			} else {
+			if(init_pri && !services.modelDataService.getPresetList().isLoadedValue){
 				services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+					init_pri = false;
 					return df()
 				});
 			}
