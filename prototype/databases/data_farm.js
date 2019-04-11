@@ -26,44 +26,7 @@ define("robotTW2/databases/data_farm", [
 		return database.get("data_farm");
 	}
 
-	var presets_load = angular.copy(services.presetListService.getPresets())
-	, presets_created = []
-	,  create_preset = function create_preset(preset, pri_vill){
-
-		let units = {};
-		let officers = {};
-		services.modelDataService.getGameData().getOrderedUnitNames().forEach(function(unitName) {
-			units[unitName] = 0;
-		});
-
-		services.modelDataService.getGameData().getOrderedOfficerNames().forEach(function(officerName) {
-			officers[officerName] = false;
-		});
-
-		let qtd = Object.values(preset)[0];
-		let unit = Object.keys(preset)[0];
-		units[unit] = qtd;
-		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
-
-		var ll = Object.values(presets_load).map(function(elem){
-			return elem.name == "*Farm " + trad_unit
-		}).filter(f=>f!=false)
-
-		if(!ll || !ll.length){
-			let d_preset = {
-					"catapult_target": null,
-					"icon": parseInt("0c0b0c", 16),
-					"name": "*Farm " + trad_unit,
-					"officers": officers,
-					"units": units,
-					"village_id": pri_vill
-			}
-
-			presets_created.push(d_preset.name);
-
-			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
-		}
-	}
+	var presets_created = []
 	, dataNew = {
 			auto_start				: false, 
 			init_initialized		: false, 
@@ -84,34 +47,39 @@ define("robotTW2/databases/data_farm", [
 
 	if(!data_farm){
 		data_farm = dataNew
-		let list_presets = [
-			{"spear": 5},
-			{"sword": 5},
-			{"archer": 5},
-			{"axe": 5},
-			{"light_cavalry": 5},
-			{"mounted_archer": 5},
-			{"heavy_cavalry": 5}
-			]
+
+		function create_preset(preset, id){
+
+			let units = {};
+			let officers = {};
+			services.modelDataService.getGameData().getOrderedUnitNames().forEach(function(unitName) {
+				units[unitName] = 0;
+			});
+
+			services.modelDataService.getGameData().getOrderedOfficerNames().forEach(function(officerName) {
+				officers[officerName] = false;
+			});
+
+			let qtd = Object.values(preset)[0];
+			let unit = Object.keys(preset)[0];
+			units[unit] = qtd;
+			let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units")
+			, d_preset = {
+				"catapult_target": null,
+				"icon": parseInt("0c0b0c", 16),
+				"name": "*Farm " + trad_unit,
+				"officers": officers,
+				"units": units,
+				"village_id": id
+			}
+
+			presets_created.push(d_preset.name);
+
+			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
+		}
 
 		function df(){
 
-			let villages = services.modelDataService.getSelectedCharacter().getVillageList()
-			
-			try{
-				Object.keys(villages).map(function(village_id){
-					let vill = services.villageService.getInitializedVillage(villages[village_id].getId())
-				})
-			} catch (err){
-				return
-			}
-
-			let pri_vill = villages[0]
-			for (var preset in list_presets){
-				if(list_presets.hasOwnProperty(preset))
-					create_preset(list_presets[preset], pri_vill)
-			}
-			
 			if(services.modelDataService.getPresetList().isLoadedValue){
 				return df()
 			} else {
@@ -120,17 +88,49 @@ define("robotTW2/databases/data_farm", [
 				});
 			}
 
-			services.$timeout(function(){
-				presets_load = angular.copy(services.presetListService.getPresets())
+			let villages = services.modelDataService.getSelectedCharacter().getVillageList()
 
-				var list_loaded = Object.values(presets_load).map(function(value){
-					if(presets_created.find(f=>f==value.name))
-						return value.id
+			try{
+				Object.keys(villages).map(function(village_id){
+					let vill = services.villageService.getInitializedVillage(villages[village_id].getId())
 				})
-				if(list_loaded.length){
-					list_loaded = list_loaded.filter(f=>f!=false);
-				}
+			} catch (err){
+				return
+			}
 
+			let qtd = Math.trunc((villages.length / 10) * 5) 
+
+			let list_presets = [
+				{"spear": qtd},
+				{"sword": qtd},
+				{"archer": qtd},
+				{"axe": qtd},
+				{"light_cavalry": qtd},
+				{"mounted_archer": qtd},
+				{"heavy_cavalry": qtd}
+				]
+
+			let presets_load = angular.copy(services.presetListService.getPresets())
+
+			let pri_vill = villages[0]
+			for (var preset in list_presets){
+				if(list_presets.hasOwnProperty(preset)){
+					if(presets_load != undefined || Object.values(presets_load).length == 0 || !Object.values(presets_load).map(function(elem){
+						return elem.name
+					}).find(f => f.name == "*Farm " + Object.keys(preset)[0])){
+						create_preset(list_presets[preset], pri_vill.getId())
+					}
+				}
+			}
+
+			services.$timeout(function(){
+				var list_loaded = Object.values(presets_load).map(function(value){
+					if(presets_created.find(f=>f==value.name)){
+						return value.id
+					} else {
+						return undefined
+					}
+				}).filter(f=>f!=undefined)
 				if(list_loaded.length){
 					for (village in villages){
 						if(villages.hasOwnProperty(village))
@@ -140,9 +140,9 @@ define("robotTW2/databases/data_farm", [
 							});
 					}
 				}
-			},10000)
+			}, 10000)
 		}
-		
+
 		df()
 	} else {
 		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
