@@ -565,11 +565,13 @@ define("robotTW2/services/FarmService", [
 				robotTW2.removeScript("/controllers/FarmCompletionController.js");
 			}
 
-			Object.keys(promise_send).map(function(cicle_p){
-				if(promise_send[cicle_p]){
-					promise_send[cicle_p] = undefined
-				}
-			})
+			if(promise_send){
+				Object.keys(promise_send).map(function(cicle_p){
+					if(promise_send[cicle_p]){
+						promise_send[cicle_p] = undefined
+					}
+				})
+			}
 
 			typeof(listener_report) == "function" ? listener_report(): null;
 			listener_report = undefined
