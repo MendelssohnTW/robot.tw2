@@ -249,7 +249,6 @@ define("robotTW2/services/FarmService", [
 							, parc = countCommands[cicle_internal][village_id][preset_id].length
 							if(promise_send_queue.length && parc <= cmd_rest && tot <= max_cmds){
 								let reg = promise_send_queue.shift()
-								console.log("next f")
 								f(reg[0], reg[1])
 							} else {
 								console.log("next preset")
