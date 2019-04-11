@@ -86,6 +86,8 @@ define("robotTW2/databases/data_farm", [
 					services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
 						return df(true)
 					});
+				} else {
+					return df(true)
 				}
 				return
 			}
