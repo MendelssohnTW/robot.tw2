@@ -134,7 +134,7 @@ define("robotTW2/services/FarmService", [
 			return lt
 		}
 		, sendCmd = function (cmd_preset, cicle_internal) {
-			new Promise(function(resv, rejc){
+			return new Promise(function(resv, rejc){
 				var result_units = []
 				, village_id = cmd_preset.village_id
 				, preset_id = cmd_preset.preset_id
