@@ -230,12 +230,15 @@ define("robotTW2/services/FarmService", [
 								var permit_send = !!result_units[0];
 								if(permit_send) {
 									countCommands[cicle_internal][village_id][preset_id].push(bb);
+									console.log("send")
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
+								} else {
+									console.log("no permited send")
 								}
 								resolve_send()
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
-						.then(function(permited){
+						.then(function(){
 							$timeout.cancel(r);
 							r = undefined;
 							$timeout.cancel(g);
@@ -249,8 +252,8 @@ define("robotTW2/services/FarmService", [
 								let reg = promise_send_queue.shift()
 								f(reg[0], reg[1])
 							} else {
+								console.log("next preset")
 								callback();
-								return !0
 							}
 						}
 						, function(){
