@@ -176,7 +176,7 @@ define("robotTW2/services/FarmService", [
 			
 			console.log("comandos " + cmd_ind)
 			
-			if(cmd_ind <= 0 || !lt_bb.length){
+			if(cmd_ind <= 0){
 				console.log("callback cmd_ind <= 0")
 				callback();
 				return !0;
@@ -189,6 +189,12 @@ define("robotTW2/services/FarmService", [
 			}).filter(f=>f!=undefined)
 
 			lt_bb = lt_bb.splice(0, cmd_ind)
+			
+			if(!lt_bb.length){
+				console.log("callback !lt_bb.length0")
+				callback();
+				return !0;
+			}
 
 			lt_bb.forEach(function (barbara) {
 				var f = function(bb, cicle_internal){
