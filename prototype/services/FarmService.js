@@ -145,6 +145,9 @@ define("robotTW2/services/FarmService", [
 			, lt_bb = Object.values(villages).map(function(el){
 				return el.id
 			})
+			
+			console.log("village " + village.getName())
+			console.log("preset " + preset_id)
 
 			if(!countCommands[cicle]) {countCommands[cicle] = {}}
 			if(!countCommands[cicle][village_id]) {countCommands[cicle][village_id] = {}}
@@ -170,8 +173,9 @@ define("robotTW2/services/FarmService", [
 			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
 			, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 			, r = undefined
-
-
+			
+			console.log("comandos " + cmd_ind)
+			
 			if(cmd_ind <= 0){
 				callback();
 				return !0;
@@ -192,7 +196,8 @@ define("robotTW2/services/FarmService", [
 						promise_send[cicle_internal] = new Promise(function(resolve_send, reject_send){
 							g = $timeout(function () {
 								r = $timeout(function(){
-									resolve_send(true)
+									resolve_send()
+									console.log("timeout")
 								}, conf_conf.LOADING_TIMEOUT);
 								if(!isRunning){
 									reject_send()
