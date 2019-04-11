@@ -177,6 +177,7 @@ define("robotTW2/services/FarmService", [
 			console.log("comandos " + cmd_ind)
 			
 			if(cmd_ind <= 0){
+				console.log("callback cmd_ind <= 0")
 				callback();
 				return !0;
 			}
@@ -190,16 +191,16 @@ define("robotTW2/services/FarmService", [
 			lt_bb = lt_bb.splice(0, cmd_ind)
 
 			lt_bb.forEach(function (barbara) {
-				var g = undefined
-				, f = function(bb, cicle_internal){
+				var f = function(bb, cicle_internal){
 					if(!promise_send[cicle_internal]){
 						promise_send[cicle_internal] = new Promise(function(resolve_send, reject_send){
-							g = $timeout(function () {
+							$timeout(function () {
 								r = $timeout(function(){
 									resolve_send()
 									console.log("timeout")
 								}, conf_conf.LOADING_TIMEOUT);
 								if(!isRunning){
+									console.log("!isRunning")
 									reject_send()
 									return
 								}
@@ -241,8 +242,6 @@ define("robotTW2/services/FarmService", [
 						.then(function(){
 							$timeout.cancel(r);
 							r = undefined;
-							$timeout.cancel(g);
-							g = undefined;
 							promise_send[cicle_internal] = undefined;
 							let tot = Object.keys(countCommands[cicle_internal][village_id]).reduce(function(a, b){
 								return countCommands[cicle_internal][village_id][a] ? countCommands[cicle_internal][village_id][a].length : 0 + countCommands[cicle_internal][village_id][b] ? countCommands[cicle_internal][village_id][b].length : 0
@@ -250,6 +249,7 @@ define("robotTW2/services/FarmService", [
 							, parc = countCommands[cicle_internal][village_id][preset_id].length
 							if(promise_send_queue.length && parc <= cmd_rest && tot <= max_cmds){
 								let reg = promise_send_queue.shift()
+								console.log("next f")
 								f(reg[0], reg[1])
 							} else {
 								console.log("next preset")
