@@ -97,17 +97,17 @@ define("robotTW2/services/FarmService", [
 
 			return f && opt ? !0 : f;
 		}
-		, units_subtract = function (preset_units, aldeia_units) {
-			var f = Object.keys(preset_units).map(function(unit_preset){
-				if(preset_units[unit_preset] > 0 && !(data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
-					aldeia_units[unit_preset].available = aldeia_units[unit_preset].available - preset_units[unit_preset];
-					if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
-						return [{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available]
-					}
-				}
-			}).filter(f=>f!=undefined)
-			return [f.length, aldeia_units] 
-		}
+//		, units_subtract = function (preset_units, aldeia_units) {
+//			var f = Object.keys(preset_units).map(function(unit_preset){
+//				if(preset_units[unit_preset] > 0 && !(data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
+//					aldeia_units[unit_preset].available = aldeia_units[unit_preset].available - preset_units[unit_preset];
+//					if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
+//						return [{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available]
+//					}
+//				}
+//			}).filter(f=>f!=undefined)
+//			return [f.length, aldeia_units] 
+//		}
 		, check_commands = function(cmd, village_id, preset_id, cicle){
 			let lt = true
 			if(cmd.data.type!="attack"){
@@ -145,7 +145,7 @@ define("robotTW2/services/FarmService", [
 			, lt_bb = Object.values(villages).map(function(el){
 				return el.id
 			})
-
+			
 			if(!countCommands[cicle]) {countCommands[cicle] = {}}
 			if(!countCommands[cicle][village_id]) {countCommands[cicle][village_id] = {}}
 			if(!countCommands[cicle][village_id]["village"]) {countCommands[cicle][village_id]["village"] = []}
@@ -170,13 +170,12 @@ define("robotTW2/services/FarmService", [
 			, cmd_rest = data_villages.villages[village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
 			, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 			, r = undefined
-
-
+			
 			if(cmd_ind <= 0){
 				callback();
 				return !0;
 			}
-
+			
 			lt_bb = Object.keys(lt_bb).map(function (barbara) {
 				if (check_commands_for_bb(lt_bb[barbara], cicle)) {
 					return lt_bb[barbara]
@@ -184,15 +183,19 @@ define("robotTW2/services/FarmService", [
 			}).filter(f=>f!=undefined)
 
 			lt_bb = lt_bb.splice(0, cmd_ind)
+			
+			if(!lt_bb.length){
+				callback();
+				return !0;
+			}
 
 			lt_bb.forEach(function (barbara) {
-				var g = undefined
-				, f = function(bb, cicle_internal){
+				var f = function(bb, cicle_internal){
 					if(!promise_send[cicle_internal]){
 						promise_send[cicle_internal] = new Promise(function(resolve_send, reject_send){
-							g = $timeout(function () {
+							$timeout(function () {
 								r = $timeout(function(){
-									resolve_send(true)
+									resolve_send()
 								}, conf_conf.LOADING_TIMEOUT);
 								if(!isRunning){
 									reject_send()
@@ -211,30 +214,26 @@ define("robotTW2/services/FarmService", [
 								data_log.farm.push({"text":text, "date": (new Date(time.convertedTime())).toString()})
 								data_log.set()
 								if(!countCommands[cicle_internal][village_id]){
-									console.log("no village_id")
 									resolve_send(true)
 									return
 								}
 								if(!preset_id){
-									console.log("no preset_id")
 									resolve_send(true)
 									return
 								}
-								result_units = units_subtract(preset_units, aldeia_units)
-								aldeia_units = result_units[1];
-								var permit_send = !!result_units[0];
-								if(permit_send) {
+//								result_units = units_subtract(preset_units, aldeia_units)
+//								aldeia_units = result_units[1];
+//								var permit_send = !!result_units[0];
+//								if(permit_send) {
 									countCommands[cicle_internal][village_id][preset_id].push(bb);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-								}
+//								}
 								resolve_send()
 							}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 						})
-						.then(function(permited){
+						.then(function(){
 							$timeout.cancel(r);
 							r = undefined;
-							$timeout.cancel(g);
-							g = undefined;
 							promise_send[cicle_internal] = undefined;
 							let tot = Object.keys(countCommands[cicle_internal][village_id]).reduce(function(a, b){
 								return countCommands[cicle_internal][village_id][a] ? countCommands[cicle_internal][village_id][a].length : 0 + countCommands[cicle_internal][village_id][b] ? countCommands[cicle_internal][village_id][b].length : 0
@@ -245,7 +244,6 @@ define("robotTW2/services/FarmService", [
 								f(reg[0], reg[1])
 							} else {
 								callback();
-								return !0
 							}
 						}
 						, function(){
@@ -345,7 +343,6 @@ define("robotTW2/services/FarmService", [
 						}
 					});
 				} else {
-					console.log("no villages.length " + JSON.stringify(cmd_preset))
 					resol()
 				}
 
@@ -484,7 +481,6 @@ define("robotTW2/services/FarmService", [
 						, function(){
 							data_log.farm.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"), "date": (new Date(time.convertedTime())).toString()})
 							clear_partial(countCicle)
-							console.log("farm stopped")
 						})
 					} else {
 						clear_partial(countCicle)
