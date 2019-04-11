@@ -119,7 +119,7 @@ define("robotTW2/databases/data_farm", [
 			let pri_vill = villages[0]
 			for (var preset in list_presets){
 				if(list_presets.hasOwnProperty(preset)){
-					if(presets_load != undefined || Object.values(presets_load).length == 0 || !Object.values(presets_load).map(function(elem){
+					if(presets_load == undefined || Object.values(presets_load).length == 0 || !Object.values(presets_load).map(function(elem){
 						return elem.name
 					}).find(f => f == "*Farm " + services.$filter("i18n")(Object.keys(list_presets[preset])[0], services.$rootScope.loc.ale, "units"))){
 						create_preset(list_presets[preset], pri_vill.getId())
