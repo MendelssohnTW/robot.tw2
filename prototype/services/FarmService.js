@@ -241,7 +241,7 @@ define("robotTW2/services/FarmService", [
 								return countCommands[cicle][village_id][a] ? countCommands[cicle][village_id][a].length : 0 + countCommands[cicle][village_id][b] ? countCommands[cicle][village_id][b].length : 0
 							})
 							, parc = countCommands[cicle][village_id][preset_id].length
-							if(promise_send_queue[cicle].length && parc <= cmd_ind && tot <= max_cmds){
+							if(promise_send_queue[cicle].length && parc <= cmd_rest && tot <= max_cmds){
 								barbara = promise_send_queue[cicle].shift()
 								f(barbara)
 							} else {
