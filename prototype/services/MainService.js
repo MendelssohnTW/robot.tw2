@@ -62,6 +62,10 @@ define("robotTW2/services/MainService", [
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_ERROR,				onErrorTimeout);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_ERROR,		onError);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
+			
+			service.$timeout(function(){
+				services.$rootScope.$broadcast(providers.eventTypeProvider.INSERT_BUTTON);	
+			}, 10000)
 
 			return extensions
 		}

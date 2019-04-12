@@ -19,7 +19,7 @@ define("robotTW2/controllers/MainCompletionController", [
 			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
 		}
 
-		services.$rootScope.$broadcast(providers.eventTypeProvider.INSERT_BUTTON);
+		
 		
 		return $scope;
 	}
