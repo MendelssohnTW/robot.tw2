@@ -34,7 +34,7 @@ define("robotTW2/services/MainService", [
 			}, 30000)
 		}
 		
-		function verifyConnection (){
+		var verifyConnection = function verifyConnection (){
 			if($('[ng-controller=ModalSocketController]').length){
 				timeout = undefined;
 				onErrorTimeout()
@@ -94,6 +94,7 @@ define("robotTW2/services/MainService", [
 
 			return select
 		}
+		, service.verifyConnection = verifyConnection
 		, service
 	})(
 			robotTW2.services.$rootScope,
