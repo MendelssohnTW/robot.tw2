@@ -17,7 +17,8 @@ define("robotTW2/databases/data_farm", [
 	) {
 
 	var data_farm = database.get("data_farm")
-	, db_farm = {};
+	, db_farm = {}
+	, presets_created = []
 
 	db_farm.set = function(){
 		database.set("data_farm", data_farm, true)
@@ -153,7 +154,7 @@ define("robotTW2/databases/data_farm", [
 		services.$timeout(function(){
 			presets_load = angular.copy(services.presetListService.getPresets())
 			var list_loaded = Object.values(presets_load).map(function(value){
-				if(presets_created.contains(value.name)){
+				if(presets_created.includes(value.name)){
 					return value.id
 				} else {
 					return undefined
@@ -171,8 +172,8 @@ define("robotTW2/databases/data_farm", [
 		}, 10000)
 	}
 
-	var presets_created = []
-	, dataNew = {
+	
+	var dataNew = {
 			auto_start				: false, 
 			init_initialized		: false, 
 			activated				: false,
