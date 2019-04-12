@@ -950,7 +950,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				"OPEN_ATTACK"					: "Internal/robotTW2/open_attack",
 				"OPEN_DEPOSIT"					: "Internal/robotTW2/open_deposit",
 				"OPEN_SECONDVILLAGE"			: "Internal/robotTW2/open_secondvillage",
-				"OPEN_MAIN"						: "Internal/robotTW2/open_main"
+				"OPEN_MAIN"						: "Internal/robotTW2/open_main",
+				"OPEN_MARKET"					: "Internal/robotTW2/open_market",
+				"OPEN_LOG"						: "Internal/robotTW2/open_log"
 			});
 			return robotTW2.providers;
 		}))
