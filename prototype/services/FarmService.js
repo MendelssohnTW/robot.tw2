@@ -244,7 +244,7 @@ define("robotTW2/services/FarmService", [
 									data_log.farm.push({"text":text, "date": (new Date(time.convertedTime())).toString()})
 									data_log.set()
 
-									countCommands[cicle_internal][cmd_preset_internal.village_id][preset_id].push(bb);
+									countCommands[cicle_internal][cmd_preset_internal.village_id][cmd_preset_internal.preset_id].push(bb);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									resolve_send()
 								}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
@@ -256,7 +256,7 @@ define("robotTW2/services/FarmService", [
 								let tot = Object.keys(countCommands[cicle_internal][cmd_preset_internal.village_id]).reduce(function(a, b){
 									return countCommands[cicle_internal][cmd_preset_internal.village_id][a] ? countCommands[cicle_internal][cmd_preset_internal.village_id][a].length : 0 + countCommands[cicle_internal][cmd_preset_internal.village_id][b] ? countCommands[cicle_internal][cmd_preset_internal.village_id][b].length : 0
 								})
-								, parc = countCommands[cicle_internal][cmd_preset_internal.village_id][preset_id].length
+								, parc = countCommands[cicle_internal][cmd_preset_internal.village_id][cmd_preset_internal.preset_id].length
 								if(promise_send_queue.length && parc <= cmd_rest && tot <= max_cmds){
 									let reg = promise_send_queue.shift()
 									f(reg[0], reg[1], reg[2])
