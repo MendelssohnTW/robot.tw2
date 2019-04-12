@@ -7,16 +7,23 @@ define("robotTW2/services/MainService", [
 			conf,
 			data_main
 	){
-	return (function MainService($rootScope, requestFn, secondVillageService, modelDataService, providers) {
+	return (function MainService(
+			$rootScope, 
+			requestFn, 
+			secondVillageService, 
+			modelDataService, 
+			providers, 
+			loadScript
+	) {
 		var timeout = undefined;
-		
+
 		function onError (){
 			if(timeout && timeout.$$state && timeout.$$state.status == 0){
 				robotTW2.services.$timeout.cancel(timeout)
 			}
 			location.reload()
 		}
-		
+
 		function onErrorTimeout (){
 			if(timeout && timeout.$$state && timeout.$$state.status == 0){
 				robotTW2.services.$timeout.cancel(timeout)
@@ -25,10 +32,10 @@ define("robotTW2/services/MainService", [
 				onError()
 			}, 30000)
 		}
-		
+
 		var service = {};
 		return service.initExtensions = function(){
-			
+			loadScript("/controllers/MainCompletionController.js");
 			var extensions = data_main.getExtensions();
 			for (var extension in extensions) {
 				var arFn = requestFn.get(extension.toLowerCase(), true);
@@ -51,21 +58,21 @@ define("robotTW2/services/MainService", [
 				}
 			}
 			data_main.setExtensions(extensions);
-			
+
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_ERROR,				onErrorTimeout);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_ERROR,		onError);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
-			
+
 			return extensions
 		}
 		, service.getSelects = function(obj, selected){
 			if(!obj) {return}
-			
+
 			var select = {
-				"availableOptions" : obj,
-				"selectedOption" : selected ? obj.find(f=>f.id==selected.id) : obj[0]
+					"availableOptions" : obj,
+					"selectedOption" : selected ? obj.find(f=>f.id==selected.id) : obj[0]
 			}
-			
+
 			return select
 		}
 		, service
@@ -74,6 +81,7 @@ define("robotTW2/services/MainService", [
 			robotTW2.requestFn, 
 			robotTW2.services.secondVillageService,
 			robotTW2.services.modelDataService,
-			robotTW2.providers
-			)
+			robotTW2.providers,
+			robotTW2.loadScript
+	)
 })
