@@ -1,0 +1,37 @@
+{
+	"author": "Mendelssohn Sergio",
+	"description": "Tribal Support Tools.",
+	"manifest_version": 2,
+	"version": "0.1.4",
+	"name": "RobotTwTwoTools",
+	"permissions": [
+		"https://*.tribalwars2.com/*",
+		"tabs",
+		"activeTab",
+		"<all_urls>"
+	],
+	"content_scripts": [
+		{
+			"js": [
+				"injectTwTwoTools.js"
+			],
+			"matches": [
+				"https://*.tribalwars2.com/game.php*"
+			],
+			"run_at": "document_start"
+		}
+	],
+	"web_accessible_resources": [
+		"twtwotools.js"
+	],
+	"background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+	"icons": {
+		"16": "robo02.png",
+		"32": "robo02.png",
+		"48": "robo02.png",
+		"128": "robo02.png"
+	}
+}
