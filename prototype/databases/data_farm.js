@@ -152,7 +152,7 @@ define("robotTW2/databases/data_farm", [
 
 		services.$timeout(function(){
 			var list_loaded = Object.values(presets_load).map(function(value){
-				if(presets_created.find(f=>f==value.name)){
+				if(presets_created.contains(value.name)){
 					return value.id
 				} else {
 					return undefined
