@@ -22,7 +22,7 @@ define("robotTW2/services/MainService", [
 			if(timeout && timeout.$$state && timeout.$$state.status == 0){
 				robotTW2.services.$timeout.cancel(timeout)
 			}
-			location.reload()
+			window.location.reload()
 		}
 
 		function onErrorTimeout (){
@@ -32,6 +32,13 @@ define("robotTW2/services/MainService", [
 			timeout = robotTW2.services.$timeout(function(){
 				onError()
 			}, 30000)
+		}
+		
+		function verifyConnection (){
+			if($('[ng-controller=ModalSocketController]').length){
+				timeout = undefined;
+				onErrorTimeout()
+			}
 		}
 
 		var service = {};
@@ -67,6 +74,13 @@ define("robotTW2/services/MainService", [
 			$timeout(function(){
 				$rootScope.$broadcast(providers.eventTypeProvider.INSERT_BUTTON);	
 			}, 10000)
+			
+			
+			window.setInterval(function(){
+				verifyConnection()
+			}, 300000)
+			
+			
 
 			return extensions
 		}
