@@ -8,7 +8,8 @@ define("robotTW2/services/MainService", [
 			data_main
 	){
 	return (function MainService(
-			$rootScope, 
+			$rootScope,
+			$timeout,
 			requestFn, 
 			secondVillageService, 
 			modelDataService, 
@@ -63,8 +64,8 @@ define("robotTW2/services/MainService", [
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_ERROR,		onError);
 			$rootScope.$on(providers.eventTypeProvider.SOCKET_RECONNECT_FAILED,		onError);
 			
-			service.$timeout(function(){
-				services.$rootScope.$broadcast(providers.eventTypeProvider.INSERT_BUTTON);	
+			$timeout(function(){
+				$rootScope.$broadcast(providers.eventTypeProvider.INSERT_BUTTON);	
 			}, 10000)
 
 			return extensions
@@ -81,7 +82,8 @@ define("robotTW2/services/MainService", [
 		}
 		, service
 	})(
-			robotTW2.services.$rootScope, 
+			robotTW2.services.$rootScope,
+			robotTW2.services.$timeout,
 			robotTW2.requestFn, 
 			robotTW2.services.secondVillageService,
 			robotTW2.services.modelDataService,
