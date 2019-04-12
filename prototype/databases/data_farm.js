@@ -17,7 +17,8 @@ define("robotTW2/databases/data_farm", [
 	) {
 
 	var data_farm = database.get("data_farm")
-	, db_farm = {};
+	, db_farm = {}
+	, presets_created = []
 
 	db_farm.set = function(){
 		database.set("data_farm", data_farm, true)
@@ -171,8 +172,8 @@ define("robotTW2/databases/data_farm", [
 		}, 10000)
 	}
 
-	var presets_created = []
-	, dataNew = {
+	
+	var dataNew = {
 			auto_start				: false, 
 			init_initialized		: false, 
 			activated				: false,
