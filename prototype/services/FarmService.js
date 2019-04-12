@@ -170,7 +170,7 @@ define("robotTW2/services/FarmService", [
 				, r = undefined
 				, villages = []
 				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units)
-				, data = mapData.loadTownData((cmd_preset.x - (dist / 2)), (cmd_preset.y - (dist / 2)), dist * 2, dist * 2)
+				, data = mapData.loadTownData(Math.trunc(cmd_preset.x - (dist / 2)), Math.trunc(cmd_preset.y - (dist / 2)), Math.trunc(dist * 2), Math.trunc(dist * 2))
 				, dt = data.map(function(elem){
 					return elem.data
 				}).filter(f=>f!=null)
