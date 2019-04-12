@@ -127,8 +127,7 @@ define("robotTW2/databases/data_farm", [
 		}
 
 		let qtd = Math.min.apply(null, [(Math.max.apply(null, [Math.trunc((villages.length / 10) * 5), 5])), 200])
-
-		let list_presets = [
+		, list_presets = [
 			{"spear": qtd},
 			{"sword": qtd},
 			{"archer": qtd},
