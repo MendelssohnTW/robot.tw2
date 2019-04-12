@@ -360,7 +360,7 @@ define("robotTW2/services/FarmService", [
 						let village_id = villages[i].getId()
 						, presets
 						, aldeia_units
-						, vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5) && data_farm.attacked
+						, vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5) && !data_farm.attacked
 
 						if(!isRunning){
 							break;
