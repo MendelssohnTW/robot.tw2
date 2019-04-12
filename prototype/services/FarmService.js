@@ -220,7 +220,7 @@ define("robotTW2/services/FarmService", [
 				}
 
 				villages.forEach(function (barbara) {
-					var f = function(bb, cicle_internal){
+					var f = function(bb, cicle_internal, cmd_preset_internal){
 						if(!promise_send[cicle_internal]){
 							promise_send[cicle_internal] = new Promise(function(resolve_send, reject_send){
 								$timeout(function () {
@@ -232,9 +232,9 @@ define("robotTW2/services/FarmService", [
 										return
 									}
 									var params =  {
-											start_village: cmd_preset.village_id,
+											start_village: cmd_preset_internal.village_id,
 											target_village: bb.id,
-											army_preset_id: cmd_preset.preset_id,
+											army_preset_id: cmd_preset_internal.preset_id,
 											type: "attack"
 									}
 
@@ -244,7 +244,7 @@ define("robotTW2/services/FarmService", [
 									data_log.farm.push({"text":text, "date": (new Date(time.convertedTime())).toString()})
 									data_log.set()
 
-									countCommands[cicle_internal][cmd_preset.village_id][preset_id].push(bb);
+									countCommands[cicle_internal][cmd_preset_internal.village_id][preset_id].push(bb);
 									socketService.emit(providers.routeProvider.SEND_PRESET, params);
 									resolve_send()
 								}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
@@ -253,13 +253,13 @@ define("robotTW2/services/FarmService", [
 								$timeout.cancel(r);
 								r = undefined;
 								promise_send[cicle_internal] = undefined;
-								let tot = Object.keys(countCommands[cicle_internal][cmd_preset.village_id]).reduce(function(a, b){
-									return countCommands[cicle_internal][cmd_preset.village_id][a] ? countCommands[cicle_internal][cmd_preset.village_id][a].length : 0 + countCommands[cicle_internal][cmd_preset.village_id][b] ? countCommands[cicle_internal][cmd_preset.village_id][b].length : 0
+								let tot = Object.keys(countCommands[cicle_internal][cmd_preset_internal.village_id]).reduce(function(a, b){
+									return countCommands[cicle_internal][cmd_preset_internal.village_id][a] ? countCommands[cicle_internal][cmd_preset_internal.village_id][a].length : 0 + countCommands[cicle_internal][cmd_preset_internal.village_id][b] ? countCommands[cicle_internal][cmd_preset_internal.village_id][b].length : 0
 								})
-								, parc = countCommands[cicle_internal][cmd_preset.village_id][preset_id].length
+								, parc = countCommands[cicle_internal][cmd_preset_internal.village_id][preset_id].length
 								if(promise_send_queue.length && parc <= cmd_rest && tot <= max_cmds){
 									let reg = promise_send_queue.shift()
-									f(reg[0], reg[1])
+									f(reg[0], reg[1], reg[2])
 								} else {
 									$timeout(function () {
 										resv();
@@ -269,10 +269,10 @@ define("robotTW2/services/FarmService", [
 								rejc();
 							})
 						} else {
-							promise_send_queue.push([barbara, cicle_internal])
+							promise_send_queue.push([barbara, cicle_internal, cmd_preset_internal])
 						}
 					}
-					f(barbara, cicle_internal)
+					f(barbara, cicle_internal, cmd_preset)
 				});
 			});
 		}
