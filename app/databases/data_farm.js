@@ -102,7 +102,7 @@ define("robotTW2/databases/data_farm", [
 				return
 			}
 
-			let qtd = Math.trunc((villages.length / 10) * 5) 
+			let qtd = Math.min.apply(null, [(Math.max.apply(null, [Math.trunc((villages.length / 10) * 5), 5])), 200])
 
 			let list_presets = [
 				{"spear": qtd},
