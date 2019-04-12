@@ -21,3 +21,10 @@ chrome.tabs.onCreated.addListener(checkTime);
 chrome.tabs.onRemoved.addListener(checkTime);
 chrome.windows.onCreated.addListener(checkTime);
 
+chrome.runtime.onConnect.addListener(function(port) {
+	var tabId = port.sender.tab.id;
+	port.onDisconnect.addListener(function() {
+		chrome.tabs.reload(tabId);
+	});
+});
+
