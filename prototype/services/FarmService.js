@@ -517,7 +517,7 @@ define("robotTW2/services/FarmService", [
 			delete commands_for_presets[cicle]
 		}
 		, stop = function () {
-
+			promise_send_queue = []
 			data_farm.complete = 0
 			data_farm.set()
 
