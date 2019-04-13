@@ -15,11 +15,13 @@ define("robotTW2/controllers/LogController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		$scope.text_version = $scope.version + " " + data_attack.version;
+		
 
 		$scope.data_main = data_main;
 		$scope.data_log = data_log;
 		$scope.extensions = $scope.data_main.getExtensions()
+		
+		$scope.text_version = $scope.version + " " + data_log.version;
 
 		var self = this
 		, TABS = {};
