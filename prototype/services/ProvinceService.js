@@ -76,8 +76,8 @@ define("robotTW2/services/ProvinceService", [
 			getProvinceData(pv.x, pv.y, function(data){
 				let villages = data.villages
 				, list_result = villages.map(function(vill_t){
-					if(modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(villages[vill_t].tribe_id)){
-						return villages[vill_t]
+					if(modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)){
+						return vill_t
 					}
 				}).filter(f=>f!=undefined)
 
@@ -91,8 +91,8 @@ define("robotTW2/services/ProvinceService", [
 			getProvinceData(pv.x, pv.y, function(data){
 				let villages = data.villages
 				, list_result = villages.map(function(vill_t){
-					if(villages[vill_t].tribe_id == null && character_id.character_id == null){
-						return villages[vill_t]
+					if(vill_t.tribe_id == null && vill_t.character_id == null){
+						return vill_t
 					}
 				}).filter(f=>f!=undefined)
 
@@ -106,12 +106,12 @@ define("robotTW2/services/ProvinceService", [
 			getProvinceData(pv.x, pv.y, function(data){
 				let villages = data.villages
 				, list_result = villages.map(function(vill_t){
-					if(!modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(villages[vill_t].tribe_id)
-							&& !modelDataService.getSelectedCharacter().getTribeRelations().isAlly(villages[vill_t].tribe_id)
-							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(villages[vill_t].tribe_id)
+					if(!modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)
+							&& !modelDataService.getSelectedCharacter().getTribeRelations().isAlly(vill_t.tribe_id)
+							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(vill_t.tribe_id)
 							&& character_id.character_id != null
 					){
-						return villages[vill_t]
+						return vill_t
 					}
 				}).filter(f=>f!=undefined)
 
