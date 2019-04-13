@@ -297,6 +297,10 @@
 .robotTW2 .tab-ten {
     max-width: 200px;
     width: 10%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    float: left;
 }
 
 .robotTW2 .select-wrapper {
