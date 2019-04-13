@@ -196,12 +196,16 @@ define("robotTW2/services/FarmService", [
 						return villages[barbara]
 					}
 				}).filter(f=>f!=undefined)
+				
+				let new_villages = []
 
 				for (j = 0; j < villages.length; j++) { // filtra as aldeias por quadrantes
-					if (!check_village(villages[j], cmd_preset)) {
-						villages = villages.filter(f=> f.id != villages[j].id)
+					if (check_village(villages[j], cmd_preset)) {
+						new_villages.push(villages[j].id)
 					}
 				}
+				
+				villages = new_villages
 
 				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time)
 				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time)
