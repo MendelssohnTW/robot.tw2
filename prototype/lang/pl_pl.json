@@ -259,6 +259,7 @@
 	},
 	"spy": {
 		"village": "Village only",
+		"target": "Target",
 		"province_enemy": "Enemies of province",
 		"province_barbarian": "Barbarian of province",
 		"province_neutral": "Neutral of province",

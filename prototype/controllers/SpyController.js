@@ -43,7 +43,9 @@ define("robotTW2/controllers/SpyController", [
 		$scope.select_all_province = false;
 		$scope.select_all_village = true;
 		$scope.item = undefined
-		$scope.text_put = text_data_target
+		$scope.text_put = $scope.text_data_target
+		$scope.text_put_province = $scope.text_target_village
+		$scope.province_name = ""
 
 		var self = this
 		, update = function(){
@@ -116,20 +118,23 @@ define("robotTW2/controllers/SpyController", [
 					updateValues()
 					break;
 				case "province_enemy":
-					provinceService.getProvinceForVillageForEnemy($scope.item, function(villages){
-						$scope.villages_for_sent = villages
+					provinceService.getProvinceForVillageForEnemy($scope.item, function(data){
+						$scope.villages_for_sent = data.villages
+						$scope.province_name = data.name
 					})
 					updateValuesSource()
 					break;
 				case "province_barbarian":
-					provinceService.getProvinceForVillageForBarbarian($scope.item, function(villages){
-						$scope.villages_for_sent = villages
+					provinceService.getProvinceForVillageForBarbarian($scope.item, function(data){
+						$scope.villages_for_sent = data.villages
+						$scope.province_name = data.name
 					})
 					updateValuesSource()
 					break;
 				case "province_neutral":
-					provinceService.getProvinceForVillageForNeutral($scope.item, function(villages){
-						$scope.villages_for_sent = villages
+					provinceService.getProvinceForVillageForNeutral($scope.item, function(data){
+						$scope.villages_for_sent = data.villages
+						$scope.province_name = data.name
 					})
 					updateValuesSource()
 					break;
@@ -577,9 +582,11 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$watch("data_option", function() {
 			if(!$scope.data_option){return}
 			if($scope.data_option.selectedOption.value == "village"){
-				$scope.text_put = text_data_target
+				$scope.text_put = $scope.text_data_target
+				$scope.text_put_province = $scope.text_target_village
 			} else {
-				$scope.text_put = text_data_source
+				$scope.text_put = $scope.text_data_source
+				$scope.text_put_province = services.$filter("i18n")("target", services.$rootScope.loc.ale, "spy") + " " + $scope.province_name
 			}
 			updateTarget()
 		}, true);

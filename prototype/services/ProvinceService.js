@@ -82,7 +82,7 @@ define("robotTW2/services/ProvinceService", [
 				}).filter(f=>f!=undefined)
 
 				if(typeof(callback)=="function"){
-					callback(list_result)
+					callback({"villages": list_result, "name": data.name})
 				}
 			})
 		}
@@ -97,7 +97,7 @@ define("robotTW2/services/ProvinceService", [
 				}).filter(f=>f!=undefined)
 
 				if(typeof(callback)=="function"){
-					callback(list_result)
+					callback({"villages": list_result, "name": data.name})
 				}
 			})
 		}
@@ -116,7 +116,7 @@ define("robotTW2/services/ProvinceService", [
 				}).filter(f=>f!=undefined)
 
 				if(typeof(callback)=="function"){
-					callback(list_result)
+					callback({"villages": list_result, "name": data.name})
 				}
 			})
 		}

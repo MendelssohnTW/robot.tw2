@@ -259,6 +259,7 @@
 	},
 	"spy": {
 		"village": "Aldeia única",
+		"target": "Alvo",
 		"province_enemy": "Inimigos da província",
 		"province_barbarian": "Bárbaras da província",
 		"province_neutral": "Neutros da província",
