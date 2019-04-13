@@ -97,9 +97,10 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		, updateTarget = function(){
-			switch($scope.data_option.selectedOption.value){
-			case "village":
-				if(Object.keys($scope.send_scope).length){
+			if(Object.keys($scope.send_scope).length){
+				switch($scope.data_option.selectedOption.value){
+				case "village":
+
 					$scope.send_scope.distance = math.actualDistance(
 							{
 								'x' : $scope.data_select.selectedOption.x,
@@ -111,26 +112,26 @@ define("robotTW2/controllers/SpyController", [
 							}
 					);
 					updateValues()
+					break;
+				case "province_enemy":
+					provinceService.getProvinceForVillageForEnemy($scope.item, function(villages){
+						$scope.villages_for_sent = villages
+					})
+					updateValuesSource()
+					break;
+				case "province_barbarian":
+					provinceService.getProvinceForVillageForBarbarian($scope.item, function(villages){
+						$scope.villages_for_sent = villages
+					})
+					updateValuesSource()
+					break;
+				case "province_neutral":
+					provinceService.getProvinceForVillageForNeutral($scope.item, function(villages){
+						$scope.villages_for_sent = villages
+					})
+					updateValuesSource()
+					break;
 				}
-				break;
-			case "province_enemy":
-				provinceService.getProvinceForVillageForEnemy($scope.item, function(villages){
-					$scope.villages_for_sent = villages
-				})
-				updateValuesSource()
-				break;
-			case "province_barbarian":
-				provinceService.getProvinceForVillageForBarbarian($scope.item, function(villages){
-					$scope.villages_for_sent = villages
-				})
-				updateValuesSource()
-				break;
-			case "province_neutral":
-				provinceService.getProvinceForVillageForNeutral($scope.item, function(villages){
-					$scope.villages_for_sent = villages
-				})
-				updateValuesSource()
-				break;
 			}
 		}
 		, updateTargetPlayer = function(){
