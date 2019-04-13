@@ -27,12 +27,6 @@
 				</div>
 			</div>
 		</div>
-		<div ng-if="activeTab == TABS.ALERT">
-			<div class="alert win-main jssb-applied jssb-focus jssb-scrolly"
-				scrollbar="">
-				<div class="box-paper"></div>
-			</div>
-		</div>
 		<div ng-if="activeTab == TABS.ATTACK">
 			<div class="attack win-main jssb-applied jssb-focus jssb-scrolly"
 				scrollbar="">
@@ -75,7 +69,7 @@
 				<div class="box-paper"></div>
 			</div>
 		</div>
-		<div ng-if="activeTab == TABS.RECON">
+		<div ng-if="TABS.RECON && activeTab == TABS.RECON">
 			<div class="recon win-main jssb-applied jssb-focus jssb-scrolly"
 				scrollbar="">
 				<div class="box-paper"></div>
