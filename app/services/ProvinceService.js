@@ -71,13 +71,62 @@ define("robotTW2/services/ProvinceService", [
 				'y': y
 			});
 		}
+		, getProvinceForVillageForEnemy = function(vill, callback){
+			let pv = getProvinceCoord(vill.x, vill.y)
+			getProvinceData(pv.x, pv.y, function(data){
+				let villages = data.villages
+				, list_result = villages.map(function(vill_t){
+					if(modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)){
+						return vill_t
+					}
+				}).filter(f=>f!=undefined)
+
+				if(typeof(callback)=="function"){
+					callback({"villages": list_result, "name": data.name})
+				}
+			})
+		}
+		, getProvinceForVillageForBarbarian = function(vill, callback){
+			let pv = getProvinceCoord(vill.x, vill.y)
+			getProvinceData(pv.x, pv.y, function(data){
+				let villages = data.villages
+				, list_result = villages.map(function(vill_t){
+					if(vill_t.tribe_id == null && vill_t.character_id == null){
+						return vill_t
+					}
+				}).filter(f=>f!=undefined)
+
+				if(typeof(callback)=="function"){
+					callback({"villages": list_result, "name": data.name})
+				}
+			})
+		}
+		, getProvinceForVillageForNeutral = function(vill, callback){
+			let pv = getProvinceCoord(vill.x, vill.y)
+			getProvinceData(pv.x, pv.y, function(data){
+				let villages = data.villages
+				, list_result = villages.map(function(vill_t){
+					if(!modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)
+							&& !modelDataService.getSelectedCharacter().getTribeRelations().isAlly(vill_t.tribe_id)
+							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(vill_t.tribe_id)
+							&& vill_t.character_id != null
+					){
+						return vill_t
+					}
+				}).filter(f=>f!=undefined)
+
+				if(typeof(callback)=="function"){
+					callback({"villages": list_result, "name": data.name})
+				}
+			})
+		}
 		, getProvinceForPlayer = function(player, callback){
 			callPlayer = callback
 			var pvs = []
 			, ab = undefined
 			let lt_vills = angular.copy(player.villages)
 			if(!player || !lt_vills.length){return}
-			
+
 			function d (ps) {
 				let df =  Object.keys(ps).map(function(pts){
 					ps[pts].villages = ps[pts].villages.filter(f=>f.character_id == player.character_id)
@@ -130,7 +179,7 @@ define("robotTW2/services/ProvinceService", [
 		, stop = function () {
 			isRunning = !1
 		}
-		
+
 		init()
 
 		return	{
@@ -139,6 +188,9 @@ define("robotTW2/services/ProvinceService", [
 			stop 					: stop,
 			getProvinceCoord 		: getProvinceCoord,
 			getProvinceForPlayer 	: getProvinceForPlayer,
+			getProvinceForVillageForEnemy 		: getProvinceForVillageForEnemy, 
+			getProvinceForVillageForBarbarian 	: getProvinceForVillageForBarbarian,
+			getProvinceForVillageForNeutral 	: getProvinceForVillageForNeutral,
 			getProvinceData 		: getProvinceData,
 			isRunning				: function () {
 				return isRunning
