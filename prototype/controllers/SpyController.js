@@ -43,6 +43,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.select_all_province = false;
 		$scope.select_all_village = true;
 		$scope.item = undefined
+		$scope.text_put = text_data_target
 
 		var self = this
 		, update = function(){
@@ -575,6 +576,11 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_option", function() {
 			if(!$scope.data_option){return}
+			if($scope.data_option.selectedOption.value == "village"){
+				$scope.text_put = text_data_target
+			} else {
+				$scope.text_put = text_data_source
+			}
 			updateTarget()
 		}, true);
 
