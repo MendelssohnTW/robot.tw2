@@ -194,8 +194,6 @@
 }
 
 .robotTW2 .defense.box-paper {
-    min-height: 48px;
-    height: 205px;
     margin: 0 2px;
 }
 
@@ -213,8 +211,6 @@
 }
 
 .robotTW2 .headquarter.box-paper {
-    min-height: 48px;
-    height: 180px;
     margin: 0 2px;
 }
 
@@ -231,8 +227,6 @@
 }
 
 .robotTW2 .spy.box-paper {
-    min-height: 48px;
-    height: 48px;
     margin: 0 2px;
 }
 
@@ -241,8 +235,6 @@
 }
 
 .robotTW2 .log.box-paper {
-    min-height: 48px;
-    height: 48px;
     margin: 0 2px;
 }
 
