@@ -97,20 +97,21 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		, updateTarget = function(){
-
 			switch($scope.data_option.selectedOption.value){
 			case "village":
-				$scope.send_scope.distance = math.actualDistance(
-						{
-							'x' : $scope.data_select.selectedOption.x,
-							'y' : $scope.data_select.selectedOption.y
-						}, 
-						{
-							'x' : $scope.item.x,
-							'y' : $scope.item.y
-						}
-				);
-				updateValues()
+				if(Object.keys($scope.send_scope).length){
+					$scope.send_scope.distance = math.actualDistance(
+							{
+								'x' : $scope.data_select.selectedOption.x,
+								'y' : $scope.data_select.selectedOption.y
+							}, 
+							{
+								'x' : $scope.item.x,
+								'y' : $scope.item.y
+							}
+					);
+					updateValues()
+				}
 				break;
 			case "province_enemy":
 				provinceService.getProvinceForVillageForEnemy($scope.item, function(villages){
@@ -569,7 +570,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_spy.set();
 		});
-		
+
 		$scope.$watch("data_option", function() {
 			if(!$scope.data_option){return}
 			updateTarget()
