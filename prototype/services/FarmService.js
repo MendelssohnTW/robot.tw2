@@ -301,7 +301,7 @@ define("robotTW2/services/FarmService", [
 
 			let quads = data_villages.getQuadrants(village_id, preset_id)
 			if(quads){
-				return !quads.includes(quadrant);
+				return quads.includes(quadrant);
 			} else {
 				return true
 			}
