@@ -58,15 +58,18 @@
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
 							<col>
+							<col>
 						</colgroup>
 						<tbody>
 							<tr>
+								<th style="display: table-cell" class="cell-center selected">Teste</th>
 								<th style="display: table-cell" class="cell-center selected">Teste</th>
 							</tr>
 						</tbody>
 						<tbody class="scroll-wrap">
 							<tr ng-repeat="log in data_log.farm">
-								<td class="cell-center">{{log}}</td>
+								<td class="cell-center">{{log.text}}</td>
+								<td class="cell-center">{{log.date}}</td>
 							</tr>
 						</tbody>
 					</table>
