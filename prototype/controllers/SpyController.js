@@ -97,17 +97,40 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		, updateTarget = function(){
-			$scope.send_scope.distance = math.actualDistance(
-					{
-						'x' : $scope.data_select.selectedOption.x,
-						'y' : $scope.data_select.selectedOption.y
-					}, 
-					{
-						'x' : $scope.item.x,
-						'y' : $scope.item.y
-					}
-			);
-			updateValues()
+
+			switch($scope.data_option.selectedOption.value){
+			case "village":
+				$scope.send_scope.distance = math.actualDistance(
+						{
+							'x' : $scope.data_select.selectedOption.x,
+							'y' : $scope.data_select.selectedOption.y
+						}, 
+						{
+							'x' : $scope.item.x,
+							'y' : $scope.item.y
+						}
+				);
+				updateValues()
+				break;
+			case "province_enemy":
+				provinceService.getProvinceForVillageForEnemy($scope.item, function(villages){
+					$scope.villages_for_sent = villages
+				})
+				updateValuesSource()
+				break;
+			case "province_barbarian":
+				provinceService.getProvinceForVillageForBarbarian($scope.item, function(villages){
+					$scope.villages_for_sent = villages
+				})
+				updateValuesSource()
+				break;
+			case "province_neutral":
+				provinceService.getProvinceForVillageForNeutral($scope.item, function(villages){
+					$scope.villages_for_sent = villages
+				})
+				updateValuesSource()
+				break;
+			}
 		}
 		, updateTargetPlayer = function(){
 			if(!$scope.item_player) {return}
@@ -399,20 +422,23 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.sendAttackSpy = function(){
 			if(!$scope.item){return}
-			updateValues()
+			if($scope.data_option.selectedOption.value == "village"){
+				updateValues()
+				if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
+					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+					$scope.send_scope.startId = $scope.data_select.selectedOption.id
+					$scope.send_scope.targetId = $scope.item.id
+					$scope.send_scope.targetVillage = $scope.item.name
+					$scope.send_scope.targetX = $scope.item.x
+					$scope.send_scope.targetY = $scope.item.y
+					$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
 
-			if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
-				$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-				$scope.send_scope.startId = $scope.data_select.selectedOption.id
-				$scope.send_scope.targetId = $scope.item.id
-				$scope.send_scope.targetVillage = $scope.item.name
-				$scope.send_scope.targetX = $scope.item.x
-				$scope.send_scope.targetY = $scope.item.y
-				$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
-
-				services.SpyService.sendCommandAttackSpy($scope.send_scope);
+					services.SpyService.sendCommandAttackSpy($scope.send_scope);
+				} else {
+					notify("date_error");
+				}
 			} else {
-				notify("date_error");
+				$scope.sendAttackSpyProvince()
 			}
 			$scope.send_scope = {}
 			$scope.recalcScrollbar();
@@ -506,6 +532,27 @@ define("robotTW2/controllers/SpyController", [
 				}]
 			)
 
+			$scope.data_option = services.MainService.getSelects([
+				{
+					"name" : services.$filter("i18n")("village", services.$rootScope.loc.ale, "spy"),
+					"value" : "village"
+				},
+				{
+					"name" : services.$filter("i18n")("province_enemy", services.$rootScope.loc.ale, "spy"),
+					"value" : "province_enemy"
+
+				},
+				{
+					"name" : services.$filter("i18n")("province_barbarian", services.$rootScope.loc.ale, "spy"),
+					"value" : "province_barbarian"
+
+				},
+				{
+					"name" : services.$filter("i18n")("province_neutral", services.$rootScope.loc.ale, "spy"),
+					"value" : "province_neutral"
+				}]
+			)
+
 			if(order && order == "thieves"){
 				$scope.data_type.push( 
 						{
@@ -522,11 +569,16 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_spy.set();
 		});
+		
+		$scope.$watch("data_option", function() {
+			if(!$scope.data_option){return}
+			updateTarget()
+		}, true);
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, function(){
 			$scope.data_select.selectedOption = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
 		});
-		
+
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])

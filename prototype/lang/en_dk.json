@@ -258,6 +258,10 @@
 		"text_interval": "Next cycle in"
 	},
 	"spy": {
+		"village": "Village",
+		"province_enemy": "Village only",
+		"province_barbarian": "Barbarian of province",
+		"province_neutral": "Neutral of province",
 		"spy": "Spy",
 		"units": "Units",
 		"buildings": "Buildings",
