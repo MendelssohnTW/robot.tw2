@@ -349,8 +349,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					res()
 					return
 				}
-				b.src = host + url + '?' + a;
-//				b.src = host + url;
+//				b.src = host + url + '?' + a;
+				b.src = host + url;
 
 				if(!scripts_loaded.find(f => f == url)){
 					if((opt && scripts_removed.find(f => f == url)) || (!opt && !scripts_removed.find(f => f == url))){
@@ -931,6 +931,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				"INTERVAL_CHANGE_MARKET"		: "Internal/robotTW2/interval_change_market",
 				"INTERVAL_CHANGE_HEADQUARTER"	: "Internal/robotTW2/interval_change_headquarter",
 				"INTERVAL_CHANGE_DEPOSIT"		: "Internal/robotTW2/interval_change_deposit",
+				"INSERT_BUTTON"					: "Internal/robotTW2/insert_button",
 				"CHANGE_COMMANDS"				: "Internal/robotTW2/change_commands",
 				"CHANGE_COMMANDS_DEFENSE"		: "Internal/robotTW2/change_commands_defense",
 				"CHANGE_TIME_CORRECTION"		: "Internal/robotTW2/change_time_correction",
@@ -949,7 +950,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				"OPEN_ATTACK"					: "Internal/robotTW2/open_attack",
 				"OPEN_DEPOSIT"					: "Internal/robotTW2/open_deposit",
 				"OPEN_SECONDVILLAGE"			: "Internal/robotTW2/open_secondvillage",
-				"OPEN_MAIN"						: "Internal/robotTW2/open_main"
+				"OPEN_MAIN"						: "Internal/robotTW2/open_main",
+				"OPEN_MARKET"					: "Internal/robotTW2/open_market",
+				"OPEN_LOG"						: "Internal/robotTW2/open_log"
 			});
 			return robotTW2.providers;
 		}))
@@ -2163,6 +2166,28 @@ var robotTW2 = window.robotTW2 = undefined;
 								scopeLang 				: scopeLang,
 								templateName 			: "farmcompletion",
 								url		 				: "/controllers/FarmCompletionController.js"
+						}	
+						robotTW2.build(params)
+					})
+					break
+				}
+				case robotTW2.controllers.MainCompletionController : {
+					robotTW2.createScopeLang("main", function(scopeLang){
+						var get_father = function(){
+							return $('[ng-controller=TopInterfaceController]');
+						}
+						, get_son = function(){
+							return get_father().find("#logout-wrapper")			
+						}
+						, params = {
+								included_controller		: "TopInterfaceController",
+								controller				: robotTW2.controllers.MainCompletionController,
+								build_open				: false,
+								get_son					: get_son,
+								provider_listener		: robotTW2.providers.eventTypeProvider.INSERT_BUTTON,
+								scopeLang 				: scopeLang,
+								templateName 			: "maincompletion",
+								url		 				: "/controllers/MainCompletionController.js"
 						}	
 						robotTW2.build(params)
 					})
