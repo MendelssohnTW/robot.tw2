@@ -372,8 +372,7 @@ define("robotTW2/controllers/SpyController", [
 					}
 
 					function fnext(dist_vill){
-						let vlg = services.modelDataService.getVillage(dist_vill.id)
-						, qtd_spy = vlg.getScoutingInfo().getNumAvailableSpies();
+						let qtd_spy = $scope.local_data_villages.find(f=>f.id==dist_vill.id).spies
 						if(qtd_spy > 0){
 							next(dist_vill)
 							if(qtc.length && list_dist_vills.length){
