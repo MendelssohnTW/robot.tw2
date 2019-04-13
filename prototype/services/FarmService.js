@@ -238,7 +238,7 @@ define("robotTW2/services/FarmService", [
 											type: "attack"
 									}
 									
-									let pstr = Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==7993285).name
+									let pstr = Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==cmd_preset_internal.preset_id).name
 									, text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + pstr + " "+
 									$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + modelDataService.getVillage(params.start_village).getName() +
 									$filter("i18n")("text_target", $rootScope.loc.ale, "farm") + ": " + bb.name
