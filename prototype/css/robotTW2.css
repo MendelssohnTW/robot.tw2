@@ -250,13 +250,8 @@
 	width: fit-content;
 }
 
-.robotTW2 .tab {
-	width: 200px;
-}
-
 .robotTW2 .tab .tab-inner div {
-    max-width: 200px;
-    width: 10%;
+    width: 100px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
