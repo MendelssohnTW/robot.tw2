@@ -42,6 +42,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.download = false;
 		$scope.select_all_province = false;
 		$scope.select_all_village = true;
+		$scope.item = undefined
 
 		var self = this
 		, update = function(){
@@ -97,7 +98,7 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 		, updateTarget = function(){
-			if(Object.keys($scope.send_scope).length){
+			if($scope.item){
 				switch($scope.data_option.selectedOption.value){
 				case "village":
 
