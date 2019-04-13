@@ -53,7 +53,24 @@
 		<div ng-if="activeTab == TABS.FARM">
 			<div class="farm win-main jssb-applied jssb-focus jssb-scrolly"
 				scrollbar="">
-				<div class="box-paper"></div>
+				<div class="box-paper">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col>
+						</colgroup>
+						<tbody>
+							<tr>
+								<th style="display: table-cell" class="cell-center selected">Teste</th>
+							</tr>
+						</tbody>
+						<tbody class="scroll-wrap">
+							<tr ng-repeat="log in data_log.farm">
+								<td class="cell-center">{{log}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<div ng-if="activeTab == TABS.HEADQUARTER">
