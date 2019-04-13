@@ -198,7 +198,7 @@ define("robotTW2/services/FarmService", [
 				}).filter(f=>f!=undefined)
 
 				for (j = 0; j < villages.length; j++) { // filtra as aldeias por quadrantes
-					if (check_village(villages[j], cmd_preset)) {
+					if (!check_village(villages[j], cmd_preset)) {
 						villages = villages.filter(f=> f.id != villages[j].id)
 					}
 				}
@@ -301,9 +301,9 @@ define("robotTW2/services/FarmService", [
 
 			let quads = data_villages.getQuadrants(village_id, preset_id)
 			if(quads){
-				return !quads.includes(quadrant);
+				return quads.includes(quadrant);
 			} else {
-				return false
+				return true
 			}
 		}
 		, get_act_time = function (village_id, bb, units) {
