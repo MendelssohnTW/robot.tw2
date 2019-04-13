@@ -194,7 +194,7 @@
 }
 
 .robotTW2 .defense.box-paper {
-    min-height: 100px;
+    min-height: 48px;
     height: 205px;
     margin: 0 2px;
 }
@@ -213,7 +213,7 @@
 }
 
 .robotTW2 .headquarter.box-paper {
-    min-height: 100px;
+    min-height: 48px;
     height: 180px;
     margin: 0 2px;
 }
@@ -231,8 +231,8 @@
 }
 
 .robotTW2 .spy.box-paper {
-    min-height: 100px;
-    height: 315px;
+    min-height: 48px;
+    height: 48px;
     margin: 0 2px;
 }
 
@@ -241,8 +241,8 @@
 }
 
 .robotTW2 .log.box-paper {
-    min-height: 100px;
-    height: 205px;
+    min-height: 48px;
+    height: 48px;
     margin: 0 2px;
 }
 
@@ -252,6 +252,51 @@
 
 .robotTW2 .tab {
 	width: 200px;
+}
+
+.robotTW2 .tab-three {
+    max-width: 200px;
+    width: 50%;
+}
+
+.robotTW2 .tab-three {
+    max-width: 200px;
+    width: 33%;
+}
+
+.robotTW2 .tab-four {
+    max-width: 200px;
+    width: 25%;
+}
+
+.robotTW2 .tab-five {
+    max-width: 200px;
+    width: 20%;
+}
+
+.robotTW2 .tab-six {
+    max-width: 200px;
+    width: 16%;
+}
+
+.robotTW2 .tab-seven {
+    max-width: 200px;
+    width: 14%;
+}
+
+.robotTW2 .tab-eight {
+    max-width: 200px;
+    width: 12%;
+}
+
+.robotTW2 .tab-nine {
+    max-width: 200px;
+    width: 11%;
+}
+
+.robotTW2 .tab-ten {
+    max-width: 200px;
+    width: 10%;
 }
 
 .robotTW2 .select-wrapper {
