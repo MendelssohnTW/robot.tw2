@@ -196,12 +196,16 @@ define("robotTW2/services/FarmService", [
 						return villages[barbara]
 					}
 				}).filter(f=>f!=undefined)
+				
+				let new_villages = []
 
 				for (j = 0; j < villages.length; j++) { // filtra as aldeias por quadrantes
-					if (!check_village(villages[j], cmd_preset)) {
-						villages = villages.filter(f=> f.id != villages[j].id)
+					if (check_village(villages[j], cmd_preset)) {
+						new_villages.push(villages[j])
 					}
 				}
+				
+				villages = new_villages
 
 				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time)
 				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time)
@@ -238,10 +242,10 @@ define("robotTW2/services/FarmService", [
 											type: "attack"
 									}
 									
-									let pstr = Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==7993285).name
-									, text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + pstr +
-									$filter("i18n")(" text_origin", $rootScope.loc.ale, "farm") + ": " + modelDataService.getVillage(params.start_village).getName() + 
-									$filter("i18n")(" text_target", $rootScope.loc.ale, "farm") + ": " + bb.name
+									let pstr = Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==cmd_preset_internal.preset_id).name
+									, text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + pstr + " "+
+									$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + modelDataService.getVillage(params.start_village).getName() +
+									$filter("i18n")("text_target", $rootScope.loc.ale, "farm") + ": " + bb.name
 									data_log.farm.push({"text":text, "date": (new Date(time.convertedTime())).toString()})
 									data_log.set()
 
@@ -301,9 +305,9 @@ define("robotTW2/services/FarmService", [
 
 			let quads = data_villages.getQuadrants(village_id, preset_id)
 			if(quads){
-				return !!quads.includes(quadrant);
+				return quads.includes(quadrant);
 			} else {
-				return !![1, 2, 3, 4].includes(quadrant);
+				return true
 			}
 		}
 		, get_act_time = function (village_id, bb, units) {
