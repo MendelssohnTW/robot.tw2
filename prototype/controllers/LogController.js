@@ -23,7 +23,7 @@ define("robotTW2/controllers/LogController", [
 		var self = this
 		, TABS = {};
 		for (var name in $scope.extensions) {
-			if($scope.extensions[name].activated && !name.includes["LOG", "RECON"]){
+			if($scope.extensions[name].activated && !name.includes["LOG", "RECON", "ALERT"]){
 				TABS[name.toUpperCase()] = services.$filter("i18n")("title", services.$rootScope.loc.ale, name.toLowerCase())
 			}			
 		}
