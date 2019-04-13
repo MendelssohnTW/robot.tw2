@@ -300,7 +300,6 @@
 }
 
 .robotTW2 .tab .tab-inner div a{
-    width: 100px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

@@ -6,27 +6,85 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="tabs tabs-bg">
-		<div class="tabs-three-col">
-			<div ng-repeat="tabName in TAB_ORDER" class="tab"
+	<div class="content-settings">
+		<div class="log box-paper">
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
+		</div>
+		<div class="tabs tabs-bg">
+			<div ng-repeat="tabName in TAB_ORDER" class="tab tab-ten"
 				ng-click="userSetActiveTab(tabName)"
 				ng-class="{'tab-active': activeTab === tabName}">
 				<div class="tab-inner">
 					<div
-						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
+						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}"
+						tooltip tooltip-content="{{tabName}}">
 						<a href="#"
 							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
-		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
-			<div class="version">
-				<h5>{{text_version}}</h5>
+		<div ng-if="activeTab == TABS.ATTACK">
+			<div class="attack win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
 			</div>
-			<div class="scroll-wrap preset" style="margin-bottom: 53px"></div>
+		</div>
+		<div ng-if="activeTab == TABS.DEFENSE">
+			<div class="defense win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.DEPOSIT">
+			<div class="deposit win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.FAKE">
+			<div class="fake win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.FARM">
+			<div class="farm win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.HEADQUARTER">
+			<div class="headquater win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.MARKET">
+			<div class="market win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="TABS.RECON && activeTab == TABS.RECON">
+			<div class="recon win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.RECRUIT">
+			<div class="recruit win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.SPY">
+			<div class="spy win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper"></div>
+			</div>
 		</div>
 	</div>
 </div>
