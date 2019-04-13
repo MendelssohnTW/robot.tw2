@@ -258,8 +258,8 @@
 		"text_interval": "Próximo ciclo em "
 	},
 	"spy": {
-		"village": "Aldeia",
-		"province_enemy": "Aldeia única",
+		"village": "Aldeia única",
+		"province_enemy": "Inimigos da província",
 		"province_barbarian": "Bárbaras da província",
 		"province_neutral": "Neutros da província",
 		"spy": "Espiões",
