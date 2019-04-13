@@ -54,6 +54,6 @@ define("robotTW2/controllers/LogController", [
 		
 		initTab()
 		
-		scope.setCollapse();
+		$scope.setCollapse();
 	}
 })
