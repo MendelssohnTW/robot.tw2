@@ -299,8 +299,7 @@
     width: 10%;
 }
 
-.robotTW2 .tab .tab-inner div {
-    width: 100px;
+.robotTW2 .tab .tab-inner div a{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
