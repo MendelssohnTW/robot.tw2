@@ -201,7 +201,7 @@ define("robotTW2/services/FarmService", [
 
 				for (j = 0; j < villages.length; j++) { // filtra as aldeias por quadrantes
 					if (check_village(villages[j], cmd_preset)) {
-						new_villages.push(villages[j].id)
+						new_villages.push(villages[j])
 					}
 				}
 				
