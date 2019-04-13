@@ -6,14 +6,18 @@ function checkTime() {
 			chrome.tabs.query({}, function (tab){
 				tab.forEach(n_tab => {
 					if (n_tab.url && n_tab.url.indexOf('.tribalwars2.com/game.php') > -1) {
+						if(chrome.runtime.lastError){console.log("error")}
 						chrome.tabs.executeScript(n_tab.id, { file: "contentScripts.js" }, result => {
 							const lastErr = chrome.runtime.lastError;
-							if (lastErr) console.log('tab: ' + n_tab.id + ' lastError: ' + JSON.stringify(lastErr));
+							if (lastErr) {
+								console.log('tab: ' + n_tab.id + ' lastError: ' + JSON.stringify(lastErr));
+								chrome.tabs.reload(n_tab.id);
+							}
 						});
 					}
 				});
 			})
-		}, 300000)
+		}, 60000)
 	}
 };
 
@@ -21,10 +25,4 @@ chrome.tabs.onCreated.addListener(checkTime);
 chrome.tabs.onRemoved.addListener(checkTime);
 chrome.windows.onCreated.addListener(checkTime);
 
-chrome.runtime.onConnect.addListener(function(port) {
-	var tabId = port.sender.tab.id;
-	port.onDisconnect.addListener(function() {
-		chrome.tabs.reload(tabId);
-	});
-});
-
+checkTime();
