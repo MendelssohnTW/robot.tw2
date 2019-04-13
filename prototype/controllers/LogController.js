@@ -51,5 +51,7 @@ define("robotTW2/controllers/LogController", [
 		$scope.requestedTab = TABS.ATTACK;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
+		
+		initTab()
 	}
 })
