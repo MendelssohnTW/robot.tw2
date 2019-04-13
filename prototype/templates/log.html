@@ -18,7 +18,8 @@
 				ng-class="{'tab-active': activeTab === tabName}">
 				<div class="tab-inner">
 					<div
-						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
+						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}"
+						tooltip tooltip-content="{{tabName}}">
 						<a href="#"
 							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
 					</div>
