@@ -53,5 +53,7 @@ define("robotTW2/controllers/LogController", [
 		$scope.TAB_ORDER = TAB_ORDER;
 		
 		initTab()
+		
+		scope.setCollapse();
 	}
 })
