@@ -47,8 +47,8 @@ define("robotTW2/controllers/SpyController", [
 		$scope.text_put_province = $scope.text_target_village
 		$scope.province_name = ""
 
-		var self = this
-		, update = function(){
+			var self = this
+			, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
 				$scope.local_out_villages.push(
 						{
@@ -525,11 +525,7 @@ define("robotTW2/controllers/SpyController", [
 			for (let i = 0; i < qtd_spy; i++){
 				lts.push(i + 1)
 			}
-			if($scope.data_option.selectedOption.value=="village"){
-				$scope.data_qtd = services.MainService.getSelects(lts)	
-			} else {
-				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])	
-			}
+			$scope.data_qtd = services.MainService.getSelects(lts)
 			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
 			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
 
@@ -589,6 +585,7 @@ define("robotTW2/controllers/SpyController", [
 				$scope.text_put = $scope.text_data_target
 				$scope.text_put_province = $scope.text_target_village
 			} else {
+				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 				$scope.text_put = $scope.text_data_source
 				$scope.text_put_province = services.$filter("i18n")("target", services.$rootScope.loc.ale, "spy") + " " + $scope.province_name
 			}

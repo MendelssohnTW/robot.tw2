@@ -623,10 +623,10 @@ define("robotTW2/services/DefenseService", [
 						$timeout.cancel(list_timeout[i]);	
 						var params = {
 								start_village		: command.target_village_id,
-								target_village		: aldeia.id,
-								target_name			: aldeia.name,
-								target_x			: aldeia.x,
-								target_y			: aldeia.y,
+								target_village		: aldeia.getId(),
+								target_name			: aldeia.getName(),
+								target_x			: aldeia.getX(),
+								target_y			: aldeia.getY(),
 								type				: "support",
 								data_escolhida		: time.convertMStoUTC(command.model.completedAt),
 								time_sniper_ant		: sniper_ant * 1000,
