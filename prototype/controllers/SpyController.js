@@ -447,6 +447,7 @@ define("robotTW2/controllers/SpyController", [
 					notify("date_error");
 				}
 			} else {
+				$scope.send_scope.qtd = $scope.data_qtd_source.selectedOption
 				$scope.sendAttackSpyProvince(true)
 			}
 			$scope.send_scope = {}
