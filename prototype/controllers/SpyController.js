@@ -45,11 +45,6 @@ define("robotTW2/controllers/SpyController", [
 		$scope.item = undefined
 		$scope.text_put = $scope.text_data_target
 		$scope.text_put_province = $scope.text_target_village
-<<<<<<< HEAD
-		$scope.text_put = $scope.text_data_target
-		$scope.text_put_province = $scope.text_target_village
-=======
->>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 		$scope.province_name = ""
 
 		var self = this
@@ -589,17 +584,8 @@ define("robotTW2/controllers/SpyController", [
 			if($scope.data_option.selectedOption.value == "village"){
 				$scope.text_put = $scope.text_data_target
 				$scope.text_put_province = $scope.text_target_village
-<<<<<<< HEAD
-				$scope.text_put = $scope.text_data_target
-				$scope.text_put_province = $scope.text_target_village
-=======
->>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 			} else {
 				$scope.text_put = $scope.text_data_source
-<<<<<<< HEAD
-				$scope.text_put = $scope.text_data_source
-=======
->>>>>>> branch 'master' of https://github.com/MendelssohnTW/robot.tw2.git
 				$scope.text_put_province = services.$filter("i18n")("target", services.$rootScope.loc.ale, "spy") + " " + $scope.province_name
 			}
 			updateTarget()
