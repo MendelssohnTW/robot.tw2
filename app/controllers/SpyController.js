@@ -316,8 +316,8 @@ define("robotTW2/controllers/SpyController", [
 			$scope.closeWindow();
 		}
 
-		$scope.sendAttackSpyProvince = function(){
-			if(!$scope.item_player){return}
+		$scope.sendAttackSpyProvince = function(opt){
+			if(!$scope.item_player && !opt){return}
 			updateValuesSource()
 			if($scope.villages_for_sent.length){
 				var list_proc = [];
@@ -447,7 +447,7 @@ define("robotTW2/controllers/SpyController", [
 					notify("date_error");
 				}
 			} else {
-				$scope.sendAttackSpyProvince()
+				$scope.sendAttackSpyProvince(true)
 			}
 			$scope.send_scope = {}
 			$scope.recalcScrollbar();
