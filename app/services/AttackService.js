@@ -197,9 +197,9 @@ define("robotTW2/services/AttackService", [
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js", true);
 				isRunning = !0
-				if(robotTW2.databases.data_main.auto_calibrate){
+//				if(robotTW2.databases.data_main.auto_calibrate){
 					calibrate_time()
-				}
+//				}
 				Object.values(data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
 						commandQueue.unbind(param.id_command, data_attack)

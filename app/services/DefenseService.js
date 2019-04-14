@@ -721,9 +721,9 @@ define("robotTW2/services/DefenseService", [
 				commandDefense = {};
 				isRunning = !0;
 				reformatCommand();
-				if(robotTW2.databases.data_main.auto_calibrate){
+//				if(robotTW2.databases.data_main.auto_calibrate){
 					calibrate_time()
-				}
+//				}
 				if(!listener_lost){
 					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));
 				}
