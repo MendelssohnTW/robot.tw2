@@ -1,5 +1,5 @@
 var check_interval = undefined
-var script = 'var load_context = document.getElementsByClassName("first-load visible"); if(load_context.length>0){window.location.reload()}else{console.log("não encontrou")}'
+var script = 'var load_context = document.getElementsByClassName("first-load visible"); if(load_context.length>0){window.location.reload()}'
 
 function checkTime() {
 	if(!check_interval){
