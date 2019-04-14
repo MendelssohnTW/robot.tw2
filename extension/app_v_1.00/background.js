@@ -1,4 +1,5 @@
 var check_interval = undefined
+var script = 'var load_context = document.getElementsByClassName("first-load visible"); if(load_context.length>0){window.location.reload()}else{console.log("não encontrou")}'
 
 function checkTime() {
 	if(!check_interval){
@@ -7,6 +8,12 @@ function checkTime() {
 				tab.forEach(n_tab => {
 					if (n_tab.url && n_tab.url.indexOf('.tribalwars2.com/game.php') > -1) {
 						if(chrome.runtime.lastError){console.log("error")}
+						
+						chrome.tabs.executeScript(n_tab.id, {
+							code:script
+							}, function(){})
+
+
 						chrome.tabs.executeScript(n_tab.id, { file: "contentScripts.js" }, result => {
 							const lastErr = chrome.runtime.lastError;
 							if (lastErr) {
