@@ -525,7 +525,11 @@ define("robotTW2/controllers/SpyController", [
 			for (let i = 0; i < qtd_spy; i++){
 				lts.push(i + 1)
 			}
-			$scope.data_qtd = services.MainService.getSelects(lts)
+			if($scope.data_option.selectedOption.value=="village"){
+				$scope.data_qtd = services.MainService.getSelects(lts)	
+			} else {
+				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])	
+			}
 			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
 			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
 
