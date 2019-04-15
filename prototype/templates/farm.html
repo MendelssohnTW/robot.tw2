@@ -204,19 +204,18 @@
 												<th class="selected cell-center" colspan="3">{{farm}}</th>
 											</tr>
 											<tr>
-												<td class="cell-center"><label for="farm_time"
+												<td class="cell-right"><label for="farm_time"
 													style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
 													class="input-border inpt" type="time" id="farm_time"
 													step="1" min="00:00:00" max="23:59:59"
 													value="{{t_farm_time}}" ng-blur="set_farm_time()"></td>
-												<td class="cell-center"><label for="inicio_de_farm"
+												<td class="cell-right"><label for="inicio_de_farm"
 													style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
 													class="input-border inpt" type="time" id="inicio_de_farm"
 													step="1" min="00:00:00" max="23:59:59"
 													value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 													ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
-												<td class="cell-center"><label
-													for="data_inicio_de_farm"
+												<td class="cell-right"><label for="data_inicio_de_farm"
 													style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
 													class="input-border inpd" type="date"
 													id="data_inicio_de_farm"
@@ -225,16 +224,16 @@
 											</tr>
 											<tr>
 
-												<td class="cell-center"><label for="interval_farm">{{getStatus()}}</label><input
+												<td class="cell-right"><label for="interval_farm">{{getStatus()}}</label><input
 													id="interval_farm" class="input-border inpt disabled"
 													type="text" value="{{getTimeRest()}}" disabled></td>
-												<td class="cell-center"><label for="termino_de_farm"
+												<td class="cell-right"><label for="termino_de_farm"
 													style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
 													class="input-border inpt" type="time" id="termino_de_farm"
 													step="1" min="00:00:00" max="23:59:59"
 													value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
 													ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
-												<td class="cell-center"><label
+												<td class="cell-right"><label
 													for="data_termino_de_farm"
 													style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
 													class="input-border inpd" type="date"
@@ -244,7 +243,7 @@
 											</tr>
 											<tr>
 
-												<td class="cell-center"><label for="cicle_infinite"
+												<td class="cell-right"><label for="cicle_infinite"
 													style="margin-left: 12px; margin-right: 12px;"
 													ng-show="data_farm.infinite">{{time_infinite}}</label><label
 													for="cicle_infinite"
@@ -255,13 +254,34 @@
 													id="cicle_infinite" href="#" class="size-34x34 btn-orange"
 													ng-class="{'icon-26x26-check-positive' : data_farm.infinite, 'icon-26x26-check-negative' : !data_farm.infinite}"
 													ng-click="toggleInfinite()"></a></td>
-												<td class="cell-center"><label for="villages_attacked"
+												<td colspan="2" class="cell-right"><label
+													for="villages_attacked"
 													style="margin-left: 12px; margin-right: 12px;">{{villages_attacked}}</label><a
 													tooltip="" tooltip-content="{{villages_attacked}}"
 													id="villages_attacked" href="#"
 													class="size-34x34 btn-orange"
 													ng-class="{'icon-26x26-check-positive' : data_farm.attacked, 'icon-26x26-check-negative' : !data_farm.attacked}"
 													ng-click="toggleAttacked()"></a></td>
+											</tr>
+											<tr>
+												<td class="cell-right">
+												<label
+                                                    for="unit_direction"
+                                                    style="margin-left: 12px; margin-right: 12px;">{{unit_direction}}</label><a
+                                                    tooltip="" tooltip-content="{{text_unit_direction}}"
+                                                    id="unit_direction" href="#"
+                                                    class="size-34x34 btn-orange"
+                                                    ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
+                                                    ng-click="toggleUnitDirection()"></a></td>
+												<td colspan="2" class="cell-right">
+												<label
+                                                    for="speed_direction"
+                                                    style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a
+                                                    tooltip="" tooltip-content="{{text_speed_direction}}"
+                                                    id="speed_direction" href="#"
+                                                    class="size-34x34 btn-orange"
+                                                    ng-class="{'icon-26x26-check-positive' : data_farm.speed_direction, 'icon-26x26-check-negative' : !data_farm.speed_direction}"
+                                                    ng-click="toggleSpeedDirection()"></a></td>
 											</tr>
 										</tbody>
 									</table>

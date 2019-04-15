@@ -301,6 +301,24 @@ define("robotTW2/controllers/FarmController", [
 			}
 			$scope.blur();
 		}
+		
+		$scope.toggleUnitDirection = function(){
+			if($scope.data_farm.unit_direction){
+				$scope.data_farm.unit_direction = false
+			} else {
+				$scope.data_farm.unit_direction = true
+			}
+			$scope.blur();
+		}
+		
+		$scope.toggleSpeedDirection = function(){
+			if($scope.data_farm.speed_direction){
+				$scope.data_farm.speed_direction = false
+			} else {
+				$scope.data_farm.speed_direction = true
+			}
+			$scope.blur();
+		}
 
 		$scope.toggleOption = function(option){
 			$scope.toggle_option = option;
