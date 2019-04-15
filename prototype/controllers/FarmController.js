@@ -48,7 +48,7 @@ define("robotTW2/controllers/FarmController", [
 			return angular.copy(services.modelDataService.getSelectedCharacter().getVillage(vid))
 		}
 		, update = function update() {
-			if(!$scope.infinite){
+			if(!$scope.data_farm.infinite){
 				if(!$scope.data_farm.farm_time_start || $scope.data_farm.farm_time_start < time.convertedTime()) {
 					$scope.data_farm.farm_time_start = time.convertedTime();
 				}
@@ -284,13 +284,21 @@ define("robotTW2/controllers/FarmController", [
 			return time_rest;
 		}
 
-		$scope.togleInfinite = function(){
-			if($scope.infinite){
-				$scope.infinite = false
+		$scope.toggleInfinite = function(){
+			if($scope.data_farm.infinite){
+				$scope.data_farm.infinite = false
 			} else {
-				$scope.infinite = true
+				$scope.data_farm.infinite = true
 			}
-			$scope.data_farm.infinite = $scope.infinite; 
+			$scope.blur();
+		}
+		
+		$scope.toggleAttacked = function(){
+			if($scope.data_farm.attacked){
+				$scope.data_farm.attacked = false
+			} else {
+				$scope.data_farm.attacked = true
+			}
 			$scope.blur();
 		}
 
@@ -318,7 +326,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blur = function (callback) {
-			if(!$scope.infinite){
+			if(!$scope.data_farm.infinite){
 				$scope.inicio_de_farm = $("#inicio_de_farm").val()
 				$scope.termino_de_farm = $("#termino_de_farm").val()
 				$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
@@ -339,7 +347,7 @@ define("robotTW2/controllers/FarmController", [
 				document.getElementById("inicio_de_farm").value = services.$filter("date")(new Date(tempo_escolhido_inicio), "HH:mm:ss");
 
 				if(helper.unreadableSeconds(r_farm_time) * 1000 == 0){
-					$scope.infinite = true
+					$scope.data_farm.infinite = true
 				}
 
 				$scope.data_farm.farm_time = helper.unreadableSeconds(r_farm_time) * 1000
@@ -580,7 +588,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.village_selected = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
-		$scope.infinite = $scope.data_farm.infinite;
 		$scope.toggle_option = "check_one";
 		$scope.check_one = true;
 		$scope.check_all = false;
