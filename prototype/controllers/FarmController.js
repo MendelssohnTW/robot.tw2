@@ -426,8 +426,10 @@ define("robotTW2/controllers/FarmController", [
 			, vill_d = v_d.presets[$scope.data.selectedOption.id]
 			switch ($scope.toggle_option) {
 			case "check_one":
-				vill_d.min_journey_time = helper.unreadableSeconds(r) * 1000
-				vill_d.min_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, vill_d.min_journey_time, vill_d.units)
+				Object.keys(v_d.presets).map(function(elem){
+					vill_d.min_journey_time = helper.unreadableSeconds(r) * 1000
+					vill_d.min_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, vill_d.min_journey_time, vill_d.units)
+				})
 				break;
 			case "check_all":
 				v_d.presets[elem].min_journey_time = helper.unreadableSeconds(r) * 1000

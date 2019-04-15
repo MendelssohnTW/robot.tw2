@@ -23,111 +23,92 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<td colspan="2"><table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+								<td colspan="2"><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
-											<col width="*">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
-											<col width="48px">
+											<col width="100px">
+											<col>
+											<col>
+											<col>
+											<col>
 										</colgroup>
 										<tbody>
 											<tr>
-												<td></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-spear"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-sword"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-axe"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-archer"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-light_cavalry"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-mounted_archer"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-heavy_cavalry"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-ram"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-catapult"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-doppelsoldner"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-trebuchet"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-snob"></span></td>
-												<td class="cell-center"><span
-													class="icon-34x34-unit-knight"></span></td>
+												<td rowspan="2">
+													<table class="tbl-border-light tbl-big-header tbl-content">
+														<tr>
+															<th class="selected cell-center">{{text_quad}}</th>
+														</tr>
+														<tr>
+															<td>
+																<div class="quadrant">
+																	<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(1)}" ng-click="setQuadrant(1)">
+																		<div class="quadrant-text">
+																			<span style="">1</span>
+																		</div>
+																	</div>
+																	<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(2)}" ng-click="setQuadrant(2)">
+																		<div class="quadrant-text">
+																			<span style="">2</span>
+																		</div>
+																	</div>
+																	<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(4)}" ng-click="setQuadrant(4)">
+																		<div class="quadrant-text">
+																			<span style="">4</span>
+																		</div>
+																	</div>
+																	<div class="quadrant-border" ng-class="{'quadrant-selected': getQuadrant(3)}" ng-click="setQuadrant(3)">
+																		<div class="quadrant-text">
+																			<span style="">3</span>
+																		</div>
+																	</div>
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td class="cell-center"><label for="min_point" class="with-margin">{{text_min_point}}</label><input class="input-border inputcreated" type="number" id="min_point" step="1" min="0" max="12000" ng-model="data.selectedOption.min_points_farm" ng-blur="updateBlur()"></td>
+												<td class="cell-center"><label for="min_journey_time" class="with-margin">{{time_min}}</label><input class="input-border inpt" type="time" id="min_journey_time" step="1" min="00:00:00" max="23:59:59" ng-blur="blurMinJourney()"></td>
+												<td class="cell-center"><label for="min_dist" class="with-margin">{{text_min_dist}}</label><input class="input-border inputcreated" type="number" id="min_dist" step="1" min="1" max="180" ng-model="data.selectedOption.min_journey_distance" disabled></td>
+												<td class="cell-center"><label for="cmd_max" class="with-margin">{{text_cmd_max}}</label><input class="input-border inputcreated" type="number" id="cmd_max" step="1" min="0" max="50" ng-model="data.selectedOption.max_commands_farm" ng-blur="updateBlur()"></td>
+
 											</tr>
 											<tr>
-												<td class="cell-right">{{text_units_preset}}</td>
-												<td class="cell-center">{{data.selectedOption.units.spear
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.sword
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.axe
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.archer
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.light_cavalry
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.mounted_archer
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.heavy_cavalry
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.ram
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.catapult
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.doppelsoldner
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.trebuchet
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.snob
-													|| 0}}</td>
-												<td class="cell-center">{{data.selectedOption.units.knight
-													|| 0}}</td>
+
+												<td class="cell-center"><label for="max_point" class="with-margin">{{text_max_point}}</label><input class="input-border inputcreated" type="number" id="max_point" step="1" min="00" max="12000" ng-model="data.selectedOption.max_points_farm" ng-blur="updateBlur()"></td>
+												<td class="cell-center"><label for="max_journey_time" class="with-margin">{{time_max}}</label><input class="input-border inpt" type="time" id="max_journey_time" step="1" min="00:00:00" max="23:59:59" ng-blur="blurMaxJourney()"></td>
+												<td class="cell-center"><label for="max_dist" class="with-margin">{{text_max_dist}}</label><input class="input-border inputcreated" type="number" id="max_dist" step="1" min="5" max="200" ng-model="data.selectedOption.max_journey_distance" disabled></td>
+												<td class="cell-center">
+													<div class="checkbox">
+														<span class="cell-center selected">{{villages_selections}}</span>
+														<div switch-slider="" border="true" enabled="true" value="data_villages.villages[village_selected.id].farm_activate" vertical="false" size="'56x28'">
+															<div ng-class="{'box-border-dark box-filter': border}" class="box-border-dark box-filter">
+																<div class="switch switch-56x28 switch-horizontal" ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
+																	<span class="size-26x26 switch-thumb"> <span class="simple icon-26x26-switch-off" ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
+																	</span>
+																</div>
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table></td>
+									<td><table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+										<tbody>
+											<tr>
+												<th class="selected cell-center">{{text_presets}}</th>
 											</tr>
 											<tr>
-												<td class="cell-right">{{text_units_village}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.mounted_archer.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town
-													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town
-													|| 0}}</td>
+												<td class="cell-right"><label for="check_one" class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+													<div id="check_one" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}" ng-click="toggleOption('check_one')" tooltip="" tooltip-content=""></div></td>
+											</tr>
+											<tr>
+												<td class="cell-right"><label for="check_all" class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+													<div id="check_all" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}" ng-click="toggleOption('check_all')" tooltip="" tooltip-content=""></div></td>
+											</tr>
+											<tr>
+												<td class="cell-right"><label for="check_all_villages" class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+													<div id="check_all_villages" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}" ng-click="toggleOption('check_all_villages')" tooltip="" tooltip-content=""></div></td>
 											</tr>
 										</tbody>
 									</table></td>
@@ -364,154 +345,98 @@
 										</tbody>
 									</table>
 
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<tbody>
-											<tr>
-												<th class="selected cell-center">{{text_presets}}</th>
-											</tr>
-											<tr>
-												<td class="cell-right"><label for="check_one"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-													<div id="check_one" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-														ng-click="toggleOption('check_one')" tooltip
-														tooltip-content=""></div></td>
-											</tr>
-											<tr>
-												<td class="cell-right"><label for="check_all"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-													<div id="check_all" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-														ng-click="toggleOption('check_all')" tooltip
-														tooltip-content=""></div></td>
-											</tr>
-											<tr>
-												<td class="cell-right"><label for="check_all_villages"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-													<div id="check_all_villages"
-														class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-														ng-click="toggleOption('check_all_villages')" tooltip
-														tooltip-content=""></div></td>
-											</tr>
-										</tbody>
-									</table>
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									
+									<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
-											<col width="100px">
-											<col>
-											<col>
-											<col>
-											<col>
+											<col width="*">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
+											<col width="48px">
 										</colgroup>
 										<tbody>
 											<tr>
-												<td rowspan="2">
-													<table class="tbl-border-light tbl-big-header tbl-content">
-														<tr>
-															<th class="selected cell-center">{{text_quad}}</th>
-														</tr>
-														<tr>
-															<td>
-																<div class="quadrant">
-																	<div class="quadrant-border"
-																		ng-class="{'quadrant-selected': getQuadrant(1)}"
-																		ng-click="setQuadrant(1)">
-																		<div class="quadrant-text">
-																			<span style="">1</span>
-																		</div>
-																	</div>
-																	<div class="quadrant-border"
-																		ng-class="{'quadrant-selected': getQuadrant(2)}"
-																		ng-click="setQuadrant(2)">
-																		<div class="quadrant-text">
-																			<span style="">2</span>
-																		</div>
-																	</div>
-																	<div class="quadrant-border"
-																		ng-class="{'quadrant-selected': getQuadrant(4)}"
-																		ng-click="setQuadrant(4)">
-																		<div class="quadrant-text">
-																			<span style="">4</span>
-																		</div>
-																	</div>
-																	<div class="quadrant-border"
-																		ng-class="{'quadrant-selected': getQuadrant(3)}"
-																		ng-click="setQuadrant(3)">
-																		<div class="quadrant-text">
-																			<span style="">3</span>
-																		</div>
-																	</div>
-																</div>
-															</td>
-														</tr>
-													</table>
-												</td>
-												<td class="cell-center"><label for="min_point"
-													class="with-margin">{{text_min_point}}</label><input
-													class="input-border inputcreated" type="number"
-													id="min_point" step="1" min="0" max="12000"
-													ng-model="data.selectedOption.min_points_farm"
-													ng-blur="updateBlur()"></td>
-												<td class="cell-center"><label for="min_journey_time"
-													class="with-margin">{{time_min}}</label><input
-													class="input-border inpt" type="time" id="min_journey_time"
-													step="1" min="00:00:00" max="23:59:59"
-													ng-blur="blurMinJourney()"></td>
-												<td class="cell-center"><label for="min_dist"
-													class="with-margin">{{text_min_dist}}</label><input
-													class="input-border inputcreated" type="number"
-													id="min_dist" step="1" min="1" max="180"
-													ng-model="data.selectedOption.min_journey_distance"
-													disabled></td>
-												<td class="cell-center"><label for="cmd_max"
-													class="with-margin">{{text_cmd_max}}</label><input
-													class="input-border inputcreated" type="number"
-													id="cmd_max" step="1" min="0" max="50"
-													ng-model="data.selectedOption.max_commands_farm"
-													ng-blur="updateBlur()"></td>
-
+												<td></td>
+												<td class="cell-center"><span class="icon-34x34-unit-spear"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-sword"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-axe"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-archer"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-light_cavalry"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-mounted_archer"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-heavy_cavalry"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-ram"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-catapult"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-doppelsoldner"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-trebuchet"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-snob"></span></td>
+												<td class="cell-center"><span class="icon-34x34-unit-knight"></span></td>
 											</tr>
 											<tr>
-
-												<td class="cell-center"><label for="max_point"
-													class="with-margin">{{text_max_point}}</label><input
-													class="input-border inputcreated" type="number"
-													id="max_point" step="1" min="00" max="12000"
-													ng-model="data.selectedOption.max_points_farm"
-													ng-blur="updateBlur()"></td>
-												<td class="cell-center"><label for="max_journey_time"
-													class="with-margin">{{time_max}}</label><input
-													class="input-border inpt" type="time" id="max_journey_time"
-													step="1" min="00:00:00" max="23:59:59"
-													ng-blur="blurMaxJourney()"></td>
-												<td class="cell-center"><label for="max_dist"
-													class="with-margin">{{text_max_dist}}</label><input
-													class="input-border inputcreated" type="number"
-													id="max_dist" step="1" min="5" max="200"
-													ng-model="data.selectedOption.max_journey_distance"
-													disabled></td>
-												<td class="cell-center">
-													<div class="checkbox">
-														<span class="cell-center selected">{{villages_selections}}</span>
-														<div switch-slider="" border="true" enabled="true"
-															value="data_villages.villages[village_selected.id].farm_activate"
-															vertical="false" size="'56x28'">
-															<div ng-class="{'box-border-dark box-filter': border}"
-																class="box-border-dark box-filter">
-																<div class="switch switch-56x28 switch-horizontal"
-																	ng-class="{'switch-checked': value, 'switch-inactive': !village_selected, 'switch-vertical': vertical == true, 'switch-horizontal': vertical == false}">
-																	<span class="size-26x26 switch-thumb"> <span
-																		class="simple icon-26x26-switch-off"
-																		ng-class="{'icon-26x26-switch-on': value, 'icon-26x26-switch-off': !value, 'icon-inactive': enabled == false}"></span>
-																	</span>
-																</div>
-															</div>
-														</div>
-													</div>
-												</td>
+												<td class="cell-right">{{text_units_preset}}</td>
+												<td class="cell-center">{{data.selectedOption.units.spear
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.sword
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.axe
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.archer
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.light_cavalry
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.mounted_archer
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.heavy_cavalry
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.ram
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.catapult
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.doppelsoldner
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.trebuchet
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.snob
+													|| 0}}</td>
+												<td class="cell-center">{{data.selectedOption.units.knight
+													|| 0}}</td>
+											</tr>
+											<tr>
+												<td class="cell-right">{{text_units_village}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.mounted_archer.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town
+													|| 0}}</td>
+												<td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town
+													|| 0}}</td>
 											</tr>
 										</tbody>
 									</table>
