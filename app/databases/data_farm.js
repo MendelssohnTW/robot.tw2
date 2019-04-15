@@ -188,7 +188,9 @@ define("robotTW2/databases/data_farm", [
 			troops_not				: conf.TROOPS_NOT.FARM,
 			name					: "data_farm",
 			infinite				: true,
-			attacked				: false
+			attacked				: false,
+			unit_direction			: false,
+			speed_direction			: false
 	}
 
 	if(!data_farm){

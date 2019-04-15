@@ -2,6 +2,7 @@ define("robotTW2/services/HeadquarterService", [
 	"robotTW2",
 	"robotTW2/time",
 	"robotTW2/conf",
+	"conf/conf",
 	"conf/upgradeabilityStates",
 	"conf/locationTypes",
 	"robotTW2/databases/data_villages",
@@ -10,6 +11,7 @@ define("robotTW2/services/HeadquarterService", [
 			robotTW2,
 			time,
 			conf,
+			conf_conf,
 			upgradeabilityStates,
 			locationTypes,
 			data_villages,
@@ -31,8 +33,8 @@ define("robotTW2/services/HeadquarterService", [
 		, interval_builder
 		, interval_cicle
 		, q
-		, character
 		, s
+		, r = undefined
 		, isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
@@ -47,7 +49,7 @@ define("robotTW2/services/HeadquarterService", [
 		, listener_resume = undefined
 		, checkBuildingOrderLimit = function(vill) {
 			if(!vill.selected){
-				vill.selected = data_headquarter.selects.find(f=>f.name ="standard");
+				vill.selected = data_headquarter.selects.find(f=>f.value ="standard");
 			}
 			var buildingLevels = vill.buildinglevels
 			, buildingLimit = vill.buildinglimit[vill.selected.value]
@@ -56,7 +58,7 @@ define("robotTW2/services/HeadquarterService", [
 			Object.keys(buildingLevels).forEach(function(key_level){
 				if(buildingLimit){
 					Object.keys(buildingLimit).forEach(function(key_limit){
-						if(Object.keys(buildingLevels[key_level])[0] == key_limit && Object.values(buildingLevels[key_level])[0] < buildingLimit[key_limit] && Object.values(buildingLevels[key_level])[0] > 0){
+						if(buildingLevels[key_level][key_limit] < buildingLimit[key_limit] && buildingLimit[key_limit] > 0){
 							builds.push({[Object.keys(buildingLevels[key_level])[0]] : Object.values(buildingLevels[key_level])[0]})
 						}
 					})
@@ -66,59 +68,49 @@ define("robotTW2/services/HeadquarterService", [
 			return builds
 
 		}
-		, getResources = function (village_id, callback) { 
-			return socketService.emit(providers.routeProvider.VILLAGE_GET_VILLAGE, {village_id: village_id}, function (data) {
-				if(!data){callback(null)}
-				if(typeof(callback) == "function") {callback(data.resources)} else {return}
-			})
-		}
+		, RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes()
 		, isUpgradeable = function(village, build, callback) {
 			var buildingData = village.getBuildingData().getDataForBuilding(build)
 			, nextLevelCosts = buildingData.nextLevelCosts
 			, not_enough_resources = false
 			, firstQueue = village.getBuildingQueue().getQueue()[0];
-			
-			
 
 			if(firstQueue && firstQueue.canBeFinishedForFree){
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 				callback(!1, "instant")
 			} else {
-				getResources(village.data.villageId, function(resources){
+				let resources = village.getResources().data.resources
 
-					if(!resources){
-						not_enough_resources = true
-					} else {
-						Object.keys(resources).forEach(function(resource_type){
-							if(resources[resource_type] + data_headquarter.reserva[resource_type.toLowerCase()] < nextLevelCosts[resource_type]){
-								not_enough_resources = true;
-							}
-						})
-					}
-
-					if(not_enough_resources){
+				Object.keys(RESOURCE_TYPES).forEach(function(name){
+					if (resources[RESOURCE_TYPES[name]] + data_headquarter.reserva[name.toLowerCase()] < nextLevelCosts[name]){
 						callback(!1, {[village.data.name] : "not_enough_resources for " + build})
-					} else{
-
-						if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
-
-							socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
-								building: build,
-								village_id: village.getId(),
-								location: locationTypes.MASS_SCREEN,
-								premium: !1
-							}, function(data, b) {
-								if(data.code == "Route/notPublic") {
-									callback(!1)
-								} else {
-									callback(!0, data)	
-								}
-							}) 
-						} else {
-							callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
-						}
+						return
 					}
-				})
+				});
+
+				if(buildingData.upgradeability === upgradeabilityStates.POSSIBLE) {
+
+					r = $timeout(function(){
+						callback(!1)
+					}, conf_conf.LOADING_TIMEOUT);
+
+					socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
+						building: build,
+						village_id: village.getId(),
+						location: locationTypes.MASS_SCREEN,
+						premium: !1
+					}, function(data, b) {
+						$timeout.cancel(r);
+						r = undefined;
+						if(data.code == "Route/notPublic") {
+							callback(!1)
+						} else {
+							callback(!0, data)	
+						}
+					}) 
+				} else {
+					callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
+				}
 			}
 		}
 		, canBeFinishedForFree = function(village){
@@ -156,29 +148,17 @@ define("robotTW2/services/HeadquarterService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.INTERVAL_CHANGE_HEADQUARTER)
 			if(callback && typeof(callback) == "function"){callback(t)}
 		}
-		, upgradeBuilding = function(village_id, resolve){
-			character = modelDataService.getSelectedCharacter();
+		, upgradeBuilding = function(village, resolve){
 			return new Promise(function(resolve){
-				var village = character.getVillage(village_id);
 				buildingService.compute(village)
 				var buildingQueue = village.getBuildingQueue()
-				, buildingData = village.getBuildingData()
-				, levels = buildingData.getBuildingLevels()
+				, levels = village.getBuildingData().getBuildingLevels()
 				, buildingLevels = angular.copy(Object.keys(levels).map(function(key){return {[key] : levels[key]}}))
 				, queues = village.buildingQueue.getQueue()
 				, readyState = village.checkReadyState()
-				, buildState = data_villages.villages[village_id].headquarter_activate
+				, buildState = data_villages.villages[village.getId()].headquarter_activate
 				, buildAmounts = buildingQueue.getAmountJobs()
 				, buildUnlockedSlots = buildingQueue.getUnlockedSlots()
-				, firstQueue = queues[0];
-				
-				var premiumActionService = injector.get("premiumActionService");
-
-				if(firstQueue && firstQueue.canBeFinishedForFree){
-					premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
-					resolve(true);
-					return;
-				}
 
 				var gt = getFinishedForFree(village);
 				if(gt != Infinity && gt != 0 && !isNaN(gt) && gt > conf.MIN_INTERVAL){
@@ -198,34 +178,34 @@ define("robotTW2/services/HeadquarterService", [
 					return;
 				}
 
-				data_villages.villages[village_id].buildinglevels = buildingLevels;
+				data_villages.villages[village.getId()].buildinglevels = buildingLevels;
 				if (queues.length) {
 					queues.forEach(
 							function(queue) {
-								data_villages.villages[village_id].buildinglevels.map(function(value){
+								data_villages.villages[village.getId()].buildinglevels.map(function(value){
 									Object.keys(value)[0] == queue.building ? value[queue.building]++ :undefined;
 								})
 							}
 					)
 				}
 
-				data_villages.villages[village_id].builds = checkBuildingOrderLimit(data_villages.villages[village_id]);
+				data_villages.villages[village.getId()].builds = checkBuildingOrderLimit(data_villages.villages[village.getId()]);
 
-				if(!data_villages.villages[village_id].builds.length) {
+				if(!data_villages.villages[village.getId()].builds.length) {
 					resolve();
 					return;
 				}
 
-				var bd = data_villages.villages[village_id].buildingorder[data_villages.villages[village_id].selected.value]
+				var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
 				var reBuilds = Object.keys(bd).map(function(key_db){
-					return data_villages.villages[village_id].builds.map(function(key){
+					return data_villages.villages[village.getId()].builds.map(function(key){
 						return Object.keys(key)[0]
 					}).find(f=>f==key_db)
 				}).filter(f => f != undefined)
 				, g = [];
 
 				reBuilds.forEach(function(i){
-					g.push(data_villages.villages[village_id].builds.map(
+					g.push(data_villages.villages[village.getId()].builds.map(
 							function(key){
 								return Object.keys(key)[0] == i ? {[Object.keys(key)[0]] : Object.values(key)[0]} : undefined
 							}
@@ -233,7 +213,7 @@ define("robotTW2/services/HeadquarterService", [
 					.filter(f => f != undefined)[0]
 					)
 				})
-				
+
 				g.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 
 				g.forEach(function(b) {
@@ -276,14 +256,14 @@ define("robotTW2/services/HeadquarterService", [
 				})
 			})
 		}
-		, seq_cicle = function(village_id){
-			function f(vill_id){
+		, seq_cicle = function(village){
+			function f(vill){
 				if(!promise){
 					promise = new Promise(function(res){
-						upgradeBuilding(vill_id).then(function(repeat){
-//							data_villages.set();
+						upgradeBuilding(vill).then(function(repeat){
 							if(repeat){
-								f(vill_id)
+								promise_queue.unshift(vill)
+								$timeout(function(){res()}, 5000)
 							} else {
 								res()
 							}
@@ -291,22 +271,23 @@ define("robotTW2/services/HeadquarterService", [
 					}).then(function(){
 						promise = undefined;
 						if (promise_queue.length){
-							vill_id = promise_queue.shift();
-							f(vill_id);	
+							vill = promise_queue.shift();
+							f(vill);	
 						} else {
 							wait()
 						}
 					})
 				} else {
-					promise_queue.push(vill_id)
+					promise_queue.push(vill)
 				}
 			}
-			f(village_id)
+			f(village)
 		}
 		, cicle_building = function($event, data){
 			if (!isInitialized)
 				return;
-			Object.keys(data_villages.villages).map(function(village_id){seq_cicle(village_id)})
+			var villages = modelDataService.getSelectedCharacter().getVillages();
+			Object.values(villages).map(function(village){seq_cicle(village)})
 		}
 		, wait = function(){
 			setList(function(tm){

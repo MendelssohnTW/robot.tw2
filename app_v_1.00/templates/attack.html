@@ -6,61 +6,74 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main" scrollbar="">
-		<div class="box-paper content-settings screen-overview">
+	<div class="content-settings">
+		<div class="attack box-paper">
 			<div class="version">
 				<h5>{{text_version}}</h5>
 			</div>
-			<div class="scroll-wrap attack" style="margin-bottom: 53px">
-				<h5 class="twx-section collapse">{{command_list}}</h5>
-				<div>
-					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-						<colgroup>
-							<col width="115px">
-							<col width="235px">
-							<col width="235px">
-							<col width="45px">
-							<col width="60px">
-							<col width="100px">
-							<col width="100px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="48px">
-							<col width="38px">
-						</colgroup>
+		</div>
+		<h5 class="twx-section">{{command_list}}</h5>
+		<div class="attack win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<table
+					class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+					<colgroup>
+						<col>
+						<col width="250px">
+						<col width="250px">
+						<col width="45px">
+						<col width="60px">
+						<col width="100px">
+						<col width="100px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="48px">
+						<col width="38px">
+					</colgroup>
+					<tbody>
 						<tr>
 							<th style="display: table-cell" class="cell-center selected">{{ident_cmd}}</th>
-							<th style="display: table-cell" class="icon icon-34x34-units-outgoing"></th>
+							<th style="display: table-cell"
+								class="icon icon-34x34-units-outgoing"></th>
 							<th style="display: table-cell" class="icon icon-34x34-village"></th>
 							<th></th>
-							<th style="display: table-cell" class="icon icon-34x34-time-remaining"></th>
+							<th style="display: table-cell"
+								class="icon icon-34x34-time-remaining"></th>
 							<th style="display: table-cell" class="icon icon-26x26-time"></th>
-							<th style="display: table-cell" class="icon icon-26x26-time-arrival"></th>
+							<th style="display: table-cell"
+								class="icon icon-26x26-time-arrival"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-spear"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-sword"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-axe"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-archer"></th>
-							<th style="display: table-cell" class="icon-34x34-unit-light_cavalry"></th>
-							<th style="display: table-cell" class="icon-34x34-unit-mounted_archer"></th>
-							<th style="display: table-cell" class="icon-34x34-unit-heavy_cavalry"></th>
+							<th style="display: table-cell"
+								class="icon-34x34-unit-light_cavalry"></th>
+							<th style="display: table-cell"
+								class="icon-34x34-unit-mounted_archer"></th>
+							<th style="display: table-cell"
+								class="icon-34x34-unit-heavy_cavalry"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-ram"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-catapult"></th>
-							<th style="display: table-cell" class="icon-34x34-unit-doppelsoldner"></th>
+							<th style="display: table-cell"
+								class="icon-34x34-unit-doppelsoldner"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-trebuchet"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-snob"></th>
 							<th style="display: table-cell" class="icon-34x34-unit-knight"></th>
 							<th></th>
 						</tr>
+					</tbody>
+					<tbody class="scroll-wrap">
 						<tr ng-repeat="comando in comandos">
 							<td class="cell-center">{{comando.id_command}}</td>
 							<td class="cell-center">
@@ -78,7 +91,7 @@
 								</div>
 							</td>
 							<td class="cell-center">
-									<div class="type" ng-class="getClass(comando.type)"></div>
+								<div class="type" ng-class="getClass(comando.type)"></div>
 							</td>
 							<td class="cell-center">
 								<div>{{getTimeRest(comando)}}</div>
@@ -136,19 +149,8 @@
 								tooltip-content="{{exclude_button}}"></a></td>
 
 						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div>
-			<div class="jssb-y  ">
-				<div class="jssb-y-track">
-					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
-						<div class="scrollbar-top"></div>
-						<div class="scrollbar-middle"></div>
-						<div class="scrollbar-bottom"></div>
-					</div>
-				</div>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

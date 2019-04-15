@@ -34,23 +34,6 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.text_version = $scope.version + " " + data_defense.version;
 
 		var self = this
-		,TABS = {
-				DEFENSE	: services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
-				TROOPS	: services.$filter("i18n")("troops", services.$rootScope.loc.ale, "defense")
-		}
-		, TAB_ORDER = [
-			TABS.DEFENSE,
-			TABS.TROOPS
-			]
-		, setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab								= tab;
-			$scope.requestedTab								= null;
-		}
-		, initTab = function initTab() {
-			if (!$scope.activeTab) {
-				setActiveTab($scope.requestedTab);
-			}
-		}
 		, update = function(){
 			$scope.comandos = services.DefenseService.get_commands();
 			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.time_sniper_ant) - (b.data_escolhida - time.convertedTime() - b.time_sniper_ant)})
@@ -61,7 +44,7 @@ define("robotTW2/controllers/DefenseController", [
 		, update_all = function(){
 
 			$scope.local_list_defense = [];
-			$scope.local_data_villages = services.VillageService.getLocalVillages("defense", "label");
+			$scope.local_data_villages = services.VillService.getLocalVillages("defense", "label");
 
 			var id = 0;
 
@@ -74,25 +57,17 @@ define("robotTW2/controllers/DefenseController", [
 				return $scope.local_list_defense;
 			})
 
-			$scope.village_selected = $scope.local_data_villages[0]
-
 			$scope.data_units = services.MainService.getSelects($scope.local_list_defense)
-			$scope.data_select = services.MainService.getSelects($scope.local_data_villages)
+			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 
-		}
-
-		$scope.userSetActiveTab = function(tab){
-			setActiveTab(tab);
 		}
 
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
-			var village = services.VillageService.getVillage(vid)
+			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
-			let x = village.data.x
-			let y = village.data.y
-			services.VillageService.setVillage(village)
-			services.mapService.jumpToVillage(x, y);
+			services.villageService.setSelectedVillage(village.getId())
+			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
 
@@ -148,32 +123,18 @@ define("robotTW2/controllers/DefenseController", [
 		}
 
 		$scope.selectAllUnits = function(){
+			let value = $scope.data_defense.list_defense[data_units.selectedOption.name]
 			Object.keys($scope.data_defense.list_defense).map(function(key){
-				$scope.data_defense.list_defense[key] = true;
-			})
-			$scope.data_defense.set();
-			update_all();
-		}
-
-		$scope.unselectAllUnits = function(){
-			Object.keys($scope.data_defense.list_defense).map(function(key){
-				$scope.data_defense.list_defense[key] = false;
+				$scope.data_defense.list_defense[key] = value;
 			})
 			$scope.data_defense.set();
 			update_all();
 		}
 
 		$scope.selectAllVillages = function(){
+			let value = $scope.data_villages.villages[$scope.data_select.selectedOption.id].defense_activate
 			Object.keys($scope.data_villages.villages).map(function(key){
-				$scope.data_villages.villages[key].defense_activate = true;
-			})
-			$scope.data_villages.set();
-			update_all();
-		}
-
-		$scope.unselectAllVillages = function(){
-			Object.keys($scope.data_villages.villages).map(function(key){
-				$scope.data_villages.villages[key].defense_activate = false;
+				$scope.data_villages.villages[key].defense_activate = value;
 			})
 			$scope.data_villages.set();
 			update_all();
@@ -209,6 +170,11 @@ define("robotTW2/controllers/DefenseController", [
 			services.DefenseService.start();
 		}, true)
 
+		$scope.$watch("data_select", function(){
+			if(!$scope.data_select){return}
+			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
+		}, true)
+
 		$scope.$watch("data_villages", function () {
 			if(!$scope.data_villages || first_2) {
 				first_2 = undefined
@@ -219,12 +185,9 @@ define("robotTW2/controllers/DefenseController", [
 			services.DefenseService.start(true);
 		}, true)
 
-		$scope.requestedTab = TABS.DEFENSE;
-		$scope.TABS = TABS;
-		$scope.TAB_ORDER = TAB_ORDER;
+		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
 
 		update_all();
-		initTab();
 		update();
 
 		$scope.setCollapse();

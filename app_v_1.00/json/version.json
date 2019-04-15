@@ -10,9 +10,8 @@
 	"FARM": "3.1.0",
 	"RECRUIT": "3.1.0",
 	"DEPOSIT": "3.1.0",
-	"MEDIC": "3.1.0",
 	"SECONDVILLAGE": "3.1.0",
-	"MAP": "3.1.0",
-	"DATA": "3.1.0",
+	"FAKE": "3.1.0",
+	"MARKET": "3.1.0",
 	"LOG": "3.1.0"
 }

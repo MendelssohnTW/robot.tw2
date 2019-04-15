@@ -196,7 +196,7 @@ define("robotTW2/services/FarmService", [
 						return villages[barbara]
 					}
 				}).filter(f=>f!=undefined)
-				
+
 				let new_villages = []
 
 				for (j = 0; j < villages.length; j++) { // filtra as aldeias por quadrantes
@@ -204,7 +204,7 @@ define("robotTW2/services/FarmService", [
 						new_villages.push(villages[j])
 					}
 				}
-				
+
 				villages = new_villages
 
 				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time)
@@ -212,9 +212,15 @@ define("robotTW2/services/FarmService", [
 				villages = villages.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 				villages = villages.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 
-				villages.sort(function (a, b) {
-					return get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
-				});
+				if(data_farm.unit_direction){
+					villages.sort(function (a, b) {
+						return get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
+					});
+				} else {
+					villages.sort(function (a, b) {
+						return get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
+					});
+				}
 
 				villages = villages.splice(0, cmd_ind) // separa somentes as aldeias possiveis de comandos
 
@@ -241,7 +247,7 @@ define("robotTW2/services/FarmService", [
 											army_preset_id: cmd_preset_internal.preset_id,
 											type: "attack"
 									}
-									
+
 									let pstr = Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==cmd_preset_internal.preset_id).name
 									, text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + pstr + " "+
 									$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + modelDataService.getVillage(params.start_village).getName() +
@@ -377,14 +383,25 @@ define("robotTW2/services/FarmService", [
 							aldeia_units = angular.copy(villages[i].getUnitInfo().getUnits())
 						}
 
-						let presets_order = Object.keys(presets).map(function(preset){
-							return Object.keys(presets[preset].units).map(function(key){
-								return modelDataService.getGameData().data.units.map(function(obj, index, array){
-									return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
-								}).filter(f=>f!=undefined)
-							}).filter(f=>f.length>0)[0][0]
-						}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
-
+						let presets_order = []
+						if(data_farm.spedd_direction){
+							presets_order = Object.keys(presets).map(function(preset){
+								return Object.keys(presets[preset].units).map(function(key){
+									return modelDataService.getGameData().data.units.map(function(obj, index, array){
+										return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
+									}).filter(f=>f!=undefined)
+								}).filter(f=>f.length>0)[0][0]
+							}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
+						} else {
+							presets_order = Object.keys(presets).map(function(preset){
+								return Object.keys(presets[preset].units).map(function(key){
+									return modelDataService.getGameData().data.units.map(function(obj, index, array){
+										return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
+									}).filter(f=>f!=undefined)
+								}).filter(f=>f.length>0)[0][0]
+							}).sort(function(a,b){return b[0]-a[0]}).map(function(obj){return obj[1]})
+						}
+						
 						presets_order.forEach(function(preset){
 							if(!units_has_exception(preset.units) && units_analyze(preset.units, aldeia_units, true)) {
 								var comando = {

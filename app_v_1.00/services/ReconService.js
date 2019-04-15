@@ -76,7 +76,7 @@ define("robotTW2/services/ReconService", [
 
 				var y = t.map(function(obj, index, array){
 					if(obj[0] == unit[0]) {
-						return $filter("i18n")(obj[1], $rootScope.loc.ale, "recon");
+						return $filter("i18n")(obj[1], $rootScope.loc.ale, "units");
 					} else {
 						return
 					} 
@@ -88,25 +88,25 @@ define("robotTW2/services/ReconService", [
 
 				var span_unit = undefined;
 				switch (true) {
-				case unitText.includes($filter("i18n")("snob", $rootScope.loc.ale, "recon")) :
+				case unitText.includes($filter("i18n")("snob", $rootScope.loc.ale, "units")) :
 					span_unit = "snob"
 						break;
-				case unitText.includes($filter("i18n")("trebuchet", $rootScope.loc.ale, "recon")) :
+				case unitText.includes($filter("i18n")("trebuchet", $rootScope.loc.ale, "units")) :
 					span_unit = "trebuchet"
 						break;
-				case unitText.includes($filter("i18n")("sword", $rootScope.loc.ale, "recon")) :
+				case unitText.includes($filter("i18n")("sword", $rootScope.loc.ale, "units")) :
 					span_unit = "sword"
 						break;
-				case unitText.includes($filter("i18n")("ram", $rootScope.loc.ale, "recon")) :
+				case unitText.includes($filter("i18n")("ram", $rootScope.loc.ale, "units")) :
 					span_unit = "ram"
 						break;
-				case unitText.includes($filter("i18n")("light_cavalry", $rootScope.loc.ale, "recon")) :
+				case unitText.includes($filter("i18n")("light_cavalry", $rootScope.loc.ale, "units")) :
 					span_unit = "light_cavalry"
 						break;
-				case unitText.includes($filter("i18n")("heavy_cavalry", $rootScope.loc.ale, "recon")) :
+				case unitText.includes($filter("i18n")("heavy_cavalry", $rootScope.loc.ale, "units")) :
 					span_unit = "heavy_cavalry"
 						break;
-				case unitText.includes($filter("i18n")("axe", $rootScope.loc.ale, "recon")) :
+				case unitText.includes($filter("i18n")("axe", $rootScope.loc.ale, "units")) :
 					if(cmdType == "attack"){
 						span_unit = "axe"
 					} else {
@@ -164,7 +164,7 @@ define("robotTW2/services/ReconService", [
 							var unitText = getAttackTypeAtackRecon(command, i);
 							if (unitText != undefined){
 								if(Object.keys(data_recon.rename).map(function(elem, index, array){
-									return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "recon"))
+									return unitText.includes($filter("i18n")(elem, $rootScope.loc.ale, "units"))
 								}).filter(f=>f!=undefined).length && data_recon.active_rename){
 									getrenameCmdAtackRecon(command, unitText);
 								}

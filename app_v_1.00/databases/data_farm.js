@@ -17,7 +17,8 @@ define("robotTW2/databases/data_farm", [
 	) {
 
 	var data_farm = database.get("data_farm")
-	, db_farm = {};
+	, db_farm = {}
+	, presets_created = []
 
 	db_farm.set = function(){
 		database.set("data_farm", data_farm, true)
@@ -25,11 +26,54 @@ define("robotTW2/databases/data_farm", [
 	db_farm.get = function(){
 		return database.get("data_farm");
 	}
-
-	var presets_load = angular.copy(services.presetListService.getPresets())
-	var presets_created = [];
-
-	var create_preset = function create_preset(preset, pri_vill){
+	db_farm.setPresets = function(value){
+		let list_presets = [
+			"*Farm " + services.$filter("i18n")("spear", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("sword", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("archer", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("axe", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("light_cavalry", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("mounted_archer", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("heavy_cavalry", services.$rootScope.loc.ale, "units")
+			]
+		let presets_load = angular.copy(services.presetListService.getPresets())
+		Object.values(presets_load).map(function(pst){
+			if(list_presets.contains(presets_load.name)){
+				Object.keys(pst.units).map(function(unit){
+					pst.units[unit] > 0 ? pst.units[unit] = value : pst.units[unit]
+					return
+				})
+				services.presetService.savePreset(pst)
+			}
+			return
+		})
+	}
+	db_farm.selectAllPresets = function(){
+		let list_presets = [
+			"*Farm " + services.$filter("i18n")("spear", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("sword", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("archer", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("axe", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("light_cavalry", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("mounted_archer", services.$rootScope.loc.ale, "units"),
+			"*Farm " + services.$filter("i18n")("heavy_cavalry", services.$rootScope.loc.ale, "units")
+			]
+		let villages = services.modelDataService.getSelectedCharacter().getVillageList()
+		let presets_load = angular.copy(services.presetListService.getPresets())
+		let list_loaded = Object.values(presets_load).map(function(value){
+			return list_presets.contains(presets_load.name) ? value.id : undefined;
+		}).filter(f=>f!=undefined)
+		
+		for (village in villages){
+			if(villages.hasOwnProperty(village))
+				services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+					'village_id': villages[village].getId(),
+					'preset_ids': list_loaded
+				});
+		}
+	}
+	
+	function create_preset(preset, id){
 
 		let units = {};
 		let officers = {};
@@ -44,28 +88,91 @@ define("robotTW2/databases/data_farm", [
 		let qtd = Object.values(preset)[0];
 		let unit = Object.keys(preset)[0];
 		units[unit] = qtd;
-		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units");
-
-		var ll = Object.values(presets_load).map(function(elem){
-			return elem.name == "Farm " + qtd.toString() + " " + trad_unit
-		}).filter(f=>f!=false)
-
-		if(!ll || !ll.length){
-			let d_preset = {
-					"catapult_target": null,
-					"icon": parseInt("0c0b0c", 16),
-					"name": "Farm " + qtd.toString() + " " + trad_unit,
-					"officers": officers,
-					"units": units,
-					"village_id": pri_vill
-			}
-
-			presets_created.push(d_preset.name);
-
-			services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
+		let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units")
+		, d_preset = {
+			"catapult_target": null,
+			"icon": parseInt("0c0b0c", 16),
+			"name": "*Farm " + trad_unit,
+			"officers": officers,
+			"units": units,
+			"village_id": id
 		}
+
+
+		presets_created.push(d_preset.name);
+
+		services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
 	}
 
+	function df(opt){
+
+		if(!opt){
+			if(!services.modelDataService.getPresetList().isLoadedValue){
+				services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+					return df(true)
+				});
+			} else {
+				return df(true)
+			}
+			return
+		}
+
+		let villages = services.modelDataService.getSelectedCharacter().getVillageList()
+
+		try{
+			Object.keys(villages).map(function(village_id){
+				let vill = services.villageService.getInitializedVillage(villages[village_id].getId())
+			})
+		} catch (err){
+			return
+		}
+
+		let qtd = Math.min.apply(null, [(Math.max.apply(null, [Math.trunc((villages.length / 10) * 10), 10])), 200])
+		, list_presets = [
+			{"spear": qtd},
+			{"sword": qtd},
+			{"archer": qtd},
+			{"axe": qtd},
+			{"light_cavalry": qtd},
+			{"mounted_archer": qtd},
+			{"heavy_cavalry": qtd}
+			]
+
+		let presets_load = angular.copy(services.presetListService.getPresets())
+
+		let pri_vill = villages[0]
+		for (var preset in list_presets){
+			if(list_presets.hasOwnProperty(preset)){
+				if(presets_load == undefined || Object.values(presets_load).length == 0 || !Object.values(presets_load).map(function(elem){
+					return elem.name
+				}).find(f => f == "*Farm " + services.$filter("i18n")(Object.keys(list_presets[preset])[0], services.$rootScope.loc.ale, "units"))){
+					create_preset(list_presets[preset], pri_vill.getId())
+				}
+			}
+		}
+
+		services.$timeout(function(){
+			presets_load = angular.copy(services.presetListService.getPresets())
+			var list_loaded = Object.values(presets_load).map(function(value){
+				if(presets_created.includes(value.name)){
+					return value.id
+				} else {
+					return undefined
+				}
+			}).filter(f=>f!=undefined)
+			if(list_loaded.length){
+				for (village in villages){
+					if(villages.hasOwnProperty(village))
+						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+							'village_id': villages[village].getId(),
+							'preset_ids': list_loaded
+						});
+				}
+			}
+		}, 10000)
+	}
+
+	
 	var dataNew = {
 			auto_start				: false, 
 			init_initialized		: false, 
@@ -80,63 +187,26 @@ define("robotTW2/databases/data_farm", [
 			commands				: {},
 			troops_not				: conf.TROOPS_NOT.FARM,
 			name					: "data_farm",
-			infinite				: true
+			infinite				: true,
+			attacked				: false,
+			unit_direction			: false,
+			speed_direction			: false
 	}
 
 	if(!data_farm){
 		data_farm = dataNew
-
-		let list_presets = [
-			{"spear": 5},
-			{"sword": 5},
-			{"archer": 5},
-			{"axe": 5},
-			{"light_cavalry": 5},
-			{"mounted_archer": 5},
-			{"heavy_cavalry": 5}
-			]
-
-		let villages = Object.keys(services.modelDataService.getSelectedCharacter().getVillages())
-		let pri_vill = villages[0]
-
-		for (var preset in list_presets){
-			if(list_presets.hasOwnProperty(preset))
-				create_preset(list_presets[preset], pri_vill)
-		}
-
-		services.$timeout(function(){
-			presets_load = angular.copy(services.presetListService.getPresets())
-			
-			var list_loaded = Object.values(presets_load).map(function(value){
-				if(presets_created.find(f=>f==value.name))
-					return value.id
-			})
-			if(list_loaded.length){
-				list_loaded = list_loaded.filter(f=>f!=false);
-			}
-			
-			if(list_loaded.length){
-				for (village in villages){
-					if(villages.hasOwnProperty(village))
-						services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-							'village_id': villages[village],
-							'preset_ids': list_loaded
-						});
-				}
-			}
-		},10000)
-
+		df()
 	} else {
 		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
 			data_farm = dataNew
 			notify("data_farm");
+			df()
 		} else {
 			if(!data_farm.auto_start) data_farm.init_initialized = !1;
 			if(data_farm.auto_start) data_farm.init_initialized = !0;
 			database.set("data_farm", data_farm, true)		
 		}
 	}
-
 
 	Object.setPrototypeOf(data_farm, db_farm);
 

@@ -28,8 +28,6 @@ define("robotTW2/services/RecruitService", [
 		, isPaused = !1
 		, promise_UnitsAndResources = undefined 
 		, queue_UnitsAndResources = []
-		, promise_recruitRequest = undefined 
-		, queue_recruitRequest = []
 		, interval_recruit = null
 		, interval_cicle = null
 		, listener_recruit = undefined
@@ -50,22 +48,18 @@ define("robotTW2/services/RecruitService", [
 			});
 			return prices;
 		})()
-		, verificarGroups = function (){
-			var game = {}
-			game.Groups = groupService.getGroups();
-			game.GroupsKeys = Object.keys(game.Groups);
-			game.GroupsName = game.GroupsKeys.map(m => game.Groups[m].name);
-			game.GroupsCount = game.GroupsKeys.length;
-
-			game.GroupsKeys.forEach(function(id){
-				if (!data_recruit.Groups[id]){
-					data_recruit.Groups[id] = game.Groups[id]; 
+		, verifyGroups = function (){
+			var groups = groupService.getGroups();
+			Object.keys(groups).forEach(function(id){
+				if(!data_recruit.groups){data_recruit.groups = {}}
+				if (!data_recruit.groups[id]){
+					data_recruit.groups[id] = groups[id]; 
 				}
 			});
 
-			data_recruit.GroupsKeys.forEach(function(id){
-				if (!game.Groups[id]){
-					delete data_recruit.Groups[id];
+			Object.keys(data_recruit.groups).forEach(function(id){
+				if (!groups[id]){
+					delete data_recruit.groups[id];
 				}
 			});
 
@@ -73,229 +67,121 @@ define("robotTW2/services/RecruitService", [
 
 			return;
 		}
+		, RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes()
 		, recruitSteps = function(list_recruit){
 			if(!list_recruit.length){return}
 			list_recruit.forEach(function(village_id){
-				var sort_units_unstabled = function (units, name){
-					var lista = [];
-					if (units != undefined){
-						Object.keys(units).forEach(function(key){
-							var ti = prices[key][0] + prices[key][1] + prices[key][2]
-							if(units[key] > 0) {
-								lista.push({[key] : units[key], "wood" : prices[key][0] * 100 / ti, "clay" : prices[key][1] * 100 / ti, "iron" : prices[key][2] * 100 / ti})
-							}
-						});
-						lista.sort(function(a, b){
-							return b[name] - a[name]}
-						);
-						lista.forEach(function(key){
-							delete key.wood;
-							delete key.clay;
-							delete key.iron;
-						})
-						return lista;
-					} else {
-						return [];
-					}
-				}
-				, sort_units_stabled = function (units, villageUnits){
-					var lista = [];
-					if (villageUnits != undefined){
-						for (key in villageUnits){
-							if (villageUnits.hasOwnProperty(key)) {
-								if (villageUnits[key] == 0 || data_recruit.troops_not.some(elem => elem == key)){
-									delete villageUnits[key];
-								}
-							}
-						}
-						lista = Object.keys(villageUnits).sort(function(a, b){return villageUnits[a] - villageUnits[b]});
-
-						var lis = [];
-						for (key in lista){
-							if (lista.hasOwnProperty(key)) {
-								lis.push({[lista[key]]: villageUnits[lista[key]]});
-							}
-						}
-						return lis;
-					} else {
-						return [];
-					}
-				}
-				, sort_max = function (list_object){
-					var food = list_object.food;
-					delete list_object.food;
-					var sorted_max = Object.keys(list_object).sort(function(a, b){return list_object[b] - list_object[a]});
-					var list_sorted = [];
-					var count = 0;
-					Object.keys(list_object).forEach(function(){
-						var max = sorted_max.shift();
-						var max_value = list_object[max];
-						list_sorted.push({[max] : max_value});
-					})
-					list_object.food = food;
-					var lis = {};
-					for (key in list_sorted){
-						if (list_sorted.hasOwnProperty(key)) {
-							lis[Object.keys(list_sorted[key])[0]] = list_sorted[key][Object.keys(list_sorted[key])[0]]
-						}
-					}
-					return lis;
-				}
-				, sec_groups = function (resp){
-					var listGroups = modelDataService.getGroupList().getVillageGroups(resp.data.village_id)
-					, amount
-					, requests = 0
-					, requestsReadys = 0
-					, copia_listGroups = angular.extend({}, listGroups)
-					, copia_res = angular.extend({}, resp.data.resources)
-					, villageUnits = resp.data.villageUnits
-					, keys_listGroups = Object.keys(copia_listGroups)
-					, village_id = resp.data.village_id;
-
-					var groupLoop = function (){
-						if(keys_listGroups.length){
-							var key = keys_listGroups.shift()
-							, group = copia_listGroups[key]
-							, gr = data_recruit.Groups[group.id]
-
-							if (gr && gr.units){
-								var units = gr.units;
-								var copia_res_sorted = sort_max(copia_res);
-								var max = copia_res_sorted[Object.keys(copia_res_sorted)[0]];
-								var mid = copia_res_sorted[Object.keys(copia_res_sorted)[1]];
-								var min = copia_res_sorted[Object.keys(copia_res_sorted)[2]];
-								var max_name = Object.keys(copia_res_sorted)[0];
-								var taxa = mid / (max - min);
-								var units_sorted = [];
-								if (taxa > 1) {
-									units_sorted = sort_units_unstabled(units, max_name);
-								} else {
-									units_sorted = sort_units_stabled(units, villageUnits);
-								};
-								var unit_type
-								, remaing
-								, fully = false
-								, unitsLoop = function (){
-									if (units_sorted.length){
-										var unit = units_sorted.shift();
-										unit_type = Object.keys(unit)[0];
-										var RESOURCE_TYPES = modelDataService.getGameData().getResourceTypes();
-										var ltz = [];
-										Object.keys(RESOURCE_TYPES).forEach(
-												function(name){
-													if (copia_res[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toLowerCase()]){
-														ltz.push(true);
-													} else {
-														ltz.push(false);
-													}
-												});
-
-										if (ltz.every(f => f == true)) {
-											unitsLoop(units_sorted);
-											return;
-										};
-										amount = Math.floor(
-												Math.min(
-														(copia_res.wood - data_recruit.reserva.wood) / prices[unit_type][0], 
-														(copia_res.clay - data_recruit.reserva.clay) / prices[unit_type][1], 
-														(copia_res.iron - data_recruit.reserva.iron) / prices[unit_type][2], 
-														(copia_res.food - data_recruit.reserva.food) / prices[unit_type][3]
-												) * 0.9
-										)
-
-										remaing = units[unit_type] - villageUnits[unit_type];
-										if (remaing <= 0) {
-											unitsLoop();
-											return;
-										};
-										if (amount > remaing) {
-											amount = remaing;
-										} else {
-											if (amount < 1) {
-												unitsLoop();
-												return;
-											};
-										};
-
-										var data_rec = {
-												"village_id": village_id,
-												"unit_type": unit_type,
-												"amount": amount
-										}
-
-										var recruit_promise = function(data_rec){
-											if(!promise_recruitRequest){
-												promise_recruitRequest = new Promise(function(res, rej){
-													if (village_id && unit_type){
-														data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
-														socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec, function(){
-															res()
-														});
-													};
-												}). then(function(data){
-													groupLoop()
-													promise_recruitRequest = undefined
-													if(queue_recruitRequest.length){
-														data_rec = queue_recruitRequest.shift()
-														recruit_promise(data_rec)
-													} else {
-														data_log.recruit.push({"text":$filter("i18n")("terminate_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
-													}
-												})
-											} else {
-												queue_recruitRequest.push(data_rec);
-											}
-										}
-
-										recruit_promise(data_rec)
-
-									} else {
-										groupLoop();
-										return;
-									};
-								};
-								unitsLoop();
-							} else {
-								groupLoop();
-								return;
-							};
-						}
-					};
-					groupLoop();
-
+				var sort_max = function (obj){
+					return Object.values(Object.keys(obj).sort(function(a, b){return obj[b] - obj[a]})).map(function(res){
+						return {[res]: obj[res]}
+					}).filter(f=>f!=undefined)
 				}
 				, sec_promise = function (village_id){
 					if(!promise_UnitsAndResources){
 						promise_UnitsAndResources = new Promise(function(res, rej){
-							socketService.emit(providers.routeProvider.VILLAGE_UNIT_INFO, {village_id: village_id}, function (data) {
-								var unit, i;
-								if(!data){
-									rej()
+							let village = modelDataService.getSelectedCharacter().getVillage(village_id)
+							, units = village.getUnitInfo().getUnits()
+							, resources = village.getResources().getResources()
+							, listGroups = modelDataService.getGroupList().getVillageGroups(village_id)
+							, villageUnits = {}
+							, ltz = []
+							, grs_units = {}
+							, gf_units = {}
+							, gf_units_prov = {}
+
+							for (let unit in units) {
+								villageUnits[unit] = units[unit].total + units[unit].recruiting;
+							}
+
+							Object.keys(RESOURCE_TYPES).forEach(function(name){
+								if (resources[RESOURCE_TYPES[name]] < data_recruit.reserva[name.toLowerCase()]){
+									ltz.push(true);
+								} else {
+									ltz.push(false);
 								}
-								if(data.error_code){
-									rej(data)
-								}
-								var villageUnits = {};
-								for (unit in data.available_units) {
-									villageUnits[unit] = data.available_units[unit].total;
-								}
-								for (i = 0; i < data.queues.barracks.length;  i++ ) {
-									villageUnits[data.queues.barracks[i].unit_type] += data.queues.barracks[i].amount;
-								}
-								socketService.emit(providers.routeProvider.VILLAGE_GET_VILLAGE, {village_id: village_id}, function (data) {
-									if(villageUnits == null || res == null) {rej()}
-									res({
-										"data": {
-											"village_id": village_id,
-											"villageUnits": villageUnits, 
-											"resources": data.resources
+							});
+
+							if (ltz.some(f => f == true || !Object.keys(listGroups).length)) {
+								res()
+								return
+							};
+							
+							if(!Object.keys(listGroups).length){
+								res()
+								return
+							}
+
+							listGroups.map(function(gr){
+								if(!data_recruit.groups[gr.id]){return}
+								if(Object.values(data_recruit.groups[gr.id].units).some(f=>f>0)){
+									Object.keys(data_recruit.groups[gr.id].units).map(function(gt){
+										if(data_recruit.groups[gr.id].units[gt] > 0){
+											return grs_units[gt] = data_recruit.groups[gr.id].units[gt]
 										}
 									})
-								})
-							});
-						})
-						.then(function(data){
-							sec_groups(data)
+									return
+								}
+							})
+
+							if(!Object.keys(grs_units).length){
+								res()
+								return
+							}
+							
+							Object.keys(grs_units).map(function(gr){
+								let min_resources = Math.trunc(
+										Math.min.apply(null, [
+											(resources.wood - data_recruit.reserva.wood) / prices[gr][0], 
+											(resources.clay - data_recruit.reserva.clay) / prices[gr][1], 
+											(resources.iron - data_recruit.reserva.iron) / prices[gr][2],
+											(resources.food - data_recruit.reserva.food) / prices[gr][3]
+											]
+										)
+								)
+								, prov = min_resources * prices[gr][3]
+								gf_units[gr] = min_resources
+								gf_units_prov[gr] = prov
+								return 
+							})
+
+							let gf_units_list = sort_max(gf_units_prov)
+
+
+							function nt(){
+								if(gf_units_list.length){
+									let unit_gf = gf_units_list.shift()
+									, unit_type = Object.keys(unit_gf)[0]
+									, amount = gf_units[unit_type]
+									, remaining = grs_units[unit_type] - villageUnits[unit_type]
+
+									if (remaining <= 0) {
+										return nt()
+										
+									};
+									if (amount > remaining) {
+										amount = remaining;
+									} else {
+										if (amount < 1) {
+											return nt()
+										};
+									};
+
+									let data_rec = {
+											"village_id": village_id,
+											"unit_type": unit_type,
+											"amount": amount
+									}
+
+									data_log.recruit.push({"text":$filter("i18n")("recruit", $rootScope.loc.ale, "recruit") + " - village_id " + village_id + " / unit_type " + unit_type, "date": (new Date(time.convertedTime())).toString()})
+									socketService.emit(providers.routeProvider.BARRACKS_RECRUIT, data_rec);
+									res()
+								} else {
+									res()
+								}
+							}
+							nt()
+
+						}).then(function(){
 							promise_UnitsAndResources = undefined
 							if(queue_UnitsAndResources.length){
 								village_id = queue_UnitsAndResources.shift()
@@ -360,16 +246,19 @@ define("robotTW2/services/RecruitService", [
 			data_log.recruit.push({"text":$filter("i18n")("init_cicles", $rootScope.loc.ale, "recruit"), "date": (new Date(time.convertedTime())).toString()})
 			var vls = modelDataService.getSelectedCharacter().getVillageList();
 			vls = Object.keys(vls).map(function(elem){
+				if(!data_villages.villages[vls[elem].getId()]){
+					return undefined
+				}
 				let tam = vls[elem].getRecruitingQueue("barracks").length || 0;
 				let gt = getFinishedForFree(vls[elem]);
 				if(gt != Infinity && gt != 0 && !isNaN(gt)){
 					list.push(getFinishedForFree(vls[elem]))
 				}
-				if(data_villages.villages[vls[elem].data.villageId].recruit_activate && tam < data_recruit.reserva.slots || tam < 1){
-					return vls[elem].data.villageId
+				if(data_villages.villages[vls[elem].getId()].recruit_activate && tam < data_recruit.reserva.slots){
+					return vls[elem].getId()
 				}
 			}).filter(f=>f!=undefined)
-			
+
 			setList();
 
 			recruitSteps(vls)
@@ -383,11 +272,11 @@ define("robotTW2/services/RecruitService", [
 			if(isRunning){return}
 			ready(function(){
 				interval_cicle = setInterval(recruit, 60 * 60 * 1000)
-				verificarGroups();
+				verifyGroups();
 				listener_recruit = $rootScope.$on(providers.eventTypeProvider.UNIT_RECRUIT_JOB_FINISHED, recruit)
-				listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verificarGroups)
-				listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verificarGroups)
-				listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verificarGroups)
+				listener_group_updated = $rootScope.$on(providers.eventTypeProvider.GROUPS_UPDATED, verifyGroups)
+				listener_group_created = $rootScope.$on(providers.eventTypeProvider.GROUPS_CREATED, verifyGroups)
+				listener_group_destroyed = $rootScope.$on(providers.eventTypeProvider.GROUPS_DESTROYED, verifyGroups)
 				isRunning = !0;
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 				wait();
@@ -405,8 +294,6 @@ define("robotTW2/services/RecruitService", [
 			listener_group_destroyed = undefined;
 			promise_UnitsAndResources = undefined 
 			queue_UnitsAndResources = []
-			promise_recruitRequest = undefined 
-			queue_recruitRequest = []
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
 			$timeout.cancel(listener_recruit);

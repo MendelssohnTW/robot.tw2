@@ -25,7 +25,7 @@ define("robotTW2/databases/data_villages", [
 		return Math.trunc((max_journey_time / 1000 / travelTime) / 2);
 	}
 	, getPst = function (v) {
-		var presets_d = services.presetListService.getPresetsForVillageId(v)
+		var presets_d = angular.copy(services.presetListService.getPresetsForVillageId(v))
 		if(!Object.keys(presets_d).length) {return {}}
 		if(!data_villages.villages[v]){data_villages.villages[v] = {"presets" : {}}}
 		Object.keys(presets_d).forEach(function (pst) {
@@ -120,6 +120,8 @@ define("robotTW2/databases/data_villages", [
 						defense_activate 		: true,
 						headquarter_activate	: true,
 						recruit_activate		: true,
+						sniper_defense			: true,
+						sniper_attack			: true,
 						presets					: getPst(m),
 						selected				: null//selects.find(f=>f.name=="standard")
 					})
@@ -140,10 +142,9 @@ define("robotTW2/databases/data_villages", [
 			callback(update)
 			return;
 		} else {
-			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){return db_villages.verifyVillages(villagesExtended, callback)});
-//			return services.$timeout(function(){
-//			return db_villages.verifyVillages(villagesExtended, callback)
-//			}, 5000)
+			services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+				return db_villages.verifyVillages(villagesExtended, callback)
+			});
 		}
 	}
 
@@ -172,7 +173,7 @@ define("robotTW2/databases/data_villages", [
 			}
 			db_villages.set();
 		}, function(){
-			
+
 			if(!data_villages.version || (typeof(data_villages.version) == "number" ? data_villages.version.toString() : data_villages.version) < conf.VERSION.VILLAGES){
 				data_villages = {};
 				data_villages.version = conf.VERSION.VILLAGES
@@ -189,9 +190,22 @@ define("robotTW2/databases/data_villages", [
 		})
 		db_villages.set();
 	}
+	
+	db_villages.getQuadrants = function(village_id, preset_id){
+		return data_villages.villages[village_id].presets[preset_id].quadrants
+	}
 
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, db_villages.updateVillages);
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, db_villages.updateVillages);
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, function(){
+		services.$timeout(function(){
+			db_villages.updateVillages()
+		}, 10000)
+		
+	});
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, function(){
+		services.$timeout(function(){
+			db_villages.updateVillages()	
+		}, 10000)
+	});
 
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, db_villages.updateVillages);

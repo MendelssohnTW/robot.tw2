@@ -102,6 +102,7 @@
         "standard": "Standard",
         "attack": "Attack",
         "defense": "Defense",
+        "hall": "Hall of order",
         "database": "Database",
         "ext_all": "All",
         "headquarter_running": "Current state of the barracks",
@@ -153,7 +154,14 @@
 		"text_active": "Enable rename",
 		"settings": "Select the type to rename"
 	},
+	"market": {
+        "title": "Market"
+    },
 	"farm": {
+        "unit_direction": "Reverse direction",
+        "speed_direction": "Reverse speed",
+        "text_unit_direction": "Farthest villages to nearest",
+        "text_speed_direction": "Slower units for faster",
 		"farm": "Collection settings",
 		"village": "Village",
 		"title": "Collection of resources",
@@ -209,7 +217,8 @@
 		"text_selection": "Selected",
 		"text_check": "Add village in farm exception list",
 		"exceptions": "Exception list",
-		"villages_selections": "Activation / deactivation"
+		"villages_selections": "Activation / deactivation",
+		"villages_attacked": "Farm in villages under attack"
 	},
 	"recruit": {
 		"recruit": "Recruitment",
@@ -253,10 +262,18 @@
 		"text_interval": "Next cycle in"
 	},
 	"spy": {
+		"village": "Village only",
+		"target": "Target",
+		"province_enemy": "Enemies of province",
+		"province_barbarian": "Barbarian of province",
+		"province_neutral": "Neutral of province",
 		"spy": "Spy",
 		"units": "Units",
 		"buildings": "Buildings",
+		"sabotage": "Sabotage",
 		"text_source": "Source",
+		"text_select_all": "Select all provinces",
+		"text_select_all_village": "Select all villages",
         "text_target_village": "Village target",
         "text_target_player": "Player target",
         "text_target_province": "Province target",
@@ -273,6 +290,29 @@
 		"text_ms": "Milliseconds",
 		"schedule": "Schedule"
 	},
+	"fake": {
+        "fake": "Fakes",
+        "units": "Units",
+        "buildings": "Buildings",
+        "text_source": "Source",
+        "text_select_all": "Select all provinces",
+        "text_select_all_village": "Select all villages",
+        "text_target_village": "Village target",
+        "text_target_player": "Player target",
+        "text_target_province": "Province target",
+        "text_data_target": "Target time",
+        "text_data_source": "Source time",
+        "comp": "Multi programming",
+        "title": "Scheduled fakes",
+        "settings": "Settings",
+        "command_list": "List of commands",
+        "text_interval": "Next cycle in",
+        "text_interval_fake": "Check interval",
+        "text_date": "Data",
+        "text_hour": "Time",
+        "text_ms": "Milliseconds",
+        "schedule": "Schedule"
+    },
 	"notify": {
 		"title": "News",
 		"data_main": "Robot TW2 - Updated (MAIN) database - reactivate the modules and configure required parameters",
@@ -298,7 +338,7 @@
 		"text_prog_full": "Schedule output time at source",
 		"text_prog": "Set arrival time on target",
 		"text_check": "Send all",
-		"title": "Scheduled commands",
+		"title": "Scheduled attacks",
 		"command_list": "List of commands",
 		"ident_cmd": "ID",
 		"exclude_button": "Delete command",
@@ -312,7 +352,7 @@
 		"text_date": "Data",
 		"text_hour": "Time",
 		"text_ms": "Milliseconds",
-		"title": "Scheduled commands",
+		"title": "Scheduled defenses",
 		"command_list": "List of commands",
 		"ident_cmd": "ID",
 		"exclude_button": "Delete command",
@@ -325,7 +365,16 @@
         "time_arrival":"Attack arrival time",
         "time_return":"Return time of maneuver",
         "sec_ant":"Previous seconds",
-        "sec_post":"Seconds after"
+        "sec_post":"Seconds after",
+        "text_status":"Status",
+        "text_defense":"Defense",
+        "text_attack":"Attack",
+        "text_village":"Village",
+        "text_troops":"Troops type for defense",
+        "text_time_sniper_ant":"Time in milliseconds for troop withdrawal",
+        "text_time_sniper_post":"Time in milliseconds for troop return",
+        "text_time_sniper_post_snob":"Time in milliseconds for troop return in nobles",
+        "text_loyalt":"Loyalty for calculation"
 	},
 	"log": {
         "title": "Log"

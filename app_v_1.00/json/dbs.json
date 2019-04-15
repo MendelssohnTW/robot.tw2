@@ -4,12 +4,12 @@
   "deposit",
   "farm",
   "headquarter",
-  "medic",
   "recon",
   "recruit",
   "spy",
   "secondvillage",
-  "map",
+  "fake",
+  "market",
   "data",
   "log"
 ]
