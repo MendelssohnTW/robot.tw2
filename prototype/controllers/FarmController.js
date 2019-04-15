@@ -392,15 +392,17 @@ define("robotTW2/controllers/FarmController", [
 			if(r.length <= 5) {
 				r = r + ":00"
 			}
+			let v_d = $scope.data_villages.villages[$scope.village_selected.id]
+			, vill_d = v_d.presets[$scope.data.selectedOption.id]
 			switch ($scope.toggle_option) {
 			case "check_one":
-				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
+				vill_d.max_journey_time = helper.unreadableSeconds(r) * 1000
+				vill_d.max_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, vill_d.max_journey_time, vill_d.units)
 				break;
 			case "check_all":
-				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
-					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_time = helper.unreadableSeconds(r) * 1000
-					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units)
+				Object.keys(v_d.presets).map(function(elem){
+					v_d.presets[elem].max_journey_time = helper.unreadableSeconds(r) * 1000
+					v_d.presets[elem].max_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, v_d.presets[elem].max_journey_time, v_d.presets[elem].units)
 				})
 				break;
 			case "check_all_villages":
@@ -420,14 +422,16 @@ define("robotTW2/controllers/FarmController", [
 			if(r.length <= 5) {
 				r = r + ":00"
 			}
+			let v_d = $scope.data_villages.villages[$scope.village_selected.id]
+			, vill_d = v_d.presets[$scope.data.selectedOption.id]
 			switch ($scope.toggle_option) {
 			case "check_one":
-				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
+				vill_d.min_journey_time = helper.unreadableSeconds(r) * 1000
+				vill_d.min_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, vill_d.min_journey_time, vill_d.units)
 				break;
 			case "check_all":
-				$scope.data.selectedOption.min_journey_time = helper.unreadableSeconds(r) * 1000
-				$scope.data.selectedOption.min_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, $scope.data.selectedOption.min_journey_time, $scope.data.selectedOption.units)
+				v_d.presets[elem].min_journey_time = helper.unreadableSeconds(r) * 1000
+				v_d.presets[elem].min_journey_distance = get_dist(services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id).data.villageId, v_d.presets[elem].min_journey_time, v_d.presets[elem].units)
 				break;
 			case "check_all_villages":
 				Object.keys($scope.data_villages.villages).map(function(village){
