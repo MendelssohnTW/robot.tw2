@@ -383,8 +383,9 @@ define("robotTW2/services/FarmService", [
 							aldeia_units = angular.copy(villages[i].getUnitInfo().getUnits())
 						}
 
+						let presets_order = []
 						if(data_farm.spedd_direction){
-							let presets_order = Object.keys(presets).map(function(preset){
+							presets_order = Object.keys(presets).map(function(preset){
 								return Object.keys(presets[preset].units).map(function(key){
 									return modelDataService.getGameData().data.units.map(function(obj, index, array){
 										return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
@@ -392,7 +393,7 @@ define("robotTW2/services/FarmService", [
 								}).filter(f=>f.length>0)[0][0]
 							}).sort(function(a,b){return a[0]-b[0]}).map(function(obj){return obj[1]})
 						} else {
-							let presets_order = Object.keys(presets).map(function(preset){
+							presets_order = Object.keys(presets).map(function(preset){
 								return Object.keys(presets[preset].units).map(function(key){
 									return modelDataService.getGameData().data.units.map(function(obj, index, array){
 										return presets[preset].units[key] > 0 && key == obj.name ? [obj.speed, presets[preset]] : undefined			
