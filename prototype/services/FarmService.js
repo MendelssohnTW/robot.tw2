@@ -212,7 +212,7 @@ define("robotTW2/services/FarmService", [
 				villages = villages.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 				villages = villages.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 
-				if(data_farm.unit_direction){
+				if(!data_farm.unit_direction){
 					villages.sort(function (a, b) {
 						return get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
 					});
@@ -384,7 +384,7 @@ define("robotTW2/services/FarmService", [
 						}
 
 						let presets_order = []
-						if(data_farm.spedd_direction){
+						if(!data_farm.spedd_direction){
 							presets_order = Object.keys(presets).map(function(preset){
 								return Object.keys(presets[preset].units).map(function(key){
 									return modelDataService.getGameData().data.units.map(function(obj, index, array){
