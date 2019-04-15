@@ -224,16 +224,10 @@
 													ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
 											</tr>
 											<tr>
-												<td class="cell-center"><label for="cicle_infinite"
-													style="margin-left: 12px; margin-right: 12px;"
-													ng-show="data_farm.infinite">{{time_infinite}}</label><label
-													for="cicle_infinite"
-													style="margin-left: 12px; margin-right: 12px;"
-													ng-show="!data_farm.infinite">{{time_finite}}</label><a tooltip=""
-													tooltip-content="{{time_infinite}} + '/' + {{time_finite}}"
-													id="cicle_infinite" href="#" class="size-34x34 btn-orange"
-													ng-class="{'icon-26x26-check-positive' : data_farm.infinite, 'icon-26x26-check-negative' : !data_farm.infinite}"
-													ng-click="toggleInfinite()"></a></td>
+
+												<td class="cell-center"><label for="interval_farm">{{getStatus()}}</label><input
+													id="interval_farm" class="input-border inpt disabled"
+													type="text" value="{{getTimeRest()}}" disabled></td>
 												<td class="cell-center"><label for="termino_de_farm"
 													style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
 													class="input-border inpt" type="time" id="termino_de_farm"
@@ -250,21 +244,24 @@
 											</tr>
 											<tr>
 
-												<td class="cell-center"><label for="interval_farm">{{getStatus()}}</label><input
-													id="interval_farm" class="input-border inpt disabled"
-													type="text" value="{{getTimeRest()}}" disabled></td>
-												<td class="cell-center">
-													<div class="checkbox">
-
-														<label for="villages_attacked"
-															style="margin-left: 12px; margin-right: 12px;">{{villages_attacked}}</label><a
-															tooltip="" tooltip-content="{{villages_attacked}}"
-															id="villages_attacked" href="#"
-															class="size-34x34 btn-orange"
-															ng-class="{'icon-26x26-check-positive' : data_farm.attacked 'icon-26x26-check-negative' : !data_farm.attacked}"
-															ng-click="toggleAttacked()"></a>
-													</div>
-												</td>
+												<td class="cell-center"><label for="cicle_infinite"
+													style="margin-left: 12px; margin-right: 12px;"
+													ng-show="data_farm.infinite">{{time_infinite}}</label><label
+													for="cicle_infinite"
+													style="margin-left: 12px; margin-right: 12px;"
+													ng-show="!data_farm.infinite">{{time_finite}}</label><a
+													tooltip=""
+													tooltip-content="{{time_infinite}} + '/' + {{time_finite}}"
+													id="cicle_infinite" href="#" class="size-34x34 btn-orange"
+													ng-class="{'icon-26x26-check-positive' : data_farm.infinite, 'icon-26x26-check-negative' : !data_farm.infinite}"
+													ng-click="toggleInfinite()"></a></td>
+												<td class="cell-center"><label for="villages_attacked"
+													style="margin-left: 12px; margin-right: 12px;">{{villages_attacked}}</label><a
+													tooltip="" tooltip-content="{{villages_attacked}}"
+													id="villages_attacked" href="#"
+													class="size-34x34 btn-orange"
+													ng-class="{'icon-26x26-check-positive' : data_farm.attacked 'icon-26x26-check-negative' : !data_farm.attacked}"
+													ng-click="toggleAttacked()"></a></td>
 											</tr>
 										</tbody>
 									</table>
