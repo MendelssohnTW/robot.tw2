@@ -46,7 +46,6 @@ define("robotTW2/controllers/SpyController", [
 		$scope.text_put = $scope.text_data_target
 		$scope.text_put_province = $scope.text_target_village
 		$scope.province_name = ""
-
 			var self = this
 			, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
@@ -81,6 +80,7 @@ define("robotTW2/controllers/SpyController", [
 					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
 					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 				}
+				$scope.recalcScrollbar()
 			}
 
 		}
@@ -98,6 +98,7 @@ define("robotTW2/controllers/SpyController", [
 					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
 					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 				}
+				$scope.recalcScrollbar()
 			}
 		}
 		, updateTarget = function(){
