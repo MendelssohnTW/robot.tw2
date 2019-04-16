@@ -267,6 +267,8 @@
 		"province_enemy": "Enemies of province",
 		"province_barbarian": "Barbarian of province",
 		"province_neutral": "Neutral of province",
+		"province_member": "Province of the player",
+        "all_member": "All player villages",
 		"spy": "Spy",
 		"units": "Units",
 		"buildings": "Buildings",

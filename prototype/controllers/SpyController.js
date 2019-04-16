@@ -561,7 +561,18 @@ define("robotTW2/controllers/SpyController", [
 				{
 					"name" : services.$filter("i18n")("province_neutral", services.$rootScope.loc.ale, "spy"),
 					"value" : "province_neutral"
-				}]
+				}
+				,
+				{
+					"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
+					"value" : "province_member"
+				}
+				,
+				{
+					"name" : services.$filter("i18n")("all_member", services.$rootScope.loc.ale, "spy"),
+					"value" : "all_member"
+				}
+				]
 			)
 
 			if(order && order == "thieves"){
