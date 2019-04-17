@@ -53,14 +53,14 @@
 					</colgroup>
 					<tbody>
 						<tr>
-							<th class="cell-center selected" colspan="2">{{text_put_province}}</th>
+							<th class="cell-center selected" colspan="3">{{text_put_province}}</th>
 							<th ng-if="data_option.selectedOption.value == 'village'"
 								class="cell-center selected" colspan="3">{{text_source}}</th>
 							<th class="cell-center selected">{{text_put}}</th>
 						</tr>
 						<tr>
 							<td><div class="icon icon-34x34-switch"
-									ng-class="{'icon-34x34-village': item.type == 'village'; icon-34x34-character': item.type == 'character'"></div></td>
+									ng-class="{'icon-34x34-village': item.type == 'village'; 'icon-34x34-character': item.type == 'character'"></div></td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
