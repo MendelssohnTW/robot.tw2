@@ -59,8 +59,7 @@
 							<th class="cell-center selected">{{text_put}}</th>
 						</tr>
 						<tr>
-							<td><div class="icon icon-34x34-switch"
-									ng-class="{'icon-34x34-village': item.type == 'village'; 'icon-34x34-character': item.type == 'character'"></div></td>
+							<td><div class="icon" ng-class="{'icon-34x34-switch': !item; 'icon-34x34-village': item.type == 'village'; 'icon-34x34-character': item.type == 'character'"></div></td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
