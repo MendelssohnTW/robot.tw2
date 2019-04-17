@@ -176,12 +176,12 @@ define("robotTW2/controllers/SpyController", [
 			if($scope.item.type == "character"){
 				$scope.data_option = services.MainService.getSelects([
 					{
-						"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
-						"value" : "province_member"
-					},
-					{
 						"name" : services.$filter("i18n")("all_member", services.$rootScope.loc.ale, "spy"),
 						"value" : "all_member"
+					},
+					{
+						"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_member"
 					}
 					]
 				) 
@@ -535,12 +535,12 @@ define("robotTW2/controllers/SpyController", [
 					"value" : "province_neutral"
 				},
 				{
-					"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_member"
-				},
-				{
 					"name" : services.$filter("i18n")("all_member", services.$rootScope.loc.ale, "spy"),
 					"value" : "all_member"
+				},
+				{
+					"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
+					"value" : "province_member"
 				}
 				]
 			)
