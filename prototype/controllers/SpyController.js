@@ -121,12 +121,22 @@ define("robotTW2/controllers/SpyController", [
 				$scope.download = true;
 				getProfile($scope.item.id, function(data){
 					angular.extend($scope.item, data)
-
 					switch($scope.data_option.selectedOption.value){
 
 					case "province_member":
+						provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
+							$scope.local_data_province = provinces;
+							$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
+							$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+							$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
+							$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
+							$scope.download = false;
+						})
+
 						break;
 					case "all_member":
+						$scope.download = false;
+						$scope.villages_for_sent = data.villages;
 						break;
 					}
 				})
@@ -169,18 +179,18 @@ define("robotTW2/controllers/SpyController", [
 
 			updateValues()
 		}
-		, updateTargetPlayer = function(){
-			if(!$scope.item_player) {return}
-			if($scope.select_all_province){
-				$scope.villages_for_sent = $scope.item_player.villages
-			} else {
-				if($scope.select_all_village){
-					$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
-				} else {
-					$scope.villages_for_sent = [$scope.data_province_village.selectedOption];
-				}
-			}
-		}
+//		, updateTargetPlayer = function(){
+//			if(!$scope.item_player) {return}
+//			if($scope.select_all_province){
+//				$scope.villages_for_sent = $scope.item_player.villages
+//			} else {
+//				if($scope.select_all_village){
+//					$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
+//				} else {
+//					$scope.villages_for_sent = [$scope.data_province_village.selectedOption];
+//				}
+//			}
+//		}
 		, updateEnter = function(item, element){
 			$scope.item = item
 			if(item.displayedName){
@@ -509,23 +519,23 @@ define("robotTW2/controllers/SpyController", [
 			$scope.recalcScrollbar();
 		}
 
-		$scope.toggleOption = function(){
-			if($scope.select_all_province){
-				$scope.select_all_province = false
-			} else {
-				$scope.select_all_province = true
-			}
-			updateTargetPlayer()
-		}
+//		$scope.toggleOption = function(){
+//			if($scope.select_all_province){
+//				$scope.select_all_province = false
+//			} else {
+//				$scope.select_all_province = true
+//			}
+//			updateTargetPlayer()
+//		}
 
-		$scope.toggleOptionVillage = function(){
-			if($scope.select_all_village){
-				$scope.select_all_village = false
-			} else {
-				$scope.select_all_village = true
-			}
-			updateTargetPlayer()
-		}
+//		$scope.toggleOptionVillage = function(){
+//			if($scope.select_all_village){
+//				$scope.select_all_village = false
+//			} else {
+//				$scope.select_all_village = true
+//			}
+//			updateTargetPlayer()
+//		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
@@ -560,13 +570,13 @@ define("robotTW2/controllers/SpyController", [
 		$scope.$watch("data_province", function(){
 			if(!$scope.data_province){return}
 			$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
-			updateTargetPlayer()
+			updateTarget()
 		}, true)
 
-		$scope.$watch("data_province_village", function(){
-			if(!$scope.data_province_village){return}
-			updateTargetPlayer()
-		}, true)
+//		$scope.$watch("data_province_village", function(){
+//			if(!$scope.data_province_village){return}
+//			updateTargetPlayer()
+//		}, true)
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
@@ -648,14 +658,14 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_option", function() {
 			if(!$scope.data_option){return}
-			if($scope.data_option.selectedOption.value == "village"){
-				$scope.text_put = $scope.text_data_target
-				$scope.text_put_province = $scope.text_target_village
-			} else {
-				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-				$scope.text_put = $scope.text_data_source
-				$scope.text_put_province = services.$filter("i18n")("target", services.$rootScope.loc.ale, "spy") + " " + $scope.province_name
-			}
+//			if($scope.data_option.selectedOption.value == "village"){
+//				$scope.text_put = $scope.text_data_target
+//				$scope.text_put_province = $scope.text_target_village
+//			} else {
+//				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
+//				$scope.text_put = $scope.text_data_source
+//				$scope.text_put_province = services.$filter("i18n")("target", services.$rootScope.loc.ale, "spy") + " " + $scope.province_name
+//			}
 			updateTarget()
 		}, true);
 
