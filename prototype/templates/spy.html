@@ -43,9 +43,11 @@
 						<col width="32px">
 						<col width="*">
 						<col width="200px">
-						<col ng-if="data_option.selectedOption.value == 'village' || data_option.selectedOption.value == 'province_member'"
+						<col
+							ng-if="data_option.selectedOption.value == 'village' || data_option.selectedOption.value == 'province_member'"
 							width="32px">
-						<col ng-if="data_option.selectedOption.value == 'village' || data_option.selectedOption.value == 'province_member'"
+						<col
+							ng-if="data_option.selectedOption.value == 'village' || data_option.selectedOption.value == 'province_member'"
 							width="200px">
 						<col width="160px">
 						<col width="100px">
@@ -54,7 +56,7 @@
 					<tbody>
 						<tr>
 							<th class="cell-center selected" colspan="3">{{text_put_province}}</th>
-							<th ng-if="data_option.selectedOption.value == 'village' || data_option.selectedOption.value == 'province_member'" class="cell-center selected" colspan="3">{{text_source}}</th>
+							<th class="cell-center selected" colspan="3">{{text_source}}</th>
 							<th class="cell-center selected">{{text_put}}</th>
 						</tr>
 						<tr>
@@ -78,30 +80,27 @@
 							<td><select id="select_option" class="select-handler"
 								ng-options="item as item.name for item in data_option.availableOptions track by item.name"
 								ng-model="data_option.selectedOption"></select></td>
-							<td ng-if="data_option.selectedOption.value == 'village'"><div
-									class="icon icon-34x34-village"></div></td>
-							<td ng-if="data_option.selectedOption.value == 'village'"><select
+							<td>
+
+								<div ng-if="data_option.selectedOption.value == 'village'"
+									class="icon icon-34x34-village"></div>
+
+
+								<div
+									ng-if="data_option.selectedOption.value == 'province_member'"
+									class="icon icon-34x34-province"
+									ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div>
+
+							</td>
+							<td><select
+								ng-if="data_option.selectedOption.value == 'village'"
 								id="select_order" class="select-handler"
 								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
-								ng-model="data_select.selectedOption"></select></td>
-
-
-							<td ng-if="data_option.selectedOption.value == 'province_member'"><div
-									class="icon icon-34x34-province"
-									ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div></td>
-							<td ng-if="data_option.selectedOption.value == 'province_member'"
-								class="cell-center"><label for="check_select"
-								class="with-margin ng-binding" style="top: 21px; left: 100px;">{{text_select_all}}</label>
-								<div id="check_select" class="position-absolute"
-									ng-class="{'btn-green icon-26x26-check-positive': select_all_province == true, 'btn-red icon-26x26-check-negative': select_all_province == false}"
-									ng-click="toggleOption()" style="margin-bottom: 5px;"></div>
-								<div>
-									<select id="select_province" class="select-handler"
-										ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
-										ng-model="data_province.selectedOption"></select>
-								</div></td>
-								
-								
+								ng-model="data_select.selectedOption"></select> <select
+								ng-if="data_option.selectedOption.value == 'province_member'"
+								id="select_province" class="select-handler"
+								ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
+								ng-model="data_province.selectedOption"></select></td>
 
 							<td><div>
 									<select id="select_qtd" class="select-handler"
