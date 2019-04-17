@@ -117,7 +117,27 @@ define("robotTW2/controllers/SpyController", [
 //		}
 //		}
 		, updateTarget = function(){
-			if($scope.item){
+			if($scope.item.type == "character"){
+				$scope.download = true;
+				services.socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
+					'character_id': $scope.item.id
+				}, function(data){
+					$scope.download = false;
+					if (!data) {
+						return;
+					}
+					switch($scope.data_option.selectedOption.value){
+
+					case "province_member":
+						break;
+					case "all_member":
+						break;
+					}
+
+				});
+
+			}
+			else if($scope.item.type == "village"){
 				switch($scope.data_option.selectedOption.value){
 				case "village":
 					$scope.send_scope.distance = math.actualDistance(
@@ -130,29 +150,27 @@ define("robotTW2/controllers/SpyController", [
 								'y' : $scope.item.y
 							}
 					);
-					updateValues()
 					break;
 				case "province_enemy":
 					provinceService.getProvinceForVillageForEnemy($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValues()
 					break;
 				case "province_barbarian":
 					provinceService.getProvinceForVillageForBarbarian($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValues()
 					break;
 				case "province_neutral":
 					provinceService.getProvinceForVillageForNeutral($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValues()
+
 					break;
+					updateValues()
 				}
 			}
 		}
