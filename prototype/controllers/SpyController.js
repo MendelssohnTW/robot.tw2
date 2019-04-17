@@ -46,9 +46,9 @@ define("robotTW2/controllers/SpyController", [
 		$scope.item.type = undefined
 		$scope.text_put = $scope.text_data_target
 		$scope.text_put_province = $scope.text_target_village
-		$scope.province_name = ""
-			var self = this
-			, update = function(){
+		$scope.province_name = "";
+		var self = this
+		, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
 				$scope.local_out_villages.push(
 						{
@@ -64,9 +64,10 @@ define("robotTW2/controllers/SpyController", [
 			if(document.getElementById("input-hour-interval")){
 				document.getElementById("input-hour-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
 			}
+			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
-		, updateValues = function(){
+		, updateValues = function(callback){
 			if(Object.keys($scope.send_scope).length){
 				let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
 				let get_data = $("#input-date").val();
@@ -97,25 +98,11 @@ define("robotTW2/controllers/SpyController", [
 				}
 				$scope.recalcScrollbar()
 			}
+			if(typeof(callback)=="function"){
+				callback()
+			}
 
 		}
-//		, updateValuesSource = function(){
-//		if(Object.keys($scope.villages_for_sent).length){
-//		let get_data = $("#input-date-source").val();
-//		let get_time = $("#input-time-source").val();
-//		let get_ms = $("#input-ms-source").val();
-//		if (get_time.length <= 5){
-//		get_time = get_time + ":00"; 
-//		}
-//		if (get_data != undefined && get_time != undefined){
-//		$scope.send_scope.milisegundos_duracao = 0;
-//		$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-//		$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
-//		$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
-//		}
-//		$scope.recalcScrollbar()
-//		}
-//		}
 		, updateTarget = function(){
 			if($scope.item.type == "character"){
 				$scope.download = true;
@@ -124,7 +111,7 @@ define("robotTW2/controllers/SpyController", [
 					switch($scope.data_option.selectedOption.value){
 
 					case "province_member":
-						provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
+						provinceService.getProvinceForPlayer($scope.item, function(provinces){
 							$scope.local_data_province = provinces;
 							$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
 							$scope.data_province = services.MainService.getSelects($scope.local_data_province)
@@ -179,18 +166,6 @@ define("robotTW2/controllers/SpyController", [
 
 			updateValues()
 		}
-//		, updateTargetPlayer = function(){
-//			if(!$scope.item_player) {return}
-//			if($scope.select_all_province){
-//				$scope.villages_for_sent = $scope.item_player.villages
-//			} else {
-//				if($scope.select_all_village){
-//					$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
-//				} else {
-//					$scope.villages_for_sent = [$scope.data_province_village.selectedOption];
-//				}
-//			}
-//		}
 		, updateEnter = function(item, element){
 			$scope.item = item
 			if(item.displayedName){
@@ -237,25 +212,6 @@ define("robotTW2/controllers/SpyController", [
 			updateTarget()
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
-//		, updateEnterPlayer = function(item, element){
-//		$scope.item_player = item
-//		$scope.item = undefined
-//		element[0].firstElementChild.value = item.name
-//		$scope.download = true;
-//		getProfile(item.id, function(data){
-//		angular.extend($scope.item_player, data)
-//		provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
-//		$scope.local_data_province = provinces;
-//		$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
-//		$scope.data_province = services.MainService.getSelects($scope.local_data_province)
-//		$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
-//		$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
-//		updateTargetPlayer()
-//		$scope.download = false;
-//		if (!$scope.$$phase) {$scope.$apply()}
-//		})
-//		})
-//		}
 		, getProfile = function (character_id, callbackgetProfile){
 			services.socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
 				'character_id': character_id
@@ -263,139 +219,8 @@ define("robotTW2/controllers/SpyController", [
 				callbackgetProfile(data)
 			});
 		}
-
-		$scope.isRunning = services.SpyService.isRunning();
-
-		$scope.local_data_villages = services.VillService.getLocalVillages("spy", "label");
-		$scope.local_data_province = []
-
-		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
-
-		$scope.autoCompleteKey = function(event){
-			let obj_autocomplete = {
-					'type'					: ['character', 'village'],
-					'placeholder'			: $scope.SEARCH_MAP,
-					'onEnter'				: updateEnter,
-					'exclude'				: null,
-					"inputValueReadOnly" 	: "",
-					"keepSelected"			: false
-			}
-
-			let object_scope = {
-					"element" 		: $($("#autocomplete_spy")[0]),
-					"id" 			: "autocomplete_spy",
-					"autoComplete" 	: obj_autocomplete
-			}
-			autocomplete(object_scope, event, $scope.inputValueSpy);
-		}
-
-//		$scope.autoCompleteKeyPlayer = function(event){
-//		let obj_autocomplete = {
-//		'type'					: 'character',
-//		'placeholder'			: $scope.SEARCH_MAP,
-//		'onEnter'				: updateEnterPlayer,
-//		'exclude'				: null,
-//		"inputValueReadOnly" 	: "",
-//		"keepSelected"			: false
-//		}
-
-//		let object_scope = {
-//		"element" 		: $($("#autocomplete_spy_player")[0]),
-//		"id" 			: "autocomplete_spy_player",
-//		"autoComplete" 	: obj_autocomplete
-//		}
-
-//		if (!$scope.$$phase) {$scope.$apply()}
-//		autocomplete(object_scope, event, $scope.inputValuePlayer);
-//		}
-
-		$scope.getLabelStart = function(param){
-			let vid = param.start_village;
-			if(!vid){return}
-			return $scope.local_data_villages.find(f=>f.id==vid).label
-		}
-
-		$scope.getLabelTarget = function(param){
-			let vid = param.target_village;
-			if(!vid || !$scope.local_out_villages.find(f=>f.id==vid)){return}
-			return $scope.local_out_villages.find(f=>f.id==vid).label
-		}
-
-		$scope.getClass = function(type){
-			var className = "";
-			switch (type) {
-			case "units": 
-				className = "icon-34x34-units";
-				break;
-			default: 
-				className = "icon-34x34-village";
-			break;
-			}
-			return className
-		}
-
-		$scope.getHoraSend = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataSend = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "dd/MM/yyyy");
-		}
-
-		$scope.getHoraAlvo = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataAlvo = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
-		}
-
-		$scope.getTimeRestSend = function(param){
-			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
-			return helper.readableMilliseconds(difTime)
-		}
-
-		$scope.getTimeRest = function(){
-			return $scope.data_spy.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_spy.complete - time.convertedTime()) : 0;
-		}
-
-		$scope.clear_spy = function(){
-			services.SpyService.removeAll();
-		}
-
-		$scope.menu = function () {
-			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
-		}
-
-		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
-
-		$scope.blur = function(){
-			var t = $("#input-hour-interval").val();
-			if(t.length <= 5) {
-				t = t + ":00"
-			}
-			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
-		}
-		$scope.jumpToVillage = function(vid){
-			if(!vid){return}
-			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
-			if(!village){return}
-			services.villageService.setSelectedVillage(village.getId())
-			services.mapService.jumpToVillage(village.getX(), village.getY());
-			$scope.closeWindow();
-		}
-
-		$scope.jumpOutVillage = function(vid){
-			if(!vid){return}
-			let v = $scope.local_out_villages.find(f=>f.id==vid);
-			if(!v){return}
-			services.mapService.jumpToVillage(v.x, v.y);
-			$scope.closeWindow();
-		}
-
-		$scope.sendAttackSpyProvince = function(opt){
-			if(!$scope.item_player && !opt){return}
-			updateValues()
+		, sendAttackSpyPlayer = function(opt){
+			if(!$scope.item && !opt){return}
 			if($scope.villages_for_sent.length){
 				var list_proc = [];
 				var villages = services.modelDataService.getSelectedCharacter().getVillages();
@@ -403,10 +228,9 @@ define("robotTW2/controllers/SpyController", [
 					let target = $scope.villages_for_sent[elem]
 					, list_dist_vills = Object.keys(villages).map(function(vill){
 						let village = villages[vill]
-//						let village = services.modelDataService.getSelectedCharacter().getVillage($scope.local_data_villages[vill].id)
-						let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
-						let order = undefined;
-						let sabotage = false;
+						, preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+						, order = undefined
+						, sabotage = false;
 						if(preceptory)
 							order = preceptory.selectedOrder;
 
@@ -506,36 +330,126 @@ define("robotTW2/controllers/SpyController", [
 			}
 		}
 
+		$scope.isRunning = services.SpyService.isRunning();
+
+		$scope.local_data_villages = services.VillService.getLocalVillages("spy", "label");
+		$scope.local_data_province = []
+
+		$scope.village_selected = $scope.local_data_villages[Object.keys($scope.local_data_villages)[0]]
+
+		$scope.autoCompleteKey = function(event){
+			let obj_autocomplete = {
+					'type'					: ['character', 'village'],
+					'placeholder'			: $scope.SEARCH_MAP,
+					'onEnter'				: updateEnter,
+					'exclude'				: null,
+					"inputValueReadOnly" 	: "",
+					"keepSelected"			: false
+			}
+
+			let object_scope = {
+					"element" 		: $($("#autocomplete_spy")[0]),
+					"id" 			: "autocomplete_spy",
+					"autoComplete" 	: obj_autocomplete
+			}
+			autocomplete(object_scope, event, $scope.inputValueSpy);
+		}
+
+		$scope.getLabelStart = function(param){
+			let vid = param.start_village;
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
+		}
+
+		$scope.getLabelTarget = function(param){
+			let vid = param.target_village;
+			if(!vid || !$scope.local_out_villages.find(f=>f.id==vid)){return}
+			return $scope.local_out_villages.find(f=>f.id==vid).label
+		}
+
+		$scope.getClass = function(type){
+			var className = "";
+			switch (type) {
+			case "units": 
+				className = "icon-34x34-units";
+				break;
+			default: 
+				className = "icon-34x34-village";
+			break;
+			}
+			return className
+		}
+
+		$scope.getHoraSend = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "HH:mm:ss.sss");
+		}
+
+		$scope.getDataSend = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida - param.duration), "dd/MM/yyyy");
+		}
+
+		$scope.getHoraAlvo = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
+		}
+
+		$scope.getDataAlvo = function(param){
+			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
+		}
+
+		$scope.getTimeRestSend = function(param){
+			var difTime = param.data_escolhida - time.convertedTime() - param.duration; 
+			return helper.readableMilliseconds(difTime)
+		}
+
+		$scope.getTimeRest = function(){
+			return $scope.data_spy.complete > time.convertedTime() ? helper.readableMilliseconds($scope.data_spy.complete - time.convertedTime()) : 0;
+		}
+
+		$scope.clear_spy = function(){
+			services.SpyService.removeAll();
+		}
+
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
+
+		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
+
+		$scope.blur = function(){
+			var t = $("#input-hour-interval").val();
+			if(t.length <= 5) {
+				t = t + ":00"
+			}
+			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
+		}
+		$scope.jumpToVillage = function(vid){
+			if(!vid){return}
+			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
+			if(!village){return}
+			services.villageService.setSelectedVillage(village.getId())
+			services.mapService.jumpToVillage(village.getX(), village.getY());
+			$scope.closeWindow();
+		}
+
+		$scope.jumpOutVillage = function(vid){
+			if(!vid){return}
+			let v = $scope.local_out_villages.find(f=>f.id==vid);
+			if(!v){return}
+			services.mapService.jumpToVillage(v.x, v.y);
+			$scope.closeWindow();
+		}
+
 		$scope.sendAttackSpy = function(){
 			if(!$scope.item){return}
 			if($scope.data_option.selectedOption.value == "village"){
-				updateValues()
-				services.SpyService.sendCommandAttackSpy($scope.send_scope);
+				updateValues(function(){
+					services.SpyService.sendCommandAttackSpy($scope.send_scope);	
+				})
 			} else {
-				$scope.data_qtd_source = $scope.data_qtd
-				$scope.sendAttackSpyProvince(true)
+				sendAttackSpyPlayer(true)
 			}
 			$scope.send_scope = {}
-			$scope.recalcScrollbar();
 		}
-
-//		$scope.toggleOption = function(){
-//			if($scope.select_all_province){
-//				$scope.select_all_province = false
-//			} else {
-//				$scope.select_all_province = true
-//			}
-//			updateTargetPlayer()
-//		}
-
-//		$scope.toggleOptionVillage = function(){
-//			if($scope.select_all_village){
-//				$scope.select_all_village = false
-//			} else {
-//				$scope.select_all_village = true
-//			}
-//			updateTargetPlayer()
-//		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
@@ -573,21 +487,16 @@ define("robotTW2/controllers/SpyController", [
 			updateTarget()
 		}, true)
 
-//		$scope.$watch("data_province_village", function(){
-//			if(!$scope.data_province_village){return}
-//			updateTargetPlayer()
-//		}, true)
-
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
 			var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
 			let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
-			let order = undefined;
+			, order = undefined;
 			if(preceptory)
 				order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
-			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
-			let lts = [];
+			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies()
+			, lts = [];
 			for (let i = 0; i < qtd_spy; i++){
 				lts.push(i + 1)
 			}
@@ -626,16 +535,6 @@ define("robotTW2/controllers/SpyController", [
 					"name" : services.$filter("i18n")("province_neutral", services.$rootScope.loc.ale, "spy"),
 					"value" : "province_neutral"
 				}
-				,
-				{
-					"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_member"
-				}
-				,
-				{
-					"name" : services.$filter("i18n")("all_member", services.$rootScope.loc.ale, "spy"),
-					"value" : "all_member"
-				}
 				]
 			)
 
@@ -658,14 +557,6 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_option", function() {
 			if(!$scope.data_option){return}
-//			if($scope.data_option.selectedOption.value == "village"){
-//				$scope.text_put = $scope.text_data_target
-//				$scope.text_put_province = $scope.text_target_village
-//			} else {
-//				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-//				$scope.text_put = $scope.text_data_source
-//				$scope.text_put_province = services.$filter("i18n")("target", services.$rootScope.loc.ale, "spy") + " " + $scope.province_name
-//			}
 			updateTarget()
 		}, true);
 
