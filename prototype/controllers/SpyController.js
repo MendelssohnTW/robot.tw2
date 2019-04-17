@@ -100,21 +100,21 @@ define("robotTW2/controllers/SpyController", [
 
 		}
 //		, updateValuesSource = function(){
-//			if(Object.keys($scope.villages_for_sent).length){
-//				let get_data = $("#input-date-source").val();
-//				let get_time = $("#input-time-source").val();
-//				let get_ms = $("#input-ms-source").val();
-//				if (get_time.length <= 5){
-//					get_time = get_time + ":00"; 
-//				}
-//				if (get_data != undefined && get_time != undefined){
-//					$scope.send_scope.milisegundos_duracao = 0;
-//					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-//					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
-//					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
-//				}
-//				$scope.recalcScrollbar()
-//			}
+//		if(Object.keys($scope.villages_for_sent).length){
+//		let get_data = $("#input-date-source").val();
+//		let get_time = $("#input-time-source").val();
+//		let get_ms = $("#input-ms-source").val();
+//		if (get_time.length <= 5){
+//		get_time = get_time + ":00"; 
+//		}
+//		if (get_data != undefined && get_time != undefined){
+//		$scope.send_scope.milisegundos_duracao = 0;
+//		$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+//		$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
+//		$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
+//		}
+//		$scope.recalcScrollbar()
+//		}
 //		}
 		, updateTarget = function(){
 			if($scope.item){
@@ -170,7 +170,11 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateEnter = function(item, element){
 			$scope.item = item
-			element[0].firstElementChild.value = item.displayedName
+			if(item.displayedName){
+				element[0].firstElementChild.value = item.displayedName
+			} else {
+				element[0].firstElementChild.value = item.name
+			}
 			if($scope.item.type == "character"){
 				$scope.data_option = services.MainService.getSelects([
 					{
@@ -211,23 +215,23 @@ define("robotTW2/controllers/SpyController", [
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
 //		, updateEnterPlayer = function(item, element){
-//			$scope.item_player = item
-//			$scope.item = undefined
-//			element[0].firstElementChild.value = item.name
-//			$scope.download = true;
-//			getProfile(item.id, function(data){
-//				angular.extend($scope.item_player, data)
-//				provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
-//					$scope.local_data_province = provinces;
-//					$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
-//					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
-//					$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
-//					$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
-//					updateTargetPlayer()
-//					$scope.download = false;
-//					if (!$scope.$$phase) {$scope.$apply()}
-//				})
-//			})
+//		$scope.item_player = item
+//		$scope.item = undefined
+//		element[0].firstElementChild.value = item.name
+//		$scope.download = true;
+//		getProfile(item.id, function(data){
+//		angular.extend($scope.item_player, data)
+//		provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
+//		$scope.local_data_province = provinces;
+//		$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
+//		$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+//		$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
+//		$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
+//		updateTargetPlayer()
+//		$scope.download = false;
+//		if (!$scope.$$phase) {$scope.$apply()}
+//		})
+//		})
 //		}
 		, getProfile = function (character_id, callbackgetProfile){
 			services.socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
@@ -263,23 +267,23 @@ define("robotTW2/controllers/SpyController", [
 		}
 
 //		$scope.autoCompleteKeyPlayer = function(event){
-//			let obj_autocomplete = {
-//					'type'					: 'character',
-//					'placeholder'			: $scope.SEARCH_MAP,
-//					'onEnter'				: updateEnterPlayer,
-//					'exclude'				: null,
-//					"inputValueReadOnly" 	: "",
-//					"keepSelected"			: false
-//			}
-//
-//			let object_scope = {
-//					"element" 		: $($("#autocomplete_spy_player")[0]),
-//					"id" 			: "autocomplete_spy_player",
-//					"autoComplete" 	: obj_autocomplete
-//			}
-//
-//			if (!$scope.$$phase) {$scope.$apply()}
-//			autocomplete(object_scope, event, $scope.inputValuePlayer);
+//		let obj_autocomplete = {
+//		'type'					: 'character',
+//		'placeholder'			: $scope.SEARCH_MAP,
+//		'onEnter'				: updateEnterPlayer,
+//		'exclude'				: null,
+//		"inputValueReadOnly" 	: "",
+//		"keepSelected"			: false
+//		}
+
+//		let object_scope = {
+//		"element" 		: $($("#autocomplete_spy_player")[0]),
+//		"id" 			: "autocomplete_spy_player",
+//		"autoComplete" 	: obj_autocomplete
+//		}
+
+//		if (!$scope.$$phase) {$scope.$apply()}
+//		autocomplete(object_scope, event, $scope.inputValuePlayer);
 //		}
 
 		$scope.getLabelStart = function(param){
