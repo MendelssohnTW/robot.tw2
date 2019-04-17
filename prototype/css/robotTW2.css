@@ -185,33 +185,16 @@
     heigth: 100vh;
 }
 
-.robotTW2 .win-main {
-	position: relative;
-}
-
 .robotTW2 .twx-section {
     margin: 0 3px 0 3px;
-}
-
-.robotTW2 .defense.win-main {
-    height: 450px;
 }
 
 .robotTW2 .defense.box-paper {
     margin: 0 2px;
 }
 
-.robotTW2 .attack.win-main {
-    height: 670px;
-}
-
 .robotTW2 .attack.box-paper {
     margin: 0 2px;
-}
-
-.robotTW2 .headquarter.win-main {
-    position: relative;
-    height: 440px;
 }
 
 .robotTW2 .headquarter.box-paper {
@@ -222,16 +205,8 @@
     margin: 0 2px;
 }
 
-.robotTW2 .farm.win-main {
-    height: 670px;
-}
-
 .robotTW2 .spy.box-paper {
     margin: 0 2px;
-}
-
-.robotTW2 .log.win-main {
-    height: 450px;
 }
 
 .robotTW2 .log.box-paper {
