@@ -54,7 +54,7 @@
 					<tbody>
 						<tr>
 							<th class="cell-center selected" colspan="3">{{text_put_province}}</th>
-							<th class="cell-center selected" colspan="3">{{text_source}}</th>
+							<th ng-if="data_option.selectedOption.value == 'village' || data_option.selectedOption.value == 'province_member'" class="cell-center selected" colspan="3">{{text_source}}</th>
 							<th class="cell-center selected">{{text_put}}</th>
 						</tr>
 						<tr>
@@ -86,10 +86,10 @@
 								ng-model="data_select.selectedOption"></select></td>
 
 
-							<td ng-if="data_option.selectedOption.value != 'village'"><div
+							<td ng-if="data_option.selectedOption.value == 'province_member'"><div
 									class="icon icon-34x34-province"
 									ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div></td>
-							<td ng-if="data_option.selectedOption.value != 'village'"
+							<td ng-if="data_option.selectedOption.value == 'province_member'"
 								class="cell-center"><label for="check_select"
 								class="with-margin ng-binding" style="top: 21px; left: 100px;">{{text_select_all}}</label>
 								<div id="check_select" class="position-absolute"
