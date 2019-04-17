@@ -54,12 +54,12 @@
 					<tbody>
 						<tr>
 							<th class="cell-center selected" colspan="3">{{text_put_province}}</th>
-							<th ng-if="data_option.selectedOption.value == 'village'"
-								class="cell-center selected" colspan="3">{{text_source}}</th>
+							<th class="cell-center selected" colspan="3">{{text_source}}</th>
 							<th class="cell-center selected">{{text_put}}</th>
 						</tr>
 						<tr>
-							<td><div class="icon" ng-class="{'icon-34x34-switch': item == undefined; 'icon-34x34-village': item.type == 'village'; 'icon-34x34-character': item.type == 'character'"></div></td>
+							<td><div class="icon"
+									ng-class="{'icon-34x34-switch': item == undefined; 'icon-34x34-village': item.type == 'village'; 'icon-34x34-character': item.type == 'character'"></div></td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
@@ -84,6 +84,25 @@
 								id="select_order" class="select-handler"
 								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 								ng-model="data_select.selectedOption"></select></td>
+
+
+							<td ng-if="data_option.selectedOption.value != 'village'"><div
+									class="icon icon-34x34-province"
+									ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div></td>
+							<td ng-if="data_option.selectedOption.value != 'village'"
+								class="cell-center"><label for="check_select"
+								class="with-margin ng-binding" style="top: 21px; left: 100px;">{{text_select_all}}</label>
+								<div id="check_select" class="position-absolute"
+									ng-class="{'btn-green icon-26x26-check-positive': select_all_province == true, 'btn-red icon-26x26-check-negative': select_all_province == false}"
+									ng-click="toggleOption()" style="margin-bottom: 5px;"></div>
+								<div>
+									<select id="select_province" class="select-handler"
+										ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
+										ng-model="data_province.selectedOption"></select>
+								</div></td>
+								
+								
+
 							<td><div>
 									<select id="select_qtd" class="select-handler"
 										ng-options="item for item in data_qtd.availableOptions"
