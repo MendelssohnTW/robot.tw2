@@ -59,10 +59,6 @@
 							<th class="cell-center selected">{{text_put}}</th>
 						</tr>
 						<tr>
-							<td colspan="2"><select id="select_option"
-								class="select-handler"
-								ng-options="item as item.name for item in data_option.availableOptions track by item.name"
-								ng-model="data_option.selectedOption"></select></td>
 							<td><div class="icon"
 									ng-class="{'icon-34x34-switch': !item; 'icon-34x34-village': item.type =='village' || !item; icon-34x34-character': item.type =='character'"></div></td>
 							<td>
@@ -80,6 +76,10 @@
 										placeholder="{{SEARCH_MAP}}" style="width: 100%;">
 								</div>
 							</td>
+							<td colspan="2"><select id="select_option"
+                                class="select-handler"
+                                ng-options="item as item.name for item in data_option.availableOptions track by item.name"
+                                ng-model="data_option.selectedOption"></select></td>
 							<td ng-if="data_option.selectedOption.value == 'village'"><div
 									class="icon icon-34x34-village"></div></td>
 							<td ng-if="data_option.selectedOption.value == 'village'"><select
