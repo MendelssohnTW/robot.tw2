@@ -61,7 +61,7 @@
 							<td><select id="select_order" class="select-handler"
 								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 								ng-model="data_select.selectedOption"></select></td>
-							<td><div class="icon icon-34x34-village"></div></td>
+							<td><div class="icon" ng-class="{'icon-34x34-switch': !item; 'icon-34x34-village': item=='village' || !item; icon-34x34-character': item=='character'"></div></td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
