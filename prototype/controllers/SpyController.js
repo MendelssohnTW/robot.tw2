@@ -436,13 +436,13 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.sendAttackSpy = function(){
 			if(!$scope.item){return}
-			if($scope.data_option.selectedOption.value == "village"){
-				updateValues(function(){
+			updateValues(function(){
+				if($scope.data_option.selectedOption.value == "village"){
 					services.SpyService.sendCommandAttackSpy($scope.send_scope);	
-				})
-			} else {
-				sendAttackSpyPlayer(true)
-			}
+				} else {
+					sendAttackSpyPlayer(true)
+				}
+			})
 			$scope.send_scope = {}
 		}
 
