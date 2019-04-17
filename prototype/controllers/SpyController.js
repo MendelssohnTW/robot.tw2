@@ -42,7 +42,8 @@ define("robotTW2/controllers/SpyController", [
 		$scope.download = false;
 		$scope.select_all_province = false;
 		$scope.select_all_village = true;
-		$scope.item = undefined
+		$scope.item = {}
+		$scope.item.type = undefined
 		$scope.text_put = $scope.text_data_target
 		$scope.text_put_province = $scope.text_target_village
 		$scope.province_name = ""
