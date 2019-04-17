@@ -74,33 +74,47 @@ define("robotTW2/controllers/SpyController", [
 				if (get_time.length <= 5){
 					get_time = get_time + ":00"; 
 				}
-				if (get_data != undefined && get_time != undefined){
-					$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
-					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
-					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
+				if($scope.data_option.selectedOption.value != "village"){
+					if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
+						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+						$scope.send_scope.startId = $scope.data_select.selectedOption.id
+						$scope.send_scope.targetId = $scope.item.id
+						$scope.send_scope.targetVillage = $scope.item.name
+						$scope.send_scope.targetX = $scope.item.x
+						$scope.send_scope.targetY = $scope.item.y
+						$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
+					} else {
+						notify("date_error");
+					}
+				} else {
+					if (get_data != undefined && get_time != undefined){
+						$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
+						$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+						$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
+						$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
+					}
 				}
 				$scope.recalcScrollbar()
 			}
 
 		}
-		, updateValuesSource = function(){
-			if(Object.keys($scope.villages_for_sent).length){
-				let get_data = $("#input-date-source").val();
-				let get_time = $("#input-time-source").val();
-				let get_ms = $("#input-ms-source").val();
-				if (get_time.length <= 5){
-					get_time = get_time + ":00"; 
-				}
-				if (get_data != undefined && get_time != undefined){
-					$scope.send_scope.milisegundos_duracao = 0;
-					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
-					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
-				}
-				$scope.recalcScrollbar()
-			}
-		}
+//		, updateValuesSource = function(){
+//			if(Object.keys($scope.villages_for_sent).length){
+//				let get_data = $("#input-date-source").val();
+//				let get_time = $("#input-time-source").val();
+//				let get_ms = $("#input-ms-source").val();
+//				if (get_time.length <= 5){
+//					get_time = get_time + ":00"; 
+//				}
+//				if (get_data != undefined && get_time != undefined){
+//					$scope.send_scope.milisegundos_duracao = 0;
+//					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+//					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
+//					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
+//				}
+//				$scope.recalcScrollbar()
+//			}
+//		}
 		, updateTarget = function(){
 			if($scope.item){
 				switch($scope.data_option.selectedOption.value){
@@ -123,21 +137,21 @@ define("robotTW2/controllers/SpyController", [
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValuesSource()
+					updateValues()
 					break;
 				case "province_barbarian":
 					provinceService.getProvinceForVillageForBarbarian($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValuesSource()
+					updateValues()
 					break;
 				case "province_neutral":
 					provinceService.getProvinceForVillageForNeutral($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValuesSource()
+					updateValues()
 					break;
 				}
 			}
@@ -197,7 +211,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
-					'type'					: ['village', 'character'],
+					'type'					: ['character', 'village'],
 					'placeholder'			: $scope.SEARCH_MAP,
 					'onEnter'				: updateEnter,
 					'exclude'				: null,
@@ -319,7 +333,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.sendAttackSpyProvince = function(opt){
 			if(!$scope.item_player && !opt){return}
-			updateValuesSource()
+			updateValues()
 			if($scope.villages_for_sent.length){
 				var list_proc = [];
 				var villages = services.modelDataService.getSelectedCharacter().getVillages();
@@ -434,19 +448,7 @@ define("robotTW2/controllers/SpyController", [
 			if(!$scope.item){return}
 			if($scope.data_option.selectedOption.value == "village"){
 				updateValues()
-				if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
-					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-					$scope.send_scope.startId = $scope.data_select.selectedOption.id
-					$scope.send_scope.targetId = $scope.item.id
-					$scope.send_scope.targetVillage = $scope.item.name
-					$scope.send_scope.targetX = $scope.item.x
-					$scope.send_scope.targetY = $scope.item.y
-					$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
-
-					services.SpyService.sendCommandAttackSpy($scope.send_scope);
-				} else {
-					notify("date_error");
-				}
+				services.SpyService.sendCommandAttackSpy($scope.send_scope);
 			} else {
 				$scope.data_qtd_source = $scope.data_qtd
 				$scope.sendAttackSpyProvince(true)
