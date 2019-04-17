@@ -119,7 +119,6 @@ define("robotTW2/controllers/SpyController", [
 			if($scope.item){
 				switch($scope.data_option.selectedOption.value){
 				case "village":
-
 					$scope.send_scope.distance = math.actualDistance(
 							{
 								'x' : $scope.data_select.selectedOption.x,
@@ -170,30 +169,65 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateEnter = function(item, element){
 			$scope.item = item
-			$scope.item_player = undefined
 			element[0].firstElementChild.value = item.displayedName
+			if($scope.item.type == "character"){
+				$scope.data_option = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_member"
+					}
+					,
+					{
+						"name" : services.$filter("i18n")("all_member", services.$rootScope.loc.ale, "spy"),
+						"value" : "all_member"
+					}
+					]
+				) 
+			} else if($scope.item.type == "village"){
+				$scope.data_option = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("village", services.$rootScope.loc.ale, "spy"),
+						"value" : "village"
+					},
+					{
+						"name" : services.$filter("i18n")("province_enemy", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_enemy"
+
+					},
+					{
+						"name" : services.$filter("i18n")("province_barbarian", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_barbarian"
+
+					},
+					{
+						"name" : services.$filter("i18n")("province_neutral", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_neutral"
+					}
+					]
+				)
+			}
 			updateTarget()
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
-		, updateEnterPlayer = function(item, element){
-			$scope.item_player = item
-			$scope.item = undefined
-			element[0].firstElementChild.value = item.name
-			$scope.download = true;
-			getProfile(item.id, function(data){
-				angular.extend($scope.item_player, data)
-				provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
-					$scope.local_data_province = provinces;
-					$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
-					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
-					$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
-					$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
-					updateTargetPlayer()
-					$scope.download = false;
-					if (!$scope.$$phase) {$scope.$apply()}
-				})
-			})
-		}
+//		, updateEnterPlayer = function(item, element){
+//			$scope.item_player = item
+//			$scope.item = undefined
+//			element[0].firstElementChild.value = item.name
+//			$scope.download = true;
+//			getProfile(item.id, function(data){
+//				angular.extend($scope.item_player, data)
+//				provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
+//					$scope.local_data_province = provinces;
+//					$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
+//					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+//					$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
+//					$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
+//					updateTargetPlayer()
+//					$scope.download = false;
+//					if (!$scope.$$phase) {$scope.$apply()}
+//				})
+//			})
+//		}
 		, getProfile = function (character_id, callbackgetProfile){
 			services.socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
 				'character_id': character_id
@@ -227,25 +261,25 @@ define("robotTW2/controllers/SpyController", [
 			autocomplete(object_scope, event, $scope.inputValueSpy);
 		}
 
-		$scope.autoCompleteKeyPlayer = function(event){
-			let obj_autocomplete = {
-					'type'					: 'character',
-					'placeholder'			: $scope.SEARCH_MAP,
-					'onEnter'				: updateEnterPlayer,
-					'exclude'				: null,
-					"inputValueReadOnly" 	: "",
-					"keepSelected"			: false
-			}
-
-			let object_scope = {
-					"element" 		: $($("#autocomplete_spy_player")[0]),
-					"id" 			: "autocomplete_spy_player",
-					"autoComplete" 	: obj_autocomplete
-			}
-
-			if (!$scope.$$phase) {$scope.$apply()}
-			autocomplete(object_scope, event, $scope.inputValuePlayer);
-		}
+//		$scope.autoCompleteKeyPlayer = function(event){
+//			let obj_autocomplete = {
+//					'type'					: 'character',
+//					'placeholder'			: $scope.SEARCH_MAP,
+//					'onEnter'				: updateEnterPlayer,
+//					'exclude'				: null,
+//					"inputValueReadOnly" 	: "",
+//					"keepSelected"			: false
+//			}
+//
+//			let object_scope = {
+//					"element" 		: $($("#autocomplete_spy_player")[0]),
+//					"id" 			: "autocomplete_spy_player",
+//					"autoComplete" 	: obj_autocomplete
+//			}
+//
+//			if (!$scope.$$phase) {$scope.$apply()}
+//			autocomplete(object_scope, event, $scope.inputValuePlayer);
+//		}
 
 		$scope.getLabelStart = function(param){
 			let vid = param.start_village;
