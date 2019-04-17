@@ -40,8 +40,8 @@
 					class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
 					id="preset-list">
 					<colgroup>
-						<col width="32px">
-						<col width="*">
+						<col ng-show="data_option.selectedOption.value == 'village'" width="32px">
+						<col ng-show="data_option.selectedOption.value == 'village'" width="*">
 						<col width="32px">
 						<col width="*">
 						<col width="32px">
@@ -52,7 +52,7 @@
 					</colgroup>
 					<tbody>
 						<tr>
-							<th class="cell-center selected" colspan="2">{{text_source}}</th>
+							<th ng-show="data_option.selectedOption.value == 'village'" class="cell-center selected" colspan="2">{{text_source}}</th>
 							<th class="cell-center selected" colspan="4">{{text_put_province}}</th>
 							<th class="cell-center selected">{{text_put}}</th>
 						</tr>
@@ -61,7 +61,7 @@
 							<td ng-show="data_option.selectedOption.value == 'village'"><select id="select_order" class="select-handler"
 								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
 								ng-model="data_select.selectedOption"></select></td>
-							<td><div class="icon" ng-class="{'icon-34x34-switch': !item; 'icon-34x34-village': item=='village' || !item; icon-34x34-character': item=='character'"></div></td>
+							<td><div class="icon" ng-class="{'icon-34x34-switch': !item; 'icon-34x34-village': item.type =='village' || !item; icon-34x34-character': item.type =='character'"></div></td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
