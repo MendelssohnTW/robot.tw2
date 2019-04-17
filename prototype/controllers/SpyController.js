@@ -119,17 +119,17 @@ define("robotTW2/controllers/SpyController", [
 		, updateTarget = function(){
 			if($scope.item.type == "character"){
 				$scope.download = true;
-				getProfile($scope.item.id, function(){
+				getProfile($scope.item.id, function(data){
 					angular.extend($scope.item, data)
+
+					switch($scope.data_option.selectedOption.value){
+
+					case "province_member":
+						break;
+					case "all_member":
+						break;
+					}
 				})
-
-				switch($scope.data_option.selectedOption.value){
-
-				case "province_member":
-					break;
-				case "all_member":
-					break;
-				}
 
 			}
 			else if($scope.item.type == "village"){
@@ -166,7 +166,7 @@ define("robotTW2/controllers/SpyController", [
 					break;
 				}
 			}
-			
+
 			updateValues()
 		}
 		, updateTargetPlayer = function(){
