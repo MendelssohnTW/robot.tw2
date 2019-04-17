@@ -115,11 +115,8 @@ define("robotTW2/controllers/SpyController", [
 							$scope.local_data_province = provinces;
 							$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
 							$scope.data_province = services.MainService.getSelects($scope.local_data_province)
-							$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
-							$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
 							$scope.download = false;
 						})
-
 						break;
 					case "all_member":
 						$scope.download = false;
@@ -127,7 +124,6 @@ define("robotTW2/controllers/SpyController", [
 						break;
 					}
 				})
-
 			}
 			else if($scope.item.type == "village"){
 				switch($scope.data_option.selectedOption.value){
@@ -482,8 +478,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_province", function(){
 			if(!$scope.data_province){return}
-			$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
-			updateTarget()
+			$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
 		}, true)
 
 		$scope.$watch("data_select", function(){
