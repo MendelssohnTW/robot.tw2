@@ -52,7 +52,7 @@
 					<tbody>
 						<tr>
 							<td><div class="icon"
-									ng-class="{'icon-34x34-switch': item.type == undefined}"></div></td>
+									ng-class="{'icon-34x34-switch': item.type == undefined; 'icon-34x34-village': item.type == 'village'; 'icon-34x34-character': item.type == 'character'}"></div></td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
@@ -72,16 +72,12 @@
 								ng-options="item as item.name for item in data_option.availableOptions track by item.name"
 								ng-model="data_option.selectedOption"></select></td>
 							<td>
-
 								<div ng-if="data_option.selectedOption.value == 'village'"
 									class="icon icon-34x34-village"></div>
-
-
 								<div
 									ng-if="data_option.selectedOption.value == 'province_member'"
 									class="icon icon-34x34-province"
 									ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div>
-
 							</td>
 							<td><select
 								ng-if="data_option.selectedOption.value == 'village'"
