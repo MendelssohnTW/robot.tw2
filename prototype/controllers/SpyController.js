@@ -119,22 +119,17 @@ define("robotTW2/controllers/SpyController", [
 		, updateTarget = function(){
 			if($scope.item.type == "character"){
 				$scope.download = true;
-				services.socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
-					'character_id': $scope.item.id
-				}, function(data){
-					$scope.download = false;
-					if (!data) {
-						return;
-					}
-					switch($scope.data_option.selectedOption.value){
+				getProfile($scope.item.id, function(){
+					angular.extend($scope.item, data)
+				})
 
-					case "province_member":
-						break;
-					case "all_member":
-						break;
-					}
+				switch($scope.data_option.selectedOption.value){
 
-				});
+				case "province_member":
+					break;
+				case "all_member":
+					break;
+				}
 
 			}
 			else if($scope.item.type == "village"){
@@ -168,11 +163,11 @@ define("robotTW2/controllers/SpyController", [
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-
 					break;
-					updateValues()
 				}
 			}
+			
+			updateValues()
 		}
 		, updateTargetPlayer = function(){
 			if(!$scope.item_player) {return}
