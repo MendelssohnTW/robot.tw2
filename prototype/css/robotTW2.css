@@ -181,6 +181,10 @@
 	padding-left: 30px;
 }
 
+.robotTW2 .content-settings {
+    heigth: 100vh;
+}
+
 .robotTW2 .win-main {
 	position: relative;
 }
@@ -220,10 +224,6 @@
 
 .robotTW2 .farm.win-main {
     height: 670px;
-}
-
-.robotTW2 .spy.win-main {
-    height: 485px;
 }
 
 .robotTW2 .spy.box-paper {
