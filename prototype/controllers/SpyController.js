@@ -76,22 +76,21 @@ define("robotTW2/controllers/SpyController", [
 				if (get_time.length <= 5){
 					get_time = get_time + ":00"; 
 				}
-				if($scope.data_option.selectedOption.value != "village"){
-					if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
-						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-						$scope.send_scope.startId = $scope.data_select.selectedOption.id
-						$scope.send_scope.targetId = $scope.item.id
-						$scope.send_scope.targetVillage = $scope.item.name
-						$scope.send_scope.targetX = $scope.item.x
-						$scope.send_scope.targetY = $scope.item.y
-						$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
-					} else {
-						notify("date_error");
+				if($scope.data_option.selectedOption.value == "village"){
+					if ($scope.send_scope.tempo_escolhido < time.convertedTime() + $scope.send_scope.milisegundos_duracao){
+						$scope.send_scope.tempo_escolhido = time.convertedTime() + 5000
 					}
+					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+					$scope.send_scope.startId = $scope.data_select.selectedOption.id
+					$scope.send_scope.targetId = $scope.item.id
+					$scope.send_scope.targetVillage = $scope.item.name
+					$scope.send_scope.targetX = $scope.item.x
+					$scope.send_scope.targetY = $scope.item.y
+					$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
 				} else {
 					if (get_data != undefined && get_time != undefined){
 						$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
-						$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+						$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + 5000)
 						$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
 						$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 					}
