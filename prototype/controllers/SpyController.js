@@ -327,7 +327,7 @@ define("robotTW2/controllers/SpyController", [
 			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
 			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
 
-			if($scope.data_option.selectedOption == "village"){
+			if($scope.data_option && $scope.data_option.selectedOption == "village"){
 				var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
 				services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
 				let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
