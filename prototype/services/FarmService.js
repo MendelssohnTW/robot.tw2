@@ -65,7 +65,7 @@ define("robotTW2/services/FarmService", [
 			return Math.trunc((journey_time / 1000 / travelTime)) || 0;
 		}
 		, get_time = function get_time(villageId, bb, units) {
-			var village = modelDataService.getVillage(village_id)
+			var village = modelDataService.getVillage(villageId)
 			, distance =  math.actualDistance(village.getPosition(), {
 				'x'			: bb.x,
 				'y'			: bb.y
