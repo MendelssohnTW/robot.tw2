@@ -54,7 +54,6 @@ define("robotTW2/services/FarmService", [
 		, listener_report
 		, get_dist = function get_dist(villageId, journey_time, units) {
 			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
-			, units = units
 			, army = {
 				'officers'	: {},
 				"units"		: units
@@ -65,9 +64,12 @@ define("robotTW2/services/FarmService", [
 
 			return Math.trunc((journey_time / 1000 / travelTime)) || 0;
 		}
-		, get_time = function get_time(villageId, distance, units) {
-			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
-			, units = units
+		, get_time = function get_time(villageId, bb, units) {
+			var village = modelDataService.getVillage(village_id)
+			, distance =  math.actualDistance(village.getPosition(), {
+				'x'			: bb.x,
+				'y'			: bb.y
+			})
 			, army = {
 				'officers'	: {},
 				"units"		: units
@@ -76,7 +78,7 @@ define("robotTW2/services/FarmService", [
 				'barbarian'		: true
 			})
 
-			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
+			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000
 		}
 		, units_has_exception = function (units) {
 			return Object.keys(units).map(function(unit){
@@ -163,7 +165,6 @@ define("robotTW2/services/FarmService", [
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
 
-
 				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]["village"]) {countCommands[cicle_internal][cmd_preset.village_id]["village"] = []}
@@ -227,18 +228,18 @@ define("robotTW2/services/FarmService", [
 
 				villages = new_villages
 
-				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time)
-				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time)
+				villages = villages.filter(f => get_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time / 2)
+				villages = villages.filter(f => get_time(cmd_preset.village_id, f, cmd_preset.preset_units) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time / 2)
 				villages = villages.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 				villages = villages.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 
 				if(!data_farm.unit_direction){
 					villages.sort(function (a, b) {
-						return get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
+						return get_time(cmd_preset.village_id, a, cmd_preset.preset_units) - get_time(cmd_preset.village_id, b, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
 					});
 				} else {
 					villages.sort(function (a, b) {
-						return get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
+						return get_time(cmd_preset.village_id, b, cmd_preset.preset_units) - get_time(cmd_preset.village_id, a, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
 					});
 				}
 
@@ -336,14 +337,7 @@ define("robotTW2/services/FarmService", [
 				return true
 			}
 		}
-		, get_act_time = function (village_id, bb, units) {
-			var village = modelDataService.getVillage(village_id);
-			let dt =  math.actualDistance(village.getPosition(), {
-				'x'			: bb.x,
-				'y'			: bb.y
-			})
-			return get_time(village_id, dt, units)
-		}
+
 		, execute_presets = function(commands_for_presets, cicle){
 			return new Promise(function(resol, rejec){
 				var promise_preset = undefined

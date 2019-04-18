@@ -72,9 +72,12 @@ define("robotTW2/controllers/FarmController", [
 
 			return Math.trunc((journey_time / 1000 / travelTime) / 2) || 0;
 		}
-		, get_time = function get_time(villageId, distance, units) {
-			var village = services.modelDataService.getSelectedCharacter().getVillage(villageId)
-			, units = units
+		, get_time = function get_time(villageId, bb, units) {
+			var village = modelDataService.getVillage(village_id)
+			, distance =  math.actualDistance(village.getPosition(), {
+				'x'			: bb.x,
+				'y'			: bb.y
+			})
 			, army = {
 				'officers'	: {},
 				"units"		: units
@@ -83,7 +86,7 @@ define("robotTW2/controllers/FarmController", [
 				'barbarian'		: true
 			})
 
-			return services.armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
+			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000
 		}
 		, triggerUpdate = function triggerUpdate() {
 			presetIds = [];
@@ -108,9 +111,9 @@ define("robotTW2/controllers/FarmController", [
 			switch ($scope.toggle_option) {
 			case "check_one":
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance = get_dist($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
-				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
+//				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units)
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_distance = get_dist($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units) || 0
-				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units) || 0
+//				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].units) || 0
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].min_points_farm = $scope.data.selectedOption.min_points_farm
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_points_farm = $scope.data.selectedOption.max_points_farm
 				$scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.selectedOption.id].max_commands_farm = $scope.data.selectedOption.max_commands_farm
@@ -119,9 +122,9 @@ define("robotTW2/controllers/FarmController", [
 			case "check_all":
 				Object.keys($scope.data_villages.villages[$scope.village_selected.id].presets).map(function(elem){
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_distance = get_dist($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units)
-					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units)
+//					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units)
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].min_journey_distance = get_dist($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].min_journey_time, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units) || 0
-					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].min_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].min_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units) || 0
+//					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].min_journey_time = get_time($scope.village_selected.id, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].min_journey_distance, $scope.data_villages.villages[$scope.village_selected.id].presets[elem].units) || 0
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].min_points_farm = $scope.data.selectedOption.min_points_farm
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_points_farm = $scope.data.selectedOption.max_points_farm
 					$scope.data_villages.villages[$scope.village_selected.id].presets[elem].max_commands_farm = $scope.data.selectedOption.max_commands_farm
@@ -132,9 +135,9 @@ define("robotTW2/controllers/FarmController", [
 				Object.keys($scope.data_villages.villages).map(function(village){
 					Object.keys($scope.data_villages.villages[village].presets).map(function(elem){
 						$scope.data_villages.villages[village].presets[elem].max_journey_distance = get_dist(village, $scope.data_villages.villages[village].presets[elem].max_journey_time, $scope.data_villages.villages[village].presets[elem].units)
-						$scope.data_villages.villages[village].presets[elem].max_journey_time = get_time(village, $scope.data_villages.villages[village].presets[elem].max_journey_distance, $scope.data_villages.villages[village].presets[elem].units)
+//						$scope.data_villages.villages[village].presets[elem].max_journey_time = get_time(village, $scope.data_villages.villages[village].presets[elem].max_journey_distance, $scope.data_villages.villages[village].presets[elem].units)
 						$scope.data_villages.villages[village].presets[elem].min_journey_distance = get_dist(village, $scope.data_villages.villages[village].presets[elem].min_journey_time, $scope.data_villages.villages[village].presets[elem].units) || 0
-						$scope.data_villages.villages[village].presets[elem].min_journey_time = get_time(village, $scope.data_villages.villages[village].presets[elem].min_journey_distance, $scope.data_villages.villages[village].presets[elem].units) || 0
+//						$scope.data_villages.villages[village].presets[elem].min_journey_time = get_time(village, $scope.data_villages.villages[village].presets[elem].min_journey_distance, $scope.data_villages.villages[village].presets[elem].units) || 0
 						$scope.data_villages.villages[village].presets[elem].min_points_farm = $scope.data.selectedOption.min_points_farm
 						$scope.data_villages.villages[village].presets[elem].max_points_farm = $scope.data.selectedOption.max_points_farm
 						$scope.data_villages.villages[village].presets[elem].max_commands_farm = $scope.data.selectedOption.max_commands_farm
