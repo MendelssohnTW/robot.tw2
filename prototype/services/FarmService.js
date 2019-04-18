@@ -190,8 +190,8 @@ define("robotTW2/services/FarmService", [
 				, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 				, r = undefined
 				, villages = []
-				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units)
-				, data = mapData.loadTownData(Math.trunc(cmd_preset.x - (dist / 2)), Math.trunc(cmd_preset.y - (dist / 2)), Math.trunc(dist * 2), Math.trunc(dist * 2))
+				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units) / 2
+				, data = mapData.loadTownData(Math.trunc(cmd_preset.x - (dist / 2)), Math.trunc(cmd_preset.y - (dist / 2)), Math.trunc(dist * 1.42), Math.trunc(dist * 1.42))
 				, dt = data.map(function(elem){
 					return elem.data
 				}).filter(f=>f!=null)
@@ -398,7 +398,7 @@ define("robotTW2/services/FarmService", [
 						}
 
 						let presets_order = []
-						if(!data_farm.spedd_direction){
+						if(!data_farm.speed_direction){
 							presets_order = Object.keys(presets).map(function(preset){
 								return Object.keys(presets[preset].units).map(function(key){
 									return modelDataService.getGameData().data.units.map(function(obj, index, array){
