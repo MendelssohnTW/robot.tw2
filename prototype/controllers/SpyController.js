@@ -158,6 +158,7 @@ define("robotTW2/controllers/SpyController", [
 				}
 			}
 
+			update_select()
 			updateValues()
 		}
 		, updateEnter = function(item, element){
@@ -322,6 +323,65 @@ define("robotTW2/controllers/SpyController", [
 				notify("villages_error");
 			}
 		}
+		, update_select = function(){
+			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
+			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
+
+			if($scope.data_option.selectedOption == "village"){
+				var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+				services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
+				let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+				, order = undefined;
+				if(preceptory)
+					order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
+				let qtd_spy = village.getScoutingInfo().getNumAvailableSpies()
+				, lts = [];
+				for (let i = 0; i < qtd_spy; i++){
+					lts.push(i + 1)
+				}
+				$scope.data_qtd = services.MainService.getSelects(lts)
+				$scope.data_type = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+						"value" : "units"
+					},
+					{
+						"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+						"value" : "buildings"
+
+					}]
+				)
+				
+				if(order && order == "thieves"){
+					$scope.data_type.push( 
+							{
+								"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
+								"value" : "sabotage"
+							}
+					)
+				}
+
+				$scope.data_type_source = $scope.data_type;
+			} else {
+				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
+				$scope.data_type = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+						"value" : "units"
+					},
+					{
+						"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+						"value" : "buildings"
+
+					},
+					{
+						"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
+						"value" : "sabotage"
+					}]
+				)
+			}
+			updateValues();
+		}
 
 		$scope.isRunning = services.SpyService.isRunning();
 
@@ -481,74 +541,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
-			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
-			let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
-			, order = undefined;
-			if(preceptory)
-				order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
-			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies()
-			, lts = [];
-			for (let i = 0; i < qtd_spy; i++){
-				lts.push(i + 1)
-			}
-			$scope.data_qtd = services.MainService.getSelects(lts)
-			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
-			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
-
-			$scope.data_type = services.MainService.getSelects([
-				{
-					"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
-					"value" : "units"
-				},
-				{
-					"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
-					"value" : "buildings"
-
-				}]
-			)
-
-			$scope.data_option = services.MainService.getSelects([
-				{
-					"name" : services.$filter("i18n")("village", services.$rootScope.loc.ale, "spy"),
-					"value" : "village"
-				},
-				{
-					"name" : services.$filter("i18n")("province_enemy", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_enemy"
-
-				},
-				{
-					"name" : services.$filter("i18n")("province_barbarian", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_barbarian"
-
-				},
-				{
-					"name" : services.$filter("i18n")("province_neutral", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_neutral"
-				},
-				{
-					"name" : services.$filter("i18n")("all_member", services.$rootScope.loc.ale, "spy"),
-					"value" : "all_member"
-				},
-				{
-					"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_member"
-				}
-				]
-			)
-
-			if(order && order == "thieves"){
-				$scope.data_type.push( 
-						{
-							"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
-							"value" : "sabotage"
-						}
-				)
-			}
-
-			$scope.data_type_source = $scope.data_type;
-			updateValues();
+			updateTarget()
 		}, true)
 
 		$scope.$on("$destroy", function() {
@@ -559,6 +552,18 @@ define("robotTW2/controllers/SpyController", [
 			if(!$scope.data_option){return}
 			updateTarget()
 		}, true);
+
+		$scope.data_type = services.MainService.getSelects([
+			{
+				"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+				"value" : "units"
+			},
+			{
+				"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+				"value" : "buildings"
+
+			}]
+		)
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, function(){
 			$scope.data_select.selectedOption = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
