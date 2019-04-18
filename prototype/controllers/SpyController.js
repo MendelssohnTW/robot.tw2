@@ -275,7 +275,7 @@ define("robotTW2/controllers/SpyController", [
 						$scope.send_scope.targetVillage = target.village_name
 						$scope.send_scope.targetX = target.village_x
 						$scope.send_scope.targetY = target.village_y
-						$scope.send_scope.qtd = 1//$scope.data_qtd_source.selectedOption //qtd
+						$scope.send_scope.qtd = 1//$scope.data_qtd.selectedOption //qtd
 
 						services.SpyService.sendCommandAttackSpy($scope.send_scope);
 						let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
@@ -294,7 +294,7 @@ define("robotTW2/controllers/SpyController", [
 					}
 
 					let qtc = []
-					for (t = 0; t < $scope.data_qtd_source.selectedOption; t++){
+					for (t = 0; t < $scope.data_qtd.selectedOption; t++){
 						qtc.push(t)
 					}
 
@@ -567,7 +567,6 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])
 
 		update();
 		$scope.setCollapse();
