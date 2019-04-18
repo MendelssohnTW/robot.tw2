@@ -160,6 +160,8 @@
 	"farm": {
         "unit_direction": "Direção reversa",
         "speed_direction": "Velocidade reversa",
+        "cicle_distinct": "Ciclos distintos",
+        "text_cicle_distinct": "Ciclos distintos e independentes",
         "text_unit_direction": "Aldeias mais distantes para as mais próximas",
         "text_speed_direction": "Unidades mais lentas para as mais rápidas",
 		"farm": "Configurações de ciclo",

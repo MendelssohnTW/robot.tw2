@@ -319,6 +319,15 @@ define("robotTW2/controllers/FarmController", [
 			}
 			$scope.blur();
 		}
+		
+		$scope.toggleCicleDistinct = function(){
+			if($scope.data_farm.cicle_distinct){
+				$scope.data_farm.cicle_distinct = false
+			} else {
+				$scope.data_farm.cicle_distinct = true
+			}
+			$scope.blur();
+		}
 
 		$scope.toggleOption = function(option){
 			$scope.toggle_option = option;
