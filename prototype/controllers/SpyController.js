@@ -249,7 +249,7 @@ define("robotTW2/controllers/SpyController", [
 
 					list_dist_vills = list_dist_vills.map(function(etm){
 						let td = list_proc.find(f=>f.id==etm.id); 
-						if($scope.data_type_source.selectedOption.value == "sabotage" && dist_vill.sabotage || $scope.data_type_source.selectedOption.value != "sabotage"){
+						if($scope.data_type.selectedOption.value == "sabotage" && dist_vill.sabotage || $scope.data_type.selectedOption.value != "sabotage"){
 							if(!td){
 								return etm;
 							} else {
@@ -270,7 +270,7 @@ define("robotTW2/controllers/SpyController", [
 						let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
 						$scope.send_scope.tempo_escolhido = vt + 2000;
 						$scope.send_scope.startId = dist_vill.id
-						$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
+						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
 						$scope.send_scope.targetId = target.village_id
 						$scope.send_scope.targetVillage = target.village_name
 						$scope.send_scope.targetX = target.village_x
@@ -361,7 +361,6 @@ define("robotTW2/controllers/SpyController", [
 					)
 				}
 
-				$scope.data_type_source = $scope.data_type;
 			} else {
 				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
 				$scope.data_type = services.MainService.getSelects([
