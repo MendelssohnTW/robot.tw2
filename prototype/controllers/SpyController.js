@@ -75,6 +75,7 @@ define("robotTW2/controllers/SpyController", [
 			if (get_time.length <= 5){
 				get_time = get_time + ":00"; 
 			}
+			if(!$scope.data_option){return}
 			if($scope.data_option.selectedOption.value != "village"){
 				$scope.send_scope.milisegundos_duracao = 0;
 				$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + 5000)
