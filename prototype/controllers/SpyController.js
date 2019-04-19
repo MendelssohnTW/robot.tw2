@@ -68,34 +68,32 @@ define("robotTW2/controllers/SpyController", [
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
 		, updateValues = function(callback){
-			if(Object.keys($scope.send_scope).length){
-				let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
-				let get_data = $("#input-date").val();
-				let get_time = $("#input-time").val();
-				let get_ms = $("#input-ms").val();
-				if (get_time.length <= 5){
-					get_time = get_time + ":00"; 
-				}
-				if($scope.data_option.selectedOption.value != "village"){
-					$scope.send_scope.milisegundos_duracao = 0;
-					$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + 5000)
-					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-					$scope.send_scope.startId = $scope.data_select.selectedOption.id
-					$scope.send_scope.targetId = $scope.item.id
-					$scope.send_scope.targetVillage = $scope.item.name
-					$scope.send_scope.targetX = $scope.item.x
-					$scope.send_scope.targetY = $scope.item.y
-					$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
-				} else {
-					if (get_data != undefined && get_time != undefined){
-						$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
-						$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + $scope.send_scope.milisegundos_duracao + 5000)
-						$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
-						$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
-					}
-				}
-				$scope.recalcScrollbar()
+			let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
+			let get_data = $("#input-date").val();
+			let get_time = $("#input-time").val();
+			let get_ms = $("#input-ms").val();
+			if (get_time.length <= 5){
+				get_time = get_time + ":00"; 
 			}
+			if($scope.data_option.selectedOption.value != "village"){
+				$scope.send_scope.milisegundos_duracao = 0;
+				$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + 5000)
+				$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+				$scope.send_scope.startId = $scope.data_select.selectedOption.id
+				$scope.send_scope.targetId = $scope.item.id
+				$scope.send_scope.targetVillage = $scope.item.name
+				$scope.send_scope.targetX = $scope.item.x
+				$scope.send_scope.targetY = $scope.item.y
+				$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
+			} else {
+				if (get_data != undefined && get_time != undefined){
+					$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
+					$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + $scope.send_scope.milisegundos_duracao + 5000)
+					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
+					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
+				}
+			}
+			$scope.recalcScrollbar()
 			if(typeof(callback)=="function"){
 				callback()
 			}
@@ -351,7 +349,7 @@ define("robotTW2/controllers/SpyController", [
 
 					}]
 				)
-				
+
 				if(order && order == "thieves"){
 					$scope.data_type.push( 
 							{
