@@ -315,7 +315,7 @@ define("robotTW2/controllers/SpyController", [
 						fnext(list_dist_vills.shift())
 					}
 				})
-				$scope.send_scope = {}
+//				$scope.send_scope = {}
 				$scope.recalcScrollbar();
 			} else {
 				notify("villages_error");
@@ -498,7 +498,7 @@ define("robotTW2/controllers/SpyController", [
 					sendAttackSpyPlayer(true)
 				}
 			})
-			$scope.send_scope = {}
+//			$scope.send_scope = {}
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
