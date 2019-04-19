@@ -165,7 +165,6 @@ define("robotTW2/controllers/MainController", [
 		
 		$scope.setCollapse();
 
-
 		return $scope;
 	}
 })
