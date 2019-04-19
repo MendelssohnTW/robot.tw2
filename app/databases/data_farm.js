@@ -190,7 +190,8 @@ define("robotTW2/databases/data_farm", [
 			infinite				: true,
 			attacked				: false,
 			unit_direction			: false,
-			speed_direction			: false
+			speed_direction			: false,
+			cicle_distinct			: false
 	}
 
 	if(!data_farm){

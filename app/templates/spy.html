@@ -40,29 +40,19 @@
 					class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
 					id="preset-list">
 					<colgroup>
-						<col width="32px">
+						<col width="38px">
 						<col width="*">
-						<col width="32px">
-						<col width="*">
-						<col width="32px">
-						<col width="*">
+						<col width="200px">
+						<col width="38px">
+						<col width="300px">
 						<col width="160px">
 						<col width="100px">
 						<col width="160px">
 					</colgroup>
 					<tbody>
 						<tr>
-							<th class="cell-center selected" colspan="2">{{text_source}}</th>
-							<th class="cell-center selected" colspan="4">{{text_put_province}}</th>
-							<th class="cell-center selected">{{text_put}}</th>
-						</tr>
-						<tr>
-							<td><div class="icon icon-34x34-village"></div></td>
-							<td><select id="select_order"
-								class="select-handler"
-								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
-								ng-model="data_select.selectedOption"></select></td>
-							<td><div class="icon icon-34x34-village"></div></td>
+							<td><div class="icon"
+									ng-class="{'icon-34x34-switch' : item.type == undefined, 'icon-34x34-village' : item.type == 'village', 'icon-34x34-character': item.type == 'character'}"></div></td>
 							<td>
 								<div>
 									<div id="select-field" select-element=""
@@ -78,10 +68,37 @@
 										placeholder="{{SEARCH_MAP}}" style="width: 100%;">
 								</div>
 							</td>
-							<td colspan="2"><select id="select_option"
-                                class="select-handler"
-                                ng-options="item as item.name for item in data_option.availableOptions track by item.name"
-                                ng-model="data_option.selectedOption"></select></td>
+							<td><select id="select_option" class="select-handler"
+								ng-options="item as item.name for item in data_option.availableOptions track by item.name"
+								ng-model="data_option.selectedOption"></select></td>
+							<td>
+								<div ng-if="data_option.selectedOption.value == 'village'"
+									class="icon icon-34x34-village"></div>
+								<div
+									ng-if="data_option.selectedOption.value == 'province_member'"
+									class="icon icon-34x34-province"
+									ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div>
+							</td>
+							<td><select
+								ng-if="data_option.selectedOption.value == 'village'"
+								id="select_order" class="select-handler"
+								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
+								ng-model="data_select.selectedOption"></select> <select
+								ng-if="data_option.selectedOption.value == 'province_member'"
+								id="select_province" class="select-handler"
+								ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
+								ng-model="data_province.selectedOption"></select></td>
+
+							<td><div>
+									<select id="select_qtd" class="select-handler"
+										ng-options="item for item in data_qtd.availableOptions"
+										ng-model="data_qtd.selectedOption"></select>
+								</div>
+								<div>
+									<select id="select_type" class="select-handler"
+										ng-options="item as item.name for item in data_type.availableOptions"
+										ng-model="data_type.selectedOption"></select>
+								</div></td>
 							<td class="cell-right">
 								<div>
 									<label for="input-date">{{text_date}}</label><input
@@ -99,16 +116,7 @@
 										min="000" max="999" value="{{ms_init}}">
 								</div>
 							</td>
-							<td><div>
-									<select id="select_qtd" class="select-handler"
-										ng-options="item for item in data_qtd.availableOptions"
-										ng-model="data_qtd.selectedOption"></select>
-								</div>
-								<div>
-									<select id="select_type" class="select-handler"
-										ng-options="item as item.name for item in data_type.availableOptions"
-										ng-model="data_type.selectedOption"></select>
-								</div></td>
+
 							<td class="cell-center"><div>
 									<a href="#" id="button-prog"
 										class="btn-orange btn-form btn-border no-padding"
@@ -117,13 +125,13 @@
 								</div></td>
 						</tr>
 
-
+						<!-- 
 						<tr>
 							<th class="cell-center selected" colspan="6">{{text_target_player}}</th>
 							<th class="cell-center selected">{{text_data_source}}</th>
 						</tr>
 						<tr>
-
+							
 							<td><div class="icon icon-34x34-character"></div></td>
 							<td>
 								<div>
@@ -196,6 +204,7 @@
 										ng-click="sendAttackSpyProvince()"><span id="span-text"
 										class="text">{{schedule}}</span> </a>
 								</div></td>
+								 -->
 						</tr>
 					</tbody>
 				</table>

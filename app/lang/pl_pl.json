@@ -160,6 +160,8 @@
 	"farm": {
         "unit_direction": "Reverse direction",
         "speed_direction": "Reverse speed",
+        "cicle_distinct": "Cicle distinct",
+        "text_cicle_distinct": "Different and independent cycles",
         "text_unit_direction": "Farthest villages to nearest",
         "text_speed_direction": "Slower units for faster",
 		"farm": "Collection settings",
@@ -267,6 +269,8 @@
 		"province_enemy": "Enemies of province",
 		"province_barbarian": "Barbarian of province",
 		"province_neutral": "Neutral of province",
+		"province_member": "Province of the player",
+        "all_member": "All player villages",
 		"spy": "Spy",
 		"units": "Units",
 		"buildings": "Buildings",

@@ -273,7 +273,15 @@
                                                     class="size-34x34 btn-orange"
                                                     ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
                                                     ng-click="toggleUnitDirection()"></a></td>
-												<td colspan="2" class="cell-right">
+												<td class="cell-right"><label
+                                                    for="cicle_distinct"
+                                                    style="margin-left: 12px; margin-right: 12px;">{{cicle_distinct}}</label><a
+                                                    tooltip="" tooltip-content="{{text_cicle_distinct}}"
+                                                    id="cicle_distinct" href="#"
+                                                    class="size-34x34 btn-orange"
+                                                    ng-class="{'icon-26x26-check-positive' : data_farm.cicle_distinct, 'icon-26x26-check-negative' : !data_farm.cicle_distinct}"
+                                                    ng-click="toggleCicleDistinct()"></a></td>
+												<td class="cell-right">
 												<label
                                                     for="speed_direction"
                                                     style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a

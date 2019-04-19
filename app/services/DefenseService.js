@@ -88,7 +88,7 @@ define("robotTW2/services/DefenseService", [
 						return 0;
 					}
 				});
-				
+
 				let aldeiaX = villages[1]
 
 				lista_aldeiasY.sort(function (a, b) {
@@ -111,7 +111,7 @@ define("robotTW2/services/DefenseService", [
 						return 0;
 					}
 				});
-				
+
 				let aldeiaY = lista_aldeiasY[1]
 				, aldeia
 
@@ -512,19 +512,23 @@ define("robotTW2/services/DefenseService", [
 						"timer_delay" 	: expires,
 						"id_command" 	: data.id
 					}
-					if(expires >= 0){
-						$rootScope.$broadcast("command_sent_received", params)
-						console.log("Enviado sendCancel " + JSON.stringify(params))
-						commandQueue.bind(data.id, sendCancel, null, params, function(fns){
-							commandDefense[params.id_command] = {
-									"timeout" 	: fns.fn.apply(this, [fns.params]),
-									"params"	: params
-							}
-
-						})
-					} else {
-						console.log("send cancel timer_delay < 0 " + JSON.stringify(params))
+					if(expires >= -25000 && expires < 0){
+						params.timer_delay = 0;
+						console.log("send cancel timer_delay = 0 " + JSON.stringify(params))
+					} else if(expires < -25000){
+						console.log("send cancel timer_delay < -25000 " + JSON.stringify(params))
+						return
 					}
+					
+					$rootScope.$broadcast("command_sent_received", params)
+					console.log("Enviado sendCancel " + JSON.stringify(params))
+					commandQueue.bind(data.id, sendCancel, null, params, function(fns){
+						commandDefense[params.id_command] = {
+								"timeout" 	: fns.fn.apply(this, [fns.params]),
+								"params"	: params
+						}
+
+					})
 
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
@@ -552,9 +556,11 @@ define("robotTW2/services/DefenseService", [
 			var expires_send = params.data_escolhida - params.time_sniper_ant
 			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
 
-			if(timer_delay_send <= 0){
+			if(timer_delay_send <= -25000){
 				removeCommandDefense(params.id_command)
 				return 
+			} else if(timer_delay_send > -25000 && timer_delay_send < 0){
+				timer_delay_send = 0;
 			}
 			resend = true;
 			return $timeout(send.bind(null, params), timer_delay_send);
@@ -573,11 +579,19 @@ define("robotTW2/services/DefenseService", [
 			var expires = params.data_escolhida - params.time_sniper_ant
 			, timer_delay = expires - time.convertedTime()
 
-			if(timer_delay >= 0){
-				angular.extend(params, {
-					"timer_delay" : timer_delay - conf.TIME_DELAY_UPDATE,
-					"id_command": id_command
-				})
+			if(timer_delay >= -25000){
+				if(timer_delay < 0){
+					angular.extend(params, {
+						"timer_delay" : 5000,
+						"id_command": id_command
+					})
+				} else {
+					angular.extend(params, {
+						"timer_delay" : timer_delay - conf.TIME_DELAY_UPDATE,
+						"id_command": id_command
+					})
+
+				}
 
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
@@ -722,7 +736,7 @@ define("robotTW2/services/DefenseService", [
 				isRunning = !0;
 				reformatCommand();
 //				if(robotTW2.databases.data_main.auto_calibrate){
-					calibrate_time()
+				calibrate_time()
 //				}
 				if(!listener_lost){
 					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));

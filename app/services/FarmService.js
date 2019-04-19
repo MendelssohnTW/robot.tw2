@@ -54,7 +54,6 @@ define("robotTW2/services/FarmService", [
 		, listener_report
 		, get_dist = function get_dist(villageId, journey_time, units) {
 			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
-			, units = units
 			, army = {
 				'officers'	: {},
 				"units"		: units
@@ -65,9 +64,12 @@ define("robotTW2/services/FarmService", [
 
 			return Math.trunc((journey_time / 1000 / travelTime)) || 0;
 		}
-		, get_time = function get_time(villageId, distance, units) {
-			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
-			, units = units
+		, get_time = function get_time(villageId, bb, units) {
+			var village = modelDataService.getVillage(villageId)
+			, distance =  math.actualDistance(village.getPosition(), {
+				'x'			: bb.x,
+				'y'			: bb.y
+			})
 			, army = {
 				'officers'	: {},
 				"units"		: units
@@ -76,7 +78,7 @@ define("robotTW2/services/FarmService", [
 				'barbarian'		: true
 			})
 
-			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000 * 2
+			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000
 		}
 		, units_has_exception = function (units) {
 			return Object.keys(units).map(function(unit){
@@ -113,24 +115,44 @@ define("robotTW2/services/FarmService", [
 			if(cmd.data.type!="attack"){
 				return false
 			}
-//			lt = Object.keys(countCommands).map(function(cicle){
-			lt =  Object.keys(countCommands[cicle]).map(function(village_id){
-				return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-					return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
+
+			if(data_farm.cicle_distinct){
+				lt =  Object.keys(countCommands[cicle]).map(function(village_id){
+					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+						return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
+					}).some(f=>f==true)
 				}).some(f=>f==true)
-			}).some(f=>f==true)
-//			}).some(f=>f==true)
+			} else {
+				lt = Object.keys(countCommands).map(function(cicle){
+					return  Object.keys(countCommands[cicle]).map(function(village_id){
+						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+							return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
+						}).some(f=>f==true)
+					}).some(f=>f==true)
+				}).some(f=>f==true)
+			}
+
 			return !lt
 		}
 		, check_commands_for_bb = function(bb, cicle){
 			let lt = false;
-//			lt = Object.keys(countCommands).map(function(cicle){
-			lt = Object.keys(countCommands[cicle]).map(function(village_id){
-				return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-					return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
-				}).every(f=>f==false)
-			}).every(f=>f==true)
-//			}).every(f=>f==true)
+
+			if(data_farm.cicle_distinct){
+				lt = Object.keys(countCommands[cicle]).map(function(village_id){
+					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+						return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
+					}).every(f=>f==false)
+				}).every(f=>f==true)
+
+			} else {
+				lt = Object.keys(countCommands).map(function(cicle){
+					return Object.keys(countCommands[cicle]).map(function(village_id){
+						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+							return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
+						}).every(f=>f==false)
+					}).every(f=>f==true)
+				}).every(f=>f==true)
+			}
 			return lt
 		}
 		, sendCmd = function (cmd_preset, cicle_internal) {
@@ -142,7 +164,6 @@ define("robotTW2/services/FarmService", [
 				, preset_units = cmd_preset.preset_units
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
-
 
 				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
@@ -169,8 +190,8 @@ define("robotTW2/services/FarmService", [
 				, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
 				, r = undefined
 				, villages = []
-				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units)
-				, data = mapData.loadTownData(Math.trunc(cmd_preset.x - (dist / 2)), Math.trunc(cmd_preset.y - (dist / 2)), Math.trunc(dist * 2), Math.trunc(dist * 2))
+				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units) / 2
+				, data = mapData.loadTownData(Math.trunc(cmd_preset.x - (dist / 2)), Math.trunc(cmd_preset.y - (dist / 2)), Math.trunc(dist * 1.42), Math.trunc(dist * 1.42))
 				, dt = data.map(function(elem){
 					return elem.data
 				}).filter(f=>f!=null)
@@ -207,18 +228,18 @@ define("robotTW2/services/FarmService", [
 
 				villages = new_villages
 
-				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time)
-				villages = villages.filter(f => get_act_time(cmd_preset.village_id, f, cmd_preset.preset_units) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time)
+				villages = villages.filter(f => get_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time / 2)
+				villages = villages.filter(f => get_time(cmd_preset.village_id, f, cmd_preset.preset_units) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time / 2)
 				villages = villages.filter(f => f.points > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_points_farm)
 				villages = villages.filter(f => f.points < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_points_farm)
 
 				if(!data_farm.unit_direction){
 					villages.sort(function (a, b) {
-						return get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
+						return get_time(cmd_preset.village_id, a, cmd_preset.preset_units) - get_time(cmd_preset.village_id, b, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
 					});
 				} else {
 					villages.sort(function (a, b) {
-						return get_act_time(cmd_preset.village_id, b, cmd_preset.preset_units) - get_act_time(cmd_preset.village_id, a, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
+						return get_time(cmd_preset.village_id, b, cmd_preset.preset_units) - get_time(cmd_preset.village_id, a, cmd_preset.preset_units) //sorteia em ordem crescente conforme distância da origem
 					});
 				}
 
@@ -316,14 +337,7 @@ define("robotTW2/services/FarmService", [
 				return true
 			}
 		}
-		, get_act_time = function (village_id, bb, units) {
-			var village = modelDataService.getVillage(village_id);
-			let dt =  math.actualDistance(village.getPosition(), {
-				'x'			: bb.x,
-				'y'			: bb.y
-			})
-			return get_time(village_id, dt, units)
-		}
+
 		, execute_presets = function(commands_for_presets, cicle){
 			return new Promise(function(resol, rejec){
 				var promise_preset = undefined
@@ -384,7 +398,7 @@ define("robotTW2/services/FarmService", [
 						}
 
 						let presets_order = []
-						if(!data_farm.spedd_direction){
+						if(!data_farm.speed_direction){
 							presets_order = Object.keys(presets).map(function(preset){
 								return Object.keys(presets[preset].units).map(function(key){
 									return modelDataService.getGameData().data.units.map(function(obj, index, array){
@@ -401,7 +415,7 @@ define("robotTW2/services/FarmService", [
 								}).filter(f=>f.length>0)[0][0]
 							}).sort(function(a,b){return b[0]-a[0]}).map(function(obj){return obj[1]})
 						}
-						
+
 						presets_order.forEach(function(preset){
 							if(!units_has_exception(preset.units) && units_analyze(preset.units, aldeia_units, true)) {
 								var comando = {
