@@ -199,6 +199,11 @@
 	min-height: auto;
 }
 
+.robotTW2 .main.box-paper {
+    margin: 0 2px;
+    min-height: auto;
+}
+
 .robotTW2 .attack.box-paper {
 	margin: 0 2px;
 	min-height: auto;
