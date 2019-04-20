@@ -322,12 +322,11 @@ px
 }
 
 .robotTW2 .headquarter.settings.win-main {
-    height: 520px;
+    height: 480px;
     position: relative;
 }
 
 .robotTW2 .headquarter.default.win-main {
-    height: 476px;
+    height: 520px;
     position: relative;
 }
-
