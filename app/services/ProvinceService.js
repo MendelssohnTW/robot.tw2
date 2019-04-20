@@ -110,6 +110,7 @@ define("robotTW2/services/ProvinceService", [
 							&& !modelDataService.getSelectedCharacter().getTribeRelations().isAlly(vill_t.tribe_id)
 							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(vill_t.tribe_id)
 							&& vill_t.character_id != null
+							&& vill_t.character_id != modelDataService.getSelectedCharacter().getId()
 					){
 						return vill_t
 					}
