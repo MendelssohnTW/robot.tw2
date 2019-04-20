@@ -320,3 +320,8 @@ px
 	animation-duration: 1s;
 	animation-iteration-count: infinite;
 }
+
+.robotTW2 .spy.win-main {
+    heigth: 55%;
+}
+
