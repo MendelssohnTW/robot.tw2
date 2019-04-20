@@ -185,10 +185,9 @@
 	height: 100vh;
 }
 
-.robotTW2 .scroll-wrapp .main{
-        margin-bottom: 400px;
+.robotTW2 .scroll-wrapp .main {
+	margin-bottom: 400px;
 }
-
 
 .robotTW2 .twx-section {
 	margin: 0 3px 0 3px;
@@ -200,8 +199,8 @@
 }
 
 .robotTW2 .main.box-paper {
-    margin: 0 2px;
-    min-height: auto;
+	margin: 0 2px;
+	min-height: auto;
 }
 
 .robotTW2 .attack.box-paper {
@@ -326,17 +325,28 @@ keyframes down { 0% {
 100%
 {
 left
+
+
 :
+
  
+
 0
 px
+
+
 ;
- 
 top
+
+
 :
+
  
+
 20
 px
+
+
 ;
 }
 }
