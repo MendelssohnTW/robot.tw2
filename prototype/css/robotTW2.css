@@ -321,11 +321,13 @@ px
 	animation-iteration-count: infinite;
 }
 
-.robotTW2 .spy.win-main {
-    heigth: 55%;
+.robotTW2 .headquarter.settings.win-main {
+    height: 520px;
+    position: relative;
 }
 
-.robotTW2 .headquarter.win-main {
-    heigth: 55%;
+.robotTW2 .headquarter.default.win-main {
+    height: 476px;
+    position: relative;
 }
 
