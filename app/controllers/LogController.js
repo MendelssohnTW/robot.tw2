@@ -37,6 +37,7 @@ define("robotTW2/controllers/LogController", [
 		, setActiveTab = function setActiveTab(tab) {
 			$scope.activeTab	= tab;
 			$scope.requestedTab	= null;
+			$scope.recalcScrollbar();
 		}
 		, initTab = function initTab() {
 			if (!$scope.activeTab) {

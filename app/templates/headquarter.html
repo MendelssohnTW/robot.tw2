@@ -1,318 +1,317 @@
 <div class="win-content robotTW2">
 	<header class="win-head">
-		<h2>{{title}}</h2>
+		<h2>{{title}} ({{text_version}})</h2>
 		<ul class="list-btn">
 			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
 	<div class="content-settings">
-		<div class="headquarter box-paper">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-			<div>
-				<table
-					class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-					<colgroup>
-						<col width="33%">
-						<col width="33%">
-						<col width="*">
-					</colgroup>
-					<tbody>
-						<tr>
-							<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
-								id="interval_headquarter" class="input-border inpt disabled"
-								type=text value="{{getTimeRest()}}" disabled></td>
-							<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
-								id="reserva_food" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.food}}"
-								ng-model="data_headquarter.reserva.food"></td>
-							<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
-								id="reserva_slots" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.slots}}"
-								ng-model="data_headquarter.reserva.slots"></td>
-						</tr>
-						<tr>
-							<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
-								id="reserva_wood" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.wood}}"
-								ng-model="data_headquarter.reserva.wood"></td>
-							<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
-								id="reserva_clay" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.clay}}"
-								ng-model="data_headquarter.reserva.clay"></td>
-							<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
-								id="reserva_iron" class="input-border inputcreated"
-								type="number" value="{{data_headquarter.reserva.iron}}"
-								ng-model="data_headquarter.reserva.iron"></td>
-						</tr>
-						<tr>
-							<td rowspan=2>
-								<table>
-									<colgroup>
-										<col width="50%">
-										<col width="64px">
-										<col width="50%">
-									</colgroup>
-									<tbody>
-										<tr>
-											<td class="cell-right"><div>{{seq_flex}}</div></td>
-											<td class="cell-center"><div switch-slider=""
-													border="true" enabled="true" value="data_headquarter.seq"
-													vertical="false" size="'56x28'">
-													<div ng-class="{'box-border-dark box-filter': border}"
-														class="box-border-dark box-filter">
-														<div class="switch switch-56x28 switch-horizontal"
-															ng-class="{'switch-checked': value}">
-															<div class="size-26x26 switch-thumb">
-																<span class="simple icon-26x26-switch-off"
-																	ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-															</div>
+		<div>
+			<table
+				class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+				<colgroup>
+					<col width="33%">
+					<col width="33%">
+					<col width="*">
+				</colgroup>
+				<tbody>
+					<tr>
+						<td class="cell-right"><label for="interval_headquarter">{{text_interval_headquarter}}</label><input
+							id="interval_headquarter" class="input-border inpt disabled"
+							type=text value="{{getTimeRest()}}" disabled></td>
+						<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
+							id="reserva_food" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.food}}"
+							ng-model="data_headquarter.reserva.food"></td>
+						<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
+							id="reserva_slots" class="input-border inputcreated"
+							type="number" value="{{data_headquarter.reserva.slots}}"
+							ng-model="data_headquarter.reserva.slots"></td>
+					</tr>
+					<tr>
+						<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
+							id="reserva_wood" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.wood}}"
+							ng-model="data_headquarter.reserva.wood"></td>
+						<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
+							id="reserva_clay" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.clay}}"
+							ng-model="data_headquarter.reserva.clay"></td>
+						<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
+							id="reserva_iron" class="input-border inputcreated" type="number"
+							value="{{data_headquarter.reserva.iron}}"
+							ng-model="data_headquarter.reserva.iron"></td>
+					</tr>
+					<tr>
+						<td rowspan=2>
+							<table>
+								<colgroup>
+									<col width="50%">
+									<col width="64px">
+									<col width="50%">
+								</colgroup>
+								<tbody>
+									<tr>
+										<td class="cell-right"><div>{{seq_flex}}</div></td>
+										<td class="cell-center"><div switch-slider=""
+												border="true" enabled="true" value="data_headquarter.seq"
+												vertical="false" size="'56x28'">
+												<div ng-class="{'box-border-dark box-filter': border}"
+													class="box-border-dark box-filter">
+													<div class="switch switch-56x28 switch-horizontal"
+														ng-class="{'switch-checked': value}">
+														<div class="size-26x26 switch-thumb">
+															<span class="simple icon-26x26-switch-off"
+																ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
 														</div>
 													</div>
-												</div></td>
-											<td class="cell-left"><div>{{seq_int}}</div></td>
-										</tr>
-									</tbody>
-								</table>
-								<div>
-									<div
-										ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
-									{{headquarter_running}}
-								</div>
-							</td>
-							<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<h5 class="twx-section collapse hidden-content">{{settings_standard}}</h5>
-		<div class="headquarter win-main jssb-applied jssb-focus jssb-scrolly"
-			scrollbar="">
-			<div class="box-paper">
-				<div class="scroll-wrap">
-					<table id="preset-list"
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-						<colgroup>
-							<col width="200px">
-							<col width="50%">
-							<col width="50%">
-							<col width="200px">
-						</colgroup>
-						<tbody>
-							<tr>
-								<td></td>
-								<td class="cell-rigth cell-top">
-									<h5 class="twx-section">{{priority}}</h5>
-									<table id="preset-list">
-										<colgroup>
-											<col width="*">
-											<col width="20">
-											<col width="26">
-										</colgroup>
-										<tbody>
-											<tr ng-repeat="item in local_data_standard_order"
-												style="height: 68px">
-												<td class="content cell-left"><div class="name-wrapper">
-														<div class="span-icon" ng-class="getClass(item.name)"></div>
-														{{item.label}}
-													</div></td>
-												<td class="cell-right"><div>{{item.value}}</div></td>
-												<td class="cell-right">
-													<div>
-														<div ng-show="item.value > 1"
-															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-															ng-click="upstandard(item)"></div>
-														<div ng-show="item.value < 17"
-															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-															ng-click="downstandard(item)"></div>
-													</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-								<td class="cell-right cell-top">
-									<h5 class="twx-section">{{levels}}</h5>
-									<table id="preset-list">
-										<colgroup>
-											<col width="*">
-											<col width="20">
-											<col width="26">
-										</colgroup>
-										<tbody>
-											<tr ng-repeat="item in local_data_standard_limit"
-												style="height: 68px">
-												<td class="content cell-left">
-													<div class="name-wrapper">
-														<div class="span-icon" ng-class="getClass(item.name)"></div>
-														{{item.label}}
-													</div>
-												</td>
-												<td class="cell-right"><div>{{item.value}}</div></td>
-												<td class="cell-right"><div ng-show="getMax(item)"
-														class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-														ng-click="levelupstandard(item.name)"></div>
-													<div ng-show="item.value > 0"
-														class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-														ng-click="leveldownstandard(item.name)"></div></td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-								<td></td>
-							</tr>
+												</div>
+											</div></td>
+										<td class="cell-left"><div>{{seq_int}}</div></td>
+									</tr>
+								</tbody>
+							</table>
+							<div>
+								<div
+									ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
+								{{headquarter_running}}
+							</div>
+						</td>
+						<td class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
+					</tr>
+				</tbody>
+			</table>
 
-						</tbody>
-					</table>
+			<h5 class="twx-section collapse hidden-content">{{settings_standard}}</h5>
+			<div
+				class="headquarter default win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper">
+					<div class="scroll-wrap">
+						<table id="preset-list"
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+							<colgroup>
+								<col width="200px">
+								<col width="50%">
+								<col width="50%">
+								<col width="200px">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td></td>
+									<td class="cell-rigth cell-top">
+										<h5 class="twx-section">{{priority}}</h5>
+										<table id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="20">
+												<col width="26">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="item in local_data_standard_order"
+													style="height: 68px">
+													<td class="content cell-left"><div
+															class="name-wrapper">
+															<div class="span-icon" ng-class="getClass(item.name)"></div>
+															{{item.label}}
+														</div></td>
+													<td class="cell-right"><div>{{item.value}}</div></td>
+													<td class="cell-right">
+														<div>
+															<div ng-show="item.value > 1"
+																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																ng-click="upstandard(item)"></div>
+															<div ng-show="item.value < 17"
+																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																ng-click="downstandard(item)"></div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+									<td class="cell-right cell-top">
+										<h5 class="twx-section">{{levels}}</h5>
+										<table id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="20">
+												<col width="26">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="item in local_data_standard_limit"
+													style="height: 68px">
+													<td class="content cell-left">
+														<div class="name-wrapper">
+															<div class="span-icon" ng-class="getClass(item.name)"></div>
+															{{item.label}}
+														</div>
+													</td>
+													<td class="cell-right"><div>{{item.value}}</div></td>
+													<td class="cell-right"><div ng-show="getMax(item)"
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+															ng-click="levelupstandard(item.name)"></div>
+														<div ng-show="item.value > 0"
+															class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+															ng-click="leveldownstandard(item.name)"></div></td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+									<td></td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<h5 class="twx-section">{{settings_for_villages}}</h5>
-		<div class="headquarter win-main jssb-applied jssb-focus jssb-scrolly"
-			scrollbar="">
-			<div class="box-paper">
-				<div class="scroll-wrap">
-					<table
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
-						id="preset-list">
-						<colgroup>
-							<col width="50%">
-							<col width="50%">
-						</colgroup>
-						<tbody>
-							<tr>
-								<td class="cell-center cell-top">
-									<table
-										class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
-										id="preset-list">
-										<colgroup>
-											<col width="*">
-											<col width="64px">
-											<col width="150px">
-										</colgroup>
-										<tbody>
-											<tr>
-												<th></th>
-												<th></th>
-												<th></th>
-											</tr>
-											<tr>
-												<td class="cell-center cell-top"><select
-													id="select_village" class="select-wrapper"
-													ng-options="item as item.name for item in data_select.availableOptions"
-													ng-model="data_select.selectedOption"></select></td>
-												<td class="cell-center cell-top"><div switch-slider=""
-														border="true" enabled="true"
-														value="data_select.selectedOption.value.headquarter_activate"
-														vertical="false" size="'56x28'">
-														<div ng-class="{'box-border-dark box-filter': border}"
-															class="box-border-dark box-filter">
-															<div class="switch switch-56x28 switch-horizontal"
-																ng-class="{'switch-checked': value}">
-																<div class="size-26x26 switch-thumb">
-																	<span class="simple icon-26x26-switch-off"
-																		ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+			<h5 class="twx-section">{{settings_for_villages}}</h5>
+			<div
+				class="headquarter settings win-main jssb-applied jssb-focus jssb-scrolly"
+				scrollbar="">
+				<div class="box-paper">
+					<div class="scroll-wrap">
+						<table
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
+							id="preset-list">
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td class="cell-center cell-top">
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
+											id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="64px">
+												<col width="150px">
+											</colgroup>
+											<tbody>
+												<tr>
+													<th></th>
+													<th></th>
+													<th></th>
+												</tr>
+												<tr>
+													<td class="cell-center cell-top"><select
+														id="select_village" class="select-wrapper"
+														ng-options="item as item.name for item in data_select.availableOptions"
+														ng-model="data_select.selectedOption"></select></td>
+													<td class="cell-center cell-top"><div switch-slider=""
+															border="true" enabled="true"
+															value="data_select.selectedOption.value.headquarter_activate"
+															vertical="false" size="'56x28'">
+															<div ng-class="{'box-border-dark box-filter': border}"
+																class="box-border-dark box-filter">
+																<div class="switch switch-56x28 switch-horizontal"
+																	ng-class="{'switch-checked': value}">
+																	<div class="size-26x26 switch-thumb">
+																		<span class="simple icon-26x26-switch-off"
+																			ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																	</div>
 																</div>
 															</div>
-														</div>
-													</div></td>
+														</div></td>
 
-												<td class="cell-center cell-top"><select
-													id="select_order" class="select-wrapper"
-													ng-options="item as item.name for item in data_type.availableOptions"
-													ng-model="data_type.selectedOption"></select></td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-								<td class="cell-center cell-top">
-									<table id="preset-list"
-										class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-										<colgroup>
-											<col width="50%">
-											<col width="50%">
-										</colgroup>
-										<tbody>
-											<tr>
-												<td class="cell-rigth cell-top">
+													<td class="cell-center cell-top"><select
+														id="select_order" class="select-wrapper"
+														ng-options="item as item.name for item in data_type.availableOptions"
+														ng-model="data_type.selectedOption"></select></td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+									<td class="cell-center cell-top">
+										<table id="preset-list"
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+											<colgroup>
+												<col width="50%">
+												<col width="50%">
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="cell-rigth cell-top">
 
-													<table id="preset-list">
-														<colgroup>
-															<col width="*">
-															<col width="20">
-															<col width="26">
-														</colgroup>
-														<tbody>
-															<tr>
-																<th class="selected" colspan="3">{{priority}}</th>
-															</tr>
-															<tr ng-repeat="item in local_data_select_order"
-																style="height: 68px">
-																<td class="content cell-left"><div
-																		class="name-wrapper">
-																		<div class="span-icon" ng-class="getClass(item.name)"></div>
-																		{{item.label}}
-																	</div></td>
-																<td class="cell-right"><div>{{item.value}}</div></td>
-																<td class="cell-right">
-																	<div>
-																		<div ng-show="item.value &gt; 1"
+														<table id="preset-list">
+															<colgroup>
+																<col width="*">
+																<col width="20">
+																<col width="26">
+															</colgroup>
+															<tbody>
+																<tr>
+																	<th class="selected" colspan="3">{{priority}}</th>
+																</tr>
+																<tr ng-repeat="item in local_data_select_order"
+																	style="height: 68px">
+																	<td class="content cell-left"><div
+																			class="name-wrapper">
+																			<div class="span-icon" ng-class="getClass(item.name)"></div>
+																			{{item.label}}
+																		</div></td>
+																	<td class="cell-right"><div>{{item.value}}</div></td>
+																	<td class="cell-right">
+																		<div>
+																			<div ng-show="item.value &gt; 1"
+																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																				ng-click="upselect(item)"></div>
+																			<div ng-show="item.value &lt; 17"
+																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																				ng-click="downselect(item)"></div>
+																		</div>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+													<td class="cell-right cell-top">
+														<table id="preset-list">
+															<colgroup>
+																<col width="*">
+																<col width="20">
+																<col width="26">
+															</colgroup>
+															<tbody>
+																<tr>
+																	<th class="selected" colspan="3">{{levels}}</th>
+																</tr>
+																<tr ng-repeat="item in local_data_select_limit"
+																	style="height: 68px">
+																	<td class="content cell-left">
+																		<div class="name-wrapper">
+																			<div class="span-icon" ng-class="getClass(item.name)"></div>
+																			{{item.label}}
+																		</div>
+																	</td>
+																	<td class="cell-right"><div>{{item.value}}</div></td>
+																	<td class="cell-right"><div ng-show="getMax(item)"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																			ng-click="upselect(item)"></div>
-																		<div ng-show="item.value &lt; 17"
+																			ng-click="levelupselect(item.name)"></div>
+																		<div ng-show="item.value &gt; 0"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																			ng-click="downselect(item)"></div>
-																	</div>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</td>
-												<td class="cell-right cell-top">
-													<table id="preset-list">
-														<colgroup>
-															<col width="*">
-															<col width="20">
-															<col width="26">
-														</colgroup>
-														<tbody>
-															<tr>
-																<th class="selected" colspan="3">{{levels}}</th>
-															</tr>
-															<tr ng-repeat="item in local_data_select_limit"
-																style="height: 68px">
-																<td class="content cell-left">
-																	<div class="name-wrapper">
-																		<div class="span-icon" ng-class="getClass(item.name)"></div>
-																		{{item.label}}
-																	</div>
-																</td>
-																<td class="cell-right"><div>{{item.value}}</div></td>
-																<td class="cell-right"><div ng-show="getMax(item)"
-																		class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																		ng-click="levelupselect(item.name)"></div>
-																	<div ng-show="item.value &gt; 0"
-																		class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																		ng-click="leveldownselect(item.name)"></div></td>
-															</tr>
-														</tbody>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+																			ng-click="leveldownselect(item.name)"></div></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
+
 			</div>
 		</div>
-
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
