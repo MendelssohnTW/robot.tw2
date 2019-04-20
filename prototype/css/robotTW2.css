@@ -357,10 +357,7 @@ px
 	position: relative;
 }
 
-.robotTW2 .defense.win-main {
+.robotTW2 .win-main {
 	position: absolute;
 }
 
-.robotTW2 .attack.win-main {
-    position: absolute;
-}
