@@ -304,6 +304,8 @@ define("robotTW2/controllers/SpyController", [
 							if(qtc.length && list_dist_vills.length){
 								qtc.shift()
 								fnext(list_dist_vills.shift())
+							} else{
+								update()
 							}
 						} else {
 							if(list_dist_vills.length){
