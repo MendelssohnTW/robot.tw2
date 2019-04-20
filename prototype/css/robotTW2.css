@@ -176,7 +176,9 @@
 }
 
 .robotTW2 .content-settings {
-	height: 100vh;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .scroll-wrapp .main {
@@ -282,14 +284,20 @@ left
 
 
 
+
+
 :
+
 
 
  
 
 
+
 0
 px
+
+
 
 
 
@@ -300,14 +308,20 @@ top
 
 
 
+
+
 :
+
 
 
  
 
 
+
 20
 px
+
+
 
 
 
@@ -322,11 +336,11 @@ px
 }
 
 .robotTW2 .headquarter.settings.win-main {
-    height: 480px;
-    position: relative;
+	height: 480px;
+	position: relative;
 }
 
 .robotTW2 .headquarter.default.win-main {
-    height: 520px;
-    position: relative;
+	height: 520px;
+	position: relative;
 }
