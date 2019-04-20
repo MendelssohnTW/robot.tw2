@@ -514,12 +514,10 @@ define("robotTW2/services/DefenseService", [
 					}
 					if(expires >= -25000 && expires < 0){
 						params.timer_delay = 0;
-						console.log("send cancel timer_delay = 0 " + JSON.stringify(params))
+						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
 					} else if(expires < -25000){
 						console.log("send cancel timer_delay < -25000 " + JSON.stringify(params))
 						return
-					} else {
-						console.log("expires < -25000 listener_command_sent")
 					}
 					
 					$rootScope.$broadcast("command_sent_received", params)
@@ -560,11 +558,11 @@ define("robotTW2/services/DefenseService", [
 
 			if(timer_delay_send <= -25000){
 				removeCommandDefense(params.id_command)
+				console.log("timer_delay_send < -25000 resendDefense" + JSON.stringify(params))
 				return 
 			} else if(timer_delay_send > -25000 && timer_delay_send < 0){
 				timer_delay_send = 0;
-			} else {
-				console.log("timer_delay_send < -25000 resendDefense")
+				console.log("timer_delay_send set to 0 resendDefense" + JSON.stringify(params))
 			}
 			resend = true;
 			return $timeout(send.bind(null, params), timer_delay_send);
