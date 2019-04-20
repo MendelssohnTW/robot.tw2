@@ -286,7 +286,10 @@ left
 
 
 
+
+
 :
+
 
 
 
@@ -294,8 +297,11 @@ left
 
 
 
+
 0
 px
+
+
 
 
 
@@ -310,7 +316,10 @@ top
 
 
 
+
+
 :
+
 
 
 
@@ -318,8 +327,11 @@ top
 
 
 
+
 20
 px
+
+
 
 
 
@@ -343,4 +355,12 @@ px
 .robotTW2 .headquarter.default.win-main {
 	height: 520px;
 	position: relative;
+}
+
+.robotTW2 .defense.win-main {
+	position: absolute;
+}
+
+.robotTW2 .attack.win-main {
+    position: absolute;
 }
