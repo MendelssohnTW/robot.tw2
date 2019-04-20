@@ -31,12 +31,6 @@
 	justify-content: center
 }
 
-.robotTW2 .version {
-	display: flex;
-	justify-content: center;
-	min-height: 40px;
-}
-
 .robotTW2 .indicator {
 	margin-right: 4px;
 	float: right
@@ -191,6 +185,8 @@
 
 .robotTW2 .twx-section {
 	margin: 0 3px 0 3px;
+	height: 40px;
+	line-height: 12px;
 }
 
 .robotTW2 .tab {
@@ -284,24 +280,36 @@ keyframes down { 0% {
 left
 
 
+
+
 :
+
 
  
 
+
 0
 px
+
+
 
 
 ;
 top
 
 
+
+
 :
+
 
  
 
+
 20
 px
+
+
 
 
 ;

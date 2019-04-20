@@ -1,17 +1,12 @@
 <div class="win-content robotTW2">
 	<header class="win-head">
-		<h3>{{title}}</h3>
+		<h3>{{title}} {{text_version}}</h3>
 		<ul class="list-btn">
 			<li><a class="size-34x34 btn-red icon-26x26-close"
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
 	<div class="content-settings">
-		<div class="twx-section">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-		</div>
 		<div class="farm win-main jssb-applied jssb-focus jssb-scrolly"
 			scrollbar="">
 			<div class="box-paper">
@@ -264,32 +259,24 @@
 													ng-click="toggleAttacked()"></a></td>
 											</tr>
 											<tr>
-												<td class="cell-right">
-												<label
-                                                    for="unit_direction"
-                                                    style="margin-left: 12px; margin-right: 12px;">{{unit_direction}}</label><a
-                                                    tooltip="" tooltip-content="{{text_unit_direction}}"
-                                                    id="unit_direction" href="#"
-                                                    class="size-34x34 btn-orange"
-                                                    ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
-                                                    ng-click="toggleUnitDirection()"></a></td>
-												<td class="cell-right"><label
-                                                    for="cicle_distinct"
-                                                    style="margin-left: 12px; margin-right: 12px;">{{cicle_distinct}}</label><a
-                                                    tooltip="" tooltip-content="{{text_cicle_distinct}}"
-                                                    id="cicle_distinct" href="#"
-                                                    class="size-34x34 btn-orange"
-                                                    ng-class="{'icon-26x26-check-positive' : data_farm.cicle_distinct, 'icon-26x26-check-negative' : !data_farm.cicle_distinct}"
-                                                    ng-click="toggleCicleDistinct()"></a></td>
-												<td class="cell-right">
-												<label
-                                                    for="speed_direction"
-                                                    style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a
-                                                    tooltip="" tooltip-content="{{text_speed_direction}}"
-                                                    id="speed_direction" href="#"
-                                                    class="size-34x34 btn-orange"
-                                                    ng-class="{'icon-26x26-check-positive' : data_farm.speed_direction, 'icon-26x26-check-negative' : !data_farm.speed_direction}"
-                                                    ng-click="toggleSpeedDirection()"></a></td>
+												<td class="cell-right"><label for="unit_direction"
+													style="margin-left: 12px; margin-right: 12px;">{{unit_direction}}</label><a
+													tooltip="" tooltip-content="{{text_unit_direction}}"
+													id="unit_direction" href="#" class="size-34x34 btn-orange"
+													ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
+													ng-click="toggleUnitDirection()"></a></td>
+												<td class="cell-right"><label for="cicle_distinct"
+													style="margin-left: 12px; margin-right: 12px;">{{cicle_distinct}}</label><a
+													tooltip="" tooltip-content="{{text_cicle_distinct}}"
+													id="cicle_distinct" href="#" class="size-34x34 btn-orange"
+													ng-class="{'icon-26x26-check-positive' : data_farm.cicle_distinct, 'icon-26x26-check-negative' : !data_farm.cicle_distinct}"
+													ng-click="toggleCicleDistinct()"></a></td>
+												<td class="cell-right"><label for="speed_direction"
+													style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a
+													tooltip="" tooltip-content="{{text_speed_direction}}"
+													id="speed_direction" href="#" class="size-34x34 btn-orange"
+													ng-class="{'icon-26x26-check-positive' : data_farm.speed_direction, 'icon-26x26-check-negative' : !data_farm.speed_direction}"
+													ng-click="toggleSpeedDirection()"></a></td>
 											</tr>
 										</tbody>
 									</table>
