@@ -193,49 +193,6 @@
 	margin: 0 3px 0 3px;
 }
 
-.robotTW2 .defense.box-paper {
-	margin: 0 2px;
-	min-height: auto;
-}
-
-.robotTW2 .main.box-paper {
-	margin: 0 2px;
-	min-height: auto;
-}
-
-.robotTW2 .attack.box-paper {
-	margin: 0 2px;
-	min-height: auto;
-}
-
-.robotTW2 .headquarter.win-main {
-	height: 45%;
-}
-
-.robotTW2 .headquarter.box-paper {
-	margin: 0 2px;
-	min-height: auto;
-}
-
-.robotTW2 .farm.box-paper {
-	margin: 0 2px;
-	min-height: auto;
-}
-
-.robotTW2 .spy.box-paper {
-	margin: 0 2px;
-	min-height: auto;
-}
-
-.robotTW2 .log.box-paper {
-	margin: 0 2px;
-	min-height: auto;
-}
-
-.robotTW2 .box-border-dark {
-	width: fit-content;
-}
-
 .robotTW2 .tab {
 	width: 200px;
 }
