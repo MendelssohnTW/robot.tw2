@@ -623,6 +623,7 @@ define("robotTW2/services/FarmService", [
 			start			: start,
 			stop 			: stop,
 			isRunning		: is_Running,
+			isPaused		: is_Paused,
 			isInitialized	: is_Initialized,
 			version			: conf.VERSION.FARM,
 			name			: "farm"
