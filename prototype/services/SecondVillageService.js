@@ -3,12 +3,14 @@ define("robotTW2/services/SecondVillageService", [
 	"helper/time",
 	"models/SecondVillageModel",
 	"robotTW2/conf",
+	"conf/conf",
 	"robotTW2/databases/data_deposit"
 	], function(
 			robotTW2,
 			helper,
 			SecondVillageModel,
 			conf,
+			conf_conf,
 			data_deposit
 	){
 	return (function SecondVillageService(
@@ -23,6 +25,7 @@ define("robotTW2/services/SecondVillageService", [
 
 		var isInitialized = !1
 		, isRunning = !1
+		, r = undefined
 		, listener_job_collect = undefined
 		, listener_job_started = undefined
 		, readyJobs = function(jobs) {
@@ -46,6 +49,9 @@ define("robotTW2/services/SecondVillageService", [
 			})
 		}
 		, start_job = function(id, callback) {
+			r = $timeout(function(){
+				callback(!1)
+			}, conf_conf.LOADING_TIMEOUT);
 			socketService.emit(providers.routeProvider.SECOND_VILLAGE_START_JOB, {
 				village_id: modelDataService.getSelectedVillage().getId(),
 				job_id: id
@@ -58,7 +64,7 @@ define("robotTW2/services/SecondVillageService", [
 		}
 		, get_info = function(callback) {
 			socketService.emit(providers.routeProvider.SECOND_VILLAGE_GET_INFO, {}, function(b) {
-				if(!SecondVillageModel){return}
+				if(!SecondVillageModel || !b){return}
 				var second_village = new SecondVillageModel(b);
 				modelDataService.getSelectedCharacter().setSecondVillage(second_village),
 				callback()
@@ -88,6 +94,8 @@ define("robotTW2/services/SecondVillageService", [
 			if (Object.keys(availableJobs).length) {
 				var job_id = getKey(availableJobs);
 				start_job(job_id, function() {
+					$timeout.cancel(r);
+					r = undefined;
 					var available_job = availableJobs[job_id];
 					$timeout(verify_second, 1e3 * available_job.duration + 1e3)
 				})
@@ -110,22 +118,17 @@ define("robotTW2/services/SecondVillageService", [
 				!listener_job_started ? listener_job_started = $rootScope.$on(providers.eventTypeProvider.SECOND_VILLAGE_VILLAGE_CREATED, function(){$timeout(function(){verify_second()}, 3000)}) : listener_job_started;
 				verify_second()
 			}, ["all_villages_ready"])
-	
+
 		}
 		, stop = function() {
 			typeof(listener_job_collect) == "function" ? listener_job_collect(): null;
 			typeof(listener_job_started) == "function" ? listener_job_started(): null;
 			listener_job_collect = undefined;
 			listener_job_started = undefined;
-//			$timeout.cancel(interval_deposit);
-//			promise = undefined
-//			deposit_queue = []
-//			interval_deposit = null
-//			interval_deposit_collect = null
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SECONDVILLAGE"})
 		}
-		
+
 		return	{
 			init			: init,
 			start 			: start,

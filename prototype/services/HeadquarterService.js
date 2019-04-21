@@ -99,10 +99,10 @@ define("robotTW2/services/HeadquarterService", [
 						village_id: village.getId(),
 						location: locationTypes.MASS_SCREEN,
 						premium: !1
-					}, function(data, b) {
+					}, function(data) {
 						$timeout.cancel(r);
 						r = undefined;
-						if(data.code == "Route/notPublic") {
+						if(!data || data.code == "Route/notPublic") {
 							callback(!1)
 						} else {
 							callback(!0, data)	

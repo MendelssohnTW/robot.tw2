@@ -191,7 +191,8 @@ define("robotTW2/databases/data_farm", [
 			attacked				: false,
 			unit_direction			: false,
 			speed_direction			: false,
-			cicle_distinct			: false
+			cicle_distinct			: false,
+			list_pause				: []
 	}
 
 	if(!data_farm){

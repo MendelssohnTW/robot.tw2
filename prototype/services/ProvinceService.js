@@ -26,6 +26,7 @@ define("robotTW2/services/ProvinceService", [
 		var isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
+		, r = undefined
 		, callbk = undefined
 		, callPlayer = undefined
 		, start = function () {
@@ -59,6 +60,8 @@ define("robotTW2/services/ProvinceService", [
 			}
 		}
 		, onMapProvinceData = function($event, data){
+			$timeout.cancel(r);
+			r = undefined;
 			if(typeof(callbk) == "function"){
 				callbk(data)
 				callbk = undefined;
@@ -66,6 +69,9 @@ define("robotTW2/services/ProvinceService", [
 		}
 		, getProvinceData = function(x, y, callback){
 			callbk = callback
+			r = $timeout(function(){
+				callback(!1)
+			}, conf_conf.LOADING_TIMEOUT);
 			socketService.emit(providers.routeProvider.MAP_GETPROVINCE, {
 				'x': x,
 				'y': y
