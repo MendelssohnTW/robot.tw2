@@ -292,7 +292,7 @@ define("robotTW2/services/FarmService", [
 										typeof(listener_resume) == "function" ? listener_resume(): null;
 										listener_resume = undefined
 										listener_resume = $rootScope.$on(providers.eventTypeProvider.FARM_RESUME, function(){
-											isPaused = !1
+											setResumed()
 											execute()
 										})
 									} else {
@@ -469,12 +469,6 @@ define("robotTW2/services/FarmService", [
 				data_farm.set();
 			}
 		}
-		, pause_farm = function(){
-			isPaused = true
-		}
-		, resume_farm = function(){
-			isPaused = false
-		}
 		, start = function () {
 
 			if(isRunning) {return}
@@ -580,16 +574,19 @@ define("robotTW2/services/FarmService", [
 //			delete countCommands[cicle]
 			delete commands_for_presets[cicle]
 		}
-		, isRunning	= function () {
+		, is_Running	= function () {
 			return isRunning
 		}
-		, isPaused = function () {
+		, is_Paused = function () {
 			return isPaused
 		}
 		, setPaused = function () {
 			isPaused = !0
 		}
-		, isInitialized	= function () {
+		, setResumed = function () {
+			isPaused = !1
+		}
+		, is_Initialized	= function () {
 			return isInitialized
 		}
 		, stop = function () {
@@ -625,10 +622,8 @@ define("robotTW2/services/FarmService", [
 			init			: init,
 			start			: start,
 			stop 			: stop,
-			isRunning		: isRunning,
-			isPaused		: isPaused,
-			setPaused		: setPaused,
-			isInitialized	: isInitialized,
+			isRunning		: is_Running,
+			isInitialized	: is_Initialized,
 			version			: conf.VERSION.FARM,
 			name			: "farm"
 		}
