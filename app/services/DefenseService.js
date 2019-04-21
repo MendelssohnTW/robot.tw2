@@ -413,6 +413,7 @@ define("robotTW2/services/DefenseService", [
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: id
 				})
+				$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
 			}, timer_delay);
 		}
 		, units_to_send = function(params){
@@ -517,10 +518,10 @@ define("robotTW2/services/DefenseService", [
 						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
 					} else if(expires < -25000){
 						console.log("send cancel timer_delay < -25000 " + JSON.stringify(params))
+						$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
 						return
 					}
 					
-					$rootScope.$broadcast("command_sent_received", params)
 					console.log("Enviado sendCancel " + JSON.stringify(params))
 					commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 						commandDefense[params.id_command] = {
@@ -533,6 +534,7 @@ define("robotTW2/services/DefenseService", [
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
+					$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
 					console.log("não encontrou o comando para sendCancel")
 				}
 			}
@@ -550,6 +552,8 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
+			
+			
 
 		}
 		, resendDefense = function(params){
@@ -565,6 +569,7 @@ define("robotTW2/services/DefenseService", [
 				console.log("timer_delay_send set to 0 resendDefense" + JSON.stringify(params))
 			}
 			resend = true;
+			$rootScope.$broadcast(providers.eventTypeProvider.FARM_PAUSE)
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
@@ -594,6 +599,8 @@ define("robotTW2/services/DefenseService", [
 					})
 
 				}
+				
+
 
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
@@ -694,6 +701,7 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
+			
 			if(commandDefense[id_command] && typeof(commandDefense[id_command].timeout) == "object"){
 				if(commandDefense[id_command].timeout.$$state.status == 0){
 					$timeout.cancel(commandDefense[id_command].timeout)	

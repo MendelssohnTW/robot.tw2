@@ -80,6 +80,7 @@ define("robotTW2/services/ProvinceService", [
 		, getProvinceForVillageForEnemy = function(vill, callback){
 			let pv = getProvinceCoord(vill.x, vill.y)
 			getProvinceData(pv.x, pv.y, function(data){
+				if(!data){return}
 				let villages = data.villages
 				, list_result = villages.map(function(vill_t){
 					if(modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)){

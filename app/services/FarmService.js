@@ -52,6 +52,8 @@ define("robotTW2/services/FarmService", [
 		, commands_for_presets = {}
 		, completion_loaded = !1
 		, listener_report
+		, listener_pause
+		, listener_resume
 		, get_dist = function get_dist(villageId, journey_time, units) {
 			var village = modelDataService.getSelectedCharacter().getVillage(villageId)
 			, army = {
@@ -116,43 +118,43 @@ define("robotTW2/services/FarmService", [
 				return false
 			}
 
-			if(data_farm.cicle_distinct){
+//			if(data_farm.cicle_distinct){
 				lt =  Object.keys(countCommands[cicle]).map(function(village_id){
 					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
 						return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
 					}).some(f=>f==true)
 				}).some(f=>f==true)
-			} else {
-				lt = Object.keys(countCommands).map(function(cicle){
-					return  Object.keys(countCommands[cicle]).map(function(village_id){
-						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-							return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
-						}).some(f=>f==true)
-					}).some(f=>f==true)
-				}).some(f=>f==true)
-			}
+//			} else {
+//				lt = Object.keys(countCommands).map(function(cicle){
+//					return  Object.keys(countCommands[cicle]).map(function(village_id){
+//						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+//							return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
+//						}).some(f=>f==true)
+//					}).some(f=>f==true)
+//				}).some(f=>f==true)
+//			}
 
 			return !lt
 		}
 		, check_commands_for_bb = function(bb, cicle){
 			let lt = false;
 
-			if(data_farm.cicle_distinct){
+//			if(data_farm.cicle_distinct){
 				lt = Object.keys(countCommands[cicle]).map(function(village_id){
 					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
 						return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
 					}).every(f=>f==false)
 				}).every(f=>f==true)
 
-			} else {
-				lt = Object.keys(countCommands).map(function(cicle){
-					return Object.keys(countCommands[cicle]).map(function(village_id){
-						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-							return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
-						}).every(f=>f==false)
-					}).every(f=>f==true)
-				}).every(f=>f==true)
-			}
+//			} else {
+//				lt = Object.keys(countCommands).map(function(cicle){
+//					return Object.keys(countCommands[cicle]).map(function(village_id){
+//						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+//							return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
+//						}).every(f=>f==false)
+//					}).every(f=>f==true)
+//				}).every(f=>f==true)
+//			}
 			return lt
 		}
 		, sendCmd = function (cmd_preset, cicle_internal) {
@@ -255,30 +257,48 @@ define("robotTW2/services/FarmService", [
 						if(!promise_send[cicle_internal]){
 							promise_send[cicle_internal] = new Promise(function(resolve_send, reject_send){
 								$timeout(function () {
-									r = $timeout(function(){
+
+									function execute(){
+										typeof(listener_resume) == "function" ? listener_resume(): null;
+										listener_resume = undefined
+										r = $timeout(function(){
+											resolve_send()
+										}, conf_conf.LOADING_TIMEOUT);
+										if(!isRunning){
+											reject_send()
+											return
+										}
+										var params =  {
+												start_village: cmd_preset_internal.village_id,
+												target_village: bb.id,
+												army_preset_id: cmd_preset_internal.preset_id,
+												type: "attack"
+										}
+
+										let pstr = Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==cmd_preset_internal.preset_id).name
+										, text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + pstr + " "+
+										$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + modelDataService.getVillage(params.start_village).getName() +
+										$filter("i18n")("text_target", $rootScope.loc.ale, "farm") + ": " + bb.name
+										data_log.farm.push({"text":text, "date": (new Date(time.convertedTime())).toString()})
+										data_log.set()
+
+										countCommands[cicle_internal][cmd_preset_internal.village_id][cmd_preset_internal.preset_id].push(bb);
+										socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										resolve_send()
-									}, conf_conf.LOADING_TIMEOUT);
-									if(!isRunning){
-										reject_send()
-										return
-									}
-									var params =  {
-											start_village: cmd_preset_internal.village_id,
-											target_village: bb.id,
-											army_preset_id: cmd_preset_internal.preset_id,
-											type: "attack"
+
 									}
 
-									let pstr = Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==cmd_preset_internal.preset_id).name
-									, text = $filter("i18n")("text_preset", $rootScope.loc.ale, "farm") +	": " + pstr + " "+
-									$filter("i18n")("text_origin", $rootScope.loc.ale, "farm") + ": " + modelDataService.getVillage(params.start_village).getName() +
-									$filter("i18n")("text_target", $rootScope.loc.ale, "farm") + ": " + bb.name
-									data_log.farm.push({"text":text, "date": (new Date(time.convertedTime())).toString()})
-									data_log.set()
+									if(isPaused){
+										typeof(listener_resume) == "function" ? listener_resume(): null;
+										listener_resume = undefined
+										listener_resume = $rootScope.$on(providers.eventTypeProvider.FARM_RESUME, function(){
+											setResumed()
+											execute()
+										})
+									} else {
+										execute()
+									}
 
-									countCommands[cicle_internal][cmd_preset_internal.village_id][cmd_preset_internal.preset_id].push(bb);
-									socketService.emit(providers.routeProvider.SEND_PRESET, params);
-									resolve_send()
 								}, Math.round((data_farm.time_delay_farm / 2) + (data_farm.time_delay_farm * Math.random())))
 							})
 							.then(function(){
@@ -499,6 +519,8 @@ define("robotTW2/services/FarmService", [
 				}
 				listener_report = $rootScope.$on(providers.eventTypeProvider.REPORT_NEW, analyze_report)
 
+				listener_pause = $rootScope.$on(providers.eventTypeProvider.FARM_PAUSE, setPaused)
+
 				data_log.farm = [];
 				data_villages.getAssignedPresets();
 
@@ -552,6 +574,21 @@ define("robotTW2/services/FarmService", [
 //			delete countCommands[cicle]
 			delete commands_for_presets[cicle]
 		}
+		, is_Running	= function () {
+			return isRunning
+		}
+		, is_Paused = function () {
+			return isPaused
+		}
+		, setPaused = function () {
+			isPaused = !0
+		}
+		, setResumed = function () {
+			isPaused = !1
+		}
+		, is_Initialized	= function () {
+			return isInitialized
+		}
 		, stop = function () {
 			promise_send_queue = []
 			data_farm.complete = 0
@@ -572,6 +609,9 @@ define("robotTW2/services/FarmService", [
 
 			typeof(listener_report) == "function" ? listener_report(): null;
 			listener_report = undefined
+			typeof(listener_pause) == "function" ? listener_pause(): null;
+			listener_pause = undefined
+			
 
 			clear();
 			isRunning = !1
@@ -582,15 +622,9 @@ define("robotTW2/services/FarmService", [
 			init			: init,
 			start			: start,
 			stop 			: stop,
-			isRunning		: function () {
-				return isRunning
-			},
-			isPaused		: function () {
-				return isPaused
-			},
-			isInitialized	: function () {
-				return isInitialized
-			},
+			isRunning		: is_Running,
+			isPaused		: is_Paused,
+			isInitialized	: is_Initialized,
 			version			: conf.VERSION.FARM,
 			name			: "farm"
 		}

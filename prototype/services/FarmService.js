@@ -118,43 +118,43 @@ define("robotTW2/services/FarmService", [
 				return false
 			}
 
-			if(data_farm.cicle_distinct){
+//			if(data_farm.cicle_distinct){
 				lt =  Object.keys(countCommands[cicle]).map(function(village_id){
 					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
 						return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
 					}).some(f=>f==true)
 				}).some(f=>f==true)
-			} else {
-				lt = Object.keys(countCommands).map(function(cicle){
-					return  Object.keys(countCommands[cicle]).map(function(village_id){
-						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-							return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
-						}).some(f=>f==true)
-					}).some(f=>f==true)
-				}).some(f=>f==true)
-			}
+//			} else {
+//				lt = Object.keys(countCommands).map(function(cicle){
+//					return  Object.keys(countCommands[cicle]).map(function(village_id){
+//						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+//							return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
+//						}).some(f=>f==true)
+//					}).some(f=>f==true)
+//				}).some(f=>f==true)
+//			}
 
 			return !lt
 		}
 		, check_commands_for_bb = function(bb, cicle){
 			let lt = false;
 
-			if(data_farm.cicle_distinct){
+//			if(data_farm.cicle_distinct){
 				lt = Object.keys(countCommands[cicle]).map(function(village_id){
 					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
 						return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
 					}).every(f=>f==false)
 				}).every(f=>f==true)
 
-			} else {
-				lt = Object.keys(countCommands).map(function(cicle){
-					return Object.keys(countCommands[cicle]).map(function(village_id){
-						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-							return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
-						}).every(f=>f==false)
-					}).every(f=>f==true)
-				}).every(f=>f==true)
-			}
+//			} else {
+//				lt = Object.keys(countCommands).map(function(cicle){
+//					return Object.keys(countCommands[cicle]).map(function(village_id){
+//						return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+//							return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
+//						}).every(f=>f==false)
+//					}).every(f=>f==true)
+//				}).every(f=>f==true)
+//			}
 			return lt
 		}
 		, sendCmd = function (cmd_preset, cicle_internal) {
