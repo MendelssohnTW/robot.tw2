@@ -83,7 +83,8 @@
 											tooltip-content="{{ext.init_initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
 											switch-slider="" border="true"
 											enabled="ext.activated && ext.name!='log'"
-											value="ext.init_initialized" vertical="false" size="'56x28'">
+											value="ext.init_initialized" vertical="false" size="'56x28'"
+											ng-click="initExt(ext)">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
