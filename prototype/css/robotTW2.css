@@ -175,16 +175,6 @@
 	padding-left: 30px;
 }
 
-.robotTW2 .content-settings {
-	height: 100%;
-	width: 100%;
-	padding-bottom: 62px;
-}
-
-.robotTW2 .scroll-wrapp .main {
-	margin-bottom: 400px;
-}
-
 .robotTW2 .twx-section {
 	margin: 0 3px 0 3px;
 	height: 40px;
@@ -280,64 +270,14 @@ keyframes down { 0% {
 100%
 {
 left
-
-
-
-
-
-
-
-
 :
-
-
-
-
- 
-
-
-
-
 0
 px
-
-
-
-
-
-
-
-
 ;
 top
-
-
-
-
-
-
-
-
 :
-
-
-
-
- 
-
-
-
-
 20
 px
-
-
-
-
-
-
-
-
 ;
 }
 }
@@ -362,3 +302,8 @@ px
 	z-index: 999 !important;
 }
 
+.robotTW2 .main.content-settings {
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
+}
