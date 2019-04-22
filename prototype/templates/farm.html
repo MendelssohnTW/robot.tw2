@@ -85,11 +85,6 @@
 									ng-class="{'icon-26x26-check-positive' : data_farm.speed_direction, 'icon-26x26-check-negative' : !data_farm.speed_direction}"
 									ng-click="toggleSpeedDirection()"></a></td>
 							</tr>
-							<tr>
-
-
-
-							</tr>
 						</tbody>
 					</table>
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
@@ -162,6 +157,47 @@
 													</ul>
 												</td>
 											</tr>
+											<tr>
+                                                <td colspan="2">{{text_remove_all_preset}}</td>
+                                                <td>
+                                                    <ul class="list-btn list-center">
+                                                        <li><a id="button-start"
+                                                            class="btn-border btn-orange btn-init"
+                                                            ng-click="unassignAllPreset()">{{REMOVE}}</a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+											<tr>
+												<td colspan="2">{{text_add_all_preset}}</td>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="assignAllPreset()">{{ADD}}</a></li>
+													</ul>
+												</td>
+											</tr>
+											<tr>
+                                                <td colspan="2">{{text_remove_all_preset_all_villages}}</td>
+                                                <td>
+                                                    <ul class="list-btn list-center">
+                                                        <li><a id="button-start"
+                                                            class="btn-border btn-orange btn-init"
+                                                            ng-click="unassignAllPresetAllVillages()">{{ADD}}</a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+											<tr>
+												<td colspan="2">{{text_add_all_preset_all_villages}}</td>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="assignAllPresetAllVillages()">{{ADD}}</a></li>
+													</ul>
+												</td>
+											</tr>
+
 										</tbody>
 									</table>
 									<table
@@ -235,27 +271,43 @@
 												</td>
 											</tr>
 										</tbody>
-									</table></td>
+									</table>
+								</td>
 								<td class="cell-top">
-									<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<tbody>
 											<tr>
 												<th class="selected cell-center">{{text_presets}}</th>
 											</tr>
 											<tr>
-												<td class="cell-right"><label for="check_one" class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-													<div id="check_one" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}" ng-click="toggleOption('check_one')" tooltip="" tooltip-content=""></div></td>
+												<td class="cell-right"><label for="check_one"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+													<div id="check_one" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
+														ng-click="toggleOption('check_one')" tooltip=""
+														tooltip-content=""></div></td>
 											</tr>
 											<tr>
-												<td class="cell-right"><label for="check_all" class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-													<div id="check_all" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}" ng-click="toggleOption('check_all')" tooltip="" tooltip-content=""></div></td>
+												<td class="cell-right"><label for="check_all"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+													<div id="check_all" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
+														ng-click="toggleOption('check_all')" tooltip=""
+														tooltip-content=""></div></td>
 											</tr>
 											<tr>
-												<td class="cell-right"><label for="check_all_villages" class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-													<div id="check_all_villages" class="position-absolute size-34x34" ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}" ng-click="toggleOption('check_all_villages')" tooltip="" tooltip-content=""></div></td>
+												<td class="cell-right"><label for="check_all_villages"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+													<div id="check_all_villages"
+														class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
+														ng-click="toggleOption('check_all_villages')" tooltip=""
+														tooltip-content=""></div></td>
 											</tr>
 										</tbody>
-									</table><table
+									</table>
+									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
 											<col width="100px">
