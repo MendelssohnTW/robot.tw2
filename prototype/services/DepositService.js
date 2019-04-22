@@ -72,7 +72,7 @@ define("robotTW2/services/DepositService", [
 			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_GET_INFO, {})
 		}
 		, wait = function(job){
-			var time_rest = 1e3 * job.time_next_reset - Date.now() + 1e3;
+			var time_rest = 1e3 * job.time_next_reset - time.convertedTime() + 1e3;
 			$timeout.cancel(interval_deposit),
 			interval_deposit = $timeout(getInfo, time_rest)
 			data_deposit.interval = time_rest
