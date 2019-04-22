@@ -93,7 +93,7 @@
 									<div>{{getTimeRest(comando)}}</div>
 								</td>
 								<td class="cell-center">
-									<div>{{new Date(comando.data_escolhida - comando.duration) | date : 'dd/MM/yyyy' : 'UTC' }}</div>
+									<div>{{comando.data_escolhida - comando.duration | date : 'dd/MM/yyyy' : 'UTC' }}</div>
 									<div>{{getHoraSend(comando)}}</div>
 								</td>
 								<td class="cell-center selected">
