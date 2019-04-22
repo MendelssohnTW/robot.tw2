@@ -382,7 +382,7 @@ define("robotTW2/services/FarmService", [
 								} else {
 									data_log.farm.push(
 											{
-												"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
+												"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
 												"origin": null,
 												"target": null,
 												"date": time.convertedTime()
@@ -509,7 +509,7 @@ define("robotTW2/services/FarmService", [
 							init_first = false;
 							data_log.farm.push(
 									{
-										"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
+										"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
 										"origin": null,
 										"target": null,
 										"date": time.convertedTime()
@@ -521,7 +521,7 @@ define("robotTW2/services/FarmService", [
 						, function(){
 							data_log.farm.push(
 									{
-										"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
+										"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
 										"origin": null,
 										"target": null,
 										"date": time.convertedTime()
@@ -533,7 +533,7 @@ define("robotTW2/services/FarmService", [
 						clear_partial(countCicle)
 						data_log.farm.push(
 								{
-									"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
+									"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
 									"origin": null,
 									"target": null,
 									"date": time.convertedTime()
