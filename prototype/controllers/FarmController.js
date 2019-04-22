@@ -25,13 +25,14 @@ define("robotTW2/controllers/FarmController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
+		$scope.CREATE = services.$filter("i18n")("CREATE", services.$rootScope.loc.ale);
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.REMOVE = services.$filter("i18n")("REMOVE", services.$rootScope.loc.ale);
 		$scope.ADD = services.$filter("i18n")("ADD", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
 		$scope.SEARCH_MAP = services.$filter('i18n')('SEARCH_MAP', services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-
+		
 		$scope.update_all_presets = false;
 		$scope.local_data_villages = [];
 		$scope.data_villages = data_villages;
@@ -462,6 +463,74 @@ define("robotTW2/controllers/FarmController", [
 			
 			triggerUpdate()
 		}
+		
+		$scope.createPresets = function createPresets(){
+			function create_preset(preset, id){
+
+				let units = {};
+				let officers = {};
+				services.modelDataService.getGameData().getOrderedUnitNames().forEach(function(unitName) {
+					units[unitName] = 0;
+				});
+
+				services.modelDataService.getGameData().getOrderedOfficerNames().forEach(function(officerName) {
+					officers[officerName] = false;
+				});
+
+				let qtd = Object.values(preset)[0];
+				let unit = Object.keys(preset)[0];
+				units[unit] = qtd;
+				let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units")
+				, d_preset = {
+					"catapult_target": null,
+					"icon": parseInt("0c0b0c", 16),
+					"name": $scope.name_preset + " " + trad_unit,
+					"officers": officers,
+					"units": units,
+					"village_id": id
+				}
+				services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
+			}
+			
+			function df(opt){
+
+//				if(!opt){
+//					if(!services.modelDataService.getPresetList().isLoadedValue){
+//						services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+//							return df(true)
+//						});
+//					} else {
+//						return df(true)
+//					}
+//					return
+//				}
+
+				let list_presets = [
+					{"spear": $scope.qtd_preset},
+					{"sword": $scope.qtd_preset},
+					{"archer": $scope.qtd_preset},
+					{"axe": $scope.qtd_preset},
+					{"light_cavalry": $scope.qtd_preset},
+					{"mounted_archer": $scope.qtd_preset},
+					{"heavy_cavalry": $scope.qtd_preset}
+					]
+
+				let psts_load = angular.copy(services.presetListService.getPresets())
+
+				let pri_vill = services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id)
+				for (var preset in list_presets){
+					if(list_presets.hasOwnProperty(preset)){
+						if(psts_load == undefined || Object.values(psts_load).length == 0 || !Object.values(psts_load).map(function(elem){
+							return elem.name
+						}).find(f => f == $scope.name_preset + " " + services.$filter("i18n")(Object.keys(list_presets[preset])[0], services.$rootScope.loc.ale, "units"))){
+							create_preset(list_presets[preset], pri_vill.getId())
+						}
+					}
+				}
+			}
+			
+			df()
+		}
 
 		$scope.blurMaxJourney = function () {
 			var r = $("#max_journey_time").val() 
@@ -652,6 +721,7 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
 		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, triggerUpdate);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
 		$scope.local_data_villages = services.VillService.getLocalVillages("farm", "label");
 
@@ -684,6 +754,9 @@ define("robotTW2/controllers/FarmController", [
 			"availableOptions" : [],
 			"selectedOption" : {}
 		}
+		
+		$scope.name_preset = "*Farm";
+		$scope.qtd_preset = Math.min.apply(null, [(Math.max.apply(null, [Math.trunc(($scope.local_data_villages.length / 10) * 10), 10])), 200]);
 
 		getDetailsExceptions();
 
