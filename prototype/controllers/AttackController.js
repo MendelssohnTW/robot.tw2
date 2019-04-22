@@ -98,6 +98,18 @@ define("robotTW2/controllers/AttackController", [
 			return helper.readableMilliseconds(difTime)
 		}
 
+		$scope.getLabelStart = function(param){
+			let vid = param.start_village;
+			if(!vid){return}
+			return $scope.local_data_villages.find(f=>f.id==vid).label
+		}
+
+		$scope.getLabelTarget = function(param){
+			let vid = param.target_village;
+			if(!vid || !$scope.local_out_villages.find(f=>f.id==vid)){return}
+			return $scope.local_out_villages.find(f=>f.id==vid).label
+		}
+
 		$scope.clear_attack = function(){
 			services.AttackService.removeAll();
 		}

@@ -76,14 +76,14 @@
 									<div class="village">
 										<div class="name-coord"
 											ng-click="jumpToVillage(comando.start_village)">
-											{{local_data_villages[comando.start_village].label}}</div>
+											{{getLabelStart(comando)}}</div>
 									</div>
 								</td>
 								<td class="cell-center">
 									<div class="village">
 										<div class="name-coord"
 											ng-click="jumpOutVillage(comando.target_village)">
-											{{local_out_villages.find(f=>f.id==comando.target_village).label}}</div>
+											{{getLabelTarget(comando)}}</div>
 									</div>
 								</td>
 								<td class="cell-center">
