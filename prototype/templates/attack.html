@@ -76,14 +76,14 @@
 									<div class="village">
 										<div class="name-coord"
 											ng-click="jumpToVillage(comando.start_village)">
-											{{getLabelStart(comando)}}</div>
+											{{local_data_villages[comando.start_village].label}}</div>
 									</div>
 								</td>
 								<td class="cell-center">
 									<div class="village">
 										<div class="name-coord"
 											ng-click="jumpOutVillage(comando.target_village)">
-											{{getLabelTarget(comando)}}</div>
+											{{local_out_villages[comando.target_village].label}}</div>
 									</div>
 								</td>
 								<td class="cell-center">
@@ -93,7 +93,7 @@
 									<div>{{getTimeRest(comando)}}</div>
 								</td>
 								<td class="cell-center">
-									<div>{{getDataSend(comando)}}</div>
+									<div>{{new Date(comando.data_escolhida - comando.duration) | date : 'dd/MM/yyyy' : 'UTC' }}</div>
 									<div>{{getHoraSend(comando)}}</div>
 								</td>
 								<td class="cell-center selected">
