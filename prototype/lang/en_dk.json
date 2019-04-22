@@ -205,6 +205,7 @@
 		"text_remove_exceptions": "Remove villages from exception list",
 		"text_add_exceptions": "Add villages from exception list",
 		"text_add_preset": "Add a global preset to the selected village",
+		"text_create_preset": "Create default global presets",
 		"text_add_all_preset": "Add all global preset to the selected village",
 		"text_add_all_preset_all_villages": "Add all global preset to all villages",
 		"text_remove_preset": "Remove selected preset from selected village",

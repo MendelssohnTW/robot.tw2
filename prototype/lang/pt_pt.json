@@ -205,6 +205,7 @@
 		"text_remove_exceptions": "Remover aldeias da lista de excessão",
 		"text_add_exceptions": "Adicionar aldeias na lista de excessão",
 		"text_add_preset": "Adicionar uma predefinição global para a aldeia selecionada",
+        "text_create_preset": "Criar predefinições globais padrões",
         "text_add_all_preset": "Adicionar todas as predefinições globais para a aldeia selecionada",
 		"text_remove_preset": "Remover a predefinição selecionada da aldeia selecionada",
         "text_remove_all_preset": "Remover uma predefinição global para a aldeia selecionada",
