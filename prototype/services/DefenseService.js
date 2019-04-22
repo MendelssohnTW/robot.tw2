@@ -405,13 +405,12 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, sendCancel = function(params){
-			var timer_delay = params.timer_delay + robotTW2.databases.data_main.time_correction_command,
-			id = params.id_command;
+			var timer_delay = params.timer_delay + robotTW2.databases.data_main.time_correction_command
 			return $timeout(function () {
-				removeCommandDefense(id)
-				console.log("sendCancel " + id + " " + new Date(time.convertedTime()))
+				removeCommandDefense(params.id_command)
+				console.log("sendCancel " + new Date(time.convertedTime()) + JSON.stringify(params))
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
-					command_id: id
+					command_id: params.id_command
 				})
 				$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
 			}, timer_delay);
@@ -521,7 +520,7 @@ define("robotTW2/services/DefenseService", [
 						$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
 						return
 					}
-					
+
 					console.log("Enviado sendCancel " + JSON.stringify(params))
 					commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 						commandDefense[params.id_command] = {
@@ -552,8 +551,8 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-			
-			
+
+
 
 		}
 		, resendDefense = function(params){
@@ -599,7 +598,7 @@ define("robotTW2/services/DefenseService", [
 					})
 
 				}
-				
+
 
 
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
@@ -701,15 +700,15 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			
-			if(commandDefense[id_command] && typeof(commandDefense[id_command].timeout) == "object"){
-				if(commandDefense[id_command].timeout.$$state.status == 0){
-					$timeout.cancel(commandDefense[id_command].timeout)	
+			if(commandDefense[id_command]){ 
+				if(typeof(commandDefense[id_command].timeout) == "object"){
+					if(commandDefense[id_command].timeout.$$state.status == 0){
+						$timeout.cancel(commandDefense[id_command].timeout)	
+					}
 				}
 				delete commandDefense[id_command];
+				commandQueue.unbind(id_command)
 			}
-
-			commandQueue.unbind(id_command)
 		}
 		, removeAll = function(){
 			commandQueue.unbindAll("support")
