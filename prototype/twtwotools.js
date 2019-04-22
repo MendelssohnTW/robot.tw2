@@ -1697,94 +1697,100 @@ var robotTW2 = window.robotTW2 = undefined;
 			return function(){
 				function calibrate () {
 					return new Promise (function(resolve){
-						var villages = robotTW2.services.modelDataService.getVillages()
-						, village = villages[Object.keys(villages).shift()]
-						, units = {}
-						, unitInfo = village.unitInfo.getUnits()
-						, gTime
+						var villages = robotTW2.services.modelDataService.getSelectedCharacter().getVillageList()
 
-						if (!unitInfo) {return};
-						for(unit in unitInfo){
-							if (unitInfo.hasOwnProperty(unit)){
-								if (unitInfo[unit].available > 0 && !["doppelsoldner","knight","trebuchet"].some(f => f == unit)){
-									var unit_available = {[unit]: unitInfo[unit].available};
-									units[Object.keys(unit_available)[0]] = 
-										Object.keys(unit_available).map(function(key) {return unit_available[key] = 1})[0];
+						function recalibrate(){
+							if(villages.length){
+								let village = villages.shift()
+								, units = {}
+								, unitInfo = village.unitInfo.getUnits()
+								, gTime
+
+								if (!unitInfo) {return};
+								for(unit in unitInfo){
+									if (unitInfo.hasOwnProperty(unit)){
+										if (unitInfo[unit].available > 0 && !["knight"].some(f => f == unit)){
+											var unit_available = {[unit]: unitInfo[unit].available};
+											units[Object.keys(unit_available)[0]] = 
+												Object.keys(unit_available).map(function(key) {return unit_available[key] = 1})[0];
+										}
+									}
 								}
-							}
-						}
 
-						var obj_unit;
+								var obj_unit;
 
-						if(!units){
-							return
-						} else {
-							obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
-						}
+								if(!units || !Object.keys(units).length){
+									return recalibrate()
+								} else {
+									obj_unit ={[Object.keys(units)[0]]: units[Object.keys(units)[0]]};
+								}
 
-						units = angular.merge({}, obj_unit)
+								units = angular.merge({}, obj_unit)
 
-						var army = {
-							'officers'	: {},
-							"units"		: units
-						}
+								var army = {
+									'officers'	: {},
+									"units"		: units
+								}
 
-						robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
-							'x' : village.data.x,
-							'y' : village.data.y
-						}, function(bb) {
-							if (bb) {
-								var distancia = math.actualDistance(village.getPosition(), {
-									'x'			: bb.x,
-									'y'			: bb.y
-								})
-								speed = calculateTravelTime(army, village, "attack", {
-									'barbarian'		: true
-								})
-								, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
+								robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.MAP_GET_NEAREST_BARBARIAN_VILLAGE, {
+									'x' : village.data.x,
+									'y' : village.data.y
+								}, function(bb) {
+									if (bb) {
+										var distancia = math.actualDistance(village.getPosition(), {
+											'x'			: bb.x,
+											'y'			: bb.y
+										})
+										speed = calculateTravelTime(army, village, "attack", {
+											'barbarian'		: true
+										})
+										, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
 
 
-								robotTW2.services.$timeout(function(){
-									gTime = time.convertedTime();
-									this.listener_completed ? this.listener_completed() : this.listener_completed;
-									this.listener_completed = undefined;
-									this.listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
-										if(!data){
-											resolve()
-											return
-										}
-										if(data.direction =="forward" && data.origin.id == village.data.villageId){
-											var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
-											var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
-											var startedAt = outgoing[Object.keys(outgoing).pop()].startedAt;
-											var dif = (gTime - time.convertMStoUTC(startedAt)) - conf.TIME_CORRECTION_COMMAND;
-											if(!robotTW2.databases.data_main.max_time_correction || (dif > -robotTW2.databases.data_main.max_time_correction && dif < robotTW2.databases.data_main.max_time_correction)) {
-												robotTW2.databases.data_main.time_correction_command = dif
-												robotTW2.databases.data_main.set();
-												$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
-											}
-											this.listener_completed();
+										robotTW2.services.$timeout(function(){
+											gTime = time.convertedTime();
+											this.listener_completed ? this.listener_completed() : this.listener_completed;
 											this.listener_completed = undefined;
-											robotTW2.services.$timeout(function(){
-												robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_CANCEL, {
-													command_id: data.command_id
-												})
-												resolve();
-											}, 5000)
-										}
-									})
-									robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SEND_CUSTOM_ARMY, {
-										start_village: village.getId(),
-										target_village: bb.id,
-										type: "attack",
-										units: units,
-										icon: 0,
-										officers: {},
-										catapult_target: null
-									});
-								}, 1000);
+											this.listener_completed = $rootScope.$on(robotTW2.providers.eventTypeProvider.COMMAND_SENT, function ($event, data){
+												if(!data){
+													resolve()
+													return
+												}
+												if(data.direction =="forward" && data.origin.id == village.data.villageId){
+													var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
+													var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
+													var startedAt = outgoing[Object.keys(outgoing).pop()].startedAt;
+													var dif = (gTime - time.convertMStoUTC(startedAt)) - conf.TIME_CORRECTION_COMMAND;
+													if(!robotTW2.databases.data_main.max_time_correction || (dif > -robotTW2.databases.data_main.max_time_correction && dif < robotTW2.databases.data_main.max_time_correction)) {
+														robotTW2.databases.data_main.time_correction_command = dif
+														robotTW2.databases.data_main.set();
+														$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.CHANGE_TIME_CORRECTION)
+													}
+													this.listener_completed();
+													this.listener_completed = undefined;
+													robotTW2.services.$timeout(function(){
+														robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.COMMAND_CANCEL, {
+															command_id: data.command_id
+														})
+														resolve();
+													}, 5000)
+												}
+											})
+											robotTW2.services.socketService.emit(robotTW2.providers.routeProvider.SEND_CUSTOM_ARMY, {
+												start_village: village.getId(),
+												target_village: bb.id,
+												type: "attack",
+												units: units,
+												icon: 0,
+												officers: {},
+												catapult_target: null
+											});
+										}, 1000);
+									}
+								})
 							}
-						})
+						}
+						recalibrate()
 					})
 				}
 
