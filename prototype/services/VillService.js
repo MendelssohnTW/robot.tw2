@@ -40,13 +40,7 @@ define("robotTW2/services/VillService", [
 			case "recruit": 
 				str = "recruit_activate"
 					break;
-			case "spy": 
-				str = undefined
-					break;
-			case "attack": 
-				str = undefined
-				break;
-			case "farm": 
+			default :
 				str = undefined
 				break;
 			}
@@ -81,9 +75,9 @@ define("robotTW2/services/VillService", [
 		, stop = function (){
 			isRunning = !1;
 		}
-		
+
 		init()
-		
+
 		return	{
 			init			: init,
 			start 			: start,

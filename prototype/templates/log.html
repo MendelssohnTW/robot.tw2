@@ -55,13 +55,15 @@
 								<col>
 								<col>
 								<col>
+								<col>
 							</colgroup>
 							<tbody>
 								<tr>
-									<th style="display: table-cell" class="cell-center selected">Teste</th>
-									<th style="display: table-cell" class="cell-center selected">Teste</th>
-									<th style="display: table-cell" class="cell-center selected">Teste</th>
-									<th style="display: table-cell" class="cell-center selected">Teste</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_preset}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_target}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
@@ -69,7 +71,8 @@
 									<td class="cell-left">{{log.text}}</td>
 									<td class="cell-left">{{log.origin}}</td>
 									<td class="cell-left">{{log.target}}</td>
-									<td class="cell-center">{{log.date}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy' : 'UTC'}}</td>
+									<td class="cell-center">{{log.date | date : 'HH:mm:ss.sss' : 'UTC'}}</td>
 								</tr>
 							</tbody>
 						</table>

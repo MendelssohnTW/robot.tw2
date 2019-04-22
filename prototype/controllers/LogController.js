@@ -44,11 +44,11 @@ define("robotTW2/controllers/LogController", [
 				setActiveTab($scope.requestedTab);
 			}
 		}
-
+		
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-
+		
 		$scope.requestedTab = TABS.ATTACK;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
