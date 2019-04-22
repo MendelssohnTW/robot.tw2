@@ -88,30 +88,6 @@ define("robotTW2/controllers/DefenseController", [
 			return "icon icon-34x34-unit-" + name;
 		}
 
-		$scope.getHoraSend = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataSend = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "dd/MM/yyyy");
-		}
-
-		$scope.getHoraAlvo = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataAlvo = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
-		}
-
-		$scope.getHoraRetorno = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataRetorno = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "dd/MM/yyyy");
-		}
-
 		$scope.getTimeRest = function(param){
 			var difTime = param.data_escolhida - time.convertedTime() - param.time_sniper_ant; 
 			if(!difTime){return}

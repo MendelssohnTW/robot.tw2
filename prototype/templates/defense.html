@@ -247,16 +247,22 @@
 										<div>{{getTimeRest(comando)}}</div>
 									</td>
 									<td class="cell-center">
-										<div>{{getDataSend(comando)}}</div>
-										<div>{{getHoraSend(comando)}}</div>
+										<div>{{comando.data_escolhida - comando.time_sniper_ant
+											| date : 'dd/MM/yyyy' : 'UTC'}}</div>
+										<div>{{comando.data_escolhida - comando.time_sniper_ant
+											| date : 'HH:mm:ss.sss' : 'UTC'}}</div>
 									</td>
 									<td class="cell-center selected">
-										<div>{{getDataAlvo(comando)}}</div>
-										<div>{{getHoraAlvo(comando)}}</div>
+										<div>{{comando.data_escolhida | date : 'dd/MM/yyyy' :
+											'UTC}}</div>
+										<div>{{comando.data_escolhida | date : 'HH:mm:ss.sss' :
+											'UTC}}</div>
 									</td>
 									<td class="cell-center selected-green">
-										<div>{{getDataRetorno(comando)}}</div>
-										<div>{{getHoraRetorno(comando)}}</div>
+										<div>{{comando.data_escolhida - comando.time_sniper_post
+											| date : 'dd/MM/yyyy' : 'UTC'}}</div>
+										<div>{{comando.data_escolhida - comando.time_sniper_post
+											| date : 'HH:mm:ss.sss' : 'UTC'}}</div>
 									</td>
 									<td class="cell-center">
 										<div>{{comando.time_sniper_ant / 1000}} s</div>
