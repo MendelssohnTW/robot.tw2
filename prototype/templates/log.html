@@ -72,8 +72,8 @@
 									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">{{log.text}}</td>
 									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.origin}}</td>
 									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.target}}</td>
-									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy' : 'UTC'}}</td>
-									<td class="cell-center">{{log.date | date : 'HH:mm:ss.sss' : 'UTC'}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date : 'HH:mm:ss.sss'}}</td>
 								</tr>
 							</tbody>
 						</table>
