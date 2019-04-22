@@ -281,7 +281,7 @@ define("robotTW2/services/FarmService", [
 												{
 													"text": Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==cmd_preset_internal.preset_id).name,
 													"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
-													"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(bb)),
+													"target": formatHelper.villageNameWithCoordinates(bb),
 													"date": time.convertedTime()
 												}
 										)
