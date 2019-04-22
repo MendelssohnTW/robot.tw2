@@ -93,12 +93,12 @@
 									<div>{{getTimeRest(comando)}}</div>
 								</td>
 								<td class="cell-center">
-									<div>{{comando.data_escolhida - comando.duration | date : 'dd/MM/yyyy' : 'UTC'}}</div>
-									<div>{{comando.data_escolhida - comando.duration | date : 'HH:mm:ss.sss' : 'UTC'}}</div>
+									<div>{{comando.data_escolhida - comando.duration | date : 'dd/MM/yyyy'}}</div>
+									<div>{{comando.data_escolhida - comando.duration | date : 'HH:mm:ss.sss'}}</div>
 								</td>
 								<td class="cell-center selected">
-									<div>{{comando.data_escolhida | date : 'dd/MM/yyyy' : 'UTC'}}</div>
-									<div>{{comando.data_escolhida | date : 'HH:mm:ss.sss' : 'UTC'}}</div>
+									<div>{{comando.data_escolhida | date : 'dd/MM/yyyy'}}</div>
+									<div>{{comando.data_escolhida | date : 'HH:mm:ss.sss'}}</div>
 								</td>
 								<td class="cell-center">
 									<div>{{comando.units.spear || 0}}</div>
