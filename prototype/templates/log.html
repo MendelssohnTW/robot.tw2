@@ -68,9 +68,10 @@
 							</tbody>
 							<tbody class="scroll-wrap">
 								<tr ng-repeat="log in data_log.farm">
-									<td class="cell-left">{{log.text}}</td>
-									<td class="cell-left">{{log.origin}}</td>
-									<td class="cell-left">{{log.target}}</td>
+									<td ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}</td>
+									<td ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">{{log.text}}</td>
+									<td ng-if="log.origin != null && log.target != null" class="cell-left">{{log.origin}}</td>
+									<td ng-if="log.origin != null && log.target != null" class="cell-left">{{log.target}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy' : 'UTC'}}</td>
 									<td class="cell-center">{{log.date | date : 'HH:mm:ss.sss' : 'UTC'}}</td>
 								</tr>
