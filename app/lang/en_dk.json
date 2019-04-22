@@ -381,7 +381,12 @@
         "text_loyalt":"Loyalty for calculation"
 	},
 	"log": {
-        "title": "Log"
+        "title": "Log",
+        "text_origin": "Origin",
+        "text_target": "Target",
+        "text_preset": "Preset",
+        "text_date": "Date",
+        "text_hour": "Hour"
     },
 	"data": {
 		"title": "Update data",

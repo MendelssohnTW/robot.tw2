@@ -6,7 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="content-settings">
+	<div class="deposit content-settings">
 		<div class="deposit win-main jssb-applied jssb-focus jssb-scrolly"
 			scrollbar="">
 			<div class="box-paper">
@@ -20,28 +20,23 @@
 						<tr>
 							<td class="cell-right">{{use_reroll_deposit}}</td>
 							<td>
-								<div id="switch" switch-slider="" border="true" enabled="true"
-									value="data_deposit.use_reroll" vertical="false" size="'56x28'">
-									<div ng-class="{'box-border-dark box-filter': border}"
-										class="box-border-dark box-filter">
-										<div class="switch switch-56x28 switch-horizontal"
-											ng-class="{'switch-checked': value}">
-											<span class="size-26x26 switch-thumb"> <span
-												class="simple icon-26x26-switch-off"
-												ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-											</span>
+								<div class="checkbox">
+									<div id="switch" switch-slider="" border="true" enabled="true"
+										value="data_deposit.use_reroll" vertical="false"
+										size="'56x28'">
+										<div ng-class="{'box-border-dark box-filter': border}"
+											class="box-border-dark box-filter">
+											<div class="switch switch-56x28 switch-horizontal"
+												ng-class="{'switch-checked': value}">
+												<span class="size-26x26 switch-thumb"> <span
+													class="simple icon-26x26-switch-off"
+													ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+												</span>
+											</div>
 										</div>
 									</div>
 								</div>
-
 							</td>
-						</tr>
-						<tr>
-							<td class="cell-right">{{text_interval_deposit}}</td>
-							<td><input id="input-ms" class="input-border inpt"
-								type="time" step="1" min="00:00:00" max="23:59:59"
-								value="{{data_deposit.interval | date : 'HH:mm:ss' : 'UTC'}}"
-								disabled></td>
 						</tr>
 						<tr>
 							<td class="cell-right">{{text_interval}}</td>

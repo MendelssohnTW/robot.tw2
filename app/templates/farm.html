@@ -6,7 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="content-settings">
+	<div class="farm content-settings">
 		<div class="farm win-main jssb-applied jssb-focus jssb-scrolly"
 			scrollbar="">
 			<div class="box-paper">
@@ -265,13 +265,17 @@
 													id="unit_direction" href="#" class="size-34x34 btn-orange"
 													ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
 													ng-click="toggleUnitDirection()"></a></td>
+												
+												<!-- 
 												<td class="cell-right"><label for="cicle_distinct"
 													style="margin-left: 12px; margin-right: 12px;">{{cicle_distinct}}</label><a
 													tooltip="" tooltip-content="{{text_cicle_distinct}}"
 													id="cicle_distinct" href="#" class="size-34x34 btn-orange"
 													ng-class="{'icon-26x26-check-positive' : data_farm.cicle_distinct, 'icon-26x26-check-negative' : !data_farm.cicle_distinct}"
 													ng-click="toggleCicleDistinct()"></a></td>
-												<td class="cell-right"><label for="speed_direction"
+													 -->
+													
+												<td colspan="2" class="cell-right"><label for="speed_direction"
 													style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a
 													tooltip="" tooltip-content="{{text_speed_direction}}"
 													id="speed_direction" href="#" class="size-34x34 btn-orange"
@@ -376,9 +380,9 @@
 													id="max_dist" step="1" min="5" max="200"
 													ng-model="data.selectedOption.max_journey_distance"
 													disabled></td>
-												<td class="cell-center">
-													<div class="checkbox">
-														<span class="cell-center selected">{{villages_selections}}</span>
+												<td class="cell-center"><label for="checkbox"
+													class="with-margin">{{villages_selections}}</label>
+													<div id="checkbox" class="checkbox">
 														<div switch-slider="" border="true" enabled="true"
 															value="data_villages.villages[village_selected.id].farm_activate"
 															vertical="false" size="'56x28'">
@@ -393,8 +397,7 @@
 																</div>
 															</div>
 														</div>
-													</div>
-												</td>
+													</div></td>
 											</tr>
 										</tbody>
 									</table>
@@ -477,31 +480,31 @@
 											</tr>
 											<tr>
 												<td class="cell-right">{{text_units_village}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town
+												<td class="cell-center">{{village_selected.units.spear.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town
+												<td class="cell-center">{{village_selected.units.sword.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town
+												<td class="cell-center">{{village_selected.units.axe.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town
+												<td class="cell-center">{{village_selected.units.archer.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town
+												<td class="cell-center">{{village_selected.units.light_cavalry.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.mounted_archer.in_town
+												<td class="cell-center">{{village_selected.units.mounted_archer.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town
+												<td class="cell-center">{{village_selected.units.heavy_cavalry.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town
+												<td class="cell-center">{{village_selected.units.ram.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town
+												<td class="cell-center">{{village_selected.units.catapult.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town
+												<td class="cell-center">{{village_selected.units.doppelsoldner.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town
+												<td class="cell-center">{{village_selected.units.trebuchet.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town
+												<td class="cell-center">{{village_selected.units.snob.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town
+												<td class="cell-center">{{village_selected.units.knight.in_town
 													|| 0}}</td>
 											</tr>
 											<tr>

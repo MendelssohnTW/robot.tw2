@@ -6,7 +6,7 @@
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="content-settings">
+	<div class="alert content-settings">
 		<div class="alert win-main jssb-applied jssb-focus jssb-scrolly"
 			scrollbar="">
 			<div class="box-paper">
@@ -22,19 +22,19 @@
 						<tbody>
 							<tr>
 								<td class="cell-top">
-									<div>
-										<h5 class="twx-section collapse">{{settings_for_member}}</h5>
-										<table
-											class="tbl-border-light tbl-big-header tbl-content tbl-striped"
-											id="preset-list">
-											<colgroup>
-												<col width="*">
-												<col width="64px">
-											</colgroup>
-											<tbody>
-												<tr ng-repeat="member in members">
-													<td class="cell-right">{{member.name}}</td>
-													<td>
+									<h5 class="twx-section collapse">{{settings_for_member}}</h5>
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+										id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="64px">
+										</colgroup>
+										<tbody>
+											<tr ng-repeat="member in members">
+												<td class="cell-right">{{member.name}}</td>
+												<td>
+													<div class="checkbox">
 														<div switch-slider="" border="true" enabled="true"
 															value="member.isFriend" ng-click="toggleValue(member)"
 															vertical="false" size="'56x28'">
@@ -49,11 +49,11 @@
 																</div>
 															</div>
 														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
 								</td>
 								<td class="cell-top">
 									<div>

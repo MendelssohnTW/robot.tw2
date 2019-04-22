@@ -175,16 +175,6 @@
 	padding-left: 30px;
 }
 
-.robotTW2 .content-settings {
-	height: 100%;
-	width: 100%;
-	padding-bottom: 62px;
-}
-
-.robotTW2 .scroll-wrapp .main {
-	margin-bottom: 400px;
-}
-
 .robotTW2 .twx-section {
 	margin: 0 3px 0 3px;
 	height: 40px;
@@ -280,67 +270,28 @@ keyframes down { 0% {
 100%
 {
 left
-
-
-
-
-
-
-
-
 :
-
-
-
-
- 
-
-
-
-
 0
 px
-
-
-
-
-
-
-
-
 ;
 top
-
-
-
-
-
-
-
-
 :
-
-
-
-
- 
-
-
-
-
 20
 px
-
-
-
-
-
-
-
-
 ;
 }
 }
+
+.robotTW2 .switch-slider {
+	width: fit-content;
+}
+
+.robotTW2 .checkbox {
+	position:relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .robotTW2 .animation-download {
 	animation-name: down;
 	animation-duration: 1s;
@@ -358,6 +309,66 @@ px
 }
 
 .robotTW2 .win-main {
-	position: absolute;
+	position: relative !important;
+	z-index: 999 !important;
 }
 
+.robotTW2 .main.content-settings {
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
+}
+
+.robotTW2 .log.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 100px;
+}
+
+.robotTW2 .farm.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 62px;
+}
+
+.robotTW2 .attack.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 62px;
+}
+
+.robotTW2 .defense.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 260px;
+}
+
+.robotTW2 .alert.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 62px;
+}
+
+.robotTW2 .spy.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 62px;
+}
+
+.robotTW2 .deposit.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 62px;
+}
+
+.robotTW2 .recon.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 62px;
+}
+
+.robotTW2 .recruit.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 62px;
+}
