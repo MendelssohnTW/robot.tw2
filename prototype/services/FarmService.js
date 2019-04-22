@@ -606,6 +606,14 @@ define("robotTW2/services/FarmService", [
 				} else {
 					data_farm.infinite = true;
 					data_farm.set();
+					data_log.farm.push(
+							{
+								"text": $filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"),
+								"origin": null,
+								"target": null,
+								"date": time.convertedTime()
+							}
+					)
 					execute_init(true)
 				}
 			}, ["all_villages_ready"])
