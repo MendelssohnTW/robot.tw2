@@ -53,9 +53,13 @@
 							<colgroup>
 								<col>
 								<col>
+								<col>
+								<col>
 							</colgroup>
 							<tbody>
 								<tr>
+									<th style="display: table-cell" class="cell-center selected">Teste</th>
+									<th style="display: table-cell" class="cell-center selected">Teste</th>
 									<th style="display: table-cell" class="cell-center selected">Teste</th>
 									<th style="display: table-cell" class="cell-center selected">Teste</th>
 								</tr>
@@ -63,6 +67,8 @@
 							<tbody class="scroll-wrap">
 								<tr ng-repeat="log in data_log.farm">
 									<td class="cell-left">{{log.text}}</td>
+									<td class="cell-left">{{log.origin}}</td>
+									<td class="cell-left">{{log.target}}</td>
 									<td class="cell-center">{{log.date}}</td>
 								</tr>
 							</tbody>

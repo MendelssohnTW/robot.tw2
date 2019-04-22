@@ -381,7 +381,12 @@
 		"text_loyalt": "Lealdade para cálculo"
 	},
 	"log": {
-		"title": "Log"
+		"title": "Log",
+        "text_origin": "Origem",
+        "text_target": "Alvo",
+        "text_preset": "Predefinição",
+        "text_date": "Data",
+        "text_hour": "Hora"
 	},
 	"data": {
 		"title": "Atualização de dados",
