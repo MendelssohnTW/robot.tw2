@@ -282,7 +282,7 @@ define("robotTW2/services/FarmService", [
 													"text": Object.keys(modelDataService.getPresetList().presets).map(function(elem){return modelDataService.getPresetList().presets[elem]}).find(f=>f.id==cmd_preset_internal.preset_id).name,
 													"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 													"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(bb)),
-													"date": (new Date(time.convertedTime())).toString()
+													"date": time.convertedTime()
 												}
 										)
 										data_log.set()
@@ -385,7 +385,7 @@ define("robotTW2/services/FarmService", [
 												"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
 												"origin": null,
 												"target": null,
-												"date": (new Date(time.convertedTime())).toString()
+												"date": time.convertedTime()
 											}
 									)
 									data_log.set()
@@ -512,7 +512,7 @@ define("robotTW2/services/FarmService", [
 										"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
 										"origin": null,
 										"target": null,
-										"date": (new Date(time.convertedTime())).toString()
+										"date": time.convertedTime()
 									}
 							)
 							data_log.set()
@@ -524,7 +524,7 @@ define("robotTW2/services/FarmService", [
 										"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
 										"origin": null,
 										"target": null,
-										"date": (new Date(time.convertedTime())).toString()
+										"date": time.convertedTime()
 									}
 							)
 							clear_partial(countCicle)
@@ -536,7 +536,7 @@ define("robotTW2/services/FarmService", [
 									"text": $filter("i18n")("terminate_cicle", $rootScope.loc.ale, "farm"),
 									"origin": null,
 									"target": null,
-									"date": (new Date(time.convertedTime())).toString()
+									"date": time.convertedTime()
 								}
 						)
 						data_log.set()
@@ -569,7 +569,7 @@ define("robotTW2/services/FarmService", [
 										"text": $filter("i18n")("wait_init", $rootScope.loc.ale, "farm"),
 										"origin": null,
 										"target": null,
-										"date": (new Date(time.convertedTime())).toString()
+										"date": time.convertedTime()
 									}
 							)
 							data_log.set()
@@ -582,7 +582,7 @@ define("robotTW2/services/FarmService", [
 										"text": $filter("i18n")("init_cicles", $rootScope.loc.ale, "farm"),
 										"origin": null,
 										"target": null,
-										"date": (new Date(time.convertedTime())).toString()
+										"date": time.convertedTime()
 									}
 							)
 							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("farm_init", $rootScope.loc.ale, "farm")})
@@ -597,7 +597,7 @@ define("robotTW2/services/FarmService", [
 									"text": $filter("i18n")("farm_no_init", $rootScope.loc.ale, "farm"),
 									"origin": null,
 									"target": null,
-									"date": (new Date(time.convertedTime())).toString()
+									"date": time.convertedTime()
 								}
 						)
 						data_log.set()
