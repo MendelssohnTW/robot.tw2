@@ -25,19 +25,21 @@ define("robotTW2/controllers/FarmController", [
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);
+		$scope.CREATE = services.$filter("i18n")("CREATE", services.$rootScope.loc.ale);
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.REMOVE = services.$filter("i18n")("REMOVE", services.$rootScope.loc.ale);
 		$scope.ADD = services.$filter("i18n")("ADD", services.$rootScope.loc.ale);
 		$scope.SELECT = services.$filter("i18n")("SELECT", services.$rootScope.loc.ale);
 		$scope.SEARCH_MAP = services.$filter('i18n')('SEARCH_MAP', services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-
+		
 		$scope.update_all_presets = false;
 		$scope.local_data_villages = [];
 		$scope.data_villages = data_villages;
 		$scope.data_farm = data_farm;
 
 		var self = this
+		, presetId
 		, r_farm_time
 		, time_rest
 		, presetListModel = services.modelDataService.getPresetList()
@@ -88,21 +90,42 @@ define("robotTW2/controllers/FarmController", [
 
 			return armyService.getTravelTimeForDistance(army, travelTime, distance, "attack") * 1000
 		}
+		, assignPresets = function assignPresets(id, callback) {
+			var timeout_preset = services.$timeout(function(){
+				if(callback && typeof(callback)=="function"){
+					callback()	
+				}
+			}, conf_conf.LOADING_TIMEOUT)
+
+			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
+				'village_id': id,
+				'preset_ids': presetIds
+			}, function(data){
+				services.$timeout.cancel(timeout_preset)
+				timeout_preset = undefined
+				$("#select_preset")[0].selectedIndex = 0;
+				$("#select_preset_out")[0].selectedIndex = 0;
+				if(callback && typeof(callback)=="function"){
+					callback()	
+				}
+			});
+		}
+		, assignPresetForVill = function assignPresetForVill(villageId, key) {
+			if($scope.village_selected.id == villageId){
+				$scope.data.assignedPresetList[+$scope.data.presets[key].id] = true
+				!presetIds.find(f=>f==$scope.data.presets[key].id) ? presetIds.push(parseInt($scope.data.presets[key].id, 10)) : presetIds;
+			}
+		}
 		, triggerUpdate = function triggerUpdate() {
 			presetIds = [];
 			$scope.data.assignedPresetList = {}
-			var presetId,
-			assignPreset = function assignPreset(villageId) {
-				if($scope.village_selected.id == villageId){
-					$scope.data.assignedPresetList[+$scope.data.presets[key].id] = true
-					!presetIds.find(f=>f==$scope.data.presets[key].id) ? presetIds.push(parseInt($scope.data.presets[key].id, 10)) : presetIds;
-				}
-			};
 			for (key in $scope.data.presets) {
 				if($scope.data.presets.hasOwnProperty(key)){
 					angular.extend($scope.data.presets[key], $scope.data_villages.villages[$scope.village_selected.id].presets[$scope.data.presets[key].id])
 					if(!$scope.data.presets[key].assigned_villages){continue}
-					$scope.data.presets[key].assigned_villages.forEach(assignPreset);
+					$scope.data.presets[key].assigned_villages.forEach(function(villageId){
+						assignPresetForVill(villageId, key)
+					});
 				}
 			}
 			$scope.data.selectedOption = $scope.data.presets.find(f=>f.id==Object.keys($scope.data.assignedPresetList)[0])
@@ -295,7 +318,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 			$scope.blur();
 		}
-		
+
 		$scope.toggleAttacked = function(){
 			if($scope.data_farm.attacked){
 				$scope.data_farm.attacked = false
@@ -304,7 +327,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 			$scope.blur();
 		}
-		
+
 		$scope.toggleUnitDirection = function(){
 			if($scope.data_farm.unit_direction){
 				$scope.data_farm.unit_direction = false
@@ -313,7 +336,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 			$scope.blur();
 		}
-		
+
 		$scope.toggleSpeedDirection = function(){
 			if($scope.data_farm.speed_direction){
 				$scope.data_farm.speed_direction = false
@@ -322,7 +345,7 @@ define("robotTW2/controllers/FarmController", [
 			}
 			$scope.blur();
 		}
-		
+
 		$scope.toggleCicleDistinct = function(){
 			if($scope.data_farm.cicle_distinct){
 				$scope.data_farm.cicle_distinct = false
@@ -396,33 +419,117 @@ define("robotTW2/controllers/FarmController", [
 		 * Presets
 		 */
 
-		$scope.assignPresets = function assignPresets() {
-			var timeout_preset = services.$timeout(function(){
-				triggerUpdate()
-			}, conf_conf.LOADING_TIMEOUT)
-
-			services.socketService.emit(providers.routeProvider.ASSIGN_PRESETS, {
-				'village_id': $scope.village_selected.id,
-				'preset_ids': presetIds
-			}, function(data){
-				services.$timeout.cancel(timeout_preset)
-				timeout_preset = undefined
-				$("#select_preset")[0].selectedIndex = 0;
-				$("#select_preset_out")[0].selectedIndex = 0;
-				triggerUpdate()
-			});
-		}
-
 		$scope.assignPreset = function assignPreset() {
 			let presetId = $scope.data.selectedOptionOut.id;
 			!presetIds.find(f=>f==presetId) ? presetIds.push(parseInt(presetId, 10)) : presetIds;
-			$scope.assignPresets();
+			assignPresets($scope.village_selected.id, triggerUpdate);
+		}
+
+		$scope.assignAllPreset = function assignAllPreset() {
+			$scope.data.presets.forEach(function(preset){
+				!presetIds.find(f=>f==preset.id) ? presetIds.push(preset.id) : presetIds;
+			});
+			assignPresets($scope.village_selected.id, triggerUpdate);
+		}
+
+		$scope.assignAllPresetAllVillages = function assignAllPresetAllVillages() {
+			$scope.data.presets.forEach(function(preset){
+				!presetIds.find(f=>f==preset.id) ? presetIds.push(preset.id) : presetIds;
+			});
+			
+			$scope.local_data_villages.forEach(function(vill){
+				assignPresets(vill.id);	
+			})
+			
+			triggerUpdate()
 		}
 
 		$scope.unassignPreset = function unassignPreset() {
 			let presetId = $scope.data.selectedOption.id;
 			presetIds.splice(presetIds.indexOf(presetId), 1);
-			$scope.assignPresets();
+			assignPresets($scope.village_selected.id, triggerUpdate);
+		}
+		
+		$scope.unassignAllPreset = function unassignAllPreset() {
+			presetIds = []
+			assignPresets($scope.village_selected.id, triggerUpdate);
+		}
+		
+		$scope.unassignAllPresetAllVillages = function unassignAllPresetAllVillages() {
+			presetIds = []
+			$scope.local_data_villages.forEach(function(vill){
+				assignPresets(vill.id);	
+			})
+			
+			triggerUpdate()
+		}
+		
+		$scope.createPresets = function createPresets(){
+			function create_preset(preset, id){
+
+				let units = {};
+				let officers = {};
+				services.modelDataService.getGameData().getOrderedUnitNames().forEach(function(unitName) {
+					units[unitName] = 0;
+				});
+
+				services.modelDataService.getGameData().getOrderedOfficerNames().forEach(function(officerName) {
+					officers[officerName] = false;
+				});
+
+				let qtd = Object.values(preset)[0];
+				let unit = Object.keys(preset)[0];
+				units[unit] = qtd;
+				let trad_unit = services.$filter("i18n")(unit, services.$rootScope.loc.ale, "units")
+				, d_preset = {
+					"catapult_target": null,
+					"icon": parseInt("0c0b0c", 16),
+					"name": $scope.name_preset + " " + trad_unit,
+					"officers": officers,
+					"units": units,
+					"village_id": id
+				}
+				services.socketService.emit(providers.routeProvider.SAVE_NEW_PRESET, d_preset);
+			}
+			
+			function df(opt){
+
+//				if(!opt){
+//					if(!services.modelDataService.getPresetList().isLoadedValue){
+//						services.socketService.emit(providers.routeProvider.GET_PRESETS, {}, function(){
+//							return df(true)
+//						});
+//					} else {
+//						return df(true)
+//					}
+//					return
+//				}
+
+				let list_presets = [
+					{"spear": $scope.qtd_preset},
+					{"sword": $scope.qtd_preset},
+					{"archer": $scope.qtd_preset},
+					{"axe": $scope.qtd_preset},
+					{"light_cavalry": $scope.qtd_preset},
+					{"mounted_archer": $scope.qtd_preset},
+					{"heavy_cavalry": $scope.qtd_preset}
+					]
+
+				let psts_load = angular.copy(services.presetListService.getPresets())
+
+				let pri_vill = services.modelDataService.getSelectedCharacter().getVillage($scope.village_selected.id)
+				for (var preset in list_presets){
+					if(list_presets.hasOwnProperty(preset)){
+						if(psts_load == undefined || Object.values(psts_load).length == 0 || !Object.values(psts_load).map(function(elem){
+							return elem.name
+						}).find(f => f == $scope.name_preset + " " + services.$filter("i18n")(Object.keys(list_presets[preset])[0], services.$rootScope.loc.ale, "units"))){
+							create_preset(list_presets[preset], pri_vill.getId())
+						}
+					}
+				}
+			}
+			
+			df()
 		}
 
 		$scope.blurMaxJourney = function () {
@@ -613,6 +720,8 @@ define("robotTW2/controllers/FarmController", [
 		});
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, triggerUpdate);
+		$scope.$on(providers.eventTypeProvider.ARMY_PRESET_SAVED, triggerUpdate);
 
 		$scope.local_data_villages = services.VillService.getLocalVillages("farm", "label");
 
@@ -645,6 +754,9 @@ define("robotTW2/controllers/FarmController", [
 			"availableOptions" : [],
 			"selectedOption" : {}
 		}
+		
+		$scope.name_preset = "*Farm";
+		$scope.qtd_preset = Math.min.apply(null, [(Math.max.apply(null, [Math.trunc(($scope.local_data_villages.length / 10) * 10), 10])), 200]);
 
 		getDetailsExceptions();
 
