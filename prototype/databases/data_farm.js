@@ -72,6 +72,9 @@ define("robotTW2/databases/data_farm", [
 				});
 		}
 	}
+	db_farm.createPreset = function(){
+		df()
+	}
 	
 	function create_preset(preset, id){
 
@@ -197,12 +200,10 @@ define("robotTW2/databases/data_farm", [
 
 	if(!data_farm){
 		data_farm = dataNew
-		df()
 	} else {
 		if(!data_farm.version || (typeof(data_farm.version) == "number" ? data_farm.version.toString() : data_farm.version) < conf.VERSION.FARM){
 			data_farm = dataNew
 			notify("data_farm");
-			df()
 		} else {
 			if(!data_farm.auto_start) data_farm.init_initialized = !1;
 			if(data_farm.auto_start) data_farm.init_initialized = !0;
