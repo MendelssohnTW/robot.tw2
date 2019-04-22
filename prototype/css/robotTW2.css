@@ -358,6 +358,7 @@ px
 }
 
 .robotTW2 .win-main {
-	position: absolute;
+	position: relative !important;
+	z-index: 999 !important;
 }
 
