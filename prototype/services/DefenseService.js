@@ -550,9 +550,6 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-
-
-
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant
@@ -718,29 +715,28 @@ define("robotTW2/services/DefenseService", [
 			isInitialized = !0
 			start();
 		}
-		, handlerVerify = function(opt, resend){
-			if(opt || resend){
-				if(!listener_verify){
-					listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
-						if(!isRunning){return}
-						promise_verify = undefined;
-
-//						promise.$$state.status === 0 // pending
-//						promise.$$state.status === 1 // resolved
-//						promise.$$state.status === 2 // rejected
-
-						if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-							timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
-						}
-					});
-				}
-			} else {
+		, handlerVerify = function(){
+			if(!resend){
 				verificarAtaques();
 			}
+			if(!listener_verify){
+				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
+					if(!isRunning){return}
+					promise_verify = undefined;
+
+//					promise.$$state.status === 0 // pending
+//					promise.$$state.status === 1 // resolved
+//					promise.$$state.status === 2 // rejected
+
+					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
+						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
+					}
+				});
+			}
 		}
-		, start = function(opt){
+		, start = function(){
 			if(isRunning){return}
-			if(opt || resend){
+			if(resend){
 				$timeout(function(){start(true)}, 10000)
 				return;
 			}
@@ -757,7 +753,7 @@ define("robotTW2/services/DefenseService", [
 				if(!listener_conquered){
 					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
 				}
-				handlerVerify(opt, resend);
+				handlerVerify();
 			}, ["all_villages_ready"])
 		}
 		, clear = function(){
