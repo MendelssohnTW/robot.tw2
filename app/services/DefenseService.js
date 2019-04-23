@@ -328,7 +328,7 @@ define("robotTW2/services/DefenseService", [
 							default:
 								list_others.push(cmd);
 							}
-							data_villages.set();
+
 						}
 					})
 				});
@@ -382,7 +382,6 @@ define("robotTW2/services/DefenseService", [
 						var id = vls.shift();
 						troops_analyze(id, lt).then(gt) 
 					} else {
-						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 						resolve()
 					}
 				}
@@ -395,6 +394,8 @@ define("robotTW2/services/DefenseService", [
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
+					data_villages.set();
+					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
 						promise_verify_queue = false;
 						verificarAtaques()
@@ -510,7 +511,7 @@ define("robotTW2/services/DefenseService", [
 						"timer_delay" 	: expires + robotTW2.databases.data_main.time_correction_command,
 						"id_command" 	: data.id
 					}
-					
+
 					if(expires >= -25000 && expires < 0){
 						params.timer_delay = 0;
 						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
@@ -531,7 +532,7 @@ define("robotTW2/services/DefenseService", [
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
-					
+
 					console.log("não encontrou o comando para sendCancel")
 				}
 			}
@@ -549,9 +550,6 @@ define("robotTW2/services/DefenseService", [
 				officers			: params.officers,
 				catapult_target		: params.catapult_target
 			});
-
-
-
 		}
 		, resendDefense = function(params){
 			var expires_send = params.data_escolhida - params.time_sniper_ant
@@ -718,7 +716,9 @@ define("robotTW2/services/DefenseService", [
 			start();
 		}
 		, handlerVerify = function(){
-			verificarAtaques();
+			if(!resend){
+				verificarAtaques();
+			}
 			if(!listener_verify){
 				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
 					if(!isRunning){return}
@@ -734,9 +734,9 @@ define("robotTW2/services/DefenseService", [
 				});
 			}
 		}
-		, start = function(opt){
+		, start = function(){
 			if(isRunning){return}
-			if(opt && isRunning && resend){
+			if(resend){
 				$timeout(function(){start(true)}, 10000)
 				return;
 			}
