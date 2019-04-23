@@ -405,6 +405,10 @@ define("robotTW2/services/FarmService", [
 				commands_for_presets = null;
 			})
 		}
+		, checkGroup = function(village_id){
+			let groups = modelDataService.getGroupList().getVillageGroups(village_id)
+			return !groups.find(f=>f.name=="no farm")
+		}
 		, execute_cicle = function(tempo, cicle){
 			return new Promise(function(resol, rejec){
 				angular.extend(data_villages, data_villages.get());
@@ -422,7 +426,7 @@ define("robotTW2/services/FarmService", [
 						if(!isRunning){
 							break;
 						}
-						if(!village_id || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked) {
+						if(!village_id || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked || checkGroup(village_id)) {
 							continue
 						} else {
 							presets = data_villages.villages[village_id].presets
@@ -643,9 +647,27 @@ define("robotTW2/services/FarmService", [
 			return isPaused
 		}
 		, setPaused = function () {
+			data_log.farm.push(
+					{
+						"text": "Paused",
+						"origin": null,
+						"target": null,
+						"date": time.convertedTime()
+					}
+			)
+			data_log.set()
 			isPaused = !0
 		}
 		, setResumed = function () {
+			data_log.farm.push(
+					{
+						"text": "Resumed",
+						"origin": null,
+						"target": null,
+						"date": time.convertedTime()
+					}
+			)
+			data_log.set()
 			isPaused = !1
 		}
 		, is_Initialized	= function () {

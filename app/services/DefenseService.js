@@ -405,7 +405,6 @@ define("robotTW2/services/DefenseService", [
 			}
 		}
 		, sendCancel = function(params){
-			var timer_delay = params.timer_delay + robotTW2.databases.data_main.time_correction_command
 			return $timeout(function () {
 				removeCommandDefense(params.id_command)
 				console.log("sendCancel " + new Date(time.convertedTime()) + JSON.stringify(params))
@@ -413,7 +412,7 @@ define("robotTW2/services/DefenseService", [
 					command_id: params.id_command
 				})
 				$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
-			}, timer_delay);
+			}, params.timer_delay);
 		}
 		, units_to_send = function(params){
 
@@ -509,9 +508,10 @@ define("robotTW2/services/DefenseService", [
 					var cmd = cmds.pop()
 					, expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
 					, params = {
-						"timer_delay" 	: expires,
+						"timer_delay" 	: expires + robotTW2.databases.data_main.time_correction_command,
 						"id_command" 	: data.id
 					}
+					
 					if(expires >= -25000 && expires < 0){
 						params.timer_delay = 0;
 						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
