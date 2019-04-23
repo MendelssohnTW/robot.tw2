@@ -147,6 +147,7 @@ define("robotTW2/services/AttackService", [
 				removeCommandAttack(params.id_command)
 				return 
 			}
+			$rootScope.$broadcast(providers.eventTypeProvider.PAUSE)
 			return $timeout(send.bind(null, params), timer_delay_send)
 		}
 		, sendCommandAttack = function(scp){

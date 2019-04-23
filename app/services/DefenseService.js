@@ -411,7 +411,6 @@ define("robotTW2/services/DefenseService", [
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: params.id_command
 				})
-				$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
 			}, params.timer_delay);
 		}
 		, units_to_send = function(params){
@@ -517,7 +516,6 @@ define("robotTW2/services/DefenseService", [
 						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
 					} else if(expires < -25000){
 						console.log("send cancel timer_delay < -25000 " + JSON.stringify(params))
-						$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
 						return
 					}
 
@@ -533,7 +531,7 @@ define("robotTW2/services/DefenseService", [
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
-					$rootScope.$broadcast(providers.eventTypeProvider.FARM_RESUME)
+					
 					console.log("não encontrou o comando para sendCancel")
 				}
 			}
@@ -568,7 +566,7 @@ define("robotTW2/services/DefenseService", [
 				console.log("timer_delay_send set to 0 resendDefense" + JSON.stringify(params))
 			}
 			resend = true;
-			$rootScope.$broadcast(providers.eventTypeProvider.FARM_PAUSE)
+			$rootScope.$broadcast(providers.eventTypeProvider.PAUSE)
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){

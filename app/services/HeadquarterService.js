@@ -47,6 +47,8 @@ define("robotTW2/services/HeadquarterService", [
 		, next_queue = []	
 		, listener_building_level_change = undefined
 		, listener_resume = undefined
+		, paused_promise = undefined
+		, paused_queue = false
 		, checkBuildingOrderLimit = function(vill) {
 			if(!vill.selected){
 				vill.selected = data_headquarter.selects.find(f=>f.value ="standard");
@@ -270,11 +272,24 @@ define("robotTW2/services/HeadquarterService", [
 						})
 					}).then(function(){
 						promise = undefined;
-						if (promise_queue.length){
-							vill = promise_queue.shift();
-							f(vill);	
+						if(isPaused){
+							typeof(listener_resume) == "function" ? listener_resume(): null;
+							listener_resume = undefined
+							listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
+								if (promise_queue.length){
+									vill = promise_queue.shift();
+									f(vill);	
+								} else {
+									wait()
+								}
+							})
 						} else {
-							wait()
+							if (promise_queue.length){
+								vill = promise_queue.shift();
+								f(vill);	
+							} else {
+								wait()
+							}
 						}
 					})
 				} else {
@@ -337,21 +352,51 @@ define("robotTW2/services/HeadquarterService", [
 			typeof(listener_building_level_change) == "function" ? listener_building_level_change(): null;
 			listener_building_level_change = undefined
 		}
-		, pause = function (){
-			isPaused = !0
-			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
+		, setPaused = function () {
+			if(!paused_promise){
+				paused_promise = new Promise(function(resolve, reject){
+					$timeout(function(){
+						resolve()	
+					}, 65000)
+				}). then(function(){
+					data_log.headquarter.push(
+							{
+								"text": "Paused",
+								"date": time.convertedTime()
+							}
+					)
+					data_log.set()
+					isPaused = !0
+					paused_promise = undefined;
+					if(paused_queue){
+						paused_queue = false;
+						setPaused()
+					} else {
+						setResumed()
+					}
+				}, function(){
+					paused_promise = undefined;
+					setResumed()
+				})
+			} else {
+				paused_queue = true;
+			}
 		}
-		, resume = function (){
+		, setResumed = function () {
+			data_log.headquarter.push(
+					{
+						"text": "Resumed",
+						"date": time.convertedTime()
+					}
+			)
+			data_log.set()
 			isPaused = !1
-			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"HEADQUARTER"})
-			$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_HEADQUARTER)
+			$rootScope.$broadcast(providers.eventTypeProvider.RESUME)
 		}
 
 		return {
 			init			: init,
 			start			: start,
-			pause			: pause,
-			resume 			: resume,
 			stop			: stop,
 			isRunning		: function() {
 				return isRunning

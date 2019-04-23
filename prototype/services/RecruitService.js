@@ -26,6 +26,9 @@ define("robotTW2/services/RecruitService", [
 		var isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
+		, listener_resume = undefined
+		, paused_promise = undefined
+		, paused_queue = false
 		, promise_UnitsAndResources = undefined 
 		, queue_UnitsAndResources = []
 		, interval_recruit = null
@@ -183,24 +186,46 @@ define("robotTW2/services/RecruitService", [
 
 						}).then(function(){
 							promise_UnitsAndResources = undefined
-							if(queue_UnitsAndResources.length){
-								village_id = queue_UnitsAndResources.shift()
-								sec_promise(village_id)
+							if(isPaused){
+								typeof(listener_resume) == "function" ? listener_resume(): null;
+								listener_resume = undefined
+								listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
+									if(queue_UnitsAndResources.length){
+										village_id = queue_UnitsAndResources.shift()
+										sec_promise(village_id)
+									}
+								})
+							} else {
+								if(queue_UnitsAndResources.length){
+									village_id = queue_UnitsAndResources.shift()
+									sec_promise(village_id)
+								}
 							}
 
 						}, function(data){
 							promise_UnitsAndResources = undefined
 							$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: data.message});
-							if(queue_UnitsAndResources.length){
-								village_id = queue_UnitsAndResources.shift()
-								sec_promise(village_id)
+							if(isPaused){
+								typeof(listener_resume) == "function" ? listener_resume(): null;
+								listener_resume = undefined
+								listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
+									if(queue_UnitsAndResources.length){
+										village_id = queue_UnitsAndResources.shift()
+										sec_promise(village_id)
+									}
+								})
+							} else {
+								if(queue_UnitsAndResources.length){
+									village_id = queue_UnitsAndResources.shift()
+									sec_promise(village_id)
+								}
 							}
 						})
 					} else {
 						queue_UnitsAndResources.push(village_id);
 					}
 				}
-
+				
 				sec_promise(village_id)
 
 			})
@@ -302,16 +327,47 @@ define("robotTW2/services/RecruitService", [
 			list = []
 
 		}
-		, pause = function (){
-			isPaused = !0
-			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
+		, setPaused = function () {
+			if(!paused_promise){
+				paused_promise = new Promise(function(resolve, reject){
+					$timeout(function(){
+						resolve()	
+					}, 65000)
+				}). then(function(){
+					data_log.recruit.push(
+							{
+								"text": "Paused",
+								"date": time.convertedTime()
+							}
+					)
+					data_log.set()
+					isPaused = !0
+					paused_promise = undefined;
+					if(paused_queue){
+						paused_queue = false;
+						setPaused()
+					} else {
+						setResumed()
+					}
+				}, function(){
+					paused_promise = undefined;
+					setResumed()
+				})
+			} else {
+				paused_queue = true;
+			}
 		}
-		, resume = function (){
+		, setResumed = function () {
+			data_log.recruit.push(
+					{
+						"text": "Resumed",
+						"date": time.convertedTime()
+					}
+			)
+			data_log.set()
 			isPaused = !1
-			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"RECRUIT"})
-			$rootScope.$broadcast(providers.eventTypeProvider.RESUME_CHANGE_RECRUIT)
+			$rootScope.$broadcast(providers.eventTypeProvider.RESUME)
 		}
-
 		return	{
 			init			: init,
 			start 			: start,

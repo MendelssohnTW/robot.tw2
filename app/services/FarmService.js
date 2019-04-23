@@ -45,6 +45,8 @@ define("robotTW2/services/FarmService", [
 		var isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
+		, paused_promise = undefined
+		, paused_queue = false
 		, interval_init = null
 		, interval_cicle = null
 		, countCommands = {}
@@ -296,8 +298,7 @@ define("robotTW2/services/FarmService", [
 									if(isPaused){
 										typeof(listener_resume) == "function" ? listener_resume(): null;
 										listener_resume = undefined
-										listener_resume = $rootScope.$on(providers.eventTypeProvider.FARM_RESUME, function(){
-											setResumed()
+										listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
 											execute()
 										})
 									} else {
@@ -556,7 +557,7 @@ define("robotTW2/services/FarmService", [
 				}
 				listener_report = $rootScope.$on(providers.eventTypeProvider.REPORT_NEW, analyze_report)
 
-				listener_pause = $rootScope.$on(providers.eventTypeProvider.FARM_PAUSE, setPaused)
+				listener_pause = $rootScope.$on(providers.eventTypeProvider.PAUSE, setPaused)
 
 				data_log.farm = [];
 				data_villages.getAssignedPresets();
@@ -647,16 +648,36 @@ define("robotTW2/services/FarmService", [
 			return isPaused
 		}
 		, setPaused = function () {
-			data_log.farm.push(
-					{
-						"text": "Paused",
-						"origin": null,
-						"target": null,
-						"date": time.convertedTime()
+			if(!paused_promise){
+				paused_promise = new Promise(function(resolve, reject){
+					$timeout(function(){
+						resolve()	
+					}, 65000)
+				}). then(function(){
+					data_log.farm.push(
+							{
+								"text": "Paused",
+								"origin": null,
+								"target": null,
+								"date": time.convertedTime()
+							}
+					)
+					data_log.set()
+					isPaused = !0
+					paused_promise = undefined;
+					if(paused_queue){
+						paused_queue = false;
+						setPaused()
+					} else {
+						setResumed()
 					}
-			)
-			data_log.set()
-			isPaused = !0
+				}, function(){
+					paused_promise = undefined;
+					setResumed()
+				})
+			} else {
+				paused_queue = true;
+			}
 		}
 		, setResumed = function () {
 			data_log.farm.push(
@@ -669,6 +690,7 @@ define("robotTW2/services/FarmService", [
 			)
 			data_log.set()
 			isPaused = !1
+			$rootScope.$broadcast(providers.eventTypeProvider.RESUME)
 		}
 		, is_Initialized	= function () {
 			return isInitialized
@@ -695,7 +717,6 @@ define("robotTW2/services/FarmService", [
 			listener_report = undefined
 			typeof(listener_pause) == "function" ? listener_pause(): null;
 			listener_pause = undefined
-
 
 			clear();
 			isRunning = !1

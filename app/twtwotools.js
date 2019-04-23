@@ -953,8 +953,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				"OPEN_MAIN"						: "Internal/robotTW2/open_main",
 				"OPEN_MARKET"					: "Internal/robotTW2/open_market",
 				"OPEN_LOG"						: "Internal/robotTW2/open_log",
-				"FARM_PAUSE"					: "Internal/robotTW2/farm_pause",
-				"FARM_RESUME"					: "Internal/robotTW2/farm_resume"
+				"PAUSE"					: "Internal/robotTW2/farm_pause",
+				"RESUME"					: "Internal/robotTW2/farm_resume"
 			});
 			return robotTW2.providers;
 		}))
