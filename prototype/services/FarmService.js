@@ -407,7 +407,7 @@ define("robotTW2/services/FarmService", [
 		}
 		, checkGroup = function(village_id){
 			let groups = modelDataService.getGroupList().getVillageGroups(village_id)
-			return !groups.find(f=>f.name=="no farm")
+			return !!groups.find(f=>f.name=="no farm")
 		}
 		, execute_cicle = function(tempo, cicle){
 			return new Promise(function(resol, rejec){
