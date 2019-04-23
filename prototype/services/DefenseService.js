@@ -328,11 +328,11 @@ define("robotTW2/services/DefenseService", [
 							default:
 								list_others.push(cmd);
 							}
-							data_villages.set();
+							
 						}
 					})
 				});
-
+				data_villages.set();
 				list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;})
 				list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;})
 				list_others.sort(function (a, b) {return b.completedAt - a.completedAt;})
