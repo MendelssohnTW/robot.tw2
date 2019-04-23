@@ -382,8 +382,6 @@ define("robotTW2/services/DefenseService", [
 						var id = vls.shift();
 						troops_analyze(id, lt).then(gt) 
 					} else {
-						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
-						
 						resolve()
 					}
 				}
@@ -397,6 +395,7 @@ define("robotTW2/services/DefenseService", [
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
 					data_villages.set();
+					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
 						promise_verify_queue = false;
 						verificarAtaques()
