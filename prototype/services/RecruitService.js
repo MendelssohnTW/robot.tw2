@@ -372,8 +372,6 @@ define("robotTW2/services/RecruitService", [
 			init			: init,
 			start 			: start,
 			stop 			: stop,
-			pause 			: pause,
-			resume 			: resume,
 			isRunning		: function() {
 				return isRunning
 			},
