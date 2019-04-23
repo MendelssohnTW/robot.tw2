@@ -67,7 +67,7 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in data_log.farm">
+								<tr ng-repeat="log in data_log.farm | orderBy : '-log.date'">
 									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}</td>
 									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">{{log.text}}</td>
 									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.origin}}</td>
