@@ -23,87 +23,98 @@
 	</div>
 
 	<div class="log content-settings">
-		<div class="win-main jssb-applied jssb-focus jssb-scrolly"
-			scrollbar="">
-			<div class="box-paper">
-				<div ng-if="activeTab == TABS.ATTACK">
+		<div class="box-paper">
+			<div ng-if="activeTab == TABS.ATTACK">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
+				</div>
+			</div>
+			<div ng-if="activeTab == TABS.DEFENSE">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
+				</div>
+			</div>
+			<div ng-if="activeTab == TABS.DEPOSIT">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
+				</div>
+			</div>
+			<div ng-if="activeTab == TABS.FAKE">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
+				</div>
+			</div>
+			<div ng-if="activeTab == TABS.FARM">
+				<div class="win-main jssb-applied jssb-focus jssb-scrolly"
+					scrollbar="">
 					<div class="box-paper">
-						<div class="scroll-wrap"></div>
+						<div class="scroll-wrap">
+							<table
+								class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+								<colgroup>
+									<col>
+									<col>
+									<col>
+									<col>
+									<col>
+								</colgroup>
+								<tbody>
+									<tr>
+										<th style="display: table-cell" class="cell-center selected">{{text_preset}}</th>
+										<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+										<th style="display: table-cell" class="cell-center selected">{{text_target}}</th>
+										<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+										<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+									</tr>
+								</tbody>
+								<tbody class="scroll-wrap">
+									<tr ng-repeat="log in data_log.farm | orderBy : '-date'">
+										<td class="cell-right"
+											ng-if="log.origin != null && log.target != null"
+											class="cell-left">{{log.text}}</td>
+										<td class="cell-right"
+											ng-if="log.origin == null || log.target == null" colspan="3"
+											class="cell-left">{{log.text}}</td>
+										<td class="cell-right"
+											ng-if="log.origin != null && log.target != null"
+											class="cell-left">{{log.origin}}</td>
+										<td class="cell-right"
+											ng-if="log.origin != null && log.target != null"
+											class="cell-left">{{log.target}}</td>
+										<td class="cell-center">{{log.date | date :
+											'dd/MM/yyyy'}}</td>
+										<td class="cell-center">{{log.date | date :
+											'HH:mm:ss.sss'}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-				<div ng-if="activeTab == TABS.DEFENSE">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
+			</div>
+			<div ng-if="activeTab == TABS.HEADQUARTER">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
 				</div>
-				<div ng-if="activeTab == TABS.DEPOSIT">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
+			</div>
+			<div ng-if="activeTab == TABS.MARKET">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
 				</div>
-				<div ng-if="activeTab == TABS.FAKE">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
+			</div>
+			<div ng-if="TABS.RECON && activeTab == TABS.RECON">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
 				</div>
-				<div ng-if="activeTab == TABS.FARM">
-					<div class="scroll-wrap">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-							<colgroup>
-								<col>
-								<col>
-								<col>
-								<col>
-								<col>
-							</colgroup>
-							<tbody>
-								<tr>
-									<th style="display: table-cell" class="cell-center selected">{{text_preset}}</th>
-									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
-									<th style="display: table-cell" class="cell-center selected">{{text_target}}</th>
-									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
-									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
-								</tr>
-							</tbody>
-							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in data_log.farm | orderBy : '-date'">
-									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}</td>
-									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">{{log.text}}</td>
-									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.origin}}</td>
-									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.target}}</td>
-									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
-									<td class="cell-center">{{log.date | date : 'HH:mm:ss.sss'}}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-
+			</div>
+			<div ng-if="activeTab == TABS.RECRUIT">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
 				</div>
-				<div ng-if="activeTab == TABS.HEADQUARTER">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
-				</div>
-				<div ng-if="activeTab == TABS.MARKET">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
-				</div>
-				<div ng-if="TABS.RECON && activeTab == TABS.RECON">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
-				</div>
-				<div ng-if="activeTab == TABS.RECRUIT">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
-				</div>
-				<div ng-if="activeTab == TABS.SPY">
-					<div class="box-paper">
-						<div class="scroll-wrap"></div>
-					</div>
+			</div>
+			<div ng-if="activeTab == TABS.SPY">
+				<div class="box-paper">
+					<div class="scroll-wrap"></div>
 				</div>
 			</div>
 		</div>
