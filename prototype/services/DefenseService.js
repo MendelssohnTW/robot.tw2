@@ -332,7 +332,7 @@ define("robotTW2/services/DefenseService", [
 						}
 					})
 				});
-				data_villages.set();
+				
 				list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;})
 				list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;})
 				list_others.sort(function (a, b) {return b.completedAt - a.completedAt;})
@@ -383,6 +383,7 @@ define("robotTW2/services/DefenseService", [
 						troops_analyze(id, lt).then(gt) 
 					} else {
 						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
+						
 						resolve()
 					}
 				}
@@ -395,6 +396,7 @@ define("robotTW2/services/DefenseService", [
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
+					data_villages.set();
 					if(promise_verify_queue) {
 						promise_verify_queue = false;
 						verificarAtaques()
