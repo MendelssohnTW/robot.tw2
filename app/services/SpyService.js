@@ -122,7 +122,7 @@ define("robotTW2/services/SpyService", [
 									}
 								})
 							} else {
-								if(queue_UnitsAndResources.length){
+								if(queue.length){
 									sec_promise(queue.shift())
 								} else {
 									wait();
@@ -140,7 +140,7 @@ define("robotTW2/services/SpyService", [
 									}
 								})
 							} else {
-								if(queue_UnitsAndResources.length){
+								if(queue.length){
 									sec_promise(queue.shift())
 								} else {
 									wait();
