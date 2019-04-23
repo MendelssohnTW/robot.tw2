@@ -328,11 +328,11 @@ define("robotTW2/services/DefenseService", [
 							default:
 								list_others.push(cmd);
 							}
-							
+
 						}
 					})
 				});
-				
+
 				list_snob.sort(function (a, b) {return b.completedAt - a.completedAt;})
 				list_trebuchet.sort(function (a, b) {return b.completedAt - a.completedAt;})
 				list_others.sort(function (a, b) {return b.completedAt - a.completedAt;})
@@ -511,7 +511,7 @@ define("robotTW2/services/DefenseService", [
 						"timer_delay" 	: expires + robotTW2.databases.data_main.time_correction_command,
 						"id_command" 	: data.id
 					}
-					
+
 					if(expires >= -25000 && expires < 0){
 						params.timer_delay = 0;
 						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
@@ -532,7 +532,7 @@ define("robotTW2/services/DefenseService", [
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
-					
+
 					console.log("não encontrou o comando para sendCancel")
 				}
 			}
@@ -718,26 +718,29 @@ define("robotTW2/services/DefenseService", [
 			isInitialized = !0
 			start();
 		}
-		, handlerVerify = function(){
-			verificarAtaques();
-			if(!listener_verify){
-				listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
-					if(!isRunning){return}
-					promise_verify = undefined;
+		, handlerVerify = function(opt, resend){
+			if(opt || resend){
+				if(!listener_verify){
+					listener_verify = $rootScope.$on(providers.eventTypeProvider.COMMAND_INCOMING, _ => {
+						if(!isRunning){return}
+						promise_verify = undefined;
 
-//					promise.$$state.status === 0 // pending
-//					promise.$$state.status === 1 // resolved
-//					promise.$$state.status === 2 // rejected
+//						promise.$$state.status === 0 // pending
+//						promise.$$state.status === 1 // resolved
+//						promise.$$state.status === 2 // rejected
 
-					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
-					}
-				});
+						if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
+							timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
+						}
+					});
+				}
+			} else {
+				verificarAtaques();
 			}
 		}
 		, start = function(opt){
 			if(isRunning){return}
-			if(opt && isRunning && resend){
+			if(opt || resend){
 				$timeout(function(){start(true)}, 10000)
 				return;
 			}
@@ -754,7 +757,7 @@ define("robotTW2/services/DefenseService", [
 				if(!listener_conquered){
 					listener_conquered = $rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, $timeout(verificarAtaques , 60000));
 				}
-				handlerVerify();
+				handlerVerify(opt, resend);
 			}, ["all_villages_ready"])
 		}
 		, clear = function(){

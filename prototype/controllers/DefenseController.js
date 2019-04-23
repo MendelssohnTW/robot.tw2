@@ -156,7 +156,9 @@ define("robotTW2/controllers/DefenseController", [
 				first_2 = undefined
 				return
 			}
+			services.DefenseService.stop();
 			$scope.data_villages.set();
+			services.DefenseService.start(true);
 		}, true)
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);
