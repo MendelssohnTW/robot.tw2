@@ -643,9 +643,27 @@ define("robotTW2/services/FarmService", [
 			return isPaused
 		}
 		, setPaused = function () {
+			data_log.farm.push(
+					{
+						"text": "Paused",
+						"origin": null,
+						"target": null,
+						"date": time.convertedTime()
+					}
+			)
+			data_log.set()
 			isPaused = !0
 		}
 		, setResumed = function () {
+			data_log.farm.push(
+					{
+						"text": "Resumed",
+						"origin": null,
+						"target": null,
+						"date": time.convertedTime()
+					}
+			)
+			data_log.set()
 			isPaused = !1
 		}
 		, is_Initialized	= function () {
