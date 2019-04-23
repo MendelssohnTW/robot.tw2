@@ -13,9 +13,9 @@ define("robotTW2/controllers/LogController", [
 	){
 	return function LogController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
+		$scope.CLEAR = services.$filter("i18n")("CLEAR", services.$rootScope.loc.ale);
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
-		
 
 		$scope.data_main = data_main;
 		$scope.data_log = data_log;
