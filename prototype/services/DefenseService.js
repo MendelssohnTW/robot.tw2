@@ -517,6 +517,7 @@ define("robotTW2/services/DefenseService", [
 						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
 					} else if(expires < -25000){
 						console.log("send cancel timer_delay < -25000 " + JSON.stringify(params))
+						removeCommandDefense(params.id_command)
 						return
 					}
 
@@ -704,6 +705,7 @@ define("robotTW2/services/DefenseService", [
 				}
 				delete commandDefense[id_command];
 				commandQueue.unbind(id_command)
+				$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 			}
 		}
 		, removeAll = function(){
