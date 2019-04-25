@@ -528,8 +528,8 @@ define("robotTW2/services/DefenseService", [
 					, params = {
 						"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
 						"id_command" 		: data.id,
-						"start_village" 	: cmd.origin.id,
-						"target_village" 	: cmd.target.id
+						"start_village" 	: cmd.start_village,
+						"target_village" 	: cmd.target_village
 						}
 
 					if(expires >= -25000 && expires < 0){
