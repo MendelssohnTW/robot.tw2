@@ -111,6 +111,7 @@ define("robotTW2/services/SpyService", [
 								}, 3000)
 							}
 						}).then(function(){
+							promise = undefined
 							if(isPaused){
 								typeof(listener_resume) == "function" ? listener_resume(): null;
 								listener_resume = undefined
@@ -129,6 +130,7 @@ define("robotTW2/services/SpyService", [
 								}
 							}
 						}, function(){
+							promise = undefined
 							if(isPaused){
 								typeof(listener_resume) == "function" ? listener_resume(): null;
 								listener_resume = undefined
@@ -352,6 +354,7 @@ define("robotTW2/services/SpyService", [
 					listener_spy = undefined;
 			listener_open = undefined;
 			listener_close = undefined;
+			promise = undefined
 			interval_handler = undefined;
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
