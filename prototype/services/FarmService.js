@@ -647,7 +647,7 @@ define("robotTW2/services/FarmService", [
 		, is_Paused = function () {
 			return isPaused
 		}
-		, setPaused = function (time_opt) {
+		, setPaused = function ($event, time_opt) {
 			if(!paused_promise){
 				paused_promise = new Promise(function(resolve, reject){
 					if(!time_opt || time_opt < 30000) {
