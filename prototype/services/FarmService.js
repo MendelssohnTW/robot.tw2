@@ -35,6 +35,8 @@ define("robotTW2/services/FarmService", [
 			providers,
 			modelDataService,
 			armyService,
+			AttackService,
+			DefenseService,
 			$timeout,
 			$filter,
 			requestFn,
@@ -413,11 +415,11 @@ define("robotTW2/services/FarmService", [
 		, checkCommand = function(village_id){
 			let cmds_attack = []
 			, cmds_defense = []
-			if(!data_farm.attack_prog && services.AttackService.isRunning()){
-				cmds_attack = services.AttackService.get_command(village_id) //Se estiver programado ataque na aldeia
+			if(!data_farm.attack_prog && AttackService.isRunning()){
+				cmds_attack = AttackService.get_command(village_id) //Se estiver programado ataque na aldeia
 			}
-			if(!data_farm.defense_prog && services.DefenseService.isRunning()){
-				cmds_defense = services.DefenseService.get_command(village_id) //Se estiver programado defesa na aldeia
+			if(!data_farm.defense_prog && DefenseService.isRunning()){
+				cmds_defense = DefenseService.get_command(village_id) //Se estiver programado defesa na aldeia
 			}
 			let cmds = cmds_attack.concat(cmds_defense)
 			return !!cmds.length
@@ -754,6 +756,8 @@ define("robotTW2/services/FarmService", [
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.armyService,
+			robotTW2.services.AttackService,
+			robotTW2.services.SefenseService,
 			robotTW2.services.$timeout,
 			robotTW2.services.$filter,
 			robotTW2.requestFn,
