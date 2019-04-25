@@ -103,7 +103,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!vid){return}
 			var data = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!data){return}
-			services.villageService.setSelectedVillage(village.getId())
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, village.getId());
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
