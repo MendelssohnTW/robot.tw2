@@ -14,7 +14,8 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_log",
 	"robotTW2/CommandDefense",
-	"robotTW2/calibrate_time"
+	"robotTW2/calibrate_time",
+	"helper/format"
 	], function(
 			robotTW2,
 			conf,
@@ -26,7 +27,8 @@ define("robotTW2/services/DefenseService", [
 			data_villages,
 			data_log,
 			commandDefense,
-			calibrate_time
+			calibrate_time,
+			formatHelper
 	){
 	return (function DefenseService(
 			$rootScope,
