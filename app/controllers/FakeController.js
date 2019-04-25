@@ -282,7 +282,7 @@ define("robotTW2/controllers/FakeController", [
 			if(!village){return}
 			let x = village.data.x
 			let y = village.data.y
-			services.villageService.setSelectedVillage(village)
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, village.getId());
 			services.mapService.jumpToVillage(x, y);
 			$scope.closeWindow();
 		}
@@ -291,6 +291,7 @@ define("robotTW2/controllers/FakeController", [
 			if(!vid){return}
 			let v = $scope.local_out_villages.find(f=>f.id==vid);
 			if(!v){return}
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, vid);
 			services.mapService.jumpToVillage(v.x, v.y);
 			$scope.closeWindow();
 		}

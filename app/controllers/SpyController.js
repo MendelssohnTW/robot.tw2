@@ -479,7 +479,7 @@ define("robotTW2/controllers/SpyController", [
 			if(!vid){return}
 			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
-			services.villageService.setSelectedVillage(village.getId())
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, village.getId());
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
@@ -488,6 +488,7 @@ define("robotTW2/controllers/SpyController", [
 			if(!vid){return}
 			let v = $scope.local_out_villages.find(f=>f.id==vid);
 			if(!v){return}
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, vid);
 			services.mapService.jumpToVillage(v.x, v.y);
 			$scope.closeWindow();
 		}
