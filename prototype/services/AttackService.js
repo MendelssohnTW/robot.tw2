@@ -10,8 +10,10 @@ define("robotTW2/services/AttackService", [
 	"robotTW2/notify",
 	"robotTW2/time",
 	"robotTW2/databases/data_attack",
+	"robotTW2/databases/data_log",
 	"robotTW2/CommandAttack",
-	"robotTW2/calibrate_time"
+	"robotTW2/calibrate_time",
+	"helper/format"
 	], function(
 			robotTW2,
 			helper,
@@ -19,8 +21,10 @@ define("robotTW2/services/AttackService", [
 			notify,
 			time,
 			data_attack,
+			data_log,
 			commandAttack,
-			calibrate_time
+			calibrate_time,
+			formatHelper
 	){
 	return (function AttackService(
 			$rootScope,
@@ -68,6 +72,22 @@ define("robotTW2/services/AttackService", [
 							"params"	: params
 					}
 				})
+			} else {
+				data_log.attack.push(
+						{
+							"text": "attack not sent - expires",
+							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+							"target": formatHelper.villageNameWithCoordinates(
+									{
+										"name": params.target_name,
+										"x": params.target_x,
+										"y": params.target_y
+									}
+							),
+							"date": time.convertedTime()
+						}
+				)
+				removeCommandAttack(params.id_command)
 			}
 		}
 		, units_to_send = function (params) {
@@ -96,6 +116,20 @@ define("robotTW2/services/AttackService", [
 					}
 				})
 			} else {
+				data_log.attack.push(
+						{
+							"text": "attack not sent - units not found",
+							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+							"target": formatHelper.villageNameWithCoordinates(
+									{
+										"name": params.target_name,
+										"x": params.target_x,
+										"y": params.target_y
+									}
+							),
+							"date": time.convertedTime()
+						}
+				)
 				removeCommandAttack(params.id_command)
 			}
 		}
@@ -122,6 +156,21 @@ define("robotTW2/services/AttackService", [
 			}
 		}
 		, send = function(params){
+			data_log.attack.push(
+					{
+						"text": services.$filter("i18n")("attack", services.$rootScope.loc.ale, "attack"),
+						"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+						"target": formatHelper.villageNameWithCoordinates(
+								{
+									"name": params.target_name,
+									"x": params.target_x,
+									"y": params.target_y
+								}
+						),
+						"date": time.convertedTime()
+					}
+			)
+			
 			socketService.emit(
 					providers.routeProvider.SEND_CUSTOM_ARMY, {
 						start_village		: params.start_village,
@@ -141,9 +190,23 @@ define("robotTW2/services/AttackService", [
 		}
 		, resendAttack = function(params){
 			var expires_send = params.data_escolhida - params.duration
-			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command;
+			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command;
 
-			if(timer_delay_send < 0){
+			if(timer_delay_send < robotTW2.databases.data_main.time_correction_command){
+				data_log.attack.push(
+						{
+							"text": "attack not sent - expires",
+							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+							"target": formatHelper.villageNameWithCoordinates(
+									{
+										"name": params.target_name,
+										"x": params.target_x,
+										"y": params.target_y
+									}
+							),
+							"date": time.convertedTime()
+						}
+				)
 				removeCommandAttack(params.id_command)
 				return 
 			}
@@ -199,7 +262,7 @@ define("robotTW2/services/AttackService", [
 				loadScript("/controllers/AttackCompletionController.js", true);
 				isRunning = !0
 //				if(robotTW2.databases.data_main.auto_calibrate){
-					calibrate_time()
+				calibrate_time()
 //				}
 				Object.values(data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){

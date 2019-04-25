@@ -12,6 +12,7 @@ define("robotTW2/services/DefenseService", [
 	"robotTW2/time",
 	"robotTW2/databases/data_defense",
 	"robotTW2/databases/data_villages",
+	"robotTW2/databases/data_log",
 	"robotTW2/CommandDefense",
 	"robotTW2/calibrate_time"
 	], function(
@@ -23,6 +24,7 @@ define("robotTW2/services/DefenseService", [
 			time,
 			data_defense,
 			data_villages,
+			data_log,
 			commandDefense,
 			calibrate_time
 	){
@@ -408,7 +410,20 @@ define("robotTW2/services/DefenseService", [
 		, sendCancel = function(params){
 			return $timeout(function () {
 				removeCommandDefense(params.id_command)
-				console.log("sendCancel " + new Date(time.convertedTime()) + JSON.stringify(params))
+				data_log.defense.push(
+						{
+							"text": "Sniper",
+							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+							"target": formatHelper.villageNameWithCoordinates(
+									{
+										"name": params.target_name,
+										"x": params.target_x,
+										"y": params.target_y
+									}
+							),
+							"date": time.convertedTime()
+						}
+				)
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: params.id_command
 				})
@@ -514,14 +529,25 @@ define("robotTW2/services/DefenseService", [
 
 					if(expires >= -25000 && expires < 0){
 						params.timer_delay = 0;
-						console.log("send cancel timer_delay set to 0 " + JSON.stringify(params))
 					} else if(expires < -25000){
-						console.log("send cancel timer_delay < -25000 " + JSON.stringify(params))
+						data_log.defense.push(
+								{
+									"text": "Sniper not sent - expires",
+									"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+									"target": formatHelper.villageNameWithCoordinates(
+											{
+												"name": params.target_name,
+												"x": params.target_x,
+												"y": params.target_y
+											}
+									),
+									"date": time.convertedTime()
+								}
+						)
 						removeCommandDefense(params.id_command)
 						return
 					}
 
-					console.log("Enviado sendCancel " + JSON.stringify(params))
 					commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 						commandDefense[params.id_command] = {
 								"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -533,14 +559,39 @@ define("robotTW2/services/DefenseService", [
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
-
-					console.log("não encontrou o comando para sendCancel")
+					data_log.defense.push(
+							{
+								"text": "Sniper not sent - not found",
+								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+								"target": formatHelper.villageNameWithCoordinates(
+										{
+											"name": params.target_name,
+											"x": params.target_x,
+											"y": params.target_y
+										}
+								),
+								"date": time.convertedTime()
+							}
+					)
 				}
 			}
 		}
 		, send = function(params){
 			resend = false;
-			var r = {};
+			data_log.defense.push(
+					{
+						"text": services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
+						"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+						"target": formatHelper.villageNameWithCoordinates(
+								{
+									"name": params.target_name,
+									"x": params.target_x,
+									"y": params.target_y
+								}
+						),
+						"date": time.convertedTime()
+					}
+			)
 
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
@@ -558,11 +609,23 @@ define("robotTW2/services/DefenseService", [
 
 			if(timer_delay_send <= -25000){
 				removeCommandDefense(params.id_command)
-				console.log("timer_delay_send < -25000 resendDefense" + JSON.stringify(params))
+				data_log.defense.push(
+								{
+									"text": "Sniper not sent - expires",
+									"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+									"target": formatHelper.villageNameWithCoordinates(
+											{
+												"name": params.target_name,
+												"x": params.target_x,
+												"y": params.target_y
+											}
+									),
+									"date": time.convertedTime()
+								}
+						)
 				return 
-			} else if(timer_delay_send > -25000 && timer_delay_send < 0){
+			} else if(timer_delay_send > -25000 && timer_delay_send < robotTW2.databases.data_main.time_correction_command){
 				timer_delay_send = 0;
-				console.log("timer_delay_send set to 0 resendDefense" + JSON.stringify(params))
 			}
 			resend = true;
 			$rootScope.$broadcast(providers.eventTypeProvider.PAUSE)
@@ -601,7 +664,20 @@ define("robotTW2/services/DefenseService", [
 					}
 				})
 			} else {
-				console.log("timer_delay_send < -25000 addDefense")
+				data_log.defense.push(
+						{
+							"text": "Sniper not sent - expires",
+							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+							"target": formatHelper.villageNameWithCoordinates(
+									{
+										"name": params.target_name,
+										"x": params.target_x,
+										"y": params.target_y
+									}
+							),
+							"date": time.convertedTime()
+						}
+				)
 			}
 		}
 		, list_timeout = {}
