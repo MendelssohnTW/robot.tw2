@@ -11,3 +11,16 @@ Script de automação para TW2
 * Ao carregar a extensão reinicie seu navegador.
 * Para acessar use as teclas shift + p para menu principal.
 
+<blockquote>
+  <p>
+    Esse é um bloco de citação.
+    Ele pode ter várias linhas.
+  </p>
+  <p>Inclusive, uma quebra de linha.</p>
+</blockquote>
+
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
