@@ -28,6 +28,7 @@ define("robotTW2/services/AttackService", [
 	){
 	return (function AttackService(
 			$rootScope,
+			$filter,
 			providers,
 			modelDataService,
 			$timeout,
@@ -158,7 +159,7 @@ define("robotTW2/services/AttackService", [
 		, send = function(params){
 			data_log.attack.push(
 					{
-						"text": services.$filter("i18n")("attack", services.$rootScope.loc.ale, "attack"),
+						"text": $filter("i18n")("attack", $rootScope.loc.ale, "attack"),
 						"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 						"target": formatHelper.villageNameWithCoordinates(
 								{
@@ -310,6 +311,7 @@ define("robotTW2/services/AttackService", [
 		}
 	})(
 			robotTW2.services.$rootScope,
+			robotTW2.services.$filter,
 			robotTW2.providers,
 			robotTW2.services.modelDataService,
 			robotTW2.services.$timeout,

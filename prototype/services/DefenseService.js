@@ -30,6 +30,7 @@ define("robotTW2/services/DefenseService", [
 	){
 	return (function DefenseService(
 			$rootScope,
+			$filter,
 			providers,
 			$timeout,
 			socketService,
@@ -580,7 +581,7 @@ define("robotTW2/services/DefenseService", [
 			resend = false;
 			data_log.defense.push(
 					{
-						"text": services.$filter("i18n")("defense", services.$rootScope.loc.ale, "defense"),
+						"text": $filter("i18n")("defense", $rootScope.loc.ale, "defense"),
 						"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 						"target": formatHelper.villageNameWithCoordinates(
 								{
@@ -906,6 +907,7 @@ define("robotTW2/services/DefenseService", [
 		}
 	})(
 			robotTW2.services.$rootScope,
+			robotTW2.services.$filter,
 			robotTW2.providers,
 			robotTW2.services.$timeout,
 			robotTW2.services.socketService,
