@@ -22,29 +22,31 @@
 		</div>
 	</div>
 
-	<div class="log content-settings">
-		<div class="box-paper">
-			<div ng-if="activeTab == TABS.ATTACK">
+	<div class="box-paper">
+		<div ng-if="activeTab == TABS.ATTACK">
+			<div class="log content-settings">
 				<div class="box-paper">
 					<div class="scroll-wrap"></div>
 				</div>
 			</div>
-			<div ng-if="activeTab == TABS.DEFENSE">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
+		</div>
+		<div ng-if="activeTab == TABS.DEFENSE">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
 			</div>
-			<div ng-if="activeTab == TABS.DEPOSIT">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
+		</div>
+		<div ng-if="activeTab == TABS.DEPOSIT">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
 			</div>
-			<div ng-if="activeTab == TABS.FAKE">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
+		</div>
+		<div ng-if="activeTab == TABS.FAKE">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
 			</div>
-			<div ng-if="activeTab == TABS.FARM">
+		</div>
+		<div ng-if="activeTab == TABS.FARM">
+			<div class="log content-settings">
 				<div class="win-main jssb-applied jssb-focus jssb-scrolly"
 					scrollbar="">
 					<div class="box-paper">
@@ -92,41 +94,40 @@
 					</div>
 				</div>
 			</div>
-			<div ng-if="activeTab == TABS.HEADQUARTER">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
-			</div>
-			<div ng-if="activeTab == TABS.MARKET">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
-			</div>
-			<div ng-if="TABS.RECON && activeTab == TABS.RECON">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
-			</div>
-			<div ng-if="activeTab == TABS.RECRUIT">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
-			</div>
-			<div ng-if="activeTab == TABS.SPY">
-				<div class="box-paper">
-					<div class="scroll-wrap"></div>
-				</div>
+		</div>
+		<div ng-if="activeTab == TABS.HEADQUARTER">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
 			</div>
 		</div>
+		<div ng-if="activeTab == TABS.MARKET">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
+			</div>
+		</div>
+		<div ng-if="TABS.RECON && activeTab == TABS.RECON">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.RECRUIT">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
+			</div>
+		</div>
+		<div ng-if="activeTab == TABS.SPY">
+			<div class="box-paper">
+				<div class="scroll-wrap"></div>
+			</div>
+		</div>
+		<footer class="win-foot">
+			<ul class="list-btn list-center buttons">
+				<li><a id="button-clear" class="btn-orange btn-border clear"
+					ng-click="clear_log()">{{CLEAR}}</a></li>
+				<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+					ng-click="menu()">{{MENU}}</a></li>
+				<li><a id="button-close" class="btn-orange btn-border close"
+					ng-click="closeWindow()">{{CLOSE}}</a></li>
+			</ul>
+		</footer>
 	</div>
-	<footer class="win-foot">
-		<ul class="list-btn list-center buttons">
-			<li><a id="button-clear" class="btn-orange btn-border clear"
-				ng-click="clear_log()">{{CLEAR}}</a></li>
-			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-				ng-click="menu()">{{MENU}}</a></li>
-			<li><a id="button-close" class="btn-orange btn-border close"
-				ng-click="closeWindow()">{{CLOSE}}</a></li>
-		</ul>
-	</footer>
-</div>
