@@ -221,6 +221,18 @@ define("robotTW2/services/AttackService", [
 			init				: init,
 			start				: start,
 			stop 				: stop,
+			get_commands		: function (){
+				return Object.keys(commandAttack).map(function(key){
+					return commandAttack[key].params;
+				});
+			},
+			get_command			: function (id){
+				return Object.keys(commandAttack).map(function(key){
+					if(commandAttack[key].params.start_village == id){
+						return commandAttack[key].params.start_village;	
+					}
+				}).filter(f=>f!=undefined);
+			},
 			sendCommandAttack 	: sendCommandAttack,
 			removeCommandAttack	: removeCommandAttack,
 			removeAll			: removeAll,

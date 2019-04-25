@@ -19,6 +19,7 @@
 							<col>
 							<col>
 							<col>
+							<col>
 						</colgroup>
 						<tbody>
 							<tr>
@@ -42,14 +43,16 @@
 									value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
 									ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
 								<td class="cell-right"><label for="cicle_infinite"
-									style="margin-left: 12px; margin-right: 12px;"
-									ng-show="data_farm.infinite">{{time_infinite}}</label><label
-									for="cicle_infinite"
-									style="margin-left: 12px; margin-right: 12px;"
-									ng-show="!data_farm.infinite">{{time_finite}}</label><a
+									style="margin-left: 12px; margin-right: 12px;">{{time_infinite}}</label><a
 									tooltip="" tooltip-content="{{time_infinite}}/{{time_finite}}"
 									id="cicle_infinite" href="#" class="size-34x34 btn-orange"
 									ng-class="{'icon-26x26-check-positive' : data_farm.infinite, 'icon-26x26-check-negative' : !data_farm.infinite}"
+									ng-click="toggleInfinite()"></a></td>
+								<td class="cell-right"><label for="attack_prog"
+									style="margin-left: 12px; margin-right: 12px;">{{attack_prog}}</label><a
+									tooltip="" tooltip-content="{{text_attack_prog}}"
+									id="attack_prog" href="#" class="size-34x34 btn-orange"
+									ng-class="{'icon-26x26-check-positive' : data_farm.attack_prog, 'icon-26x26-check-negative' : !data_farm.attack_prog}"
 									ng-click="toggleInfinite()"></a></td>
 								<td class="cell-right"><label for="unit_direction"
 									style="margin-left: 12px; margin-right: 12px;">{{unit_direction}}</label><a
@@ -80,6 +83,12 @@
 									id="villages_attacked" href="#" class="size-34x34 btn-orange"
 									ng-class="{'icon-26x26-check-positive' : data_farm.attacked, 'icon-26x26-check-negative' : !data_farm.attacked}"
 									ng-click="toggleAttacked()"></a></td>
+								<td class="cell-right"><label for="defense_prog"
+                                    style="margin-left: 12px; margin-right: 12px;">{{defense_prog}}</label><a
+                                    tooltip="" tooltip-content="{{text_defense_prog}}"
+                                    id="defense_prog" href="#" class="size-34x34 btn-orange"
+                                    ng-class="{'icon-26x26-check-positive' : data_farm.defense_prog, 'icon-26x26-check-negative' : !data_farm.defense_prog}"
+                                    ng-click="toggleInfinite()"></a></td>
 								<td class="cell-right"><label for="speed_direction"
 									style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a
 									tooltip="" tooltip-content="{{text_speed_direction}}"
@@ -303,7 +312,8 @@
 														<ul class="list-btn list-center">
 															<li><a id="button-start"
 																class="btn-border btn-orange btn-init"
-																ng-click="createPresets()" tooltip="" tooltip-content="{{text_create_preset}}">{{CREATE}}</a></li>
+																ng-click="createPresets()" tooltip=""
+																tooltip-content="{{text_create_preset}}">{{CREATE}}</a></li>
 														</ul>
 													</div>
 												</td>
