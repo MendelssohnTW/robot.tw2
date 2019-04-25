@@ -654,10 +654,6 @@ define("robotTW2/services/FarmService", [
 						time_opt = 65000;
 					}
 					isPaused = !0
-					$timeout(function(){
-						resolve()	
-					}, time_opt)
-				}). then(function(){
 					data_log.farm.push(
 							{
 								"text": "Paused",
@@ -667,6 +663,10 @@ define("robotTW2/services/FarmService", [
 							}
 					)
 					data_log.set()
+					$timeout(function(){
+						resolve()	
+					}, time_opt)
+				}). then(function(){
 					paused_promise = undefined;
 					if(paused_queue){
 						paused_queue = false;

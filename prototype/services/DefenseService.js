@@ -808,9 +808,14 @@ define("robotTW2/services/DefenseService", [
 					return commandDefense[key].params;
 				});
 			},
-			getAllcommands		: function (){
-				return commandDefense;
+			get_command			: function (id){
+				return Object.keys(commandDefense).map(function(key){
+					if(commandDefense[key].params.start_village == id){
+						return commandDefense[key].params.start_village;	
+					}
+				}).filter(f=>f!=undefined);
 			},
+
 			removeCommandDefense: removeCommandDefense,
 			removeAll			: removeAll,
 			isRunning			: function () {

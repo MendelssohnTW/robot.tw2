@@ -410,6 +410,12 @@ define("robotTW2/services/FarmService", [
 			let groups = modelDataService.getGroupList().getVillageGroups(village_id)
 			return !!groups.find(f=>f.name=="no farm")
 		}
+		, checkCommand = function(village_id){
+			let cmds_attack = services.AttackService.get_command(village_id) //Se estiver programado ataque na aldeia
+			let cmds_defense = services.DefenseService.get_command(village_id) //Se estiver programado defesa na aldeia
+			let cmds = cmds_attack.concat(cmds_defense)
+			return !!cmds.length
+		}
 		, execute_cicle = function(tempo, cicle){
 			return new Promise(function(resol, rejec){
 				angular.extend(data_villages, data_villages.get());
@@ -427,7 +433,7 @@ define("robotTW2/services/FarmService", [
 						if(!isRunning){
 							break;
 						}
-						if(!village_id || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked || checkGroup(village_id)) {
+						if(!village_id || !data_villages.villages[village_id] || !data_villages.villages[village_id].farm_activate || vill_attacked || checkGroup(village_id) || checkCommand(village_id)) {
 							continue
 						} else {
 							presets = data_villages.villages[village_id].presets
