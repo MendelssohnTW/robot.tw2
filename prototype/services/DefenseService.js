@@ -417,13 +417,7 @@ define("robotTW2/services/DefenseService", [
 						{
 							"text": "Sniper",
 							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
-							"target": formatHelper.villageNameWithCoordinates(
-									{
-										"name": params.target_name,
-										"x": params.target_x,
-										"y": params.target_y
-									}
-							),
+							"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.target_village).data),
 							"date": time.convertedTime()
 						}
 				)
