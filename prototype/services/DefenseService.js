@@ -593,11 +593,7 @@ define("robotTW2/services/DefenseService", [
 						"timer_delay" : timer_delay - conf.TIME_DELAY_UPDATE,
 						"id_command": id_command
 					})
-
 				}
-
-
-
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
