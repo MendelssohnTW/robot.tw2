@@ -597,8 +597,8 @@ define("robotTW2/services/DefenseService", [
 			});
 		}
 		, resendDefense = function(params){
-			var expires_send = params.data_escolhida - params.time_sniper_ant
-			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
+			var expires_send = params.data_escolhida - params.time_sniper_ant + robotTW2.databases.data_main.time_correction_command
+			, timer_delay_send = expires_send - time.convertedTime()
 
 			if(timer_delay_send <= -25000){
 				removeCommandDefense(params.id_command)
@@ -617,7 +617,7 @@ define("robotTW2/services/DefenseService", [
 								}
 						)
 				return 
-			} else if(timer_delay_send > -25000 && timer_delay_send < robotTW2.databases.data_main.time_correction_command){
+			} else if(timer_delay_send > -25000 && timer_delay_send < 0){
 				timer_delay_send = 0;
 			}
 			resend = true;
