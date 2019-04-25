@@ -411,8 +411,14 @@ define("robotTW2/services/FarmService", [
 			return !!groups.find(f=>f.name=="no farm")
 		}
 		, checkCommand = function(village_id){
-			let cmds_attack = services.AttackService.get_command(village_id) //Se estiver programado ataque na aldeia
-			let cmds_defense = services.DefenseService.get_command(village_id) //Se estiver programado defesa na aldeia
+			let cmds_attack = []
+			, cmds_defense = []
+			if(!data_farm.attack_prog){
+				cmds_attack = services.AttackService.get_command(village_id) //Se estiver programado ataque na aldeia
+			}
+			if(!data_farm.defense_prog){
+				cmds_defense = services.DefenseService.get_command(village_id) //Se estiver programado defesa na aldeia
+			}
 			let cmds = cmds_attack.concat(cmds_defense)
 			return !!cmds.length
 		}

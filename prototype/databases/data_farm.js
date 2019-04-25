@@ -89,6 +89,8 @@ define("robotTW2/databases/data_farm", [
 			name					: "data_farm",
 			infinite				: true,
 			attacked				: false,
+			attack_prog				: false,
+			defense_prog			: false,
 			unit_direction			: false,
 			speed_direction			: false,
 			cicle_distinct			: false,
