@@ -2,7 +2,7 @@ define("robotTW2/controllers/AlertController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
-	"helper.unreadableSeconds", 
+	"robotTW2/unreadableSeconds", 
 	"robotTW2/databases/data_alert",
 	], function(
 			services,

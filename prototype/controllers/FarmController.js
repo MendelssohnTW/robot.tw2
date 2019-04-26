@@ -9,7 +9,7 @@ define("robotTW2/controllers/FarmController", [
 	"robotTW2/databases/data_farm",
 	"helper/format",
 	"robotTW2/autocomplete",
-	"helper.unreadableSeconds"
+	"robotTW2/unreadableSeconds"
 	], function(
 			helper,
 			time,

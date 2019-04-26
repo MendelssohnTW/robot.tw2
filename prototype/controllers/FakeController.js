@@ -10,7 +10,7 @@ define("robotTW2/controllers/FakeController", [
 	"helper/math",
 	"conf/conf",
 	"robotTW2/services/ProvinceService",
-	"helper.unreadableSeconds"
+	"robotTW2/unreadableSeconds"
 	], function(
 			services,
 			providers,

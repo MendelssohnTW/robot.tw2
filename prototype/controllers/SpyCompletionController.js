@@ -3,7 +3,7 @@ define("robotTW2/controllers/SpyCompletionController", [
 	"robotTW2/time",
 	"helper/time",
 	"robotTW2/notify",
-	"helper.unreadableSeconds"
+	"robotTW2/unreadableSeconds"
 	], function(
 			services,
 			time,
