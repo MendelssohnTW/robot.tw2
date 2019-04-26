@@ -1,18 +1,18 @@
 define("robotTW2/controllers/AttackCompletionController", [
 	"robotTW2/services",
-	"robotTW2/time",
+	"robotTW2/unreadableSeconds", 
 	"helper/time",
 	"robotTW2/notify"
 	], function(
 			services,
 			time,
-			helper,
+			unreadableSeconds,
 			notify
 	){
 	return function AttackCompletionController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.SCHEDULE = services.$filter("i18n")("SCHEDULE", services.$rootScope.loc.ale);
-		
+
 		var self = this;
 
 		$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
@@ -21,7 +21,7 @@ define("robotTW2/controllers/AttackCompletionController", [
 		$scope.enviarFull = false;
 
 		$scope.sendAttack = function(){
-			
+
 			$scope.army = {
 					'officers': {}
 			}
@@ -32,7 +32,8 @@ define("robotTW2/controllers/AttackCompletionController", [
 					}
 				}
 			}
-			var durationInSeconds = helper.unreadableSeconds($scope.properties.duration);
+
+			var durationInSeconds = unreadableSeconds($scope.properties.duration);
 			if ($scope.enviarFull){
 				durationInSeconds = 0;
 			}

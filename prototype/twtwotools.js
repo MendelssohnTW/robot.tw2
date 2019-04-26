@@ -1679,6 +1679,24 @@ var robotTW2 = window.robotTW2 = undefined;
 			};
 		})
 		,
+		define("robotTW2/unreadableSeconds", [
+			"helper/time",
+		], function(
+				helper
+				){
+			return function(hms){
+				let args = hms.split(':').reverse(),
+				s = args[0],
+				m = args[1],
+				h = args[2],
+				d = args[3] || 0
+				, days = d*24*60*60*1000
+				, ms = helper.unreadableSeconds($scope.properties.duration);
+				
+				return ms + days;
+			}
+		})
+		,
 		define("robotTW2/calibrate_time", [
 			"helper/time", 
 			"robotTW2/time",
