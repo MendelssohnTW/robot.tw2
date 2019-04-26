@@ -1698,13 +1698,15 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 		,
 		define("robotTW2/calibrate_time", [
-			"helper/time", 
+			"helper/time",
+			"robotTW2/unreadableSeconds",
 			"robotTW2/time",
 			"robotTW2/conf",
 			"helper/math",
 			"robotTW2/calculateTravelTime"
 			], function(
-					helper, 
+					helper,
+					unreadableSeconds,
 					time,
 					conf,
 					math,
@@ -1762,7 +1764,7 @@ var robotTW2 = window.robotTW2 = undefined;
 										speed = calculateTravelTime(army, village, "attack", {
 											'barbarian'		: true
 										})
-										, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
+										, duration = unreadableSeconds(helper.readableSeconds(speed * distancia, false))
 
 
 										robotTW2.services.$timeout(function(){

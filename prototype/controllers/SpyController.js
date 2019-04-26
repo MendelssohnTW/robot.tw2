@@ -9,7 +9,8 @@ define("robotTW2/controllers/SpyController", [
 	"robotTW2/notify",
 	"helper/math",
 	"conf/conf",
-	"robotTW2/services/ProvinceService"
+	"robotTW2/services/ProvinceService",
+	"helper.unreadableSeconds"
 	], function(
 			services,
 			providers,
@@ -21,7 +22,8 @@ define("robotTW2/controllers/SpyController", [
 			notify,
 			math,
 			conf_conf,
-			provinceService
+			provinceService,
+			unreadableSeconds
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -473,7 +475,7 @@ define("robotTW2/controllers/SpyController", [
 			if(t.length <= 5) {
 				t = t + ":00"
 			}
-			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
+			$scope.data_spy.interval = unreadableSeconds(t) * 1000;
 		}
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}

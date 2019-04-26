@@ -9,7 +9,8 @@ define("robotTW2/controllers/FakeController", [
 	"robotTW2/notify",
 	"helper/math",
 	"conf/conf",
-	"robotTW2/services/ProvinceService"
+	"robotTW2/services/ProvinceService",
+	"helper.unreadableSeconds"
 	], function(
 			services,
 			providers,
@@ -21,7 +22,8 @@ define("robotTW2/controllers/FakeController", [
 			notify,
 			math,
 			conf_conf,
-			provinceService
+			provinceService,
+			unreadableSeconds
 	){
 	return function FakeController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -273,7 +275,7 @@ define("robotTW2/controllers/FakeController", [
 			if(t.length <= 5) {
 				t = t + ":00"
 			}
-			$scope.data_fake.interval = helper.unreadableSeconds(t) * 1000;
+			$scope.data_fake.interval = unreadableSeconds(t) * 1000;
 		}
 
 		$scope.jumpToVillage = function(vid){
