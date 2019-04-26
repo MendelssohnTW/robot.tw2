@@ -1691,7 +1691,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				h = args[2],
 				d = args[3] || 0
 				, days = d*24*60*60*1000
-				, ms = helper.unreadableSeconds(hms);
+				, tet = h + ":" + m + ":" + s
+				, ms = helper.unreadableSeconds(tet);
 				
 				return ms + days;
 			}
