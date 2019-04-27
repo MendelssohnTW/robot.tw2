@@ -27,7 +27,6 @@ define("robotTW2/services/AlertService", [
 			$rootScope.$broadcast(providers.eventTypeProvider.MESSAGE_DEBUG, {message: $filter("i18n")("text_underattack", $rootScope.loc.ale, "alert")})
 		}
 		, verify_alert = function(){
-
 			let members = modelDataService.getSelectedCharacter().getTribeMemberModel()
 			, friends = data_alert.friends;
 			if (members != undefined){
