@@ -412,18 +412,18 @@ define("robotTW2/services/DefenseService", [
 		}
 		, sendCancel = function(params){
 			return $timeout(function () {
+				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
+					command_id: params.id_command
+				})
 				removeCommandDefense(params.id_command)
 				data_log.defense.push(
 						{
-							"text": "Sniper",
+							"text": "Sniper send cancel",
 							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 							"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.target_village).data),
 							"date": time.convertedTime()
 						}
 				)
-				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
-					command_id: params.id_command
-				})
 			}, params.timer_delay);
 		}
 		, units_to_send = function(params){
@@ -537,7 +537,6 @@ define("robotTW2/services/DefenseService", [
 									"date": time.convertedTime()
 								}
 						)
-						removeCommandDefense(params.id_command)
 						return
 					}
 
@@ -548,6 +547,8 @@ define("robotTW2/services/DefenseService", [
 						}
 
 					})
+					
+					removeCommandDefense(cmd.id_command)
 
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 

@@ -2,11 +2,13 @@ define("robotTW2/controllers/AlertController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"helper/time",
+	"robotTW2/unreadableSeconds", 
 	"robotTW2/databases/data_alert",
 	], function(
 			services,
 			providers,
 			helper,
+			unreadableSeconds,
 			data_alert
 	){
 	return function AlertController($scope) {
@@ -79,14 +81,14 @@ define("robotTW2/controllers/AlertController", [
 			if(interval_alert.length <= 5){
 				interval_alert = interval_alert + ":00"
 			}
-			if (helper.unreadableSeconds(interval_alert) * 1e3 > 30*60*1000){
+			if (unreadableSeconds(interval_alert) * 1e3 > 30*60*1000){
 				$scope.data_alert.interval = 30*60*1000
 				$scope.interval_alert = 30*60*1000;
-			} else if (helper.unreadableSeconds(interval_alert) * 1e3 < 5*60*1000){
+			} else if (unreadableSeconds(interval_alert) * 1e3 < 5*60*1000){
 				$scope.data_alert.interval = 5*60*1000
 				$scope.interval_alert = 5*60*1000;
 			} else {
-				$scope.data_alert.interval = helper.unreadableSeconds(interval_alert) * 1e3
+				$scope.data_alert.interval = unreadableSeconds(interval_alert) * 1e3
 				$scope.interval_alert = interval_alert;
 			}
 			document.getElementById("input-text-time-interval").value = $scope.interval_alert;

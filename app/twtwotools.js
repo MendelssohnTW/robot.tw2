@@ -953,8 +953,8 @@ var robotTW2 = window.robotTW2 = undefined;
 				"OPEN_MAIN"						: "Internal/robotTW2/open_main",
 				"OPEN_MARKET"					: "Internal/robotTW2/open_market",
 				"OPEN_LOG"						: "Internal/robotTW2/open_log",
-				"PAUSE"					: "Internal/robotTW2/farm_pause",
-				"RESUME"					: "Internal/robotTW2/farm_resume"
+				"PAUSE"							: "Internal/robotTW2/farm_pause",
+				"RESUME"						: "Internal/robotTW2/farm_resume"
 			});
 			return robotTW2.providers;
 		}))
@@ -1047,21 +1047,40 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 		})
 		,
-		define("robotTW2/unreadableMilliseconds", [
+		define("robotTW2/unreadableSeconds", [
+			"helper/time",
 			], function(
+					helper
 			){
-			return function return_Miliseconds(tempo){
-				var days, hours, minutes, s = 1000, m = 60, timeString, h = m * m , d = 24 * h;
-				if (tempo != undefined && tempo != 0){
-					if (tempo.length <= 5){
-						tempo = tempo + ":00"; 
+			return function(hms){
+				if (hms != undefined && hms != 0){
+					if (hms.length <= 5){
+						hms = hms + ":00"; 
 					}
-					var ar_tempo = tempo.split(":").reverse();
-					var days = parseInt(ar_tempo[3]) || 0;
-					var hours = parseInt(ar_tempo[2]) || 0;
-					var minutes = parseInt(ar_tempo[1]) || 0;
-					var seconds = parseInt(ar_tempo[0]) || 0;
-					return ((days * d + hours * h + minutes * m  + seconds) * s);
+					let args = hms.split(':').reverse(),
+					s = parseInt(args[0]) || 0,
+					m = parseInt(args[1]) || 0,
+					h = parseInt(args[2]) || 0,
+					d = parseInt(args[3] )|| 0
+					, days = d*24*60*60*1000
+					, tet = h + ":" + m + ":" + s
+					, ms = helper.unreadableSeconds(tet);
+
+					return ms + days;
+				} else {
+					return 0;
+				}
+			}
+		})
+		,
+		define("robotTW2/unreadableMilliseconds", [
+			"robotTW2/unreadableSeconds",
+			], function(
+					unreadableSeconds
+			){
+			return function return_Miliseconds(hms){
+				if (hms != undefined && hms != 0){
+					return unreadableSeconds(hms) * s
 				} else {
 					return 0;
 				}
@@ -1680,13 +1699,15 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 		,
 		define("robotTW2/calibrate_time", [
-			"helper/time", 
+			"helper/time",
+			"robotTW2/unreadableSeconds",
 			"robotTW2/time",
 			"robotTW2/conf",
 			"helper/math",
 			"robotTW2/calculateTravelTime"
 			], function(
-					helper, 
+					helper,
+					unreadableSeconds,
 					time,
 					conf,
 					math,
@@ -1744,7 +1765,7 @@ var robotTW2 = window.robotTW2 = undefined;
 										speed = calculateTravelTime(army, village, "attack", {
 											'barbarian'		: true
 										})
-										, duration = helper.unreadableSeconds(helper.readableSeconds(speed * distancia, false))
+										, duration = unreadableSeconds(helper.readableSeconds(speed * distancia, false))
 
 
 										robotTW2.services.$timeout(function(){
@@ -1865,6 +1886,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		$rootScope.$on("ready", function($event, type){
 
 			require(["robotTW2/conf"], function(conf){
+
 				switch (type) {
 				case robotTW2.controllers.MainController : {
 					robotTW2.loadScript("/controllers/FarmController.js");
@@ -2292,32 +2314,35 @@ var robotTW2 = window.robotTW2 = undefined;
 					break
 				}
 				case "database" : {
-					robotTW2.ready(function(){
-						robotTW2.services.$timeout(function(){
-							robotTW2.loadScript("/databases/data_villages.js")
+					robotTW2.loadScript("/services/User_Control.js");
+					$rootScope.$on("ready_users", function($event, data){
+						if(!data){return}
+						robotTW2.ready(function(){
 							robotTW2.services.$timeout(function(){
-								robotTW2.loadScript("/databases/data_farm.js");
-								robotTW2.loadScript("/databases/data_deposit.js");
-								robotTW2.loadScript("/databases/data_spy.js");
-								robotTW2.loadScript("/databases/data_fake.js");
-								robotTW2.loadScript("/databases/data_market.js");
-								robotTW2.loadScript("/databases/data_alert.js");
-								robotTW2.loadScript("/databases/data_attack.js");
-								robotTW2.loadScript("/databases/data_recon.js");
-								robotTW2.loadScript("/databases/data_defense.js");
-								robotTW2.loadScript("/databases/data_headquarter.js");
-								robotTW2.loadScript("/databases/data_recruit.js");
-								robotTW2.loadScript("/databases/data_secondvillage.js");
-								robotTW2.loadScript("/databases/data_log.js");
-
+								robotTW2.loadScript("/databases/data_villages.js")
 								robotTW2.services.$timeout(function(){
-									robotTW2.loadScript("/databases/data_main.js");
+									robotTW2.loadScript("/databases/data_farm.js");
+									robotTW2.loadScript("/databases/data_deposit.js");
+									robotTW2.loadScript("/databases/data_spy.js");
+									robotTW2.loadScript("/databases/data_fake.js");
+									robotTW2.loadScript("/databases/data_market.js");
+									robotTW2.loadScript("/databases/data_alert.js");
+									robotTW2.loadScript("/databases/data_attack.js");
+									robotTW2.loadScript("/databases/data_recon.js");
+									robotTW2.loadScript("/databases/data_defense.js");
+									robotTW2.loadScript("/databases/data_headquarter.js");
+									robotTW2.loadScript("/databases/data_recruit.js");
+									robotTW2.loadScript("/databases/data_secondvillage.js");
+									robotTW2.loadScript("/databases/data_log.js");
+
+									robotTW2.services.$timeout(function(){
+										robotTW2.loadScript("/databases/data_main.js");
+									}, 3000)
 								}, 3000)
-							}, 3000)
-						}, 1000)
+							}, 1000)
 
-					},  ["all_villages_ready", "tribe_relations"])
-
+						},  ["all_villages_ready", "tribe_relations"])
+					})
 					break
 				}
 				case "data_main" : {
