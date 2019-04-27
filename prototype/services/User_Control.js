@@ -35,6 +35,7 @@ define("robotTW2/services/User_Control", [
 								if(Object.keys(user_control[server][world])[id].length){
 									if(Object.keys(user_control[server][world])[id] == name){
 										status = true;
+										$rootScope.$broadcast("ready_users", true)
 									}
 								}
 							}
@@ -42,7 +43,6 @@ define("robotTW2/services/User_Control", [
 					}				
 				}
 			}
-			$rootScope.$broadcast("ready_users", false)
 		}, 10000)
 		
 		service.getControl = function(){
