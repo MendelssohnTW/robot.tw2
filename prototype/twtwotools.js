@@ -333,7 +333,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					require([i], function(type){
 						addScript(url)
 						exports[f][g] = type
-						if(f != "databases"){
+						if(f == "databases"){
 							$rootScope.$broadcast("ready", g);
 						} else {
 							$rootScope.$broadcast("ready", type);
