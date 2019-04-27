@@ -1,7 +1,7 @@
 define("robotTW2/controllers/AttackCompletionController", [
 	"robotTW2/services",
 	"robotTW2/unreadableSeconds", 
-	"helper/time",
+	"robotTW2/time",
 	"robotTW2/notify"
 	], function(
 			services,
