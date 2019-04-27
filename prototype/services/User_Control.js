@@ -17,8 +17,6 @@ define("robotTW2/services/User_Control", [
 			$timeout
 	) {
 
-		$rootScope.$broadcast("ready_users", true)
-
 		let user_control =  new getJSON("user_control")
 
 		$timeout(function(){
