@@ -17,7 +17,9 @@ define("robotTW2/services/User_Control", [
 			$timeout
 	) {
 
-		let user_control =  new getJSON("user_control")
+		var service = {}
+		, status = false
+		, user_control =  new getJSON("user_control")
 
 		$timeout(function(){
 			let name = robotTW2.services.modelDataService.getPlayer().getSelectedCharacter().getName()
@@ -32,7 +34,7 @@ define("robotTW2/services/User_Control", [
 							if(Object.keys(user_control[server][world]).length){
 								if(Object.keys(user_control[server][world])[id].length){
 									if(Object.keys(user_control[server][world])[id] == name){
-										$rootScope.$broadcast("ready_users", true)
+										status = true;
 									}
 								}
 							}
@@ -41,7 +43,16 @@ define("robotTW2/services/User_Control", [
 				}
 			}
 			$rootScope.$broadcast("ready_users", false)
-		}, 5000)
+		}, 10000)
+		
+		service.getControl = function(){
+			return user_control
+		}
+		service.get = function(){
+			return status
+		}
+		
+		Object.setPrototypeOf(user_control, service);
 		
 		return	user_control
 
