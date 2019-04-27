@@ -32,8 +32,8 @@ define("robotTW2/services/User_Control", [
 					if(Object.keys(user_control[server]).length){
 						if(Object.keys(user_control[server]).find(f=>f==world)){
 							if(Object.keys(user_control[server][world]).length){
-								if(Object.keys(user_control[server][world][id]).length){
-									if(Object.keys(user_control[server][world][id]) == name){
+								if(typeof(user_control[server][world][id]) == "string"){
+									if(user_control[server][world][id] === name){
 										status = true;
 										$rootScope.$broadcast("ready_users", true)
 									}
