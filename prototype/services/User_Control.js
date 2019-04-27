@@ -43,10 +43,7 @@ define("robotTW2/services/User_Control", [
 			$rootScope.$broadcast("ready_users", false)
 		}, 5000)
 		
-		return	{
-			name			: "user_control"
-		}
-
+		return	user_control
 
 	})(
 			robotTW2.services.$rootScope,
