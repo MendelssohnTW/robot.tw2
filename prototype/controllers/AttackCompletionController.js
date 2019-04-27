@@ -5,8 +5,8 @@ define("robotTW2/controllers/AttackCompletionController", [
 	"robotTW2/notify"
 	], function(
 			services,
-			time,
 			unreadableSeconds,
+			time,
 			notify
 	){
 	return function AttackCompletionController($scope) {
