@@ -765,7 +765,13 @@ define("robotTW2/services/DefenseService", [
 			};
 		}
 		, removeCommandDefense = function(id_command){
-			if(commandDefense[id_command]){ 
+			if(commandDefense[id_command]){
+				data_log.defense.push(
+						{
+							"text": "Command removed - " + id_command,
+							"date": time.convertedTime()
+						}
+				)
 				if(typeof(commandDefense[id_command].timeout) == "object"){
 					if(commandDefense[id_command].timeout.$$state.status == 0){
 						$timeout.cancel(commandDefense[id_command].timeout)	
