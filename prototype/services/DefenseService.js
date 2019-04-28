@@ -562,14 +562,8 @@ define("robotTW2/services/DefenseService", [
 					data_log.defense.push(
 							{
 								"text": "Sniper not sent - not found",
-								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
-								"target": formatHelper.villageNameWithCoordinates(
-										{
-											"name": params.target_name,
-											"x": params.target_x,
-											"y": params.target_y
-										}
-								),
+								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(data.home.id).data),
+								"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(data.target.id).data),
 								"date": time.convertedTime()
 							}
 					)
