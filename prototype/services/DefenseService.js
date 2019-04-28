@@ -516,7 +516,7 @@ define("robotTW2/services/DefenseService", [
 				}).filter(f => f != undefined)
 
 				if(cmds.length){
-					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
+					cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 					for (_cmd in cmds){
 						if(cmds.hasOwnProperty(_cmd)){
 							let cmd = cmds[_cmd]
