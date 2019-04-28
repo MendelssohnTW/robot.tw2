@@ -530,7 +530,6 @@ define("robotTW2/services/DefenseService", [
 							}
 
 							console.log("comando " + params.id_command)
-
 							if(expires >= -25000 && expires < 0){
 								params.timer_delay = 0;
 								console.log("delay = 0")
