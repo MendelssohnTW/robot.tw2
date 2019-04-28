@@ -121,15 +121,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
 				if(!params || !Object.keys(params).length) {
 					if(!Object.keys(fs.params).length) {
-						triggered[this.prefix + key] = fs.fn.apply(this, [])
+						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
 					} else {
-						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
+						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
 					}
 				} else {
 					if(!Object.keys(fs.params).length) {
-						triggered[this.prefix + key] = fs.fn.apply(this, [])
+						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
 					} else {
-						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
+						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
 					}
 				}
 			})
