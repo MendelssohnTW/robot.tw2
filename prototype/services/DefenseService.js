@@ -415,7 +415,6 @@ define("robotTW2/services/DefenseService", [
 				socketService.emit(providers.routeProvider.COMMAND_CANCEL, {
 					command_id: params.id_command
 				})
-				removeCommandDefense(params.id_command)
 				data_log.defense.push(
 						{
 							"text": "Sniper send cancel " + params.id_command,
@@ -424,6 +423,7 @@ define("robotTW2/services/DefenseService", [
 							"date": time.convertedTime()
 						}
 				)
+				removeCommandDefense(params.id_command)
 			}, params.timer_delay);
 		}
 		, units_to_send = function(params){
