@@ -137,8 +137,8 @@ var robotTW2 = window.robotTW2 = undefined;
 		,
 		service.get = function(key, opt_prefix, index) {
 			if(!key) return;
-			!index ? index = 0 : index;
-			return opt_prefix && fns[this.prefix + key] ? fns[this.prefix + key][index] : fns[key] ? fns[key][index] : null 
+//			!index ? index = 0 : index;
+			return opt_prefix && fns[this.prefix + key] ? fns[this.prefix + key] : fns[key] ? fns[key] : null 
 		}
 		, service.unbind = function(key) {
 			if(fns.hasOwnProperty(this.prefix + key)){
