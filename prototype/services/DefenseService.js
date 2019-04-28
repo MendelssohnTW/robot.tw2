@@ -520,7 +520,7 @@ define("robotTW2/services/DefenseService", [
 					for (_cmd in cmds){
 						if(cmds.hasOwnProperty(_cmd)){
 							let cmd = cmds[_cmd]
-							, dif = time.convertMStoUTC(data.time_start * 1000 - (cmd.data_escolhida - cmd.time_sniper_ant))
+							, dif = time.convertMStoUTC(data.time_start * 1000) - (cmd.data_escolhida - cmd.time_sniper_ant)
 							, expires = (((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2
 							, params = {
 								"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
