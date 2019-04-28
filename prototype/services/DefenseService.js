@@ -516,7 +516,8 @@ define("robotTW2/services/DefenseService", [
 				}).filter(f => f != undefined)
 
 				if(cmds.length){
-					for (cmd in cmds){
+					for (_cmd in cmds){
+						let cmd = cmds[_cmd]
 						let  expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
 						, params = {
 							"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
