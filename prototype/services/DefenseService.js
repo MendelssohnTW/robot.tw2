@@ -516,42 +516,46 @@ define("robotTW2/services/DefenseService", [
 				}).filter(f => f != undefined)
 
 				if(cmds.length){
-					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
-					var cmd = cmds.pop()
-					, expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
-					, params = {
-						"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
-						"id_command" 		: data.id,
-						"start_village" 	: cmd.start_village,
-						"target_village" 	: cmd.target_village
+					for (cmd in cmds){
+						let  expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
+						, params = {
+							"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+							"id_command" 		: data.id,
+							"start_village" 	: cmd.start_village,
+							"target_village" 	: cmd.target_village
 						}
-					
-					removeCommandDefense(cmd.id_command)
 
-					if(expires >= -25000 && expires < 0){
-						params.timer_delay = 0;
-					} else if(expires < -25000){
-						console.log(JSON.stringify(params))
-						data_log.defense.push(
-								{
-									"text": "Sniper not sent - expires",
-									"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
-									"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.target_village).data),
-									"date": time.convertedTime()
+						if(expires >= -25000 && expires < 0){
+							params.timer_delay = 0;
+						} else if(expires < -25000){
+							console.log(JSON.stringify(params))
+							data_log.defense.push(
+									{
+										"text": "Sniper not sent - expires",
+										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.target_village).data),
+										"date": time.convertedTime()
+									}
+							)
+							removeCommandDefense(cmd.id_command)
+							return
+						}
+
+						if(!commandDefense[params.id_command]){
+							removeCommandDefense(cmd.id_command)
+							commandQueue.bind(data.id, sendCancel, null, params, function(fns){
+								commandDefense[params.id_command] = {
+										"timeout" 	: fns.fn.apply(this, [fns.params]),
+										"params"	: params
 								}
-						)
-						
-						return
+
+							})
+						}
 					}
 
-					commandQueue.bind(data.id, sendCancel, null, params, function(fns){
-						commandDefense[params.id_command] = {
-								"timeout" 	: fns.fn.apply(this, [fns.params]),
-								"params"	: params
-						}
+//					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
+//					var cmd = cmds.pop()
 
-					})
-					
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
@@ -606,19 +610,19 @@ define("robotTW2/services/DefenseService", [
 			if(timer_delay_send <= -25000){
 				removeCommandDefense(params.id_command)
 				data_log.defense.push(
-								{
-									"text": "Sniper not sent - expires",
-									"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
-									"target": formatHelper.villageNameWithCoordinates(
-											{
-												"name": params.target_name,
-												"x": params.target_x,
-												"y": params.target_y
-											}
-									),
-									"date": time.convertedTime()
-								}
-						)
+						{
+							"text": "Sniper not sent - expires",
+							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+							"target": formatHelper.villageNameWithCoordinates(
+									{
+										"name": params.target_name,
+										"x": params.target_x,
+										"y": params.target_y
+									}
+							),
+							"date": time.convertedTime()
+						}
+				)
 				return 
 			} else if(timer_delay_send > -25000 && timer_delay_send < 0){
 				timer_delay_send = 0;
