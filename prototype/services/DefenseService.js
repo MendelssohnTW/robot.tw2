@@ -528,7 +528,7 @@ define("robotTW2/services/DefenseService", [
 								"target_village" 	: cmd.target_village
 							}
 
-							console.log("comando " + JSON.stringify(cmd))
+							console.log("comando " + params.id_command)
 
 							if(expires >= -25000 && expires < 0){
 								params.timer_delay = 0;
@@ -547,7 +547,7 @@ define("robotTW2/services/DefenseService", [
 								return
 							}
 
-							console.log("bindind command " + JSON.stringify(params))
+							console.log("bindind command " + params.id_command)
 							if(!commandDefense[params.id_command]){
 								console.log("binded")
 								removeCommandDefense(cmd.id_command)
