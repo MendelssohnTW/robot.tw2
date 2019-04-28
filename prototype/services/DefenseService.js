@@ -537,6 +537,7 @@ define("robotTW2/services/DefenseService", [
 									"date": time.convertedTime()
 								}
 						)
+						removeCommandDefense(cmd.id_command)
 						return
 					}
 
