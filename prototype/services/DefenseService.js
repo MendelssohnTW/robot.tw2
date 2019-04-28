@@ -525,6 +525,8 @@ define("robotTW2/services/DefenseService", [
 						"start_village" 	: cmd.start_village,
 						"target_village" 	: cmd.target_village
 						}
+					
+					removeCommandDefense(cmd.id_command)
 
 					if(expires >= -25000 && expires < 0){
 						params.timer_delay = 0;
@@ -538,7 +540,7 @@ define("robotTW2/services/DefenseService", [
 									"date": time.convertedTime()
 								}
 						)
-						removeCommandDefense(cmd.id_command)
+						
 						return
 					}
 
@@ -550,8 +552,6 @@ define("robotTW2/services/DefenseService", [
 
 					})
 					
-					removeCommandDefense(cmd.id_command)
-
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 
 				} else {
