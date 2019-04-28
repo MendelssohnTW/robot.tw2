@@ -516,41 +516,51 @@ define("robotTW2/services/DefenseService", [
 				}).filter(f => f != undefined)
 
 				if(cmds.length){
+					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
 					for (_cmd in cmds){
-						let cmd = cmds[_cmd]
-						, expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
-						, params = {
-							"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
-							"id_command" 		: data.id,
-							"start_village" 	: cmd.start_village,
-							"target_village" 	: cmd.target_village
-						}
+						if(cmds.hasOwnProperty(_cmd)){
+							let cmd = cmds[_cmd]
+							, expires = (cmd.data_escolhida - time.convertMStoUTC(data.time_start * 1000) + cmd.time_sniper_post) / 2
+							, params = {
+								"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+								"id_command" 		: data.id,
+								"start_village" 	: cmd.start_village,
+								"target_village" 	: cmd.target_village
+							}
 
-						if(expires >= -25000 && expires < 0){
-							params.timer_delay = 0;
-						} else if(expires < -25000){
-							console.log(JSON.stringify(params))
-							data_log.defense.push(
-									{
-										"text": "Sniper not sent - expires - " + cmd.id_command,
-										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
-										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
-										"date": time.convertedTime()
+							console.log("comando " + JSON.stringify(cmd))
+
+							if(expires >= -25000 && expires < 0){
+								params.timer_delay = 0;
+								console.log("delay = 0")
+							} else if(expires < -25000){
+								console.log(JSON.stringify(params))
+								data_log.defense.push(
+										{
+											"text": "Sniper not sent - expires - " + cmd.id_command,
+											"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+											"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+											"date": time.convertedTime()
+										}
+								)
+								removeCommandDefense(cmd.id_command)
+								return
+							}
+
+							console.log("bindind command " + JSON.stringify(params))
+							if(!commandDefense[params.id_command]){
+								console.log("binded")
+								removeCommandDefense(cmd.id_command)
+								commandQueue.bind(data.id, sendCancel, null, params, function(fns){
+									commandDefense[params.id_command] = {
+											"timeout" 	: fns.fn.apply(this, [fns.params]),
+											"params"	: params
 									}
-							)
-							removeCommandDefense(cmd.id_command)
-							return
-						}
 
-						if(!commandDefense[params.id_command]){
-							removeCommandDefense(cmd.id_command)
-							commandQueue.bind(data.id, sendCancel, null, params, function(fns){
-								commandDefense[params.id_command] = {
-										"timeout" 	: fns.fn.apply(this, [fns.params]),
-										"params"	: params
-								}
-
-							})
+								})
+							} else {
+								console.log("not binded")
+							}
 						}
 					}
 
@@ -558,7 +568,6 @@ define("robotTW2/services/DefenseService", [
 //					var cmd = cmds.pop()
 
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
-
 				} else {
 					data_log.defense.push(
 							{
