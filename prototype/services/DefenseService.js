@@ -529,6 +529,7 @@ define("robotTW2/services/DefenseService", [
 					if(expires >= -25000 && expires < 0){
 						params.timer_delay = 0;
 					} else if(expires < -25000){
+						console.log(JSON.stringify(params))
 						data_log.defense.push(
 								{
 									"text": "Sniper not sent - expires",
