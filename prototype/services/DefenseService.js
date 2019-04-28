@@ -418,7 +418,7 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				data_log.defense.push(
 						{
-							"text": "Sniper send cancel",
+							"text": "Sniper send cancel " + params.id_command,
 							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 							"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.target_village).data),
 							"date": time.convertedTime()
@@ -531,9 +531,9 @@ define("robotTW2/services/DefenseService", [
 							console.log(JSON.stringify(params))
 							data_log.defense.push(
 									{
-										"text": "Sniper not sent - expires",
-										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
-										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.target_village).data),
+										"text": "Sniper not sent - expires - " + cmd.id_command,
+										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
 										"date": time.convertedTime()
 									}
 							)
@@ -580,7 +580,7 @@ define("robotTW2/services/DefenseService", [
 			resend = false;
 			data_log.defense.push(
 					{
-						"text": $filter("i18n")("defense", $rootScope.loc.ale, "defense"),
+						"text": $filter("i18n")("defense", $rootScope.loc.ale, "defense") + " - " + params.id_command,
 						"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 						"target": formatHelper.villageNameWithCoordinates(
 								{
@@ -611,7 +611,7 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				data_log.defense.push(
 						{
-							"text": "Sniper not sent - expires",
+							"text": "Sniper not sent - expires " + params.id_command,
 							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 							"target": formatHelper.villageNameWithCoordinates(
 									{
@@ -666,7 +666,7 @@ define("robotTW2/services/DefenseService", [
 			} else {
 				data_log.defense.push(
 						{
-							"text": "Sniper not sent - expires",
+							"text": "Sniper not sent - expires " + params.id_command,
 							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
 							"target": formatHelper.villageNameWithCoordinates(
 									{
