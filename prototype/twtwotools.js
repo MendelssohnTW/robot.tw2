@@ -104,11 +104,14 @@ var robotTW2 = window.robotTW2 = undefined;
 		return service.prefix = "robotTW2/" 
 			, service.bind = function(key, fn, params, callback) {
 			fns.hasOwnProperty(this.prefix + key) || (fns[this.prefix + key] = []),
-			fns[this.prefix + key].push(
-					{
-						fn:fn, params:params || {}
-					}
-			)
+			angular.extend(fns[this.prefix + key], {
+				fn:fn, params:params || {}
+			})
+//			fns[this.prefix + key].push(
+//					{
+//						fn:fn, params:params || {}
+//					}
+//			)
 			if(typeof(callback)=="function"){
 				callback({fn:fn, params:params || {}})
 			}
@@ -182,8 +185,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			})
 		}
 		, service.getFns = function(){return fns}
-		,
-		service
+		, service
 	})()
 	, commandQueue = (function (){
 		var service = {};
