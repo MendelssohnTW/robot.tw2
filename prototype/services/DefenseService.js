@@ -547,9 +547,8 @@ define("robotTW2/services/DefenseService", [
 								return
 							}
 
-							console.log("bindind command " + params.id_command)
 							if(!commandDefense[params.id_command]){
-								console.log("binded")
+								console.log("binded " + params.id_command)
 								removeCommandDefense(cmd.id_command)
 								commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 									console.log("triggered")
@@ -559,8 +558,6 @@ define("robotTW2/services/DefenseService", [
 									}
 
 								})
-							} else {
-								console.log("not binded")
 							}
 						}
 					}
