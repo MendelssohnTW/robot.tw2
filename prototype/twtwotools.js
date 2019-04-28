@@ -99,7 +99,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	}
 	, requestFn = (function(){
 		var fns = {}
-		, triggered = {}
+//		, triggered = {}
 		, service = {};
 		return service.prefix = "robotTW2/" 
 			, service.bind = function(key, fn, params, callback) {
@@ -112,29 +112,32 @@ var robotTW2 = window.robotTW2 = undefined;
 //						fn:fn, params:params || {}
 //					}
 //			)
+			/*
+			 * triggered for callback
+			 */
 			if(typeof(callback)=="function"){
 				callback({fn:fn, params:params || {}})
 			}
 		}
 		,
-		service.trigger = function(key, params) {
-			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
-				if(!params || !Object.keys(params).length) {
-					if(!Object.keys(fs.params).length) {
-						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
-					} else {
-						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
-					}
-				} else {
-					if(!Object.keys(fs.params).length) {
-						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
-					} else {
-						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
-					}
-				}
-			})
-		}
-		,
+//		service.trigger = function(key, params) {
+//			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
+//				if(!params || !Object.keys(params).length) {
+//					if(!Object.keys(fs.params).length) {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//					} else {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//					}
+//				} else {
+//					if(!Object.keys(fs.params).length) {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//					} else {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//					}
+//				}
+//			})
+//		}
+//		,
 		service.get = function(key, opt_prefix, index) {
 			if(!key) return;
 //			!index ? index = 0 : index;
@@ -142,19 +145,19 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		, service.unbind = function(key) {
 			if(fns.hasOwnProperty(this.prefix + key)){
-				if(triggered[key]){
-					if(typeof(triggered[this.prefix + key]) == "object"){
-						if(triggered[this.prefix + key].$$state.status == 0){
-							$timeout.cancel(triggered[this.prefix + key])	
-						}
-					} else if(typeof(triggered[this.prefix + key]) == "function"){
-						triggered[this.prefix + key]();
-					}
-					delete triggered[this.prefix + key];
+//				if(triggered[key]){
+//					if(typeof(triggered[this.prefix + key]) == "object"){
+//						if(triggered[this.prefix + key].$$state.status == 0){
+//							$timeout.cancel(triggered[this.prefix + key])	
+//						}
+//					} else if(typeof(triggered[this.prefix + key]) == "function"){
+//						triggered[this.prefix + key]();
+//					}
+//					delete triggered[this.prefix + key];
+//					delete fns[this.prefix + key];
+//				} else {
 					delete fns[this.prefix + key];
-				} else {
-					delete fns[this.prefix + key];
-				}
+//				}
 			}
 		}
 		, service.unbindAll = function(type) {
@@ -166,19 +169,19 @@ var robotTW2 = window.robotTW2 = undefined;
 						return undefined
 					} else {
 						if(fns[key].params.type == type){
-							if(triggered[key]){
-								if(typeof(triggered[key]) == "object"){
-									if(triggered[key].$$state.status == 0){
-										$timeout.cancel(triggered[key])	
-									}
-								} else if(typeof(triggered[key]) == "function"){
-									triggered[key]();
-								}
-								delete triggered[key];
+//							if(triggered[key]){
+//								if(typeof(triggered[key]) == "object"){
+//									if(triggered[key].$$state.status == 0){
+//										$timeout.cancel(triggered[key])	
+//									}
+//								} else if(typeof(triggered[key]) == "function"){
+//									triggered[key]();
+//								}
+//								delete triggered[key];
+//								delete fns[key];
+//							} else {
 								delete fns[key];
-							} else {
-								delete fns[key];
-							}
+//							}
 						}
 					}
 				}
@@ -205,15 +208,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			})
 		}
 		,
-		service.trigger = function(key, params) {
-			if(!key) return;
-			if(!params){
-				requestFn.trigger(key);
-			} else {
-				requestFn.trigger(key, [params]);	
-			}
-		}
-		,
+//		service.trigger = function(key, params) {
+//			if(!key) return;
+//			if(!params){
+//				requestFn.trigger(key);
+//			} else {
+//				requestFn.trigger(key, [params]);	
+//			}
+//		}
+//		,
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
 			if(opt_db){
@@ -351,8 +354,8 @@ var robotTW2 = window.robotTW2 = undefined;
 					res()
 					return
 				}
-				b.src = host + url + '?' + a;
-//				b.src = host + url;
+//				b.src = host + url + '?' + a;
+				b.src = host + url;
 
 				if(!scripts_loaded.find(f => f == url)){
 					if((opt && scripts_removed.find(f => f == url)) || (!opt && !scripts_removed.find(f => f == url))){
