@@ -594,6 +594,10 @@ define("robotTW2/services/DefenseService", [
 						"date": time.convertedTime()
 					}
 			)
+			
+			$timeout(function(){
+				removeCommandDefense(params.id_command)
+			}, 10000)
 
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
