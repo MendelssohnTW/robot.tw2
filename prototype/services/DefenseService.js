@@ -517,12 +517,15 @@ define("robotTW2/services/DefenseService", [
 				for (_cmd in cmds){
 					if(cmds.hasOwnProperty(_cmd)){
 						let cmd = cmds[_cmd]
-						, dif = time.convertMStoUTC(cmd.startedAt) - (_params.data_escolhida - _params.time_sniper_ant) //diferença entre tempo escolhido e tempo enviado
-						, dif_2 = time.convertMStoUTC(cmd.startedAt) - time.convertedTime() //diferença entre tempo enviado e hora atual
-//						, expires = (((_params.data_escolhida + _params.time_sniper_post) - time.convertedTime()) / 2) - dif
-						, expires = ((_params.time_sniper_post + _params.time_sniper_ant) / 2) + dif + dif_2
+						, init_time = _params.data_escolhida - _params.time_sniper_ant
+						, end_time = _params.data_escolhida + _params.time_sniper_post
+						, tot_time = (init_time + end_time) / 2
+						, dif = (init_time) - time.convertMStoUTC(cmd.startedAt)
+						, dif_2 = time.convertMStoUTC(cmd.startedAt) - time.convertedTime()
+						, parc_time = tot_time - dif - dif_2
+						, expires = parc_time + robotTW2.databases.data_main.time_correction_command
 						, params = {
-							"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+							"timer_delay" 		: expires,
 							"id_command" 		: cmd.id,
 							"start_village" 	: _params.start_village,
 							"target_village" 	: _params.target_village
