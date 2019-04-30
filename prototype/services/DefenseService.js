@@ -188,7 +188,7 @@ define("robotTW2/services/DefenseService", [
 							list.reduce(function(prevVal, elem, index, array) {
 								count++;
 								var b = t == 0 ? prevVal.completedAt : t;
-								if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
+								if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count || loyalty < data_defense.loyalt) {
 									t = prevVal.completedAt;
 									g.push(elem)
 									return elem;
