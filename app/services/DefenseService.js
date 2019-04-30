@@ -54,6 +54,8 @@ define("robotTW2/services/DefenseService", [
 		, interval_reload = undefined
 		, listener_verify = undefined
 		, listener_lost = undefined
+		, promise_command_cancel = undefined
+		, queue_command_cancel = []
 		, listener_sent = undefined
 		, listener_cancel = undefined
 		, listener_received = undefined
@@ -184,20 +186,21 @@ define("robotTW2/services/DefenseService", [
 						let loyalty = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).getLoyalty();
 						let limit = Math.trunc(Math.trunc(loyalty) / data_defense.loyalt)
 						let count = 0;
-						if(loyalty > data_defense.loyalt){
-							list.reduce(function(prevVal, elem, index, array) {
-								count++;
-								var b = t == 0 ? prevVal.completedAt : t;
-								if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
-									t = prevVal.completedAt;
-									g.push(elem)
-									return elem;
-								} else {
-									t = 0;
-									return elem
-								}
-							})
+						if(loyalty < data_defense.loyalt){
+							return list
 						}
+						list.reduce(function(prevVal, elem, index, array) {
+							count++;
+							var b = t == 0 ? prevVal.completedAt : t;
+							if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
+								t = prevVal.completedAt;
+								g.push(elem)
+								return elem;
+							} else {
+								t = 0;
+								return elem
+							}
+						})
 					}
 					return g;
 				}
@@ -478,26 +481,86 @@ define("robotTW2/services/DefenseService", [
 		, sendDefense = function(params){
 			return $timeout(units_to_send.bind(null, params), params.timer_delay);
 		}
-		, listener_command_cancel = function($event, data){
-			if(!$event.currentScope){
-				return
-			}
-			if(data.direction == "backward" && data.type == "support"){
-				var cmds = Object.keys(commandDefense).map(function(param){
-					if(commandDefense[param].params.start_village == data.home.id
-							&& commandDefense[param].params.target_village == data.target.id
-							&& commandDefense[param].params.id_command == data.command_id
-					) {
-						return commandDefense[param].params	
-					} else {
-						return undefined
+//		, listener_command_cancel = function($event, data){
+//		if(!$event.currentScope){
+//		return
+//		}
+//		if(data.direction == "backward" && data.type == "support"){
+//		var cmds = Object.keys(commandDefense).map(function(param){
+//		if(commandDefense[param].params.start_village == data.home.id
+//		&& commandDefense[param].params.target_village == data.target.id
+//		&& commandDefense[param].params.id_command == data.command_id
+//		) {
+//		return commandDefense[param].params	
+//		} else {
+//		return undefined
+//		}
+//		}).filter(f => f != undefined)
+//		var cmd = undefined;
+//		if(cmds.length){
+//		cmd = cmds.pop();
+//		}
+//		}
+//		}
+		, trigger_cancel = function(_params, callback){
+			var comandos_outgoing = modelDataService.getSelectedCharacter().getVillage(_params.start_village).getCommandListModel().outgoing
+			, cmds = Object.keys(comandos_outgoing).map(function(param){
+				if(comandos_outgoing[param].targetCharacterId = modelDataService.getSelectedCharacter().getId() && comandos_outgoing[param].type == "support") {
+					return comandos_outgoing[param]
+				} else {
+					return undefined
+				}
+			}).filter(f => f != undefined)
+
+			if(cmds.length){
+				cmds.sort(function (a, b) {return a.startedAt - b.startedAt})
+				for (_cmd in cmds){
+					if(cmds.hasOwnProperty(_cmd)){
+						let cmd = cmds[_cmd]
+						, dif = time.convertMStoUTC(cmd.startedAt) - (_params.data_escolhida - _params.time_sniper_ant) - robotTW2.databases.data_main.time_correction_command
+						, expires = (((_params.data_escolhida + _params.time_sniper_post) - time.convertedTime()) / 2) - dif
+						, params = {
+							"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+							"id_command" 		: cmd.id,
+							"start_village" 	: _params.start_village,
+							"target_village" 	: _params.target_village
+						}
+
+						console.log("comando " + JSON.stringify(params))
+						console.log("dif " + dif)
+						if(expires >= -25000 && expires < 0){
+							params.timer_delay = 0;
+							console.log("delay = 0")
+						} else if(expires < -25000){
+							console.log(JSON.stringify(params))
+							data_log.defense.push(
+									{
+										"text": "Sniper not sent - expires - " + cmd.id_command,
+										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+										"date": time.convertedTime()
+									}
+							)
+							removeCommandDefense(_params.id_command)
+							return
+						}
+
+						if(!commandDefense[params.id_command]){
+							console.log("binded " + params.id_command)
+							removeCommandDefense(_params.id_command)
+							commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
+								console.log("triggered " + JSON.stringify(fns.params))
+								commandDefense[params.id_command] = {
+									"timeout" 	: fns.fn.apply(this, [fns.params]),
+									"params"	: fns.params
+								}
+
+							})
+						}
 					}
-				}).filter(f => f != undefined)
-				var cmd = undefined;
-				if(cmds.length){
-					cmd = cmds.pop();
 				}
 			}
+			callback()
 		}
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){
@@ -553,8 +616,8 @@ define("robotTW2/services/DefenseService", [
 								commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 									console.log("triggered " + JSON.stringify(fns.params))
 									commandDefense[params.id_command] = {
-											"timeout" 	: fns.fn.apply(this, [fns.params]),
-											"params"	: fns.params
+										"timeout" 	: fns.fn.apply(this, [fns.params]),
+										"params"	: fns.params
 									}
 
 								})
@@ -594,10 +657,30 @@ define("robotTW2/services/DefenseService", [
 						"date": time.convertedTime()
 					}
 			)
+
+			function send_cmd_cancel(params){
+				if(!promise_command_cancel){
+					promise_command_cancel = new Promise(function(resol, rejec){
+						$timeout(function(){
+							trigger_cancel(params, resol);
+						}, 5000)
+					}).then(function(){
+						promise_command_cancel = undefined
+						if(queue_command_cancel.length){
+							send_cmd_cancel(queue_command_cancel.shift())
+						}
+					}, function(){
+						promise_command_cancel = undefined
+						if(queue_command_cancel.length){
+							send_cmd_cancel(queue_command_cancel.shift())
+						}
+					})
+				} else {
+					queue_command_cancel.push(params)
+				}
+			}
 			
-			$timeout(function(){
-				removeCommandDefense(params.id_command)
-			}, 10000)
+			send_cmd_cancel(params)
 
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
 				start_village		: params.start_village,
@@ -640,8 +723,8 @@ define("robotTW2/services/DefenseService", [
 		, addDefense = function(params){
 
 			if(!params){return}
-			!(typeof(listener_sent) == "function") ? listener_sent = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
-			!(typeof(listener_cancel) == "function") ? listener_cancel = $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
+//			!(typeof(listener_sent) == "function") ? listener_sent = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+//			!(typeof(listener_cancel) == "function") ? listener_cancel = $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
 
 			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 			if(params.id_command){
@@ -859,6 +942,8 @@ define("robotTW2/services/DefenseService", [
 			if(!resend){
 				isRunning = !1;
 				commandQueue.unbindAll("support");
+				queue_command_cancel = [];
+				promise_command_cancel = undefined;
 				clear();
 				typeof(listener_verify) == "function" ? listener_verify(): null;
 				typeof(listener_lost) == "function" ? listener_lost(): null;
