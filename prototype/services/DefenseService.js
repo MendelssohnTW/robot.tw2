@@ -187,20 +187,18 @@ define("robotTW2/services/DefenseService", [
 						if(loyalty < data_defense.loyalt){
 							return list
 						}
-//						if(loyalty > data_defense.loyalt){
-							list.reduce(function(prevVal, elem, index, array) {
-								count++;
-								var b = t == 0 ? prevVal.completedAt : t;
-								if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
-									t = prevVal.completedAt;
-									g.push(elem)
-									return elem;
-								} else {
-									t = 0;
-									return elem
-								}
-							})
-//						}
+						list.reduce(function(prevVal, elem, index, array) {
+							count++;
+							var b = t == 0 ? prevVal.completedAt : t;
+							if(elem.completedAt - b <= conf.TIME_SNIPER_POST + conf.TIME_SNIPER_ANT || limit <= count) {
+								t = prevVal.completedAt;
+								g.push(elem)
+								return elem;
+							} else {
+								t = 0;
+								return elem
+							}
+						})
 					}
 					return g;
 				}
@@ -556,8 +554,8 @@ define("robotTW2/services/DefenseService", [
 								commandQueue.bind(data.id, sendCancel, null, params, function(fns){
 									console.log("triggered " + JSON.stringify(fns.params))
 									commandDefense[params.id_command] = {
-											"timeout" 	: fns.fn.apply(this, [fns.params]),
-											"params"	: fns.params
+										"timeout" 	: fns.fn.apply(this, [fns.params]),
+										"params"	: fns.params
 									}
 
 								})
@@ -597,7 +595,7 @@ define("robotTW2/services/DefenseService", [
 						"date": time.convertedTime()
 					}
 			)
-			
+
 			$timeout(function(){
 				removeCommandDefense(params.id_command)
 			}, 10000)
