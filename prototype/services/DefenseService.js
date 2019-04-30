@@ -519,14 +519,15 @@ define("robotTW2/services/DefenseService", [
 						let cmd = cmds[_cmd]
 						, dif = time.convertMStoUTC(cmd.time_start * 1000) - (_params.data_escolhida - _params.time_sniper_ant)
 						, expires = (((_params.data_escolhida + _params.time_sniper_post) - time.convertedTime()) - dif) / 2
-						, params = {
+						, expires = {
 							"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
 							"id_command" 		: cmd.id,
 							"start_village" 	: _params.start_village,
 							"target_village" 	: _params.target_village
 						}
 
-						console.log("comando " + params.id_command)
+						console.log("comando " + JSON.stringify(params))
+						console.log("dif " + dif)
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
 							console.log("delay = 0")
