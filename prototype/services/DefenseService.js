@@ -184,7 +184,7 @@ define("robotTW2/services/DefenseService", [
 						let loyalty = modelDataService.getSelectedCharacter().getVillage(list[0].targetVillageId).getLoyalty();
 						let limit = Math.trunc(Math.trunc(loyalty) / data_defense.loyalt)
 						let count = 0;
-						if(loyalty > data_defense.loyalt){
+//						if(loyalty > data_defense.loyalt){
 							list.reduce(function(prevVal, elem, index, array) {
 								count++;
 								var b = t == 0 ? prevVal.completedAt : t;
@@ -197,7 +197,7 @@ define("robotTW2/services/DefenseService", [
 									return elem
 								}
 							})
-						}
+//						}
 					}
 					return g;
 				}
