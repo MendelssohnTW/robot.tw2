@@ -540,14 +540,14 @@ define("robotTW2/services/DefenseService", [
 										"date": time.convertedTime()
 									}
 							)
-							removeCommandDefense(cmd.id_command)
+							removeCommandDefense(_params.id_command)
 							return
 						}
 
 						if(!commandDefense[params.id_command]){
 							console.log("binded " + params.id_command)
-							removeCommandDefense(cmd.id_command)
-							commandQueue.bind(data.id, sendCancel, null, params, function(fns){
+							removeCommandDefense(_params.id_command)
+							commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
 								console.log("triggered " + JSON.stringify(fns.params))
 								commandDefense[params.id_command] = {
 									"timeout" 	: fns.fn.apply(this, [fns.params]),
