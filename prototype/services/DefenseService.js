@@ -502,7 +502,7 @@ define("robotTW2/services/DefenseService", [
 //		}
 //		}
 //		}
-		, trigger_cancel = function(_params, callbak){
+		, trigger_cancel = function(_params, callback){
 			var comandos_outgoing = modelDataService.getSelectedCharacter().getVillage(_params.start_village).getCommandListModel().outgoing
 			, cmds = Object.keys(comandos_outgoing).map(function(param){
 				if(comandos_outgoing[param].targetCharacterId = modelDataService.getSelectedCharacter().getId() && comandos_outgoing[param].type == "support") {
