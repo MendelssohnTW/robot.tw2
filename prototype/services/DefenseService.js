@@ -532,7 +532,14 @@ define("robotTW2/services/DefenseService", [
 						}
 
 						console.log("comando " + JSON.stringify(params))
+						console.log("init_time " + init_time)
+						console.log("end_time " + end_time)
+						console.log("tot_time " + tot_time)
 						console.log("dif " + dif)
+						console.log("dif_2 " + dif_2)
+						console.log("parc_time " + parc_time)
+						console.log("expires " + expires)
+						console.log("time_correction_command " + robotTW2.databases.data_main.time_correction_command)
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
 							console.log("delay = 0")
