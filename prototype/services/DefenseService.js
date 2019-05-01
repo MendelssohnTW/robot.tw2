@@ -497,7 +497,7 @@ define("robotTW2/services/DefenseService", [
 						, mid_time = tot_time / 2
 						, return_time = init_time + mid_time 
 						, rest_time = return_time - time.convertedTime()
-						, expires = rest_time + robotTW2.databases.data_main.time_correction_command
+						, expires = rest_time// + robotTW2.databases.data_main.time_correction_command
 						, params = {
 							"timer_delay" 		: expires,
 							"id_command" 		: cmd.id,
@@ -514,7 +514,6 @@ define("robotTW2/services/DefenseService", [
 						console.log("return_time " + return_time)
 						console.log("rest_time " + rest_time)
 						console.log("expires " + expires)
-						console.log("time_correction_command " + robotTW2.databases.data_main.time_correction_command)
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
 							console.log("delay = 0")
