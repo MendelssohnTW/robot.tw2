@@ -936,7 +936,7 @@ define("robotTW2/services/DefenseService", [
 //					promise.$$state.status === 2 // rejected
 
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
+						timeout = $timeout(verificarAtaques, 180000); // 3seg
 					}
 				});
 			}
