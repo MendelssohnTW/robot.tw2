@@ -431,46 +431,13 @@ define("robotTW2/services/DefenseService", [
 		}
 		, units_to_send = function(params){
 
-			let units = {}
-			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).getUnitInfo().getUnits();
-
-			if(!list_units){
-				removeCommandDefense(params.id_command)
-				return
-			}
-
-			if(data_villages.villages[params.start_village].sniper_defense || params.nob){
-				Object.keys(list_units).map(
-						function(f){
-							if(conf.UNITS_DEFENSE.includes(f) && list_units[f].available > 0){
-								units[f] = list_units[f].available;
-							}
-						}
-				)
-			}
-			if(data_villages.villages[params.start_village].sniper_attack || params.nob){
-				Object.keys(list_units).map(
-						function(f){
-							if(conf.UNITS_ATTACK.includes(f) && list_units[f].available > 0){
-								units[f] = list_units[f].available;
-								return
-							}
-						}
-				)
-			}
-
 			if([data_villages.villages[params.start_village].sniper_defense, data_villages.villages[params.start_village].sniper_attack].every(f=>f==false)){
 				removeCommandDefense(params.id_command)
 				return
 			}
 
-			params.units = units;
 
-			if(!Object.keys(units).length){
-				removeCommandDefense(params.id_command)
-				return
-			}
-
+			
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -702,6 +669,55 @@ define("robotTW2/services/DefenseService", [
 			});
 		}
 		, resendDefense = function(params){
+			let units = {}
+			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).getUnitInfo().getUnits();
+
+			if(!list_units){
+				removeCommandDefense(params.id_command)
+				return
+			}
+
+			if(data_villages.villages[params.start_village].sniper_defense || params.nob){
+				Object.keys(list_units).map(
+						function(f){
+							if(conf.UNITS_DEFENSE.includes(f) && list_units[f].available > 0){
+								units[f] = list_units[f].available;
+							}
+						}
+				)
+			}
+			if(data_villages.villages[params.start_village].sniper_attack || params.nob){
+				Object.keys(list_units).map(
+						function(f){
+							if(conf.UNITS_ATTACK.includes(f) && list_units[f].available > 0){
+								units[f] = list_units[f].available;
+								return
+							}
+						}
+				)
+			}
+
+			if(!Object.keys(units).length){
+				removeCommandDefense(params.id_command)
+				data_log.defense.push(
+						{
+							"text": "Sniper not sent - not units - resendDefense" + params.id_command,
+							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+							"target": formatHelper.villageNameWithCoordinates(
+									{
+										"name": params.target_name,
+										"x": params.target_x,
+										"y": params.target_y
+									}
+							),
+							"date": time.convertedTime()
+						}
+				)
+				return
+			}
+			
+			params.units = units;
+			
 			var expires_send = params.data_escolhida - params.time_sniper_ant + robotTW2.databases.data_main.time_correction_command
 			, timer_delay_send = expires_send - time.convertedTime()
 
