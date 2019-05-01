@@ -401,8 +401,10 @@ define("robotTW2/services/DefenseService", [
 			timeout = undefined
 			if(!isRunning){return}
 			if(!promise_verify){
+				console.log("verificarAtaques")
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
+					console.log("promise_verify = undefined")
 					data_villages.set();
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
@@ -411,6 +413,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				}, function(){
 					promise_verify = undefined;
+					console.log("promise_verify = undefined")
 					data_villages.set();
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
