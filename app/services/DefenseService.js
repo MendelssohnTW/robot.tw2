@@ -256,7 +256,7 @@ define("robotTW2/services/DefenseService", [
 									target_x			: aldeia.getX(),
 									target_y			: aldeia.getY(),
 									type				: "support",
-									data_escolhida		: time.convertMStoUTC(cmd.completedAt),
+									data_escolhida		: time.convertMStoUTC(cmd.time_completed * 1000),
 									time_sniper_ant		: data_defense.time_sniper_ant,
 									time_sniper_post	: timeSniperPost,
 									preserv				: false,
@@ -398,10 +398,13 @@ define("robotTW2/services/DefenseService", [
 		}
 		, verificarAtaques = function (){
 			var promise_verify_queue = false
+			timeout = undefined
 			if(!isRunning){return}
 			if(!promise_verify){
+				console.log("verificarAtaques")
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
+					console.log("promise_verify = undefined")
 					data_villages.set();
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
@@ -410,6 +413,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				}, function(){
 					promise_verify = undefined;
+					console.log("promise_verify = undefined")
 					data_villages.set();
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
@@ -443,8 +447,6 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				return
 			}
-
-
 			
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
@@ -495,11 +497,10 @@ define("robotTW2/services/DefenseService", [
 						, init_time = _params.data_escolhida - _params.time_sniper_ant
 						, end_time = _params.data_escolhida + _params.time_sniper_post
 						, tot_time = _params.time_sniper_post + _params.time_sniper_ant
-						, rest_time = end_time - time.convertedTime()
-						, passed_time = tot_time - rest_time
-						, dif_time = time.convertedTime() - time.convertMStoUTC(cmd.startedAt)
-						, parc_time = (rest_time / 2) - dif_time
-						, expires = parc_time + robotTW2.databases.data_main.time_correction_command
+						, mid_time = tot_time / 2
+						, return_time = init_time + mid_time 
+						, rest_time = return_time - time.convertedTime()
+						, expires = rest_time + robotTW2.databases.data_main.time_correction_command
 						, params = {
 							"timer_delay" 		: expires,
 							"id_command" 		: cmd.id,
@@ -507,14 +508,15 @@ define("robotTW2/services/DefenseService", [
 							"target_village" 	: _params.target_village
 						}
 
+						console.log(time.convertedTime())
 						console.log("comando " + JSON.stringify(params))
 						console.log("init_time " + init_time)
 						console.log("end_time " + end_time)
+						console.log("tot_time " + tot_time)
+						console.log("mid_time " + mid_time)
+						console.log("return_time " + return_time)
 						console.log("rest_time " + rest_time)
-						console.log("dif_time " + dif_time)
-						console.log("parc_time " + parc_time)
 						console.log("expires " + expires)
-						console.log("time_correction_command " + robotTW2.databases.data_main.time_correction_command)
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
 							console.log("delay = 0")
@@ -647,6 +649,8 @@ define("robotTW2/services/DefenseService", [
 			function send_cmd_cancel(params){
 				if(!promise_command_cancel){
 					promise_command_cancel = new Promise(function(resol, rejec){
+						console.log(time.convertedTime())
+						console.log("wait 5 sec")
 						$timeout(function(){
 							trigger_cancel(params, resol);
 						}, 5000)
@@ -728,8 +732,8 @@ define("robotTW2/services/DefenseService", [
 			
 			params.units = units;
 			
-			var expires_send = params.data_escolhida - params.time_sniper_ant + robotTW2.databases.data_main.time_correction_command
-			, timer_delay_send = expires_send - time.convertedTime()
+			var expires_send = params.data_escolhida - params.time_sniper_ant
+			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
 
 			if(timer_delay_send <= -25000){
 				data_log.defense.push(
@@ -753,6 +757,8 @@ define("robotTW2/services/DefenseService", [
 			}
 			resend = true;
 			$rootScope.$broadcast(providers.eventTypeProvider.PAUSE)
+			console.log(time.convertedTime())
+			console.log("timer_delay_send " + timer_delay_send)
 			return $timeout(send.bind(null, params), timer_delay_send);
 		}
 		, addDefense = function(params){
@@ -845,7 +851,7 @@ define("robotTW2/services/DefenseService", [
 								target_x			: aldeia.getX(),
 								target_y			: aldeia.getY(),
 								type				: "support",
-								data_escolhida		: time.convertMStoUTC(command.model.completedAt),
+								data_escolhida		: time.convertMStoUTC(command.model.time_completed * 1000),
 								time_sniper_ant		: sniper_ant * 1000,
 								time_sniper_post	: sniper_post * 1000,
 								preserv				: true,
@@ -931,9 +937,14 @@ define("robotTW2/services/DefenseService", [
 //					promise.$$state.status === 0 // pending
 //					promise.$$state.status === 1 // resolved
 //					promise.$$state.status === 2 // rejected
+					
+					console.log("listener command_incoming")
 
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
-						timeout = $timeout(verificarAtaques, 5 * 60 * 1000);
+						console.log("no exist timeout")
+						timeout = $timeout(verificarAtaques, 180000); // 3seg
+					} else {
+						console.log("exist timeout")
 					}
 				});
 			}

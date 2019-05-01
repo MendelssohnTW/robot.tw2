@@ -813,8 +813,6 @@ var robotTW2 = window.robotTW2 = undefined;
 						"MIN_POINTS_FARM"			: 0,
 						"MAX_POINTS_FARM"			: 12000,
 						"MAP_CHUNCK_LEN"			: 15,
-						"TIME_CORRECTION_COMMAND"	: 775,
-						"TIME_CORRECTION_STANDARD"	: -225,
 						"TIME_DELAY_UPDATE"			: 30000,
 						"TIME_DELAY_FARM"			: 2000,
 						"TIME_SNIPER_ANT"			: 30000,
@@ -1786,7 +1784,7 @@ var robotTW2 = window.robotTW2 = undefined;
 													var outgoing = robotTW2.services.modelDataService.getSelectedCharacter().getVillage(village.data.villageId).data.commands.outgoing;
 													var completedAt = outgoing[Object.keys(outgoing).pop()].completedAt;
 													var startedAt = outgoing[Object.keys(outgoing).pop()].startedAt;
-													var dif = (gTime - time.convertMStoUTC(startedAt)) - conf.TIME_CORRECTION_COMMAND;
+													var dif = (gTime - time.convertMStoUTC(startedAt)) + robotTW2.services.modelDataService.getSelectedCharacter().getTimeSync().csDiff;
 													if(!robotTW2.databases.data_main.max_time_correction || (dif > -robotTW2.databases.data_main.max_time_correction && dif < robotTW2.databases.data_main.max_time_correction)) {
 														robotTW2.databases.data_main.time_correction_command = dif
 														robotTW2.databases.data_main.set();
