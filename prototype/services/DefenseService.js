@@ -934,9 +934,14 @@ define("robotTW2/services/DefenseService", [
 //					promise.$$state.status === 0 // pending
 //					promise.$$state.status === 1 // resolved
 //					promise.$$state.status === 2 // rejected
+					
+					console.log("listener command_incoming")
 
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
+						console.log("no exist timeout")
 						timeout = $timeout(verificarAtaques, 180000); // 3seg
+					} else {
+						console.log("exist timeout")
 					}
 				});
 			}
