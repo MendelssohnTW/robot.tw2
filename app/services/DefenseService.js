@@ -517,22 +517,32 @@ define("robotTW2/services/DefenseService", [
 				for (_cmd in cmds){
 					if(cmds.hasOwnProperty(_cmd)){
 						let cmd = cmds[_cmd]
-						, dif = time.convertMStoUTC(cmd.startedAt) - (_params.data_escolhida - _params.time_sniper_ant) - robotTW2.databases.data_main.time_correction_command
-						, expires = (((_params.data_escolhida + _params.time_sniper_post) - time.convertedTime()) / 2) - dif
+						, init_time = _params.data_escolhida - _params.time_sniper_ant
+						, end_time = _params.data_escolhida + _params.time_sniper_post
+						, rest_time = end_time - time.convertedTime()
+						, dif_time = time.convertedTime() - time.convertMStoUTC(cmd.startedAt)
+						, parc_time = (rest_time + dif_time) / 2
+						, expires = parc_time + robotTW2.databases.data_main.time_correction_command
 						, params = {
-							"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+							"timer_delay" 		: expires,
 							"id_command" 		: cmd.id,
 							"start_village" 	: _params.start_village,
 							"target_village" 	: _params.target_village
 						}
 
 						console.log("comando " + JSON.stringify(params))
+						console.log("init_time " + init_time)
+						console.log("end_time " + end_time)
+						console.log("tot_time " + tot_time)
 						console.log("dif " + dif)
+						console.log("dif_2 " + dif_2)
+						console.log("parc_time " + parc_time)
+						console.log("expires " + expires)
+						console.log("time_correction_command " + robotTW2.databases.data_main.time_correction_command)
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
 							console.log("delay = 0")
 						} else if(expires < -25000){
-							console.log(JSON.stringify(params))
 							data_log.defense.push(
 									{
 										"text": "Sniper not sent - expires - " + cmd.id_command,
