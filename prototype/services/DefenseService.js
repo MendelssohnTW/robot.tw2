@@ -398,6 +398,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, verificarAtaques = function (){
 			var promise_verify_queue = false
+			timeout = undefined
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
