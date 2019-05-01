@@ -519,7 +519,7 @@ define("robotTW2/services/DefenseService", [
 						let cmd = cmds[_cmd]
 						, init_time = _params.data_escolhida - _params.time_sniper_ant
 						, end_time = _params.data_escolhida + _params.time_sniper_post
-						, tot_time = (init_time + end_time) / 2
+						, tot_time = (_params.time_sniper_ant + _params.time_sniper_post) / 2
 						, dif = (init_time) - time.convertMStoUTC(cmd.startedAt)
 						, dif_2 = time.convertMStoUTC(cmd.startedAt) - time.convertedTime()
 						, parc_time = tot_time - dif - dif_2
