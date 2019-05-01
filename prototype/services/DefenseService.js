@@ -497,7 +497,7 @@ define("robotTW2/services/DefenseService", [
 						, mid_time = tot_time / 2
 						, return_time = init_time + mid_time 
 						, rest_time = return_time - time.convertedTime()
-						, expires = rest_time// + robotTW2.databases.data_main.time_correction_command
+						, expires = rest_time + robotTW2.databases.data_main.time_correction_command
 						, params = {
 							"timer_delay" 		: expires,
 							"id_command" 		: cmd.id,
