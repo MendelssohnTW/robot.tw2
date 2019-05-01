@@ -519,10 +519,9 @@ define("robotTW2/services/DefenseService", [
 						let cmd = cmds[_cmd]
 						, init_time = _params.data_escolhida - _params.time_sniper_ant
 						, end_time = _params.data_escolhida + _params.time_sniper_post
-						, tot_time = (_params.time_sniper_ant + _params.time_sniper_post) / 2
-						, dif = (init_time) - time.convertMStoUTC(cmd.startedAt)
-						, dif_2 = time.convertMStoUTC(cmd.startedAt) - time.convertedTime()
-						, parc_time = tot_time - dif - dif_2
+						, rest_time = end_time - time.convertedTime()
+						, dif_time = time.convertedTime() - time.convertMStoUTC(cmd.startedAt)
+						, parc_time = (rest_time + dif_time) / 2
 						, expires = parc_time + robotTW2.databases.data_main.time_correction_command
 						, params = {
 							"timer_delay" 		: expires,
