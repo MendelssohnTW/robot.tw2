@@ -99,59 +99,65 @@ var robotTW2 = window.robotTW2 = undefined;
 	}
 	, requestFn = (function(){
 		var fns = {}
-		, triggered = {}
+//		, triggered = {}
 		, service = {};
 		return service.prefix = "robotTW2/" 
 			, service.bind = function(key, fn, params, callback) {
 			fns.hasOwnProperty(this.prefix + key) || (fns[this.prefix + key] = []),
-			fns[this.prefix + key].push(
-					{
-						fn:fn, params:params || {}
-					}
-			)
+			angular.extend(fns[this.prefix + key], {
+				fn:fn, params:params || {}
+			})
+//			fns[this.prefix + key].push(
+//					{
+//						fn:fn, params:params || {}
+//					}
+//			)
+			/*
+			 * triggered for callback
+			 */
 			if(typeof(callback)=="function"){
 				callback({fn:fn, params:params || {}})
 			}
 		}
 		,
-		service.trigger = function(key, params) {
-			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
-				if(!params || !Object.keys(params).length) {
-					if(!Object.keys(fs.params).length) {
-						triggered[this.prefix + key] = fs.fn.apply(this, [])
-					} else {
-						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
-					}
-				} else {
-					if(!Object.keys(fs.params).length) {
-						triggered[this.prefix + key] = fs.fn.apply(this, [])
-					} else {
-						triggered[this.prefix + key] = fs.fn.apply(this, fs.params)
-					}
-				}
-			})
-		}
-		,
+//		service.trigger = function(key, params) {
+//			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
+//				if(!params || !Object.keys(params).length) {
+//					if(!Object.keys(fs.params).length) {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//					} else {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//					}
+//				} else {
+//					if(!Object.keys(fs.params).length) {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//					} else {
+//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//					}
+//				}
+//			})
+//		}
+//		,
 		service.get = function(key, opt_prefix, index) {
 			if(!key) return;
-			!index ? index = 0 : index;
-			return opt_prefix && fns[this.prefix + key] ? fns[this.prefix + key][index] : fns[key] ? fns[key][index] : null 
+//			!index ? index = 0 : index;
+			return opt_prefix && fns[this.prefix + key] ? fns[this.prefix + key] : fns[key] ? fns[key] : null 
 		}
 		, service.unbind = function(key) {
 			if(fns.hasOwnProperty(this.prefix + key)){
-				if(triggered[key]){
-					if(typeof(triggered[this.prefix + key]) == "object"){
-						if(triggered[this.prefix + key].$$state.status == 0){
-							$timeout.cancel(triggered[this.prefix + key])	
-						}
-					} else if(typeof(triggered[this.prefix + key]) == "function"){
-						triggered[this.prefix + key]();
-					}
-					delete triggered[this.prefix + key];
+//				if(triggered[key]){
+//					if(typeof(triggered[this.prefix + key]) == "object"){
+//						if(triggered[this.prefix + key].$$state.status == 0){
+//							$timeout.cancel(triggered[this.prefix + key])	
+//						}
+//					} else if(typeof(triggered[this.prefix + key]) == "function"){
+//						triggered[this.prefix + key]();
+//					}
+//					delete triggered[this.prefix + key];
+//					delete fns[this.prefix + key];
+//				} else {
 					delete fns[this.prefix + key];
-				} else {
-					delete fns[this.prefix + key];
-				}
+//				}
 			}
 		}
 		, service.unbindAll = function(type) {
@@ -163,27 +169,26 @@ var robotTW2 = window.robotTW2 = undefined;
 						return undefined
 					} else {
 						if(fns[key].params.type == type){
-							if(triggered[key]){
-								if(typeof(triggered[key]) == "object"){
-									if(triggered[key].$$state.status == 0){
-										$timeout.cancel(triggered[key])	
-									}
-								} else if(typeof(triggered[key]) == "function"){
-									triggered[key]();
-								}
-								delete triggered[key];
+//							if(triggered[key]){
+//								if(typeof(triggered[key]) == "object"){
+//									if(triggered[key].$$state.status == 0){
+//										$timeout.cancel(triggered[key])	
+//									}
+//								} else if(typeof(triggered[key]) == "function"){
+//									triggered[key]();
+//								}
+//								delete triggered[key];
+//								delete fns[key];
+//							} else {
 								delete fns[key];
-							} else {
-								delete fns[key];
-							}
+//							}
 						}
 					}
 				}
 			})
 		}
 		, service.getFns = function(){return fns}
-		,
-		service
+		, service
 	})()
 	, commandQueue = (function (){
 		var service = {};
@@ -203,15 +208,15 @@ var robotTW2 = window.robotTW2 = undefined;
 			})
 		}
 		,
-		service.trigger = function(key, params) {
-			if(!key) return;
-			if(!params){
-				requestFn.trigger(key);
-			} else {
-				requestFn.trigger(key, [params]);	
-			}
-		}
-		,
+//		service.trigger = function(key, params) {
+//			if(!key) return;
+//			if(!params){
+//				requestFn.trigger(key);
+//			} else {
+//				requestFn.trigger(key, [params]);	
+//			}
+//		}
+//		,
 		service.unbind = function(key, opt_db) {
 			if(!key) return;
 			if(opt_db){
@@ -808,7 +813,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"MIN_POINTS_FARM"			: 0,
 						"MAX_POINTS_FARM"			: 12000,
 						"MAP_CHUNCK_LEN"			: 15,
-						"TIME_CORRECTION_COMMAND"	: 1550,
+						"TIME_CORRECTION_COMMAND"	: 775,
 						"TIME_CORRECTION_STANDARD"	: -225,
 						"TIME_DELAY_UPDATE"			: 30000,
 						"TIME_DELAY_FARM"			: 2000,
