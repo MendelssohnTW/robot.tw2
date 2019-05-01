@@ -361,7 +361,7 @@ define("robotTW2/services/DefenseService", [
 			})
 		}
 		, getAtaques = function(){
-			return new Promise(function(resolve){
+			return new Promise(function(resolve, reject){
 
 				clear();
 
@@ -401,6 +401,14 @@ define("robotTW2/services/DefenseService", [
 			if(!isRunning){return}
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
+					promise_verify = undefined;
+					data_villages.set();
+					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
+					if(promise_verify_queue) {
+						promise_verify_queue = false;
+						verificarAtaques()
+					}
+				}, function(){
 					promise_verify = undefined;
 					data_villages.set();
 					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
@@ -486,7 +494,7 @@ define("robotTW2/services/DefenseService", [
 						let cmd = cmds[_cmd]
 						, init_time = _params.data_escolhida - _params.time_sniper_ant
 						, end_time = _params.data_escolhida + _params.time_sniper_post
-						, tot_time = params.time_sniper_post + _params.time_sniper_ant
+						, tot_time = _params.time_sniper_post + _params.time_sniper_ant
 						, rest_time = end_time - time.convertedTime()
 						, passed_time = tot_time - rest_time
 						, dif_time = time.convertedTime() - time.convertMStoUTC(cmd.startedAt)
