@@ -316,7 +316,7 @@ define("robotTW2/services/DefenseService", [
 				if(!length_incomming){resolve(); return}
 
 				if(length_incomming > limit){
-					comandos_incoming.splice(0, limit);
+					comandos_incoming = comandos_incoming.splice(0, limit);
 				}
 
 				comandos_incoming.forEach(function(cmd){
