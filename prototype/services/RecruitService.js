@@ -4,14 +4,16 @@ define("robotTW2/services/RecruitService", [
 	"robotTW2/conf",
 	"robotTW2/databases/data_log",
 	"robotTW2/databases/data_recruit",
-	"robotTW2/databases/data_villages"
+	"robotTW2/databases/data_villages",
+	"helper/format"
 	], function(
 			robotTW2,
 			time,
 			conf,
 			data_log,
 			data_recruit,
-			data_villages
+			data_villages,
+			formatHelper
 	){
 	return (function FarmService(
 			$rootScope,
