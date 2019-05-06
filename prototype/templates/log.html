@@ -69,13 +69,7 @@
 							</tbody>
 						</table>
 					</div>
-					<div ng-if="activeTab == TABS.ATTACK"></div>
-					<div ng-if="activeTab == TABS.DEPOSIT"></div>
-					<div ng-if="activeTab == TABS.FAKE"></div>
-					<div ng-if="activeTab == TABS.HEADQUARTER"></div>
-					<div ng-if="activeTab == TABS.MARKET"></div>
-					<div ng-if="TABS.RECON && activeTab == TABS.RECON"></div>
-					<div ng-if="activeTab == TABS.RECRUIT">
+					<div ng-if="activeTab == TABS.ATTACK">
 						<table
 							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
@@ -95,7 +89,7 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in data_log.recruit | orderBy : '-date'">
+								<tr ng-repeat="log in attack | orderBy : '-date'">
 									<td class="cell-right"
 										ng-if="log.origin != null && log.target != null"
 										class="cell-left">{{log.text}}</td>
@@ -108,6 +102,161 @@
 									<td class="cell-right"
 										ng-if="log.origin != null && log.target != null"
 										class="cell-left">{{log.target}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date :
+										'HH:mm:ss.sss'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div ng-if="activeTab == TABS.DEPOSIT">
+						<table
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+							<colgroup>
+								<col>
+								<col>
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+								</tr>
+							</tbody>
+							<tbody class="scroll-wrap">
+								<tr ng-repeat="log in deposit | orderBy : '-date'">
+									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date :
+										'HH:mm:ss.sss'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div ng-if="activeTab == TABS.FAKE">
+						<table
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+							<colgroup>
+								<col>
+								<col>
+								<col>
+								<col>
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th style="display: table-cell" class="cell-center selected">{{text_preset}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_target}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+								</tr>
+							</tbody>
+							<tbody class="scroll-wrap">
+								<tr ng-repeat="log in data_log.defense | orderBy : '-date'">
+									<td class="cell-right"
+										ng-if="log.origin != null && log.target != null"
+										class="cell-left">{{log.text}}</td>
+									<td class="cell-right"
+										ng-if="log.origin == null || log.target == null" colspan="3"
+										class="cell-left">{{log.text}}</td>
+									<td class="cell-right"
+										ng-if="log.origin != null && log.target != null"
+										class="cell-left">{{log.origin}}</td>
+									<td class="cell-right"
+										ng-if="log.origin != null && log.target != null"
+										class="cell-left">{{log.target}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date :
+										'HH:mm:ss.sss'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div ng-if="activeTab == TABS.HEADQUARTER">
+						<table
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+							<colgroup>
+								<col>
+								<col>
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+								</tr>
+							</tbody>
+							<tbody class="scroll-wrap">
+								<tr ng-repeat="log in headquarter | orderBy : '-date'">
+									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date :
+										'HH:mm:ss.sss'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div ng-if="activeTab == TABS.MARKET">
+						<table
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+							<colgroup>
+								<col>
+								<col>
+								<col>
+								<col>
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th style="display: table-cell" class="cell-center selected">{{text_preset}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_target}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+								</tr>
+							</tbody>
+							<tbody class="scroll-wrap">
+								<tr ng-repeat="log in data_log.defense | orderBy : '-date'">
+									<td class="cell-right"
+										ng-if="log.origin != null && log.target != null"
+										class="cell-left">{{log.text}}</td>
+									<td class="cell-right"
+										ng-if="log.origin == null || log.target == null" colspan="3"
+										class="cell-left">{{log.text}}</td>
+									<td class="cell-right"
+										ng-if="log.origin != null && log.target != null"
+										class="cell-left">{{log.origin}}</td>
+									<td class="cell-right"
+										ng-if="log.origin != null && log.target != null"
+										class="cell-left">{{log.target}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date :
+										'HH:mm:ss.sss'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div ng-if="activeTab == TABS.RECRUIT">
+						<table
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+							<colgroup>
+								<col>
+								<col>
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+								</tr>
+							</tbody>
+							<tbody class="scroll-wrap">
+								<tr ng-repeat="log in data_log.recruit | orderBy : '-date'">
+									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
 										'HH:mm:ss.sss'}}</td>
@@ -155,16 +304,37 @@
 							</tbody>
 						</table>
 					</div>
+					<div ng-if="activeTab == TABS.SPY">
+						<table
+							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+							<colgroup>
+								<col>
+								<col>
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+								</tr>
+							</tbody>
+							<tbody class="scroll-wrap">
+								<tr ng-repeat="log in spy | orderBy : '-date'">
+									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date :
+										'HH:mm:ss.sss'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div ng-if="activeTab == TABS.SPY">
-		<div class="box-paper">
-			<div class="scroll-wrap"></div>
-		</div>
-	</div>
+
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
 			<li><a id="button-clear" class="btn-orange btn-border clear"
