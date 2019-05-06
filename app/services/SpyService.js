@@ -11,7 +11,9 @@ define("robotTW2/services/SpyService", [
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_spy",
-	"robotTW2/CommandSpy"
+	"robotTW2/databases/data_log",
+	"robotTW2/CommandSpy",
+	"helper/format"
 	], function(
 			robotTW2,
 			time,
@@ -20,7 +22,9 @@ define("robotTW2/services/SpyService", [
 			SPY_TYPES,
 			data_villages,
 			data_spy,
-			commandSpy
+			data_log,
+			commandSpy,
+			formatHelper
 	){
 	return (function SpyService(
 			$rootScope,
@@ -100,6 +104,14 @@ define("robotTW2/services/SpyService", [
 										list.push(spy.timeCompleted);
 									}
 									if ((spy.type === SPY_TYPES.NO_SPY) && spy.affordable) {
+										
+										data_log.spy.push(
+												{
+													"text": $filter("i18n")("title", $rootScope.loc.ale, "spy") + " - " + formatHelper.villageNameWithCoordinates(selectedVillage.data),
+													"date": time.convertedTime()
+												}
+										)
+										
 										socketService.emit(providers.routeProvider.SCOUTING_RECRUIT, {
 											'village_id'	: selectedVillage.getId(),
 											'slot'			: spy.id

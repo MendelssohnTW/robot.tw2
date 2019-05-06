@@ -20,7 +20,7 @@ define("robotTW2/controllers/LogController", [
 		$scope.data_main = data_main;
 		$scope.data_log = data_log;
 		$scope.extensions = $scope.data_main.getExtensions()
-		
+
 		$scope.text_version = $scope.version + " " + data_log.version;
 
 		var self = this
@@ -35,8 +35,11 @@ define("robotTW2/controllers/LogController", [
 			return TABS[elem]
 		}).sort(function(a,b){return a.localeCompare(b)})
 		, setActiveTab = function setActiveTab(tab) {
-			$scope.activeTab	= tab;
-			$scope.requestedTab	= null;
+			$scope.activeTab		= tab;
+			$scope.activeTabName 	= Object.keys(TABS).map(function(tb){
+				return TABS[tb] == tab ? tb.toLowerCase() : undefined
+			}).filter(f=>f!=undefined)[0];
+			$scope.requestedTab		= null;
 			$scope.recalcScrollbar();
 		}
 		, initTab = function initTab() {
@@ -44,17 +47,26 @@ define("robotTW2/controllers/LogController", [
 				setActiveTab($scope.requestedTab);
 			}
 		}
-		
+
 		$scope.userSetActiveTab = function(tab){
 			setActiveTab(tab);
 		}
-		
+
+		$scope.menu = function () {
+			services.$rootScope.$broadcast(providers.eventTypeProvider.OPEN_MAIN);
+		}
+
+		$scope.clear_log = function(){
+			data_log[$scope.activeTabName] = []
+			data_log.set()
+		}
+
 		$scope.requestedTab = TABS.ATTACK;
 		$scope.TABS = TABS;
 		$scope.TAB_ORDER = TAB_ORDER;
-		
+
 		initTab()
-		
+
 		$scope.setCollapse();
 	}
 })

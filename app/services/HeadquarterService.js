@@ -7,6 +7,8 @@ define("robotTW2/services/HeadquarterService", [
 	"conf/locationTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_headquarter",
+	"robotTW2/databases/data_log",
+	"helper/format"
 	], function(
 			robotTW2,
 			time,
@@ -15,7 +17,9 @@ define("robotTW2/services/HeadquarterService", [
 			upgradeabilityStates,
 			locationTypes,
 			data_villages,
-			data_headquarter
+			data_headquarter,
+			data_log,
+			formatHelper
 	){
 	return (function HeadquarterService(
 			$rootScope,
@@ -95,6 +99,13 @@ define("robotTW2/services/HeadquarterService", [
 					r = $timeout(function(){
 						callback(!1)
 					}, conf_conf.LOADING_TIMEOUT);
+					
+					data_log.recruit.push(
+							{
+								"text":"Upgrade " + formatHelper.villageNameWithCoordinates(village.data) + " " + build, 
+								"date": time.convertedTime()
+							}
+					)
 
 					socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
 						building: build,
