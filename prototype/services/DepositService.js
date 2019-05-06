@@ -2,12 +2,14 @@ define("robotTW2/services/DepositService", [
 	"robotTW2",
 	"robotTW2/time",
 	"robotTW2/conf",
-	"robotTW2/databases/data_deposit"
+	"robotTW2/databases/data_deposit",
+	"robotTW2/databases/data_log"
 	], function(
 			robotTW2,
 			time,
 			conf,
-			data_deposit
+			data_deposit,
+			data_log
 	){
 	return (function DepositService(
 			$rootScope,

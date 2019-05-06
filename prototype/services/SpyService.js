@@ -11,6 +11,7 @@ define("robotTW2/services/SpyService", [
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_spy",
+	"robotTW2/databases/data_log",
 	"robotTW2/CommandSpy",
 	"helper/format"
 	], function(
@@ -21,6 +22,7 @@ define("robotTW2/services/SpyService", [
 			SPY_TYPES,
 			data_villages,
 			data_spy,
+			data_log,
 			commandSpy,
 			formatHelper
 	){

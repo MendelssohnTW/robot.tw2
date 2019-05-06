@@ -7,6 +7,7 @@ define("robotTW2/services/HeadquarterService", [
 	"conf/locationTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_headquarter",
+	"robotTW2/databases/data_log",
 	"helper/format"
 	], function(
 			robotTW2,
@@ -17,6 +18,7 @@ define("robotTW2/services/HeadquarterService", [
 			locationTypes,
 			data_villages,
 			data_headquarter,
+			data_log,
 			formatHelper
 	){
 	return (function HeadquarterService(
