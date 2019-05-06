@@ -34,6 +34,14 @@ define("robotTW2/services/DepositService", [
 			})
 		}
 		, collectJob = function(job, callback) {
+			
+			data_log.spy.push(
+					{
+						"text": $filter("i18n")("title", $rootScope.loc.ale, "deposit"),
+						"date": time.convertedTime()
+					}
+			)
+			
 			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_COLLECT, {
 				job_id: job.id,
 				village_id: modelDataService.getSelectedVillage().getId()
