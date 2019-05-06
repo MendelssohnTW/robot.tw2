@@ -508,16 +508,17 @@ define("robotTW2/services/DefenseService", [
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
 						} else if(expires < -25000){
-							data_log.defense.push(
-									{
-										"text": "Sniper not sent - expires - " + cmd.id_command,
-										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
-										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
-										"date": time.convertedTime()
-									}
-							)
-							removeCommandDefense(_params.id_command)
-							return
+							params.timer_delay = 30000;
+//							data_log.defense.push(
+//									{
+//										"text": "Sniper not sent - expires - " + cmd.id_command,
+//										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+//										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+//										"date": time.convertedTime()
+//									}
+//							)
+//							removeCommandDefense(_params.id_command)
+//							return
 						}
 
 						if(!commandDefense[params.id_command]){
