@@ -58,7 +58,7 @@ define("robotTW2/controllers/LogController", [
 
 		$scope.clear_log = function(){
 			data_log[$scope.activeTabName] = []
-			data_log[$scope.activeTabName].set()
+			data_log.set()
 		}
 
 		$scope.requestedTab = TABS.ATTACK;
