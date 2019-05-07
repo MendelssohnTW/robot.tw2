@@ -497,6 +497,7 @@ define("robotTW2/services/DefenseService", [
 			, return_time = init_time + mid_time 
 			, rest_time = return_time - time.convertedTime()
 			, expires = rest_time + robotTW2.databases.data_main.time_correction_command
+			, control = []
 
 			if(cmds.length){
 				cmds.sort(function (a, b) {return a.startedAt - b.startedAt})
@@ -512,7 +513,8 @@ define("robotTW2/services/DefenseService", [
 
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
-//							params.timer_delay = 30000;
+						} else if(expires < -25000){
+							control.push(false)
 							data_log.defense.push(
 									{
 										"text": "Sniper not sent - expires - " + cmd.id_command,
@@ -524,6 +526,8 @@ define("robotTW2/services/DefenseService", [
 							removeCommandDefense(_params.id_command)
 							continue
 						}
+
+						control.push(true)
 
 						if(!commandDefense[params.id_command]){
 							removeCommandDefense(_params.id_command)
@@ -538,7 +542,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				}
 			}
-			callback()
+			callback([control.every(f=>f==false) , _params])
 		}
 //		, listener_command_sent = function($event, data){
 //		if(!$event.currentScope){
@@ -636,21 +640,36 @@ define("robotTW2/services/DefenseService", [
 					}
 			)
 
+			var count_push = 0;
+
 			function send_cmd_cancel(params){
 				if(!promise_command_cancel){
 					promise_command_cancel = new Promise(function(resol, rejec){
 						$timeout(function(){
-							trigger_cancel(params, resol);
+							trigger_cancel(params, function(control){
+								if(control[0]){
+									rejec(control[1])
+								} else {
+									resol()
+								}
+							});
 						}, 5000)
 					}).then(function(){
 						promise_command_cancel = undefined
 						if(queue_command_cancel.length){
 							send_cmd_cancel(queue_command_cancel.shift())
 						}
-					}, function(){
+					}, function(control_params){
+						if(!queue_command_cancel.length){
+							count_push++;
+						}
 						promise_command_cancel = undefined
-						if(queue_command_cancel.length){
+						queue_command_cancel.push(control_params)
+						if(count_push < 5){
 							send_cmd_cancel(queue_command_cancel.shift())
+						} else {
+							count_push = 0;
+							queue_command_cancel = [];
 						}
 					})
 				} else {
