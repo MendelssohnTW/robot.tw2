@@ -100,7 +100,7 @@ define("robotTW2/services/HeadquarterService", [
 						callback(!1)
 					}, conf_conf.LOADING_TIMEOUT);
 					
-					data_log.recruit.push(
+					data_log.headquarter.push(
 							{
 								"text":"Upgrade " + formatHelper.villageNameWithCoordinates(village.data) + " " + build, 
 								"date": time.convertedTime()

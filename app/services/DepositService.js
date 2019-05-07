@@ -38,7 +38,7 @@ define("robotTW2/services/DepositService", [
 		}
 		, collectJob = function(job, callback) {
 			
-			data_log.spy.push(
+			data_log.deposit.push(
 					{
 						"text": $filter("i18n")("title", $rootScope.loc.ale, "deposit"),
 						"date": time.convertedTime()
