@@ -444,7 +444,7 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				return
 			}
-			
+
 			commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 				commandDefense[params.id_command] = {
 						"timeout" 	: fns.fn.apply(this, [fns.params]),
@@ -479,25 +479,30 @@ define("robotTW2/services/DefenseService", [
 		, trigger_cancel = function(_params, callback){
 			var comandos_outgoing = modelDataService.getSelectedCharacter().getVillage(_params.start_village).getCommandListModel().outgoing
 			, cmds = Object.keys(comandos_outgoing).map(function(param){
-				if(comandos_outgoing[param].targetCharacterId = modelDataService.getSelectedCharacter().getId() && comandos_outgoing[param].type == "support") {
+				if(comandos_outgoing[param].targetCharacterId = modelDataService.getSelectedCharacter().getId() && 
+						comandos_outgoing[param].type == "support" && 
+						comandos_outgoing[param].data.direction == "forward" &&
+						comandos_outgoing[param].targetVillageId == _params.target_village
+				) {
 					return comandos_outgoing[param]
 				} else {
 					return undefined
 				}
 			}).filter(f => f != undefined)
+			
+			var init_time = _params.data_escolhida - _params.time_sniper_ant
+			, end_time = _params.data_escolhida + _params.time_sniper_post
+			, tot_time = _params.time_sniper_post + _params.time_sniper_ant
+			, mid_time = tot_time / 2
+			, return_time = init_time + mid_time 
+			, rest_time = return_time - time.convertedTime()
+			, expires = rest_time + robotTW2.databases.data_main.time_correction_command
 
 			if(cmds.length){
 				cmds.sort(function (a, b) {return a.startedAt - b.startedAt})
 				for (_cmd in cmds){
 					if(cmds.hasOwnProperty(_cmd)){
 						let cmd = cmds[_cmd]
-						, init_time = _params.data_escolhida - _params.time_sniper_ant
-						, end_time = _params.data_escolhida + _params.time_sniper_post
-						, tot_time = _params.time_sniper_post + _params.time_sniper_ant
-						, mid_time = tot_time / 2
-						, return_time = init_time + mid_time 
-						, rest_time = return_time - time.convertedTime()
-						, expires = rest_time + robotTW2.databases.data_main.time_correction_command
 						, params = {
 							"timer_delay" 		: expires,
 							"id_command" 		: cmd.id,
@@ -510,12 +515,12 @@ define("robotTW2/services/DefenseService", [
 						} else if(expires < -25000){
 							params.timer_delay = 30000;
 //							data_log.defense.push(
-//									{
-//										"text": "Sniper not sent - expires - " + cmd.id_command,
-//										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
-//										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
-//										"date": time.convertedTime()
-//									}
+//							{
+//							"text": "Sniper not sent - expires - " + cmd.id_command,
+//							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+//							"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+//							"date": time.convertedTime()
+//							}
 //							)
 //							removeCommandDefense(_params.id_command)
 //							return
@@ -525,8 +530,8 @@ define("robotTW2/services/DefenseService", [
 							removeCommandDefense(_params.id_command)
 							commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
 								commandDefense[params.id_command] = {
-									"timeout" 	: fns.fn.apply(this, [fns.params]),
-									"params"	: fns.params
+										"timeout" 	: fns.fn.apply(this, [fns.params]),
+										"params"	: fns.params
 								}
 
 							})
@@ -537,83 +542,83 @@ define("robotTW2/services/DefenseService", [
 			callback()
 		}
 //		, listener_command_sent = function($event, data){
-//			if(!$event.currentScope){
-//				return
-//			}
-//			if(data.direction == "forward" && data.type == "support"){
-//				var cmds = Object.keys(commandDefense).map(function(param){
-//					//verificar a origem e alvo do comando
-//					if(commandDefense[param].params.start_village == data.home.id 
-//							&& commandDefense[param].params.target_village == data.target.id
-//					) {
-//						return commandDefense[param].params
-//					} else {
-//						return undefined
-//					}
-//				}).filter(f => f != undefined)
-//
-//				if(cmds.length){
-//					cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
-//					for (_cmd in cmds){
-//						if(cmds.hasOwnProperty(_cmd)){
-//							let cmd = cmds[_cmd]
-//							, dif = time.convertMStoUTC(data.time_start * 1000) - (cmd.data_escolhida - cmd.time_sniper_ant)
-//							, expires = (((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2
-//							, params = {
-//								"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
-//								"id_command" 		: data.id,
-//								"start_village" 	: cmd.start_village,
-//								"target_village" 	: cmd.target_village
-//							}
-//
-//							console.log("comando " + params.id_command)
-//							if(expires >= -25000 && expires < 0){
-//								params.timer_delay = 0;
-//								console.log("delay = 0")
-//							} else if(expires < -25000){
-//								console.log(JSON.stringify(params))
-//								data_log.defense.push(
-//										{
-//											"text": "Sniper not sent - expires - " + cmd.id_command,
-//											"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
-//											"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
-//											"date": time.convertedTime()
-//										}
-//								)
-//								removeCommandDefense(cmd.id_command)
-//								return
-//							}
-//
-//							if(!commandDefense[params.id_command]){
-//								console.log("binded " + params.id_command)
-//								removeCommandDefense(cmd.id_command)
-//								commandQueue.bind(data.id, sendCancel, null, params, function(fns){
-//									console.log("triggered " + JSON.stringify(fns.params))
-//									commandDefense[params.id_command] = {
-//										"timeout" 	: fns.fn.apply(this, [fns.params]),
-//										"params"	: fns.params
-//									}
-//
-//								})
-//							}
-//						}
-//					}
-//
-////					cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
-////					var cmd = cmds.pop()
-//
-//					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
-//				} else {
-//					data_log.defense.push(
-//							{
-//								"text": "Sniper not sent - not found",
-//								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(data.home.id).data),
-//								"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(data.target.id).data),
-//								"date": time.convertedTime()
-//							}
-//					)
-//				}
-//			}
+//		if(!$event.currentScope){
+//		return
+//		}
+//		if(data.direction == "forward" && data.type == "support"){
+//		var cmds = Object.keys(commandDefense).map(function(param){
+//		//verificar a origem e alvo do comando
+//		if(commandDefense[param].params.start_village == data.home.id 
+//		&& commandDefense[param].params.target_village == data.target.id
+//		) {
+//		return commandDefense[param].params
+//		} else {
+//		return undefined
+//		}
+//		}).filter(f => f != undefined)
+
+//		if(cmds.length){
+//		cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
+//		for (_cmd in cmds){
+//		if(cmds.hasOwnProperty(_cmd)){
+//		let cmd = cmds[_cmd]
+//		, dif = time.convertMStoUTC(data.time_start * 1000) - (cmd.data_escolhida - cmd.time_sniper_ant)
+//		, expires = (((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2
+//		, params = {
+//		"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+//		"id_command" 		: data.id,
+//		"start_village" 	: cmd.start_village,
+//		"target_village" 	: cmd.target_village
+//		}
+
+//		console.log("comando " + params.id_command)
+//		if(expires >= -25000 && expires < 0){
+//		params.timer_delay = 0;
+//		console.log("delay = 0")
+//		} else if(expires < -25000){
+//		console.log(JSON.stringify(params))
+//		data_log.defense.push(
+//		{
+//		"text": "Sniper not sent - expires - " + cmd.id_command,
+//		"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+//		"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+//		"date": time.convertedTime()
+//		}
+//		)
+//		removeCommandDefense(cmd.id_command)
+//		return
+//		}
+
+//		if(!commandDefense[params.id_command]){
+//		console.log("binded " + params.id_command)
+//		removeCommandDefense(cmd.id_command)
+//		commandQueue.bind(data.id, sendCancel, null, params, function(fns){
+//		console.log("triggered " + JSON.stringify(fns.params))
+//		commandDefense[params.id_command] = {
+//		"timeout" 	: fns.fn.apply(this, [fns.params]),
+//		"params"	: fns.params
+//		}
+
+//		})
+//		}
+//		}
+//		}
+
+////		cmds.sort(function(a,b){return b.data_escolhida - a.data_escolhida})
+////		var cmd = cmds.pop()
+
+//		$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
+//		} else {
+//		data_log.defense.push(
+//		{
+//		"text": "Sniper not sent - not found",
+//		"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(data.home.id).data),
+//		"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(data.target.id).data),
+//		"date": time.convertedTime()
+//		}
+//		)
+//		}
+//		}
 //		}
 		, send = function(params){
 			resend = false;
@@ -653,7 +658,7 @@ define("robotTW2/services/DefenseService", [
 					queue_command_cancel.push(params)
 				}
 			}
-			
+
 			send_cmd_cancel(params)
 
 			socketService.emit(providers.routeProvider.SEND_CUSTOM_ARMY, {
@@ -713,9 +718,9 @@ define("robotTW2/services/DefenseService", [
 				)
 				return
 			}
-			
+
 			params.units = units;
-			
+
 			var expires_send = params.data_escolhida - params.time_sniper_ant
 			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
 
@@ -919,7 +924,7 @@ define("robotTW2/services/DefenseService", [
 //					promise.$$state.status === 0 // pending
 //					promise.$$state.status === 1 // resolved
 //					promise.$$state.status === 2 // rejected
-					
+
 
 					if(!timeout || !timeout.$$state || timeout.$$state.status != 0){
 						timeout = $timeout(verificarAtaques, 180000); // 3seg
