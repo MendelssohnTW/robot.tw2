@@ -2,14 +2,12 @@ define("robotTW2/services/DepositService", [
 	"robotTW2",
 	"robotTW2/time",
 	"robotTW2/conf",
-	"robotTW2/databases/data_deposit",
-	"robotTW2/databases/data_log"
+	"robotTW2/databases/data_deposit"
 	], function(
 			robotTW2,
 			time,
 			conf,
-			data_deposit,
-			data_log
+			data_deposit
 	){
 	return (function DepositService(
 			$rootScope,
@@ -37,14 +35,6 @@ define("robotTW2/services/DepositService", [
 			})
 		}
 		, collectJob = function(job, callback) {
-			
-			data_log.deposit.push(
-					{
-						"text": $filter("i18n")("title", $rootScope.loc.ale, "deposit"),
-						"date": time.convertedTime()
-					}
-			)
-			
 			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_COLLECT, {
 				job_id: job.id,
 				village_id: modelDataService.getSelectedVillage().getId()
