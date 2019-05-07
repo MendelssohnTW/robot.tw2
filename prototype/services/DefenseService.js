@@ -489,7 +489,7 @@ define("robotTW2/services/DefenseService", [
 					return undefined
 				}
 			}).filter(f => f != undefined)
-			
+
 			var init_time = _params.data_escolhida - _params.time_sniper_ant
 			, end_time = _params.data_escolhida + _params.time_sniper_post
 			, tot_time = _params.time_sniper_post + _params.time_sniper_ant
@@ -504,26 +504,25 @@ define("robotTW2/services/DefenseService", [
 					if(cmds.hasOwnProperty(_cmd)){
 						let cmd = cmds[_cmd]
 						, params = {
-							"timer_delay" 		: expires,
-							"id_command" 		: cmd.id,
-							"start_village" 	: _params.start_village,
-							"target_village" 	: _params.target_village
+								"timer_delay" 		: expires,
+								"id_command" 		: cmd.id,
+								"start_village" 	: _params.start_village,
+								"target_village" 	: _params.target_village
 						}
 
 						if(expires >= -25000 && expires < 0){
 							params.timer_delay = 0;
-						} else if(expires < -25000){
-							params.timer_delay = 30000;
-//							data_log.defense.push(
-//							{
-//							"text": "Sniper not sent - expires - " + cmd.id_command,
-//							"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
-//							"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
-//							"date": time.convertedTime()
-//							}
-//							)
-//							removeCommandDefense(_params.id_command)
-//							return
+//							params.timer_delay = 30000;
+							data_log.defense.push(
+									{
+										"text": "Sniper not sent - expires - " + cmd.id_command,
+										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+										"date": time.convertedTime()
+									}
+							)
+							removeCommandDefense(_params.id_command)
+							continue
 						}
 
 						if(!commandDefense[params.id_command]){
