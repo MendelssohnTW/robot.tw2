@@ -118,17 +118,17 @@ define("robotTW2/services/ReconService", [
 				switch (cmdType) {
 				case "attack":
 					if(span_unit != undefined){
-						document.querySelector(document.querySelector('span.type')[i]).removeClass("icon-34x34-attack").addClass("icon-34x34-unit-" + span_unit);
-						document.querySelector(document.querySelector('span.edit')[i]).removeClass("icon-34x34-edit").addClass(classe);
+						document.querySelector(document.querySelector('span.type')[i]).classList.remove("icon-34x34-attack").addClass("icon-34x34-unit-" + span_unit);
+						document.querySelector(document.querySelector('span.edit')[i]).classList.remove("icon-34x34-edit").addClass(classe);
 					}
 					break;
 				case "relocate":
-					document.querySelector(document.querySelector('span.type')[i]).removeClass("icon-34x34-relocate").addClass("icon-34x34-unit-" + span_unit);
-					document.querySelector(document.querySelector('span.edit')[i]).removeClass("icon-34x34-edit").addClass("icon-34x34-relocate");
+					document.querySelector(document.querySelector('span.type')[i]).classList.remove("icon-34x34-relocate").addClass("icon-34x34-unit-" + span_unit);
+					document.querySelector(document.querySelector('span.edit')[i]).classList.remove("icon-34x34-edit").addClass("icon-34x34-relocate");
 					break;
 				case "support":
-					document.querySelector(document.querySelector('span.type')[i]).removeClass("icon-34x34-support").addClass("icon-34x34-unit-" + span_unit);
-					document.querySelector(document.querySelector('span.edit')[i]).removeClass("icon-34x34-edit").addClass("icon-34x34-support");
+					document.querySelector(document.querySelector('span.type')[i]).classList.remove("icon-34x34-support").addClass("icon-34x34-unit-" + span_unit);
+					document.querySelector(document.querySelector('span.edit')[i]).classList.remove("icon-34x34-edit").addClass("icon-34x34-support");
 					break;
 				}
 

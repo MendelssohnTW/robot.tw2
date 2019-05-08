@@ -836,7 +836,7 @@ define("robotTW2/services/DefenseService", [
 			document.querySelector(".indicatorSelected").css("float", "right");
 			document.querySelector(document.querySelector(".indicatorSelected")[i]).click(function () {
 				if (document.querySelector(document.querySelector(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
-					document.querySelector(this).removeClass("icon-26x26-dot-red").addClass("icon-26x26-dot-green");
+					document.querySelector(this).classList.remove("icon-26x26-dot-red").addClass("icon-26x26-dot-green");
 					var sniper_ant;
 					var sniper_post;
 					(document.querySelector(".sniper_ant")[i]).value < conf.MIN_TIME_SNIPE_ANT ? sniper_ant = conf.MIN_TIME_SNIPE_ANT : (document.querySelector(".sniper_ant")[i]).value > conf.MAX_TIME_SNIPE_ANT ? sniper_ant = conf.MAX_TIME_SNIPE_ANT : sniper_ant = (document.querySelector(".sniper_ant")[i]).value; 
@@ -844,7 +844,7 @@ define("robotTW2/services/DefenseService", [
 					var r;
 					list_timeout[i] = $timeout(function(){
 						r = undefined;
-						document.querySelector(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
+						document.querySelector(this).classList.remove("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
 					}, conf.loading_timeout);
 
 					r = loadVillage(command).then(function(aldeia){
@@ -868,7 +868,7 @@ define("robotTW2/services/DefenseService", [
 					})
 
 				} else {
-					document.querySelector(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
+					document.querySelector(this).classList.remove("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
 					removeCommandDefense(command.command_id)
 				}
 			});
