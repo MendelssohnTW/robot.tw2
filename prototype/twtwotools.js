@@ -580,9 +580,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				window.dispatchEvent(new Event('resize'));
 			});
 			
-			var obj_main = document.querySelector(".robotTW2 .win-main");
-			obj_main.classList.remove("jssb-focus")
-			obj_main.classList.remove("jssb-applied")
+			var obj_main = document.querySelectorAll(".robotTW2 .win-main");
+//			obj_main.classList.remove("jssb-focus")
+//			obj_main.classList.remove("jssb-applied")
 			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
 			for(let i = 0; i < obj_main.length; i++){
 				if(!obj_main[i].classList.contains("jssb-applied")){
