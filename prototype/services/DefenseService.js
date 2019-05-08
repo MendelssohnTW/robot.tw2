@@ -849,7 +849,8 @@ define("robotTW2/services/DefenseService", [
 			input_post.classList.add("sniper_post")
 			input_post.style.width = "40px";
 			input_post.style.color = "white";
-			div.classList.add(opts[(isMark) ? 1 : 0] + " indicatorSelected")
+			div.classList.add(opts[(isMark) ? 1 : 0])
+			div.classList.add("indicatorSelected")
 			div_pai.appendChild(input_ant)
 			div_pai.appendChild(input_post)
 			div_pai.appendChild(div)
