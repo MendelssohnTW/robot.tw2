@@ -2149,7 +2149,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=ModalCustomArmyController]');
 						}
 						, get_son = function(){
-							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+							return get_father() ? get_father().children("div").children(".box-paper").children(".scroll-wrap"): {}				
 						}
 						, params = {
 								included_controller		: "ModalCustomArmyController",
@@ -2193,7 +2193,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=BattleReportController]');
 						}
 						, get_son = function(){
-							return get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false			
+							return get_father() ? get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false : {}	
 						}
 						, params = {
 								included_controller		: "BattleReportController",
@@ -2215,7 +2215,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=TopInterfaceController]');
 						}
 						, get_son = function(){
-							return get_father().find("#logout-wrapper")			
+							return get_father() ? get_father().find("#logout-wrapper") : {}			
 						}
 						, params = {
 								included_controller		: "TopInterfaceController",
