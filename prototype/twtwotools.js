@@ -2190,7 +2190,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=BattleReportController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull").length ? get_father().querySelector(".tbl-result") : false : {}	
+							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull") ? get_father().querySelector(".tbl-result") : false : {}	
 						}
 						, params = {
 								included_controller		: "BattleReportController",
