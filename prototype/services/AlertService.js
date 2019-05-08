@@ -9,6 +9,7 @@ define("robotTW2/services/AlertService", [
 			data_alert,
 			conf_conf
 	){
+	
 	return (function AlertService(
 			$rootScope,
 			socketService,

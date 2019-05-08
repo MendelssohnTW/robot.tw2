@@ -40,9 +40,9 @@ define("robotTW2/controllers/AttackCompletionController", [
 			if ($scope.armyEmpty && !$scope.enviarFull){
 				notify("unity_select");
 			} else {
-				var get_data = $("#input-date").val();
-				var get_time = $("#input-time").val();
-				var get_ms = $("#input-ms").val();
+				var get_data = document.querySelector("#input-date").val();
+				var get_time = document.querySelector("#input-time").val();
+				var get_ms = document.querySelector("#input-ms").val();
 				if (get_time.length <= 5){
 					get_time = get_time + ":00"; 
 				}

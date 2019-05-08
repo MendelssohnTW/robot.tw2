@@ -245,7 +245,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		return selector.scope();
 	}
 	, loadController = function(controller){
-		return window[controller] || getScope($('[ng-controller=' + controller + ']'));
+		return window[controller] || getScope(document.querySelector('[ng-controller=' + controller + ']'));
 	}
 	, createScopeLang = function(module, callback){
 		var scope = {};
@@ -559,7 +559,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			if(self.style){
 				Object.keys(self.style).forEach(function(key){
-					$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
+					document.querySelector(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
 					window.dispatchEvent(new Event('resize'));
 				})
 			}
@@ -569,16 +569,16 @@ var robotTW2 = window.robotTW2 = undefined;
 					self.classes = [self.classes]
 				}
 				var cls = self.classes.join(" ");
-				$(rootnode).addClass(cls);
+				document.querySelector(rootnode).addClass(cls);
 			}
 
 			data.scope.$on('$destroy', function() {
-				$("#map")[0].setAttribute("style", "left:0px;")
+				document.querySelector("#map")[0].setAttribute("style", "left:0px;")
 				window.dispatchEvent(new Event('resize'));
 			});
 
 			self.$window = rootnode;
-			var obj_main = $(".robotTW2 .win-main");
+			var obj_main = document.querySelector(".robotTW2 .win-main");
 			obj_main.removeClass("jssb-focus")
 			obj_main.removeClass("jssb-applied")
 			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
@@ -1435,7 +1435,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			 */
 			hideSelect = function hideSelect() {
 				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
-				$(window).off('click', clickHandler);
+				document.querySelector(window).off('click', clickHandler);
 			},
 
 			/**
@@ -1484,7 +1484,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						noResultTranslation
 				);
 
-				$(window).off('click', clickHandler).on('click', clickHandler);
+				document.querySelector(window).off('click', clickHandler).on('click', clickHandler);
 			},
 
 			/**
@@ -2141,7 +2141,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
-							return $('[ng-controller=ModalCustomArmyController]');
+							return document.querySelector('[ng-controller=ModalCustomArmyController]');
 						}
 						, get_son = function(){
 							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
@@ -2163,7 +2163,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.SpyCompletionController : {
 					robotTW2.createScopeLang("spy", function(scopeLang){
 						var get_father = function(){
-							return $('[ng-controller=ModalSendSpiesController]');
+							return document.querySelector('[ng-controller=ModalSendSpiesController]');
 						}
 						, get_son = function(){
 							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
@@ -2185,7 +2185,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.FarmCompletionController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
 						var get_father = function(){
-							return $('[ng-controller=BattleReportController]');
+							return document.querySelector('[ng-controller=BattleReportController]');
 						}
 						, get_son = function(){
 							return get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false			
@@ -2207,7 +2207,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.MainCompletionController : {
 					robotTW2.createScopeLang("main", function(scopeLang){
 						var get_father = function(){
-							return $('[ng-controller=TopInterfaceController]');
+							return document.querySelector('[ng-controller=TopInterfaceController]');
 						}
 						, get_son = function(){
 							return get_father().find("#logout-wrapper")			
