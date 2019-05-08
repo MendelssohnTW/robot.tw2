@@ -522,7 +522,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			compiledTemplate(scope, function(clonedElement, scope) {
 				if(!filho){return}
-				filho.append(clonedElement);
+				filho.appendChild(clonedElement);
 			});
 
 			self.controller.apply(self.controller, [scope])
