@@ -826,25 +826,25 @@ define("robotTW2/services/DefenseService", [
 			} else {
 				isMark = false;
 			}
-			$($(".content.incoming td.column-time_completed")[i]).prepend('<div style="float: right;"><input id="sniper_ant" class="sniper_ant" type="number" style="width: 40px; color: white;" step="1" min="5" max"600"><input id="sniper_post" class="sniper_post" type="number" style="width: 40px; color: white;"  step="1" min="1" max"600"></div><div class="' + opts[(isMark) ? 1 : 0] + ' indicatorSelected"></div>');
-			if (($(".sniper_ant")[i]) != undefined){
-				($(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : data_defense.time_sniper_ant / 1000;
+			document.querySelectorAll(document.querySelectorAll(".content.incoming td.column-time_completed")[i]).prepend('<div style="float: right;"><input id="sniper_ant" class="sniper_ant" type="number" style="width: 40px; color: white;" step="1" min="5" max"600"><input id="sniper_post" class="sniper_post" type="number" style="width: 40px; color: white;"  step="1" min="1" max"600"></div><div class="' + opts[(isMark) ? 1 : 0] + ' indicatorSelected"></div>');
+			if ((document.querySelectorAll(".sniper_ant")[i]) != undefined){
+				(document.querySelectorAll(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : data_defense.time_sniper_ant / 1000;
 			}
-			if (($(".sniper_post")[i]) != undefined){
-				($(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : data_defense.time_sniper_post / 1000;
+			if ((document.querySelectorAll(".sniper_post")[i]) != undefined){
+				(document.querySelectorAll(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : data_defense.time_sniper_post / 1000;
 			}
-			$(".indicatorSelected").css("float", "right");
-			$($(".indicatorSelected")[i]).click(function () {
-				if ($($(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
-					$(this).removeClass("icon-26x26-dot-red").addClass("icon-26x26-dot-green");
+			document.querySelectorAll(".indicatorSelected").css("float", "right");
+			document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).click(function () {
+				if (document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
+					document.querySelectorAll(this).classList.remove("icon-26x26-dot-red").classList.add("icon-26x26-dot-green");
 					var sniper_ant;
 					var sniper_post;
-					($(".sniper_ant")[i]).value < conf.MIN_TIME_SNIPE_ANT ? sniper_ant = conf.MIN_TIME_SNIPE_ANT : ($(".sniper_ant")[i]).value > conf.MAX_TIME_SNIPE_ANT ? sniper_ant = conf.MAX_TIME_SNIPE_ANT : sniper_ant = ($(".sniper_ant")[i]).value; 
-					($(".sniper_post")[i]).value < conf.MIN_TIME_SNIPE_POST ? sniper_post = conf.MIN_TIME_SNIPE_POST : ($(".sniper_post")[i]).value > conf.MAX_TIME_SNIPE_POST ? sniper_post = conf.MAX_TIME_SNIPE_POST : sniper_post = ($(".sniper_post")[i]).value;
+					(document.querySelectorAll(".sniper_ant")[i]).value < conf.MIN_TIME_SNIPE_ANT ? sniper_ant = conf.MIN_TIME_SNIPE_ANT : (document.querySelectorAll(".sniper_ant")[i]).value > conf.MAX_TIME_SNIPE_ANT ? sniper_ant = conf.MAX_TIME_SNIPE_ANT : sniper_ant = (document.querySelectorAll(".sniper_ant")[i]).value; 
+					(document.querySelectorAll(".sniper_post")[i]).value < conf.MIN_TIME_SNIPE_POST ? sniper_post = conf.MIN_TIME_SNIPE_POST : (document.querySelectorAll(".sniper_post")[i]).value > conf.MAX_TIME_SNIPE_POST ? sniper_post = conf.MAX_TIME_SNIPE_POST : sniper_post = (document.querySelectorAll(".sniper_post")[i]).value;
 					var r;
 					list_timeout[i] = $timeout(function(){
 						r = undefined;
-						$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
+						document.querySelectorAll(this).classList.remove("icon-26x26-dot-green").classList.add("icon-26x26-dot-red");
 					}, conf.loading_timeout);
 
 					r = loadVillage(command).then(function(aldeia){
@@ -868,7 +868,7 @@ define("robotTW2/services/DefenseService", [
 					})
 
 				} else {
-					$(this).removeClass("icon-26x26-dot-green").addClass("icon-26x26-dot-red");
+					document.querySelectorAll(this).classList.remove("icon-26x26-dot-green").classList.add("icon-26x26-dot-red");
 					removeCommandDefense(command.command_id)
 				}
 			});
@@ -897,7 +897,7 @@ define("robotTW2/services/DefenseService", [
 					if (OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 						addDefenseSelector(command, iCount);
 						iCount++
-						if ($('span.type').length <= iCount) 
+						if (document.querySelectorAll('span.type').length <= iCount) 
 							iCount = 0;
 					}
 				}, 100)

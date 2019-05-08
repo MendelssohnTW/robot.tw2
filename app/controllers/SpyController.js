@@ -71,9 +71,9 @@ define("robotTW2/controllers/SpyController", [
 		}
 		, updateValues = function(callback){
 			let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
-			let get_data = $("#input-date").val();
-			let get_time = $("#input-time").val();
-			let get_ms = $("#input-ms").val();
+			let get_data = document.querySelector("#input-date").value;
+			let get_time = document.querySelector("#input-time").value;
+			let get_ms = document.querySelector("#input-ms").value;
 			if (get_time.length <= 5){
 				get_time = get_time + ":00"; 
 			}
@@ -403,7 +403,7 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-					"element" 		: $($("#autocomplete_spy")[0]),
+					"element" 		: document.querySelector(document.querySelector("#autocomplete_spy")[0]),
 					"id" 			: "autocomplete_spy",
 					"autoComplete" 	: obj_autocomplete
 			}
@@ -471,7 +471,7 @@ define("robotTW2/controllers/SpyController", [
 		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
 
 		$scope.blur = function(){
-			var t = $("#input-hour-interval").val();
+			var t = document.querySelector("#input-hour-interval").value;
 			if(t.length <= 5) {
 				t = t + ":00"
 			}

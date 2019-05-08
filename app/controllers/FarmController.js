@@ -105,8 +105,8 @@ define("robotTW2/controllers/FarmController", [
 			}, function(data){
 				services.$timeout.cancel(timeout_preset)
 				timeout_preset = undefined
-				$("#select_preset")[0].selectedIndex = 0;
-				$("#select_preset_out")[0].selectedIndex = 0;
+				document.querySelector("#select_preset")[0].selectedIndex = 0;
+				document.querySelector("#select_preset_out")[0].selectedIndex = 0;
 				if(callback && typeof(callback)=="function"){
 					callback()	
 				}
@@ -288,7 +288,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.set_farm_time = function(){
-			r_farm_time = $("#farm_time").val()
+			r_farm_time = document.querySelector("#farm_time").value
 			if(r_farm_time.length <= 5) {
 				r_farm_time = r_farm_time + ":00"
 			}
@@ -382,10 +382,10 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.blur = function (callback) {
 			if(!$scope.data_farm.infinite){
-				$scope.inicio_de_farm = $("#inicio_de_farm").val()
-				$scope.termino_de_farm = $("#termino_de_farm").val()
-				$scope.data_termino_de_farm = $("#data_termino_de_farm").val()
-				$scope.data_inicio_de_farm = $("#data_inicio_de_farm").val()
+				$scope.inicio_de_farm = document.querySelector("#inicio_de_farm").value
+				$scope.termino_de_farm = document.querySelector("#termino_de_farm").value
+				$scope.data_termino_de_farm = document.querySelector("#data_termino_de_farm").value
+				$scope.data_inicio_de_farm = document.querySelector("#data_inicio_de_farm").value
 
 				var tempo_escolhido_inicio = new Date($scope.data_inicio_de_farm + " " + $scope.inicio_de_farm).getTime();
 				var tempo_escolhido_termino = new Date($scope.data_termino_de_farm + " " + $scope.termino_de_farm).getTime();
@@ -535,7 +535,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blurMaxJourney = function () {
-			var r = $("#max_journey_time").val() 
+			var r = document.querySelector("#max_journey_time").value 
 			if(r.length <= 5) {
 				r = r + ":00"
 			}
@@ -565,7 +565,7 @@ define("robotTW2/controllers/FarmController", [
 		}
 
 		$scope.blurMinJourney = function () {
-			var r = $("#min_journey_time").val() 
+			var r = document.querySelector("#min_journey_time").value 
 			if(r.length <= 5) {
 				r = r + ":00"
 			}
@@ -676,7 +676,7 @@ define("robotTW2/controllers/FarmController", [
 
 			let object_scope = {
 					"inputValue" 	: event.srcElement.value,
-					"element" 		: $($("#autocomplete_farm")[0]),
+					"element" 		: document.querySelector(document.querySelector("#autocomplete_farm")[0]),
 					"id" 			: "autocomplete_farm",
 					"autoComplete" 	: obj_autocomplete
 			}

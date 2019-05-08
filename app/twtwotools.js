@@ -108,9 +108,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				fn:fn, params:params || {}
 			})
 //			fns[this.prefix + key].push(
-//					{
-//						fn:fn, params:params || {}
-//					}
+//			{
+//			fn:fn, params:params || {}
+//			}
 //			)
 			/*
 			 * triggered for callback
@@ -121,21 +121,21 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		,
 //		service.trigger = function(key, params) {
-//			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
-//				if(!params || !Object.keys(params).length) {
-//					if(!Object.keys(fs.params).length) {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
-//					} else {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
-//					}
-//				} else {
-//					if(!Object.keys(fs.params).length) {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
-//					} else {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
-//					}
-//				}
-//			})
+//		fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
+//		if(!params || !Object.keys(params).length) {
+//		if(!Object.keys(fs.params).length) {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//		} else {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//		}
+//		} else {
+//		if(!Object.keys(fs.params).length) {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//		} else {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//		}
+//		}
+//		})
 //		}
 //		,
 		service.get = function(key, opt_prefix, index) {
@@ -146,17 +146,17 @@ var robotTW2 = window.robotTW2 = undefined;
 		, service.unbind = function(key) {
 			if(fns.hasOwnProperty(this.prefix + key)){
 //				if(triggered[key]){
-//					if(typeof(triggered[this.prefix + key]) == "object"){
-//						if(triggered[this.prefix + key].$$state.status == 0){
-//							$timeout.cancel(triggered[this.prefix + key])	
-//						}
-//					} else if(typeof(triggered[this.prefix + key]) == "function"){
-//						triggered[this.prefix + key]();
-//					}
-//					delete triggered[this.prefix + key];
-//					delete fns[this.prefix + key];
+//				if(typeof(triggered[this.prefix + key]) == "object"){
+//				if(triggered[this.prefix + key].$$state.status == 0){
+//				$timeout.cancel(triggered[this.prefix + key])	
+//				}
+//				} else if(typeof(triggered[this.prefix + key]) == "function"){
+//				triggered[this.prefix + key]();
+//				}
+//				delete triggered[this.prefix + key];
+//				delete fns[this.prefix + key];
 //				} else {
-					delete fns[this.prefix + key];
+				delete fns[this.prefix + key];
 //				}
 			}
 		}
@@ -170,17 +170,17 @@ var robotTW2 = window.robotTW2 = undefined;
 					} else {
 						if(fns[key].params.type == type){
 //							if(triggered[key]){
-//								if(typeof(triggered[key]) == "object"){
-//									if(triggered[key].$$state.status == 0){
-//										$timeout.cancel(triggered[key])	
-//									}
-//								} else if(typeof(triggered[key]) == "function"){
-//									triggered[key]();
-//								}
-//								delete triggered[key];
-//								delete fns[key];
+//							if(typeof(triggered[key]) == "object"){
+//							if(triggered[key].$$state.status == 0){
+//							$timeout.cancel(triggered[key])	
+//							}
+//							} else if(typeof(triggered[key]) == "function"){
+//							triggered[key]();
+//							}
+//							delete triggered[key];
+//							delete fns[key];
 //							} else {
-								delete fns[key];
+							delete fns[key];
 //							}
 						}
 					}
@@ -209,12 +209,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		,
 //		service.trigger = function(key, params) {
-//			if(!key) return;
-//			if(!params){
-//				requestFn.trigger(key);
-//			} else {
-//				requestFn.trigger(key, [params]);	
-//			}
+//		if(!key) return;
+//		if(!params){
+//		requestFn.trigger(key);
+//		} else {
+//		requestFn.trigger(key, [params]);	
+//		}
 //		}
 //		,
 		service.unbind = function(key, opt_db) {
@@ -241,11 +241,13 @@ var robotTW2 = window.robotTW2 = undefined;
 		service
 	})()
 	, getScope = function(elem){
-		var selector = angular.element(elem[0]);
-		return selector.scope();
+		if(!elem){return {}}
+		return angular.element(elem).scope();
 	}
 	, loadController = function(controller){
-		return window[controller] || getScope(window.$('[ng-controller=' + controller + ']'));
+		let control = document.querySelector('[ng-controller=' + controller + ']')
+		if(!control){return null}
+		return window[controller] || getScope(control);
 	}
 	, createScopeLang = function(module, callback){
 		var scope = {};
@@ -519,7 +521,7 @@ var robotTW2 = window.robotTW2 = undefined;
 
 			compiledTemplate(scope, function(clonedElement, scope) {
 				if(!filho){return}
-				filho.append(clonedElement);
+				filho.appendChild(clonedElement[0]);
 			});
 
 			self.controller.apply(self.controller, [scope])
@@ -554,12 +556,13 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 		.then(function(data){
 			var rootnode = data.rootnode;
+			self.$window = rootnode;
 			var tempName = self.templateName;
 			var tempUpperCase = tempName.charAt(0).toUpperCase() + tempName.slice(1);
 
 			if(self.style){
 				Object.keys(self.style).forEach(function(key){
-					window.$(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
+					self.$window.setAttribute("style", key + ":" + self.style[key] + ";");
 					window.dispatchEvent(new Event('resize'));
 				})
 			}
@@ -569,23 +572,21 @@ var robotTW2 = window.robotTW2 = undefined;
 					self.classes = [self.classes]
 				}
 				var cls = self.classes.join(" ");
-				window.$(rootnode).addClass(cls);
+				self.$window.classList.add(cls);
 			}
 
 			data.scope.$on('$destroy', function() {
-				window.$("#map")[0].setAttribute("style", "left:0px;")
+				document.querySelector("#map").setAttribute("style", "left:0px;")
 				window.dispatchEvent(new Event('resize'));
 			});
 
-			self.$window = rootnode;
-			var obj_main = window.$(".robotTW2 .win-main");
-			obj_main.removeClass("jssb-focus")
-			obj_main.removeClass("jssb-applied")
 			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
+			var obj_main = document.querySelectorAll(".robotTW2 .win-main");
 			for(let i = 0; i < obj_main.length; i++){
-				if(!obj_main[i].classList.contains("jssb-applied")){
-					!self.$scrollbar[i] ? self.$scrollbar[i] = new jsScrollbar(obj_main[i]) : self.$scrollbar[i];
-				}
+				obj_main[i].classList.remove("jssb-focus")
+				obj_main[i].classList.remove("jssb-applied")
+				obj_main[i].classList.remove("jssb-scrolly")
+				!self.$scrollbar[i] ? self.$scrollbar[i] = new jsScrollbar(obj_main[i]) : self.$scrollbar[i];
 			}
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
@@ -1122,7 +1123,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			) {
 			return function(message, opt){
 				var $scope = robotTW2.loadController("NotificationController")
-				, promise
+				if(!$scope){return}
+				let promise
 				, that = this
 				, queue = []
 				, fireworkSystem = new firework.FireworkSystem(32, 'notificationCanvas')
@@ -1435,7 +1437,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			 */
 			hideSelect = function hideSelect() {
 				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
-				window.$(window).off('click', clickHandler);
+				document.querySelector(window).off('click', clickHandler);
 			},
 
 			/**
@@ -1484,7 +1486,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						noResultTranslation
 				);
 
-				window.$(window).off('click', clickHandler).on('click', clickHandler);
+				document.querySelector(window).off('click', clickHandler).on('click', clickHandler);
 			},
 
 			/**
@@ -2141,10 +2143,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.AttackCompletionController : {
 					robotTW2.createScopeLang("attack", function(scopeLang){
 						var get_father = function(){
-							return window.$('[ng-controller=ModalCustomArmyController]');
+							return document.querySelector('[ng-controller=ModalCustomArmyController]');
 						}
 						, get_son = function(){
-							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+							return get_father() ? get_father().querySelector("div").querySelector(".box-paper").querySelector(".scroll-wrap"): {}				
 						}
 						, params = {
 								included_controller		: "ModalCustomArmyController",
@@ -2163,10 +2165,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.SpyCompletionController : {
 					robotTW2.createScopeLang("spy", function(scopeLang){
 						var get_father = function(){
-							return window.$('[ng-controller=ModalSendSpiesController]');
+							return document.querySelector('[ng-controller=ModalSendSpiesController]');
 						}
 						, get_son = function(){
-							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+							return get_father() ? get_father().querySelector("div").querySelector(".box-paper").querySelector(".scroll-wrap"): {}						
 						}
 						, params = {
 								included_controller		: "ModalSendSpiesController",
@@ -2185,10 +2187,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.FarmCompletionController : {
 					robotTW2.createScopeLang("farm", function(scopeLang){
 						var get_father = function(){
-							return window.$('[ng-controller=BattleReportController]');
+							return document.querySelector('[ng-controller=BattleReportController]');
 						}
 						, get_son = function(){
-							return get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false			
+							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull").length ? get_father().querySelector(".tbl-result") : false : {}	
 						}
 						, params = {
 								included_controller		: "BattleReportController",
@@ -2207,10 +2209,10 @@ var robotTW2 = window.robotTW2 = undefined;
 				case robotTW2.controllers.MainCompletionController : {
 					robotTW2.createScopeLang("main", function(scopeLang){
 						var get_father = function(){
-							return window.$('[ng-controller=TopInterfaceController]');
+							return document.querySelector('[ng-controller=TopInterfaceController]');
 						}
 						, get_son = function(){
-							return get_father().find("#logout-wrapper")			
+							return get_father() ? get_father().querySelector("#logout-wrapper") : {}			
 						}
 						, params = {
 								included_controller		: "TopInterfaceController",
