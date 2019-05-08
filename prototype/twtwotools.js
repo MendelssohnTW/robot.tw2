@@ -108,9 +108,9 @@ var robotTW2 = window.robotTW2 = undefined;
 				fn:fn, params:params || {}
 			})
 //			fns[this.prefix + key].push(
-//					{
-//						fn:fn, params:params || {}
-//					}
+//			{
+//			fn:fn, params:params || {}
+//			}
 //			)
 			/*
 			 * triggered for callback
@@ -121,21 +121,21 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		,
 //		service.trigger = function(key, params) {
-//			fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
-//				if(!params || !Object.keys(params).length) {
-//					if(!Object.keys(fs.params).length) {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
-//					} else {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
-//					}
-//				} else {
-//					if(!Object.keys(fs.params).length) {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
-//					} else {
-//						!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
-//					}
-//				}
-//			})
+//		fns.hasOwnProperty(this.prefix + key) && fns[this.prefix + key].forEach(function(fs) {
+//		if(!params || !Object.keys(params).length) {
+//		if(!Object.keys(fs.params).length) {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//		} else {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//		}
+//		} else {
+//		if(!Object.keys(fs.params).length) {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, []) : triggered[this.prefix + key]
+//		} else {
+//		!triggered[this.prefix + key] ? triggered[this.prefix + key] = fs.fn.apply(this, fs.params) : triggered[this.prefix + key]
+//		}
+//		}
+//		})
 //		}
 //		,
 		service.get = function(key, opt_prefix, index) {
@@ -146,17 +146,17 @@ var robotTW2 = window.robotTW2 = undefined;
 		, service.unbind = function(key) {
 			if(fns.hasOwnProperty(this.prefix + key)){
 //				if(triggered[key]){
-//					if(typeof(triggered[this.prefix + key]) == "object"){
-//						if(triggered[this.prefix + key].$$state.status == 0){
-//							$timeout.cancel(triggered[this.prefix + key])	
-//						}
-//					} else if(typeof(triggered[this.prefix + key]) == "function"){
-//						triggered[this.prefix + key]();
-//					}
-//					delete triggered[this.prefix + key];
-//					delete fns[this.prefix + key];
+//				if(typeof(triggered[this.prefix + key]) == "object"){
+//				if(triggered[this.prefix + key].$$state.status == 0){
+//				$timeout.cancel(triggered[this.prefix + key])	
+//				}
+//				} else if(typeof(triggered[this.prefix + key]) == "function"){
+//				triggered[this.prefix + key]();
+//				}
+//				delete triggered[this.prefix + key];
+//				delete fns[this.prefix + key];
 //				} else {
-					delete fns[this.prefix + key];
+				delete fns[this.prefix + key];
 //				}
 			}
 		}
@@ -170,17 +170,17 @@ var robotTW2 = window.robotTW2 = undefined;
 					} else {
 						if(fns[key].params.type == type){
 //							if(triggered[key]){
-//								if(typeof(triggered[key]) == "object"){
-//									if(triggered[key].$$state.status == 0){
-//										$timeout.cancel(triggered[key])	
-//									}
-//								} else if(typeof(triggered[key]) == "function"){
-//									triggered[key]();
-//								}
-//								delete triggered[key];
-//								delete fns[key];
+//							if(typeof(triggered[key]) == "object"){
+//							if(triggered[key].$$state.status == 0){
+//							$timeout.cancel(triggered[key])	
+//							}
+//							} else if(typeof(triggered[key]) == "function"){
+//							triggered[key]();
+//							}
+//							delete triggered[key];
+//							delete fns[key];
 //							} else {
-								delete fns[key];
+							delete fns[key];
 //							}
 						}
 					}
@@ -209,12 +209,12 @@ var robotTW2 = window.robotTW2 = undefined;
 		}
 		,
 //		service.trigger = function(key, params) {
-//			if(!key) return;
-//			if(!params){
-//				requestFn.trigger(key);
-//			} else {
-//				requestFn.trigger(key, [params]);	
-//			}
+//		if(!key) return;
+//		if(!params){
+//		requestFn.trigger(key);
+//		} else {
+//		requestFn.trigger(key, [params]);	
+//		}
 //		}
 //		,
 		service.unbind = function(key, opt_db) {
@@ -579,15 +579,13 @@ var robotTW2 = window.robotTW2 = undefined;
 				document.querySelector("#map").setAttribute("style", "left:0px;")
 				window.dispatchEvent(new Event('resize'));
 			});
-			
+
 			var obj_main = document.querySelectorAll(".robotTW2 .win-main");
-//			obj_main.classList.remove("jssb-focus")
-//			obj_main.classList.remove("jssb-applied")
-//			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
 			for(let i = 0; i < obj_main.length; i++){
-				if(!obj_main[i].classList.contains("jssb-applied")){
-					!self.$scrollbar[i] ? self.$scrollbar[i] = new jsScrollbar(obj_main[i]) : self.$scrollbar[i];
-				}
+				obj_main[i].classList.remove("jssb-focus")
+				obj_main[i].classList.remove("jssb-applied")
+				obj_main[i].classList.remove("jssb-scrolly")
+				!self.$scrollbar[i] ? self.$scrollbar[i] = new jsScrollbar(obj_main[i]) : self.$scrollbar[i];
 			}
 			self.recalcScrollbar = function() {
 				if(!self.$scrollbar) return;
