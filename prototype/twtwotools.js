@@ -583,7 +583,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			var obj_main = document.querySelectorAll(".robotTW2 .win-main");
 //			obj_main.classList.remove("jssb-focus")
 //			obj_main.classList.remove("jssb-applied")
-			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
+//			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
 			for(let i = 0; i < obj_main.length; i++){
 				if(!obj_main[i].classList.contains("jssb-applied")){
 					!self.$scrollbar[i] ? self.$scrollbar[i] = new jsScrollbar(obj_main[i]) : self.$scrollbar[i];
