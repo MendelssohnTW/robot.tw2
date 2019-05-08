@@ -67,9 +67,9 @@ define("robotTW2/controllers/FakeController", [
 		, updateValues = function(){
 			if(Object.keys($scope.send_scope).length){
 				let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().fake_speed * 60
-				let get_data = document.querySelector("#input-date").val();
-				let get_time = document.querySelector("#input-time").val();
-				let get_ms = document.querySelector("#input-ms").val();
+				let get_data = document.querySelector("#input-date").value;
+				let get_time = document.querySelector("#input-time").value;
+				let get_ms = document.querySelector("#input-ms").value;
 				if (get_time.length <= 5){
 					get_time = get_time + ":00"; 
 				}
@@ -84,9 +84,9 @@ define("robotTW2/controllers/FakeController", [
 		}
 		, updateValuesSource = function(){
 			if(Object.keys($scope.villages_for_sent).length){
-				let get_data = document.querySelector("#input-date-source").val();
-				let get_time = document.querySelector("#input-time-source").val();
-				let get_ms = document.querySelector("#input-ms-source").val();
+				let get_data = document.querySelector("#input-date-source").value;
+				let get_time = document.querySelector("#input-time-source").value;
+				let get_ms = document.querySelector("#input-ms-source").value;
 				if (get_time.length <= 5){
 					get_time = get_time + ":00"; 
 				}
@@ -271,7 +271,7 @@ define("robotTW2/controllers/FakeController", [
 		$scope.removeCommand = services.FakeService.removeCommandAttackFake;
 
 		$scope.blur = function(){
-			var t = document.querySelector("#input-hour-interval").val();
+			var t = document.querySelector("#input-hour-interval").value;
 			if(t.length <= 5) {
 				t = t + ":00"
 			}
