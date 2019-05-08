@@ -557,12 +557,13 @@ var robotTW2 = window.robotTW2 = undefined;
 		})
 		.then(function(data){
 			var rootnode = data.rootnode;
+			self.$window = rootnode;
 			var tempName = self.templateName;
 			var tempUpperCase = tempName.charAt(0).toUpperCase() + tempName.slice(1);
 
 			if(self.style){
 				Object.keys(self.style).forEach(function(key){
-					document.querySelector(rootnode, "section")[0].setAttribute("style", key + ":" + self.style[key] + ";");
+					self.$window.setAttribute("style", key + ":" + self.style[key] + ";");
 					window.dispatchEvent(new Event('resize'));
 				})
 			}
@@ -572,7 +573,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					self.classes = [self.classes]
 				}
 				var cls = self.classes.join(" ");
-				document.querySelector(rootnode).addClass(cls);
+				self.$window.addClass(cls);
 			}
 
 			data.scope.$on('$destroy', function() {
@@ -580,7 +581,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				window.dispatchEvent(new Event('resize'));
 			});
 
-			self.$window = rootnode;
+			
 			var obj_main = document.querySelector(".robotTW2 .win-main");
 			obj_main.removeClass("jssb-focus")
 			obj_main.removeClass("jssb-applied")
