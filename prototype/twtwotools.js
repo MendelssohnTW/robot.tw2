@@ -580,6 +580,7 @@ var robotTW2 = window.robotTW2 = undefined;
 				window.dispatchEvent(new Event('resize'));
 			});
 
+			!self.$scrollbar ? self.$scrollbar = [] : self.$scrollbar;
 			var obj_main = document.querySelectorAll(".robotTW2 .win-main");
 			for(let i = 0; i < obj_main.length; i++){
 				obj_main[i].classList.remove("jssb-focus")
