@@ -241,6 +241,7 @@ var robotTW2 = window.robotTW2 = undefined;
 		service
 	})()
 	, getScope = function(elem){
+		if(!elem){return {}}
 		var selector = angular.element(elem[0]);
 		return selector.scope();
 	}
