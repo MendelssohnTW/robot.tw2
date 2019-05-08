@@ -577,7 +577,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			}
 
 			data.scope.$on('$destroy', function() {
-				document.querySelector("#map")[0].setAttribute("style", "left:0px;")
+				document.querySelector("#map").setAttribute("style", "left:0px;")
 				window.dispatchEvent(new Event('resize'));
 			});
 
