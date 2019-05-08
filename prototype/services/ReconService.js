@@ -122,22 +122,22 @@ define("robotTW2/services/ReconService", [
 				case "attack":
 					if(span_unit != undefined){
 						pai_type[i].classList.remove("icon-34x34-attack");
-						pai_type.classList.add("icon-34x34-unit-" + span_unit);
+						pai_type[i].classList.add("icon-34x34-unit-" + span_unit);
 						pai_edit[i].classList.remove("icon-34x34-edit");
-						pai_edit.classList.add(classe);
+						pai_edit[i].classList.add(classe);
 					}
 					break;
 				case "relocate":
 					pai_type[i].classList.remove("icon-34x34-relocate");
-					pai_type.classList.add("icon-34x34-unit-" + span_unit);
+					pai_type[i].classList.add("icon-34x34-unit-" + span_unit);
 					pai_edit[i].classList.remove("icon-34x34-edit");
-					pai_edit.classList.add("icon-34x34-relocate");
+					pai_edit[i].classList.add("icon-34x34-relocate");
 					break;
 				case "support":
 					pai_type[i].classList.remove("icon-34x34-support");
-					pai_type.classList.add("icon-34x34-unit-" + span_unit);
+					pai_type[i].classList.add("icon-34x34-unit-" + span_unit);
 					pai_edit[i].classList.remove("icon-34x34-edit");
-					pai_edit.classList.add("icon-34x34-support");
+					pai_edit[i].classList.add("icon-34x34-support");
 					break;
 				}
 
