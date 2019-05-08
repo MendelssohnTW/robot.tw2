@@ -2193,7 +2193,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=BattleReportController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().find(".tbl-result") && !get_father().find("#checkboxFull").length ? get_father().find(".tbl-result") : false : {}	
+							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull").length ? get_father().querySelector(".tbl-result") : false : {}	
 						}
 						, params = {
 								included_controller		: "BattleReportController",
@@ -2215,7 +2215,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=TopInterfaceController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().find("#logout-wrapper") : {}			
+							return get_father() ? get_father().querySelector("#logout-wrapper") : {}			
 						}
 						, params = {
 								included_controller		: "TopInterfaceController",
