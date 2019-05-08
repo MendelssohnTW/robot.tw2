@@ -246,7 +246,9 @@ var robotTW2 = window.robotTW2 = undefined;
 		return selector.scope();
 	}
 	, loadController = function(controller){
-		return window[controller] || getScope(document.querySelector('[ng-controller=' + controller + ']'));
+		let control = document.querySelector('[ng-controller=' + controller + ']')
+		if(!control){return null}
+		return window[controller] || getScope(control);
 	}
 	, createScopeLang = function(module, callback){
 		var scope = {};
