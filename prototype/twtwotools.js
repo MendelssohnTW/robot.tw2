@@ -2167,7 +2167,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=ModalSendSpiesController]');
 						}
 						, get_son = function(){
-							return get_father().children("div").children(".box-paper").children(".scroll-wrap")						
+							return get_father() ? get_father().children("div").children(".box-paper").children(".scroll-wrap"): {}						
 						}
 						, params = {
 								included_controller		: "ModalSendSpiesController",
