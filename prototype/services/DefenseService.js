@@ -867,7 +867,7 @@ define("robotTW2/services/DefenseService", [
 			}
 			
 			document.querySelectorAll(".indicatorSelected")[i].addEventListener('click', function (event) {
-				if (document.querySelectorAll(".indicatorSelected")[i].attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
+				if (document.querySelectorAll(".indicatorSelected")[i].classList.contains("icon-26x26-dot-red")) {
 					document.querySelectorAll(this).classList.remove("icon-26x26-dot-red");
 					document.querySelectorAll(this).classList.add("icon-26x26-dot-green");
 					var sniper_ant;
@@ -902,7 +902,8 @@ define("robotTW2/services/DefenseService", [
 					})
 
 				} else {
-					document.querySelectorAll(this).classList.remove("icon-26x26-dot-green").classList.add("icon-26x26-dot-red");
+					document.querySelectorAll(this).classList.remove("icon-26x26-dot-green");
+					document.querySelectorAll(this).classList.add("icon-26x26-dot-red");
 					removeCommandDefense(command.command_id)
 				}
 			});
