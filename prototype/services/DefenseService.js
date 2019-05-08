@@ -854,8 +854,10 @@ define("robotTW2/services/DefenseService", [
 			div_pai.appendChild(input_ant)
 			div_pai.appendChild(input_post)
 			div_pai.appendChild(div)
+			
+			let pai = document.querySelectorAll(".content.incoming td.column-time_completed")[i]
 
-			(document.querySelectorAll(".content.incoming td.column-time_completed")[i]).prepend(div_pai);
+			pai.insertBerfore(div_pai, pai.childNodes[0]);
 			if ((document.querySelectorAll(".sniper_ant")[i]) != undefined){
 				(document.querySelectorAll(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : data_defense.time_sniper_ant / 1000;
 			}
