@@ -158,7 +158,7 @@ define("robotTW2/services/ReconService", [
 				
 				$timeout(function(){
 					var elem = undefined;
-					document.querySelectorAll(".command-type")[i] ? elem = document.querySelectorAll(document.querySelectorAll(".command-type")[i])[0].querySelectorAll("div") : i = 0;
+					document.querySelectorAll(".command-type")[i] ? elem = (document.querySelectorAll(".command-type")[i]).querySelectorAll("div")[0] : i = 0;
 					if(elem){
 						if(OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 							var unitText = getAttackTypeAtackRecon(command, i);
