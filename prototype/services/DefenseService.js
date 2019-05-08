@@ -833,7 +833,12 @@ define("robotTW2/services/DefenseService", [
 			let div = document.createElement("div")
 
 			div_pai.style.float = "right";
-			input_ant.setAttribute("id", "sniper_ant").setAttribute("class", "sniper_ant").setAttribute("type", "number").setAttribute("step", "1").setAttribute("min", "5").setAttribute("max", "600")
+			input_ant.setAttribute("id", "sniper_ant")
+			input_ant.setAttribute("type", "number")
+			input_ant.setAttribute("step", "1")
+			input_ant.setAttribute("min", "5")
+			input_ant.setAttribute("max", "600")
+			input_ant.classList.add("sniper_ant")
 			input_ant.style.width = "40px";
 			input_ant.style.color = "white";
 			input_post.setAttribute("id", "sniper_post").setAttribute("class", "sniper_post").setAttribute("type", "number").setAttribute("step", "1").setAttribute("min", "5").setAttribute("max", "600")
