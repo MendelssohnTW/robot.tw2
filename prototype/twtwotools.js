@@ -1125,7 +1125,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			) {
 			return function(message, opt){
 				var $scope = robotTW2.loadController("NotificationController")
-				, promise
+				if(!$scope){return}
+				let promise
 				, that = this
 				, queue = []
 				, fireworkSystem = new firework.FireworkSystem(32, 'notificationCanvas')
