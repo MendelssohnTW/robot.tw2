@@ -580,7 +580,6 @@ var robotTW2 = window.robotTW2 = undefined;
 				document.querySelector("#map").setAttribute("style", "left:0px;")
 				window.dispatchEvent(new Event('resize'));
 			});
-
 			
 			var obj_main = document.querySelector(".robotTW2 .win-main");
 			obj_main.classList.remove("jssb-focus")
