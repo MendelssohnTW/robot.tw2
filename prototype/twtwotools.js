@@ -242,8 +242,7 @@ var robotTW2 = window.robotTW2 = undefined;
 	})()
 	, getScope = function(elem){
 		if(!elem){return {}}
-		var selector = angular.element(elem);
-		return selector.scope();
+		return angular.element(elem).scope();
 	}
 	, loadController = function(controller){
 		let control = document.querySelector('[ng-controller=' + controller + ']')
