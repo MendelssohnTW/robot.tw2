@@ -118,17 +118,17 @@ define("robotTW2/services/ReconService", [
 				switch (cmdType) {
 				case "attack":
 					if(span_unit != undefined){
-						document.querySelector(document.querySelector('span.type')[i]).classList.remove("icon-34x34-attack").addClass("icon-34x34-unit-" + span_unit);
-						document.querySelector(document.querySelector('span.edit')[i]).classList.remove("icon-34x34-edit").addClass(classe);
+						document.querySelectorAll(document.querySelectorAll('span.type')[i]).classList.remove("icon-34x34-attack").classList.add("icon-34x34-unit-" + span_unit);
+						document.querySelectorAll(document.querySelectorAll('span.edit')[i]).classList.remove("icon-34x34-edit").classList.add(classe);
 					}
 					break;
 				case "relocate":
-					document.querySelector(document.querySelector('span.type')[i]).classList.remove("icon-34x34-relocate").addClass("icon-34x34-unit-" + span_unit);
-					document.querySelector(document.querySelector('span.edit')[i]).classList.remove("icon-34x34-edit").addClass("icon-34x34-relocate");
+					document.querySelectorAll(document.querySelectorAll('span.type')[i]).classList.remove("icon-34x34-relocate").classList.add("icon-34x34-unit-" + span_unit);
+					document.querySelectorAll(document.querySelectorAll('span.edit')[i]).classList.remove("icon-34x34-edit").classList.add("icon-34x34-relocate");
 					break;
 				case "support":
-					document.querySelector(document.querySelector('span.type')[i]).classList.remove("icon-34x34-support").addClass("icon-34x34-unit-" + span_unit);
-					document.querySelector(document.querySelector('span.edit')[i]).classList.remove("icon-34x34-edit").addClass("icon-34x34-support");
+					document.querySelectorAll(document.querySelectorAll('span.type')[i]).classList.remove("icon-34x34-support").classList.add("icon-34x34-unit-" + span_unit);
+					document.querySelectorAll(document.querySelectorAll('span.edit')[i]).classList.remove("icon-34x34-edit").classList.add("icon-34x34-support");
 					break;
 				}
 
@@ -158,7 +158,7 @@ define("robotTW2/services/ReconService", [
 				
 				$timeout(function(){
 					var elem = undefined;
-					document.querySelector(".command-type")[i] ? elem = document.querySelector(document.querySelector(".command-type")[i])[0].querySelector("div") : i = 0;
+					document.querySelectorAll(".command-type")[i] ? elem = document.querySelectorAll(document.querySelectorAll(".command-type")[i])[0].querySelectorAll("div") : i = 0;
 					if(elem){
 						if(OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 							var unitText = getAttackTypeAtackRecon(command, i);
@@ -171,14 +171,14 @@ define("robotTW2/services/ReconService", [
 							}
 							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
 							i++;
-							if (document.querySelector('span.type').length === i) {
+							if (document.querySelectorAll('span.type').length === i) {
 								i = 0;
 							}
 
 						} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
 							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
 							i++;
-							if (document.querySelector('span.type').length === i) {
+							if (document.querySelectorAll('span.type').length === i) {
 								i = 0;
 							}
 						}

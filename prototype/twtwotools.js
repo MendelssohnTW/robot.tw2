@@ -573,7 +573,7 @@ var robotTW2 = window.robotTW2 = undefined;
 					self.classes = [self.classes]
 				}
 				var cls = self.classes.join(" ");
-				self.$window.addClass(cls);
+				self.$window.classList.add(cls);
 			}
 
 			data.scope.$on('$destroy', function() {
