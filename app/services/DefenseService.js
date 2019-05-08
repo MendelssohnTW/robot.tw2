@@ -826,15 +826,47 @@ define("robotTW2/services/DefenseService", [
 			} else {
 				isMark = false;
 			}
-			document.querySelectorAll(document.querySelectorAll(".content.incoming td.column-time_completed")[i]).prepend('<div style="float: right;"><input id="sniper_ant" class="sniper_ant" type="number" style="width: 40px; color: white;" step="1" min="5" max"600"><input id="sniper_post" class="sniper_post" type="number" style="width: 40px; color: white;"  step="1" min="1" max"600"></div><div class="' + opts[(isMark) ? 1 : 0] + ' indicatorSelected"></div>');
+
+			let div_pai = document.createElement("div")
+			let input_ant = document.createElement("input")
+			let input_post = document.createElement("input")
+			let div = document.createElement("div")
+
+			div_pai.style.float = "right";
+			input_ant.setAttribute("id", "sniper_ant")
+			input_ant.setAttribute("type", "number")
+			input_ant.setAttribute("step", "1")
+			input_ant.setAttribute("min", "5")
+			input_ant.setAttribute("max", "600")
+			input_ant.classList.add("sniper_ant")
+			input_ant.style.width = "40px";
+			input_ant.style.color = "white";
+			input_post.setAttribute("id", "sniper_post")
+			input_post.setAttribute("type", "number")
+			input_post.setAttribute("step", "1")
+			input_post.setAttribute("min", "5")
+			input_post.setAttribute("max", "600")
+			input_post.classList.add("sniper_post")
+			input_post.style.width = "40px";
+			input_post.style.color = "white";
+			div.style.float = "right";
+			div.classList.add(opts[(isMark) ? 1 : 0])
+			div.classList.add("indicatorSelected")
+			div_pai.appendChild(input_ant)
+			div_pai.appendChild(input_post)
+			div_pai.appendChild(div)
+			
+			let pai = document.querySelectorAll(".content.incoming td.column-time_completed")[i]
+
+			pai.insertBefore(div_pai, pai.childNodes[0]);
 			if ((document.querySelectorAll(".sniper_ant")[i]) != undefined){
 				(document.querySelectorAll(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : data_defense.time_sniper_ant / 1000;
 			}
 			if ((document.querySelectorAll(".sniper_post")[i]) != undefined){
 				(document.querySelectorAll(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : data_defense.time_sniper_post / 1000;
 			}
-			document.querySelectorAll(".indicatorSelected").css("float", "right");
-			document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).click(function () {
+			
+			document.querySelectorAll(".indicatorSelected")[i].click(function () {
 				if (document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
 					document.querySelectorAll(this).classList.remove("icon-26x26-dot-red").classList.add("icon-26x26-dot-green");
 					var sniper_ant;

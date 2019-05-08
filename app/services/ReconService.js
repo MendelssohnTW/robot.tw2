@@ -114,21 +114,30 @@ define("robotTW2/services/ReconService", [
 					}
 				break;
 				}
+				
+				let pai_type = document.querySelectorAll('span.type');
+				let pai_edit = document.querySelectorAll('span.edit');
 
 				switch (cmdType) {
 				case "attack":
 					if(span_unit != undefined){
-						document.querySelectorAll(document.querySelectorAll('span.type')[i]).classList.remove("icon-34x34-attack").classList.add("icon-34x34-unit-" + span_unit);
-						document.querySelectorAll(document.querySelectorAll('span.edit')[i]).classList.remove("icon-34x34-edit").classList.add(classe);
+						pai_type[i].classList.remove("icon-34x34-attack");
+						pai_type.classList.add("icon-34x34-unit-" + span_unit);
+						pai_edit[i].classList.remove("icon-34x34-edit");
+						pai_edit.classList.add(classe);
 					}
 					break;
 				case "relocate":
-					document.querySelectorAll(document.querySelectorAll('span.type')[i]).classList.remove("icon-34x34-relocate").classList.add("icon-34x34-unit-" + span_unit);
-					document.querySelectorAll(document.querySelectorAll('span.edit')[i]).classList.remove("icon-34x34-edit").classList.add("icon-34x34-relocate");
+					pai_type[i].classList.remove("icon-34x34-relocate");
+					pai_type.classList.add("icon-34x34-unit-" + span_unit);
+					pai_edit[i].classList.remove("icon-34x34-edit");
+					pai_edit.classList.add("icon-34x34-relocate");
 					break;
 				case "support":
-					document.querySelectorAll(document.querySelectorAll('span.type')[i]).classList.remove("icon-34x34-support").classList.add("icon-34x34-unit-" + span_unit);
-					document.querySelectorAll(document.querySelectorAll('span.edit')[i]).classList.remove("icon-34x34-edit").classList.add("icon-34x34-support");
+					pai_type[i].classList.remove("icon-34x34-support");
+					pai_type.classList.add("icon-34x34-unit-" + span_unit);
+					pai_edit[i].classList.remove("icon-34x34-edit");
+					pai_edit.classList.add("icon-34x34-support");
 					break;
 				}
 
@@ -158,7 +167,7 @@ define("robotTW2/services/ReconService", [
 				
 				$timeout(function(){
 					var elem = undefined;
-					document.querySelectorAll(".command-type")[i] ? elem = document.querySelectorAll(document.querySelectorAll(".command-type")[i])[0].querySelectorAll("div") : i = 0;
+					document.querySelectorAll(".command-type")[i] ? elem = (document.querySelectorAll(".command-type")[i]).querySelectorAll("div")[0] : i = 0;
 					if(elem){
 						if(OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 							var unitText = getAttackTypeAtackRecon(command, i);
