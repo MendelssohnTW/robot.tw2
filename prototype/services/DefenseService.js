@@ -866,7 +866,7 @@ define("robotTW2/services/DefenseService", [
 				(document.querySelectorAll(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : data_defense.time_sniper_post / 1000;
 			}
 			
-			document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).click(function () {
+			document.querySelectorAll(".indicatorSelected")[i].click(function () {
 				if (document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
 					document.querySelectorAll(this).classList.remove("icon-26x26-dot-red").classList.add("icon-26x26-dot-green");
 					var sniper_ant;
