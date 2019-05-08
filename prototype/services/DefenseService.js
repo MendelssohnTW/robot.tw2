@@ -841,7 +841,14 @@ define("robotTW2/services/DefenseService", [
 			input_ant.classList.add("sniper_ant")
 			input_ant.style.width = "40px";
 			input_ant.style.color = "white";
-			input_post.setAttribute("id", "sniper_post").setAttribute("class", "sniper_post").setAttribute("type", "number").setAttribute("step", "1").setAttribute("min", "5").setAttribute("max", "600")
+			input_post.setAttribute("id", "sniper_post")
+			input_post.setAttribute("type", "number")
+			input_post.setAttribute("step", "1")
+			input_post.setAttribute("min", "5")
+			input_post.setAttribute("max", "600")
+			input_post.classList.add("sniper_post")
+			input_post.style.width = "40px";
+			input_post.style.color = "white";
 			div.classList.add(opts[(isMark) ? 1 : 0] + " indicatorSelected")
 			div_pai.appendChild(input_ant)
 			div_pai.appendChild(input_post)
