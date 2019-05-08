@@ -826,7 +826,23 @@ define("robotTW2/services/DefenseService", [
 			} else {
 				isMark = false;
 			}
-			document.querySelectorAll(document.querySelectorAll(".content.incoming td.column-time_completed")[i]).prepend('<div style="float: right;"><input id="sniper_ant" class="sniper_ant" type="number" style="width: 40px; color: white;" step="1" min="5" max"600"><input id="sniper_post" class="sniper_post" type="number" style="width: 40px; color: white;"  step="1" min="1" max"600"></div><div class="' + opts[(isMark) ? 1 : 0] + ' indicatorSelected"></div>');
+
+			let div_pai = document.createElement("div")
+			let input_ant = document.createElement("input")
+			let input_post = document.createElement("input")
+			let div = document.createElement("div")
+
+			div_pai.style.float = "right";
+			input_ant.setAttribute("id", "sniper_ant").setAttribute("class", "sniper_ant").setAttribute("type", "number").setAttribute("step", "1").setAttribute("min", "5").setAttribute("max", "600")
+			input_ant.style.width = "40px";
+			input_ant.style.color = "white";
+			input_post.setAttribute("id", "sniper_post").setAttribute("class", "sniper_post").setAttribute("type", "number").setAttribute("step", "1").setAttribute("min", "5").setAttribute("max", "600")
+			div.classList.add(opts[(isMark) ? 1 : 0] + " indicatorSelected")
+			div_pai.appendChild(input_ant)
+			div_pai.appendChild(input_post)
+			div_pai.appendChild(div)
+
+			(document.querySelectorAll(".content.incoming td.column-time_completed")[i]).prepend(div_pai);
 			if ((document.querySelectorAll(".sniper_ant")[i]) != undefined){
 				(document.querySelectorAll(".sniper_ant")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_ant / 1000 : data_defense.time_sniper_ant / 1000;
 			}
