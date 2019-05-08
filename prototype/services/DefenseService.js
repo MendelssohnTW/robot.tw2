@@ -849,6 +849,7 @@ define("robotTW2/services/DefenseService", [
 			input_post.classList.add("sniper_post")
 			input_post.style.width = "40px";
 			input_post.style.color = "white";
+			div.style.float = "right";
 			div.classList.add(opts[(isMark) ? 1 : 0])
 			div.classList.add("indicatorSelected")
 			div_pai.appendChild(input_ant)
@@ -864,7 +865,7 @@ define("robotTW2/services/DefenseService", [
 			if ((document.querySelectorAll(".sniper_post")[i]) != undefined){
 				(document.querySelectorAll(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : data_defense.time_sniper_post / 1000;
 			}
-			document.querySelectorAll(".indicatorSelected").css("float", "right");
+			
 			document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).click(function () {
 				if (document.querySelectorAll(document.querySelectorAll(".indicatorSelected")[i]).attr("class")[0].split(' ').some(s => s === 'icon-26x26-dot-red')) {
 					document.querySelectorAll(this).classList.remove("icon-26x26-dot-red").classList.add("icon-26x26-dot-green");
