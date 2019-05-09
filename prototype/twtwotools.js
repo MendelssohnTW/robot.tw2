@@ -1673,7 +1673,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
 						if (!elemListener) {
-							elemListener = element.on('blur', stopIncreseInterval);
+							elemListener = element.addEventListener('blur', stopIncreseInterval);
 						}
 						// If requesting data is possible.
 						requestData(requestDataParam);
