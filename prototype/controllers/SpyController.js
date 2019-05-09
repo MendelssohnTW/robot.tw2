@@ -165,9 +165,9 @@ define("robotTW2/controllers/SpyController", [
 		, updateEnter = function(item, element){
 			$scope.item = item
 			if(item.displayedName){
-				element[0].firstElementChild.value = item.displayedName
+				element.firstElementChild.value = item.displayedName
 			} else {
-				element[0].firstElementChild.value = item.name
+				element.firstElementChild.value = item.name
 			}
 			if($scope.item.type == "character"){
 				$scope.data_option = services.MainService.getSelects([
