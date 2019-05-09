@@ -1486,8 +1486,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						noResultTranslation
 				);
 
-				document.querySelector(window).removeEventListener("click", clickHandler)
-				document.querySelector(window).addEventListener("click", clickHandler)
+				window.removeEventListener("click", clickHandler)
+				window.addEventListener("click", clickHandler)
 			},
 
 			/**
