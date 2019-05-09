@@ -1437,7 +1437,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			 */
 			hideSelect = function hideSelect() {
 				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
-				document.querySelector(window).off('click', clickHandler);
+				window.removeEventListener("click", clickHandler)
 			},
 
 			/**
@@ -1486,7 +1486,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						noResultTranslation
 				);
 
-				document.querySelector(window).off('click', clickHandler).on('click', clickHandler);
+				window.removeEventListener("click", clickHandler)
+				window.addEventListener("click", clickHandler)
 			},
 
 			/**
@@ -1505,7 +1506,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			stopIncreseInterval = function() {
 				if (dataRequestTimeout) {
 					robotTW2.services.$timeout.cancel(dataRequestTimeout);
-					element.off('blur', stopIncreseInterval);
+					elemListener = false
+					element.removeEventListener('blur', stopIncreseInterval)
 					dataRequestTimeout = null;
 				}
 			},
@@ -1625,7 +1627,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 
 			isListElementSelected = function isListElementSelected() {
-				return list && list.length && selectIndex.between(0, list.length - 1) && list[selectIndex];
+				return list && list.length && selectIndex && selectIndex.between(0, list.length - 1) && list[selectIndex];
 			},
 
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
@@ -1673,7 +1675,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
 						if (!elemListener) {
-							elemListener = element.on('blur', stopIncreseInterval);
+							elemListener = true
+							element.addEventListener('blur', stopIncreseInterval);
 						}
 						// If requesting data is possible.
 						requestData(requestDataParam);
@@ -2190,7 +2193,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=BattleReportController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull").length ? get_father().querySelector(".tbl-result") : false : {}	
+							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull") ? get_father().querySelector(".tbl-result") : false : {}	
 						}
 						, params = {
 								included_controller		: "BattleReportController",

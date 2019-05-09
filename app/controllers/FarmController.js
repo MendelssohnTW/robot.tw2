@@ -676,7 +676,7 @@ define("robotTW2/controllers/FarmController", [
 
 			let object_scope = {
 					"inputValue" 	: event.srcElement.value,
-					"element" 		: document.querySelector(document.querySelector("#autocomplete_farm")[0]),
+					"element" 		: document.querySelector("#autocomplete_farm"),
 					"id" 			: "autocomplete_farm",
 					"autoComplete" 	: obj_autocomplete
 			}

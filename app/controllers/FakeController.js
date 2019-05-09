@@ -183,7 +183,7 @@ define("robotTW2/controllers/FakeController", [
 			}
 
 			let object_scope = {
-					"element" 		: document.querySelector(document.querySelector("#autocomplete_fake")[0]),
+					"element" 		: document.querySelector("#autocomplete_fake"),
 					"id" 			: "autocomplete_fake",
 					"autoComplete" 	: obj_autocomplete
 			}
@@ -201,7 +201,7 @@ define("robotTW2/controllers/FakeController", [
 			}
 
 			let object_scope = {
-					"element" 		: document.querySelector(document.querySelector("#autocomplete_fake_player")[0]),
+					"element" 		: docdocument.querySelector("#autocomplete_fake_player"),
 					"id" 			: "autocomplete_fake_player",
 					"autoComplete" 	: obj_autocomplete
 			}
