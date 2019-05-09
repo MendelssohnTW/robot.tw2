@@ -1625,7 +1625,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			},
 
 			isListElementSelected = function isListElementSelected() {
-				return list && list.length && selectIndex.between(0, list.length - 1) && list[selectIndex];
+				return list && list.length && selectIndex && selectIndex.between(0, list.length - 1) && list[selectIndex];
 			},
 
 			clickHandler = domHelper.matchesId.bind(this, 'select-field', true, hideSelect);
