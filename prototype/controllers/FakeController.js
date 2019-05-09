@@ -201,7 +201,7 @@ define("robotTW2/controllers/FakeController", [
 			}
 
 			let object_scope = {
-					"element" 		: docdocument.querySelector(utocomplete_fake_player"),
+					"element" 		: docdocument.querySelector("#autocomplete_fake_player"),
 					"id" 			: "autocomplete_fake_player",
 					"autoComplete" 	: obj_autocomplete
 			}
