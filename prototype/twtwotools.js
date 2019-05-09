@@ -1506,7 +1506,8 @@ var robotTW2 = window.robotTW2 = undefined;
 			stopIncreseInterval = function() {
 				if (dataRequestTimeout) {
 					robotTW2.services.$timeout.cancel(dataRequestTimeout);
-					element.off('blur', stopIncreseInterval);
+					elemListener = false
+					element.removeEventListener('blur', stopIncreseInterval)
 					dataRequestTimeout = null;
 				}
 			},
@@ -1674,7 +1675,8 @@ var robotTW2 = window.robotTW2 = undefined;
 						}
 						dataRequestTimeout = robotTW2.services.$timeout(increaseDelayDots);
 						if (!elemListener) {
-							elemListener = element.addEventListener('blur', stopIncreseInterval);
+							elemListener = true
+							element.addEventListener('blur', stopIncreseInterval);
 						}
 						// If requesting data is possible.
 						requestData(requestDataParam);
