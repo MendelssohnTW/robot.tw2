@@ -403,7 +403,7 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-					"element" 		: document.querySelector(document.querySelector("#autocomplete_spy")[0]),
+					"element" 		: document.querySelector("#autocomplete_spy"),
 					"id" 			: "autocomplete_spy",
 					"autoComplete" 	: obj_autocomplete
 			}
