@@ -1437,7 +1437,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			 */
 			hideSelect = function hideSelect() {
 				$rootScope.$broadcast(robotTW2.providers.eventTypeProvider.SELECT_HIDE, id);
-				document.querySelector(window).off('click', clickHandler);
+				window.removeEventListener("click", clickHandler)
 			},
 
 			/**
