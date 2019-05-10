@@ -118,6 +118,7 @@ define("robotTW2/services/ProvinceService", [
 							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(vill_t.tribe_id)
 							&& vill_t.character_id != null
 							&& vill_t.character_id != modelDataService.getSelectedCharacter().getId()
+							&& vill_t.tribe_id != modelDataService.getSelectedCharacter().getTribeId()
 					){
 						return vill_t
 					}
