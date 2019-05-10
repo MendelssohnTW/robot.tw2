@@ -9,7 +9,8 @@ define("robotTW2/controllers/SpyController", [
 	"robotTW2/notify",
 	"helper/math",
 	"conf/conf",
-	"robotTW2/services/ProvinceService"
+	"robotTW2/services/ProvinceService",
+	"robotTW2/unreadableSeconds"
 	], function(
 			services,
 			providers,
@@ -21,7 +22,8 @@ define("robotTW2/controllers/SpyController", [
 			notify,
 			math,
 			conf_conf,
-			provinceService
+			provinceService,
+			unreadableSeconds
 	){
 	return function SpyController($scope) {
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
@@ -42,13 +44,13 @@ define("robotTW2/controllers/SpyController", [
 		$scope.download = false;
 		$scope.select_all_province = false;
 		$scope.select_all_village = true;
-		$scope.item = undefined
+		$scope.item = {}
+		$scope.item.type = undefined
 		$scope.text_put = $scope.text_data_target
 		$scope.text_put_province = $scope.text_target_village
-		$scope.province_name = ""
-
-			var self = this
-			, update = function(){
+		$scope.province_name = "";
+		var self = this
+		, update = function(){
 			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
 				$scope.local_out_villages.push(
 						{
@@ -64,47 +66,67 @@ define("robotTW2/controllers/SpyController", [
 			if(document.getElementById("input-hour-interval")){
 				document.getElementById("input-hour-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
 			}
+			$scope.recalcScrollbar();
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
-		, updateValues = function(){
-			if(Object.keys($scope.send_scope).length){
-				let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
-				let get_data = $("#input-date").val();
-				let get_time = $("#input-time").val();
-				let get_ms = $("#input-ms").val();
-				if (get_time.length <= 5){
-					get_time = get_time + ":00"; 
-				}
+		, updateValues = function(callback){
+			let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
+			let get_data = document.querySelector("#input-date").value;
+			let get_time = document.querySelector("#input-time").value;
+			let get_ms = document.querySelector("#input-ms").value;
+			if (get_time.length <= 5){
+				get_time = get_time + ":00"; 
+			}
+			if(!$scope.data_option){return}
+			if($scope.data_option.selectedOption.value != "village"){
+				$scope.send_scope.milisegundos_duracao = 0;
+				$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + 15000)
+				$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+				$scope.send_scope.startId = $scope.data_select.selectedOption.id
+				$scope.send_scope.targetId = $scope.item.id
+				$scope.send_scope.targetVillage = $scope.item.name
+				$scope.send_scope.targetX = $scope.item.x
+				$scope.send_scope.targetY = $scope.item.y
+				$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
+			} else {
 				if (get_data != undefined && get_time != undefined){
 					$scope.send_scope.milisegundos_duracao = durationInSeconds * 1000;
-					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
+					$scope.send_scope.tempo_escolhido = Math.max(new Date(get_data + " " + get_time + "." + get_ms).getTime(), time.convertedTime() + $scope.send_scope.milisegundos_duracao + 15000)
 					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
 					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
 				}
+			}
+			$scope.recalcScrollbar()
+			if(typeof(callback)=="function"){
+				callback()
 			}
 
-		}
-		, updateValuesSource = function(){
-			if(Object.keys($scope.villages_for_sent).length){
-				let get_data = $("#input-date-source").val();
-				let get_time = $("#input-time-source").val();
-				let get_ms = $("#input-ms-source").val();
-				if (get_time.length <= 5){
-					get_time = get_time + ":00"; 
-				}
-				if (get_data != undefined && get_time != undefined){
-					$scope.send_scope.milisegundos_duracao = 0;
-					$scope.send_scope.tempo_escolhido = new Date(get_data + " " + get_time + "." + get_ms).getTime();
-					$scope.date_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "yyyy-MM-dd")
-					$scope.hour_init = services.$filter("date")(new Date($scope.send_scope.tempo_escolhido), "HH:mm:ss")
-				}
-			}
 		}
 		, updateTarget = function(){
-			if($scope.item){
+			if($scope.item.type == "character"){
+				$scope.download = true;
+				getProfile($scope.item.id, function(data){
+					angular.extend($scope.item, data)
+					switch($scope.data_option.selectedOption.value){
+
+					case "province_member":
+						provinceService.getProvinceForPlayer($scope.item, function(provinces){
+							$scope.local_data_province = provinces;
+							$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
+							$scope.data_province = services.MainService.getSelects($scope.local_data_province)
+							$scope.download = false;
+						})
+						break;
+					case "all_member":
+						$scope.download = false;
+						$scope.villages_for_sent = data.villages;
+						break;
+					}
+				})
+			}
+			else if($scope.item.type == "village"){
 				switch($scope.data_option.selectedOption.value){
 				case "village":
-
 					$scope.send_scope.distance = math.actualDistance(
 							{
 								'x' : $scope.data_select.selectedOption.x,
@@ -115,69 +137,75 @@ define("robotTW2/controllers/SpyController", [
 								'y' : $scope.item.y
 							}
 					);
-					updateValues()
 					break;
 				case "province_enemy":
 					provinceService.getProvinceForVillageForEnemy($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValuesSource()
 					break;
 				case "province_barbarian":
 					provinceService.getProvinceForVillageForBarbarian($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValuesSource()
 					break;
 				case "province_neutral":
 					provinceService.getProvinceForVillageForNeutral($scope.item, function(data){
 						$scope.villages_for_sent = data.villages
 						$scope.province_name = data.name
 					})
-					updateValuesSource()
 					break;
 				}
 			}
-		}
-		, updateTargetPlayer = function(){
-			if(!$scope.item_player) {return}
-			if($scope.select_all_province){
-				$scope.villages_for_sent = $scope.item_player.villages
-			} else {
-				if($scope.select_all_village){
-					$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
-				} else {
-					$scope.villages_for_sent = [$scope.data_province_village.selectedOption];
-				}
-			}
+
+			update_select()
+			updateValues()
 		}
 		, updateEnter = function(item, element){
 			$scope.item = item
-			$scope.item_player = undefined
-			element[0].firstElementChild.value = item.displayedName
+			if(item.displayedName){
+				element.firstElementChild.value = item.displayedName
+			} else {
+				element.firstElementChild.value = item.name
+			}
+			if($scope.item.type == "character"){
+				$scope.data_option = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("all_member", services.$rootScope.loc.ale, "spy"),
+						"value" : "all_member"
+					},
+					{
+						"name" : services.$filter("i18n")("province_member", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_member"
+					}
+					]
+				) 
+			} else if($scope.item.type == "village"){
+				$scope.data_option = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("village", services.$rootScope.loc.ale, "spy"),
+						"value" : "village"
+					},
+					{
+						"name" : services.$filter("i18n")("province_enemy", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_enemy"
+
+					},
+					{
+						"name" : services.$filter("i18n")("province_barbarian", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_barbarian"
+
+					},
+					{
+						"name" : services.$filter("i18n")("province_neutral", services.$rootScope.loc.ale, "spy"),
+						"value" : "province_neutral"
+					}
+					]
+				)
+			}
 			updateTarget()
 			if (!$scope.$$phase) {$scope.$apply()}
-		}
-		, updateEnterPlayer = function(item, element){
-			$scope.item_player = item
-			$scope.item = undefined
-			element[0].firstElementChild.value = item.name
-			$scope.download = true;
-			getProfile(item.id, function(data){
-				angular.extend($scope.item_player, data)
-				provinceService.getProvinceForPlayer($scope.item_player, function(provinces){
-					$scope.local_data_province = provinces;
-					$scope.local_data_province.sort(function(a,b){return a.name.localeCompare(b.name)})
-					$scope.data_province = services.MainService.getSelects($scope.local_data_province)
-					$scope.data_province.selectedOption.villages.sort(function(a,b){return a.village_name.localeCompare(b.village_name)})
-					$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
-					updateTargetPlayer()
-					$scope.download = false;
-					if (!$scope.$$phase) {$scope.$apply()}
-				})
-			})
 		}
 		, getProfile = function (character_id, callbackgetProfile){
 			services.socketService.emit(providers.routeProvider.CHAR_GET_PROFILE, {
@@ -185,6 +213,176 @@ define("robotTW2/controllers/SpyController", [
 			}, function(data){
 				callbackgetProfile(data)
 			});
+		}
+		, sendAttackSpyPlayer = function(opt){
+			if(!$scope.item && !opt){return}
+			if($scope.villages_for_sent.length){
+				var list_proc = [];
+				var villages = services.modelDataService.getSelectedCharacter().getVillages();
+				Object.keys($scope.villages_for_sent).map(function(elem){
+					let target = $scope.villages_for_sent[elem]
+					, list_dist_vills = Object.keys(villages).map(function(vill){
+						let village = villages[vill]
+						, preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+						, order = undefined
+						, sabotage = false;
+						if(preceptory)
+							order = preceptory.selectedOrder;
+
+						if(order && order == "thieves") 
+							sabotage = true;
+
+						return {
+							"id": village.getId(), 
+							"dist" : math.actualDistance(
+									{
+										'x' : village.getX(),
+										'y' : village.getY()
+									}, 
+									{
+										'x' : target.village_x, 
+										'y' : target.village_y
+									}
+							),
+							"sabotage" : sabotage
+						}
+					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
+
+					list_dist_vills = list_dist_vills.map(function(etm){
+						let td = list_proc.find(f=>f.id==etm.id); 
+						if($scope.data_type.selectedOption.value == "sabotage" && dist_vill.sabotage || $scope.data_type.selectedOption.value != "sabotage"){
+							if(!td){
+								return etm;
+							} else {
+								if(td.spies < etm.spies){
+									etm.spies = etm.spies - td.spies
+									return etm
+								}
+							}
+						}
+					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
+
+					if(!list_dist_vills) return;
+					let dist_vill
+					, count = 0;
+
+					function next(dist_vill){
+						count++;
+						let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
+						$scope.send_scope.tempo_escolhido = vt + 2000;
+						$scope.send_scope.startId = dist_vill.id
+						$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
+						$scope.send_scope.targetId = target.village_id
+						$scope.send_scope.targetVillage = target.village_name
+						$scope.send_scope.targetX = target.village_x
+						$scope.send_scope.targetY = target.village_y
+						$scope.send_scope.qtd = 1//$scope.data_qtd.selectedOption //qtd
+
+						services.SpyService.sendCommandAttackSpy($scope.send_scope);
+						let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
+						if(vill_local){
+							vill_local.spies--
+						}
+						if(vill_local.spies > 0){
+							list_dist_vills.unshift(dist_vill)
+						} else {
+							list_proc.push({
+								"id": dist_vill.id, 
+								"spies": count
+							})
+							count = 0;
+						}
+					}
+
+					let qtc = []
+					for (t = 0; t < $scope.data_qtd.selectedOption; t++){
+						qtc.push(t)
+					}
+
+					function fnext(dist_vill){
+						let qtd_spy = $scope.local_data_villages.find(f=>f.id==dist_vill.id).spies
+						if(qtd_spy > 0){
+							next(dist_vill)
+							if(qtc.length && list_dist_vills.length){
+								qtc.shift()
+								fnext(list_dist_vills.shift())
+							} else{
+								update()
+							}
+						} else {
+							if(list_dist_vills.length){
+								fnext(list_dist_vills.shift())
+							}
+						}	
+					}
+					if(qtc.length && list_dist_vills.length){
+						qtc.shift()
+						fnext(list_dist_vills.shift())
+					}
+				})
+//				$scope.send_scope = {}
+				$scope.recalcScrollbar();
+			} else {
+				notify("villages_error");
+			}
+		}
+		, update_select = function(){
+			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
+			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
+
+			if($scope.data_option && $scope.data_option.selectedOption == "village"){
+				var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
+				services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
+				let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
+				, order = undefined;
+				if(preceptory)
+					order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
+				let qtd_spy = village.getScoutingInfo().getNumAvailableSpies()
+				, lts = [];
+				for (let i = 0; i < qtd_spy; i++){
+					lts.push(i + 1)
+				}
+				$scope.data_qtd = services.MainService.getSelects(lts)
+				$scope.data_type = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+						"value" : "units"
+					},
+					{
+						"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+						"value" : "buildings"
+
+					}]
+				)
+
+				if(order && order == "thieves"){
+					$scope.data_type.push( 
+							{
+								"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
+								"value" : "sabotage"
+							}
+					)
+				}
+
+			} else {
+				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
+				$scope.data_type = services.MainService.getSelects([
+					{
+						"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+						"value" : "units"
+					},
+					{
+						"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+						"value" : "buildings"
+
+					},
+					{
+						"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
+						"value" : "sabotage"
+					}]
+				)
+			}
+			updateValues();
 		}
 
 		$scope.isRunning = services.SpyService.isRunning();
@@ -196,7 +394,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.autoCompleteKey = function(event){
 			let obj_autocomplete = {
-					'type'					: 'village',
+					'type'					: ['character', 'village'],
 					'placeholder'			: $scope.SEARCH_MAP,
 					'onEnter'				: updateEnter,
 					'exclude'				: null,
@@ -205,31 +403,11 @@ define("robotTW2/controllers/SpyController", [
 			}
 
 			let object_scope = {
-					"element" 		: $($("#autocomplete_spy")[0]),
+					"element" 		: document.querySelector("#autocomplete_spy"),
 					"id" 			: "autocomplete_spy",
 					"autoComplete" 	: obj_autocomplete
 			}
 			autocomplete(object_scope, event, $scope.inputValueSpy);
-		}
-
-		$scope.autoCompleteKeyPlayer = function(event){
-			let obj_autocomplete = {
-					'type'					: 'character',
-					'placeholder'			: $scope.SEARCH_MAP,
-					'onEnter'				: updateEnterPlayer,
-					'exclude'				: null,
-					"inputValueReadOnly" 	: "",
-					"keepSelected"			: false
-			}
-
-			let object_scope = {
-					"element" 		: $($("#autocomplete_spy_player")[0]),
-					"id" 			: "autocomplete_spy_player",
-					"autoComplete" 	: obj_autocomplete
-			}
-
-			if (!$scope.$$phase) {$scope.$apply()}
-			autocomplete(object_scope, event, $scope.inputValuePlayer);
 		}
 
 		$scope.getLabelStart = function(param){
@@ -293,17 +471,17 @@ define("robotTW2/controllers/SpyController", [
 		$scope.removeCommand = services.SpyService.removeCommandAttackSpy;
 
 		$scope.blur = function(){
-			var t = $("#input-hour-interval").val();
+			var t = document.querySelector("#input-hour-interval").value;
 			if(t.length <= 5) {
 				t = t + ":00"
 			}
-			$scope.data_spy.interval = helper.unreadableSeconds(t) * 1000;
+			$scope.data_spy.interval = unreadableSeconds(t) * 1000;
 		}
 		$scope.jumpToVillage = function(vid){
 			if(!vid){return}
 			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
-			services.villageService.setSelectedVillage(village.getId())
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, village.getId());
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
@@ -312,164 +490,21 @@ define("robotTW2/controllers/SpyController", [
 			if(!vid){return}
 			let v = $scope.local_out_villages.find(f=>f.id==vid);
 			if(!v){return}
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, vid);
 			services.mapService.jumpToVillage(v.x, v.y);
 			$scope.closeWindow();
 		}
 
-		$scope.sendAttackSpyProvince = function(opt){
-			if(!$scope.item_player && !opt){return}
-			updateValuesSource()
-			if($scope.villages_for_sent.length){
-				var list_proc = [];
-				var villages = services.modelDataService.getSelectedCharacter().getVillages();
-				Object.keys($scope.villages_for_sent).map(function(elem){
-					let target = $scope.villages_for_sent[elem]
-					, list_dist_vills = Object.keys(villages).map(function(vill){
-						let village = villages[vill]
-//						let village = services.modelDataService.getSelectedCharacter().getVillage($scope.local_data_villages[vill].id)
-						let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
-						let order = undefined;
-						let sabotage = false;
-						if(preceptory)
-							order = preceptory.selectedOrder;
-
-						if(order && order == "thieves") 
-							sabotage = true;
-
-						return {
-							"id": village.getId(), 
-							"dist" : math.actualDistance(
-									{
-										'x' : village.getX(),
-										'y' : village.getY()
-									}, 
-									{
-										'x' : target.village_x, 
-										'y' : target.village_y
-									}
-							),
-							"sabotage" : sabotage
-						}
-					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
-
-					list_dist_vills = list_dist_vills.map(function(etm){
-						let td = list_proc.find(f=>f.id==etm.id); 
-						if($scope.data_type_source.selectedOption.value == "sabotage" && dist_vill.sabotage || $scope.data_type_source.selectedOption.value != "sabotage"){
-							if(!td){
-								return etm;
-							} else {
-								if(td.spies < etm.spies){
-									etm.spies = etm.spies - td.spies
-									return etm
-								}
-							}
-						}
-					}).filter(f=>f!=undefined).sort(function(a,b){return a.dist - b.dist})
-
-					if(!list_dist_vills) return;
-					let dist_vill
-					, count = 0;
-
-					function next(dist_vill){
-						count++;
-						let vt = Math.max($scope.send_scope.tempo_escolhido, time.convertedTime())
-						$scope.send_scope.tempo_escolhido = vt + 2000;
-						$scope.send_scope.startId = dist_vill.id
-						$scope.send_scope.type = $scope.data_type_source.selectedOption.value; //type
-						$scope.send_scope.targetId = target.village_id
-						$scope.send_scope.targetVillage = target.village_name
-						$scope.send_scope.targetX = target.village_x
-						$scope.send_scope.targetY = target.village_y
-						$scope.send_scope.qtd = 1//$scope.data_qtd_source.selectedOption //qtd
-
-						services.SpyService.sendCommandAttackSpy($scope.send_scope);
-						let vill_local = $scope.local_data_villages.find(f=>f.id==dist_vill.id)
-						if(vill_local){
-							vill_local.spies--
-						}
-						if(vill_local.spies > 0){
-							list_dist_vills.unshift(dist_vill)
-						} else {
-							list_proc.push({
-								"id": dist_vill.id, 
-								"spies": count
-							})
-							count = 0;
-						}
-					}
-
-					let qtc = []
-					for (t = 0; t < $scope.data_qtd_source.selectedOption; t++){
-						qtc.push(t)
-					}
-
-					function fnext(dist_vill){
-						let qtd_spy = $scope.local_data_villages.find(f=>f.id==dist_vill.id).spies
-						if(qtd_spy > 0){
-							next(dist_vill)
-							if(qtc.length && list_dist_vills.length){
-								qtc.shift()
-								fnext(list_dist_vills.shift())
-							}
-						} else {
-							if(list_dist_vills.length){
-								fnext(list_dist_vills.shift())
-							}
-						}	
-					}
-					if(qtc.length && list_dist_vills.length){
-						qtc.shift()
-						fnext(list_dist_vills.shift())
-					}
-				})
-				$scope.send_scope = {}
-				$scope.recalcScrollbar();
-			} else {
-				notify("villages_error");
-			}
-		}
-
 		$scope.sendAttackSpy = function(){
 			if(!$scope.item){return}
-			if($scope.data_option.selectedOption.value == "village"){
-				updateValues()
-				if ($scope.send_scope.tempo_escolhido > time.convertedTime() + $scope.send_scope.milisegundos_duracao){
-					$scope.send_scope.type = $scope.data_type.selectedOption.value; //type
-					$scope.send_scope.startId = $scope.data_select.selectedOption.id
-					$scope.send_scope.targetId = $scope.item.id
-					$scope.send_scope.targetVillage = $scope.item.name
-					$scope.send_scope.targetX = $scope.item.x
-					$scope.send_scope.targetY = $scope.item.y
-					$scope.send_scope.qtd = $scope.data_qtd.selectedOption //qtd
-
-					services.SpyService.sendCommandAttackSpy($scope.send_scope);
+			updateValues(function(){
+				if($scope.data_option.selectedOption.value == "village"){
+					services.SpyService.sendCommandAttackSpy($scope.send_scope);	
 				} else {
-					notify("date_error");
+					sendAttackSpyPlayer(true)
 				}
-			} else {
-				$scope.data_qtd_source = $scope.data_qtd
-				$scope.sendAttackSpyProvince(true)
-			}
-			$scope.send_scope = {}
-			$scope.recalcScrollbar();
-		}
-
-		$scope.toggleOption = function(){
-			if($scope.select_all_province){
-				$scope.select_all_province = false
-			} else {
-				$scope.select_all_province = true
-			}
-			updateTargetPlayer()
-		}
-
-		$scope.toggleOptionVillage = function(){
-			if($scope.select_all_village){
-				$scope.select_all_village = false
-			} else {
-				$scope.select_all_village = true
-			}
-			updateTargetPlayer()
+			})
+//			$scope.send_scope = {}
 		}
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
@@ -504,76 +539,12 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_province", function(){
 			if(!$scope.data_province){return}
-			$scope.data_province_village = services.MainService.getSelects($scope.data_province.selectedOption.villages)
-			updateTargetPlayer()
-		}, true)
-
-		$scope.$watch("data_province_village", function(){
-			if(!$scope.data_province_village){return}
-			updateTargetPlayer()
+			$scope.villages_for_sent = $scope.data_province.selectedOption.villages;
 		}, true)
 
 		$scope.$watch("data_select", function(){
 			if(!$scope.data_select){return}
-			var village = services.modelDataService.getSelectedCharacter().getVillage($scope.data_select.selectedOption.id)
-			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
-			let preceptory = village.getBuildingData().getDataForBuilding("preceptory")
-			let order = undefined;
-			if(preceptory)
-				order = village.getBuildingData().getDataForBuilding("preceptory").selectedOrder;
-			let qtd_spy = village.getScoutingInfo().getNumAvailableSpies();
-			let lts = [];
-			for (let i = 0; i < qtd_spy; i++){
-				lts.push(i + 1)
-			}
-			$scope.data_qtd = services.MainService.getSelects(lts)
-			$scope.date_init = services.$filter("date")(new Date(time.convertedTime()), "yyyy-MM-dd")
-			$scope.hour_init = services.$filter("date")(new Date(time.convertedTime()), "HH:mm:ss")
-
-			$scope.data_type = services.MainService.getSelects([
-				{
-					"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
-					"value" : "units"
-				},
-				{
-					"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
-					"value" : "buildings"
-
-				}]
-			)
-
-			$scope.data_option = services.MainService.getSelects([
-				{
-					"name" : services.$filter("i18n")("village", services.$rootScope.loc.ale, "spy"),
-					"value" : "village"
-				},
-				{
-					"name" : services.$filter("i18n")("province_enemy", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_enemy"
-
-				},
-				{
-					"name" : services.$filter("i18n")("province_barbarian", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_barbarian"
-
-				},
-				{
-					"name" : services.$filter("i18n")("province_neutral", services.$rootScope.loc.ale, "spy"),
-					"value" : "province_neutral"
-				}]
-			)
-
-			if(order && order == "thieves"){
-				$scope.data_type.push( 
-						{
-							"name" : services.$filter("i18n")("sabotage", services.$rootScope.loc.ale, "spy"),
-							"value" : "sabotage"
-						}
-				)
-			}
-
-			$scope.data_type_source = $scope.data_type;
-			updateValues();
+			updateTarget()
 		}, true)
 
 		$scope.$on("$destroy", function() {
@@ -582,16 +553,20 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$watch("data_option", function() {
 			if(!$scope.data_option){return}
-			if($scope.data_option.selectedOption.value == "village"){
-				$scope.text_put = $scope.text_data_target
-				$scope.text_put_province = $scope.text_target_village
-			} else {
-				$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-				$scope.text_put = $scope.text_data_source
-				$scope.text_put_province = services.$filter("i18n")("target", services.$rootScope.loc.ale, "spy") + " " + $scope.province_name
-			}
 			updateTarget()
 		}, true);
+
+		$scope.data_type = services.MainService.getSelects([
+			{
+				"name" : services.$filter("i18n")("units", services.$rootScope.loc.ale, "spy"),
+				"value" : "units"
+			},
+			{
+				"name" : services.$filter("i18n")("buildings", services.$rootScope.loc.ale, "spy"),
+				"value" : "buildings"
+
+			}]
+		)
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, function(){
 			$scope.data_select.selectedOption = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
@@ -599,7 +574,6 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		$scope.data_qtd = services.MainService.getSelects([1, 2, 3, 4, 5])
-		$scope.data_qtd_source = services.MainService.getSelects([1, 2, 3, 4, 5])
 
 		update();
 		$scope.setCollapse();

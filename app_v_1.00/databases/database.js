@@ -44,5 +44,5 @@ define("robotTW2/databases/database", [
 		return null === value ? missing : "object" == typeof value && void 0 !== value ? value : missing
 	}
 	, database.name = "database"
-		, database;
+	, database;
 })

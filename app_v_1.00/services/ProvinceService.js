@@ -26,6 +26,7 @@ define("robotTW2/services/ProvinceService", [
 		var isInitialized = !1
 		, isRunning = !1
 		, isPaused = !1
+		, r = undefined
 		, callbk = undefined
 		, callPlayer = undefined
 		, start = function () {
@@ -59,6 +60,8 @@ define("robotTW2/services/ProvinceService", [
 			}
 		}
 		, onMapProvinceData = function($event, data){
+			$timeout.cancel(r);
+			r = undefined;
 			if(typeof(callbk) == "function"){
 				callbk(data)
 				callbk = undefined;
@@ -66,6 +69,9 @@ define("robotTW2/services/ProvinceService", [
 		}
 		, getProvinceData = function(x, y, callback){
 			callbk = callback
+			r = $timeout(function(){
+				callback(!1)
+			}, conf_conf.LOADING_TIMEOUT);
 			socketService.emit(providers.routeProvider.MAP_GETPROVINCE, {
 				'x': x,
 				'y': y
@@ -74,6 +80,7 @@ define("robotTW2/services/ProvinceService", [
 		, getProvinceForVillageForEnemy = function(vill, callback){
 			let pv = getProvinceCoord(vill.x, vill.y)
 			getProvinceData(pv.x, pv.y, function(data){
+				if(!data){return}
 				let villages = data.villages
 				, list_result = villages.map(function(vill_t){
 					if(modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)){
@@ -110,6 +117,8 @@ define("robotTW2/services/ProvinceService", [
 							&& !modelDataService.getSelectedCharacter().getTribeRelations().isAlly(vill_t.tribe_id)
 							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(vill_t.tribe_id)
 							&& vill_t.character_id != null
+							&& vill_t.character_id != modelDataService.getSelectedCharacter().getId()
+							&& vill_t.tribe_id != modelDataService.getSelectedCharacter().getTribeId()
 					){
 						return vill_t
 					}

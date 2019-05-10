@@ -1,18 +1,16 @@
 <div class="win-content robotTW2">
 	<header class="win-head">
-		<h2>{{title}}</h2>
+		<h2>{{title}} ({{text_version}})</h2>
 		<ul class="list-btn">
 			<li><a class="size-34x34 btn-red icon-26x26-close"
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main" scrollbar="">
-		<div class="box-paper content-settings screen-overview">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-			<div class="scroll-wrap" style="margin-bottom: 56px">
-				<div>
+	<div class="alert content-settings">
+		<div class="alert win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
 					<table
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped"
 						id="preset-list">
@@ -24,19 +22,19 @@
 						<tbody>
 							<tr>
 								<td class="cell-top">
-									<div>
-										<h5 class="twx-section collapse">{{settings_for_member}}</h5>
-										<table
-											class="tbl-border-light tbl-big-header tbl-content tbl-striped"
-											id="preset-list">
-											<colgroup>
-												<col width="*">
-												<col width="64px">
-											</colgroup>
-											<tbody>
-												<tr ng-repeat="member in members">
-													<td class="cell-right">{{member.name}}</td>
-													<td>
+									<h5 class="twx-section collapse">{{settings_for_member}}</h5>
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+										id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="64px">
+										</colgroup>
+										<tbody>
+											<tr ng-repeat="member in members">
+												<td class="cell-right">{{member.name}}</td>
+												<td>
+													<div class="checkbox">
 														<div switch-slider="" border="true" enabled="true"
 															value="member.isFriend" ng-click="toggleValue(member)"
 															vertical="false" size="'56x28'">
@@ -51,11 +49,11 @@
 																</div>
 															</div>
 														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
 								</td>
 								<td class="cell-top">
 									<div>
@@ -103,17 +101,6 @@
 						</tbody>
 					</table>
 
-				</div>
-			</div>
-		</div>
-		<div>
-			<div class="jssb-y  ">
-				<div class="jssb-y-track">
-					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
-						<div class="scrollbar-top"></div>
-						<div class="scrollbar-middle"></div>
-						<div class="scrollbar-bottom"></div>
-					</div>
 				</div>
 			</div>
 		</div>

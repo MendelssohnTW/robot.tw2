@@ -11,7 +11,9 @@ define("robotTW2/services/SpyService", [
 	"conf/spyTypes",
 	"robotTW2/databases/data_villages",
 	"robotTW2/databases/data_spy",
-	"robotTW2/CommandSpy"
+	"robotTW2/databases/data_log",
+	"robotTW2/CommandSpy",
+	"helper/format"
 	], function(
 			robotTW2,
 			time,
@@ -20,7 +22,9 @@ define("robotTW2/services/SpyService", [
 			SPY_TYPES,
 			data_villages,
 			data_spy,
-			commandSpy
+			data_log,
+			commandSpy,
+			formatHelper
 	){
 	return (function SpyService(
 			$rootScope,
@@ -36,12 +40,16 @@ define("robotTW2/services/SpyService", [
 
 		var isInitialized = !1
 		, isRunning = !1
+		, isPaused = !1
 		, listener = undefined
 		, interval_spy = undefined
 		, listener_spy = undefined
 		, listener_open = undefined
 		, listener_close = undefined
+		, listener_resume = undefined
 		, interval_handler = undefined
+		, promise = undefined
+		, queue = []
 		, list = []
 		, counterMeasureTypes = {
 				CAMOUFLAGE: "camouflage",
@@ -67,43 +75,100 @@ define("robotTW2/services/SpyService", [
 		}
 		, recruit_spy = function (){
 			Object.keys(data_villages.villages).forEach(function(id){
-				var selectedVillage = modelDataService.getSelectedCharacter().getVillage(id);
-				if(selectedVillage && selectedVillage.data.buildings) {
-					var scoutingInfo = selectedVillage.scoutingInfo;
-					var spies = scoutingInfo.spies;
-					var prices = scoutingInfo.getData().spy_prices;
-					var maxSpies = getMaxSpies(selectedVillage.data.buildings.tavern.researches, selectedVillage.data.buildings.tavern.level);
-					var count = 0;
-					for (i = 0; i < maxSpies; i++ ){
-						var spy = spies[i];
-						spy.affordable = !Object.keys(selectedVillage.getResources().getComputed()).map(
-								function(elem){
-									if(["wood", "clay", "iron"].some(f=> f== elem)){
-										if(selectedVillage.getResources().getComputed()[elem].currentStock > prices[i][elem]) {
-											return true
-										} else {
-											return false
-										}
-									} else {
-										return undefined;
+				var sec_promise = function (id){
+					if(!promise){
+						promise = new Promise(function(res, rej){
+							let selectedVillage = modelDataService.getSelectedCharacter().getVillage(id);
+							if(selectedVillage && selectedVillage.data.buildings) {
+								let scoutingInfo = selectedVillage.scoutingInfo
+								,  spies = scoutingInfo.spies
+								,  prices = scoutingInfo.getData().spy_prices
+								,  maxSpies = getMaxSpies(selectedVillage.data.buildings.tavern.researches, selectedVillage.data.buildings.tavern.level)
+								,  count = 0;
+								for (i = 0; i < maxSpies; i++ ){
+									let spy = spies[i];
+									spy.affordable = !Object.keys(selectedVillage.getResources().getComputed()).map(
+											function(elem){
+												if(["wood", "clay", "iron"].some(f=> f== elem)){
+													if(selectedVillage.getResources().getComputed()[elem].currentStock > prices[i][elem]) {
+														return true
+													} else {
+														return false
+													}
+												} else {
+													return undefined;
+												}
+											}
+									).filter(elem => elem != undefined).some(elem => elem == false)
+									if(spy.type == SPY_TYPES.RECRUITING && spy.timeCompleted != null){
+										list.push(spy.timeCompleted);
 									}
+									if ((spy.type === SPY_TYPES.NO_SPY) && spy.affordable) {
+										
+										data_log.spy.push(
+												{
+													"text": $filter("i18n")("title", $rootScope.loc.ale, "spy") + " - " + formatHelper.villageNameWithCoordinates(selectedVillage.data),
+													"date": time.convertedTime()
+												}
+										)
+										
+										socketService.emit(providers.routeProvider.SCOUTING_RECRUIT, {
+											'village_id'	: selectedVillage.getId(),
+											'slot'			: spy.id
+										});
+									};
 								}
-						).filter(elem => elem != undefined).some(elem => elem == false)
-						if(spy.type == SPY_TYPES.RECRUITING && spy.timeCompleted != null){
-							list.push(spy.timeCompleted);
-						}
-						if ((spy.type === SPY_TYPES.NO_SPY) && spy.affordable) {
-							socketService.emit(providers.routeProvider.SCOUTING_RECRUIT, {
-								'village_id'	: selectedVillage.getId(),
-								'slot'			: spy.id
-							});
-						};
+								$timeout(function(){
+									res()
+								}, 3000)
+							}
+						}).then(function(){
+							promise = undefined
+							if(isPaused){
+								typeof(listener_resume) == "function" ? listener_resume(): null;
+								listener_resume = undefined
+								listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
+									if(queue.length){
+										sec_promise(queue.shift())
+									} else {
+										wait();
+									}
+								})
+							} else {
+								if(queue.length){
+									sec_promise(queue.shift())
+								} else {
+									wait();
+								}
+							}
+						}, function(){
+							promise = undefined
+							if(isPaused){
+								typeof(listener_resume) == "function" ? listener_resume(): null;
+								listener_resume = undefined
+								listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
+									if(queue.length){
+										sec_promise(queue.shift())
+									} else {
+										wait();
+									}
+								})
+							} else {
+								if(queue.length){
+									sec_promise(queue.shift())
+								} else {
+									wait();
+								}
+							}
+						})
+
+					} else {
+						queue.push(id)
 					}
-
 				}
-
+				sec_promise(id)
 			})
-			wait();
+
 		}
 		, setList = function(callback){
 			list.push(conf.INTERVAL.SPY)
@@ -301,12 +366,55 @@ define("robotTW2/services/SpyService", [
 					listener_spy = undefined;
 			listener_open = undefined;
 			listener_close = undefined;
+			promise = undefined
 			interval_handler = undefined;
 			isRunning = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"SPY"})
 			$timeout.cancel(interval_spy);
 			interval_spy = undefined;
 		}
+		, setPaused = function () {
+			if(!paused_promise){
+				paused_promise = new Promise(function(resolve, reject){
+					$timeout(function(){
+						resolve()	
+					}, 65000)
+				}). then(function(){
+					data_log.spy.push(
+							{
+								"text": "Paused",
+								"date": time.convertedTime()
+							}
+					)
+					data_log.set()
+					isPaused = !0
+					paused_promise = undefined;
+					if(paused_queue){
+						paused_queue = false;
+						setPaused()
+					} else {
+						setResumed()
+					}
+				}, function(){
+					paused_promise = undefined;
+					setResumed()
+				})
+			} else {
+				paused_queue = true;
+			}
+		}
+		, setResumed = function () {
+			data_log.spy.push(
+					{
+						"text": "Resumed",
+						"date": time.convertedTime()
+					}
+			)
+			data_log.set()
+			isPaused = !1
+			$rootScope.$broadcast(providers.eventTypeProvider.RESUME)
+		}
+		
 		return	{
 			init					: init,
 			start					: start,
@@ -316,6 +424,9 @@ define("robotTW2/services/SpyService", [
 			removeAll				: removeAll,
 			isRunning				: function() {
 				return isRunning
+			},
+			isPaused		: function() {
+				return isPaused
 			},
 			isInitialized			: function(){
 				return isInitialized

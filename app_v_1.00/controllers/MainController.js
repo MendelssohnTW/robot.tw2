@@ -49,6 +49,20 @@ define("robotTW2/controllers/MainController", [
 			}
 			if (!$scope.$$phase) {$scope.$apply()}
 		}
+		, initExt = function(ext){
+			if(ext.init_initialized && ext.activated){
+				var arFn = robotTW2.requestFn.get(ext.name.toLowerCase(), true)
+				var fn = arFn.fn;
+				if(!fn.isInitialized()){
+					if(typeof(fn.init) == "function"){
+						if(!fn.isRunning()){
+							fn.init()
+						}
+					}
+					if(typeof(fn.analytics) == "function"){fn.analytics()}
+				}
+			}
+		}
 		, startExt = function(name){
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true)
 			var fn = arFn.fn;
@@ -86,15 +100,15 @@ define("robotTW2/controllers/MainController", [
 			$scope.extensions[name.toUpperCase()].hotkey ? $scope.extensions[name.toUpperCase()].hotkey = conf.HOTKEY[name.toUpperCase()].toUpperCase() : null;
 			var arFn = robotTW2.requestFn.get(name.toLowerCase(), true)
 			var fn = arFn.fn;
-			
+
 			$scope.extensions[name].status = getStatus(fn)
 			if($scope.extensions[name].status == $scope.running){
 				$scope.extensions_status[name] = true;
-				
+
 			} else {
 				$scope.extensions_status[name] = false;
 			}
-			
+
 		}
 
 		$scope.clearDB = function(ext_name){
@@ -118,11 +132,11 @@ define("robotTW2/controllers/MainController", [
 			$scope.data_main.auto_calibrate = true;
 			calibrate_time()
 		}
-		
+
 		$scope.updateTimeCorrection = function(){
 			updateCorrection();
 		}
-		
+
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function($event, data) {
 			if(!data){return} 
 			services.$timeout(function(){update_status()}, 1500)
@@ -136,6 +150,10 @@ define("robotTW2/controllers/MainController", [
 			}
 		}
 
+		$scope.initExt = function(ext) {
+			initExt(ext.name)
+		}
+
 		$scope.openExt = function(name) {
 			var text = "OPEN_";
 			var concat = text + name.toUpperCase();
@@ -146,11 +164,11 @@ define("robotTW2/controllers/MainController", [
 			if(!$scope.extensions){return}
 			$scope.data_main.setExtensions($scope.extensions)
 		}, true)
-		
+
 		$scope.$watch("data_main", function(){
 			$scope.data_main.set()
 		}, true)
-		
+
 		$scope.$watch("data_main.time_correction_command", function(){
 			$scope.data_main.auto_calibrate = false;
 		}, true)
@@ -162,9 +180,8 @@ define("robotTW2/controllers/MainController", [
 		$scope.$on("$destroy", function() {
 			$scope.data_main.setExtensions($scope.extensions)
 		})
-		
-		$scope.setCollapse();
 
+		$scope.setCollapse();
 
 		return $scope;
 	}

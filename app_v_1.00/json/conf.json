@@ -24,5 +24,8 @@
 	"MAX_JOURNEY_TIME": 3600000,
 	"MIN_JOURNEY_TIME": 480000,
 	"FARM_TIME": 1800000,
-	"MIN_INTERVAL": 300000
+	"MIN_INTERVAL": 300000,
+"DBS": ["alert", "attack", "defense", "deposit", "farm", "headquarter", "medic", "recon", "recruit", "spy", "secondvillage", "map", "data", "log"],
+	"HOTKEY": {	"ALERT": "shift+l",	"ATTACK": "shift+a",	"DEFENSE": "shift+d",	"DEPOSIT": "shift+t",	"FARM": "shift+f",	"HEADQUARTER": "shift+h",	"MAIN": "shift+p",	"MEDIC": "shift+i",	"RECON": "shift+r",	"RECRUIT": "shift+e",	"SPY": "shift+s",	"SECONDVILLAGE": "shift+q",	"MAP": "shift+m",	"DATA": "shift+j"}
+	
 }

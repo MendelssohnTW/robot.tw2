@@ -66,7 +66,7 @@ define("robotTW2/controllers/DefenseController", [
 			if(!vid){return}
 			var village = services.modelDataService.getSelectedCharacter().getVillage(vid)
 			if(!village){return}
-			services.villageService.setSelectedVillage(village.getId())
+			services.$rootScope.$broadcast(providers.eventTypeProvider.MAP_SELECT_VILLAGE, village.getId());
 			services.mapService.jumpToVillage(village.getX(), village.getY());
 			$scope.closeWindow();
 		}
@@ -86,30 +86,6 @@ define("robotTW2/controllers/DefenseController", [
 		$scope.getClass = function(name){
 			if(!name){return}
 			return "icon icon-34x34-unit-" + name;
-		}
-
-		$scope.getHoraSend = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataSend = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida - param.time_sniper_ant), "dd/MM/yyyy");
-		}
-
-		$scope.getHoraAlvo = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataAlvo = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida), "dd/MM/yyyy");
-		}
-
-		$scope.getHoraRetorno = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "HH:mm:ss.sss");
-		}
-
-		$scope.getDataRetorno = function(param){
-			return services.$filter("date")(new Date(param.data_escolhida + param.time_sniper_post), "dd/MM/yyyy");
 		}
 
 		$scope.getTimeRest = function(param){
@@ -180,9 +156,7 @@ define("robotTW2/controllers/DefenseController", [
 				first_2 = undefined
 				return
 			}
-			services.DefenseService.stop();
 			$scope.data_villages.set();
-			services.DefenseService.start(true);
 		}, true)
 
 		$scope.$on(providers.eventTypeProvider.VILLAGE_SELECTED_CHANGED, update_all);

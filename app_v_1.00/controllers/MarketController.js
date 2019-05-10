@@ -48,7 +48,7 @@ define("robotTW2/controllers/MarketController", [
 			}
 
 			let object_scope = {
-					"element" 		: $($("#autocomplete_spy")[0]),
+					"element" 		: document.querySelector("#autocomplete_spy"),
 					"id" 			: "autocomplete_spy",
 					"autoComplete" 	: obj_autocomplete
 			}

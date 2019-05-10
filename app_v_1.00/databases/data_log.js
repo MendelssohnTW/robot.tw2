@@ -11,9 +11,19 @@ define("robotTW2/databases/data_log", [
 	) {
 	var data_log = database.get("data_log")
 	, db_log = {};
-	
+
 	db_log.set = function(){
-			database.set("data_log", data_log, true)
+
+		data_log.farm = data_log.farm.splice(0, 100)
+		data_log.headquarter = data_log.headquarter.splice(0, 100)
+		data_log.attack = data_log.attack.splice(0, 100)
+		data_log.defense = data_log.defense.splice(0, 100)
+		data_log.recruit = data_log.recruit.splice(0, 100)
+		data_log.spy = data_log.spy.splice(0, 100)
+		data_log.fake = data_log.fake.splice(0, 100)
+		data_log.market = data_log.market.splice(0, 100)
+
+		database.set("data_log", data_log, true)
 	}
 
 	db_log.get = function(){
@@ -50,6 +60,6 @@ define("robotTW2/databases/data_log", [
 	}
 
 	Object.setPrototypeOf(data_log, db_log);
-	
+
 	return data_log;
 })

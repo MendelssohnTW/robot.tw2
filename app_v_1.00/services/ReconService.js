@@ -114,21 +114,30 @@ define("robotTW2/services/ReconService", [
 					}
 				break;
 				}
+				
+				let pai_type = document.querySelectorAll('span.type');
+				let pai_edit = document.querySelectorAll('span.edit');
 
 				switch (cmdType) {
 				case "attack":
 					if(span_unit != undefined){
-						$($('span.type')[i]).removeClass("icon-34x34-attack").addClass("icon-34x34-unit-" + span_unit);
-						$($('span.edit')[i]).removeClass("icon-34x34-edit").addClass(classe);
+						pai_type[i].classList.remove("icon-34x34-attack");
+						pai_type[i].classList.add("icon-34x34-unit-" + span_unit);
+						pai_edit[i].classList.remove("icon-34x34-edit");
+						pai_edit[i].classList.add(classe);
 					}
 					break;
 				case "relocate":
-					$($('span.type')[i]).removeClass("icon-34x34-relocate").addClass("icon-34x34-unit-" + span_unit);
-					$($('span.edit')[i]).removeClass("icon-34x34-edit").addClass("icon-34x34-relocate");
+					pai_type[i].classList.remove("icon-34x34-relocate");
+					pai_type[i].classList.add("icon-34x34-unit-" + span_unit);
+					pai_edit[i].classList.remove("icon-34x34-edit");
+					pai_edit[i].classList.add("icon-34x34-relocate");
 					break;
 				case "support":
-					$($('span.type')[i]).removeClass("icon-34x34-support").addClass("icon-34x34-unit-" + span_unit);
-					$($('span.edit')[i]).removeClass("icon-34x34-edit").addClass("icon-34x34-support");
+					pai_type[i].classList.remove("icon-34x34-support");
+					pai_type[i].classList.add("icon-34x34-unit-" + span_unit);
+					pai_edit[i].classList.remove("icon-34x34-edit");
+					pai_edit[i].classList.add("icon-34x34-support");
 					break;
 				}
 
@@ -158,7 +167,7 @@ define("robotTW2/services/ReconService", [
 				
 				$timeout(function(){
 					var elem = undefined;
-					$(".command-type")[i] ? elem = $($(".command-type")[i])[0].querySelector("div") : i = 0;
+					document.querySelectorAll(".command-type")[i] ? elem = (document.querySelectorAll(".command-type")[i]).querySelectorAll("div")[0] : i = 0;
 					if(elem){
 						if(OverviewController && OverviewController.activeTab == OverviewController.TABS.INCOMING){
 							var unitText = getAttackTypeAtackRecon(command, i);
@@ -171,14 +180,14 @@ define("robotTW2/services/ReconService", [
 							}
 							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
 							i++;
-							if ($('span.type').length === i) {
+							if (document.querySelectorAll('span.type').length === i) {
 								i = 0;
 							}
 
 						} else if(OverviewController.activeTab == OverviewController.TABS.COMMANDS){
 							elem.setAttribute("style", "margin-top: 1px; display: block; overflow: hidden; text-overflow: ellipsis;	white-space: nowrap; max-width: 104px")
 							i++;
-							if ($('span.type').length === i) {
+							if (document.querySelectorAll('span.type').length === i) {
 								i = 0;
 							}
 						}

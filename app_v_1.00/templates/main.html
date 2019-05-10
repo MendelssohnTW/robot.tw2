@@ -1,18 +1,16 @@
 <div class="win-content robotTW2">
 	<header class="win-head">
-		<h2>{{settings_module}}</h2>
+		<h2>{{settings_module}} ({{text_version}})</h2>
 		<ul class="list-btn">
 			<li><a class="size-34x34 btn-red icon-26x26-close"
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="win-main jssb-applied jssb-focus jssb-scrolly" scrollbar="">
-		<div class="box-paper content-settings screen-overview">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-			<div class="scroll-wrap main" style="margin-bottom: 56px">
-				<div>
+	<div class="main content-settings">
+		<div class="main win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
 					<table
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped"
 						id="preset-list">
@@ -46,8 +44,7 @@
 
 						</tbody>
 					</table>
-					<table
-						class="tbl-border-light tbl-big-header tbl-striped"
+					<table class="tbl-border-light tbl-big-header tbl-striped"
 						id="preset-list">
 						<colgroup>
 							<col width="*">
@@ -84,8 +81,10 @@
 									<div class="checkbox">
 										<div tooltip
 											tooltip-content="{{ext.init_initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
-											switch-slider="" border="true" enabled="ext.activated && ext.name!='log'"
-											value="ext.init_initialized" vertical="false" size="'56x28'">
+											switch-slider="" border="true"
+											enabled="ext.activated && ext.name!='log'"
+											value="ext.init_initialized" vertical="false" size="'56x28'"
+											ng-click="initExt(ext)">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -102,8 +101,8 @@
 								<td class="cell-center">
 									<div class="checkbox">
 										<div switch-slider="" border="true"
-											enabled="ext.init_initialized && ext.name!='log'" value="ext.auto_start"
-											vertical="false" size="'56x28'">
+											enabled="ext.init_initialized && ext.name!='log'"
+											value="ext.auto_start" vertical="false" size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
 												<div class="switch switch-56x28 switch-horizontal"
@@ -128,7 +127,8 @@
 									<div class="checkbox">
 										<div tooltip
 											tooltip-content="{{extensions_status[ext.name] ? STOP : START}}"
-											switch-slider="" border="true" enabled="ext.init_initialized && ext.name!='log'"
+											switch-slider="" border="true"
+											enabled="ext.init_initialized && ext.name!='log'"
 											value="extensions_status[ext.name]"
 											ng-click="toggleStartStop(ext)" vertical="false"
 											size="'56x28'">
@@ -163,15 +163,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="jssb-y  ">
-			<div class="jssb-y-track">
-				<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
-					<div class="scrollbar-top"></div>
-					<div class="scrollbar-middle"></div>
-					<div class="scrollbar-bottom"></div>
-				</div>
-			</div>
-		</div>
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
@@ -180,4 +171,3 @@
 		</ul>
 	</footer>
 </div>
-

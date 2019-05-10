@@ -1,21 +1,103 @@
 <div class="win-content robotTW2">
 	<header class="win-head">
-		<h3>{{title}}</h3>
+		<h3>{{title}} ({{text_version}})</h3>
 		<ul class="list-btn">
 			<li><a class="size-34x34 btn-red icon-26x26-close"
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="content-settings">
-		<div class="farm box-paper">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
-		</div>
+	<div class="farm content-settings">
 		<div class="farm win-main jssb-applied jssb-focus jssb-scrolly"
 			scrollbar="">
 			<div class="box-paper">
 				<div class="scroll-wrap">
+					<table
+						class="tbl-border-light tbl-border-dark tbl-big-header tbl-content tbl-farm">
+						<colgroup>
+							<col>
+							<col>
+							<col>
+							<col>
+							<col>
+							<col>
+						</colgroup>
+						<tbody>
+							<tr>
+								<th class="selected cell-center" colspan="6">{{farm}}</th>
+							</tr>
+							<tr>
+								<td class="cell-right"><label for="farm_time"
+									style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
+									class="input-border inpt" type="time" id="farm_time" step="1"
+									min="00:00:00" max="23:59:59" value="{{t_farm_time}}"
+									ng-blur="set_farm_time()"></td>
+								<td class="cell-right"><label for="inicio_de_farm"
+									style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
+									class="input-border inpt" type="time" id="inicio_de_farm"
+									step="1" min="00:00:00" max="23:59:59"
+									value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
+									ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
+								<td class="cell-right"><label for="data_inicio_de_farm"
+									style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
+									class="input-border inpd" type="date" id="data_inicio_de_farm"
+									value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
+									ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
+								<td class="cell-right"><label for="cicle_infinite"
+									style="margin-left: 12px; margin-right: 12px;">{{time_infinite}}</label><a
+									tooltip="" tooltip-content="{{time_infinite}}/{{time_finite}}"
+									id="cicle_infinite" href="#" class="size-34x34 btn-orange"
+									ng-class="{'icon-26x26-check-positive' : data_farm.infinite, 'icon-26x26-check-negative' : !data_farm.infinite}"
+									ng-click="toggleInfinite()"></a></td>
+								<td class="cell-right"><label for="attack_prog"
+									style="margin-left: 12px; margin-right: 12px;">{{attack_prog}}</label><a
+									tooltip="" tooltip-content="{{text_attack_prog}}"
+									id="attack_prog" href="#" class="size-34x34 btn-orange"
+									ng-class="{'icon-26x26-check-positive' : data_farm.attack_prog, 'icon-26x26-check-negative' : !data_farm.attack_prog}"
+									ng-click="toggleInfinite()"></a></td>
+								<td class="cell-right"><label for="unit_direction"
+									style="margin-left: 12px; margin-right: 12px;">{{unit_direction}}</label><a
+									tooltip="" tooltip-content="{{text_unit_direction}}"
+									id="unit_direction" href="#" class="size-34x34 btn-orange"
+									ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
+									ng-click="toggleUnitDirection()"></a></td>
+							</tr>
+							<tr>
+
+								<td class="cell-right"><label for="interval_farm">{{getStatus()}}</label><input
+									id="interval_farm" class="input-border inpt disabled"
+									type="text" value="{{getTimeRest()}}" disabled></td>
+								<td class="cell-right"><label for="termino_de_farm"
+									style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
+									class="input-border inpt" type="time" id="termino_de_farm"
+									step="1" min="00:00:00" max="23:59:59"
+									value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
+									ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
+								<td class="cell-right"><label for="data_termino_de_farm"
+									style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
+									class="input-border inpd" type="date" id="data_termino_de_farm"
+									value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
+									ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
+								<td class="cell-right"><label for="villages_attacked"
+									style="margin-left: 12px; margin-right: 12px;">{{villages_attacked}}</label><a
+									tooltip="" tooltip-content="{{villages_attacked}}"
+									id="villages_attacked" href="#" class="size-34x34 btn-orange"
+									ng-class="{'icon-26x26-check-positive' : data_farm.attacked, 'icon-26x26-check-negative' : !data_farm.attacked}"
+									ng-click="toggleAttacked()"></a></td>
+								<td class="cell-right"><label for="defense_prog"
+                                    style="margin-left: 12px; margin-right: 12px;">{{defense_prog}}</label><a
+                                    tooltip="" tooltip-content="{{text_defense_prog}}"
+                                    id="defense_prog" href="#" class="size-34x34 btn-orange"
+                                    ng-class="{'icon-26x26-check-positive' : data_farm.defense_prog, 'icon-26x26-check-negative' : !data_farm.defense_prog}"
+                                    ng-click="toggleInfinite()"></a></td>
+								<td class="cell-right"><label for="speed_direction"
+									style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a
+									tooltip="" tooltip-content="{{text_speed_direction}}"
+									id="speed_direction" href="#" class="size-34x34 btn-orange"
+									ng-class="{'icon-26x26-check-positive' : data_farm.speed_direction, 'icon-26x26-check-negative' : !data_farm.speed_direction}"
+									ng-click="toggleSpeedDirection()"></a></td>
+							</tr>
+						</tbody>
+					</table>
 					<table class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 						<colgroup>
 							<col width="40%">
@@ -23,45 +105,13 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<td class="cell-top"><table
-										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
-										<tbody>
-											<tr>
-												<th class="selected cell-center">{{text_presets}}</th>
-											</tr>
-											<tr>
-												<td class="cell-right"><label for="check_one"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
-													<div id="check_one" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
-														ng-click="toggleOption('check_one')" tooltip=""
-														tooltip-content=""></div></td>
-											</tr>
-											<tr>
-												<td class="cell-right"><label for="check_all"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
-													<div id="check_all" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
-														ng-click="toggleOption('check_all')" tooltip=""
-														tooltip-content=""></div></td>
-											</tr>
-											<tr>
-												<td class="cell-right"><label for="check_all_villages"
-													class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
-													<div id="check_all_villages"
-														class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
-														ng-click="toggleOption('check_all_villages')" tooltip=""
-														tooltip-content=""></div></td>
-											</tr>
-										</tbody>
-									</table>
+								<td class="cell-top">
 									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
-											<col width="120px">
+											<col>
 											<col width="30px">
-											<col width="*">
+											<col width="250px">
 										</colgroup>
 										<tbody>
 											<tr>
@@ -118,14 +168,55 @@
 													</ul>
 												</td>
 											</tr>
+											<tr>
+												<td colspan="2">{{text_remove_all_preset}}</td>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="unassignAllPreset()">{{REMOVE}}</a></li>
+													</ul>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">{{text_add_all_preset}}</td>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="assignAllPreset()">{{ADD}}</a></li>
+													</ul>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">{{text_remove_all_preset_all_villages}}</td>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="unassignAllPresetAllVillages()">{{REMOVE}}</a></li>
+													</ul>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">{{text_add_all_preset_all_villages}}</td>
+												<td>
+													<ul class="list-btn list-center">
+														<li><a id="button-start"
+															class="btn-border btn-orange btn-init"
+															ng-click="assignAllPresetAllVillages()">{{ADD}}</a></li>
+													</ul>
+												</td>
+											</tr>
+
 										</tbody>
 									</table>
 									<table
 										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
-											<col width="120px">
+											<col>
 											<col width="30px">
-											<col width="*">
+											<col width="250px">
 										</colgroup>
 										<tbody>
 											<tr>
@@ -191,97 +282,64 @@
 												</td>
 											</tr>
 										</tbody>
-									</table></td>
-								<td class="cell-top"><table
-										class="tbl-border-light tbl-border-dark tbl-big-header tbl-content tbl-farm">
+									</table>
+								</td>
+								<td class="cell-top">
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-farm">
 										<colgroup>
-											<col width="33%">
-											<col width="33%">
-											<col width="*">
+											<col>
+											<col>
 										</colgroup>
 										<tbody>
 											<tr>
-												<th class="selected cell-center" colspan="3">{{farm}}</th>
+												<th class="selected cell-center" colspan="2">{{text_presets}}</th>
 											</tr>
 											<tr>
-												<td class="cell-right"><label for="farm_time"
-													style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
-													class="input-border inpt" type="time" id="farm_time"
-													step="1" min="00:00:00" max="23:59:59"
-													value="{{t_farm_time}}" ng-blur="set_farm_time()"></td>
-												<td class="cell-right"><label for="inicio_de_farm"
-													style="margin-left: 12px; margin-right: 12px;">{{init_hour}}</label><input
-													class="input-border inpt" type="time" id="inicio_de_farm"
-													step="1" min="00:00:00" max="23:59:59"
-													value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
-													ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
-												<td class="cell-right"><label for="data_inicio_de_farm"
-													style="margin-left: 12px; margin-right: 12px;">{{init_date}}</label><input
-													class="input-border inpd" type="date"
-													id="data_inicio_de_farm"
-													value="{{data_farm.farm_time_start | date : 'yyyy-MM-dd'}}"
-													ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
+												<td class="cell-right" rowspan="3">
+													<div>
+														<label for="name_preset" class="with-margin">{{text_name_preset}}</label><input
+															class="input-border inputcreated" type="text"
+															id="name_preset" ng-model="name_preset">
+													</div>
+													<div>
+														<label for="qtd_preset" class="with-margin">{{text_qtd_preset}}</label><input
+															class="input-border inputcreated" type="number"
+															id="qtd_preset" step="1" min="0" max="1000"
+															ng-model="qtd_preset" style="width: 150px;">
+													</div>
+													<div>
+														<ul class="list-btn list-center">
+															<li><a id="button-start"
+																class="btn-border btn-orange btn-init"
+																ng-click="createPresets()" tooltip=""
+																tooltip-content="{{text_create_preset}}">{{CREATE}}</a></li>
+														</ul>
+													</div>
+												</td>
+												<td class="cell-right"><label for="check_one"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_one_preset}}</label>
+													<div id="check_one" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_one, 'btn-red icon-26x26-check-negative': !check_one}"
+														ng-click="toggleOption('check_one')" tooltip=""
+														tooltip-content=""></div></td>
 											</tr>
 											<tr>
-
-												<td class="cell-right"><label for="interval_farm">{{getStatus()}}</label><input
-													id="interval_farm" class="input-border inpt disabled"
-													type="text" value="{{getTimeRest()}}" disabled></td>
-												<td class="cell-right"><label for="termino_de_farm"
-													style="margin-left: 12px; margin-right: 12px;">{{terminate_hour}}</label><input
-													class="input-border inpt" type="time" id="termino_de_farm"
-													step="1" min="00:00:00" max="23:59:59"
-													value="{{data_farm.farm_time_start | date : 'HH:mm:ss'}}"
-													ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
-												<td class="cell-right"><label
-													for="data_termino_de_farm"
-													style="margin-left: 12px; margin-right: 12px;">{{terminate_date}}</label><input
-													class="input-border inpd" type="date"
-													id="data_termino_de_farm"
-													value="{{data_farm.farm_time_stop | date : 'yyyy-MM-dd'}}"
-													ng-blur="blur()" ng-disabled="data_farm.infinite"></td>
+												<td class="cell-right"><label for="check_all"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_all_preset}}</label>
+													<div id="check_all" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_all, 'btn-red icon-26x26-check-negative': !check_all}"
+														ng-click="toggleOption('check_all')" tooltip=""
+														tooltip-content=""></div></td>
 											</tr>
 											<tr>
-
-												<td class="cell-right"><label for="cicle_infinite"
-													style="margin-left: 12px; margin-right: 12px;"
-													ng-show="data_farm.infinite">{{time_infinite}}</label><label
-													for="cicle_infinite"
-													style="margin-left: 12px; margin-right: 12px;"
-													ng-show="!data_farm.infinite">{{time_finite}}</label><a
-													tooltip=""
-													tooltip-content="{{time_infinite}}/{{time_finite}}"
-													id="cicle_infinite" href="#" class="size-34x34 btn-orange"
-													ng-class="{'icon-26x26-check-positive' : data_farm.infinite, 'icon-26x26-check-negative' : !data_farm.infinite}"
-													ng-click="toggleInfinite()"></a></td>
-												<td colspan="2" class="cell-right"><label
-													for="villages_attacked"
-													style="margin-left: 12px; margin-right: 12px;">{{villages_attacked}}</label><a
-													tooltip="" tooltip-content="{{villages_attacked}}"
-													id="villages_attacked" href="#"
-													class="size-34x34 btn-orange"
-													ng-class="{'icon-26x26-check-positive' : data_farm.attacked, 'icon-26x26-check-negative' : !data_farm.attacked}"
-													ng-click="toggleAttacked()"></a></td>
-											</tr>
-											<tr>
-												<td class="cell-right">
-												<label
-                                                    for="unit_direction"
-                                                    style="margin-left: 12px; margin-right: 12px;">{{unit_direction}}</label><a
-                                                    tooltip="" tooltip-content="{{text_unit_direction}}"
-                                                    id="unit_direction" href="#"
-                                                    class="size-34x34 btn-orange"
-                                                    ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
-                                                    ng-click="toggleUnitDirection()"></a></td>
-												<td colspan="2" class="cell-right">
-												<label
-                                                    for="speed_direction"
-                                                    style="margin-left: 12px; margin-right: 12px;">{{speed_direction}}</label><a
-                                                    tooltip="" tooltip-content="{{text_speed_direction}}"
-                                                    id="speed_direction" href="#"
-                                                    class="size-34x34 btn-orange"
-                                                    ng-class="{'icon-26x26-check-positive' : data_farm.speed_direction, 'icon-26x26-check-negative' : !data_farm.speed_direction}"
-                                                    ng-click="toggleSpeedDirection()"></a></td>
+												<td class="cell-right"><label for="check_all_villages"
+													class="with-margin" style="top: 21px; left: 100px;">{{text_all_village_preset}}</label>
+													<div id="check_all_villages"
+														class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': check_all_villages, 'btn-red icon-26x26-check-negative': !check_all_villages}"
+														ng-click="toggleOption('check_all_villages')" tooltip=""
+														tooltip-content=""></div></td>
 											</tr>
 										</tbody>
 									</table>
@@ -381,9 +439,9 @@
 													id="max_dist" step="1" min="5" max="200"
 													ng-model="data.selectedOption.max_journey_distance"
 													disabled></td>
-												<td class="cell-center">
-													<div class="checkbox">
-														<span class="cell-center selected">{{villages_selections}}</span>
+												<td class="cell-center"><label for="checkbox"
+													class="with-margin">{{villages_selections}}</label>
+													<div id="checkbox" class="checkbox">
 														<div switch-slider="" border="true" enabled="true"
 															value="data_villages.villages[village_selected.id].farm_activate"
 															vertical="false" size="'56x28'">
@@ -398,8 +456,7 @@
 																</div>
 															</div>
 														</div>
-													</div>
-												</td>
+													</div></td>
 											</tr>
 										</tbody>
 									</table>
@@ -482,31 +539,31 @@
 											</tr>
 											<tr>
 												<td class="cell-right">{{text_units_village}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.spear.in_town
+												<td class="cell-center">{{village_selected.units.spear.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.sword.in_town
+												<td class="cell-center">{{village_selected.units.sword.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.axe.in_town
+												<td class="cell-center">{{village_selected.units.axe.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.archer.in_town
+												<td class="cell-center">{{village_selected.units.archer.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.light_cavalry.in_town
+												<td class="cell-center">{{village_selected.units.light_cavalry.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.mounted_archer.in_town
+												<td class="cell-center">{{village_selected.units.mounted_archer.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.heavy_cavalry.in_town
+												<td class="cell-center">{{village_selected.units.heavy_cavalry.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.ram.in_town
+												<td class="cell-center">{{village_selected.units.ram.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.catapult.in_town
+												<td class="cell-center">{{village_selected.units.catapult.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.doppelsoldner.in_town
+												<td class="cell-center">{{village_selected.units.doppelsoldner.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.trebuchet.in_town
+												<td class="cell-center">{{village_selected.units.trebuchet.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.snob.in_town
+												<td class="cell-center">{{village_selected.units.snob.in_town
 													|| 0}}</td>
-												<td class="cell-center">{{village_selected.value.unitInfo.units.knight.in_town
+												<td class="cell-center">{{village_selected.units.knight.in_town
 													|| 0}}</td>
 											</tr>
 											<tr>
@@ -519,7 +576,8 @@
 												</td>
 											</tr>
 										</tbody>
-									</table></td>
+									</table>
+								</td>
 
 							</tr>
 						</tbody>

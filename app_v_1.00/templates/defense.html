@@ -1,193 +1,180 @@
 
 <div class="win-content robotTW2">
 	<header class="win-head">
-		<h2>{{title}}</h2>
+		<h2>{{title}} ({{text_version}})</h2>
 		<ul class="list-btn">
 			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
 				ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
-	<div class="content-settings">
-		<div class="defense box-paper">
-			<div class="version">
-				<h5>{{text_version}}</h5>
-			</div>
+	<table>
+		<colgroup>
+			<col width="35%">
+			<col width="65%">
+		</colgroup>
+		<tbody>
+			<tr>
+				<td class="cell-top">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col width="*">
+							<col width="64px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th></th>
+								<th></th>
+							</tr>
+							<tr>
+								<td class="cell-right"><label for="time_sniper_ant">{{text_time_sniper_ant}}</label></td>
+								<td><input id="time_sniper_ant"
+									class="input-border inputcreated" type="number"
+									ng-model="data_defense.time_sniper_ant" min="5000" max="600000"></td>
+							</tr>
+							<tr>
+								<td class="cell-right"><label for="time_sniper_post">{{text_time_sniper_post}}</label></td>
+								<td><input id="time_sniper_post"
+									class="input-border inputcreated" type="number"
+									ng-model="data_defense.time_sniper_post" min="300" max="600000"></td>
+							</tr>
+							<tr>
+								<td class="cell-right"><label for="time_sniper_post_snob">{{text_time_sniper_post_snob}}</label></td>
+								<td><input id="time_sniper_post_snob"
+									class="input-border inputcreated" type="number"
+									ng-model="data_defense.time_sniper_post_snob" min="300"
+									max="600000"></td>
+							</tr>
+							<tr>
+								<td class="cell-right"><label for="loyalt">{{text_loyalt}}</label></td>
+								<td><input id="loyalt" class="input-border inputcreated"
+									type="number" ng-model="data_defense.loyalt" min="20" max="50"></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td class="cell-top">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col width="58px">
+							<col width="*">
+							<col width="64px">
+							<col width="64px">
+							<col width="64px">
+							<col width="160px">
 
-			<div>
-				<table>
-					<colgroup>
-						<col width="35%">
-						<col width="65%">
-					</colgroup>
-					<tbody>
-						<tr>
-							<td>
-								<table
-									class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-									<colgroup>
-										<col width="*">
-										<col width="64px">
-									</colgroup>
-									<tbody>
-										<tr>
-											<th></th>
-											<th></th>
-										</tr>
-										<tr>
-											<td class="cell-right"><label for="time_sniper_ant">{{text_time_sniper_ant}}</label></td>
-											<td><input id="time_sniper_ant"
-												class="input-border inputcreated" type=number
-												ng-model="data_defense.time_sniper_ant" min="5000"
-												max="600000"></td>
-										</tr>
-										<tr>
-											<td class="cell-right"><label for="time_sniper_post">{{text_time_sniper_post}}</label></td>
-											<td><input id="time_sniper_post"
-												class="input-border inputcreated" type=number
-												ng-model="data_defense.time_sniper_post" min="300"
-												max="600000"></td>
-										</tr>
-										<tr>
-											<td class="cell-right"><label
-												for="time_sniper_post_snob">{{text_time_sniper_post_snob}}</label></td>
-											<td><input id="time_sniper_post_snob"
-												class="input-border inputcreated" type=number
-												ng-model="data_defense.time_sniper_post_snob" min="300"
-												max="600000"></td>
-										</tr>
-										<tr>
-											<td class="cell-right"><label for="loyalt">{{text_loyalt}}</label></td>
-											<td><input id="loyalt" class="input-border inputcreated"
-												type=number ng-model="data_defense.loyalt" min="20" max="50"></td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-							<td>
-								<table
-									class="tbl-border-light tbl-big-header tbl-content tbl-striped">
-									<colgroup>
-										<col width="58px">
-										<col width="*">
-										<col width="64px">
-										<col width="64px">
-										<col width="64px">
-										<col width="160px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th colspan="2" class="selected cell-center">{{text_troops}}</th>
+								<th class="selected cell-center">{{text_status}}</th>
+								<th></th>
+								<th></th>
+								<th></th>
+							</tr>
+							<tr>
+								<td><div
+										ng-class="getClass(data_units.selectedOption.name)"></div></td>
+								<td><select id="select_units" class="select-wrapper"
+									ng-options="item as item.name for item in data_units.availableOptions track by item.name"
+									ng-model="data_units.selectedOption"></select></td>
+								<td><div id="switch" switch-slider="" border="true"
+										enabled="true"
+										value="data_defense.list_defense[data_units.selectedOption.name]"
+										vertical="false" size="'56x28'">
+										<div ng-class="{'box-border-dark box-filter': border}"
+											class="box-border-dark box-filter">
+											<div class="switch switch-56x28 switch-horizontal"
+												ng-class="{'switch-checked': value}">
+												<div class="size-26x26 switch-thumb">
+													<div class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+												</div>
+											</div>
+										</div>
+									</div></td>
+								<td colspan="2"></td>
+								<td><a href="#" tooltip="" tooltip-content=""
+									class="btn-orange btn-form btn-border no-padding"
+									ng-click="selectAllUnits()"><span
+										style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
 
-									</colgroup>
-									<tbody>
-										<tr>
-											<th colspan="2" class="selected cell-center">{{text_troops}}</th>
-											<th class="selected cell-center">{{text_status}}</th>
-											<th></th>
-											<th></th>
-											<th></th>
-										</tr>
-										<tr>
-											<td><div
-													ng-class="getClass(data_units.selectedOption.name)"></div></td>
-											<td><select id="select_units" class="select-wrapper"
-												ng-options="item as item.name for item in data_units.availableOptions track by item.name"
-												ng-model="data_units.selectedOption"></select></td>
-											<td><div id="switch" switch-slider="" border="true"
-													enabled="true"
-													value="data_defense.list_defense[data_units.selectedOption.name]"
-													vertical="false" size="'56x28'">
-													<div ng-class="{'box-border-dark box-filter': border}"
-														class="box-border-dark box-filter">
-														<div class="switch switch-56x28 switch-horizontal"
-															ng-class="{'switch-checked': value}">
-															<div class="size-26x26 switch-thumb">
-																<div class="simple icon-26x26-switch-off"
-																	ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
-															</div>
-														</div>
-													</div>
-												</div></td>
-											<td colspan="2"></td>
-											<td><a href="#" tooltip tooltip-content=""
-												class="btn-orange btn-form btn-border no-padding"
-												ng-click="selectAllUnits()"><span
-													style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
+							</tr>
 
-										</tr>
+							<tr>
+								<th colspan="2" class="selected cell-center">{{text_village}}</th>
+								<th class="selected cell-center">{{text_status}}</th>
+								<th class="selected cell-center">{{text_defense}}</th>
+								<th class="selected cell-center">{{text_attack}}</th>
+								<th></th>
+							</tr>
 
-										<tr>
-											<th colspan="2" class="selected cell-center">{{text_village}}</th>
-											<th class="selected cell-center">{{text_status}}</th>
-											<th class="selected cell-center">{{text_defense}}</th>
-											<th class="selected cell-center">{{text_attack}}</th>
-											<th></th>
-										</tr>
+							<tr>
+								<td><div class="icon icon-34x34-village"></div></td>
+								<td><select id="select_villages" class="select-wrapper"
+									ng-options="item as item.label for item in data_select.availableOptions track by item.name"
+									ng-model="data_select.selectedOption"></select></td>
+								<td><div id="switch" switch-slider="" border="true"
+										enabled="true"
+										value="data_villages.villages[data_select.selectedOption.id].defense_activate"
+										vertical="false" size="'56x28'">
+										<div ng-class="{'box-border-dark box-filter': border}"
+											class="box-border-dark box-filter">
+											<div class="switch switch-56x28 switch-horizontal"
+												ng-class="{'switch-checked': value}">
+												<div class="size-26x26 switch-thumb">
+													<div class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+												</div>
+											</div>
+										</div>
+									</div></td>
 
-										<tr>
-											<td><div class="icon icon-34x34-village"></div></td>
-											<td><select id="select_villages" class="select-wrapper"
-												ng-options="item as item.label for item in data_select.availableOptions track by item.name"
-												ng-model="data_select.selectedOption"></select></td>
-											<td><div id="switch" switch-slider="" border="true"
-													enabled="true"
-													value="data_villages.villages[data_select.selectedOption.id].defense_activate"
-													vertical="false" size="'56x28'">
-													<div ng-class="{'box-border-dark box-filter': border}"
-														class="box-border-dark box-filter">
-														<div class="switch switch-56x28 switch-horizontal"
-															ng-class="{'switch-checked': value}">
-															<div class="size-26x26 switch-thumb">
-																<div class="simple icon-26x26-switch-off"
-																	ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
-															</div>
-														</div>
-													</div>
-												</div></td>
+								<td><div id="switch" switch-slider="" border="true"
+										enabled="true"
+										value="data_villages.villages[data_select.selectedOption.id].sniper_defense"
+										vertical="false" size="'56x28'">
+										<div ng-class="{'box-border-dark box-filter': border}"
+											class="box-border-dark box-filter">
+											<div class="switch switch-56x28 switch-horizontal"
+												ng-class="{'switch-checked': value}">
+												<div class="size-26x26 switch-thumb">
+													<div class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+												</div>
+											</div>
+										</div>
+									</div></td>
+								<td><div id="switch" switch-slider="" border="true"
+										enabled="true"
+										value="data_villages.villages[data_select.selectedOption.id].sniper_attack"
+										vertical="false" size="'56x28'">
+										<div ng-class="{'box-border-dark box-filter': border}"
+											class="box-border-dark box-filter">
+											<div class="switch switch-56x28 switch-horizontal"
+												ng-class="{'switch-checked': value}">
+												<div class="size-26x26 switch-thumb">
+													<div class="simple icon-26x26-switch-off"
+														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+												</div>
+											</div>
+										</div>
+									</div></td>
+								<td><a href="#" tooltip="" tooltip-content=""
+									class="btn-orange btn-form btn-border no-padding"
+									ng-click="selectAllVillages()"><span
+										style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<h5 class="twx-section">{{command_list}}</h5>
+	<div class="defense content-settings">
 
-											<td><div id="switch" switch-slider="" border="true"
-													enabled="true"
-													value="data_villages.villages[data_select.selectedOption.id].sniper_defense"
-													vertical="false" size="'56x28'">
-													<div ng-class="{'box-border-dark box-filter': border}"
-														class="box-border-dark box-filter">
-														<div class="switch switch-56x28 switch-horizontal"
-															ng-class="{'switch-checked': value}">
-															<div class="size-26x26 switch-thumb">
-																<div class="simple icon-26x26-switch-off"
-																	ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
-															</div>
-														</div>
-													</div>
-												</div></td>
-											<td><div id="switch" switch-slider="" border="true"
-													enabled="true"
-													value="data_villages.villages[data_select.selectedOption.id].sniper_attack"
-													vertical="false" size="'56x28'">
-													<div ng-class="{'box-border-dark box-filter': border}"
-														class="box-border-dark box-filter">
-														<div class="switch switch-56x28 switch-horizontal"
-															ng-class="{'switch-checked': value}">
-															<div class="size-26x26 switch-thumb">
-																<div class="simple icon-26x26-switch-off"
-																	ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
-															</div>
-														</div>
-													</div>
-												</div></td>
-											<td><a href="#" tooltip tooltip-content=""
-												class="btn-orange btn-form btn-border no-padding"
-												ng-click="selectAllVillages()"><span
-													style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-
-			</div>
-		</div>
-		
-		<h5 class="twx-section">{{command_list}}</h5>
-		
 		<div class="defense win-main jssb-applied jssb-focus jssb-scrolly"
 			scrollbar="">
 			<div class="box-paper">
@@ -209,8 +196,8 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<th class="cell-center selected" tooltip tooltip-content="{{id_command}}"
-									style="display: table-cell">{{ident_cmd}}</th>
+								<th class="cell-center selected" tooltip
+									tooltip-content="{{id_command}}" style="display: table-cell">{{ident_cmd}}</th>
 								<th class="icon icon-34x34-units-outgoing"
 									style="display: table-cell" tooltip
 									tooltip-content="{{village_sob_attack}}"></th>
@@ -256,16 +243,20 @@
 									<div>{{getTimeRest(comando)}}</div>
 								</td>
 								<td class="cell-center">
-									<div>{{getDataSend(comando)}}</div>
-									<div>{{getHoraSend(comando)}}</div>
+									<div>{{comando.data_escolhida - comando.time_sniper_ant |
+										date : 'dd/MM/yyyy'}}</div>
+									<div>{{comando.data_escolhida - comando.time_sniper_ant |
+										date : 'HH:mm:ss.sss'}}</div>
 								</td>
 								<td class="cell-center selected">
-									<div>{{getDataAlvo(comando)}}</div>
-									<div>{{getHoraAlvo(comando)}}</div>
+									<div>{{comando.data_escolhida | date : 'dd/MM/yyyy'}}</div>
+									<div>{{comando.data_escolhida | date : 'HH:mm:ss.sss'}}</div>
 								</td>
 								<td class="cell-center selected-green">
-									<div>{{getDataRetorno(comando)}}</div>
-									<div>{{getHoraRetorno(comando)}}</div>
+									<div>{{comando.data_escolhida + comando.time_sniper_post
+										| date : 'dd/MM/yyyy'}}</div>
+									<div>{{comando.data_escolhida + comando.time_sniper_post
+										| date : 'HH:mm:ss.sss'}}</div>
 								</td>
 								<td class="cell-center">
 									<div>{{comando.time_sniper_ant / 1000}} s</div>
@@ -283,7 +274,6 @@
 					</table>
 				</div>
 			</div>
-
 		</div>
 	</div>
 

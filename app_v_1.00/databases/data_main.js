@@ -115,7 +115,7 @@ define("robotTW2/databases/data_main", [
 
 	var dataNew = {
 			max_time_correction		: conf.MAX_TIME_CORRECTION,
-			time_correction_command	: conf.TIME_CORRECTION_STANDARD,
+			time_correction_command	: services.modelDataService.getSelectedCharacter().getTimeSync().csDiff,
 			auto_calibrate			: true,
 			version					: conf.VERSION.MAIN,
 			pages_excludes			: ["farm", "recruit", "headquarter"],

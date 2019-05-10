@@ -70,7 +70,6 @@ define("robotTW2/services/VillageService", [
 		, init = function (){
 			isInitialized = !0
 			start();
-			wait();
 		}
 		, start = function (){
 			if(isRunning){return}
@@ -81,6 +80,9 @@ define("robotTW2/services/VillageService", [
 		, stop = function (){
 			isRunning = !1;
 		}
+		
+		init()
+		
 		return	{
 			init			: init,
 			start 			: start,
@@ -94,7 +96,6 @@ define("robotTW2/services/VillageService", [
 			isInitialized	: function(){
 				return isInitialized
 			},
-			version			: conf.VERSION.ALERT,
 			name			: "village"
 		}
 	})(
