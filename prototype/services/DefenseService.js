@@ -554,7 +554,8 @@ define("robotTW2/services/DefenseService", [
 			if(data.target.character_id = modelDataService.getSelectedCharacter().getId() 
 					&& data.type == "support" 
 						&& data.direction == "forward"
-							&& list_wait_cancel.find(f=>f.target_village == data.target.id) 
+							&& (Object.values(commandDefense).find(f=>f.params.target_village == data.target.id)
+									&& Object.values(commandDefense).find(f=>f.params.start_village == data.home.id)) 
 			) {
 				var cmds = Object.keys(commandDefense).map(function(param){
 					if(commandDefense[param].params.start_village == data.home.id 
