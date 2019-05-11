@@ -227,7 +227,7 @@ define("robotTW2/services/HeadquarterService", [
 					)
 				})
 
-				g.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+//				g.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 
 				g.forEach(function(b) {
 					function a (build){
