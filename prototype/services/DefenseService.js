@@ -50,7 +50,6 @@ define("robotTW2/services/DefenseService", [
 		, timeout = undefined
 		, oldCommand
 		, d = {}
-		, list_wait_cancel = []
 		, resend = false
 		, interval_reload = undefined
 		, listener_verify = undefined
@@ -478,7 +477,6 @@ define("robotTW2/services/DefenseService", [
 //		}
 //		}
 		, trigger_cancel = function(_params, callback){
-			list_wait_cancel = list_wait_cancel.filter(f=>f!=_params.id_command)
 			var comandos_outgoing = modelDataService.getSelectedCharacter().getVillage(_params.start_village).getCommandListModel().outgoing
 			, cmds = Object.keys(comandos_outgoing).map(function(param){
 				if(comandos_outgoing[param].targetCharacterId = modelDataService.getSelectedCharacter().getId() && 
@@ -513,9 +511,9 @@ define("robotTW2/services/DefenseService", [
 								"target_village" 	: _params.target_village
 						}
 
-						if(expires >= -25000 && expires < 0){
+						if(expires >= -15000 && expires < 0){
 							params.timer_delay = 0;
-						} else if(expires < -25000){
+						} else if(expires < -15000){
 							control.push(false)
 							data_log.defense.push(
 									{
@@ -597,8 +595,7 @@ define("robotTW2/services/DefenseService", [
 					return
 				}
 
-				if(list_wait_cancel.filter(f=>f!=cmd.id_command)){
-					list_wait_cancel = list_wait_cancel.filter(f=>f!=cmd.id_command)
+				if(!commandDefense[params.id_command]){
 					removeCommandDefense(_params.id_command)
 					commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
 						commandDefense[params.id_command] = {
@@ -697,7 +694,7 @@ define("robotTW2/services/DefenseService", [
 				if(!promise_command_cancel){
 					promise_command_cancel = new Promise(function(resol, rejec){
 						$timeout(function(){
-							if(list_wait_cancel.find(f=>f.id_command==params.id_command))
+							if(Objet.values(commandDefense).find(f=>f.id_command==params.id_command))
 								trigger_cancel(params, function(control){
 									if(control[0]){
 										rejec(control[1])
@@ -727,10 +724,6 @@ define("robotTW2/services/DefenseService", [
 				} else {
 					queue_command_cancel.push(params)
 				}
-			}
-
-			if(!list_wait_cancel.find(f=>f.id_command==params.id_command)){
-				list_wait_cancel.push(params)
 			}
 
 			send_cmd_cancel(params)
