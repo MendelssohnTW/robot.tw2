@@ -497,7 +497,6 @@ define("robotTW2/services/DefenseService", [
 			, return_time = init_time + mid_time 
 			, rest_time = return_time - time.convertedTime()
 			, expires = rest_time + robotTW2.databases.data_main.time_correction_command
-			, control = []
 
 			if(cmds.length){
 				cmds.sort(function (a, b) {return a.startedAt - b.startedAt})
@@ -514,7 +513,6 @@ define("robotTW2/services/DefenseService", [
 						if(expires >= -15000 && expires < 0){
 							params.timer_delay = 0;
 						} else if(expires < -15000){
-							control.push(false)
 							data_log.defense.push(
 									{
 										"text": "Sniper not sent - expires - " + cmd.id_command,
@@ -526,8 +524,6 @@ define("robotTW2/services/DefenseService", [
 							removeCommandDefense(_params.id_command)
 							continue
 						}
-
-						control.push(true)
 
 						if(!commandDefense[params.id_command]){
 							removeCommandDefense(_params.id_command)
@@ -542,7 +538,7 @@ define("robotTW2/services/DefenseService", [
 					}
 				}
 			}
-			callback([control.every(f=>f==false) , _params])
+			callback()
 		}
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){
@@ -582,7 +578,6 @@ define("robotTW2/services/DefenseService", [
 				if(expires >= -25000 && expires < 0){
 					params.timer_delay = 0;
 				} else if(expires < -25000){
-					control.push(false)
 					data_log.defense.push(
 							{
 								"text": "Sniper not sent - expires - " + cmd.id_command,
@@ -695,12 +690,8 @@ define("robotTW2/services/DefenseService", [
 					promise_command_cancel = new Promise(function(resol, rejec){
 						$timeout(function(){
 							if(Objet.values(commandDefense).find(f=>f.id_command==params.id_command))
-								trigger_cancel(params, function(control){
-									if(control[0]){
-										rejec(control[1])
-									} else {
-										resol()
-									}
+								trigger_cancel(params, function(){
+									resol()
 								});
 						}, 5000)
 					}).then(function(){
