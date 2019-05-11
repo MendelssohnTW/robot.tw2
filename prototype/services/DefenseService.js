@@ -689,7 +689,7 @@ define("robotTW2/services/DefenseService", [
 				if(!promise_command_cancel){
 					promise_command_cancel = new Promise(function(resol, rejec){
 						$timeout(function(){
-							if(Objet.values(commandDefense).find(f=>f.id_command==params.id_command))
+							if(Object.values(commandDefense).find(f=>f.id_command==params.id_command))
 								trigger_cancel(params, function(){
 									resol()
 								});
