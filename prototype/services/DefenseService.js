@@ -380,7 +380,7 @@ define("robotTW2/services/DefenseService", [
 				var villages = modelDataService.getSelectedCharacter().getVillages();
 
 				var vls = Object.keys(villages).map(function(villageId){
-					let vill_attacked = modelDataService.getGroupList().getVillageGroups(villageId).some(f=>f.id==-5)
+					let vill_attacked = modelDataService.getGroupList().getVillageGroups(villageId).some(f=>f.id==-5||f.id==-8)
 					if(data_villages.villages[villageId].defense_activate && vill_attacked){
 						return villageId
 					}
@@ -409,8 +409,6 @@ define("robotTW2/services/DefenseService", [
 					if(promise_verify_queue) {
 						promise_verify_queue = false;
 						verificarAtaques()
-					} else {
-						promise_verify_queue = true;
 					}
 				}, function(){
 					promise_verify = undefined;
@@ -419,8 +417,6 @@ define("robotTW2/services/DefenseService", [
 					if(promise_verify_queue) {
 						promise_verify_queue = false;
 						verificarAtaques()
-					} else {
-						promise_verify_queue = true;
 					}
 				})
 			} else {
