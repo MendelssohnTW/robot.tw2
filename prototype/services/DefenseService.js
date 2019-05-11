@@ -923,8 +923,8 @@ define("robotTW2/services/DefenseService", [
 
 			document.querySelectorAll(".indicatorSelected")[i].addEventListener('click', function (event) {
 				if (document.querySelectorAll(".indicatorSelected")[i].classList.contains("icon-26x26-dot-red")) {
-					document.querySelectorAll(this).classList.remove("icon-26x26-dot-red");
-					document.querySelectorAll(this).classList.add("icon-26x26-dot-green");
+					this.classList.remove("icon-26x26-dot-red");
+					this.classList.add("icon-26x26-dot-green");
 					var sniper_ant;
 					var sniper_post;
 					(document.querySelectorAll(".sniper_ant")[i]).value < conf.MIN_TIME_SNIPE_ANT ? sniper_ant = conf.MIN_TIME_SNIPE_ANT : (document.querySelectorAll(".sniper_ant")[i]).value > conf.MAX_TIME_SNIPE_ANT ? sniper_ant = conf.MAX_TIME_SNIPE_ANT : sniper_ant = (document.querySelectorAll(".sniper_ant")[i]).value; 
@@ -932,8 +932,8 @@ define("robotTW2/services/DefenseService", [
 					var r;
 					list_timeout[i] = $timeout(function(){
 						r = undefined;
-						document.querySelectorAll(this).classList.remove("icon-26x26-dot-green");
-						document.querySelectorAll(this).classList.add("icon-26x26-dot-red");
+						this.classList.remove("icon-26x26-dot-green");
+						this.classList.add("icon-26x26-dot-red");
 					}, conf.loading_timeout);
 
 					r = loadVillage(command).then(function(aldeia){
@@ -957,8 +957,8 @@ define("robotTW2/services/DefenseService", [
 					})
 
 				} else {
-					document.querySelectorAll(this).classList.remove("icon-26x26-dot-green");
-					document.querySelectorAll(this).classList.add("icon-26x26-dot-red");
+					this.classList.remove("icon-26x26-dot-green");
+					this.classList.add("icon-26x26-dot-red");
 					removeCommandDefense(command.command_id)
 				}
 			});
