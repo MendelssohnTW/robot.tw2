@@ -50,6 +50,7 @@ define("robotTW2/services/DefenseService", [
 		, timeout = undefined
 		, oldCommand
 		, d = {}
+		, list_wait_cancel = []
 		, resend = false
 		, interval_reload = undefined
 		, listener_verify = undefined
@@ -477,6 +478,7 @@ define("robotTW2/services/DefenseService", [
 //		}
 //		}
 		, trigger_cancel = function(_params, callback){
+			list_wait_cancel = list_wait_cancel.filter(f=>f!=_params.id_command)
 			var comandos_outgoing = modelDataService.getSelectedCharacter().getVillage(_params.start_village).getCommandListModel().outgoing
 			, cmds = Object.keys(comandos_outgoing).map(function(param){
 				if(comandos_outgoing[param].targetCharacterId = modelDataService.getSelectedCharacter().getId() && 
@@ -544,21 +546,69 @@ define("robotTW2/services/DefenseService", [
 			}
 			callback([control.every(f=>f==false) , _params])
 		}
-//		, listener_command_sent = function($event, data){
-//		if(!$event.currentScope){
-//		return
-//		}
-//		if(data.direction == "forward" && data.type == "support"){
-//		var cmds = Object.keys(commandDefense).map(function(param){
-//		//verificar a origem e alvo do comando
-//		if(commandDefense[param].params.start_village == data.home.id 
-//		&& commandDefense[param].params.target_village == data.target.id
-//		) {
-//		return commandDefense[param].params
-//		} else {
-//		return undefined
-//		}
-//		}).filter(f => f != undefined)
+		, listener_command_sent = function($event, data){
+			if(!$event.currentScope){
+				return
+			}
+
+			if(data.targetCharacterId = modelDataService.getSelectedCharacter().getId() 
+					&& data.type == "support" 
+						&& data.data.direction == "forward"
+							&& list_wait_cancel.find(f=>f.target_village == data.targetVillageId) 
+			) {
+				var cmds = Object.keys(commandDefense).map(function(param){
+					if(commandDefense[param].params.start_village == data.home.id 
+							&& commandDefense[param].params.target_village == data.target.id
+							&& commandDefense[param].params.target_village == modelDataService.getSelectedCharacter().getId()
+					) {
+						return commandDefense[param].params
+					} else {
+						return undefined
+					}
+				}).filter(f => f != undefined)
+
+				cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
+				let cmd = cmds.shift()
+				if(!cmd){return}
+
+				let dif = time.convertMStoUTC(data.time_start * 1000) - (cmd.data_escolhida - cmd.time_sniper_ant)
+				, expires = (((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2
+				, params = {
+					"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+					"id_command" 		: data.id,
+					"start_village" 	: cmd.start_village,
+					"target_village" 	: cmd.target_village
+				}
+
+				if(expires >= -25000 && expires < 0){
+					params.timer_delay = 0;
+				} else if(expires < -25000){
+					control.push(false)
+					data_log.defense.push(
+							{
+								"text": "Sniper not sent - expires - " + cmd.id_command,
+								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+								"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+								"date": time.convertedTime()
+							}
+					)
+					removeCommandDefense(_params.id_command)
+					return
+				}
+
+				if(list_wait_cancel.filter(f=>f!=cmd.id_command)){
+					list_wait_cancel = list_wait_cancel.filter(f=>f!=cmd.id_command)
+					removeCommandDefense(_params.id_command)
+					commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
+						commandDefense[params.id_command] = {
+								"timeout" 	: fns.fn.apply(this, [fns.params]),
+								"params"	: fns.params
+						}
+
+					})
+				}
+			}
+		}
 
 //		if(cmds.length){
 //		cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
@@ -646,13 +696,14 @@ define("robotTW2/services/DefenseService", [
 				if(!promise_command_cancel){
 					promise_command_cancel = new Promise(function(resol, rejec){
 						$timeout(function(){
-							trigger_cancel(params, function(control){
-								if(control[0]){
-									rejec(control[1])
-								} else {
-									resol()
-								}
-							});
+							if(list_wait_cancel.find(f=>f.id_command==params.id_command))
+								trigger_cancel(params, function(control){
+									if(control[0]){
+										rejec(control[1])
+									} else {
+										resol()
+									}
+								});
 						}, 5000)
 					}).then(function(){
 						promise_command_cancel = undefined
@@ -675,6 +726,10 @@ define("robotTW2/services/DefenseService", [
 				} else {
 					queue_command_cancel.push(params)
 				}
+			}
+
+			if(!list_wait_cancel.find(f=>f.id_command==params.id_command)){
+				list_wait_cancel.push(params)
 			}
 
 			send_cmd_cancel(params)
@@ -769,7 +824,7 @@ define("robotTW2/services/DefenseService", [
 		, addDefense = function(params){
 
 			if(!params){return}
-//			!(typeof(listener_sent) == "function") ? listener_sent = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
+			!(typeof(listener_sent) == "function") ? listener_sent = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 //			!(typeof(listener_cancel) == "function") ? listener_cancel = $rootScope.$on(providers.eventTypeProvider.COMMAND_CANCELLED, listener_command_cancel) : null;
 
 			var id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
@@ -855,7 +910,7 @@ define("robotTW2/services/DefenseService", [
 			div_pai.appendChild(input_ant)
 			div_pai.appendChild(input_post)
 			div_pai.appendChild(div)
-			
+
 			let pai = document.querySelectorAll(".content.incoming td.column-time_completed")[i]
 
 			pai.insertBefore(div_pai, pai.childNodes[0]);
@@ -865,7 +920,7 @@ define("robotTW2/services/DefenseService", [
 			if ((document.querySelectorAll(".sniper_post")[i]) != undefined){
 				(document.querySelectorAll(".sniper_post")[i]).value = isSelected != undefined && isSelected.params != undefined ? isSelected.params.time_sniper_post / 1000 : data_defense.time_sniper_post / 1000;
 			}
-			
+
 			document.querySelectorAll(".indicatorSelected")[i].addEventListener('click', function (event) {
 				if (document.querySelectorAll(".indicatorSelected")[i].classList.contains("icon-26x26-dot-red")) {
 					document.querySelectorAll(this).classList.remove("icon-26x26-dot-red");
