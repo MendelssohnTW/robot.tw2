@@ -210,20 +210,17 @@ define("robotTW2/services/HeadquarterService", [
 				}
 
 				var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
-				
 				var reBuilds = Object.keys(bd).map(function(key_db){
 					return data_villages.villages[village.getId()].builds.map(function(key){
-						return {[Object.keys(key)[0]] : Object.values(key)[0]}
-					}).find(f=>Object.keys(f)[0]==key_db)
+						return Object.keys(key)[0]
+					}).find(f=>f==key_db)
 				}).filter(f => f != undefined)
 				, g = [];
-				
-				reBuilds.sort(function(a,b){return Object.values(a)[0]-Object.values(b)[0]})
 
 				reBuilds.forEach(function(i){
 					g.push(data_villages.villages[village.getId()].builds.map(
 							function(key){
-								return Object.keys(key)[0] == Object.keys(i)[0] ? {[Object.keys(key)[0]] : Object.values(key)[0]} : undefined
+								return Object.keys(key)[0] == i ? {[Object.keys(key)[0]] : Object.values(key)[0]} : undefined
 							}
 					)
 					.filter(f => f != undefined)[0]
