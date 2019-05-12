@@ -585,13 +585,13 @@ define("robotTW2/services/DefenseService", [
 								"date": time.convertedTime()
 							}
 					)
-					removeCommandDefense(_params.id_command)
+					removeCommandDefense(cmd.id_command)
 					return
 				}
 
 				if(!commandDefense[params.id_command]){
-					removeCommandDefense(_params.id_command)
-					commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
+					removeCommandDefense(cmd.id_command)
+					commandQueue.bind(params.id_command, sendCancel, null, params, function(fns){
 						commandDefense[params.id_command] = {
 								"timeout" 	: fns.fn.apply(this, [fns.params]),
 								"params"	: fns.params
