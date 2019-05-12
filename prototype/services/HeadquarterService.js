@@ -218,7 +218,7 @@ define("robotTW2/services/HeadquarterService", [
 				}).filter(f => f != undefined)
 				, g = [];
 				
-				reBuilds.sort(function(a,b){return Object.values(a)[0]-Object.values(d)[0]})
+				reBuilds.sort(function(a,b){return Object.values(a)[0]-Object.values(b)[0]})
 
 				reBuilds.forEach(function(i){
 					g.push(data_villages.villages[village.getId()].builds.map(
