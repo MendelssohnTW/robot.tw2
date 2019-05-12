@@ -76,7 +76,29 @@ define("robotTW2/services/SpyService", [
 		}
 		, recruit_spy = function (){
 			Object.keys(data_villages.villages).forEach(function(id){
-				var sec_promise = function (id){
+				var next_seq = function next_seq(){
+					$timeout(function(){
+						promise = undefined
+						if(isPaused){
+							typeof(listener_resume) == "function" ? listener_resume(): null;
+							listener_resume = undefined
+							listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
+								if(queue.length){
+									sec_promise(queue.shift())
+								} else {
+									wait();
+								}
+							})
+						} else {
+							if(queue.length){
+								sec_promise(queue.shift())
+							} else {
+								wait();
+							}
+						}
+					}, 3000)
+				}
+				, sec_promise = function sec_promise(id){
 					if(!promise){
 						promise = new Promise(function(res, rej){
 							let selectedVillage = modelDataService.getSelectedCharacter().getVillage(id);
@@ -105,63 +127,23 @@ define("robotTW2/services/SpyService", [
 										list.push(spy.timeCompleted);
 									}
 									if ((spy.type === SPY_TYPES.NO_SPY) && spy.affordable) {
-										
+
 										data_log.spy.push(
 												{
 													"text": $filter("i18n")("title", $rootScope.loc.ale, "spy") + " - " + formatHelper.villageNameWithCoordinates(selectedVillage.data),
 													"date": time.convertedTime()
 												}
 										)
-										
+
 										socketService.emit(providers.routeProvider.SCOUTING_RECRUIT, {
 											'village_id'	: selectedVillage.getId(),
 											'slot'			: spy.id
 										});
 									};
 								}
-								$timeout(function(){
-									res()
-								}, 3000)
+								res()
 							}
-						}).then(function(){
-							promise = undefined
-							if(isPaused){
-								typeof(listener_resume) == "function" ? listener_resume(): null;
-								listener_resume = undefined
-								listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
-									if(queue.length){
-										sec_promise(queue.shift())
-									} else {
-										wait();
-									}
-								})
-							} else {
-								if(queue.length){
-									sec_promise(queue.shift())
-								} else {
-									wait();
-								}
-							}
-						}, function(){
-							promise = undefined
-							if(isPaused){
-								typeof(listener_resume) == "function" ? listener_resume(): null;
-								listener_resume = undefined
-								listener_resume = $rootScope.$on(providers.eventTypeProvider.RESUME, function(){
-									if(queue.length){
-										sec_promise(queue.shift())
-									} else {
-										wait();
-									}
-								})
-							} else {
-								if(queue.length){
-									sec_promise(queue.shift())
-								} else {
-									wait();
-								}
-							}
-						})
+						}).then(next_seq, next_seq)
 
 					} else {
 						queue.push(id)
@@ -415,7 +397,7 @@ define("robotTW2/services/SpyService", [
 			isPaused = !1
 			$rootScope.$broadcast(providers.eventTypeProvider.RESUME)
 		}
-		
+
 		return	{
 			init					: init,
 			start					: start,
