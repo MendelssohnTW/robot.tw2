@@ -554,7 +554,6 @@ define("robotTW2/services/DefenseService", [
 				var cmds = Object.keys(commandDefense).map(function(param){
 					if(commandDefense[param].params.start_village == data.home.id 
 							&& commandDefense[param].params.target_village == data.target.id
-							&& commandDefense[param].params.target_village == modelDataService.getSelectedCharacter().getId()
 					) {
 						return commandDefense[param].params
 					} else {
