@@ -520,7 +520,7 @@ var robotTW2 = window.robotTW2 = undefined;
 			var compiledTemplate = $compile(templateHTML);
 
 			compiledTemplate(scope, function(clonedElement, scope) {
-				if(!Object.keys(filho.childNodes).length){return}
+				if(!filho.childNodes){return}
 				filho.appendChild(clonedElement[0]);
 			});
 
