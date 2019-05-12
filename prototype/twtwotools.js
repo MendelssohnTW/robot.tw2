@@ -2149,7 +2149,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=ModalCustomArmyController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().querySelector("div").querySelector(".box-paper").querySelector(".scroll-wrap"): {}				
+							return get_father() ? get_father().querySelector("div").querySelector(".box-paper").querySelector(".scroll-wrap"): undefined				
 						}
 						, params = {
 								included_controller		: "ModalCustomArmyController",
@@ -2171,7 +2171,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=ModalSendSpiesController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().querySelector("div").querySelector(".box-paper").querySelector(".scroll-wrap"): {}						
+							return get_father() ? get_father().querySelector("div").querySelector(".box-paper").querySelector(".scroll-wrap"): undefined				
 						}
 						, params = {
 								included_controller		: "ModalSendSpiesController",
@@ -2193,7 +2193,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=BattleReportController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull") ? get_father().querySelector(".tbl-result") : false : {}	
+							return get_father() ? get_father().querySelector(".tbl-result") && !get_father().querySelector("#checkboxFull") ? get_father().querySelector(".tbl-result") : false : undefined	
 						}
 						, params = {
 								included_controller		: "BattleReportController",
@@ -2215,7 +2215,7 @@ var robotTW2 = window.robotTW2 = undefined;
 							return document.querySelector('[ng-controller=TopInterfaceController]');
 						}
 						, get_son = function(){
-							return get_father() ? get_father().querySelector("#logout-wrapper") : {}			
+							return get_father() ? get_father().querySelector("#logout-wrapper") : undefined	
 						}
 						, params = {
 								included_controller		: "TopInterfaceController",
