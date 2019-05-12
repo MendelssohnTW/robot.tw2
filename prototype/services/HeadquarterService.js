@@ -212,8 +212,8 @@ define("robotTW2/services/HeadquarterService", [
 				var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
 				var reBuilds = Object.keys(bd).map(function(key_db){
 					return data_villages.villages[village.getId()].builds.map(function(key){
-						return Object.keys(key)[0]
-					}).find(f=>f==key_db)
+						return key
+					}).find(f=>Object.keys(f)[0]==key_db)
 				}).filter(f => f != undefined)
 				, g = [];
 
