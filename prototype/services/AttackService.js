@@ -145,7 +145,6 @@ define("robotTW2/services/AttackService", [
 		, sendAttack = function(params){
 			return $timeout(function(){
 				commandQueue.bind(params.id_command, resendAttack, data_attack, params, function(fns){
-					console.log(time.convertedTime())
 					commandAttack[fns.params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
 							"params"	: params
@@ -206,8 +205,6 @@ define("robotTW2/services/AttackService", [
 							}
 					)
 					
-					console.log(time.convertedTime())
-
 					socketService.emit(
 							providers.routeProvider.SEND_CUSTOM_ARMY, {
 								start_village		: params.start_village,
