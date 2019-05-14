@@ -3,15 +3,13 @@ define("robotTW2/controllers/MainCompletionController", [
 	"robotTW2/services",
 	"robotTW2/providers",
 	"robotTW2/conf",
-	"robotTW2/databases/data_main",
-	"robotTW2/calibrate_time"
+	"robotTW2/databases/data_main"
 	], function(
 			robotTW2,
 			services,
 			providers,
 			conf,
-			data_main,
-			calibrate_time
+			data_main
 	){
 	return function MainCompletionController($scope) {
 		

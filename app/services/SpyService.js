@@ -179,7 +179,7 @@ define("robotTW2/services/SpyService", [
 			if(!params){return}
 			!(typeof(listener) == "function") ? listener = $rootScope.$on(providers.eventTypeProvider.SCOUTING_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
-			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
+			, timer_delay = (expires - time.convertedTime())
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 
 			if(opt_id){
@@ -253,7 +253,7 @@ define("robotTW2/services/SpyService", [
 		}
 		, resendAttackSpy = function(params){
 			var expires_send = params.data_escolhida - params.duration
-			, timer_delay_send = (expires_send - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command;
+			, timer_delay_send = expires_send - time.convertedTime()
 
 			if(timer_delay_send < 0){
 				removeCommandAttackSpy(params.id_command)
