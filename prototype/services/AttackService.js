@@ -54,8 +54,8 @@ define("robotTW2/services/AttackService", [
 			if(!params){return}
 			!(typeof(listener) == "function") ? listener = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
-			, timer_delay = (expires - time.convertedTime())
-			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
+			, timer_delay = expires - time.convertedTime()
+			, id_command = Math.round(time.convertedTime() + params.data_escolhida).toString();
 
 			if(opt_id){
 				id_command = params.id_command
@@ -150,7 +150,7 @@ define("robotTW2/services/AttackService", [
 							"params"	: params
 					}
 				})
-			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
+			}, params.timer_delay - conf.TIME_DELAY_UPDATE - modelDataService.getSelectedCharacter().getTimeSync().csDiff)
 		}
 		, resendAttack = function(params){
 			let units = {};
@@ -217,7 +217,7 @@ define("robotTW2/services/AttackService", [
 							}
 					)
 					removeCommandAttack(params.id_command)
-				}, timer_delay_send)
+				}, timer_delay_send - modelDataService.getSelectedCharacter().getTimeSync().csDiff)
 			} else {
 				data_log.attack.push(
 						{
