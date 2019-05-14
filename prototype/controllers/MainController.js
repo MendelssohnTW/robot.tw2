@@ -128,10 +128,10 @@ define("robotTW2/controllers/MainController", [
 			services.$timeout(function(){location.reload()}, 2000)
 		}
 
-		$scope.recalibrate = function(){
-			$scope.data_main.auto_calibrate = true;
-			calibrate_time()
-		}
+//		$scope.recalibrate = function(){
+//			$scope.data_main.auto_calibrate = true;
+//			calibrate_time()
+//		}
 
 		$scope.updateTimeCorrection = function(){
 			updateCorrection();
@@ -169,9 +169,9 @@ define("robotTW2/controllers/MainController", [
 			$scope.data_main.set()
 		}, true)
 
-		$scope.$watch("data_main.time_correction_command", function(){
-			$scope.data_main.auto_calibrate = false;
-		}, true)
+//		$scope.$watch("data_main.time_correction_command", function(){
+//			$scope.data_main.auto_calibrate = false;
+//		}, true)
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_TIME_CORRECTION, function() {
 			updateCorrection()

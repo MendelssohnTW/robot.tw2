@@ -496,6 +496,7 @@ define("robotTW2/services/DefenseService", [
 			, mid_time = tot_time / 2
 			, return_time = init_time + mid_time 
 			, rest_time = return_time - time.convertedTime()
+//			, expires = rest_time + robotTW2.databases.data_main.time_correction_command
 			, expires = rest_time + robotTW2.databases.data_main.time_correction_command
 
 			if(cmds.length){
@@ -566,9 +567,10 @@ define("robotTW2/services/DefenseService", [
 				if(!cmd){return}
 
 				let dif = time.convertMStoUTC(data.time_start * 1000) - (cmd.data_escolhida - cmd.time_sniper_ant)
-				, expires = (((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2
+//				, expires = ((((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2) + robotTW2.databases.data_main.time_correction_command
+				, expires = ((((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2)
 				, params = {
-					"timer_delay" 		: expires + robotTW2.databases.data_main.time_correction_command,
+					"timer_delay" 		: expires,
 					"id_command" 		: data.id,
 					"start_village" 	: cmd.start_village,
 					"target_village" 	: cmd.target_village
@@ -779,7 +781,8 @@ define("robotTW2/services/DefenseService", [
 			params.units = units;
 
 			var expires_send = params.data_escolhida - params.time_sniper_ant
-			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
+//			, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command
+			, timer_delay_send = expires_send - time.convertedTime()
 
 			if(timer_delay_send <= -25000){
 				data_log.defense.push(
@@ -1035,7 +1038,7 @@ define("robotTW2/services/DefenseService", [
 				isRunning = !0;
 				reformatCommand();
 //				if(robotTW2.databases.data_main.auto_calibrate){
-				calibrate_time()
+//				calibrate_time()
 //				}
 				if(!listener_lost){
 					listener_lost = $rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, $timeout(verificarAtaques , 60000));

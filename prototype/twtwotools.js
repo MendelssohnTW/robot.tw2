@@ -1823,13 +1823,13 @@ var robotTW2 = window.robotTW2 = undefined;
 					})
 				}
 
-				if(!this.promise_calibrate){
-					this.promise_calibrate = calibrate().then(function(){
-						robotTW2.services.$timeout(function(){
-							this.promise_calibrate = undefined;
-						}, 10 * conf.min)
-					})
-				}
+//				if(!this.promise_calibrate){
+//					this.promise_calibrate = calibrate().then(function(){
+//						robotTW2.services.$timeout(function(){
+//							this.promise_calibrate = undefined;
+//						}, 10 * conf.min)
+//					})
+//				}
 			}
 		})
 		, define("robotTW2/services/grid_town", ["robotTW2", "robotTW2/conf"], function(robotTW2, conf){

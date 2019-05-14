@@ -54,7 +54,6 @@ define("robotTW2/services/AttackService", [
 			if(!params){return}
 			!(typeof(listener) == "function") ? listener = $rootScope.$on(providers.eventTypeProvider.COMMAND_SENT, listener_command_sent) : null;
 			var expires = params.data_escolhida - params.duration
-//			, timer_delay = (expires - time.convertedTime()) + robotTW2.databases.data_main.time_correction_command
 			, timer_delay = (expires - time.convertedTime())
 			, id_command = (Math.round(time.convertedTime() + params.data_escolhida).toString());
 
@@ -91,14 +90,6 @@ define("robotTW2/services/AttackService", [
 				)
 				removeCommandAttack(params.id_command)
 			}
-		}
-		, units_to_send = function (params) {
-			commandQueue.bind(params.id_command, resendAttack, data_attack, params, function(fns){
-				commandAttack[fns.params.id_command] = {
-						"timeout" 	: fns.fn.apply(this, [fns.params]),
-						"params"	: params
-				}
-			})
 		}
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){return}
@@ -152,7 +143,15 @@ define("robotTW2/services/AttackService", [
 			removeCommandAttack(params.id_command)
 		}
 		, sendAttack = function(params){
-			return $timeout(units_to_send.bind(null, params), params.timer_delay - conf.TIME_DELAY_UPDATE)
+			return $timeout(function(){
+				commandQueue.bind(params.id_command, resendAttack, data_attack, params, function(fns){
+					console.log(time.convertedTime())
+					commandAttack[fns.params.id_command] = {
+							"timeout" 	: fns.fn.apply(this, [fns.params]),
+							"params"	: params
+					}
+				})
+			}, params.timer_delay - conf.TIME_DELAY_UPDATE)
 		}
 		, resendAttack = function(params){
 			let units = {};
@@ -169,9 +168,9 @@ define("robotTW2/services/AttackService", [
 			};
 			if (!Object.keys(units).length || !params.enviarFull) {
 				let expires_send = params.data_escolhida - params.duration
-				, timer_delay_send = expires_send - time.convertedTime() + robotTW2.databases.data_main.time_correction_command;
+				, timer_delay_send = expires_send - time.convertedTime()
 
-				if(timer_delay_send < robotTW2.databases.data_main.time_correction_command){
+				if(timer_delay_send < 0){
 					data_log.attack.push(
 							{
 								"text": "attack not sent - expires",
@@ -190,7 +189,38 @@ define("robotTW2/services/AttackService", [
 					return 
 				}
 				$rootScope.$broadcast(providers.eventTypeProvider.PAUSE, 35000)
-				return $timeout(send.bind(null, params), timer_delay_send)
+//				return $timeout(send.bind(null, params), timer_delay_send)
+				return $timeout(function(){
+					data_log.attack.push(
+							{
+								"text": $filter("i18n")("attack", $rootScope.loc.ale, "attack"),
+								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+								"target": formatHelper.villageNameWithCoordinates(
+										{
+											"name": params.target_name,
+											"x": params.target_x,
+											"y": params.target_y
+										}
+								),
+								"date": time.convertedTime()
+							}
+					)
+					
+					console.log(time.convertedTime())
+
+					socketService.emit(
+							providers.routeProvider.SEND_CUSTOM_ARMY, {
+								start_village		: params.start_village,
+								target_village		: params.target_village,
+								type				: params.type,
+								units				: params.units,
+								icon				: 0,
+								officers			: params.officers,
+								catapult_target		: params.catapult_target
+							}
+					)
+					removeCommandAttack(params.id_command)
+				}, timer_delay_send)
 			} else {
 				data_log.attack.push(
 						{
@@ -208,9 +238,6 @@ define("robotTW2/services/AttackService", [
 				)
 				removeCommandAttack(params.id_command)
 			}
-
-
-
 		}
 		, sendCommandAttack = function(scp){
 			var params = {
@@ -263,7 +290,7 @@ define("robotTW2/services/AttackService", [
 				loadScript("/controllers/AttackCompletionController.js", true);
 				isRunning = !0
 //				if(robotTW2.databases.data_main.auto_calibrate){
-				calibrate_time()
+//				calibrate_time()
 //				}
 				Object.values(data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
