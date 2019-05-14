@@ -46,6 +46,10 @@ define("robotTW2/services/VillService", [
 			}
 			Object.keys(data_villages.villages).map(function(key){
 				var vill = getVillage(key);
+				if(!vill){
+					delete data_villages.villages[key]
+					data_villages.set()
+				}
 				local_data_villages.push({
 					id 		: key,
 					name 	: vill.data.name,
