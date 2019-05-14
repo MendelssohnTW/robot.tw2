@@ -188,7 +188,6 @@ define("robotTW2/services/AttackService", [
 					return 
 				}
 				$rootScope.$broadcast(providers.eventTypeProvider.PAUSE, 35000)
-//				return $timeout(send.bind(null, params), timer_delay_send)
 				return $timeout(function(){
 					data_log.attack.push(
 							{
@@ -286,9 +285,6 @@ define("robotTW2/services/AttackService", [
 			ready(function(){
 				loadScript("/controllers/AttackCompletionController.js", true);
 				isRunning = !0
-//				if(robotTW2.databases.data_main.auto_calibrate){
-//				calibrate_time()
-//				}
 				Object.values(data_attack.commands).forEach(function(param){
 					if((param.data_escolhida - param.duration) < time.convertedTime()){
 						commandQueue.unbind(param.id_command, data_attack)
