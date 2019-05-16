@@ -743,14 +743,8 @@ define("robotTW2/services/DefenseService", [
 						"id_command": id_command
 					})
 				}
-//				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
-//					commandDefense[params.id_command] = {
-//							"timeout" 	: fns.fn.apply(this, [fns.params]),
-//							"params"	: params
-//					}
-//				})
-				
-				$timeout(function(){
+
+				var sendDefense = $timeout(function(){
 					if([data_villages.villages[params.start_village].sniper_defense, data_villages.villages[params.start_village].sniper_attack].every(f=>f==false)){
 						removeCommandDefense(params.id_command)
 						return
@@ -763,7 +757,15 @@ define("robotTW2/services/DefenseService", [
 						}
 					})
 					
-				}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff);
+				}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff)
+
+				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
+					commandDefense[params.id_command] = {
+							"timeout" 	: fns.fn.apply(this, [fns.params]),
+							"params"	: params
+					}
+				})
+				
 			} else {
 				data_log.defense.push(
 						{
