@@ -856,7 +856,7 @@ define("robotTW2/services/DefenseService", [
 								target_x			: aldeia.getX(),
 								target_y			: aldeia.getY(),
 								type				: "support",
-								data_escolhida		: time.convertMStoUTC(command.model.completed_at),
+								data_escolhida		: time.convertMStoUTC(command.model.completedAt),
 //								data_escolhida		: time.convertMStoUTC(command.model.time_completed * 1000),
 								time_sniper_ant		: sniper_ant * 1000,
 								time_sniper_post	: sniper_post * 1000,
