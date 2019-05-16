@@ -437,7 +437,7 @@ define("robotTW2/services/DefenseService", [
 					command_id: params.id_command
 				})
 				removeCommandDefense(params.id_command)
-			}, params.timer_delay);
+			}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff);
 		}
 		, sendDefense = function(params){
 			return $timeout(function(){
@@ -552,12 +552,12 @@ define("robotTW2/services/DefenseService", [
 				function send_cmd_cancel(params){
 					if(!promise_command_cancel){
 						promise_command_cancel = new Promise(function(resol, rejec){
-							$timeout(function(){
+//							$timeout(function(){
 								if(Object.values(commandDefense).find(f=>f.id_command==params.id_command))
 									trigger_cancel(params, function(){
 										resol()
 									});
-							}, 5000)
+//							}, 5000)
 						}).then(function(){
 							promise_command_cancel = undefined
 							if(queue_command_cancel.length){
@@ -749,6 +749,7 @@ define("robotTW2/services/DefenseService", [
 							"params"	: params
 					}
 				})
+				
 			} else {
 				data_log.defense.push(
 						{
@@ -841,7 +842,7 @@ define("robotTW2/services/DefenseService", [
 								target_x			: aldeia.getX(),
 								target_y			: aldeia.getY(),
 								type				: "support",
-								data_escolhida		: time.convertMStoUTC(command.model.completed_at),
+								data_escolhida		: time.convertMStoUTC(command.model.completedAt),
 //								data_escolhida		: time.convertMStoUTC(command.model.time_completed * 1000),
 								time_sniper_ant		: sniper_ant * 1000,
 								time_sniper_post	: sniper_post * 1000,
