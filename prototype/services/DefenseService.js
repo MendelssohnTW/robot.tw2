@@ -439,22 +439,22 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 			}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff);
 		}
-//		, sendDefense = function(params){
-//			return $timeout(function(){
-//				if([data_villages.villages[params.start_village].sniper_defense, data_villages.villages[params.start_village].sniper_attack].every(f=>f==false)){
-//					removeCommandDefense(params.id_command)
-//					return
-//				}
-//
-//				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
-//					commandDefense[params.id_command] = {
-//							"timeout" 	: fns.fn.apply(this, [fns.params]),
-//							"params"	: params
-//					}
-//				})
-//				
-//			}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff);
-//		}
+		, sendDefense = function(params){
+			return $timeout(function(){
+				if([data_villages.villages[params.start_village].sniper_defense, data_villages.villages[params.start_village].sniper_attack].every(f=>f==false)){
+					removeCommandDefense(params.id_command)
+					return
+				}
+
+				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
+					commandDefense[params.id_command] = {
+							"timeout" 	: fns.fn.apply(this, [fns.params]),
+							"params"	: params
+					}
+				})
+				
+			}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff);
+		}
 		, resendDefense = function(params){
 			let units = {}
 			, list_units = modelDataService.getSelectedCharacter().getVillage(params.start_village).getUnitInfo().getUnits();
@@ -743,22 +743,6 @@ define("robotTW2/services/DefenseService", [
 						"id_command": id_command
 					})
 				}
-
-				var sendDefense = $timeout(function(){
-					if([data_villages.villages[params.start_village].sniper_defense, data_villages.villages[params.start_village].sniper_attack].every(f=>f==false)){
-						removeCommandDefense(params.id_command)
-						return
-					}
-
-					commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
-						commandDefense[params.id_command] = {
-								"timeout" 	: fns.fn.apply(this, [fns.params]),
-								"params"	: params
-						}
-					})
-					
-				}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff)
-
 				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
 					commandDefense[params.id_command] = {
 							"timeout" 	: fns.fn.apply(this, [fns.params]),
