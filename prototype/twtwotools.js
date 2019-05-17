@@ -1712,22 +1712,113 @@ var robotTW2 = window.robotTW2 = undefined;
 			"robotTW2/time",
 			"robotTW2/conf",
 			"helper/math",
-			"robotTW2/calculateTravelTime"
+			"robotTW2/calculateTravelTime",
+			"conf/unitTypes",
+			"conf/unitCategories"
 			], function(
 					helper,
 					unreadableSeconds,
 					time,
 					conf,
 					math,
-					calculateTravelTime
+					calculateTravelTime,
+					unitTypes,
+					unitCategories
 			) {
 			var promise_calibrate = undefined
 			, listener_completed = undefined
 			return function(){
+				
+				function getUpgradeBonus(id) {
+					var bonusUpgrades = ['training_ground', 'large_ground', 'military_academy'],
+						i = 0,
+						bonus = 0,
+						researches = robotTW2.services.modelDataService.getVillage(id).getBuildingData().getDataForBuilding(buildingTypes.BARRACKS).researches;
+
+					for (i = 0; i < bonusUpgrades.length; i++) {
+						if (researches[bonusUpgrades[i]]) {
+							if (researches[bonusUpgrades[i]].researched || researches[bonusUpgrades[i]].unlocked) {
+								bonus += 3;
+							}
+						}
+					}
+
+					return bonus;
+				}
+				
+				function calculateDiscipline(army, id) {
+					var baseDiscipline,
+						upgradeBonus,
+						discipline;
+
+					if (!army.officers) {
+						return 0;
+					}
+
+					baseDiscipline = getBaseDiscipline(army.units);
+					upgradeBonus = getUpgradeBonus(id);
+					discipline = Math.min(baseDiscipline + upgradeBonus, 10);
+
+					return (10 - discipline) / 2;
+				}
+				
+				function getUnitCategory(unit) {
+					switch (unit) {
+						case unitTypes.SPEAR:
+						case unitTypes.SWORD:
+						case unitTypes.AXE:
+						case unitTypes.ARCHER:
+						case unitTypes.DOPPELSOLDNER:
+							return unitCategories.INFANTRY;
+						case unitTypes.LIGHT_CAVALRY:
+						case unitTypes.HEAVY_CAVALRY:
+						case unitTypes.MOUNTED_ARCHER:
+						case unitTypes.KNIGHT:
+							return unitCategories.CAVALRY;
+						case unitTypes.RAM:
+						case unitTypes.CATAPULT:
+						case unitTypes.TREBUCHET:
+							return unitCategories.SIEGE;
+						case unitTypes.SNOB:
+							return unitCategories.SPECIAL;
+						default:
+							return null;
+					}
+				}
+				
+				function getBaseDiscipline(units) {
+					var unit,
+						category,
+						categories = {};
+
+					for (unit in units) {
+						if (units[unit] > 0) {
+							category = getUnitCategory(unit);
+
+							if (!categories[category]) {
+								categories[category] = true;
+							}
+						}
+					}
+
+					return 4 - Object.keys(categories).length;
+				}
+				
+				var villages = angular.extend({}, robotTW2.services.modelDataService.getSelectedCharacter().getVillageList())
+				villages.forEach(function(vill){
+					let discipline = calculateDiscipline(
+							{
+								'officers'	: {},
+								"units"		: vill.getUnitInfo().units
+							}
+							, vill.getId())
+					vill["discipline"] = discipline
+				})
+				
+				villages.sort(function(a,b){return a.discipline - b.discipline})
+				
 				function calibrate () {
 					return new Promise (function(resolve){
-						var villages = robotTW2.services.modelDataService.getSelectedCharacter().getVillageList()
-
 						function recalibrate(){
 							if(villages.length){
 								let village = villages.shift()
