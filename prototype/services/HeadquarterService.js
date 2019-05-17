@@ -89,7 +89,12 @@ define("robotTW2/services/HeadquarterService", [
 
 				Object.keys(RESOURCE_TYPES).forEach(function(name){
 					if (resources[RESOURCE_TYPES[name]] + data_headquarter.reserva[name.toLowerCase()] < nextLevelCosts[name]){
-
+						data_log.headquarter.push(
+								{
+									"text": village.data.name + " not_enough_resources for " + build, 
+									"date": time.convertedTime()
+								}
+						)
 						data_log.set()
 						callback(!1, {[village.data.name] : "not_enough_resources for " + build})
 						return
@@ -259,16 +264,7 @@ define("robotTW2/services/HeadquarterService", [
 										} else if(data == "instant"){
 											res(true);
 										}
-										let text = data
-										if(Object.keys(data).length){
-											text =  Object.keys(data)[0] + Object.values(data)[0]
-										}
-										data_log.headquarter.push(
-												{
-													"text": text, 
-													"date": time.convertedTime()
-												}
-										)
+										
 										res()
 									})
 								} else {
