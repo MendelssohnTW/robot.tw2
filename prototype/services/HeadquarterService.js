@@ -106,6 +106,7 @@ define("robotTW2/services/HeadquarterService", [
 								"date": time.convertedTime()
 							}
 					)
+					data_log.set()
 
 					socketService.emit(providers.routeProvider.VILLAGE_UPGRADE_BUILDING, {
 						building: build,
@@ -123,6 +124,7 @@ define("robotTW2/services/HeadquarterService", [
 					}) 
 				} else {
 					callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
+					
 				}
 			}
 		}
@@ -187,6 +189,12 @@ define("robotTW2/services/HeadquarterService", [
 								&& (village.isInitialized() || villageService.initializeVillage(village))
 						) 
 				) {
+					data_log.headquarter.push(
+							{
+								"text":"No upgrade " + formatHelper.villageNameWithCoordinates(village.data) + " - no limit for upgrade", 
+								"date": time.convertedTime()
+							}
+					)
 					resolve();
 					return;
 				}
@@ -205,6 +213,12 @@ define("robotTW2/services/HeadquarterService", [
 				data_villages.villages[village.getId()].builds = checkBuildingOrderLimit(data_villages.villages[village.getId()]);
 
 				if(!data_villages.villages[village.getId()].builds.length) {
+					data_log.headquarter.push(
+							{
+								"text":"No upgrade " + formatHelper.villageNameWithCoordinates(village.data) + " - no Build for upgrade", 
+								"date": time.convertedTime()
+							}
+					)
 					resolve();
 					return;
 				}
@@ -243,6 +257,13 @@ define("robotTW2/services/HeadquarterService", [
 										} else if(data == "instant"){
 											res(true);
 										}
+										data_log.headquarter.push(
+												{
+													"text": data, 
+													"date": time.convertedTime()
+												}
+										)
+										data_log.set()
 										res()
 									})
 								} else {
