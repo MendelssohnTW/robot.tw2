@@ -219,7 +219,7 @@ define("robotTW2/controllers/SpyController", [
 			return !!groups.find(f=>f.name=="no farm")
 		}
 		, checkFilter = function(village){
-			if(checkGroup(village.village_id)){
+			if(!checkGroup(village.village_id)){
 				return village	
 			}
 		}
@@ -227,7 +227,7 @@ define("robotTW2/controllers/SpyController", [
 			if(!$scope.item && !opt){return}
 			if($scope.villages_for_sent.length){
 
-				$scope.villages_for_sent.filter(checkFilter)
+				$scope.villages_for_sent = $scope.villages_for_sent.filter(checkFilter)
 				
 				var list_proc = [];
 				var villages = services.modelDataService.getSelectedCharacter().getVillages();
