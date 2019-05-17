@@ -214,9 +214,21 @@ define("robotTW2/controllers/SpyController", [
 				callbackgetProfile(data)
 			});
 		}
+		, checkGroup = function(village_id){
+			let groups = services.modelDataService.getGroupList().getVillageGroups(village_id)
+			return !!groups.find(f=>f.name=="no farm")
+		}
+		, checkFilter = function(village){
+			if(checkGroup(village.getId())){
+				return village	
+			}
+		}
 		, sendAttackSpyPlayer = function(opt){
 			if(!$scope.item && !opt){return}
 			if($scope.villages_for_sent.length){
+
+				$scope.villages_for_sent.filter(checkFilter)
+				
 				var list_proc = [];
 				var villages = services.modelDataService.getSelectedCharacter().getVillages();
 				Object.keys($scope.villages_for_sent).map(function(elem){
