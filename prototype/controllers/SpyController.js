@@ -219,7 +219,7 @@ define("robotTW2/controllers/SpyController", [
 			return !!groups.find(f=>f.name=="no farm")
 		}
 		, checkFilter = function(village){
-			if(checkGroup(village.getId())){
+			if(checkGroup(village.village_id)){
 				return village	
 			}
 		}
