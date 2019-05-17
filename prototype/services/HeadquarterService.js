@@ -89,6 +89,8 @@ define("robotTW2/services/HeadquarterService", [
 
 				Object.keys(RESOURCE_TYPES).forEach(function(name){
 					if (resources[RESOURCE_TYPES[name]] + data_headquarter.reserva[name.toLowerCase()] < nextLevelCosts[name]){
+
+						data_log.set()
 						callback(!1, {[village.data.name] : "not_enough_resources for " + build})
 						return
 					}
@@ -124,7 +126,7 @@ define("robotTW2/services/HeadquarterService", [
 					}) 
 				} else {
 					callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
-					
+
 				}
 			}
 		}
@@ -225,9 +227,9 @@ define("robotTW2/services/HeadquarterService", [
 
 				var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
 				, bt = data_villages.villages[village.getId()].builds
-				
+
 				bt = bt.filter(f=>Object.values(f)[0]!=0)
-				
+
 				var bf = Object.keys(bd).map(function(bd_key){
 					return bt.find(f=>Object.keys(f)[0]==bd_key) ? {[bd_key]:bd[bd_key]} : undefined;
 				}).filter(f => f != undefined)
@@ -257,13 +259,16 @@ define("robotTW2/services/HeadquarterService", [
 										} else if(data == "instant"){
 											res(true);
 										}
+										let text = data
+										if(Object.keys(data).length){
+											text =  Object.keys(data)[0] + Object.values(data)[0]
+										}
 										data_log.headquarter.push(
 												{
-													"text": data, 
+													"text": text, 
 													"date": time.convertedTime()
 												}
 										)
-										data_log.set()
 										res()
 									})
 								} else {
