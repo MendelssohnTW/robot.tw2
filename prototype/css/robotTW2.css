@@ -372,3 +372,7 @@ px
     width: 100%;
     padding-bottom: 62px;
 }
+
+.robotTW2 .win-foot {
+    z-index: 1000;
+}
