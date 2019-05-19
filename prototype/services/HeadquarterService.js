@@ -217,9 +217,11 @@ define("robotTW2/services/HeadquarterService", [
 					)
 				}
 
-				data_villages.villages[village.getId()].builds = checkBuildingOrderLimit(data_villages.villages[village.getId()]);
+//				var bt = data_villages.villages[village.getId()].builds = checkBuildingOrderLimit(data_villages.villages[village.getId()]);
+				var bt = checkBuildingOrderLimit(data_villages.villages[village.getId()]);
+				bt = bt.filter(f=>Object.values(f)[0]!=0)
 
-				if(!data_villages.villages[village.getId()].builds.length) {
+				if(!bt.length) {
 					data_log.headquarter.push(
 							{
 								"text":"No upgrade " + formatHelper.villageNameWithCoordinates(village.data) + " - no Build for upgrade", 
@@ -231,11 +233,7 @@ define("robotTW2/services/HeadquarterService", [
 				}
 
 				var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
-				, bt = data_villages.villages[village.getId()].builds
-
-				bt = bt.filter(f=>Object.values(f)[0]!=0)
-
-				var bf = Object.keys(bd).map(function(bd_key){
+				, bf = Object.keys(bd).map(function(bd_key){
 					return bt.find(f=>Object.keys(f)[0]==bd_key) ? {[bd_key]:bd[bd_key]} : undefined;
 				}).filter(f => f != undefined)
 				, g = [];
