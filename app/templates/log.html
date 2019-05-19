@@ -89,7 +89,7 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in attack | orderBy : '-date'">
+								<tr ng-repeat="log in data_log.attack | orderBy : '-date'">
 									<td class="cell-right"
 										ng-if="log.origin != null && log.target != null"
 										class="cell-left">{{log.text}}</td>
@@ -125,7 +125,7 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in deposit | orderBy : '-date'">
+								<tr ng-repeat="log in data_log.deposit | orderBy : '-date'">
 									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
@@ -190,8 +190,8 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in headquarter | orderBy : '-date'">
-									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
+								<tr ng-repeat="log in data_log.headquarter | orderBy : '-date'">
+									<td class="cell-left">{{log.text}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
 										'HH:mm:ss.sss'}}</td>
@@ -320,7 +320,7 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in spy | orderBy : '-date'">
+								<tr ng-repeat="log in data_log.spy | orderBy : '-date'">
 									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
