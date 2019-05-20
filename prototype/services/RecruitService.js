@@ -159,7 +159,7 @@ define("robotTW2/services/RecruitService", [
 									, amount = gf_units[unit_type]
 									, remaining = grs_units[unit_type] - villageUnits[unit_type]
 
-									if (remaining <= 0 && !recruitable) {
+									if (remaining <= 0 || !recruitable) {
 										return nt()
 									};
 									if (amount > remaining) {
