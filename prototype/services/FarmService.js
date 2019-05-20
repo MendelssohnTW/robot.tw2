@@ -170,6 +170,11 @@ define("robotTW2/services/FarmService", [
 				, preset_units = cmd_preset.preset_units
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
+				
+				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
+					resv();
+					return !1;
+				}
 
 				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
@@ -182,18 +187,13 @@ define("robotTW2/services/FarmService", [
 					}
 				}) : aldeia_commands = [];
 
-				let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[cmd_preset.village_id].presets).map(function(elem){
-					return data_villages.villages[cmd_preset.village_id].presets[elem].max_commands_farm
-				})) || 0;
+//				let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[cmd_preset.village_id].presets).map(function(elem){
+//					return data_villages.villages[cmd_preset.village_id].presets[elem].max_commands_farm
+//				})) || 0;
 
-				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
-					resv();
-					return !1;
-				}
-
-				var cmd_rest_preset = max_cmds - aldeia_commands.length
-				, cmd_rest = data_villages.villages[cmd_preset.village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
-				, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
+//				var cmd_rest_preset = max_cmds - aldeia_commands.length
+				var cmd_rest = data_villages.villages[cmd_preset.village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
+				, cmd_ind = Math.min(cmd_rest, t_obj[1])
 				, r = undefined
 				, villages = []
 				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units) / 2
