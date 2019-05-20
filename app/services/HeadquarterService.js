@@ -80,7 +80,6 @@ define("robotTW2/services/HeadquarterService", [
 			, nextLevelCosts = buildingData.nextLevelCosts
 			, not_enough_resources = false
 			, firstQueue = village.getBuildingQueue().getQueue()[0];
-
 			if(firstQueue && firstQueue.canBeFinishedForFree){
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 				callback(!1, "instant")
@@ -131,7 +130,6 @@ define("robotTW2/services/HeadquarterService", [
 					}) 
 				} else {
 					callback(!1, {[village.data.name] : buildingData.upgradeability + " for " + build})
-
 				}
 			}
 		}

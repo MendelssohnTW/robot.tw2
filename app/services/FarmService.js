@@ -170,30 +170,8 @@ define("robotTW2/services/FarmService", [
 				, preset_units = cmd_preset.preset_units
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
-
-				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
-				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
-				if(!countCommands[cicle_internal][cmd_preset.village_id]["village"]) {countCommands[cicle_internal][cmd_preset.village_id]["village"] = []}
-				if(!countCommands[cicle_internal][cmd_preset.village_id][preset_id]) {countCommands[cicle_internal][cmd_preset.village_id][preset_id] = []}
-
-				aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
-					if(check_commands(cmd, cmd_preset.village_id, preset_id, cicle_internal)){
-						countCommands[cicle_internal][cmd_preset.village_id]["village"].push(cmd.targetVillageId);
-					}
-				}) : aldeia_commands = [];
-
-				let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[cmd_preset.village_id].presets).map(function(elem){
-					return data_villages.villages[cmd_preset.village_id].presets[elem].max_commands_farm
-				})) || 0;
-
-				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
-					resv();
-					return !1;
-				}
-
-				var cmd_rest_preset = max_cmds - aldeia_commands.length
 				, cmd_rest = data_villages.villages[cmd_preset.village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
-				, cmd_ind = Math.min(cmd_rest, t_obj[1], cmd_rest_preset)
+				, cmd_ind = Math.min(cmd_rest, t_obj[1])
 				, r = undefined
 				, villages = []
 				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units) / 2
@@ -202,10 +180,27 @@ define("robotTW2/services/FarmService", [
 					return elem.data
 				}).filter(f=>f!=null)
 
-				if(cmd_ind <= 0 || !countCommands[cicle_internal][cmd_preset.village_id] || !preset_id){
+				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds || cmd_ind <= 0){
 					resv();
-					return;
+					return !1;
 				}
+				
+				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
+				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
+				if(!countCommands[cicle_internal][cmd_preset.village_id]["village"]) {countCommands[cicle_internal][cmd_preset.village_id]["village"] = []}
+				if(!countCommands[cicle_internal][cmd_preset.village_id][preset_id]) {countCommands[cicle_internal][cmd_preset.village_id][preset_id] = []}
+
+				aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
+					if(check_commands(cmd, cmd_preset.village_id, preset_id, cicle_internal) && !countCommands[cicle_internal][cmd_preset.village_id]["village"].find(f=>f==cmd.targetVillageId)){
+						countCommands[cicle_internal][cmd_preset.village_id]["village"].push(cmd.targetVillageId)
+					}
+				}) : aldeia_commands = [];
+
+//				let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[cmd_preset.village_id].presets).map(function(elem){
+//				return data_villages.villages[cmd_preset.village_id].presets[elem].max_commands_farm
+//				})) || 0;
+
+//				var cmd_rest_preset = max_cmds - aldeia_commands.length
 
 				dt.map(function(a){
 					return Object.keys(a).map(function(x){
