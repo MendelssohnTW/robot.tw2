@@ -170,7 +170,7 @@ define("robotTW2/services/FarmService", [
 				, preset_units = cmd_preset.preset_units
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
-				
+
 				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
 					resv();
 					return !1;
@@ -182,13 +182,13 @@ define("robotTW2/services/FarmService", [
 				if(!countCommands[cicle_internal][cmd_preset.village_id][preset_id]) {countCommands[cicle_internal][cmd_preset.village_id][preset_id] = []}
 
 				aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
-					if(check_commands(cmd, cmd_preset.village_id, preset_id, cicle_internal)){
-						countCommands[cicle_internal][cmd_preset.village_id]["village"].push(cmd.targetVillageId);
+					if(check_commands(cmd, cmd_preset.village_id, preset_id, cicle_internal) && !countCommands[cicle_internal][cmd_preset.village_id]["village"].find(f=>f==cmd.targetVillageId)){
+						countCommands[cicle_internal][cmd_preset.village_id]["village"].push(cmd.targetVillageId)
 					}
 				}) : aldeia_commands = [];
 
 //				let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[cmd_preset.village_id].presets).map(function(elem){
-//					return data_villages.villages[cmd_preset.village_id].presets[elem].max_commands_farm
+//				return data_villages.villages[cmd_preset.village_id].presets[elem].max_commands_farm
 //				})) || 0;
 
 //				var cmd_rest_preset = max_cmds - aldeia_commands.length
