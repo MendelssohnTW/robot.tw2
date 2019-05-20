@@ -170,12 +170,21 @@ define("robotTW2/services/FarmService", [
 				, preset_units = cmd_preset.preset_units
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
+				, cmd_rest = data_villages.villages[cmd_preset.village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
+				, cmd_ind = Math.min(cmd_rest, t_obj[1])
+				, r = undefined
+				, villages = []
+				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units) / 2
+				, data = mapData.loadTownData(Math.trunc(cmd_preset.x - (dist / 2)), Math.trunc(cmd_preset.y - (dist / 2)), Math.trunc(dist * 1.42), Math.trunc(dist * 1.42))
+				, dt = data.map(function(elem){
+					return elem.data
+				}).filter(f=>f!=null)
 
-				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds){
+				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds || cmd_ind <= 0){
 					resv();
 					return !1;
 				}
-
+				
 				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]["village"]) {countCommands[cicle_internal][cmd_preset.village_id]["village"] = []}
@@ -192,20 +201,6 @@ define("robotTW2/services/FarmService", [
 //				})) || 0;
 
 //				var cmd_rest_preset = max_cmds - aldeia_commands.length
-				var cmd_rest = data_villages.villages[cmd_preset.village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
-				, cmd_ind = Math.min(cmd_rest, t_obj[1])
-				, r = undefined
-				, villages = []
-				, dist = get_dist(cmd_preset.village_id,cmd_preset.max_journey_time, cmd_preset.preset_units) / 2
-				, data = mapData.loadTownData(Math.trunc(cmd_preset.x - (dist / 2)), Math.trunc(cmd_preset.y - (dist / 2)), Math.trunc(dist * 1.42), Math.trunc(dist * 1.42))
-				, dt = data.map(function(elem){
-					return elem.data
-				}).filter(f=>f!=null)
-
-				if(cmd_ind <= 0 || !countCommands[cicle_internal][cmd_preset.village_id] || !preset_id){
-					resv();
-					return;
-				}
 
 				dt.map(function(a){
 					return Object.keys(a).map(function(x){
