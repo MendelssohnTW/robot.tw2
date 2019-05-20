@@ -170,7 +170,8 @@ define("robotTW2/services/FarmService", [
 				, preset_units = cmd_preset.preset_units
 				, aldeia_commands = village.getCommandListModel().getCommands()
 				, t_obj = units_analyze(preset_units, aldeia_units)
-				, cmd_rest = data_villages.villages[cmd_preset.village_id].presets[preset_id].max_commands_farm - aldeia_commands.length
+				, max_cmds = data_villages.villages[cmd_preset.village_id].presets[preset_id].max_commands_farm
+				, cmd_rest = max_cmds - aldeia_commands.length
 				, cmd_ind = Math.min(cmd_rest, t_obj[1])
 				, r = undefined
 				, villages = []
@@ -180,7 +181,7 @@ define("robotTW2/services/FarmService", [
 					return elem.data
 				}).filter(f=>f!=null)
 
-				if(!t_obj || t_obj[1] == 0 || aldeia_commands.length >= max_cmds || cmd_ind <= 0){
+				if(cmd_ind <= 0){
 					resv();
 					return !1;
 				}
