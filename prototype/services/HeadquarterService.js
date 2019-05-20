@@ -80,10 +80,6 @@ define("robotTW2/services/HeadquarterService", [
 			, nextLevelCosts = buildingData.nextLevelCosts
 			, not_enough_resources = false
 			, firstQueue = village.getBuildingQueue().getQueue()[0];
-			if(buildingData.locked){
-				callback(!1, {[village.data.name] : "Locked for " + build})
-				return
-			}
 			if(firstQueue && firstQueue.canBeFinishedForFree){
 				premiumActionService.instantBuild(firstQueue, locationTypes.HEADQUARTER, true);
 				callback(!1, "instant")
