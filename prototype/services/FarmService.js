@@ -211,8 +211,8 @@ define("robotTW2/services/FarmService", [
 					})
 				})
 
-				villages = villages.filter(f => f.affiliation == "barbarian") //filtra as barbaras
 				villages = villages.filter(f => !data_farm.list_exceptions.find(g => g == f.id)) // filtra as excessões
+				villages = villages.filter(f => f.affiliation == "barbarian") //filtra as barbaras
 
 				villages = Object.keys(villages).map(function (barbara) { //verificar a presença da aldeia nos comandos existentes do ciclo
 					if (check_commands_for_bb(villages[barbara], cicle_internal)) {
@@ -490,8 +490,10 @@ define("robotTW2/services/FarmService", [
 		}
 		, analyze_report = function analyze_report(event, data){
 			if(data.type == "attack" && data.read == 0 && (data.result === REPORT_TYPE_CONF.RESULT_TYPES.CASUALTIES || data.result === REPORT_TYPE_CONF.RESULT_TYPES.DEFEAT)){
-				data_farm.list_exceptions.push(data.target_village_id)
-				data_farm.set();
+				if(!data_farm.list_exceptions.find(f=>f==data.target_village_id)){
+					data_farm.list_exceptions.push(data.target_village_id)
+					data_farm.set();
+				}
 			}
 		}
 		, start = function () {
