@@ -1,6 +1,8 @@
 window.name = 'NG_ENABLE_DEBUG_INFO!';
 
-var urlServer = "https://mendelssohntw.github.io/robot.tw2/app/";
+var urlServer = "https://laverel.com/script/prototype/";
+//var urlServer = "https://delacasa.com.py/script/prototype/";
+//var urlServer = "https://mendelssohntw.github.io/robot.tw2/prototype/";
 
 if (!window.inject){
 	window.inject = function inject(url) {
