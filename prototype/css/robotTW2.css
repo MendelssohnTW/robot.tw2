@@ -311,6 +311,7 @@ px
 .robotTW2 .win-main {
 	position: relative !important;
 	z-index: 999 !important;
+	padding-bottom: 42px
 }
 
 .robotTW2 .main.content-settings {
