@@ -223,13 +223,19 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.uplist = function(item, index){
-			$scope.data_headquarter.standard.buildinglist
-			console.log("teste")
+			let ant = $scope.data_headquarter.standard.buildinglist[index]
+			let post = $scope.data_headquarter.standard.buildinglist[index - 1]
+			$scope.data_headquarter.standard.buildinglist[index] = post
+			$scope.data_headquarter.standard.buildinglist[index - 1] = ant
+			update_standard();
 		}
 
 		$scope.downlist = function(item, index){
-			$scope.data_headquarter.standard.buildinglist
-			console.log("teste")
+			let ant = $scope.data_headquarter.standard.buildinglist[index]
+			let post = $scope.data_headquarter.standard.buildinglist[index + 1]
+			$scope.data_headquarter.standard.buildinglist[index] = post
+			$scope.data_headquarter.standard.buildinglist[index + 1] = ant
+			update_standard();
 		}
 
 		$scope.levelupstandard = function(key){
