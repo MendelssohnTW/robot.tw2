@@ -75,9 +75,9 @@ define("robotTW2/services/HeadquarterService", [
 					if(buildingList){
 						buildingList.forEach(function(key){
 							let name = Object.keys(key)[0]
-							let level = Object.value(key)[0]
+							let level = Object.values(key)[0]
 							if(buildingLevels[key_level][name] < level && level > 0){
-								builds.push({[name] : level})
+								builds.push(name)
 							}
 						})
 					}
