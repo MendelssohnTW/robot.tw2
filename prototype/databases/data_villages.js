@@ -116,6 +116,7 @@ define("robotTW2/databases/data_villages", [
 						buildingorder 			: conf.BUILDINGORDER,
 						buildinglimit 			: conf.BUILDINGLIMIT,
 						buildinglevels 			: conf.BUILDINGLEVELS,
+						buildinglist 			: conf.BUILDINGLIST,
 						farm_activate 			: true,
 						defense_activate 		: true,
 						headquarter_activate	: true,
