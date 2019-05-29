@@ -39,6 +39,7 @@
 		"trebuchet": "Trabuco"
 	},
 	"buildings": {
+	    "stop": "Parar aqui",
 		"academy": "Academia",
 		"headquarter": "Edifício principal",
 		"farm": "Fazenda",

@@ -39,6 +39,7 @@
 		"trebuchet": "Trebuchet"
 	},
 	"buildings": {
+	    "stop": "Stop here",
 		"academy": "Academy",
 		"headquarter": "Headquarter",
 		"farm": "Farm",
