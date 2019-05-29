@@ -198,8 +198,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			let ant = $scope.local_data_select_list[index]
 			let post = $scope.local_data_select_list[index - 1]
 
-			$scope.data_select.selectedOption.value.buildinglist[index] = post
-			$scope.data_select.selectedOption.value.buildinglist[index - 1] = ant
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index] = post
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index - 1] = ant
 			update_select();
 		}
 
@@ -207,8 +207,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			let ant = $scope.local_data_select_list[index]
 			let post = $scope.local_data_select_list[index + 1]
 
-			$scope.data_select.selectedOption.value.buildinglist[index] = post
-			$scope.data_select.selectedOption.value.buildinglist[index + 1] = ant
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index] = post
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index + 1] = ant
 			update_select();
 		}
 

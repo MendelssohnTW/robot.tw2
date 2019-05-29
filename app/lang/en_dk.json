@@ -39,6 +39,7 @@
 		"trebuchet": "Trebuchet"
 	},
 	"buildings": {
+	    "stop": "Stop here",
 		"academy": "Academy",
 		"headquarter": "Headquarter",
 		"farm": "Farm",
@@ -114,7 +115,8 @@
 		"init_standard": "Auto",
 		"seq_int": "Integral sequence",
 		"seq_flex": "Flexible Sequence",
-		"text_seq": "Flexible sequence is defined sequence to raise buildings as resource availability. Integral sequence is the sequence that raises buildings as levels move to the next building only when they reach the set maximum level",
+		"seq_list": "List Sequence",
+		"text_seq": "Flexible sequence is defined sequence to raise buildings as resource availability. Integral sequence is the sequence that raises buildings as levels move to the next building only when they reach the set maximum level. List Sequence is a file defined in a list of defined settings",
 		"headquarter": "Main building",
 		"text_interval_headquarter": "Next cycle in ",
 		"text_executebuildingorder": "Enable / Disable barrack automation",
@@ -127,6 +129,7 @@
 		"production": "Production",
 		"base": "Base",
 		"priority": "Sequence of priorities",
+		"list": "List Sequence",
 		"levels": "Level limit",
 		"activate": "Current state",
 		"introducing": "You can create customizations by villages. Initially, they will be configured with the global settings",

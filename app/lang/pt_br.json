@@ -39,6 +39,7 @@
 		"trebuchet": "Trabuco"
 	},
 	"buildings": {
+		"stop": "Parar aqui",
 		"academy": "Academia",
 		"headquarter": "Edifício principal",
 		"farm": "Fazenda",
@@ -114,7 +115,8 @@
 		"init_standard": "Auto",
 		"seq_int": "Sequência íntegra",
 		"seq_flex": "Sequência flexível",
-		"text_seq": "Sequência flexível é sequência definida para elevar os edifícios conforme a disponibilidade de recursos. Sequência íntegra é a sequência que eleva os edifícios conforme os níveis passando ao próximo edifício somente quando atingir o nível máximo setado",
+		"seq_list": "Sequência de lista",
+        "text_seq": "Sequência flexível é sequência definida para elevar os edifícios conforme a disponibilidade de recursos. Sequência íntegra é a sequência que eleva os edifícios conforme os níveis passando ao próximo edifício somente quando atingir o nível máximo setado. Sequência de lista é a sequência definida numa lista conforme níeveis setados",
 		"headquarter": "Edificio principal",
 		"text_interval_headquarter": "Próximo ciclo em ",
 		"text_executebuildingorder": "Ativar/Desativar automatização do quartel",
@@ -127,6 +129,7 @@
 		"production": "Produção",
 		"base": "Base",
 		"priority": "Sequência de prioridades",
+		"list": "Sequência de lista",
 		"levels": "Limite de níveis",
 		"activate": "Estado atual",
 		"introducing": "Você pode criar customizações por aldeias. Inicialmente serão configuradas com as configurações globais",
