@@ -60,7 +60,8 @@ define("robotTW2/services/HeadquarterService", [
 			var buildingLevels = vill.buildinglevels
 			, buildingLimit = vill.buildinglimit[vill.selected.value]
 			, buildingList = vill.buildinglist[vill.selected.value]
-			, builds = [];
+			, builds = []
+			, loop_control = false;
 
 			Object.keys(buildingLevels).forEach(function(key_level){
 				if(data_headquarter.seq_type != "seq_list"){
@@ -75,7 +76,10 @@ define("robotTW2/services/HeadquarterService", [
 					if(buildingList){
 						buildingList.forEach(function(key){
 							let name = Object.keys(key)[0]
-							if(name == "stop"){return}
+							if(name == "stop" || loop_control){
+								loop_control = true
+								return
+							}
 							let level = Object.values(key)[0]
 							if(buildingLevels[key_level][name] < level && level > 0){
 								builds.push(name)
@@ -243,7 +247,7 @@ define("robotTW2/services/HeadquarterService", [
 					resolve();
 					return;
 				}
-				
+
 				var g = []
 
 				if(data_headquarter.seq_type != "seq_list"){
