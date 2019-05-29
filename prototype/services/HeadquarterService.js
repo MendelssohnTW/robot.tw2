@@ -63,7 +63,7 @@ define("robotTW2/services/HeadquarterService", [
 			, builds = [];
 
 			Object.keys(buildingLevels).forEach(function(key_level){
-				if(data_headquarter.seq_type != "seq_int"){
+				if(data_headquarter.seq_type != "seq_list"){
 					if(buildingLimit){
 						Object.keys(buildingLimit).forEach(function(key_limit){
 							if(buildingLevels[key_level][key_limit] < buildingLimit[key_limit] && buildingLimit[key_limit] > 0){
