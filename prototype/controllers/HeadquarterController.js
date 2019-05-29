@@ -89,7 +89,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_standard_order = set_list_obj($scope.data_headquarter.standard.buildingorder, "buildings")
 			$scope.local_data_standard_limit = set_list_obj($scope.data_headquarter.standard.buildinglimit, "buildings", "name")
 			$scope.local_data_standard_list = set_list($scope.data_headquarter.standard.buildinglist, "buildings")
-			$scope.array_length = $scope.local_data_standard_list.length 
+			$scope.array_length = $scope.local_data_standard_list.length - 1
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
@@ -103,7 +103,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_select_order = set_list_obj($scope.data_select.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value.selected.value], "buildings")
 			$scope.local_data_select_limit = set_list_obj($scope.data_select.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value.selected.value], "buildings", "name")
 			$scope.local_data_select_list = set_list($scope.data_select.selectedOption.value.buildinglist[$scope.data_select.selectedOption.value.selected.value], "buildings")
-			$scope.array_length = $scope.local_data_standard_list.length
+			$scope.array_length = $scope.local_data_standard_list.length - 1
 
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
