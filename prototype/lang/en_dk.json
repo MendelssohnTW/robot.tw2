@@ -128,6 +128,7 @@
 		"production": "Production",
 		"base": "Base",
 		"priority": "Sequence of priorities",
+		"list": "List Sequence",
 		"levels": "Level limit",
 		"activate": "Current state",
 		"introducing": "You can create customizations by villages. Initially, they will be configured with the global settings",
