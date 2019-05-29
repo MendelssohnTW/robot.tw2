@@ -839,6 +839,7 @@ var robotTW2 = window.robotTW2 = undefined;
 						"BUILDINGLEVELS"			: levelsBuilding,
 						"BUILDINGORDER"				: new getJSON("orderBuilding"),
 						"BUILDINGLIMIT"				: new getJSON("limitBuilding"),
+						"BUILDINGLIST"				: new getJSON("listBuilding"),
 						"VERSION"					: new getJSON("version"),
 						"DBS" 						: new getJSON("dbs"),
 						"HOTKEY"					: new getJSON("hotkey"),

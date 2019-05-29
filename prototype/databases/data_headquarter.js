@@ -30,7 +30,7 @@ define("robotTW2/databases/data_headquarter", [
 			interval				: conf.INTERVAL.HEADQUARTER,
 			time_complete			: 0,
 			version					: conf.VERSION.HEADQUARTER,
-			seq						: false,
+			seq_type				: "seq_flex",
 			reserva 				: {
 				food			: conf.RESERVA.HEADQUARTER.FOOD,
 				wood			: conf.RESERVA.HEADQUARTER.WOOD,
@@ -46,8 +46,9 @@ define("robotTW2/databases/data_headquarter", [
 				}
 			}),
 			standard				: {
-				"buildingorder": conf.BUILDINGORDER["standard"],
-				"buildinglimit": conf.BUILDINGLIMIT["standard"]
+				"buildingorder"	: conf.BUILDINGORDER["standard"],
+				"buildinglimit"	: conf.BUILDINGLIMIT["standard"],
+				"buildinglist"	: conf.BUILDINGLIST["standard"]
 			}
 
 	}
