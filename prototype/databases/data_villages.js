@@ -111,6 +111,7 @@ define("robotTW2/databases/data_villages", [
 				|| !data_villages.villages[m].buildingorder 
 				|| !data_villages.villages[m].buildinglimit
 				|| !data_villages.villages[m].buildinglevels
+				|| !data_villages.villages[m].buildinglist
 				){
 					angular.extend(villagesExtended[m], {
 						buildingorder 			: conf.BUILDINGORDER,

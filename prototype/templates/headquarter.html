@@ -57,21 +57,21 @@
 											style="margin-left: 12px; margin-right: 12px;">{{seq_flex}}</label><a
 											tooltip="" tooltip-content="{{seq_flex}}" id="seq_flex"
 											href="#" class="size-34x34 btn-orange"
-											ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
+											ng-class="{'icon-26x26-check-positive' : data_headquarter.seq_type == 'seq_flex',  'icon-26x26-check-negative' : data_headquarter.seq_type != 'seq_flex'}"
 											ng-click="toggle_seq_flex()"></a></td>
 
 										<td class="cell-right"><label for="seq_int"
 											style="margin-left: 12px; margin-right: 12px;">{{seq_int}}</label><a
 											tooltip="" tooltip-content="{{seq_int}}" id="seq_int"
 											href="#" class="size-34x34 btn-orange"
-											ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
+											ng-class="{'icon-26x26-check-positive' : data_headquarter.seq_type == 'seq_int',  'icon-26x26-check-negative' : data_headquarter.seq_type != 'seq_int'}"
 											ng-click="toggle_seq_int()"></a></td>
 
 										<td class="cell-right"><label for="seq_list"
 											style="margin-left: 12px; margin-right: 12px;">{{seq_list}}</label><a
 											tooltip="" tooltip-content="{{seq_list}}" id="seq_list"
 											href="#" class="size-34x34 btn-orange"
-											ng-class="{'icon-26x26-check-positive' : data_farm.unit_direction, 'icon-26x26-check-negative' : !data_farm.unit_direction}"
+											ng-class="{'icon-26x26-check-positive' : data_headquarter.seq_type == 'seq_list',  'icon-26x26-check-negative' : data_headquarter.seq_type != 'seq_list'}"
 											ng-click="toggle_seq_list()"></a></td>
 									</tr>
 								</tbody>
@@ -121,12 +121,12 @@
                                                     <td class="cell-right"><div>{{item.value}}</div></td>
                                                     <td class="cell-right">
                                                         <div>
-                                                            <div ng-show="item.value > 1"
+                                                            <div ng-show="$index > 0"
                                                                 class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-                                                                ng-click="uplist(item)"></div>
-                                                            <div ng-show="item.value < 17"
+                                                                ng-click="uplist(item, $index)"></div>
+                                                            <div ng-show="$index < array_length"
                                                                 class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-                                                                ng-click="downlist(item)"></div>
+                                                                ng-click="downlist(item, $index)"></div>
                                                         </div>
                                                     </td>
                                                 </tr>
