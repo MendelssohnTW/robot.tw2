@@ -192,6 +192,25 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][prox.name] -= 1
 			update_select();
 		}
+		
+		$scope.upselectlist = function(item, index){
+			
+			let ant = $scope.local_data_select_list[index]
+			let post = $scope.local_data_select_list[index - 1]
+
+			$scope.data_select.selectedOption.value.buildinglist[index] = post
+			$scope.data_select.selectedOption.value.buildinglist[index - 1] = ant
+			update_select();
+		}
+
+		$scope.downselectlist = function(item, index){
+			let ant = $scope.local_data_select_list[index]
+			let post = $scope.local_data_select_list[index + 1]
+
+			$scope.data_select.selectedOption.value.buildinglist[index] = post
+			$scope.data_select.selectedOption.value.buildinglist[index + 1] = ant
+			update_select();
+		}
 
 		$scope.levelupselect = function(key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;

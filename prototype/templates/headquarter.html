@@ -263,11 +263,45 @@
 										<table id="preset-list"
 											class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
 											<colgroup>
-												<col width="50%">
-												<col width="50%">
+											 <col width="*">
+												<col width="*">
+												<col width="*">
 											</colgroup>
 											<tbody>
 												<tr>
+												<td class="cell-rigth cell-top">
+												<table id="preset-list">
+                                                            <colgroup>
+                                                                <col width="*">
+                                                                <col width="20">
+                                                                <col width="26">
+                                                            </colgroup>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="selected" colspan="3">{{list}}</th>
+                                                                </tr>
+                                                                <tr ng-repeat="item in local_data_select_list"
+                                                                    style="height: 68px">
+                                                                    <td class="content cell-left"><div
+                                                                            class="name-wrapper">
+                                                                            <div class="span-icon" ng-class="getClass(item.name)"></div>
+                                                                            {{item.label}}
+                                                                        </div></td>
+                                                                    <td class="cell-right"><div>{{item.value}}</div></td>
+                                                                    <td class="cell-right">
+                                                                        <div>
+                                                                            <div ng-show="$index > 0"
+                                                                                class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+                                                                                ng-click="upselectlist(item, $index)"></div>
+                                                                            <div ng-show="$index < array_length"
+                                                                                class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+                                                                                ng-click="downselectlist(item, $index)"></div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+												</td>
 													<td class="cell-rigth cell-top">
 
 														<table id="preset-list">
