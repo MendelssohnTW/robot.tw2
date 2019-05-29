@@ -59,15 +59,28 @@ define("robotTW2/services/HeadquarterService", [
 			}
 			var buildingLevels = vill.buildinglevels
 			, buildingLimit = vill.buildinglimit[vill.selected.value]
+			, buildingList = vill.buildinglist[vill.selected.value]
 			, builds = [];
 
 			Object.keys(buildingLevels).forEach(function(key_level){
-				if(buildingLimit){
-					Object.keys(buildingLimit).forEach(function(key_limit){
-						if(buildingLevels[key_level][key_limit] < buildingLimit[key_limit] && buildingLimit[key_limit] > 0){
-							builds.push({[Object.keys(buildingLevels[key_level])[0]] : Object.values(buildingLevels[key_level])[0]})
-						}
-					})
+				if(data_headquarter.seq_type != "seq_int"){
+					if(buildingLimit){
+						Object.keys(buildingLimit).forEach(function(key_limit){
+							if(buildingLevels[key_level][key_limit] < buildingLimit[key_limit] && buildingLimit[key_limit] > 0){
+								builds.push({[Object.keys(buildingLevels[key_level])[0]] : Object.values(buildingLevels[key_level])[0]})
+							}
+						})
+					}
+				} else {
+					if(buildingList){
+						buildingList.forEach(function(key){
+							let name = Object.keys(key)[0]
+							let level = Object.value(key)[0]
+							if(buildingLevels[key_level][name] < level && level > 0){
+								builds.push({[name] : level})
+							}
+						})
+					}
 				}
 			})
 
@@ -229,23 +242,28 @@ define("robotTW2/services/HeadquarterService", [
 					resolve();
 					return;
 				}
+				
+				var g = []
 
-				var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
-				, bf = Object.keys(bd).map(function(bd_key){
-					return bt.find(f=>Object.keys(f)[0]==bd_key) ? {[bd_key]:bd[bd_key]} : undefined;
-				}).filter(f => f != undefined)
-				, g = [];
+				if(data_headquarter.seq_type != "seq_list"){
+					var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
+					, bf = Object.keys(bd).map(function(bd_key){
+						return bt.find(f=>Object.keys(f)[0]==bd_key) ? {[bd_key]:bd[bd_key]} : undefined;
+					}).filter(f => f != undefined);
 
-				bf.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
+					bf.sort(function(a,b){return Object.values(a)[0] - Object.values(b)[0]})
 
-				bf.forEach(function(bf_obj){
-					let tr = bt.find(f=>Object.keys(f)[0]==Object.keys(bf_obj)[0])
-					tr ? g.push(Object.keys(tr)[0]) : tr
-				})
+					bf.forEach(function(bf_obj){
+						let tr = bt.find(f=>Object.keys(f)[0]==Object.keys(bf_obj)[0])
+						tr ? g.push(Object.keys(tr)[0]) : tr
+					})
 
-				if(data_headquarter.seq){
-					g = g.splice(0,1)
-				};
+					if(data_headquarter.seq_type == "seq_int"){
+						g = g.splice(0,1)
+					};
+				} else {
+					g = bt.splice(0,1)
+				}
 
 				g.forEach(function(g_obj) {
 					function a (obj_build){
@@ -260,7 +278,7 @@ define("robotTW2/services/HeadquarterService", [
 										} else if(data == "instant"){
 											res(true);
 										}
-										
+
 										res()
 									})
 								} else {
