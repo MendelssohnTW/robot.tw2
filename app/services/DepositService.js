@@ -22,6 +22,7 @@ define("robotTW2/services/DepositService", [
 		var isInitialized = !1 
 		, isRunning = !1
 		, inProcess = !0
+		, interval = undefined
 		, interval_deposit = undefined
 		, listener_quest_collect = undefined
 		, listener_quest_finished = undefined
@@ -92,6 +93,9 @@ define("robotTW2/services/DepositService", [
 			socketService.emit(providers.routeProvider.QUESTS_GET_QUEST_LINES);
 		}
 		, wait = function(job){
+			if(!interval){
+				interval = setInterval(getInfo, 30*60*1000)
+			}
 			var time_rest = 1e3 * job.time_next_reset - Date.now() + 1e3;
 			$timeout.cancel(interval_deposit),
 			interval_deposit = $timeout(getInfo, time_rest)
