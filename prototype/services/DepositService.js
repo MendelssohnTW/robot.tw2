@@ -23,6 +23,8 @@ define("robotTW2/services/DepositService", [
 		, isRunning = !1
 		, inProcess = !0
 		, interval_deposit = undefined
+		, listener_quest_collect = undefined
+		, listener_quest_finished = undefined
 		, listener_job_collect = undefined
 		, listener_job_rerolled = undefined
 		, listener_job_collectible = undefined
@@ -57,7 +59,7 @@ define("robotTW2/services/DepositService", [
 			var readyJobs = resourceDepositModel.getReadyJobs();
 			if(readyJobs)
 				return startJob(sortJobs(readyJobs));
-			
+
 			var reroll = modelDataService.getInventory().getItemByType("resource_deposit_reroll");
 			if (reroll && reroll.amount > 0 && data_deposit.use_reroll && resourceDepositModel.getMilestones().length){
 				socketService.emit(providers.routeProvider.PREMIUM_USE_ITEM, {
@@ -69,8 +71,25 @@ define("robotTW2/services/DepositService", [
 				})
 			}
 		}
+		, onQuestsChanged = function(){
+			var questLines = modelDataService.getSelectedCharacter().getQuestLineListModel().getQuestLineModels()
+			if(questLines){
+				questLines.forEach(function(questLineModel){
+					let firstFinishableQuestIndex = questLineModel.getFirstFinishableQuestIndex(),
+					questIndex = firstFinishableQuestIndex >= 0 ? firstFinishableQuestIndex : questLineModel.getFirstSelectableQuestIndex();
+					let questModel = questLineModel.getQuestByIndex(questIndex)
+					if(questModel.isFinishable()){
+						socketService.emit(providers.routeProvider.QUEST_FINISH_QUEST, {
+							'quest_id': questModel.getId(),
+							'village_id': modelDataService.getSelectedVillage().getId()
+						});
+					}
+				})
+			}
+		}
 		, getInfo = function(){
 			socketService.emit(providers.routeProvider.RESOURCE_DEPOSIT_GET_INFO, {})
+			socketService.emit(providers.routeProvider.QUESTS_GET_QUEST_LINES);
 		}
 		, wait = function(job){
 			var time_rest = 1e3 * job.time_next_reset - Date.now() + 1e3;
@@ -89,6 +108,8 @@ define("robotTW2/services/DepositService", [
 			ready(function(){
 				isRunning = !0
 				$rootScope.$broadcast(providers.eventTypeProvider.ISRUNNING_CHANGE, {name:"DEPOSIT"})
+				!listener_quest_collect ? listener_quest_collect = $rootScope.$on(providers.eventTypeProvider.QUESTS_QUEST_LINES, function(){$timeout(function(){onQuestsChanged()}, 5000)}) : listener_quest_collect;
+				!listener_quest_finished ? listener_quest_finished = $rootScope.$on(providers.eventTypeProvider.QUESTS_QUEST_FINISHED, function(){$timeout(function(){onQuestsChanged()}, 5000)}) : listener_quest_finished;
 				!listener_job_collect ? listener_job_collect = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_collect;
 				!listener_job_rerolled ? listener_job_rerolled = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOBS_REROLLED, function(){$timeout(function(){verify_deposit()}, 3000)}) : listener_job_rerolled;
 				!listener_job_collectible ? listener_job_collectible = $rootScope.$on(providers.eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTIBLE, function(){
@@ -108,10 +129,14 @@ define("robotTW2/services/DepositService", [
 			}, ["all_villages_ready"])
 		}
 		, stop = function (){
+			typeof(listener_quest_collect) == "function" ? listener_quest_collect(): null;
+			typeof(listener_quest_finished) == "function" ? listener_quest_finished(): null;
 			typeof(listener_job_collect) == "function" ? listener_job_collect(): null;
 			typeof(listener_job_rerolled) == "function" ? listener_job_rerolled(): null;
 			typeof(listener_job_collectible) == "function" ? listener_job_collectible(): null;
 			typeof(listener_job_info) == "function" ? listener_job_info(): null;
+			listener_quest_collect = undefined;
+			listener_quest_finished = undefined;
 			listener_job_collect = undefined;
 			listener_job_rerolled = undefined;
 			listener_job_collectible = undefined;
