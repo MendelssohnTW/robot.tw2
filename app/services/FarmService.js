@@ -105,61 +105,26 @@ define("robotTW2/services/FarmService", [
 
 			return f && opt ? !0 : f;
 		}
-//		, units_subtract = function (preset_units, aldeia_units) {
-//		var f = Object.keys(preset_units).map(function(unit_preset){
-//		if(preset_units[unit_preset] > 0 && !(data_farm.troops_not.some(elem => elem == unit_preset)) && units_has_unit_search(unit_preset, aldeia_units)) {
-//		aldeia_units[unit_preset].available = aldeia_units[unit_preset].available - preset_units[unit_preset];
-//		if(aldeia_units[unit_preset].available >= preset_units[unit_preset]){
-//		return [{[unit_preset] : preset_units[unit_preset]}, aldeia_units[unit_preset].available]
-//		}
-//		}
-//		}).filter(f=>f!=undefined)
-//		return [f.length, aldeia_units] 
-//		}
-		, check_commands = function(cmd, village_id, preset_id, cicle){
+		, check_commands = function(cmd, village_id, preset_id){
 			let lt = true
-			if(cmd.data.type!="attack"){
-				return false
+			var id;
+			if(cmd.data){
+				if(cmd.data.type!="attack" && cmd.data.direction!="forward"){ //filtra os comandos diferentes de ataques e comandos retornand
+					return false
+				}
+				id = cmd.targetVillageId
+			} else {
+				id = cmd
 			}
-
-//			if(data_farm.cicle_distinct){
-			lt =  Object.keys(countCommands[cicle]).map(function(village_id){
-				return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-					return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
+			lt = Object.keys(countCommands).map(function(cicle){
+				return Object.keys(countCommands[cicle]).map(function(village_id){
+					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
+						return countCommands[cicle][village_id][preset_id].some(f=>f==id)
+					}).some(f=>f==true)
 				}).some(f=>f==true)
 			}).some(f=>f==true)
-//			} else {
-//			lt = Object.keys(countCommands).map(function(cicle){
-//			return  Object.keys(countCommands[cicle]).map(function(village_id){
-//			return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-//			return countCommands[cicle][village_id][preset_id].some(f=>f==cmd.targetVillageId)
-//			}).some(f=>f==true)
-//			}).some(f=>f==true)
-//			}).some(f=>f==true)
-//			}
 
 			return !lt
-		}
-		, check_commands_for_bb = function(bb, cicle){
-			let lt = false;
-
-//			if(data_farm.cicle_distinct){
-			lt = Object.keys(countCommands[cicle]).map(function(village_id){
-				return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-					return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
-				}).every(f=>f==false)
-			}).every(f=>f==true)
-
-//			} else {
-//			lt = Object.keys(countCommands).map(function(cicle){
-//			return Object.keys(countCommands[cicle]).map(function(village_id){
-//			return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
-//			return countCommands[cicle][village_id][preset_id].some(f=>f==bb)
-//			}).every(f=>f==false)
-//			}).every(f=>f==true)
-//			}).every(f=>f==true)
-//			}
-			return lt
 		}
 		, sendCmd = function (cmd_preset, cicle_internal) {
 			return new Promise(function(resv, rejc){
@@ -181,27 +146,22 @@ define("robotTW2/services/FarmService", [
 					return elem.data
 				}).filter(f=>f!=null)
 
-				if(cmd_ind <= 0){
-					resv();
-					return !1;
-				}
-				
 				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
 				if(!countCommands[cicle_internal][cmd_preset.village_id]["village"]) {countCommands[cicle_internal][cmd_preset.village_id]["village"] = []}
 				if(!countCommands[cicle_internal][cmd_preset.village_id][preset_id]) {countCommands[cicle_internal][cmd_preset.village_id][preset_id] = []}
 
 				aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
-					if(check_commands(cmd, cmd_preset.village_id, preset_id, cicle_internal) && !countCommands[cicle_internal][cmd_preset.village_id]["village"].find(f=>f==cmd.targetVillageId)){
+//					if(check_commands(cmd, cmd_preset.village_id, preset_id) && !countCommands[cicle_internal][cmd_preset.village_id]["village"].find(f=>f==cmd.targetVillageId)){
+					if(check_commands(cmd, cmd_preset.village_id, preset_id)){
 						countCommands[cicle_internal][cmd_preset.village_id]["village"].push(cmd.targetVillageId)
 					}
 				}) : aldeia_commands = [];
 
-//				let max_cmds = Math.max.apply(null, Object.keys(data_villages.villages[cmd_preset.village_id].presets).map(function(elem){
-//				return data_villages.villages[cmd_preset.village_id].presets[elem].max_commands_farm
-//				})) || 0;
-
-//				var cmd_rest_preset = max_cmds - aldeia_commands.length
+				if(cmd_ind <= 0){
+					resv();
+					return !1;
+				}
 
 				dt.map(function(a){
 					return Object.keys(a).map(function(x){
@@ -215,20 +175,10 @@ define("robotTW2/services/FarmService", [
 				villages = villages.filter(f => f.affiliation == "barbarian") //filtra as barbaras
 
 				villages = Object.keys(villages).map(function (barbara) { //verificar a presença da aldeia nos comandos existentes do ciclo
-					if (check_commands_for_bb(villages[barbara].id, cicle_internal)) {
+					if (check_commands(villages[barbara].id, cmd_preset.village_id, cmd_preset.preset_id) && check_village(villages[barbara], cmd_preset)) {
 						return villages[barbara]
 					}
 				}).filter(f=>f!=undefined)
-
-				let new_villages = []
-
-				for (j = 0; j < villages.length; j++) { // filtra as aldeias por quadrantes
-					if (check_village(villages[j], cmd_preset)) {
-						new_villages.push(villages[j])
-					}
-				}
-
-				villages = new_villages
 
 				villages = villages.filter(f => get_time(cmd_preset.village_id, f, cmd_preset.preset_units) > data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].min_journey_time / 2)
 				villages = villages.filter(f => get_time(cmd_preset.village_id, f, cmd_preset.preset_units) < data_villages.villages[cmd_preset.village_id].presets[cmd_preset.preset_id].max_journey_time / 2)
@@ -648,7 +598,7 @@ define("robotTW2/services/FarmService", [
 			countCicle = 0;
 		}
 		, clear_partial = function(cicle){
-//			delete countCommands[cicle]
+			delete countCommands[cicle]
 			delete commands_for_presets[cicle]
 		}
 		, is_Running	= function () {
