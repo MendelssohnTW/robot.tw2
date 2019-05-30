@@ -215,7 +215,7 @@ define("robotTW2/services/FarmService", [
 				villages = villages.filter(f => f.affiliation == "barbarian") //filtra as barbaras
 
 				villages = Object.keys(villages).map(function (barbara) { //verificar a presença da aldeia nos comandos existentes do ciclo
-					if (check_commands_for_bb(villages[barbara], cicle_internal)) {
+					if (check_commands_for_bb(villages[barbara].id, cicle_internal)) {
 						return villages[barbara]
 					}
 				}).filter(f=>f!=undefined)
