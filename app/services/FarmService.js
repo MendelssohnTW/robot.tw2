@@ -309,7 +309,6 @@ define("robotTW2/services/FarmService", [
 				return true
 			}
 		}
-
 		, execute_presets = function(commands_for_presets, cicle){
 			return new Promise(function(resol, rejec){
 				var promise_preset = undefined
@@ -327,20 +326,11 @@ define("robotTW2/services/FarmService", [
 									cmd_preset = promise_preset_queue.shift();
 									t(cmd_preset)
 								} else {
-									data_log.farm.push(
-											{
-												"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
-												"origin": null,
-												"target": null,
-												"date": time.convertedTime()
-											}
-									)
-									data_log.set()
-									resol()
+									resol(cicle)
 								}
 							}
 							, function(){
-								rejec()
+								rejec(cicle)
 							})
 						} else {
 							promise_preset_queue.push(cmd_preset)
@@ -433,7 +423,16 @@ define("robotTW2/services/FarmService", [
 					if(!isRunning || commands_for_presets[cicle].length){
 						execute_presets(commands_for_presets[cicle], cicle).then(resol, rejec)
 					} else {
-						resol()
+						data_log.farm.push(
+								{
+									"text": "all villages in farm in the cicle " + cicle,
+									"origin": null,
+									"target": null,
+									"date": time.convertedTime()
+								}
+						)
+						data_log.set()
+						resol(cicle)
 					}
 				}, tempo)
 			})
@@ -470,7 +469,7 @@ define("robotTW2/services/FarmService", [
 						let gt = tempo
 						if(init_first)
 							gt = 0;
-						execute_cicle(gt, countCicle).then(function(){
+						execute_cicle(gt, countCicle).then(function(cic){
 							init_first = false;
 							data_log.farm.push(
 									{
@@ -481,9 +480,9 @@ define("robotTW2/services/FarmService", [
 									}
 							)
 							data_log.set()
-							clear_partial(countCicle)
+							clear_partial(cic)
 						}
-						, function(){
+						, function(cic){
 							data_log.farm.push(
 									{
 										"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
@@ -492,7 +491,7 @@ define("robotTW2/services/FarmService", [
 										"date": time.convertedTime()
 									}
 							)
-							clear_partial(countCicle)
+							clear_partial(cic)
 						})
 					} else {
 						clear_partial(countCicle)
@@ -598,6 +597,7 @@ define("robotTW2/services/FarmService", [
 			countCicle = 0;
 		}
 		, clear_partial = function(cicle){
+			if(!cicle){return}
 			delete countCommands[cicle]
 			delete commands_for_presets[cicle]
 		}
