@@ -425,7 +425,7 @@ define("robotTW2/services/FarmService", [
 					} else {
 						data_log.farm.push(
 								{
-									"text": "all villages in farm in the cicle " + cicle,
+									"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm") + " " + cicle,
 									"origin": null,
 									"target": null,
 									"date": time.convertedTime()
@@ -473,7 +473,7 @@ define("robotTW2/services/FarmService", [
 							init_first = false;
 							data_log.farm.push(
 									{
-										"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
+										"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm") + " " + cic,
 										"origin": null,
 										"target": null,
 										"date": time.convertedTime()
@@ -485,7 +485,7 @@ define("robotTW2/services/FarmService", [
 						, function(cic){
 							data_log.farm.push(
 									{
-										"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm"),
+										"text": $filter("i18n")("terminate_cicles", $rootScope.loc.ale, "farm") + " " + cic,
 										"origin": null,
 										"target": null,
 										"date": time.convertedTime()
