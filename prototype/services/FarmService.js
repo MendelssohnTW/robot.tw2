@@ -202,6 +202,11 @@ define("robotTW2/services/FarmService", [
 					return !0;
 				}
 
+
+villages.forEach(function (barbara) {
+countCommands[cicle_internal][cmd_preset_internal.village_id][cmd_preset_internal.preset_id].push(bb)
+
+})
 				villages.forEach(function (barbara) {
 					var f = function(bb, cicle_internal, cmd_preset_internal){
 						if(!promise_send[cicle_internal]){
@@ -235,7 +240,7 @@ define("robotTW2/services/FarmService", [
 										)
 										data_log.set()
 
-										countCommands[cicle_internal][cmd_preset_internal.village_id][cmd_preset_internal.preset_id].push(bb);
+										;
 										socketService.emit(providers.routeProvider.SEND_PRESET, params);
 										resolve_send()
 
