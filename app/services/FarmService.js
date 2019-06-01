@@ -204,7 +204,7 @@ define("robotTW2/services/FarmService", [
 
 
 				villages.forEach(function (barbara) {
-					countCommands[cicle_internal][cmd_preset_internal.village_id][cmd_preset_internal.preset_id].push(bb)
+					countCommands[cicle_internal][cmd_preset.village_id][cmd_preset.preset_id].push(bb)
 				})
 				
 				villages.forEach(function (barbara) {
