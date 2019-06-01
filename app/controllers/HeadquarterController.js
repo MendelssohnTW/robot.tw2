@@ -91,7 +91,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_standard_list = set_list($scope.data_headquarter.standard.buildinglist, "buildings")
 			$scope.array_length = $scope.local_data_standard_list.length - 1
 
-			if (!$scope.$$phase) {$scope.$apply();}
+//			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, update_select = function(){
 			$scope.local_data_select_order = []
@@ -105,7 +105,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_select_list = set_list($scope.data_select.selectedOption.value.buildinglist[$scope.data_select.selectedOption.value.selected.value], "buildings")
 			$scope.array_length = $scope.local_data_standard_list.length - 1
 
-			if (!$scope.$$phase) {$scope.$apply();}
+//			if (!$scope.$$phase) {$scope.$apply();}
 		}
 		, getVillageData = function getVillageData(vid){
 			if(!vid){return}
@@ -333,7 +333,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_select){return}
 			$scope.data_type = services.MainService.getSelects($scope.local_data_select, $scope.data_select.selectedOption.value.selected)
 			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
-			update_select()
+//			update_select()
 		}, true)
 
 		$scope.$watch("data_type", function(){
