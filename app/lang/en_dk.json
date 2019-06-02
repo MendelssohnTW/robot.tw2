@@ -177,7 +177,7 @@
 		"title": "Collection of resources",
 		"wait_init": "Waiting for start of Farm cycle",
 		"farm_init": "Farm cycle started",
-		"terminate_cicles": "Finished all Farm Cycles",
+		"terminate_cicles": "Finished Farm Cycle",
 		"init_cicles": "Initiated Farm cycles",
 		"farm_no_init": "Farm cycle not started. Farm termination less than minimum cycle time",
 		"farm_running": "Current farm processing state",
