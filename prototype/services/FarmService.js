@@ -105,7 +105,7 @@ define("robotTW2/services/FarmService", [
 
 			return f && opt ? !0 : f;
 		}
-		, check_commands = function(cmd, village_id, preset_id){
+		, check_commands = function(cmd){
 			let lt = true
 			var id;
 			if(cmd.data){
@@ -116,7 +116,6 @@ define("robotTW2/services/FarmService", [
 			} else {
 				id = cmd
 			}
-//			countCommands[cicle_internal][cmd_preset.village_id]["village"]
 			lt = Object.keys(countCommands).map(function(cicle){
 				return Object.keys(countCommands[cicle]).map(function(village_id){
 					return Object.keys(countCommands[cicle][village_id]).map(function(preset_id){
@@ -147,16 +146,13 @@ define("robotTW2/services/FarmService", [
 					return elem.data
 				}).filter(f=>f!=null)
 
-				if(!countCommands[cicle_internal]) {countCommands[cicle_internal] = {}}
-				if(!countCommands[cicle_internal][cmd_preset.village_id]) {countCommands[cicle_internal][cmd_preset.village_id] = {}}
-				if(!countCommands[cicle_internal][cmd_preset.village_id]["village"]) {countCommands[cicle_internal][cmd_preset.village_id]["village"] = []}
 				if(!countCommands[cicle_internal][cmd_preset.village_id][preset_id]) {countCommands[cicle_internal][cmd_preset.village_id][preset_id] = []}
 
-				aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
-					if(check_commands(cmd, cmd_preset.village_id, preset_id)){
-						countCommands[cicle_internal][cmd_preset.village_id]["village"].push(cmd.targetVillageId)
-					}
-				}) : aldeia_commands = [];
+//				aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
+//					if(check_commands(cmd)){
+//						countCommands[cicle_internal][cmd_preset.village_id]["village"].push(cmd.targetVillageId)
+//					}
+//				}) : aldeia_commands = [];
 
 				if(cmd_ind <= 0){
 					resv();
@@ -175,7 +171,13 @@ define("robotTW2/services/FarmService", [
 				villages = villages.filter(f => f.affiliation == "barbarian") //filtra as barbaras
 
 				villages = Object.keys(villages).map(function (barbara) { //verifica a presença da aldeia nos comandos existentes do ciclo
-					if (check_commands(villages[barbara].id, cmd_preset.village_id, cmd_preset.preset_id) && check_village(villages[barbara], cmd_preset)) {
+					if (check_commands(villages[barbara].id)) {
+						return villages[barbara]
+					}
+				}).filter(f=>f!=undefined)
+				
+				villages = Object.keys(villages).map(function (barbara) { //verifica a presença da aldeia nos comandos existentes do ciclo
+					if (check_village(villages[barbara], cmd_preset)) {
 						return villages[barbara]
 					}
 				}).filter(f=>f!=undefined)
@@ -203,8 +205,8 @@ define("robotTW2/services/FarmService", [
 				}
 
 				villages.forEach(function (barbara) {
-					if(!countCommands[cicle_internal][cmd_preset.village_id][cmd_preset.preset_id].find(f=>f==barbara)){
-						countCommands[cicle_internal][cmd_preset.village_id][cmd_preset.preset_id].push(barbara)
+					if(check_commands(barbara.id)){
+						countCommands[cicle_internal][cmd_preset.village_id][cmd_preset.preset_id].push(barbara.id)
 					}
 				})
 
@@ -274,7 +276,7 @@ define("robotTW2/services/FarmService", [
 								rejc();
 							})
 						} else {
-							if(!promise_send_queue.find(f=>f[0]==barbara)){
+							if(!promise_send_queue.find(f=>f[0]==barbara.id)){
 								promise_send_queue.push([barbara, cic, cmd_preset_internal])	
 							}
 						}
@@ -371,11 +373,27 @@ define("robotTW2/services/FarmService", [
 					commands_for_presets[cicle] = []
 					let villages = modelDataService.getSelectedCharacter().getVillageList();
 
+					if(!countCommands[cicle]) {countCommands[cicle] = {}}
+
 					for(let i = 0; i < villages.length; i++){
-						let village_id = villages[i].getId()
+						let village = villages[i]
+						, village_id = village.getId()
 						, presets
 						, aldeia_units
 						, vill_attacked = modelDataService.getGroupList().getVillageGroups(village_id).some(f=>f.id==-5||f.id==-8) && !data_farm.attacked
+						, aldeia_commands = village.getCommandListModel().getCommands()
+						
+						if(!countCommands[cicle][village_id]) {countCommands[cicle][village_id] = {}}
+						if(!countCommands[cicle][village_id]["village"]) {countCommands[cicle][village_id]["village"] = []}
+
+						/*
+						 * Verifica e adiciona os comandos já existentes das aldeias
+						 */
+						aldeia_commands.length ? aldeia_commands.forEach(function (cmd) {
+							if(check_commands(cmd)){
+								countCommands[cicle][village_id]["village"].push(cmd.targetVillageId)
+							}
+						}) : aldeia_commands = [];
 
 						if(!isRunning){
 							break;
@@ -445,7 +463,8 @@ define("robotTW2/services/FarmService", [
 									"date": time.convertedTime()
 								}
 						)
-						data_log.set()
+						data_log.set()	
+						clear_partial(cicle)
 						resol(cicle)
 					}
 				}, tempo)
