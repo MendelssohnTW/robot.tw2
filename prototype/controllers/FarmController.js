@@ -327,7 +327,22 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				$scope.data_farm.attacked = true
 			}
-			$scope.blur();
+		}
+		
+		$scope.toggleDefenseProg = function(){
+			if($scope.data_farm.defense_prog){
+				$scope.data_farm.defense_prog = false
+			} else {
+				$scope.data_farm.defense_prog = true
+			}
+		}
+		
+		$scope.toggleAttackeProg = function(){
+			if($scope.data_farm.attack_prog){
+				$scope.data_farm.attack_prog = false
+			} else {
+				$scope.data_farm.attack_prog = true
+			}
 		}
 
 		$scope.toggleUnitDirection = function(){
@@ -336,7 +351,6 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				$scope.data_farm.unit_direction = true
 			}
-			$scope.blur();
 		}
 
 		$scope.toggleSpeedDirection = function(){
@@ -345,7 +359,6 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				$scope.data_farm.speed_direction = true
 			}
-			$scope.blur();
 		}
 
 		$scope.toggleCicleDistinct = function(){
@@ -354,7 +367,6 @@ define("robotTW2/controllers/FarmController", [
 			} else {
 				$scope.data_farm.cicle_distinct = true
 			}
-			$scope.blur();
 		}
 
 		$scope.toggleOption = function(option){
