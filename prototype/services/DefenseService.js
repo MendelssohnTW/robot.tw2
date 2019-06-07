@@ -659,9 +659,10 @@ define("robotTW2/services/DefenseService", [
 
 			if(cmds.length){
 				cmds.sort(function (a, b) {return a.startedAt - b.startedAt})
-				for (cmd in cmds){
-					if(cmds.hasOwnProperty(cmd)){
-						let params = {
+				for (_cmd in cmds){
+					if(cmds.hasOwnProperty(_cmd)){
+						let cmd = cmds[_cmd]
+						, params = {
 								"timer_delay" 		: expires,
 								"id_command" 		: cmd.id,
 								"start_village" 	: _params.start_village,
