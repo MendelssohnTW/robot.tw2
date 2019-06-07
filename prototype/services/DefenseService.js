@@ -449,7 +449,6 @@ define("robotTW2/services/DefenseService", [
 					removeCommandDefense(params.id_command)
 					return
 				}
-
 				try{
 					commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
 						commandDefense[params.id_command] = {
