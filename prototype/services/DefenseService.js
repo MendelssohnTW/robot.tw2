@@ -56,10 +56,12 @@ define("robotTW2/services/DefenseService", [
 		, listener_lost = undefined
 		, promise_command_cancel = undefined
 		, queue_command_cancel = []
+		, timeout_control = []
 		, listener_sent = undefined
 		, listener_cancel = undefined
 		, listener_received = undefined
 		, listener_conquered = undefined
+		, listener_canceled = undefined
 		, promise_verify = undefined
 		, villages = modelDataService.getSelectedCharacter().getVillageList()
 		, that = this
@@ -425,6 +427,8 @@ define("robotTW2/services/DefenseService", [
 		}
 		, sendCancel = function(params){
 			return $timeout(function () {
+				console.log("sendCancel " + params.id_command)
+				console.log("convertedTime " + time.convertedTime())
 				data_log.defense.push(
 						{
 							"text": "Sniper send cancel " + params.id_command,
@@ -446,13 +450,30 @@ define("robotTW2/services/DefenseService", [
 					return
 				}
 
-				commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
-					commandDefense[params.id_command] = {
-							"timeout" 	: fns.fn.apply(this, [fns.params]),
-							"params"	: params
-					}
-				})
-				
+				try{
+					commandQueue.bind(params.id_command, resendDefense, null, params, function(fns){
+						commandDefense[params.id_command] = {
+								"timeout" 	: fns.fn.apply(this, [fns.params]),
+								"params"	: params
+						}
+					})
+				} catch (err){
+					data_log.defense.push(
+							{
+								"text": "Sniper not add - catch sendDefense " + params.id_command,
+								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+								"target": formatHelper.villageNameWithCoordinates(
+										{
+											"name": params.target_name,
+											"x": params.target_x,
+											"y": params.target_y
+										}
+								),
+								"date": time.convertedTime()
+							}
+					)
+				}
+
 			}, params.timer_delay - modelDataService.getSelectedCharacter().getTimeSync().csDiff);
 		}
 		, resendDefense = function(params){
@@ -526,12 +547,15 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				return 
 			} else if(timer_delay_send > -25000 && timer_delay_send < 0){
+				console.log("timer_delay_send " + timer_delay_send)
+				console.log("timer_delay_send igual a 0")
 				timer_delay_send = 0;
 			}
 			resend = true;
 			$rootScope.$broadcast(providers.eventTypeProvider.PAUSE)
 			return $timeout(function(){
 				resend = false;
+				console.log("resend defense " + params.id_command)
 				data_log.defense.push(
 						{
 							"text": $filter("i18n")("defense", $rootScope.loc.ale, "defense") + " - " + params.id_command,
@@ -549,32 +573,51 @@ define("robotTW2/services/DefenseService", [
 
 				var count_push = 0;
 
+				function resolv_send(id_cmd){
+					if(timeout_control[id_cmd]){
+						$timeout.cancel(timeout_control[id_cmd])
+						delete timeout_control[id_cmd]
+					}
+					promise_command_cancel = undefined
+					if(queue_command_cancel.length){
+						send_cmd_cancel(queue_command_cancel.shift())
+					}
+				}
+
+				!(typeof(listener_canceled) == "function") ? listener_canceled = $rootScope.$on("canceled_command", resolv_send) : null;
+
 				function send_cmd_cancel(params){
 					if(!promise_command_cancel){
 						promise_command_cancel = new Promise(function(resol, rejec){
-//							$timeout(function(){
+							console.log("Esperando nenhum retorno do listener")
+							!timeout_control[params.id_command] ? timeout_control[params.id_command] = $timeout(function(){
 								if(Object.values(commandDefense).find(f=>f.id_command==params.id_command))
-									trigger_cancel(params, function(){
-										resol()
+									console.log("trigger_cancel " + params.id_command)
+									trigger_cancel(params, function(id_cmd){
+										resol(id_cmd)
 									});
-//							}, 5000)
-						}).then(function(){
-							promise_command_cancel = undefined
-							if(queue_command_cancel.length){
-								send_cmd_cancel(queue_command_cancel.shift())
+							}, 5000): rejec(params.id_command)
+						}).then(resolv_send, function(id_cmd){
+							if(!id_cmd){ // Se haver algum erro verifica o proximo comando
+								promise_command_cancel = undefined
+								if(queue_command_cancel.length){
+									send_cmd_cancel(queue_command_cancel.shift())
+								}
 							}
-						}, function(control_params){
-							if(!queue_command_cancel.length){
-								count_push++;
-							}
-							promise_command_cancel = undefined
-							queue_command_cancel.push(control_params)
-							if(count_push < 5){
-								send_cmd_cancel(queue_command_cancel.shift())
-							} else {
-								count_push = 0;
-								queue_command_cancel = [];
-							}
+
+
+//							if(!queue_command_cancel.length){
+//							count_push++;
+//							}
+//							console.log("count_push " + count_push)
+//							promise_command_cancel = undefined
+//							queue_command_cancel.push(control_params)
+//							if(count_push < 5){
+//							send_cmd_cancel(queue_command_cancel.shift())
+//							} else {
+//							count_push = 0;
+//							queue_command_cancel = [];
+//							}
 						})
 					} else {
 						queue_command_cancel.push(params)
@@ -617,10 +660,9 @@ define("robotTW2/services/DefenseService", [
 
 			if(cmds.length){
 				cmds.sort(function (a, b) {return a.startedAt - b.startedAt})
-				for (_cmd in cmds){
-					if(cmds.hasOwnProperty(_cmd)){
-						let cmd = cmds[_cmd]
-						, params = {
+				for (cmd in cmds){
+					if(cmds.hasOwnProperty(cmd)){
+						let params = {
 								"timer_delay" 		: expires,
 								"id_command" 		: cmd.id,
 								"start_village" 	: _params.start_village,
@@ -628,8 +670,12 @@ define("robotTW2/services/DefenseService", [
 						}
 
 						if(expires >= -15000 && expires < 0){
+							console.log("timer_delay " + expires)
 							params.timer_delay = 0;
 						} else if(expires < -15000){
+							console.log("timer_delay < -15000 " + expires)
+							console.log(params)
+							console.log("convertedTime " + time.convertedTime())
 							data_log.defense.push(
 									{
 										"text": "Sniper not sent - expires - " + cmd.id_command,
@@ -643,31 +689,56 @@ define("robotTW2/services/DefenseService", [
 						}
 
 						if(!commandDefense[params.id_command]){
+							console.log("bind sendCancel")
 							removeCommandDefense(_params.id_command)
-							commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
-								commandDefense[params.id_command] = {
-										"timeout" 	: fns.fn.apply(this, [fns.params]),
-										"params"	: fns.params
-								}
+							try {
+								commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
+									commandDefense[params.id_command] = {
+											"timeout" 	: fns.fn.apply(this, [fns.params]),
+											"params"	: fns.params
+									}
 
-							})
+								})
+							} catch (err){
+								data_log.defense.push(
+										{
+											"text": "Sniper not add - catch bindCancel " + params.id_command,
+											"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+											"target": formatHelper.villageNameWithCoordinates(
+													{
+														"name": params.target_name,
+														"x": params.target_x,
+														"y": params.target_y
+													}
+											),
+											"date": time.convertedTime()
+										}
+								)
+								if(typeof(callback)=="function"){
+									callback(_params.id_command)
+								}
+							}
 						}
 					}
 				}
 			}
-			callback()
+			if(typeof(callback)=="function"){
+				callback(_params.id_command)
+			}
 		}
 		, listener_command_sent = function($event, data){
 			if(!$event.currentScope){
 				return
 			}
 
-			if(data.target.character_id = modelDataService.getSelectedCharacter().getId() 
-					&& data.type == "support" 
-						&& data.direction == "forward"
-							&& (Object.values(commandDefense).find(f=>f.params.target_village == data.target.id)
-									&& Object.values(commandDefense).find(f=>f.params.start_village == data.home.id)) 
+			if(data.target.character_id = modelDataService.getSelectedCharacter().getId() && 
+					data.type == "support" && 
+					data.direction == "forward" &&
+					(Object.values(commandDefense).find(f=>f.params.target_village == data.target.id) &&
+							Object.values(commandDefense).find(f=>f.params.start_village == data.home.id)) 
 			) {
+
+				console.log("comando listener")
 				var cmds = Object.keys(commandDefense).map(function(param){
 					if(commandDefense[param].params.start_village == data.home.id 
 							&& commandDefense[param].params.target_village == data.target.id
@@ -681,41 +752,46 @@ define("robotTW2/services/DefenseService", [
 				cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 				let cmd = cmds.shift()
 				if(!cmd){return}
+				console.log("comando localizado na pilha " + cmd.id_command)
 
-				let dif = time.convertMStoUTC(data.time_start * 1000) - (cmd.data_escolhida - cmd.time_sniper_ant)
-				, expires = ((((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2)
-				, params = {
-					"timer_delay" 		: expires,
-					"id_command" 		: data.id,
-					"start_village" 	: cmd.start_village,
-					"target_village" 	: cmd.target_village
-				}
+				trigger_cancel(cmd)
 
-				if(expires >= -25000 && expires < 0){
-					params.timer_delay = 0;
-				} else if(expires < -25000){
-					data_log.defense.push(
-							{
-								"text": "Sniper not sent - expires - " + cmd.id_command,
-								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
-								"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
-								"date": time.convertedTime()
-							}
-					)
-					removeCommandDefense(cmd.id_command)
-					return
-				}
+				$rootScope.$broadcast("canceled_command", cmd.id_command)
 
-				if(!commandDefense[params.id_command]){
-					removeCommandDefense(cmd.id_command)
-					commandQueue.bind(params.id_command, sendCancel, null, params, function(fns){
-						commandDefense[params.id_command] = {
-								"timeout" 	: fns.fn.apply(this, [fns.params]),
-								"params"	: fns.params
-						}
+//				let dif = time.convertMStoUTC(data.time_start * 1000) - (cmd.data_escolhida - cmd.time_sniper_ant)
+//				, expires = ((((cmd.data_escolhida + cmd.time_sniper_post) - time.convertedTime()) - dif) / 2)
+//				, params = {
+//				"timer_delay" 		: expires,
+//				"id_command" 		: data.id,
+//				"start_village" 	: cmd.start_village,
+//				"target_village" 	: cmd.target_village
+//				}
 
-					})
-				}
+//				if(expires >= -25000 && expires < 0){
+//				params.timer_delay = 0;
+//				} else if(expires < -25000){
+//				data_log.defense.push(
+//				{
+//				"text": "Sniper not sent - expires - " + cmd.id_command,
+//				"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
+//				"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
+//				"date": time.convertedTime()
+//				}
+//				)
+//				removeCommandDefense(cmd.id_command)
+//				return
+//				}
+
+//				if(!commandDefense[params.id_command]){
+//				removeCommandDefense(cmd.id_command)
+//				commandQueue.bind(params.id_command, sendCancel, null, params, function(fns){
+//				commandDefense[params.id_command] = {
+//				"timeout" 	: fns.fn.apply(this, [fns.params]),
+//				"params"	: fns.params
+//				}
+
+//				})
+//				}
 			}
 		}
 		, addDefense = function(params){
@@ -743,13 +819,30 @@ define("robotTW2/services/DefenseService", [
 						"id_command": id_command
 					})
 				}
-				commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
-					commandDefense[params.id_command] = {
-							"timeout" 	: fns.fn.apply(this, [fns.params]),
-							"params"	: params
-					}
-				})
-				
+				try {
+					commandQueue.bind(params.id_command, sendDefense, null, params, function(fns){
+						commandDefense[params.id_command] = {
+								"timeout" 	: fns.fn.apply(this, [fns.params]),
+								"params"	: params
+						}
+					})
+				} catch (err){
+					data_log.defense.push(
+							{
+								"text": "Sniper not add - catch addDefense " + params.id_command,
+								"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(params.start_village).data),
+								"target": formatHelper.villageNameWithCoordinates(
+										{
+											"name": params.target_name,
+											"x": params.target_x,
+											"y": params.target_y
+										}
+								),
+								"date": time.convertedTime()
+							}
+					)
+				}
+
 			} else {
 				data_log.defense.push(
 						{

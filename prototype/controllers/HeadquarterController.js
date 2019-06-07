@@ -28,7 +28,6 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.local_data_standard_limit = []
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
-
 		$scope.text_version = $scope.version + " " + data_headquarter.version;
 
 		$scope.status = "stopped";
