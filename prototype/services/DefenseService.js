@@ -679,8 +679,6 @@ define("robotTW2/services/DefenseService", [
 							data_log.defense.push(
 									{
 										"text": "Sniper not sent - expires - " + cmd.id_command,
-										"origin": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.start_village).data),
-										"target": formatHelper.villageNameWithCoordinates(modelDataService.getVillage(cmd.target_village).data),
 										"date": time.convertedTime()
 									}
 							)
