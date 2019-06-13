@@ -9,9 +9,10 @@
 	<div class="content-settings">
 		<div>
 			<table
-				class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
-				style="height: 167px;">
+				class="tbl-border-light tbl-border-dark tbl-big-header tbl-content tbl-headquarter">
 				<colgroup>
+					<col width="*">
+					<col width="*">
 					<col width="*">
 					<col width="*">
 					<col width="*">
@@ -29,6 +30,18 @@
 							id="reserva_slots" class="input-border inputcreated"
 							type="number" value="{{data_headquarter.reserva.slots}}"
 							ng-model="data_headquarter.reserva.slots"></td>
+						<td class="cell-right"><label for="seq_flex"
+							class="with-margin" style="top: 21px; left: 100px;">{{seq_flex}}</label>
+							<div id="seq_flex" class="position-absolute size-34x34"
+								ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_flex', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_flex'}"
+								ng-click="toggle_seq('seq_flex')" tooltip=""
+								tooltip-content="{{seq_flex}}"></div></td>
+						<td class="cell-right"><label for="check_one"
+							class="with-margin" style="top: 21px; left: 100px;">{{text_one}}</label>
+							<div id="check_one" class="position-absolute size-34x34"
+								ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_one', 'btn-red icon-26x26-check-negative': toggle_option != 'check_one'}"
+								ng-click="toggleOption('check_one')" tooltip=""
+								tooltip-content="{{check_one}}"></div></td>
 					</tr>
 					<tr>
 						<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
@@ -43,52 +56,50 @@
 							id="reserva_iron" class="input-border inputcreated" type="number"
 							value="{{data_headquarter.reserva.iron}}"
 							ng-model="data_headquarter.reserva.iron"></td>
+						<td class="cell-right"><label for="seq_int"
+							class="with-margin" style="top: 21px; left: 100px;">{{seq_int}}</label>
+							<div id="seq_int" class="position-absolute size-34x34"
+								ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_int', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_int'}"
+								ng-click="toggle_seq('seq_int')" tooltip=""
+								tooltip-content="{{seq_int}}"></div></td>
+						<td class="cell-right"><label for="check_all"
+							class="with-margin" style="top: 21px; left: 100px;">{{
+								text_all}}</label>
+							<div id="check_all" class="position-absolute size-34x34"
+								ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_all', 'btn-red icon-26x26-check-negative': toggle_option != 'check_all'}"
+								ng-click="toggleOption('check_all')" tooltip=""
+								tooltip-content="{{check_all}}"></div></td>
+
 					</tr>
 					<tr>
-						<td rowspan="2">
-							<table>
-								<colgroup>
-									<col width="*">
-									<col width="*">
-									<col width="*">
-								</colgroup>
-								<tbody>
-									<tr>
-										<td class="cell-right"><label for="seq_flex"
-											style="margin-left: 12px; margin-right: 12px;">{{seq_flex}}</label><a
-											tooltip="" tooltip-content="{{seq_flex}}" id="seq_flex"
-											href="#" class="size-34x34 btn-orange"
-											ng-class="{'icon-26x26-check-positive' : data_headquarter.seq_type == 'seq_flex',  'icon-26x26-check-negative' : data_headquarter.seq_type != 'seq_flex'}"
-											ng-click="toggle_seq_flex()"></a></td>
-
-										<td class="cell-right"><label for="seq_int"
-											style="margin-left: 12px; margin-right: 12px;">{{seq_int}}</label><a
-											tooltip="" tooltip-content="{{seq_int}}" id="seq_int"
-											href="#" class="size-34x34 btn-orange"
-											ng-class="{'icon-26x26-check-positive' : data_headquarter.seq_type == 'seq_int',  'icon-26x26-check-negative' : data_headquarter.seq_type != 'seq_int'}"
-											ng-click="toggle_seq_int()"></a></td>
-
-										<td class="cell-right"><label for="seq_list"
-											style="margin-left: 12px; margin-right: 12px;">{{seq_list}}</label><a
-											tooltip="" tooltip-content="{{seq_list}}" id="seq_list"
-											href="#" class="size-34x34 btn-orange"
-											ng-class="{'icon-26x26-check-positive' : data_headquarter.seq_type == 'seq_list',  'icon-26x26-check-negative' : data_headquarter.seq_type != 'seq_list'}"
-											ng-click="toggle_seq_list()"></a></td>
-									</tr>
-								</tbody>
-							</table>
+						<td colspan="3">
 							<div>
 								<div
 									ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
 								{{headquarter_running}}
 							</div>
 						</td>
-						<td rowspan="2" class="cell-center" colspan="2" style="color: #ffff55;">{{text_seq}}</td>
+						<td class="cell-right"><label for="seq_list"
+							class="with-margin" style="top: 21px; left: 100px;">{{seq_list}}</label>
+							<div id="seq_list" class="position-absolute size-34x34"
+								ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_list', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_list'}"
+								ng-click="toggle_seq('seq_list')" tooltip=""
+								tooltip-content="{{seq_list}}"></div></td>
+
+						<td class="cell-right"><label for="check_all_villages"
+							class="with-margin" style="top: 21px; left: 100px;">{{text_all_villages}}</label>
+							<div id="check_all_villages" class="position-absolute size-34x34"
+								ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_all_villages', 'btn-red icon-26x26-check-negative': toggle_option != 'check_all_villages'}"
+								ng-click="toggleOption('check_all_villages')" tooltip=""
+								tooltip-content="{{check_all_villages}}"></div></td>
+					</tr>
+					<tr>
+						<td class="cell-center" colspan="5" style="color: #ffff55;">{{text_seq}}</td>
 					</tr>
 				</tbody>
 			</table>
 
-			<h5 class="twx-section collapse hidden-content">{{settings_standard}}</h5>
+			<h5 class="twx-section">{{settings_standard}}</h5>
 			<div
 				class="headquarter default win-main jssb-applied jssb-focus jssb-scrolly"
 				scrollbar="">
@@ -201,197 +212,22 @@
 				</div>
 			</div>
 
-			<h5 class="twx-section">{{settings_for_villages}}</h5>
-			<div
-				class="headquarter settings win-main jssb-applied jssb-focus jssb-scrolly"
-				scrollbar="">
-				<div class="box-paper">
-					<div class="scroll-wrap">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
-							id="preset-list">
-							<colgroup>
-								<col width="50%">
-								<col width="50%">
-							</colgroup>
-							<tbody>
-								<tr>
-									<td class="cell-center cell-top">
-										<table
-											class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
-											id="preset-list">
-											<colgroup>
-												<col width="*">
-												<col width="64px">
-												<col width="150px">
-											</colgroup>
-											<tbody>
-												<tr>
-													<th></th>
-													<th></th>
-													<th></th>
-												</tr>
-												<tr>
-													<td class="cell-center cell-top"><select
-														id="select_village" class="select-wrapper"
-														ng-options="item as item.name for item in data_select.availableOptions"
-														ng-model="data_select.selectedOption"></select></td>
-													<td class="cell-center cell-top"><div switch-slider=""
-															border="true" enabled="true"
-															value="data_select.selectedOption.value.headquarter_activate"
-															vertical="false" size="'56x28'">
-															<div ng-class="{'box-border-dark box-filter': border}"
-																class="box-border-dark box-filter">
-																<div class="switch switch-56x28 switch-horizontal"
-																	ng-class="{'switch-checked': value}">
-																	<div class="size-26x26 switch-thumb">
-																		<span class="simple icon-26x26-switch-off"
-																			ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
-																	</div>
-																</div>
-															</div>
-														</div></td>
 
-													<td class="cell-center cell-top"><select
-														id="select_order" class="select-wrapper"
-														ng-options="item as item.name for item in data_type.availableOptions"
-														ng-model="data_type.selectedOption"></select></td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
-									<td class="cell-center cell-top">
-										<table id="preset-list"
-											class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-											<colgroup>
-												<col width="*">
-												<col width="*">
-												<col width="*">
-											</colgroup>
-											<tbody>
-												<tr>
-													<td class="cell-rigth cell-top">
-														<table id="preset-list">
-															<colgroup>
-																<col width="*">
-																<col width="20">
-																<col width="26">
-															</colgroup>
-															<tbody>
-																<tr>
-																	<th class="selected" colspan="3">{{list}}</th>
-																</tr>
-																<tr ng-repeat="item in local_data_select_list"
-																	style="height: 68px">
-																	<td class="content cell-left"><div
-																			class="name-wrapper">
-																			<div class="span-icon" ng-class="getClass(item.name)"></div>
-																			{{item.label}}
-																		</div></td>
-																	<td class="cell-right"><div>{{item.value}}</div></td>
-																	<td class="cell-right">
-																		<div>
-																			<div ng-show="$index > 0"
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																				ng-click="upselectlist(item, $index)"></div>
-																			<div ng-show="$index < array_length"
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																				ng-click="downselectlist(item, $index)"></div>
-																		</div>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</td>
-													<td class="cell-rigth cell-top">
-
-														<table id="preset-list">
-															<colgroup>
-																<col width="*">
-																<col width="20">
-																<col width="26">
-															</colgroup>
-															<tbody>
-																<tr>
-																	<th class="selected" colspan="3">{{priority}}</th>
-																</tr>
-																<tr ng-repeat="item in local_data_select_order"
-																	style="height: 68px">
-																	<td class="content cell-left"><div
-																			class="name-wrapper">
-																			<div class="span-icon" ng-class="getClass(item.name)"></div>
-																			{{item.label}}
-																		</div></td>
-																	<td class="cell-right"><div>{{item.value}}</div></td>
-																	<td class="cell-right">
-																		<div>
-																			<div ng-show="item.value &gt; 1"
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																				ng-click="upselect(item)"></div>
-																			<div ng-show="item.value &lt; 17"
-																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																				ng-click="downselect(item)"></div>
-																		</div>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</td>
-													<td class="cell-right cell-top">
-														<table id="preset-list">
-															<colgroup>
-																<col width="*">
-																<col width="20">
-																<col width="26">
-															</colgroup>
-															<tbody>
-																<tr>
-																	<th class="selected" colspan="3">{{levels}}</th>
-																</tr>
-																<tr ng-repeat="item in local_data_select_limit"
-																	style="height: 68px">
-																	<td class="content cell-left">
-																		<div class="name-wrapper">
-																			<div class="span-icon" ng-class="getClass(item.name)"></div>
-																			{{item.label}}
-																		</div>
-																	</td>
-																	<td class="cell-right"><div>{{item.value}}</div></td>
-																	<td class="cell-right"><div ng-show="getMax(item)"
-																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																			ng-click="levelupselect(item.name)"></div>
-																		<div ng-show="item.value &gt; 0"
-																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																			ng-click="leveldownselect(item.name)"></div></td>
-																</tr>
-															</tbody>
-														</table>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-			</div>
 		</div>
 	</div>
-	<footer class="win-foot">
-		<ul class="list-btn list-center buttons">
-			<li><a class="btn-orange btn-border start"
-				ng-click="start_headquarter()">{{START}}</a></li>
-			<li><a class="btn-orange btn-border stop"
-				ng-click="stop_headquarter()">{{STOP}}</a></li>
-			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-				ng-click="menu()">{{MENU}}</a></li>
-			<li><a class="btn-orange btn-border close"
-				ng-click="closeWindow()">{{CLOSE}}</a></li>
+</div>
+<footer class="win-foot">
+	<ul class="list-btn list-center buttons">
+		<li><a class="btn-orange btn-border start"
+			ng-click="start_headquarter()">{{START}}</a></li>
+		<li><a class="btn-orange btn-border stop"
+			ng-click="stop_headquarter()">{{STOP}}</a></li>
+		<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+			ng-click="menu()">{{MENU}}</a></li>
+		<li><a class="btn-orange btn-border close"
+			ng-click="closeWindow()">{{CLOSE}}</a></li>
 
-		</ul>
-	</footer>
+	</ul>
+</footer>
 </div>
 

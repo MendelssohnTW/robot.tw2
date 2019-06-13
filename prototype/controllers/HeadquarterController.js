@@ -29,6 +29,8 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_headquarter.version;
+		
+		$scope.toggle_option = "seq_flex";
 
 		$scope.status = "stopped";
 
@@ -111,24 +113,20 @@ define("robotTW2/controllers/HeadquarterController", [
 			return $scope.local_data_villages.find(f=>f.villageId==vid);
 		}
 
-		$scope.toggle_seq_flex = function(){
+		//togle_seq("seq_flex")
+		//togle_seq("seq_int")
+		//togle_seq("seq_list")
+		$scope.toggle_seq = function(seq){
 			if(data_headquarter.seq_type){
-				data_headquarter.seq_type = "seq_flex"
+				data_headquarter.seq_type = seq
 			}
 		}
-
-		$scope.toggle_seq_int = function(){
-			if(data_headquarter.seq_type){
-				data_headquarter.seq_type = "seq_int"
-			}
+		
+		$scope.toggleOption = function(option){
+			$scope.toggle_option = option;
+			if (!$scope.$$phase) {$scope.$apply();}
 		}
-
-		$scope.toggle_seq_list = function(){
-			if(data_headquarter.seq_type){
-				data_headquarter.seq_type = "seq_list"
-			}
-		}
-
+		
 		$scope.getLabel = function(vid){
 			if(!vid){return}
 			return $scope.local_data_villages.find(f=>f.id==vid).label

@@ -371,24 +371,6 @@ define("robotTW2/controllers/FarmController", [
 
 		$scope.toggleOption = function(option){
 			$scope.toggle_option = option;
-
-			switch (option) {
-			case "check_one":
-				$scope.check_one = true;
-				$scope.check_all = false;
-				$scope.check_all_villages = false;
-				break;
-			case "check_all":
-				$scope.check_one = false;
-				$scope.check_all = true;
-				$scope.check_all_villages = false;
-				break;
-			case "check_all_villages":
-				$scope.check_one = false;
-				$scope.check_all = false;
-				$scope.check_all_villages = true;
-				break;
-			}
 			if (!$scope.$$phase) {$scope.$apply();}
 		}
 
@@ -742,9 +724,6 @@ define("robotTW2/controllers/FarmController", [
 		$scope.village_selected = $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId())
 		$scope.text_version = $scope.version + " " + $scope.data_farm.version;
 		$scope.toggle_option = "check_one";
-		$scope.check_one = true;
-		$scope.check_all = false;
-		$scope.check_all_villages = false;
 		$scope.item = {}
 		$scope.date_ref = new Date(0);
 		$scope.tmMax = "0";
