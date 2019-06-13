@@ -49,25 +49,29 @@ define("robotTW2/controllers/SpyController", [
 		$scope.text_put = $scope.text_data_target
 		$scope.text_put_province = $scope.text_target_village
 		$scope.province_name = "";
-		var self = this
+
+		var in_update = undefined
 		, update = function(){
-			$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
-				$scope.local_out_villages.push(
-						{
-							"id"	: $scope.data_spy.commands[elem].target_village ,
-							"label"	: $scope.data_spy.commands[elem].target_name + " (" + $scope.data_spy.commands[elem].target_x + "|" + $scope.data_spy.commands[elem].target_y + ")",
-							"x"		: $scope.data_spy.commands[elem].target_x,
-							"y"		: $scope.data_spy.commands[elem].target_y
-						});
+			!in_update ? in_update = services.$timeout(function(){
+				$scope.comandos = Object.keys($scope.data_spy.commands).map(function(elem, index, array){
+					$scope.local_out_villages.push(
+							{
+								"id"	: $scope.data_spy.commands[elem].target_village ,
+								"label"	: $scope.data_spy.commands[elem].target_name + " (" + $scope.data_spy.commands[elem].target_x + "|" + $scope.data_spy.commands[elem].target_y + ")",
+								"x"		: $scope.data_spy.commands[elem].target_x,
+								"y"		: $scope.data_spy.commands[elem].target_y
+							});
+					if (!$scope.$$phase) {$scope.$apply()}
+					return $scope.data_spy.commands[elem]
+				});
+				$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
+				if(document.getElementById("input-hour-interval")){
+					document.getElementById("input-hour-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
+				}
+				$scope.recalcScrollbar();
 				if (!$scope.$$phase) {$scope.$apply()}
-				return $scope.data_spy.commands[elem]
-			});
-			$scope.comandos.sort(function(a,b){return (a.data_escolhida - time.convertedTime() - a.duration) - (b.data_escolhida - time.convertedTime() - b.duration)})
-			if(document.getElementById("input-hour-interval")){
-				document.getElementById("input-hour-interval").value = helper.readableMilliseconds($scope.data_spy.interval).length == 7 ? "0" + helper.readableMilliseconds($scope.data_spy.interval) : helper.readableMilliseconds($scope.data_spy.interval);
-			}
-			$scope.recalcScrollbar();
-			if (!$scope.$$phase) {$scope.$apply()}
+				in_update = undefined;
+			}, 3000): null
 		}
 		, updateValues = function(callback){
 			let durationInSeconds = $scope.send_scope.distance / services.modelDataService.getWorldConfig().getSpeed() * services.modelDataService.getGameData().getBaseData().spy_speed * 60
@@ -228,7 +232,7 @@ define("robotTW2/controllers/SpyController", [
 			if($scope.villages_for_sent.length){
 
 				$scope.villages_for_sent = $scope.villages_for_sent.filter(checkFilter)
-				
+
 				var list_proc = [];
 				var villages = services.modelDataService.getSelectedCharacter().getVillages();
 				Object.keys($scope.villages_for_sent).map(function(elem){
@@ -318,8 +322,8 @@ define("robotTW2/controllers/SpyController", [
 							if(qtc.length && list_dist_vills.length){
 								qtc.shift()
 								fnext(list_dist_vills.shift())
-							} else{
-								update()
+							} else {
+								update();
 							}
 						} else {
 							if(list_dist_vills.length){
@@ -330,8 +334,11 @@ define("robotTW2/controllers/SpyController", [
 					if(qtc.length && list_dist_vills.length){
 						qtc.shift()
 						fnext(list_dist_vills.shift())
+					} else {
+						update();
 					}
-				})
+				}) 
+
 //				$scope.send_scope = {}
 				$scope.recalcScrollbar();
 			} else {
@@ -521,6 +528,7 @@ define("robotTW2/controllers/SpyController", [
 
 		$scope.$on(providers.eventTypeProvider.CHANGE_COMMANDS, function() {
 			update();
+
 		})
 
 		$scope.$on(providers.eventTypeProvider.INTERVAL_CHANGE_SPY, function($event, data) {
@@ -545,8 +553,8 @@ define("robotTW2/controllers/SpyController", [
 		}, true)
 
 		$scope.$watch("data_spy", function(){
-			if(!$scope.data_spy){return}
-			$scope.data_spy.set();
+//			if(!$scope.data_spy){return}
+//			$scope.data_spy.set();
 		}, true)
 
 		$scope.$watch("data_province", function(){

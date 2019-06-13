@@ -427,8 +427,7 @@ define("robotTW2/services/DefenseService", [
 		}
 		, sendCancel = function(params){
 			return $timeout(function () {
-				console.log("sendCancel " + params.id_command)
-				console.log("convertedTime " + time.convertedTime())
+				console.log("sendCancel " + params.id_command + " - " + time.convertedTime())
 				data_log.defense.push(
 						{
 							"text": "Sniper send cancel " + params.id_command,
@@ -546,15 +545,13 @@ define("robotTW2/services/DefenseService", [
 				removeCommandDefense(params.id_command)
 				return 
 			} else if(timer_delay_send > -25000 && timer_delay_send < 0){
-				console.log("timer_delay_send " + timer_delay_send)
-				console.log("timer_delay_send igual a 0")
 				timer_delay_send = 0;
 			}
 			resend = true;
 			$rootScope.$broadcast(providers.eventTypeProvider.PAUSE)
 			return $timeout(function(){
 				resend = false;
-				console.log("resend defense " + params.id_command)
+				console.log("resend defense " + params.id_command + " - " + time.convertedTime())
 				data_log.defense.push(
 						{
 							"text": $filter("i18n")("defense", $rootScope.loc.ale, "defense") + " - " + params.id_command,
@@ -588,10 +585,8 @@ define("robotTW2/services/DefenseService", [
 				function send_cmd_cancel(params){
 					if(!promise_command_cancel){
 						promise_command_cancel = new Promise(function(resol, rejec){
-							console.log("Esperando nenhum retorno do listener")
 							!timeout_control[params.id_command] ? timeout_control[params.id_command] = $timeout(function(){
 								if(Object.values(commandDefense).find(f=>f.id_command==params.id_command))
-									console.log("trigger_cancel " + params.id_command)
 									trigger_cancel(params, function(id_cmd){
 										resol(id_cmd)
 									});
@@ -670,12 +665,8 @@ define("robotTW2/services/DefenseService", [
 						}
 
 						if(expires >= -15000 && expires < 0){
-							console.log("timer_delay " + expires)
 							params.timer_delay = 0;
 						} else if(expires < -15000){
-							console.log("timer_delay < -15000 " + expires)
-							console.log(params)
-							console.log("convertedTime " + time.convertedTime())
 							data_log.defense.push(
 									{
 										"text": "Sniper not sent - expires - " + cmd.id_command,
@@ -687,8 +678,8 @@ define("robotTW2/services/DefenseService", [
 						}
 
 						if(!commandDefense[params.id_command]){
-							console.log("bind sendCancel")
 							removeCommandDefense(_params.id_command)
+							console.log("trigger_cancel " + params.id_command + " - " + time.convertedTime())
 							try {
 								commandQueue.bind(cmd.id, sendCancel, null, params, function(fns){
 									commandDefense[params.id_command] = {
@@ -736,7 +727,6 @@ define("robotTW2/services/DefenseService", [
 							Object.values(commandDefense).find(f=>f.params.start_village == data.home.id)) 
 			) {
 
-				console.log("comando listener")
 				var cmds = Object.keys(commandDefense).map(function(param){
 					if(commandDefense[param].params.start_village == data.home.id 
 							&& commandDefense[param].params.target_village == data.target.id
@@ -750,7 +740,6 @@ define("robotTW2/services/DefenseService", [
 				cmds.sort(function(a,b){return a.data_escolhida - b.data_escolhida})
 				let cmd = cmds.shift()
 				if(!cmd){return}
-				console.log("comando localizado na pilha " + cmd.id_command)
 
 				trigger_cancel(cmd)
 
