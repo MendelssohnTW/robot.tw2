@@ -30,7 +30,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.data_villages = data_villages;
 		$scope.text_version = $scope.version + " " + data_headquarter.version;
 		
-		$scope.toggle_option = "seq_flex";
+		$scope.toggle_option = "check_one";
 
 		$scope.status = "stopped";
 

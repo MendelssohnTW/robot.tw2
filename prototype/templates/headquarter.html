@@ -71,7 +71,6 @@
 								ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_all', 'btn-red icon-26x26-check-negative': toggle_option != 'check_all'}"
 								ng-click="toggleOption('check_all')" tooltip=""
 								tooltip-content="{{check_all}}"></div></td>
-
 					</tr>
 					<tr>
 						<td colspan="3">
@@ -99,21 +98,21 @@
 						<td class="cell-center" colspan="5" style="color: #ffff55;">{{text_seq}}</td>
 					</tr>
 					<tr>
-						<th class="cell-center selected ng-binding" colspan="2">{{text_selections}}</th>
-						<th class="cell-center selected ng-binding" colspan="3">Test</th>
+						<th class="cell-center selected ng-binding" colspan="3">{{text_selections}}</th>
+						<th class="cell-center selected ng-binding" colspan="2">{{settings}}</th>
 					</tr>
 					<tr>
 						<td class="cell-top" colspan="3">
 							<table id="preset-list"
 								class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
 								<colgroup>
-									<col>
+									<col width="100px">
 									<col width="30px">
-									<col width="250px">
+									<col>
 								</colgroup>
 								<tbody>
 									<tr>
-										<td class="ng-binding">{{text_village}}</td>
+										<td>{{text_village}}</td>
 										<td class="cell-center"><span
 											class="icon icon-34x34-select-village"></span></td>
 										<td><div>
@@ -123,7 +122,7 @@
 											</div></td>
 									</tr>
 									<tr>
-										<td class="ng-binding">{{text_type}}</td>
+										<td>{{text_type}}</td>
 										<td class="cell-center"><span class="icon"></span></td>
 										<td><div>
 												<select id="select_order" class="select-wrapper"
@@ -135,118 +134,128 @@
 							</table>
 						</td>
 						<td class="cell-top" colspan="2">
-							<table id="preset-list"
-								class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
-								<colgroup>
-									<col width="*">
-									<col width="25%">
-									<col width="25%">
-									<col width="25%">
-								</colgroup>
-								<tbody>
-									<tr>
-										<td class="cell-rigth cell-top">
-											<h5 class="twx-section">{{list}}</h5>
-											<table id="preset-list">
+							<div class="headquarter content-settings">
+								<div
+									class="headquarter win-main jssb-applied jssb-focus jssb-scrolly"
+									scrollbar="">
+									<div class="box-paper">
+										<div class="scroll-wrap">
+											<table id="preset-list"
+												class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
 												<colgroup>
-													<col width="*">
-													<col width="20">
-													<col width="26">
+													<col>
+													<col>
+													<col>
 												</colgroup>
 												<tbody>
-													<tr ng-repeat="item in local_data_standard_list"
-														style="height: 68px">
-														<td class="content cell-left"><div
-																class="name-wrapper">
-																<div class="span-icon" ng-class="getClass(item.name)"></div>
-																{{item.label}}
-															</div></td>
-														<td class="cell-right"><div>{{item.value}}</div></td>
-														<td class="cell-right">
-															<div>
-																<div ng-show="$index > 0"
-																	class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																	ng-click="uplist(item, $index)"></div>
-																<div ng-show="$index < array_length"
-																	class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																	ng-click="downlist(item, $index)"></div>
-															</div>
+													<tr>
+														<th class="selected cell-center">{{list}}</th>
+														<th class="selected cell-center">{{priority}}</th>
+														<th class="selected cell-center">{{levels}}</th>
+													</tr>
+													<tr>
+														<td class="cell-rigth cell-top">
+															<table id="preset-list">
+																<colgroup>
+																	<col width="*">
+																	<col width="20">
+																	<col width="26">
+																</colgroup>
+																<tbody>
+																	<tr ng-repeat="item in local_data_standard_list"
+																		style="height: 68px">
+																		<td class="content cell-left"><div
+																				class="name-wrapper">
+																				<div class="span-icon"
+																					ng-class="getClass(item.name)"></div>
+																				{{item.label}}
+																			</div></td>
+																		<td class="cell-right"><div>{{item.value}}</div></td>
+																		<td class="cell-right">
+																			<div>
+																				<div ng-show="$index > 0"
+																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																					ng-click="uplist(item, $index)"></div>
+																				<div ng-show="$index < array_length"
+																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																					ng-click="downlist(item, $index)"></div>
+																			</div>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</td>
+														<td class="cell-rigth cell-top">
+															<table id="preset-list">
+																<colgroup>
+																	<col width="*">
+																	<col width="20">
+																	<col width="26">
+																</colgroup>
+																<tbody>
+																	<tr ng-repeat="item in local_data_standard_order"
+																		style="height: 68px">
+																		<td class="content cell-left"><div
+																				class="name-wrapper">
+																				<div class="span-icon"
+																					ng-class="getClass(item.name)"></div>
+																				{{item.label}}
+																			</div></td>
+																		<td class="cell-right"><div>{{item.value}}</div></td>
+																		<td class="cell-right">
+																			<div>
+																				<div ng-show="item.value > 1"
+																					class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																					ng-click="upstandard(item)"></div>
+																				<div ng-show="item.value < 17"
+																					class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																					ng-click="downstandard(item)"></div>
+																			</div>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</td>
+														<td class="cell-right cell-top">
+															<table id="preset-list">
+																<colgroup>
+																	<col width="*">
+																	<col width="20">
+																	<col width="26">
+																</colgroup>
+																<tbody>
+																	<tr ng-repeat="item in local_data_standard_limit"
+																		style="height: 68px">
+																		<td class="content cell-left">
+																			<div class="name-wrapper">
+																				<div class="span-icon"
+																					ng-class="getClass(item.name)"></div>
+																				{{item.label}}
+																			</div>
+																		</td>
+																		<td class="cell-right"><div>{{item.value}}</div></td>
+																		<td class="cell-right"><div
+																				ng-show="getMax(item)"
+																				class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
+																				ng-click="levelupstandard(item.name)"></div>
+																			<div ng-show="item.value > 0"
+																				class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
+																				ng-click="leveldownstandard(item.name)"></div></td>
+																	</tr>
+																</tbody>
+															</table>
 														</td>
 													</tr>
 												</tbody>
 											</table>
-										</td>
-										<td class="cell-rigth cell-top">
-											<h5 class="twx-section">{{priority}}</h5>
-											<table id="preset-list">
-												<colgroup>
-													<col width="*">
-													<col width="20">
-													<col width="26">
-												</colgroup>
-												<tbody>
-													<tr ng-repeat="item in local_data_standard_order"
-														style="height: 68px">
-														<td class="content cell-left"><div
-																class="name-wrapper">
-																<div class="span-icon" ng-class="getClass(item.name)"></div>
-																{{item.label}}
-															</div></td>
-														<td class="cell-right"><div>{{item.value}}</div></td>
-														<td class="cell-right">
-															<div>
-																<div ng-show="item.value > 1"
-																	class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																	ng-click="upstandard(item)"></div>
-																<div ng-show="item.value < 17"
-																	class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																	ng-click="downstandard(item)"></div>
-															</div>
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</td>
-										<td class="cell-right cell-top">
-											<h5 class="twx-section">{{levels}}</h5>
-											<table id="preset-list">
-												<colgroup>
-													<col width="*">
-													<col width="20">
-													<col width="26">
-												</colgroup>
-												<tbody>
-													<tr ng-repeat="item in local_data_standard_limit"
-														style="height: 68px">
-														<td class="content cell-left">
-															<div class="name-wrapper">
-																<div class="span-icon" ng-class="getClass(item.name)"></div>
-																{{item.label}}
-															</div>
-														</td>
-														<td class="cell-right"><div>{{item.value}}</div></td>
-														<td class="cell-right"><div ng-show="getMax(item)"
-																class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																ng-click="levelupstandard(item.name)"></div>
-															<div ng-show="item.value > 0"
-																class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																ng-click="leveldownstandard(item.name)"></div></td>
-													</tr>
-												</tbody>
-											</table>
-										</td>
-									</tr>
-
-								</tbody>
-							</table>
+										</div>
+									</div>
+								</div>
+							</div>
 						</td>
-
 					</tr>
-
-
 				</tbody>
 			</table>
-
 		</div>
 	</div>
 	<footer class="win-foot">
