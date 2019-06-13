@@ -41,18 +41,20 @@
 }
 
 .robotTW2 .name-wrapper {
-	display: inline-block;
+	display: inline-flex;
 	height: 36px;
 	float: left
 }
 
-.robotTW2 .name-wrapper .name {
-	margin-top: 1px;
-	display: block;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	max-width: 104px
+@media ( max-width : 1220px) {
+	.name-wrapper .name {
+		margin-top: 1px;
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 90px;
+	}
 }
 
 .robotTW2 .name-wrapper .tribe-friend {
@@ -270,26 +272,49 @@ keyframes down { 0% {
 100%
 {
 left
+
+
+
+
 :
+
+
+
+
 0
 px
+
+
+
+
 ;
 top
+
+
+
+
 :
+
+
+
+
 20
 px
+
+
+
+
 ;
 }
 }
-
 .robotTW2 .switch-slider {
 	width: fit-content;
 }
 
 .robotTW2 .checkbox {
-	position:relative;
-    left: 50%;
-    transform: translateX(-50%);
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .robotTW2 .animation-download {
@@ -299,9 +324,31 @@ px
 }
 
 .robotTW2 .headquarter.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 306px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 248px;
+}
+
+.robotTW2 .headquarter.content-settings {
+	height: 100%;
+	width: 100%;
+	padding-bottom: 248px;
+}
+
+@media ( max-width : 1350px) {
+	.robotTW2 .headquarter.content-settings {
+		height: 100%;
+		width: 100%;
+		padding-bottom: 316px;
+	}
+}
+
+@media ( max-width : 830px) {
+    .robotTW2 .headquarter.content-settings {
+        height: 100%;
+        width: 100%;
+        padding-bottom: 330px;
+    }
 }
 
 .robotTW2 .win-main {
@@ -316,59 +363,59 @@ px
 }
 
 .robotTW2 .log.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 100px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 100px;
 }
 
 .robotTW2 .farm.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 62px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .attack.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 62px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .defense.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 260px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 260px;
 }
 
 .robotTW2 .alert.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 62px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .spy.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 62px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .deposit.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 62px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .recon.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 62px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .recruit.content-settings {
-    height: 100%;
-    width: 100%;
-    padding-bottom: 62px;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 62px;
 }
 
 .robotTW2 .win-foot {
-    z-index: 1000;
+	z-index: 1000;
 }

@@ -174,13 +174,12 @@
 															<col width="26%">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="item in local_data_standard_list"
-																style="height: 68px">
-																<td class="cell-center"><span>{{$index}}</span></td>
+															<tr ng-repeat="item in local_data_standard_list">
+																<td class="cell-center"><span>{{$index + 1}}</span></td>
 																<td class="content cell-left"><div
 																		class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
-																		{{item.label}}
+																		<div class="name">{{item.label}}</div>
 																	</div></td>
 																<td class="cell-right"><div>{{item.value}}</div></td>
 																<td class="cell-right">
@@ -205,12 +204,11 @@
 															<col width="26%">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="item in local_data_standard_order"
-																style="height: 68px">
+															<tr ng-repeat="item in local_data_standard_order">
 																<td class="content cell-left"><div
 																		class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
-																		{{item.label}}
+																		<div class="name">{{item.label}}</div>
 																	</div></td>
 																<td class="cell-right"><div>{{item.value}}</div></td>
 																<td class="cell-right">
@@ -235,12 +233,11 @@
 															<col width="26%">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="item in local_data_standard_limit"
-																style="height: 68px">
+															<tr ng-repeat="item in local_data_standard_limit">
 																<td class="content cell-left">
 																	<div class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
-																		{{item.label}}
+																		<div class="name">{{item.label}}</div>
 																	</div>
 																</td>
 																<td class="cell-right"><div>{{item.value}}</div></td>
@@ -267,6 +264,8 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
+			<li><a class="btn-orange btn-border start"
+                ng-click="save_headquarter()">{{SAVE}}</a>
 			<li><a class="btn-orange btn-border start"
 				ng-click="start_headquarter()">{{START}}</a></li>
 			<li><a class="btn-orange btn-border stop"
