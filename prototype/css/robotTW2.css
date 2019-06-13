@@ -298,14 +298,10 @@ px
 	animation-iteration-count: infinite;
 }
 
-.robotTW2 .headquarter.settings.win-main {
-	height: 414px;
-	position: relative;
-}
-
-.robotTW2 .headquarter.default.win-main {
-	height: 456px;
-	position: relative;
+.robotTW2 .headquarter.content-settings {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 306px;
 }
 
 .robotTW2 .win-main {
