@@ -17,6 +17,9 @@ define("robotTW2/controllers/HeadquarterController", [
 	){
 	return function HeadquarterController($scope) {
 		$scope.MENU = services.$filter("i18n")("MENU", services.$rootScope.loc.ale);
+		$scope.SAVE = services.$filter("i18n")("SAVE", services.$rootScope.loc.ale);
+		$scope.INCLUDE = services.$filter("i18n")("INCLUDE", services.$rootScope.loc.ale);
+		$scope.APPLY = services.$filter("i18n")("APPLY", services.$rootScope.loc.ale);
 		$scope.CLOSE = services.$filter("i18n")("CLOSE", services.$rootScope.loc.ale);
 		$scope.START = services.$filter("i18n")("START", services.$rootScope.loc.ale);
 		$scope.STOP = services.$filter("i18n")("STOP", services.$rootScope.loc.ale);

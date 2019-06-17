@@ -332,22 +332,22 @@ px
 .robotTW2 .headquarter.content-settings {
 	height: 100%;
 	width: 100%;
-	padding-bottom: 248px;
+	padding-bottom: 190px;
 }
 
-@media ( max-width : 1350px) {
+@media ( max-width : 1215px) {
 	.robotTW2 .headquarter.content-settings {
 		height: 100%;
 		width: 100%;
-		padding-bottom: 316px;
+		padding-bottom: 210px;
 	}
 }
 
-@media ( max-width : 830px) {
+@media ( max-width : 860px) {
     .robotTW2 .headquarter.content-settings {
         height: 100%;
         width: 100%;
-        padding-bottom: 330px;
+        padding-bottom: 240px;
     }
 }
 

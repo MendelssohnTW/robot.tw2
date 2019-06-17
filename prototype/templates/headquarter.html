@@ -14,6 +14,7 @@
 			<col width="*">
 			<col width="*">
 			<col width="*">
+			<col width="*">
 		</colgroup>
 		<tbody>
 			<tr>
@@ -31,20 +32,6 @@
 					id="reserva_slots" class="input-border inputcreated" type="number"
 					value="{{data_headquarter.reserva.slots}}"
 					ng-model="data_headquarter.reserva.slots"></td>
-				<td class="cell-right"><label for="seq_flex"
-					class="with-margin" style="top: 21px; left: 100px;">{{seq_flex}}</label>
-					<div id="seq_flex" class="position-absolute size-34x34"
-						ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_flex', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_flex'}"
-						ng-click="toggle_seq('seq_flex')" tooltip=""
-						tooltip-content="{{seq_flex}}"></div></td>
-				<td class="cell-right"><label for="check_one"
-					class="with-margin" style="top: 21px; left: 100px;">{{text_one}}</label>
-					<div id="check_one" class="position-absolute size-34x34"
-						ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_one', 'btn-red icon-26x26-check-negative': toggle_option != 'check_one'}"
-						ng-click="toggleOption('check_one')" tooltip=""
-						tooltip-content="{{check_one}}"></div></td>
-			</tr>
-			<tr>
 				<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
 					id="reserva_wood" class="input-border inputcreated" type="number"
 					value="{{data_headquarter.reserva.wood}}"
@@ -57,42 +44,15 @@
 					id="reserva_iron" class="input-border inputcreated" type="number"
 					value="{{data_headquarter.reserva.iron}}"
 					ng-model="data_headquarter.reserva.iron"></td>
-				<td class="cell-right"><label for="seq_int" class="with-margin"
-					style="top: 21px; left: 100px;">{{seq_int}}</label>
-					<div id="seq_int" class="position-absolute size-34x34"
-						ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_int', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_int'}"
-						ng-click="toggle_seq('seq_int')" tooltip=""
-						tooltip-content="{{seq_int}}"></div></td>
-				<td class="cell-right"><label for="check_all"
-					class="with-margin" style="top: 21px; left: 100px;">{{text_all}}</label>
-					<div id="check_all" class="position-absolute size-34x34"
-						ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_all', 'btn-red icon-26x26-check-negative': toggle_option != 'check_all'}"
-						ng-click="toggleOption('check_all')" tooltip=""
-						tooltip-content="{{check_all}}"></div></td>
 			</tr>
 			<tr>
-				<td colspan="3">
+				<td>
 					<div>
 						<div
 							ng-class="{'icon-26x26-dot-green' : status == 'running', 'icon-26x26-dot-red' : status == 'stopped', 'icon-26x26-dot-blue' : status == 'paused'}"></div>
 						{{headquarter_running}}
 					</div>
 				</td>
-				<td class="cell-right"><label for="seq_list"
-					class="with-margin" style="top: 21px; left: 100px;">{{seq_list}}</label>
-					<div id="seq_list" class="position-absolute size-34x34"
-						ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_list', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_list'}"
-						ng-click="toggle_seq('seq_list')" tooltip=""
-						tooltip-content="{{seq_list}}"></div></td>
-
-				<td class="cell-right"><label for="check_all_villages"
-					class="with-margin" style="top: 21px; left: 100px;">{{text_all_village}}</label>
-					<div id="check_all_villages" class="position-absolute size-34x34"
-						ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_all_villages', 'btn-red icon-26x26-check-negative': toggle_option != 'check_all_villages'}"
-						ng-click="toggleOption('check_all_villages')" tooltip=""
-						tooltip-content="{{check_all_villages}}"></div></td>
-			</tr>
-			<tr>
 				<td class="cell-center" colspan="5" style="color: #ffff55;">{{text_seq}}</td>
 			</tr>
 
@@ -108,7 +68,7 @@
 					<table
 						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 						<colgroup>
-							<col>
+							<col width="500px">
 							<col>
 						</colgroup>
 						<tbody>
@@ -120,7 +80,7 @@
 							<tr>
 								<td class="cell-top">
 									<table id="preset-list"
-										class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+										class="tbl-border-light tbl-border-dark tbl-big-header tbl-content tbl-content">
 										<colgroup>
 											<col width="100px">
 											<col width="30px">
@@ -131,7 +91,7 @@
 												<td>{{text_village}}</td>
 												<td class="cell-center"><span
 													class="icon icon-34x34-select-village"></span></td>
-												<td><div>
+												<td class="cell-center"><div>
 														<select id="select_village" class="select-wrapper"
 															ng-options="item as item.name for item in data_select.availableOptions"
 															ng-model="data_select.selectedOption"></select>
@@ -140,11 +100,117 @@
 											<tr>
 												<td>{{text_type}}</td>
 												<td class="cell-center"><span class="icon"></span></td>
-												<td><div>
+												<td class="cell-center"><div>
 														<select id="select_order" class="select-wrapper"
 															ng-options="item as item.name for item in data_type.availableOptions"
 															ng-model="data_type.selectedOption"></select>
 													</div></td>
+											</tr>
+											<tr>
+												<td colspan="2"><div>{{text_executebuildingorder}}</div></td>
+												<td class="cell-center"><div switch-slider=""
+														border="true" enabled="true"
+														value="data_select.selectedOption.value.headquarter_activate"
+														vertical="false" size="'56x28'">
+														<div ng-class="{'box-border-dark box-filter': border}"
+															class="box-border-dark box-filter">
+															<div class="switch switch-56x28 switch-horizontal"
+																ng-class="{'switch-checked': value}">
+																<div class="size-26x26 switch-thumb">
+																	<span class="simple icon-26x26-switch-off"
+																		ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																</div>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+										</tbody>
+									</table>
+									<table id="config-apply"
+										class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+										<colgroup>
+											<col>
+											<col>
+											<col>
+										</colgroup>
+										<tbody>
+											<tr>
+												<th class="selected cell-center">{{seq_flex}}</th>
+												<th class="selected cell-center">{{seq_int}}</th>
+												<th class="selected cell-center">{{seq_list}}</th>
+											</tr>
+											<tr>
+												<td class="cell-center"><div id="seq_flex"
+														class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_flex', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_flex'}"
+														ng-click="toggle_seq('seq_flex')" tooltip=""
+														tooltip-content="{{seq_flex}}"></div></td>
+												<td class="cell-center"><div id="seq_int"
+														class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_int', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_int'}"
+														ng-click="toggle_seq('seq_int')" tooltip=""
+														tooltip-content="{{seq_int}}"></div></td>
+												<td class="cell-center"><div id="seq_list"
+														class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_list', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_list'}"
+														ng-click="toggle_seq('seq_list')" tooltip=""
+														tooltip-content="{{seq_list}}"></div></td>
+											</tr>
+										</tbody>
+									</table>
+									<table id="config-apply"
+										class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content">
+										<colgroup>
+											<col>
+											<col>
+										</colgroup>
+										<tbody>
+											<tr>
+												<th class="selected cell-center">{{text_one}}</th>
+												<th class="selected cell-center">{{text_all}}</th>
+											</tr>
+
+											<tr>
+												<td class="cell-center">
+													<div id="check_one" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_one', 'btn-red icon-26x26-check-negative': toggle_option != 'check_one'}"
+														ng-click="toggleOption('check_one')" tooltip=""
+														tooltip-content="{{check_one}}"></div>
+												</td>
+												<td class="cell-center">
+													<div id="check_all" class="position-absolute size-34x34"
+														ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_all', 'btn-red icon-26x26-check-negative': toggle_option != 'check_all'}"
+														ng-click="toggleOption('check_all')" tooltip=""
+														tooltip-content="{{check_all}}"></div>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="3">
+													<ul class="list-btn list-center buttons">
+														<li><a class="btn-orange btn-border start"
+															ng-click="save_village()">{{SAVE}}</a></li>
+													</ul>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<ul class="list-btn list-center buttons">
+														<li><a class="btn-orange btn-border start"
+															ng-click="include_village()">{{INCLUDE}}</a></li>
+													</ul>
+												</td>
+												<td>
+													<ul class="list-btn list-center buttons">
+														<li><a class="btn-orange btn-border start"
+															ng-click="apply_village()">{{APPLY}}</a></li>
+													</ul>
+												</td>
+											</tr>
+											<tr ng-repeat="item in selected_villages_list">
+												<td class="content cell-left"><div class="name-wrapper">
+														<div class="name">{{item.label}}</div>
+													</div></td>
+												<td class="cell-center"><div>{{item.value}}</div></td>
 											</tr>
 										</tbody>
 									</table>
@@ -168,10 +234,10 @@
 												<td class="cell-rigth cell-top">
 													<table id="preset-list">
 														<colgroup>
-															<col width="20px">
+															<col width="28px">
 															<col width="*">
+															<col width="28px">
 															<col width="20%">
-															<col width="26%">
 														</colgroup>
 														<tbody>
 															<tr ng-repeat="item in local_data_standard_list">
@@ -181,8 +247,8 @@
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
 																		<div class="name">{{item.label}}</div>
 																	</div></td>
-																<td class="cell-right"><div>{{item.value}}</div></td>
-																<td class="cell-right">
+																<td class="cell-center"><div>{{item.value}}</div></td>
+																<td class="cell-center">
 																	<div>
 																		<div ng-show="$index > 0"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
@@ -200,8 +266,8 @@
 													<table id="preset-list">
 														<colgroup>
 															<col width="*">
+															<col width="28px">
 															<col width="20%">
-															<col width="26%">
 														</colgroup>
 														<tbody>
 															<tr ng-repeat="item in local_data_standard_order">
@@ -210,8 +276,8 @@
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
 																		<div class="name">{{item.label}}</div>
 																	</div></td>
-																<td class="cell-right"><div>{{item.value}}</div></td>
-																<td class="cell-right">
+																<td class="cell-center"><div>{{item.value}}</div></td>
+																<td class="cell-center">
 																	<div>
 																		<div ng-show="item.value > 1"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
@@ -229,8 +295,8 @@
 													<table id="preset-list">
 														<colgroup>
 															<col width="*">
+															<col width="28px">
 															<col width="20%">
-															<col width="26%">
 														</colgroup>
 														<tbody>
 															<tr ng-repeat="item in local_data_standard_limit">
@@ -240,8 +306,8 @@
 																		<div class="name">{{item.label}}</div>
 																	</div>
 																</td>
-																<td class="cell-right"><div>{{item.value}}</div></td>
-																<td class="cell-right"><div ng-show="getMax(item)"
+																<td class="cell-center"><div>{{item.value}}</div></td>
+																<td class="cell-center"><div ng-show="getMax(item)"
 																		class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																		ng-click="levelupstandard(item.name)"></div>
 																	<div ng-show="item.value > 0"
@@ -265,7 +331,7 @@
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
 			<li><a class="btn-orange btn-border start"
-                ng-click="save_headquarter()">{{SAVE}}</a>
+				ng-click="save_headquarter()">{{SAVE}}</a></li>
 			<li><a class="btn-orange btn-border start"
 				ng-click="start_headquarter()">{{START}}</a></li>
 			<li><a class="btn-orange btn-border stop"
