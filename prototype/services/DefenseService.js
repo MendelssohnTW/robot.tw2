@@ -406,19 +406,21 @@ define("robotTW2/services/DefenseService", [
 			if(!promise_verify){
 				promise_verify = getAtaques().then(function(){
 					promise_verify = undefined;
-					data_villages.set();
-					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
 						promise_verify_queue = false;
 						verificarAtaques()
+					} else {
+						data_villages.set();
+						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					}
 				}, function(){
 					promise_verify = undefined;
-					data_villages.set();
-					$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					if(promise_verify_queue) {
 						promise_verify_queue = false;
 						verificarAtaques()
+					} else {
+						data_villages.set();
+						$rootScope.$broadcast(providers.eventTypeProvider.CHANGE_COMMANDS_DEFENSE)
 					}
 				})
 			} else {
