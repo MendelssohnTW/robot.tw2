@@ -211,15 +211,12 @@
 												</td>
 											</tr>
 											<tr ng-repeat="item in local_included_villages">
-												<td class="content cell-left"><div class="name-wrapper">
-														<div class="name">{{item.label}}</div>
-													</div></td>
-												<td class="cell-center"><div>
-														<ul class="list-btn">
-															<li><a href="#"
-																class="size-34x34 btn-red icon-26x26-close"
-																ng-click="exclude_village(item.id)"></a></li>
-														</ul>
+												<td class="content cell-left" colspan="2"><div class="name-wrapper">
+														<div class="name"><ul class="list-btn">
+                                                            <li><a href="#"
+                                                                class="size-34x34 btn-red icon-26x26-close"
+                                                                ng-click="exclude_village(item.id)"></a></li>
+                                                        </ul>{{item.label}}</div>
 													</div></td>
 											</tr>
 										</tbody>
