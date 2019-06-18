@@ -77,6 +77,12 @@
 	color: #352108;
 }
 
+@media ( max-width : 1440px) {
+    .robotTW2 table #headquarter {
+        height: 68px;
+    }
+}
+
 .robotTW2 .inpt {
 	width: 100px;
 	height: 26px;
