@@ -94,7 +94,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.local_data_select_limit = set_list_obj($scope.data_select.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value.selected.value], "buildings", "name")
 			$scope.local_data_select_list = set_list($scope.data_select.selectedOption.value.buildinglist[$scope.data_select.selectedOption.value.selected.value], "buildings")
 		}
-		
+
 		$scope.getTimeRest = function(){
 			return $scope.data_headquarter.complete > time.convertedTime() && services.HeadquarterService.isRunning() ? helper.readableMilliseconds($scope.data_headquarter.complete - time.convertedTime()) : 0;
 		}
@@ -103,26 +103,28 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!item){return}
 			return item.value < services.modelDataService.getGameData().getBuildingDataForBuilding(item.name).max_level ? true: false;
 		}
-		
+
 		$scope.getClass = function(key){
 			if(!key){return}
 			return "icon-20x20-building-" + key;
 		}
-		
+
 		$scope.toggle_seq = function(seq){
 			if($scope.data_select.selectedOption.value.seq_type){
 				$scope.data_select.selectedOption.value.seq_type = seq
 			}
 		}
-		
+
 		$scope.include_village = function(){
-			$scope.local_included_villages.push({
-				"name": $scope.data_select.selectedOption["name"],
-				"label": $scope.data_select.selectedOption["label"],
-				"id": $scope.data_select.selectedOption["id"],
-			})
+			if($scope.local_included_villages.find(f=>f.id!=id)){
+				$scope.local_included_villages.push({
+					"name": $scope.data_select.selectedOption["name"],
+					"label": $scope.data_select.selectedOption["label"],
+					"id": $scope.data_select.selectedOption["id"],
+				})
+			}
 		}
-		
+
 		$scope.exclude_village = function(id){
 			$scope.local_included_villages = $scope.local_included_villages.filter(f=>f.id!=id) 
 		}
