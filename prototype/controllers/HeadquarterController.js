@@ -107,6 +107,12 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!key){return}
 			return "icon-20x20-building-" + key;
 		}
+		
+		$scope.toggle_seq = function(seq){
+			if($scope.data_select.selectedOption.value.seq_type){
+				$scope.data_select.selectedOption.value.seq_type = seq
+			}
+		}
 
 		$scope.$watch("data_logs.headquarter", function(){
 			$scope.recalcScrollbar();
@@ -117,7 +123,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_select){return}
 			update_local_data_select()
 			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
-		}, true)
+		})
 
 		$scope.$watch("data_type", function(){
 			if(!$scope.data_type){return}
