@@ -36,6 +36,10 @@ define("robotTW2/controllers/HeadquarterController", [
 
 		var buildingTypes = services.modelDataService.getGameData().getBuildingTypes()
 		, buildings = services.modelDataService.getGameData().getBuildings()
+		, update_status = function () {
+			services.HeadquarterService.isRunning() && services.HeadquarterService.isPaused() ? $scope.status = "paused" : services.HeadquarterService.isRunning() && (typeof(services.HeadquarterService.isPaused) == "function" && !services.HeadquarterService.isPaused()) ? $scope.status = "running" : $scope.status = "stopped";
+			if (!$scope.$$phase) {$scope.$apply();}
+		}
 		, set_list_obj = function(obj, str, desc){
 			if(!obj){return}
 			let list = []
@@ -124,9 +128,49 @@ define("robotTW2/controllers/HeadquarterController", [
 				})
 			}
 		}
+		
+		$scope.start_headquarter = function(){
+			services.HeadquarterService.start();
+			update_status()
+		}
+
+		$scope.stop_headquarter = function(){
+			services.HeadquarterService.stop();
+			$scope.data_headquarter.complete = 0
+			update_status()
+		}
+
+		$scope.pause_headquarter = function(){
+			services.HeadquarterService.pause();
+			$scope.paused = !0;
+		}
+
+		$scope.resume_headquarter = function(){
+			services.HeadquarterService.resume();
+			$scope.paused = !1;
+		}
+		
+		$scope.restore_headquarter = function(){
+			$scope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
+			Object.values($scope.data_villages.villages).forEach(function(village){
+				angular.merge(village, {
+					headquarter_activate 	: true,
+					buildingorder 			: $scope.data_headquarter.buildingorder,
+					buildinglimit 			: $scope.data_headquarter.buildinglimit,
+					buildinglist 			: $scope.data_headquarter.buildinglist
+				})
+			})
+			$scope.data_villages.set();
+			if (!$scope.$$phase) $scope.$apply();
+		}
 
 		$scope.exclude_village = function(id){
 			$scope.local_included_villages = $scope.local_included_villages.filter(f=>f.id!=id) 
+		}
+		
+		$scope.save_village = function(){
+			$scope.data_headquarter.set();
+			$scope.data_villages.set();
 		}
 
 		$scope.$watch("data_logs.headquarter", function(){
@@ -144,6 +188,13 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_type){return}
 			update_select()
 		}, true)
+		
+		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
+			if(!data) {return} 
+			update_status();
+		})
+
+		update_status();
 
 		$scope.$on("$destroy", function() {
 			$scope.data_villages.set();

@@ -77,9 +77,9 @@
 	color: #352108;
 }
 
-@media ( max-width : 1440px) {
-    .robotTW2 table #headquarter {
-        height: 68px;
+@media ( max-width : 1170px) {
+    .robotTW2 table #headquarter-table {
+        height: 56px;
     }
 }
 
