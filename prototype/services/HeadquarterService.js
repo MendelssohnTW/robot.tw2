@@ -55,7 +55,8 @@ define("robotTW2/services/HeadquarterService", [
 		, paused_queue = false
 		, checkBuildingOrderLimit = function(vill) {
 			if(!vill.selected){
-				vill.selected = data_headquarter.selects.find(f=>f.value ="standard");
+//				vill.selected = data_headquarter.selects.find(f=>f.value ="standard");
+				return []
 			}
 			var buildingLevels = vill.buildinglevels
 			, buildingLimit = vill.buildinglimit[vill.selected.value]
@@ -250,7 +251,8 @@ define("robotTW2/services/HeadquarterService", [
 
 				var g = []
 
-				if(data_headquarter.seq_type != "seq_list"){
+//				if(data_headquarter.seq_type != "seq_list"){
+				if(data_villages.villages[village.getId()].seq_type != "seq_list"){
 					var bd = data_villages.villages[village.getId()].buildingorder[data_villages.villages[village.getId()].selected.value]
 					, bf = Object.keys(bd).map(function(bd_key){
 						return bt.find(f=>Object.keys(f)[0]==bd_key) ? {[bd_key]:bd[bd_key]} : undefined;
@@ -263,7 +265,8 @@ define("robotTW2/services/HeadquarterService", [
 						tr ? g.push(Object.keys(tr)[0]) : tr
 					})
 
-					if(data_headquarter.seq_type == "seq_int"){
+//					if(data_headquarter.seq_type == "seq_int"){
+					if(data_villages.villages[village.getId()].seq_type == "seq_int"){
 						g = g.splice(0,1)
 					};
 				} else {

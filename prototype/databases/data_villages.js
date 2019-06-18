@@ -73,6 +73,11 @@ define("robotTW2/databases/data_villages", [
 		});
 		return data_villages.villages[v].presets;
 	}
+	, update_villages = function(){
+		services.$timeout(function(){
+			db_villages.updateVillages()
+		}, 10000)
+	}
 	, data_villages = database.get("data_villages") || {}
 	, db_villages = {}
 	db_villages.set = function(){
@@ -124,6 +129,7 @@ define("robotTW2/databases/data_villages", [
 						recruit_activate		: true,
 						sniper_defense			: true,
 						sniper_attack			: true,
+						seq_type				: "seq_flex",
 						presets					: getPst(m),
 						selected				: null//selects.find(f=>f.name=="standard")
 					})
@@ -197,17 +203,8 @@ define("robotTW2/databases/data_villages", [
 		return data_villages.villages[village_id].presets[preset_id].quadrants
 	}
 
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, function(){
-		services.$timeout(function(){
-			db_villages.updateVillages()
-		}, 10000)
-		
-	});
-	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, function(){
-		services.$timeout(function(){
-			db_villages.updateVillages()	
-		}, 10000)
-	});
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_LOST, update_villages);
+	services.$rootScope.$on(providers.eventTypeProvider.VILLAGE_CONQUERED, update_villages);
 
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_DELETED, db_villages.updateVillages);
 	services.$rootScope.$on(providers.eventTypeProvider.ARMY_PRESET_ASSIGNED, db_villages.updateVillages);

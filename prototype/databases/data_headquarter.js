@@ -30,7 +30,7 @@ define("robotTW2/databases/data_headquarter", [
 			interval				: conf.INTERVAL.HEADQUARTER,
 			time_complete			: 0,
 			version					: conf.VERSION.HEADQUARTER,
-			seq_type				: "seq_flex",
+//			seq_type				: "seq_flex",
 			reserva 				: {
 				food			: conf.RESERVA.HEADQUARTER.FOOD,
 				wood			: conf.RESERVA.HEADQUARTER.WOOD,
@@ -44,12 +44,13 @@ define("robotTW2/databases/data_headquarter", [
 					name	: services.$filter("i18n")(elem, services.$rootScope.loc.ale, "headquarter"),
 					value	: elem
 				}
-			}),
-			standard				: {
-				"buildingorder"	: conf.BUILDINGORDER["standard"],
-				"buildinglimit"	: conf.BUILDINGLIMIT["standard"],
-				"buildinglist"	: conf.BUILDINGLIST["standard"]
-			}
+			})
+//			,
+//			standard				: {
+//				"buildingorder"	: conf.BUILDINGORDER["standard"],
+//				"buildinglimit"	: conf.BUILDINGLIMIT["standard"],
+//				"buildinglist"	: conf.BUILDINGLIST["standard"]
+//			}
 
 	}
 

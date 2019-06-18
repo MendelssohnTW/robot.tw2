@@ -185,7 +185,10 @@
 												</td>
 											</tr>
 											<tr>
-												<td colspan="3">
+												<th class="selected cell-center">{{settings_list}}</th>
+											</tr>
+											<tr>
+												<td colspan="2">
 													<ul class="list-btn list-center buttons">
 														<li><a class="btn-orange btn-border start"
 															ng-click="save_village()">{{SAVE}}</a></li>
@@ -240,7 +243,7 @@
 															<col width="20%">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="item in local_data_standard_list">
+															<tr ng-repeat="item in local_data_select_list">
 																<td class="cell-center"><span>{{$index + 1}}</span></td>
 																<td class="content cell-left"><div
 																		class="name-wrapper">
@@ -253,7 +256,7 @@
 																		<div ng-show="$index > 0"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
 																			ng-click="uplist(item, $index)"></div>
-																		<div ng-show="$index < array_length"
+																		<div ng-show="$index < local_data_select_list.length - 1"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
 																			ng-click="downlist(item, $index)"></div>
 																	</div>
@@ -270,7 +273,7 @@
 															<col width="20%">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="item in local_data_standard_order">
+															<tr ng-repeat="item in local_data_select_order">
 																<td class="content cell-left"><div
 																		class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
@@ -299,7 +302,7 @@
 															<col width="20%">
 														</colgroup>
 														<tbody>
-															<tr ng-repeat="item in local_data_standard_limit">
+															<tr ng-repeat="item in local_data_select_limit">
 																<td class="content cell-left">
 																	<div class="name-wrapper">
 																		<div class="span-icon" ng-class="getClass(item.name)"></div>
@@ -330,8 +333,6 @@
 	</div>
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li><a class="btn-orange btn-border start"
-				ng-click="save_headquarter()">{{SAVE}}</a></li>
 			<li><a class="btn-orange btn-border start"
 				ng-click="start_headquarter()">{{START}}</a></li>
 			<li><a class="btn-orange btn-border stop"
