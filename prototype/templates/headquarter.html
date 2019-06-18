@@ -142,17 +142,17 @@
 											<tr>
 												<td class="cell-center"><div id="seq_flex"
 														class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_flex', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_flex'}"
+														ng-class="{'btn-green icon-26x26-check-positive': data_select.selectedOption.value.seq_type == 'seq_flex', 'btn-red icon-26x26-check-negative': data_select.selectedOption.value.seq_type != 'seq_flex'}"
 														ng-click="toggle_seq('seq_flex')" tooltip=""
 														tooltip-content="{{seq_flex}}"></div></td>
 												<td class="cell-center"><div id="seq_int"
 														class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_int', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_int'}"
+														ng-class="{'btn-green icon-26x26-check-positive': data_select.selectedOption.value.seq_type == 'seq_int', 'btn-red icon-26x26-check-negative': data_select.selectedOption.value.seq_type != 'seq_int'}"
 														ng-click="toggle_seq('seq_int')" tooltip=""
 														tooltip-content="{{seq_int}}"></div></td>
 												<td class="cell-center"><div id="seq_list"
 														class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': data_headquarter.seq_type == 'seq_list', 'btn-red icon-26x26-check-negative': data_headquarter.seq_type != 'seq_list'}"
+														ng-class="{'btn-green icon-26x26-check-positive': data_select.selectedOption.value.seq_type == 'seq_list', 'btn-red icon-26x26-check-negative': data_select.selectedOption.value.seq_type != 'seq_list'}"
 														ng-click="toggle_seq('seq_list')" tooltip=""
 														tooltip-content="{{seq_list}}"></div></td>
 											</tr>
