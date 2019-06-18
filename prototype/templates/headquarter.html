@@ -192,7 +192,7 @@
 													</ul>
 												</td>
 											</tr>
-											
+
 											<tr>
 												<th class="selected cell-center" colspan="2">{{settings_list}}</th>
 											</tr>
@@ -210,11 +210,17 @@
 													</ul>
 												</td>
 											</tr>
-											<tr ng-repeat="item in selected_villages_list">
+											<tr ng-repeat="item in local_included_villages">
 												<td class="content cell-left"><div class="name-wrapper">
 														<div class="name">{{item.label}}</div>
 													</div></td>
-												<td class="cell-center"><div>{{item.value}}</div></td>
+												<td class="cell-center"><div>
+														<ul class="list-btn">
+															<li><a href="#"
+																class="size-34x34 btn-red icon-26x26-close"
+																ng-click="exclude_village(item.id)"></a></li>
+														</ul>
+													</div></td>
 											</tr>
 										</tbody>
 									</table>
@@ -230,12 +236,16 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th class="selected cell-center" ng-if="data_select.selectedOption.value.seq_type == 'seq_list'">{{list}}</th>
-												<th class="selected cell-center" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">{{priority}}</th>
-												<th class="selected cell-center" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">{{levels}}</th>
+												<th class="selected cell-center"
+													ng-if="data_select.selectedOption.value.seq_type == 'seq_list'">{{list}}</th>
+												<th class="selected cell-center"
+													ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">{{priority}}</th>
+												<th class="selected cell-center"
+													ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">{{levels}}</th>
 											</tr>
 											<tr>
-												<td class="cell-rigth cell-top" ng-if="data_select.selectedOption.value.seq_type == 'seq_list'">
+												<td class="cell-rigth cell-top"
+													ng-if="data_select.selectedOption.value.seq_type == 'seq_list'">
 													<table id="headquarter-list">
 														<colgroup>
 															<col width="28px">
@@ -267,7 +277,8 @@
 														</tbody>
 													</table>
 												</td>
-												<td class="cell-rigth cell-top" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">
+												<td class="cell-rigth cell-top"
+													ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">
 													<table id="headquarter-order">
 														<colgroup>
 															<col width="*">
@@ -296,7 +307,8 @@
 														</tbody>
 													</table>
 												</td>
-												<td class="cell-right cell-top" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">
+												<td class="cell-right cell-top"
+													ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">
 													<table id="headquarter-level">
 														<colgroup>
 															<col width="*">

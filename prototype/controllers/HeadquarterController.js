@@ -26,6 +26,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.version = services.$filter("i18n")("version", services.$rootScope.loc.ale);
 
 		$scope.local_data_villages = [];
+		$scope.local_included_villages = []
 		$scope.local_data_select = []
 		$scope.data_headquarter = data_headquarter
 		$scope.data_villages = data_villages;
@@ -112,6 +113,18 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_select.selectedOption.value.seq_type){
 				$scope.data_select.selectedOption.value.seq_type = seq
 			}
+		}
+		
+		$scope.include_village = function(){
+			$scope.local_included_villages.push({
+				"name": $scope.data_select.selectedOption["name"],
+				"label": $scope.data_select.selectedOption["label"],
+				"id": $scope.data_select.selectedOption["id"],
+			})
+		}
+		
+		$scope.exclude_village = function(id){
+			$scope.local_included_villages = $scope.local_included_villages.filter(f=>f.id!=id) 
 		}
 
 		$scope.$watch("data_logs.headquarter", function(){
