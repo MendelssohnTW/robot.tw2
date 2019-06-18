@@ -26,9 +26,8 @@ var robotTW2 = window.robotTW2 = undefined;
 
 	"use strict";
 //	var host = "https://mendelssohntw.github.io/robot.tw2/prototype";
-//	var host = "https://laverel.com/script/prototype";
+	var host = "https://laverel.com/script/prototype";
 //	var host = "https://delacasa.com.py/script/prototype";
-	var host = urlServer;
 	var $rootScope				= injector.get('$rootScope');
 	var $templateCache 			= injector.get('$templateCache');
 	var $exceptionHandler 		= injector.get('$exceptionHandler');
