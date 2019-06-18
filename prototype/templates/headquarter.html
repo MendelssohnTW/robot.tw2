@@ -230,12 +230,12 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th class="selected cell-center">{{list}}</th>
-												<th class="selected cell-center">{{priority}}</th>
-												<th class="selected cell-center">{{levels}}</th>
+												<th class="selected cell-center" ng-if="data_select.selectedOption.value.seq_type == 'seq_list'">{{list}}</th>
+												<th class="selected cell-center" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">{{priority}}</th>
+												<th class="selected cell-center" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">{{levels}}</th>
 											</tr>
 											<tr>
-												<td class="cell-rigth cell-top">
+												<td class="cell-rigth cell-top" ng-if="data_select.selectedOption.value.seq_type == 'seq_list'">
 													<table id="headquarter-list">
 														<colgroup>
 															<col width="28px">
@@ -267,7 +267,7 @@
 														</tbody>
 													</table>
 												</td>
-												<td class="cell-rigth cell-top">
+												<td class="cell-rigth cell-top" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">
 													<table id="headquarter-order">
 														<colgroup>
 															<col width="*">
@@ -296,7 +296,7 @@
 														</tbody>
 													</table>
 												</td>
-												<td class="cell-right cell-top">
+												<td class="cell-right cell-top" ng-if="data_select.selectedOption.value.seq_type != 'seq_list'">
 													<table id="headquarter-level">
 														<colgroup>
 															<col width="*">
