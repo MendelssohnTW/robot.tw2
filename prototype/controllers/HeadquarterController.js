@@ -116,7 +116,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.include_village = function(){
-			if($scope.local_included_villages.find(f=>f.id!=id)){
+			if($scope.local_included_villages.find(f=>f.id!=$scope.data_select.selectedOption["id"])){
 				$scope.local_included_villages.push({
 					"name": $scope.data_select.selectedOption["name"],
 					"label": $scope.data_select.selectedOption["label"],
