@@ -25,7 +25,6 @@ var robotTW2 = window.robotTW2 = undefined;
 	var exports = {}
 
 	"use strict";
-
 //	var host = "https://mendelssohntw.github.io/robot.tw2/prototype";
 //	var host = "https://laverel.com/script/prototype";
 //	var host = "https://delacasa.com.py/script/prototype";
