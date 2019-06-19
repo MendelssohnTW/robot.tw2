@@ -272,11 +272,11 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) {$scope.$apply()}
 		}, true)
 
-		$scope.$watch("data_select", function(){
-			if(!$scope.data_select){return}
-			update_local_data_select()
-			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
-		}, true)
+//		$scope.$watch("data_select", function(){
+//			if(!$scope.data_select){return}
+//			update_local_data_select()
+//			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
+//		}, true)
 
 		$scope.$watch("data_type", function(){
 			if(!$scope.data_type){return}
