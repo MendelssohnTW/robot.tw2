@@ -175,22 +175,40 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.save_village = function(){
+			if($scope.toggle_option == "check_all"){
+				Object.values($scope.data_villages.villages).forEach(function(village){
+					angular.merge(village, {
+						buildingorder 			: $scope.data_select.selectedOption.value.buildingorder,
+						buildinglimit 			: $scope.data_select.selectedOption.value.buildinglimit,
+						buildinglist 			: $scope.data_select.selectedOption.value.buildinglist
+					})
+				})
+			}
 			$scope.data_headquarter.set();
 			$scope.data_villages.set();
 		}
 
 		$scope.apply_village = function(){
-			//Aplicar configurações na lista de aldeias selecionadas
+			Object.values($scope.local_included_villages).forEach(function(obj){
+				let village = $scope.data_villages.villages[obj.id]
+				angular.merge(village, {
+					buildingorder 			: $scope.data_select.selectedOption.value.buildingorder,
+					buildinglimit 			: $scope.data_select.selectedOption.value.buildinglimit,
+					buildinglist 			: $scope.data_select.selectedOption.value.buildinglist
+				})
+			})
+			$scope.data_headquarter.set();
+			$scope.data_villages.set();
 		}
 
 		$scope.upselectlist = function(item, index){
 
 			let ant = $scope.local_data_select_list[index]
 			let post = $scope.local_data_select_list[index - 1]
-			
+
 			$scope.local_data_select_list[index] = post
 			$scope.local_data_select_list[index - 1] = ant
-			
+
 			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index] = {[post.name] : post.value}
 			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index - 1] = {[ant.name] : ant.value}
 //			update_select();
@@ -199,7 +217,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		$scope.downselectlist = function(item, index){
 			let ant = $scope.local_data_select_list[index]
 			let post = $scope.local_data_select_list[index + 1]
-			
+
 			$scope.local_data_select_list[index] = post
 			$scope.local_data_select_list[index + 1] = ant
 
@@ -207,7 +225,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index + 1] = {[ant.name] : ant.value}
 //			update_select();
 		}
-		
+
 		$scope.upselectorder = function(item){
 			var ant = $scope.local_data_select_order.find(f => f.value == item.value - 1)
 			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][item.name] -= 1
@@ -221,7 +239,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][prox.name] -= 1
 			update_select();
 		}
-		
+
 		$scope.upselectlevel = function(key){
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
 			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] < max_level){
@@ -246,7 +264,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_select){return}
 			update_local_data_select()
 			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
-		})
+		}, true)
 
 		$scope.$watch("data_type", function(){
 			if(!$scope.data_type){return}
