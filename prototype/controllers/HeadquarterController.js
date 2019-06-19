@@ -274,6 +274,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_select){return}
 			update_local_data_select()
 			services.villageService.setSelectedVillage($scope.data_select.selectedOption.id)
+			update_select()
 		}, true)
 
 		
