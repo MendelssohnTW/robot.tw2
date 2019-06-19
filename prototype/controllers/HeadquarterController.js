@@ -87,20 +87,23 @@ define("robotTW2/controllers/HeadquarterController", [
 		, update_data_select = function(){
 			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		}
+		, update_select = function(){
+			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
+			update_select_limit()
+			update_select_order()
+			update_select_list()
+		}
 		, update_select_limit = function(){
 			$scope.local_data_select_limit = []
-//			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
 			$scope.local_data_select_limit = set_list_obj($scope.data_select.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value.selected.value], "buildings", "name")
 			
 		}
 		, update_select_order = function(){
 			$scope.local_data_select_order = []
-//			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
 			$scope.local_data_select_order = set_list_obj($scope.data_select.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value.selected.value], "buildings")
 		}
 		, update_select_list = function(){
 			$scope.local_data_select_list = []
-//			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
 			$scope.local_data_select_list = set_list($scope.data_select.selectedOption.value.buildinglist[$scope.data_select.selectedOption.value.selected.value], "buildings")
 		}
 
