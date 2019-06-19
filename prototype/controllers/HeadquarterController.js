@@ -119,16 +119,12 @@ define("robotTW2/controllers/HeadquarterController", [
 			}
 		}
 
-		$scope.include_village = function(){
-			if($scope.local_included_villages.find(f=>f.id!=$scope.data_select.selectedOption["id"])){
-				$scope.local_included_villages.push({
-					"name": $scope.data_select.selectedOption["name"],
-					"label": $scope.data_select.selectedOption["label"],
-					"id": $scope.data_select.selectedOption["id"],
-				})
+		$scope.toggleOption = function(option){
+			if($scope.toggle_option){
+				$scope.toggle_option = option
 			}
 		}
-		
+
 		$scope.start_headquarter = function(){
 			services.HeadquarterService.start();
 			update_status()
@@ -149,7 +145,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			services.HeadquarterService.resume();
 			$scope.paused = !1;
 		}
-		
+
 		$scope.restore_headquarter = function(){
 			$scope.data_headquarter.interval = conf.INTERVAL.HEADQUARTER
 			Object.values($scope.data_villages.villages).forEach(function(village){
@@ -164,13 +160,81 @@ define("robotTW2/controllers/HeadquarterController", [
 			if (!$scope.$$phase) $scope.$apply();
 		}
 
+		$scope.include_village = function(){
+			if($scope.local_included_villages.find(f=>f.id!=$scope.data_select.selectedOption["id"])){
+				$scope.local_included_villages.push({
+					"name": $scope.data_select.selectedOption["name"],
+					"label": $scope.data_select.selectedOption["label"],
+					"id": $scope.data_select.selectedOption["id"],
+				})
+			}
+		}
+
 		$scope.exclude_village = function(id){
 			$scope.local_included_villages = $scope.local_included_villages.filter(f=>f.id!=id) 
 		}
-		
+
 		$scope.save_village = function(){
 			$scope.data_headquarter.set();
 			$scope.data_villages.set();
+		}
+
+		$scope.apply_village = function(){
+			//Aplicar configurações na lista de aldeias selecionadas
+		}
+
+		$scope.upselectlist = function(item, index){
+
+			let ant = $scope.local_data_select_list[index]
+			let post = $scope.local_data_select_list[index - 1]
+			
+			$scope.local_data_select_list[index] = post
+			$scope.local_data_select_list[index - 1] = ant
+			
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index] = {[post.name] : post.value}
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index - 1] = {[ant.name] : ant.value}
+//			update_select();
+		}
+
+		$scope.downselectlist = function(item, index){
+			let ant = $scope.local_data_select_list[index]
+			let post = $scope.local_data_select_list[index + 1]
+			
+			$scope.local_data_select_list[index] = post
+			$scope.local_data_select_list[index + 1] = ant
+
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index] = {[post.name] : post.value}
+			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index + 1] = {[ant.name] : ant.value}
+//			update_select();
+		}
+		
+		$scope.upselectorder = function(item){
+			var ant = $scope.local_data_select_order.find(f => f.value == item.value - 1)
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][item.name] -= 1
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][ant.name] += 1
+			update_select();
+		}
+
+		$scope.downselectorder = function(item){
+			var prox = $scope.local_data_select_order.find(f => f.value == item.value + 1)
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][item.name] += 1
+			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][prox.name] -= 1
+			update_select();
+		}
+		
+		$scope.upselectlevel = function(key){
+			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
+			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] < max_level){
+				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] += 1
+			}
+			update_select();
+		}
+
+		$scope.downselectlevel = function(key){
+			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] > 0){
+				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] -= 1
+			}
+			update_select();
 		}
 
 		$scope.$watch("data_logs.headquarter", function(){
@@ -188,7 +252,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if(!$scope.data_type){return}
 			update_select()
 		}, true)
-		
+
 		$scope.$on(providers.eventTypeProvider.ISRUNNING_CHANGE, function ($event, data) {
 			if(!data) {return} 
 			update_status();

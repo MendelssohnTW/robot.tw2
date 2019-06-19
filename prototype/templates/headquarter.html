@@ -263,11 +263,11 @@
 																	<div>
 																		<div ng-show="$index > 0"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																			ng-click="uplist(item, $index)"></div>
+																			ng-click="upselectlist(item, $index)"></div>
 																		<div
 																			ng-show="$index < local_data_select_list.length - 1"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																			ng-click="downlist(item, $index)"></div>
+																			ng-click="downselectlist(item, $index)"></div>
 																	</div>
 																</td>
 															</tr>
@@ -294,10 +294,10 @@
 																	<div>
 																		<div ng-show="item.value > 1"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																			ng-click="upstandard(item)"></div>
+																			ng-click="upselectorder(item)"></div>
 																		<div ng-show="item.value < 17"
 																			class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																			ng-click="downstandard(item)"></div>
+																			ng-click="downselectorder(item)"></div>
 																	</div>
 																</td>
 															</tr>
@@ -323,10 +323,10 @@
 																<td class="cell-center"><div>{{item.value}}</div></td>
 																<td class="cell-center"><div ng-show="getMax(item)"
 																		class="size-12x12 btn-orange icon-26x26-normal-arrow-up"
-																		ng-click="levelupstandard(item.name)"></div>
+																		ng-click="upselectlevel(item.name)"></div>
 																	<div ng-show="item.value > 0"
 																		class="size-12x12 btn-orange icon-26x26-normal-arrow-down"
-																		ng-click="leveldownstandard(item.name)"></div></td>
+																		ng-click="downselectlevel(item.name)"></div></td>
 															</tr>
 														</tbody>
 													</table>
