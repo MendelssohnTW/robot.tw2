@@ -87,15 +87,20 @@ define("robotTW2/controllers/HeadquarterController", [
 		, update_data_select = function(){
 			$scope.data_select = services.MainService.getSelects($scope.local_data_villages, $scope.local_data_villages.find(f=>f.id==services.modelDataService.getSelectedCharacter().getSelectedVillage().getId()))
 		}
-		, update_select = function(){
-			$scope.local_data_select_order = []
+		, update_select_limit = function(){
 			$scope.local_data_select_limit = []
-			$scope.local_data_select_list = []
-
-			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
-
-			$scope.local_data_select_order = set_list_obj($scope.data_select.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value.selected.value], "buildings")
+//			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
 			$scope.local_data_select_limit = set_list_obj($scope.data_select.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value.selected.value], "buildings", "name")
+			
+		}
+		, update_select_order = function(){
+			$scope.local_data_select_order = []
+//			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
+			$scope.local_data_select_order = set_list_obj($scope.data_select.selectedOption.value.buildingorder[$scope.data_select.selectedOption.value.selected.value], "buildings")
+		}
+		, update_select_list = function(){
+			$scope.local_data_select_list = []
+//			$scope.data_select.selectedOption.value.selected = $scope.data_type.selectedOption
 			$scope.local_data_select_list = set_list($scope.data_select.selectedOption.value.buildinglist[$scope.data_select.selectedOption.value.selected.value], "buildings")
 		}
 
@@ -211,7 +216,7 @@ define("robotTW2/controllers/HeadquarterController", [
 
 			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index] = {[post.name] : post.value}
 			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index - 1] = {[ant.name] : ant.value}
-//			update_select();
+//			update_select_list();
 		}
 
 		$scope.downselectlist = function(item, index){
@@ -223,21 +228,21 @@ define("robotTW2/controllers/HeadquarterController", [
 
 			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index] = {[post.name] : post.value}
 			$scope.data_select.selectedOption.value.buildinglist[$scope.data_type.selectedOption.value][index + 1] = {[ant.name] : ant.value}
-//			update_select();
+//			update_select_list();
 		}
 
 		$scope.upselectorder = function(item){
 			var ant = $scope.local_data_select_order.find(f => f.value == item.value - 1)
 			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][item.name] -= 1
 			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][ant.name] += 1
-			update_select();
+			update_select_order();
 		}
 
 		$scope.downselectorder = function(item){
 			var prox = $scope.local_data_select_order.find(f => f.value == item.value + 1)
 			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][item.name] += 1
 			$scope.data_select.selectedOption.value.buildingorder[$scope.data_type.selectedOption.value][prox.name] -= 1
-			update_select();
+			update_select_order();
 		}
 
 		$scope.upselectlevel = function(key){
@@ -245,14 +250,14 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] < max_level){
 				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] += 1
 			}
-			update_select();
+			update_select_limit();
 		}
 
 		$scope.downselectlevel = function(key){
 			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] > 0){
 				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] -= 1
 			}
-			update_select();
+			update_select_limit();
 		}
 
 		$scope.$watch("data_logs.headquarter", function(){
