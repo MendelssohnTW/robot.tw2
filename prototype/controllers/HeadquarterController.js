@@ -252,7 +252,8 @@ define("robotTW2/controllers/HeadquarterController", [
 			var max_level = services.modelDataService.getGameData().getBuildingDataForBuilding(key).max_level;
 			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] < max_level){
 				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] += 1
-				$scope.local_data_select_limit.find(f=>f.name==key).value = $scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] 
+				$scope.local_data_select_limit.find(f=>f.name==key).value = $scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key]
+				update_select_limit();
 			}
 		}
 
@@ -260,6 +261,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			if($scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] > 0){
 				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] -= 1
 				$scope.local_data_select_limit.find(f=>f.name==key).value = $scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key]
+				update_select_limit();
 			}
 		}
 
