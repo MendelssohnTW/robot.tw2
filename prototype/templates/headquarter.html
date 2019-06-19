@@ -166,29 +166,11 @@
 										</colgroup>
 										<tbody>
 											<tr>
-												<th class="selected cell-center">{{text_one}}</th>
-												<th class="selected cell-center">{{text_all}}</th>
-											</tr>
-
-											<tr>
-												<td class="cell-center">
-													<div id="check_one" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_one', 'btn-red icon-26x26-check-negative': toggle_option != 'check_one'}"
-														ng-click="toggleOption('check_one')" tooltip=""
-														tooltip-content="{{check_one}}"></div>
-												</td>
-												<td class="cell-center">
-													<div id="check_all" class="position-absolute size-34x34"
-														ng-class="{'btn-green icon-26x26-check-positive': toggle_option == 'check_all', 'btn-red icon-26x26-check-negative': toggle_option != 'check_all'}"
-														ng-click="toggleOption('check_all')" tooltip=""
-														tooltip-content="{{check_all}}"></div>
-												</td>
-											</tr>
-											<tr>
-												<td colspan="2">
+												<td>{{text_all}}</td>
+												<td>
 													<ul class="list-btn list-center buttons">
 														<li><a class="btn-orange btn-border start"
-															ng-click="save_village()">{{SAVE}}</a></li>
+															ng-click="save_village()">{{APPLY}}</a></li>
 													</ul>
 												</td>
 											</tr>
@@ -211,12 +193,16 @@
 												</td>
 											</tr>
 											<tr ng-repeat="item in local_included_villages">
-												<td class="content cell-left" colspan="2"><div class="name-wrapper">
-														<div class="name"><ul class="list-btn">
-                                                            <li><a href="#"
-                                                                class="size-34x34 btn-red icon-26x26-close"
-                                                                ng-click="exclude_village(item.id)"></a></li>
-                                                        </ul>{{item.label}}</div>
+												<td class="content cell-left" colspan="2"><div
+														class="name-wrapper">
+														<div class="name">
+															<ul class="list-btn">
+																<li><a href="#"
+																	class="size-34x34 btn-red icon-26x26-close"
+																	ng-click="exclude_village(item.id)"></a></li>
+															</ul>
+															{{item.label}}
+														</div>
 													</div></td>
 											</tr>
 										</tbody>

@@ -96,7 +96,7 @@ define("robotTW2/controllers/HeadquarterController", [
 		, update_select_limit = function(){
 			$scope.local_data_select_limit = []
 			$scope.local_data_select_limit = set_list_obj($scope.data_select.selectedOption.value.buildinglimit[$scope.data_select.selectedOption.value.selected.value], "buildings", "name")
-			
+
 		}
 		, update_select_order = function(){
 			$scope.local_data_select_order = []
@@ -183,15 +183,13 @@ define("robotTW2/controllers/HeadquarterController", [
 		}
 
 		$scope.save_village = function(){
-			if($scope.toggle_option == "check_all"){
-				Object.values($scope.data_villages.villages).forEach(function(village){
-					angular.merge(village, {
-						buildingorder 			: $scope.data_select.selectedOption.value.buildingorder,
-						buildinglimit 			: $scope.data_select.selectedOption.value.buildinglimit,
-						buildinglist 			: $scope.data_select.selectedOption.value.buildinglist
-					})
+			Object.values($scope.data_villages.villages).forEach(function(village){
+				angular.merge(village, {
+					buildingorder 			: $scope.data_select.selectedOption.value.buildingorder,
+					buildinglimit 			: $scope.data_select.selectedOption.value.buildinglimit,
+					buildinglist 			: $scope.data_select.selectedOption.value.buildinglist
 				})
-			}
+			})
 			$scope.data_headquarter.set();
 			$scope.data_villages.set();
 		}
@@ -277,7 +275,7 @@ define("robotTW2/controllers/HeadquarterController", [
 			update_select()
 		}, true)
 
-		
+
 		$scope.$watch("data_type.selectedOption", function(){
 			if(!$scope.data_type){return}
 			update_select()
