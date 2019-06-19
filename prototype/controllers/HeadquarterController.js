@@ -254,6 +254,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] += 1
 				$scope.local_data_select_limit.find(f=>f.name==key).value = $scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] 
 			}
+			if (!$scope.$$phase) {$scope.$apply()}
 //			update_select_limit();
 		}
 
@@ -262,6 +263,7 @@ define("robotTW2/controllers/HeadquarterController", [
 				$scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key] -= 1
 				$scope.local_data_select_limit.find(f=>f.name==key).value = $scope.data_select.selectedOption.value.buildinglimit[$scope.data_type.selectedOption.value][key]
 			}
+			if (!$scope.$$phase) {$scope.$apply()}
 //			update_select_limit();
 		}
 
