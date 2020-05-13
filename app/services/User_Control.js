@@ -27,6 +27,9 @@ define("robotTW2/services/User_Control", [
 			, world_id = robotTW2.services.modelDataService.getPlayer().getSelectedCharacter().getWorldId()
 			, server = world_id.slice(0,2)
 			, world = world_id.slice(2,4)
+			status = true;
+			$rootScope.$broadcast("ready_users", true)
+			/*
 			if(Object.keys(user_control).length){
 				if(Object.keys(user_control).find(f=>f==server)){
 					if(Object.keys(user_control[server]).length){
@@ -43,6 +46,7 @@ define("robotTW2/services/User_Control", [
 					}				
 				}
 			}
+			*/
 		}, 10000)
 		
 		service.getControl = function(){
