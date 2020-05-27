@@ -6,7 +6,6 @@
     <b>Faça o download da extensão aqui</b>
     <ul>
         <li><a href="https://github.com/MendelssohnTW/robot.tw2/raw/master/extension/extension_app.rar">latest</a></li>
-    
     </ul>
   </p>
 </blockquote>
@@ -52,7 +51,7 @@ Farm é o sistema de coleta de recursos automatizados com envio de comandos prog
 
 <h2 id="operation">Funcionamento do FARM</h2>
 <blockquote>
-    <br>Para acesso a tela de FARM pode-se usar as teclas de atalho <b style="color:blue;">ctrl + f</b> ou pela tela principal de módulos.
+    <br>Para acesso a tela de FARM pode-se usar as teclas de atalho <b style="color:blue;">shift + P</b> pela tela principal de módulos.
     <br>O sistema faz uma varredura no mapa conforme configurações e envia os comandos de unidades de acordo com as predefinições da aldeia. 
     <br>Os ciclos são executados conforme o tempo definido, podendo executar mais de um ciclo paralelamente. 
     <br>Os comandos são enviados em intervalos aleatórios calculados entre 1,5 a 2,5 segundos.
