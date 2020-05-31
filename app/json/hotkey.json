@@ -3,6 +3,7 @@
 	"ATTACK": "shift+a",
 	"DEFENSE": "shift+d",
 	"DEPOSIT": "shift+t",
+	"CDR": "shift+w",
 	"FARM": "shift+f",
 	"HEADQUARTER": "shift+h",
 	"MAIN": "shift+p",
@@ -12,5 +13,6 @@
 	"FAKE": "shift+g",
 	"MARKET": "shift+j",
 	"SECONDVILLAGE": "shift+q",
-	"LOG": "shift+m"
+	"LOG": "shift+m",
+	"COINS": "shift+k"
 }

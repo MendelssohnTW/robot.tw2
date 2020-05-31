@@ -28,7 +28,6 @@ define("robotTW2/databases/data_headquarter", [
 			activated 				: false,
 			hotkey					: conf.HOTKEY.HEADQUARTER,
 			interval				: conf.INTERVAL.HEADQUARTER,
-			time_complete			: 0,
 			version					: conf.VERSION.HEADQUARTER,
 //			seq_type				: "seq_flex",
 			reserva 				: {

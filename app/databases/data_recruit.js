@@ -36,7 +36,6 @@ define("robotTW2/databases/data_recruit", [
 			hotkey					: conf.HOTKEY.RECRUIT,
 			version					: conf.VERSION.RECRUIT,
 			interval				: conf.INTERVAL.RECRUIT,
-			time_complete			: 0,
 			reserva 				: {
 				food			: conf.RESERVA.RECRUIT.FOOD,
 				wood			: conf.RESERVA.RECRUIT.WOOD,

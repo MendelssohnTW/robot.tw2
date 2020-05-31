@@ -1,0 +1,40 @@
+<table class="tbl-border-light tbl-big-header tbl-content tbl-striped robotTW2"
+	style="background: red;">
+	<colgroup>
+		<col width="165px">
+		<col width="58px">
+		<col width="*">
+	</colgroup>
+	<tbody>
+		<tr>
+			<td class="cell-right">
+				<div>
+					<label for="input-date">{{text_date}}</label><input id="input-date"
+						class="input-border inpd" type="date" value="{{date_init}}">
+				</div>
+				<div>
+					<label for="input-time">{{text_hour}}</label><input id="input-time"
+						class="input-border inpt" type="time" step="1" min="00:00:00"
+						max="23:59:59" value="{{hour_init}}">
+				</div>
+				<div>
+					<label for="input-ms">{{text_ms}}</label><input id="input-ms"
+						class="input-border inputcreated" type="number" step="1" min="000"
+						max="999" value="{{ms_init}}">
+				</div>
+			</td>
+			<td class="cell-center"><div>
+					<a href="#" id="button-prog"
+						class="btn-orange btn-form btn-border no-padding btn-grey"
+						ng-click="sendAttackSpy()" 
+						ng-class="{'btn-grey': rangeSlider.value === 0 || availableSpies === 0 || option.length === 0}"><span
+						class="icon"> <span
+							class="icon-26x26-domination icon-btn-fix"></span><span
+							id="span-text" class="text">{{schedule}}</span>
+					</span></a>
+				</div></td>
+		</tr>
+
+	</tbody>
+</table>
+

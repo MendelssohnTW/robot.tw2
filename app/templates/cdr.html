@@ -1,0 +1,163 @@
+<div class="win-content robotTW2">
+  <header class="win-head">
+    <h2>{{title}} ({{text_version}})</h2>
+    <ul class="list-btn">
+      <li><a class="size-34x34 btn-red icon-26x26-close" ng-click="closeWindow()"></a></li>
+    </ul>
+  </header>
+  <div class="cdr content-settings">
+    <div class="cdr win-main jssb-applied jssb-focus jssb-scrolly" scrollbar="">
+      <div class="box-paper">
+        <div class="scroll-wrap">
+          <table class="tbl-border-light tbl-big-header tbl-striped">
+            <colgroup>
+              <col width="*">
+              <col width="100px">
+
+            </colgroup>
+            <tr>
+              <td class="cell-right">{{use_reroll_deposit}}</td>
+              <td>
+                <div class="checkbox">
+                  <div id="switch" switch-slider="" border="true" enabled="true" value="data_cdr.use_reroll"
+                    vertical="false" size="'56x28'">
+                    <div ng-class="{'box-border-dark box-filter': border}" class="box-border-dark box-filter">
+                      <div class="switch switch-56x28 switch-horizontal" ng-class="{'switch-checked': value}">
+                        <span class="size-26x26 switch-thumb"> <span class="simple icon-26x26-switch-off"
+                            ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <table class="tbl-border-light tbl-big-header tbl-content tbl-striped" style="height: 168px;">
+            <colgroup>
+              <col width="58px">
+              <col width="*">
+              <col width="64px">
+              <col width="64px">
+              <col width="160px">
+
+            </colgroup>
+            <tbody>
+              <tr>
+                <td class="cell-right" colspan="2"><label for="coins_time"
+                    style="margin-left: 12px; margin-right: 12px;">{{time_cicle}}</label><input
+                    class="input-border inpt" type="time" id="coins_time" step="1" min="00:00:00" max="23:59:59"
+                    value="{{coins_time}}" ng-blur="set_coins_time()"></td>
+                <td class="cell-right" colspan="3"><label for="interval_coins">{{text_interval}}</label><input
+                    id="interval_coins" class="input-border inpt disabled" type="text" value="{{getTimeRest()}}"
+                    disabled>
+                </td>
+
+              </tr>
+              <tr>
+                <th colspan="2" class="selected cell-center">{{text_village}}</th>
+                <th class="selected cell-center">{{text_coin}}</th>
+                <th class="selected cell-center">{{text_noble}}</th>
+                <th></th>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="icon icon-34x34-village"></div>
+                </td>
+                <td><select id="select_villages" class="select-wrapper"
+                    ng-options="item as item.label for item in data_select.availableOptions track by item.name"
+                    ng-model="data_select.selectedOption"></select></td>
+                <td>
+                  <div id="switch" switch-slider="" border="true" enabled="true"
+                    value="data_villages.villages[data_select.selectedOption.id].coins_activate" vertical="false"
+                    size="'56x28'">
+                    <div ng-class="{'box-border-dark box-filter': border}" class="box-border-dark box-filter">
+                      <div class="switch switch-56x28 switch-horizontal" ng-class="{'switch-checked': value}">
+                        <div class="size-26x26 switch-thumb">
+                          <div class="simple icon-26x26-switch-off"
+                            ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div id="switch" switch-slider="" border="true" enabled="true"
+                    value="data_villages.villages[data_select.selectedOption.id].nobles_activate" vertical="false"
+                    size="'56x28'">
+                    <div ng-class="{'box-border-dark box-filter': border}" class="box-border-dark box-filter">
+                      <div class="switch switch-56x28 switch-horizontal" ng-class="{'switch-checked': value}">
+                        <div class="size-26x26 switch-thumb">
+                          <div class="simple icon-26x26-switch-off"
+                            ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td><a href="#" tooltip="" tooltip-content="" class="btn-orange btn-form btn-border no-padding"
+                    ng-click="selectAllVillages()"><span style="position: relative;" id="span-text"
+                      class="text">{{select_all}}</span></a></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="tbl-border-light tbl-big-header tbl-striped">
+            <colgroup>
+              <col width="*">
+              <col width="64px">
+            </colgroup>
+            <tbody>
+              <tr>
+                <td class="cell-center">{{text_active}}</td>
+                <td>
+                  <div id="switch" switch-slider="" border="true" enabled="true" value="data_cdr.active_rename"
+                    vertical="false" size="'56x28'">
+                    <div ng-class="{'box-border-dark box-filter': border}" class="box-border-dark box-filter">
+                      <div class="switch switch-56x28 switch-horizontal" ng-class="{'switch-checked': value}">
+                        <span class="size-26x26 switch-thumb"> <span class="simple icon-26x26-switch-off"
+                            ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th colspan="2" class="cell-center selected">{{settings}}</th>
+              </tr>
+              <tr ng-repeat="(key, value) in data_cdr.rename">
+                <td class="cell-right">{{getKey(key)}}<span class="span-icon" ng-class="getClass(key)"></span></td>
+                <td>
+                  <div id="switch" switch-slider="" border="true" enabled="data_cdr.active_rename" value="value"
+                    vertical="false" size="'56x28'">
+                    <div ng-class="{'box-border-dark box-filter': border}" class="box-border-dark box-filter">
+                      <div class="switch switch-56x28 switch-horizontal" ng-class="{'switch-checked': value}">
+                        <span class="size-26x26 switch-thumb"> <span class="simple icon-26x26-switch-off"
+                            ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="win-foot">
+    <ul class="list-btn list-center buttons">
+      <li><a id="button-menu" class="btn-border btn-orange btn-menu" ng-click="menu()">{{MENU}}</a></li>
+      <li class="robotTW2-button-settings"><a class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a>
+      </li>
+    </ul>
+  </footer>
+</div>

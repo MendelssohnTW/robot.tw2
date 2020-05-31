@@ -1,0 +1,155 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}} ({{text_version}})</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+
+	<h5 class="twx-section">{{command_list}}</h5>
+	<div class="market content-settings">
+		<div class="market win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col width="*">
+                            <col width="235px">
+                            <col width="235px">
+                            <col width="60px">
+                            <col width="100px">
+                            <col width="100px">
+                            <col width="100px">
+                            <col width="48px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th style="display: table-cell" class="cell-center selected">{{ident_cmd}}</th>
+								<th style="display: table-cell" class="icon icon-34x34-resources"></th>
+								<th style="display: table-cell" class="icon icon-34x34-village"></th>
+								<th style="display: table-cell" class="icon icon-34x34-time-duration"></th>
+								<th style="display: table-cell" class="icon icon-34x34-resource-wood"></th>
+								<th style="display: table-cell" class="icon icon-34x34-resource-clay"></th>
+								<th style="display: table-cell" class="icon icon-34x34-resource-iron"></th>
+								<th></th>
+							</tr>
+							<tr ng-repeat="comando in comandos">
+								<td class="cell-center">{{comando.id_command}}</td>
+								<td class="cell-center"><div class="village">
+                                        <div class="name-coord"
+                                            ng-click="jumpToVillage(comando.start_village)">
+                                            {{getLabelStart(comando)}}</div>
+                                    </div></td>
+								<td class="cell-center"><div class="village">
+                                        <div class="name-coord"
+                                            ng-click="jumpOutVillage(comando.target_village)">
+                                            {{getLabelTarget(comando)}}</div>
+                                    </div></td>
+								<td class="cell-center">{{getInterval(comando)}}</td>
+								<td class="cell-center">{{comando.wood}}</td>
+								<td class="cell-center">{{comando.clay}}</td>
+								<td class="cell-center">{{comando.iron}}</td>
+								<td class="cell-center"><a href="#"
+                                    class="size-34x34 btn-red icon-26x26-close"
+                                    ng-click="removeCommand(comando.id_command)" tooltip
+                                    tooltip-content="{{exclude_button}}"></a></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li><a id="button-clear" class="btn-orange btn-border clear"
+				ng-click="clear_spy()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li><a id="button-close" class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}} ({{text_version}})</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+
+	<h5 class="twx-section">{{command_list}}</h5>
+	<div class="market content-settings">
+		<div class="market win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col width="*">
+                            <col width="235px">
+                            <col width="235px">
+                            <col width="60px">
+                            <col width="100px">
+                            <col width="100px">
+                            <col width="100px">
+                            <col width="48px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th style="display: table-cell" class="cell-center selected">{{ident_cmd}}</th>
+								<th style="display: table-cell" class="icon icon-34x34-resources"></th>
+								<th style="display: table-cell" class="icon icon-34x34-village"></th>
+								<th style="display: table-cell" class="icon icon-34x34-time-duration"></th>
+								<th style="display: table-cell" class="icon icon-34x34-resource-wood"></th>
+								<th style="display: table-cell" class="icon icon-34x34-resource-clay"></th>
+								<th style="display: table-cell" class="icon icon-34x34-resource-iron"></th>
+								<th></th>
+							</tr>
+							<tr ng-repeat="comando in comandos">
+								<td class="cell-center">{{comando.id_command}}</td>
+								<td class="cell-center"><div class="village">
+                                        <div class="name-coord"
+                                            ng-click="jumpToVillage(comando.start_village)">
+                                            {{getLabelStart(comando)}}</div>
+                                    </div></td>
+								<td class="cell-center"><div class="village">
+                                        <div class="name-coord"
+                                            ng-click="jumpOutVillage(comando.target_village)">
+                                            {{getLabelTarget(comando)}}</div>
+                                    </div></td>
+								<td class="cell-center">{{getInterval(comando)}}</td>
+								<td class="cell-center">{{comando.wood}}</td>
+								<td class="cell-center">{{comando.clay}}</td>
+								<td class="cell-center">{{comando.iron}}</td>
+								<td class="cell-center"><a href="#"
+                                    class="size-34x34 btn-red icon-26x26-close"
+                                    ng-click="removeCommand(comando.id_command)" tooltip
+                                    tooltip-content="{{exclude_button}}"></a></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li><a id="button-clear" class="btn-orange btn-border clear"
+				ng-click="clear_spy()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li><a id="button-close" class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+
+</div>

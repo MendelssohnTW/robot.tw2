@@ -1,0 +1,27 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="win-main" scrollbar="">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap" style="margin-bottom: 100px">
+				<div ng-show="inConfirm">{{text_show}}</div>
+				<div ng-show="inConfirm">{{text_confirm}}</div>
+				<div ng-show="inReload">{{text_reload}}</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="Confirm()">{{CONFIRM}}</a></li>
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="Cancel()">{{CANCEL}}</a></li>
+		</ul>
+	</footer>
+</div>
+

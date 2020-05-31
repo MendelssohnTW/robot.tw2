@@ -1,0 +1,164 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}} ({{text_version}})</h2>
+		<ul class="list-btn">
+			<li><a href="#" class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="attack content-settings">
+		<div class="attack win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col>
+							<col width="250px">
+							<col width="250px">
+							<col width="45px">
+							<col width="60px">
+							<col width="100px">
+							<col width="100px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="48px">
+							<col width="38px">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th style="display: table-cell" class="cell-center selected">{{ident_cmd}}</th>
+								<th style="display: table-cell"
+									class="icon icon-34x34-units-outgoing"></th>
+								<th style="display: table-cell" class="icon icon-34x34-village"></th>
+								<th></th>
+								<th style="display: table-cell"
+									class="icon icon-34x34-time-remaining"></th>
+								<th style="display: table-cell" class="icon icon-26x26-time"></th>
+								<th style="display: table-cell"
+									class="icon icon-26x26-time-arrival"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-spear"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-sword"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-axe"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-archer"></th>
+								<th style="display: table-cell"
+									class="icon-34x34-unit-light_cavalry"></th>
+								<th style="display: table-cell"
+									class="icon-34x34-unit-mounted_archer"></th>
+								<th style="display: table-cell"
+									class="icon-34x34-unit-heavy_cavalry"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-ram"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-catapult"></th>
+								<th style="display: table-cell"
+									class="icon-34x34-unit-doppelsoldner"></th>
+								<th style="display: table-cell"
+									class="icon-34x34-unit-trebuchet"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-snob"></th>
+								<th style="display: table-cell" class="icon-34x34-unit-knight"></th>
+								<th></th>
+							</tr>
+						</tbody>
+						<tbody class="scroll-wrap">
+							<tr ng-repeat="comando in comandos">
+								<td class="cell-center">{{comando.id_command}}</td>
+								<td class="cell-center">
+									<div class="village">
+										<div class="name-coord"
+											ng-click="jumpToVillage(comando.start_village)">
+											{{getLabelStart(comando)}}</div>
+									</div>
+								</td>
+								<td class="cell-center">
+									<div class="village">
+										<div class="name-coord"
+											ng-click="jumpOutVillage(comando.target_village)">
+											{{getLabelTarget(comando)}}</div>
+									</div>
+								</td>
+								<td class="cell-center">
+									<div class="type" ng-class="getClass(comando.type)"></div>
+								</td>
+								<td class="cell-center">
+									<div>{{getTimeRest(comando)}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.data_escolhida - comando.duration | date : 'dd/MM/yyyy'}}</div>
+									<div>{{comando.data_escolhida - comando.duration | date : 'HH:mm:ss.sss'}}</div>
+								</td>
+								<td class="cell-center selected">
+									<div>{{comando.data_escolhida | date : 'dd/MM/yyyy'}}</div>
+									<div>{{comando.data_escolhida | date : 'HH:mm:ss.sss'}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.spear || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.sword || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.axe || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.archer || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.light_cavalry || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.mounted_archer || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.heavy_cavalry || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.ram || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.catapult || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.doppelsoldner || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.trebuchet || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.snob || 0}}</div>
+								</td>
+								<td class="cell-center">
+									<div>{{comando.units.knight || 0}}</div>
+								</td>
+								<td class="cell-center"><a href="#"
+									class="size-34x34 btn-red icon-26x26-close"
+									ng-click="removeCommand(comando.id_command)" tooltip
+									tooltip-content="{{exclude_button}}"></a></td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li><a class="btn-orange btn-border clear"
+				ng-click="clear_attack()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li><a class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+</div>

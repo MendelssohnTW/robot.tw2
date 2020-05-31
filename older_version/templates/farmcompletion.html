@@ -1,0 +1,19 @@
+<div class="robotTW2">
+	<label for="checkboxFull" style="position: absolute; margin-top: 8px;">{{text_check}}</label>
+	<div id="checkboxFull" class="checkbox" style="float: left;">
+		<div tooltip tooltip-content="{{text_checked}}" switch-slider=""
+			border="true" enabled="true" value="checked"
+			ng-click="toggleValue(checked)" vertical="false" size="'56x28'">
+			<div ng-class="{'box-border-dark box-filter': border}"
+				class="box-border-dark box-filter">
+				<div class="switch switch-56x28 switch-horizontal"
+					ng-class="{'switch-checked': value}">
+					<span class="size-26x26 switch-thumb"> <span
+						class="simple icon-26x26-switch-off"
+						ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

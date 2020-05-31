@@ -1,0 +1,92 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}}</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="win-main" scrollbar="">
+		<div class="box-paper content-settings">
+			<div class="scroll-wrap data" style="margin-bottom: 53px">
+				<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+					<colgroup>
+						<col width="*">
+						<col width="100px">
+
+					</colgroup>
+					<tr>
+						<td class="cell-right">{{text_interval_data_villages}}</td>
+						<td><input id="input-ms" class="input-border inpt"
+							type="time" step="1" min="00:00:00" max="23:59:59"
+							value="{{data_data.interval.villages | date : 'HH:mm:ss' : 'UTC'}}"
+							disabled></td>
+						<td class="cell-right">{{text_interval_data_tribes}}</td>
+						<td><input id="input-ms" class="input-border inpt"
+							type="time" step="1" min="00:00:00" max="23:59:59"
+							value="{{data_data.interval.tribes | date : 'HH:mm:ss' : 'UTC'}}"
+							disabled></td>
+					</tr>
+					<tr>
+						<td class="cell-right">{{text_interval}}</td>
+						<td><input id="input-ms-villages"
+							class="input-border inpt disabled" type=text
+							value="{{getTimeRestVillages()}}" disabled></td>
+						<td class="cell-right">{{text_interval}}</td>
+						<td><input id="input-ms-tribes"
+							class="input-border inpt disabled" type=text
+							value="{{getTimeRestTribes()}}" disabled></td>
+					</tr>
+					<tr>
+						<td><label for="input-xmin">xmin</label><input
+							id="input-xmin" class="input-border inpt disabled" type=number
+							min=0 max=1000 step=1 ng-model="data_data.xmin"></td>
+						<td><label for="input-xmax">xmax</label><input
+							id="input-xmax" class="input-border inpt disabled" type=number
+							min=0 max=1000 step=1 ng-model="data_data.xmax"></td>
+						<td><label for="input-ymin">ymin</label><input
+							id="input-ymin" class="input-border inpt disabled" type=number
+							min=0 max=1000 step=1 ng-model="data_data.ymin"></td>
+						<td><label for="input-ymax">ymax</label><input
+							id="input-ymax" class="input-border inpt disabled" type=number
+							min=0 max=1000 step=1 ng-model="data_data.ymax"></td>
+					</tr>
+				</table>
+				<div class="scroll-wrap">
+					<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col width="50%">
+							<col width="50%">
+						</colgroup>
+						<tr ng-repeat="log in data_logs.data">
+							<td class="cell-right">{{log.text}}</td>
+							<td class="cell-right">{{log.date}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="jssb-y  ">
+				<div class="jssb-y-track">
+					<div class="jssb-y-thumb" style="height: 55px; top: 0px;">
+						<div class="scrollbar-top"></div>
+						<div class="scrollbar-middle"></div>
+						<div class="scrollbar-bottom"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center">
+			<li><a id="button-start" class="btn-border btn-orange btn-init"
+				ng-click="start_data()"><span>{{START}}</span></a></li>
+			<li><a id="button-stop" class="btn-border btn-orange btn-stop"
+				ng-click="stop_data()"><span>{{STOP}}</span></a></li>
+			<li><a class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+</div>
+

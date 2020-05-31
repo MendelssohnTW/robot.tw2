@@ -1,0 +1,61 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}} ({{text_version}})</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="deposit content-settings">
+		<div class="deposit win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table class="tbl-border-light tbl-big-header tbl-striped">
+						<colgroup>
+							<col width="*">
+							<col width="100px">
+
+						</colgroup>
+						<tr>
+							<td class="cell-right">{{use_reroll_deposit}}</td>
+							<td>
+								<div class="checkbox">
+									<div id="switch" switch-slider="" border="true" enabled="true"
+										value="data_deposit.use_reroll" vertical="false"
+										size="'56x28'">
+										<div ng-class="{'box-border-dark box-filter': border}"
+											class="box-border-dark box-filter">
+											<div class="switch switch-56x28 switch-horizontal"
+												ng-class="{'switch-checked': value}">
+												<span class="size-26x26 switch-thumb"> <span
+													class="simple icon-26x26-switch-off"
+													ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="cell-right">{{text_interval}}</td>
+							<td><input id="input-ms" class="input-border inpt disabled"
+								type=text value="{{getTimeRest()}}" disabled></td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+</div>
+

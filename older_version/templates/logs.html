@@ -1,0 +1,32 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h3>{{title}}</h3>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="tabs tabs-bg">
+		<div class="tabs-three-col">
+			<div ng-repeat="tabName in TAB_ORDER" class="tab"
+				ng-click="userSetActiveTab(tabName)"
+				ng-class="{'tab-active': activeTab === tabName}">
+				<div class="tab-inner">
+					<div
+						ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}">
+						<a href="#"
+							ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="win-main" scrollbar="" ng-if="activeTab == TABS.FARM">
+		<div class="box-paper content-settings" ng-if="activeTab == TABS.FARM">
+			<div class="version">
+				<h5>{{text_version}}</h5>
+			</div>
+			<div class="scroll-wrap preset" style="margin-bottom: 53px"></div>
+		</div>
+	</div>
+</div>

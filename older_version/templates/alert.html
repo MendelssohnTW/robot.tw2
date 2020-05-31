@@ -1,0 +1,122 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}} ({{text_version}})</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="alert content-settings">
+		<div class="alert win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+						id="preset-list">
+						<colgroup>
+							<col width="*%">
+							<col width="33%">
+							<col width="33%">
+						</colgroup>
+						<tbody>
+							<tr>
+								<td class="cell-top">
+									<h5 class="twx-section collapse">{{settings_for_member}}</h5>
+									<table
+										class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+										id="preset-list">
+										<colgroup>
+											<col width="*">
+											<col width="64px">
+										</colgroup>
+										<tbody>
+											<tr ng-repeat="member in members">
+												<td class="cell-right">{{member.name}}</td>
+												<td>
+													<div class="checkbox">
+														<div switch-slider="" border="true" enabled="true"
+															value="member.isFriend" ng-click="toggleValue(member)"
+															vertical="false" size="'56x28'">
+															<div ng-class="{'box-border-dark box-filter': border}"
+																class="box-border-dark box-filter">
+																<div class="switch switch-56x28 switch-horizontal"
+																	ng-class="{'switch-checked': value}">
+																	<span class="size-26x26 switch-thumb"> <span
+																		class="simple icon-26x26-switch-off"
+																		ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+																	</span>
+																</div>
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+								<td class="cell-top">
+									<div>
+										<h5 class="twx-section collapse">{{text_friends}}</h5>
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+											id="preset-list">
+											<colgroup>
+												<col width="*">
+												<col width="32px">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="friend in data_alert.friends">
+													<td class="cell-right">{{friend}}</td>
+													<td>
+														<ul class="list-btn list-center buttons">
+															<li><a class="size-26x26 btn-red icon-26x26-close"
+																ng-click="remove(friend)" tooltip
+																tooltip-content="{{remove}}"></a></li>
+														</ul>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</td>
+								<td class="cell-top">
+									<div>
+										<h5 class="twx-section collapse">{{text_underattack}}</h5>
+										<table
+											class="tbl-border-light tbl-big-header tbl-content tbl-striped"
+											id="preset-list">
+											<colgroup>
+												<col width="*">
+											</colgroup>
+											<tbody>
+												<tr ng-repeat="under in underattack">
+													<td class="cell-right">{{under.name}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="selectAll()">{{select_all}}</a></li>
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="removeAll()">{{unselect_all}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li class="robotTW2-button-settings"><a
+				class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+</div>
+

@@ -1,0 +1,16 @@
+{
+	"ALERT": "shift+l",
+	"ATTACK": "shift+a",
+	"DEFENSE": "shift+d",
+	"DEPOSIT": "shift+t",
+	"FARM": "shift+f",
+	"HEADQUARTER": "shift+h",
+	"MAIN": "shift+p",
+	"RECON": "shift+r",
+	"RECRUIT": "shift+e",
+	"SPY": "shift+s",
+	"FAKE": "shift+g",
+	"MARKET": "shift+j",
+	"SECONDVILLAGE": "shift+q",
+	"LOG": "shift+m"
+}

@@ -1,0 +1,148 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}} ({{text_version}})</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="recruit content-settings">
+		<div class="recruit win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col width="33%">
+							<col width="33%">
+							<col width="*">
+						</colgroup>
+						<tbody>
+
+							<tr>
+								<td class="cell-right"><label for="interval_recruit">{{text_interval_recruit}}</label><input
+									id="interval_recruit" class="input-border inpt disabled"
+									type=text value="{{getTimeRest()}}" disabled></td>
+								<td class="cell-right"><label for="reserva_food">{{text_reserva_food}}</label><input
+									id="reserva_food" class="input-border inputcreated"
+									type="number" value="{{data_recruit.reserva.food}}"
+									ng-model="data_recruit.reserva.food"></td>
+								<td class="cell-right"><label for="reserva_slots">{{text_reserva_slots}}</label><input
+									id="reserva_slots" class="input-border inputcreated"
+									type="number" value="{{data_recruit.reserva.slots}}"
+									ng-model="data_recruit.reserva.slots"></td>
+							</tr>
+							<tr>
+								<td class="cell-right"><label for="reserva_wood">{{text_reserva_wood}}</label><input
+									id="reserva_wood" class="input-border inputcreated"
+									type="number" value="{{data_recruit.reserva.wood}}"
+									ng-model="data_recruit.reserva.wood"></td>
+								<td class="cell-right"><label for="reserva_clay">{{text_reserva_clay}}</label><input
+									id="reserva_clay" class="input-border inputcreated"
+									type="number" value="{{data_recruit.reserva.clay}}"
+									ng-model="data_recruit.reserva.clay"></td>
+								<td class="cell-right"><label for="reserva_iron">{{text_reserva_iron}}</label><input
+									id="reserva_iron" class="input-border inputcreated"
+									type="number" value="{{data_recruit.reserva.iron}}"
+									ng-model="data_recruit.reserva.iron"></td>
+							</tr>
+							<tr>
+								<td><span
+									ng-class="{'icon-26x26-dot-green' : isRunning, 'icon-26x26-dot-red' : !isRunning, 'icon-26x26-dot-blue' : isRunning && paused}"></span>{{recruit_running}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table class="tbl-border-light tbl-big-header tbl-striped">
+						<tbody>
+						<colgroup>
+							<col width="32px">
+							<col width="*">
+							<col width="32px">
+							<col width="160px">
+							<col width="160px">
+						</colgroup>
+						<tr>
+							<th colspan="5" class="cell-center selected">{{select_villages}}</th>
+						</tr>
+						<tr>
+							<td><div class="icon icon-34x34-village"></div></td>
+							<td><select id="select_villages" class="select-wrapper"
+								ng-options="item as item.label for item in data_select.availableOptions track by item.name"
+								ng-model="data_select.selectedOption"></select></td>
+							<td><div id="switch" switch-slider="" border="true"
+									enabled="true"
+									value="data_villages.villages[data_select.selectedOption.id].defense_activate"
+									vertical="false" size="'56x28'">
+									<div ng-class="{'box-border-dark box-filter': border}"
+										class="box-border-dark box-filter">
+										<div class="switch switch-56x28 switch-horizontal"
+											ng-class="{'switch-checked': value}">
+											<div class="size-26x26 switch-thumb">
+												<div class="simple icon-26x26-switch-off"
+													ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+											</div>
+										</div>
+									</div>
+								</div></td>
+							<td><a href="#" tooltip tooltip-content=""
+								class="btn-orange btn-form btn-border no-padding"
+								ng-click="selectAllVillages()"><span
+									style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
+							<td><a href="#" tooltip tooltip-content=""
+								class="btn-orange btn-form btn-border no-padding"
+								ng-click="unselectAllVillages()"><span
+									style="position: relative;" id="span-text" class="text">{{unselect_all}}</span></a></td>
+						</tr>
+						<tr>
+							<th colspan="3" class="cell-center selected">{{groups_selection}}</th>
+							<th colspan="2" class="cell-center selected">{{unit_settings}}</th>
+						</tr>
+						<tr>
+							<td class="cell-top"><canvas
+									icon-generator="data_groups.selectedOption.icon"
+									icon-type="'group'" width="26" height="26"></canvas> <span
+								class="group-name overflow-ellipsis"></span></td>
+							<td colspan="2" class="cell-top">
+								<div>
+									<select id="select_group" class="select-wrapper"
+										ng-options="item as item.name for item in data_groups.availableOptions track by item.name"
+										ng-model="data_groups.selectedOption"></select>
+								</div>
+							</td>
+
+							<td colspan="2" class="cell-top cell-right">
+								<div
+									ng-repeat="(key, value) in data_groups.selectedOption.units"
+									class="cell-right">
+									<label for=key>{{getText(key)}}</label><span class="span-icon"
+										ng-class="getClass(key)"></span><input id={{key}}
+										class="input-border input-list-collapse" type="number"
+										value="data_groups.selectedOption.units[key]"
+										ng-model="data_groups.selectedOption.units[key]">
+								</div>
+							</td>
+						</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li><a class="btn-orange btn-border start"
+				ng-click="start_recruit()">{{START}}</a></li>
+			<li><a class="btn-orange btn-border stop"
+				ng-click="stop_recruit()">{{STOP}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li><a class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+</div>
+

@@ -1,0 +1,276 @@
+<div class="win-content robotTW2">
+	<header class="win-head">
+		<h2>{{title}} ({{text_version}})</h2>
+		<ul class="list-btn">
+			<li><a class="size-34x34 btn-red icon-26x26-close"
+				ng-click="closeWindow()"></a></li>
+		</ul>
+	</header>
+	<div class="content-settings">
+		<div class="farm win-main jssb-applied jssb-focus jssb-scrolly"
+			scrollbar="">
+			<table
+				class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+				<colgroup>
+					<col width="*">
+					<col width="100px">
+					<col width="*">
+					<col width="100px">
+
+				</colgroup>
+				<tr>
+					<td class="cell-right">{{text_interval_fake}}</td>
+					<td><input id="input-hour-interval" class="input-border inpt"
+						type="time" step="1" min="00:00:00" max="23:59:59"
+						value="{{data_fake.interval | date : 'HH:mm:ss'}}"
+						ng-blur="blur()"></td>
+					<td class="cell-right">{{text_interval}}</td>
+					<td><input id="input-ms-interval"
+						class="input-border inpt disabled" type=text
+						value="{{getTimeRest()}}" disabled></td>
+				</tr>
+			</table>
+			<table
+				class="tbl-border-light tbl-big-header tbl-content tbl-striped tbl-content"
+				id="preset-list">
+				<colgroup>
+					<col width="32px">
+					<col width="*">
+					<col width="32px">
+					<col width="*">
+					<col width="32px">
+					<col width="*">
+					<col width="160px">
+					<col width="100px">
+					<col width="160px">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th class="cell-center selected" colspan="4">{{text_source}}</th>
+						<th class="cell-center selected" colspan="2">{{text_target_village}}</th>
+						<th class="cell-center selected">{{text_data_target}}</th>
+					</tr>
+					<tr>
+						<td><div class="icon icon-34x34-village"></div></td>
+						<td colspan="3"><select id="select_order"
+							class="select-handler"
+							ng-options="item as item.label for item in data_select.availableOptions track by item.name"
+							ng-model="data_select.selectedOption"></select></td>
+						<td><div class="icon icon-34x34-village"></div></td>
+						<td>
+							<div>
+								<div id="select-field" select-element=""
+									ng-style="{'width': width + 'px'}"
+									style="transform: translate3d(63px, 819px, 0px); width: 309px;">
+									<ul class="action-list select-handler">
+									</ul>
+								</div>
+							</div>
+							<div id="autocomplete_fake" class="auto-complete-wrapper">
+								<input type="text" ng-keyup="autoCompleteKey($event)"
+									ng-model="inputValueFake" class="textfield-border"
+									placeholder="{{SEARCH_MAP}}" style="width: 100%;">
+							</div>
+						</td>
+						<td class="cell-right">
+							<div>
+								<label for="input-date">{{text_date}}</label><input
+									id="input-date" class="input-border inpd" type="date"
+									value="{{date_init}}">
+							</div>
+							<div>
+								<label for="input-time">{{text_hour}}</label><input
+									id="input-time" class="input-border inpt" type="time" step="1"
+									min="00:00:00" max="23:59:59" value="{{hour_init}}">
+							</div>
+							<div>
+								<label for="input-ms">{{text_ms}}</label><input id="input-ms"
+									class="input-border inputcreated" type="number" step="1"
+									min="000" max="999" value="{{ms_init}}">
+							</div>
+						</td>
+						<td><div>
+								<select id="select_qtd" class="select-handler"
+									ng-options="item for item in data_qtd.availableOptions"
+									ng-model="data_qtd.selectedOption"></select>
+							</div>
+							<div>
+								<select id="select_type" class="select-handler"
+									ng-options="item as item.name for item in data_type.availableOptions"
+									ng-model="data_type.selectedOption"></select>
+							</div></td>
+						<td class="cell-center"><div>
+								<a href="#" id="button-prog"
+									class="btn-orange btn-form btn-border no-padding"
+									ng-click="sendAttackFake()"><span id="span-text"
+									class="text">{{schedule}}</span> </a>
+							</div></td>
+					</tr>
+
+
+					<tr>
+						<th class="cell-center selected" colspan="6">{{text_target_player}}</th>
+						<th class="cell-center selected">{{text_data_source}}</th>
+					</tr>
+					<tr>
+
+						<td><div class="icon icon-34x34-character"></div></td>
+						<td>
+							<div>
+								<div id="select-field" select-element=""
+									ng-style="{'width': width + 'px'}"
+									style="transform: translate3d(63px, 819px, 0px); width: 309px;">
+									<ul class="action-list select-handler">
+									</ul>
+								</div>
+							</div>
+							<div id="autocomplete_fake_player" class="auto-complete-wrapper">
+								<input type="text" ng-keyup="autoCompleteKeyPlayer($event)"
+									ng-model="inputValuePlayer" class="textfield-border"
+									placeholder="{{SEARCH_MAP}}" style="width: 100%;">
+							</div>
+						</td>
+						<td><div class="icon icon-34x34-province"
+								ng-class="{'animation-download icon-34x34-arrow-down': download == true, 'icon-34x34-province': download == false}"></div></td>
+						<td class="cell-center"><label for="check_select"
+							class="with-margin ng-binding" style="top: 21px; left: 100px;">{{text_select_all}}</label>
+							<div id="check_select" class="position-absolute"
+								ng-class="{'btn-green icon-26x26-check-positive': select_all_province == true, 'btn-red icon-26x26-check-negative': select_all_province == false}"
+								ng-click="toggleOption()" style="margin-bottom: 5px;"></div>
+							<div>
+								<select id="select_province" class="select-handler"
+									ng-options="item as (item.name + ' (' + item.x + '|' + item.y + ')') for item in data_province.availableOptions track by item.name"
+									ng-model="data_province.selectedOption"></select>
+							</div></td>
+						<td><div class="icon icon-34x34-village"></div></td>
+						<td class="cell-center"><label for="check_village"
+							class="with-margin ng-binding" style="top: 21px; left: 100px;">{{text_select_all_village}}</label>
+							<div id="check_village" class="position-absolute"
+								ng-class="{'btn-green icon-26x26-check-positive': select_all_village == true, 'btn-red icon-26x26-check-negative': select_all_village == false}"
+								ng-click="toggleOptionVillage()" style="margin-bottom: 5px;"></div>
+							<div>
+								<select id="select_village" class="select-handler"
+									ng-options="item as (item.village_name + ' (' + item.village_x + '|' + item.village_y + ')') for item in data_province_village.availableOptions track by item.village_name"
+									ng-model="data_province_village.selectedOption"></select>
+							</div></td>
+						<td class="cell-right">
+							<div>
+								<label for="input-date-source">{{text_date}}</label><input
+									id="input-date-source" class="input-border inpd" type="date"
+									value="{{date_init}}">
+							</div>
+							<div>
+								<label for="input-time-source">{{text_hour}}</label><input
+									id="input-time-source" class="input-border inpt" type="time"
+									step="1" min="00:00:00" max="23:59:59" value="{{hour_init}}">
+							</div>
+							<div>
+								<label for="input-ms-source">{{text_ms}}</label><input
+									id="input-ms-source" class="input-border inputcreated"
+									type="number" step="1" min="000" max="999" value="{{ms_init}}">
+							</div>
+						</td>
+						<td><div>
+								<select id="select_qtd_source" class="select-handler"
+									ng-options="item for item in data_qtd_source.availableOptions"
+									ng-model="data_qtd_source.selectedOption"></select>
+							</div>
+							<div>
+								<select id="select_type_source" class="select-handler"
+									ng-options="item as item.name for item in data_type_source.availableOptions"
+									ng-model="data_type_source.selectedOption"></select>
+							</div></td>
+						<td class="cell-center"><div>
+								<a href="#" id="button-prog"
+									class="btn-orange btn-form btn-border no-padding"
+									ng-click="sendAttackFakeProvince()"><span id="span-text"
+									class="text">{{schedule}}</span> </a>
+							</div></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h5 class="twx-section collapse">{{command_list}}</h5>
+			<div class="box-paper">
+				<div class="scroll-wrap">
+					<table
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<colgroup>
+							<col width="*">
+							<col width="235px">
+							<col width="235px">
+							<col width="45px">
+							<col width="60px">
+							<col width="100px">
+							<col width="100px">
+							<col width="48px">
+						</colgroup>
+						<tr>
+							<th style="display: table-cell" class="cell-center selected">{{ident_cmd}}</th>
+							<th style="display: table-cell"
+								class="icon icon-34x34-units-outgoing"></th>
+							<th style="display: table-cell" class="icon icon-34x34-village"></th>
+							<th></th>
+							<th style="display: table-cell"
+								class="icon icon-34x34-time-remaining"></th>
+							<th style="display: table-cell" class="icon icon-26x26-time-spy"></th>
+							<th style="display: table-cell"
+								class="icon icon-26x26-time-arrival"></th>
+							<th></th>
+							<th></th>
+						</tr>
+						<tr ng-repeat="comando in comandos">
+							<td class="cell-center">{{comando.id_command}}</td>
+							<td class="cell-center">
+								<div class="village">
+									<div class="name-coord"
+										ng-click="jumpToVillage(comando.start_village)">
+										{{getLabelStart(comando)}}</div>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div class="village">
+									<div class="name-coord"
+										ng-click="jumpOutVillage(comando.target_village)">
+										{{getLabelTarget(comando)}}</div>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>
+									<div class="type" ng-class="getClass(comando.type)"></div>
+								</div>
+							</td>
+							<td class="cell-center">
+								<div>{{getTimeRestSend(comando)}}</div>
+							</td>
+							<td class="cell-center">
+								<div>{{getDataSend(comando)}}</div>
+								<div>{{getHoraSend(comando)}}</div>
+							</td>
+							<td class="cell-center">
+								<div>{{getDataAlvo(comando)}}</div>
+								<div>{{getHoraAlvo(comando)}}</div>
+							</td>
+							<td class="cell-center">{{comando.fakes}}</td>
+							<td class="cell-center"><a href="#"
+								class="size-34x34 btn-red icon-26x26-close"
+								ng-click="removeCommand(comando.id_command)" tooltip
+								tooltip-content="{{exclude_button}}"></a></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="win-foot">
+		<ul class="list-btn list-center buttons">
+			<li><a id="button-clear" class="btn-orange btn-border clear"
+				ng-click="clear_fake()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
+				ng-click="menu()">{{MENU}}</a></li>
+			<li><a id="button-close" class="btn-orange btn-border close"
+				ng-click="closeWindow()">{{CLOSE}}</a></li>
+		</ul>
+	</footer>
+
+</div>

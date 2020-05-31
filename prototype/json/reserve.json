@@ -1,16 +1,16 @@
 {
 	"RECRUIT": {
-		"FOOD": 500,
-		"WOOD": 200,
-		"CLAY": 200,
-		"IRON": 200,
+		"FOOD": 200,
+		"WOOD": 50,
+		"CLAY": 50,
+		"IRON": 50,
 		"SLOTS": 2
 	},
 	"HEADQUARTER": {
-		"FOOD": 500,
-		"WOOD": 200,
-		"CLAY": 200,
-		"IRON": 200,
+		"FOOD": 200,
+		"WOOD": 50,
+		"CLAY": 50,
+		"IRON": 50,
 		"SLOTS": 2
 	}
 }

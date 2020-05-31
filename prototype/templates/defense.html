@@ -16,16 +16,12 @@
 			<tr>
 				<td class="cell-top">
 					<table
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped" style="height: 168px;">
 						<colgroup>
 							<col width="*">
 							<col width="64px">
 						</colgroup>
 						<tbody>
-							<tr>
-								<th></th>
-								<th></th>
-							</tr>
 							<tr>
 								<td class="cell-right"><label for="time_sniper_ant">{{text_time_sniper_ant}}</label></td>
 								<td><input id="time_sniper_ant"
@@ -55,58 +51,26 @@
 				</td>
 				<td class="cell-top">
 					<table
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						class="tbl-border-light tbl-big-header tbl-content tbl-striped" style="height: 168px;">
 						<colgroup>
 							<col width="58px">
 							<col width="*">
 							<col width="64px">
 							<col width="64px">
 							<col width="64px">
+                            <col width="64px">
+                            <col width="64px">
 							<col width="160px">
 
 						</colgroup>
 						<tbody>
 							<tr>
-								<th colspan="2" class="selected cell-center">{{text_troops}}</th>
-								<th class="selected cell-center">{{text_status}}</th>
-								<th></th>
-								<th></th>
-								<th></th>
-							</tr>
-							<tr>
-								<td><div
-										ng-class="getClass(data_units.selectedOption.name)"></div></td>
-								<td><select id="select_units" class="select-wrapper"
-									ng-options="item as item.name for item in data_units.availableOptions track by item.name"
-									ng-model="data_units.selectedOption"></select></td>
-								<td><div id="switch" switch-slider="" border="true"
-										enabled="true"
-										value="data_defense.list_defense[data_units.selectedOption.name]"
-										vertical="false" size="'56x28'">
-										<div ng-class="{'box-border-dark box-filter': border}"
-											class="box-border-dark box-filter">
-											<div class="switch switch-56x28 switch-horizontal"
-												ng-class="{'switch-checked': value}">
-												<div class="size-26x26 switch-thumb">
-													<div class="simple icon-26x26-switch-off"
-														ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
-												</div>
-											</div>
-										</div>
-									</div></td>
-								<td colspan="2"></td>
-								<td><a href="#" tooltip="" tooltip-content=""
-									class="btn-orange btn-form btn-border no-padding"
-									ng-click="selectAllUnits()"><span
-										style="position: relative;" id="span-text" class="text">{{select_all}}</span></a></td>
-
-							</tr>
-
-							<tr>
 								<th colspan="2" class="selected cell-center">{{text_village}}</th>
 								<th class="selected cell-center">{{text_status}}</th>
 								<th class="selected cell-center">{{text_defense}}</th>
 								<th class="selected cell-center">{{text_attack}}</th>
+								<th class="selected cell-center">{{text_resources}}</th>
+								<th class="selected cell-center">{{text_donate}}</th>
 								<th></th>
 							</tr>
 
@@ -161,6 +125,36 @@
 											</div>
 										</div>
 									</div></td>
+									<td><div id="switch" switch-slider="" border="true"
+                                        enabled="true"
+                                        value="data_villages.villages[data_select.selectedOption.id].sniper_resources"
+                                        vertical="false" size="'56x28'">
+                                        <div ng-class="{'box-border-dark box-filter': border}"
+                                            class="box-border-dark box-filter">
+                                            <div class="switch switch-56x28 switch-horizontal"
+                                                ng-class="{'switch-checked': value}">
+                                                <div class="size-26x26 switch-thumb">
+                                                    <div class="simple icon-26x26-switch-off"
+                                                        ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div></td>
+                                    <td><div id="switch" switch-slider="" border="true"
+                                        enabled="true"
+                                        value="data_villages.villages[data_select.selectedOption.id].donate_resources"
+                                        vertical="false" size="'56x28'">
+                                        <div ng-class="{'box-border-dark box-filter': border}"
+                                            class="box-border-dark box-filter">
+                                            <div class="switch switch-56x28 switch-horizontal"
+                                                ng-class="{'switch-checked': value}">
+                                                <div class="size-26x26 switch-thumb">
+                                                    <div class="simple icon-26x26-switch-off"
+                                                        ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div></td>
 								<td><a href="#" tooltip="" tooltip-content=""
 									class="btn-orange btn-form btn-border no-padding"
 									ng-click="selectAllVillages()"><span
