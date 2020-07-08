@@ -2,18 +2,15 @@
 	<header class="win-head">
 		<h3>{{title}} ({{text_version}})</h3>
 		<ul class="list-btn">
-			<li><a class="size-34x34 btn-red icon-26x26-close"
-				ng-click="closeWindow()"></a></li>
+			<li><a class="size-34x34 btn-red icon-26x26-close" ng-click="closeWindow()"></a></li>
 		</ul>
 	</header>
 
 	<div class="tabs tabs-bg">
-		<div ng-repeat="tabName in TAB_ORDER" class="tab tab-ten"
-			ng-click="userSetActiveTab(tabName)"
+		<div ng-repeat="tabName in TAB_ORDER" class="tab tab-ten" ng-click="userSetActiveTab(tabName)"
 			ng-class="{'tab-active': activeTab === tabName}">
 			<div class="tab-inner">
-				<div
-					ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}"
+				<div ng-class="{'box-border-light': (activeTab === tabName) || (!activeTab && (requestedTab === tabName))}"
 					tooltip tooltip-content="{{tabName}}">
 					<a href="#"
 						ng-class="{'btn-icon btn-orange': (activeTab !== tabName) && (requestedTab !== tabName)}">{{tabName}}</a>
@@ -25,13 +22,11 @@
 
 
 	<div class="log content-settings">
-		<div class="win-main jssb-applied jssb-focus jssb-scrolly"
-			scrollbar="">
+		<div class="win-main jssb-applied jssb-focus jssb-scrolly" scrollbar="">
 			<div class="box-paper">
 				<div class="scroll-wrap">
 					<div ng-if="activeTab == TABS.DEFENSE">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -49,19 +44,15 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in data_log.defense | orderBy : '-date'">
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin == null || log.target == null" colspan="3"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.origin}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.target}}</td>
+								<tr ng-repeat="log in data_log_defense.logs | orderBy : '-date'">
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}
+									</td>
+									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">
+										{{log.text}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.origin}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.target}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
 										'HH:mm:ss.sss'}}</td>
@@ -70,8 +61,7 @@
 						</table>
 					</div>
 					<div ng-if="activeTab == TABS.ATTACK">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -89,19 +79,15 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in data_log.attack | orderBy : '-date'">
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin == null || log.target == null" colspan="3"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.origin}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.target}}</td>
+								<tr ng-repeat="log in data_log_attack.logs | orderBy : '-date'">
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}
+									</td>
+									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">
+										{{log.text}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.origin}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.target}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
 										'HH:mm:ss.sss'}}</td>
@@ -110,8 +96,7 @@
 						</table>
 					</div>
 					<div ng-if="activeTab == TABS.DEPOSIT">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -135,8 +120,7 @@
 						</table>
 					</div>
 					<div ng-if="activeTab == TABS.FAKE">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -154,19 +138,15 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in data_log.defense | orderBy : '-date'">
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin == null || log.target == null" colspan="3"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.origin}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.target}}</td>
+								<tr ng-repeat="log in data_log_defense.logs | orderBy : '-date'">
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}
+									</td>
+									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">
+										{{log.text}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.origin}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.target}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
 										'HH:mm:ss.sss'}}</td>
@@ -175,8 +155,7 @@
 						</table>
 					</div>
 					<div ng-if="activeTab == TABS.HEADQUARTER">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -200,8 +179,7 @@
 						</table>
 					</div>
 					<div ng-if="activeTab == TABS.MARKET">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -219,19 +197,15 @@
 								</tr>
 							</tbody>
 							<tbody class="scroll-wrap">
-								<tr ng-repeat="log in data_log.defense | orderBy : '-date'">
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin == null || log.target == null" colspan="3"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.origin}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.target}}</td>
+								<tr ng-repeat="log in data_log_defense.logs | orderBy : '-date'">
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}
+									</td>
+									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">
+										{{log.text}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.origin}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.target}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
 										'HH:mm:ss.sss'}}</td>
@@ -240,8 +214,7 @@
 						</table>
 					</div>
 					<div ng-if="activeTab == TABS.RECRUIT">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -264,9 +237,32 @@
 							</tbody>
 						</table>
 					</div>
+					<div ng-if="activeTab == TABS.COINS">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+							<colgroup>
+								<col>
+								<col>
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th style="display: table-cell" class="cell-center selected">{{text_origin}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_date}}</th>
+									<th style="display: table-cell" class="cell-center selected">{{text_hour}}</th>
+								</tr>
+							</tbody>
+							<tbody class="scroll-wrap">
+								<tr ng-repeat="log in data_log.coins | orderBy : '-date'">
+									<td class="cell-right" colspan="3" class="cell-left">{{log.text}}</td>
+									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
+									<td class="cell-center">{{log.date | date :
+                                        'HH:mm:ss.sss'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 					<div ng-if="activeTab == TABS.FARM">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -285,18 +281,14 @@
 							</tbody>
 							<tbody class="scroll-wrap">
 								<tr ng-repeat="log in data_log.farm | orderBy : '-date'">
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin == null || log.target == null" colspan="3"
-										class="cell-left">{{log.text}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.origin}}</td>
-									<td class="cell-right"
-										ng-if="log.origin != null && log.target != null"
-										class="cell-left">{{log.target}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">{{log.text}}
+									</td>
+									<td class="cell-right" ng-if="log.origin == null || log.target == null" colspan="3" class="cell-left">
+										{{log.text}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.origin}}</td>
+									<td class="cell-right" ng-if="log.origin != null && log.target != null" class="cell-left">
+										{{log.target}}</td>
 									<td class="cell-center">{{log.date | date : 'dd/MM/yyyy'}}</td>
 									<td class="cell-center">{{log.date | date :
 										'HH:mm:ss.sss'}}</td>
@@ -305,8 +297,7 @@
 						</table>
 					</div>
 					<div ng-if="activeTab == TABS.SPY">
-						<table
-							class="tbl-border-light tbl-big-header tbl-content tbl-striped">
+						<table class="tbl-border-light tbl-big-header tbl-content tbl-striped">
 							<colgroup>
 								<col>
 								<col>
@@ -337,12 +328,9 @@
 
 	<footer class="win-foot">
 		<ul class="list-btn list-center buttons">
-			<li><a id="button-clear" class="btn-orange btn-border clear"
-				ng-click="clear_log()">{{CLEAR}}</a></li>
-			<li><a id="button-menu" class="btn-border btn-orange btn-menu"
-				ng-click="menu()">{{MENU}}</a></li>
-			<li><a id="button-close" class="btn-orange btn-border close"
-				ng-click="closeWindow()">{{CLOSE}}</a></li>
+			<li><a id="button-clear" class="btn-orange btn-border clear" ng-click="clear_log()">{{CLEAR}}</a></li>
+			<li><a id="button-menu" class="btn-border btn-orange btn-menu" ng-click="menu()">{{MENU}}</a></li>
+			<li><a id="button-close" class="btn-orange btn-border close" ng-click="closeWindow()">{{CLOSE}}</a></li>
 		</ul>
 	</footer>
 </div>

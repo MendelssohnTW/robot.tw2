@@ -1,15 +1,13 @@
-["alert",
+[
+  "alert",
   "attack",
   "defense",
-  "deposit",
   "farm",
   "headquarter",
-  "recon",
+  "cdr",
   "recruit",
   "spy",
   "secondvillage",
   "fake",
-  "market",
-  "data",
-  "log"
+  "market"
 ]
