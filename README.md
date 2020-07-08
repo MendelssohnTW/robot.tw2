@@ -5,7 +5,7 @@
   <p>
     <b>Faça o download da extensão aqui</b>
     <ul>
-        <li><a href="https://github.com/MendelssohnTW/robot.tw2/raw/master/extension/extension_app.rar">latest</a></li>
+        <li><a href="https://github.com/MendelssohnTW/robot.tw2/raw/master/extension/app.zip">latest</a></li>
     </ul>
   </p>
 </blockquote>
