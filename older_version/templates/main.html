@@ -11,80 +11,69 @@
 			scrollbar="">
 			<div class="box-paper">
 				<div class="scroll-wrap">
-					<!-- 
-					<table
-						class="tbl-border-light tbl-big-header tbl-content tbl-striped"
-						id="preset-list">
-						<colgroup>
-							<col width="*">
-							<col width="42px">
-							<col width="*">
-							<col width="70px">
-							<col width="*">
-							<col width="70px">
-						</colgroup>
-						<tbody>
-							<tr>
-								<td class="cell-right"><label
-									for="time_automatic_correction_command">{{text_time_automatic_correction_command}}</label></td>
-								<td class="cell-right"><div
-										class="position-absolute btn-green size-34x34 icon-26x26-check-positive"
-										ng-click="recalibrate()" tooltip
-										tooltip-content="{{recal_button}}"></div></td>
-								<td class="cell-right"><label for="max_time_correction">{{text_max_time_correction}}</label></td>
-								<td><input id="max_time_correction"
-									class="input-border inputcreated" type=number
-									ng-model="data_main.max_time_correction"
-									ng-blur="updateTimeCorrection()"></td>
-								<td class="cell-right"><label for="time_correction_command">{{text_time_correction_command}}</label></td>
-								<td><input id="time_correction_command"
-									class="input-border inputcreated" type=number
-									ng-model="data_main.time_correction_command"
-									ng-blur="updateTimeCorrection()"></td>
-							</tr>
-
-						</tbody>
-					</table>
-					 -->
 					<table class="tbl-border-light tbl-big-header tbl-striped"
-						id="preset-list">
+						id="robottw2-main-menu">
 						<colgroup>
-							<col width="*">
-							<col width="76px">
-							<col width="76px">
-							<col width="30px">
-							<col width="76px">
-							<col width="160px">
-							<col width="160px">
+							<col>
+							<col>
+							<col width="80px">
+							<col width="80px">
+							<col width="80px">
+							<col width="80px">
+							<col width="80px">					
 						</colgroup>
 						<tbody>
-							<tr>
-								<th class="cell-center"><h5>{{module}}</h5></th>
+							<tr>								
+								<th class="cell-center" colspan="2"><h5>{{module}}</h5></th>
 								<th class="cell-center"><h5>{{state}}</h5></th>
 								<th class="cell-center"><h5>{{init_standard}}</h5></th>
-								<th class="cell-center" colspan="2"><h5>{{extension_start
+								<th class="cell-center"><h5>{{extension_start
 										+ "/" + extension_stop}}</h5></th>
 								<th class="cell-center"><h5>{{database}}</h5></th>
 								<th class="cell-center"><h5>{{text_hotkey}}</h5></th>
 							</tr>
-							<tr>
-								<td class="cell-right">{{ext_all}}</td>
+							<tr>								
+								<td class="cell-right" colspan="2">{{ext_all}}</td>
 								<td class="cell-center"></td>
 								<td class="cell-center"></td>
-								<td colspan="2" class="cell-center"></td>
-								<td><a href="#" tooltip tooltip-content={{clear_databases}}
-									class="btn-orange btn-form btn-border no-padding"
-									ng-click="clearAllDB()"><span id="span-text" class="text">{{CLEAR}}</span></a></td>
-								<td></td>
+								<td class="cell-center"></td>
+								<td>								
+									<a 
+										href="#" 
+										tooltip tooltip-content={{clear_databases}}	
+										class="size-34x34 btn-red icon-26x26-check-negative"
+										ng-click="clearAllDB()"
+									>
+										<!--<span id="span-text" class="text">{{CLEAR}}</span>-->
+									</a>
+								</td>
+								<td>
+									<a 
+										href="#" 
+										tooltip 
+										tooltip-content={{clear_datavillages}}
+                    class="size-34x34 btn-orange icon-34x34-arrow-up"
+										ng-click="updateDB()"
+									>
+										<!--<span id="span-text" class="text">{{UPDATE}}</span>-->
+									</a>
+								</td>
 							</tr>
 							<tr ng-repeat="ext in extensions" ng-show="ext.activated">
+								<td class="cell-center">
+									<div class="icon-26x26-dot-bg" tooltip
+										tooltip-content="{{ext.status}}">
+										<div
+											ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status == stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></div>
+									</div>
+								</td>
 								<td class="cell-right">{{ext.name}}</td>
 								<td class="cell-center">
 									<div class="checkbox">
 										<div tooltip
 											tooltip-content="{{ext.init_initialized ? ext.name + ' ' + extension_enabled : ext.name + ' ' + extension_disabled}}"
 											switch-slider="" border="true"
-											enabled="ext.activated && ext.name!='log'"
+											enabled="ext.activated && ext.name!='LOG'"
 											value="ext.init_initialized" vertical="false" size="'56x28'"
 											ng-click="initExt(ext)">
 											<div ng-class="{'box-border-dark box-filter': border}"
@@ -103,7 +92,7 @@
 								<td class="cell-center">
 									<div class="checkbox">
 										<div switch-slider="" border="true"
-											enabled="ext.init_initialized && ext.name!='log'"
+											enabled="ext.init_initialized && ext.name!='LOG'"
 											value="ext.auto_start" vertical="false" size="'56x28'">
 											<div ng-class="{'box-border-dark box-filter': border}"
 												class="box-border-dark box-filter">
@@ -117,20 +106,13 @@
 											</div>
 										</div>
 									</div>
-								</td>
-								<td class="cell-center">
-									<div class="icon-26x26-dot-bg" tooltip
-										tooltip-content="{{ext.status}}">
-										<div
-											ng-class="{'icon-26x26-dot-green' : ext.status == running, 'icon-26x26-dot-red' : ext.status == stopped , 'icon-26x26-dot-blue' : ext.status == paused, 'icon-26x26-dot-yellow' : ext.status == disabled}"></div>
-									</div>
-								</td>
+								</td>								
 								<td>
 									<div class="checkbox">
 										<div tooltip
 											tooltip-content="{{extensions_status[ext.name] ? STOP : START}}"
 											switch-slider="" border="true"
-											enabled="ext.init_initialized && ext.name!='log'"
+											enabled="ext.init_initialized && ext.name!='LOG'"
 											value="extensions_status[ext.name]"
 											ng-click="toggleStartStop(ext)" vertical="false"
 											size="'56x28'">
@@ -147,18 +129,29 @@
 										</div>
 									</div>
 								</td>
-								<td><a href="#" tooltip
-									tooltip-content="{{CLEAR + ' database ' + ext.name.toUpperCase()}}"
-									class="btn-orange btn-form btn-border no-padding"
-									ng-click="clearDB(ext.name)"><span class="text">{{CLEAR
-											+ " " + ext.name.toUpperCase()}}</span></a></td>
-								<td><a href="#" tooltip
-									tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
-									class="btn-orange btn-form btn-border no-padding"
-									ng-click="openExt(ext.name)"
-									ng-class="{'btn-grey': !ext.init_initialized}"><span
-										id="span-text" class="text">{{OPEN + " " +
-											ext.name.toUpperCase()}}</span></a></td>
+								<td>
+									<a 
+										href="#" 
+										tooltip
+										tooltip-content="{{CLEAR + ' database ' + ext.name.toUpperCase()}}"
+										class="size-34x34 btn-orange icon-26x26-check-negative"
+										ng-click="clearDB(ext.name)"
+									>
+										<!--<span class="text">{{CLEAR + " " + ext.name.toUpperCase()}}</span>-->
+									</a>
+								</td>
+								<td>
+									<a 
+										href="#" 
+										tooltip
+										tooltip-content="{{text_hotkey + ': ' + ext.hotkey}}"
+										class="size-34x34 btn-orange icon-26x26-plus"
+										ng-click="openExt(ext.name)"
+										ng-class="{'btn-grey': !ext.init_initialized}"
+									>
+										<!--<span	id="span-text" class="text">{{OPEN + " " + ext.name.toUpperCase()}}</span>-->
+									</a>
+								</td>
 							</tr>
 						</tbody>
 					</table>

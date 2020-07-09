@@ -3,14 +3,12 @@ define("robotTW2/services/ProvinceService", [
 	"robotTW2/conf",
 	"conf/conf",
 	"helper/math",
-	"robotTW2/databases/data_villages",
 	"struct/MapData"
 	], function(
 			robotTW2,
 			conf,
 			conf_conf,
 			math,
-			data_villages,
 			mapData
 	){
 	return (function ProvinceService(
@@ -83,7 +81,7 @@ define("robotTW2/services/ProvinceService", [
 				if(!data){return}
 				let villages = data.villages
 				, list_result = villages.map(function(vill_t){
-					if(modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)){
+					if(modelDataService.getSelectedCharacter().getTribeRelations() && modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)){
 						return vill_t
 					}
 				}).filter(f=>f!=undefined)
@@ -113,9 +111,9 @@ define("robotTW2/services/ProvinceService", [
 			getProvinceData(pv.x, pv.y, function(data){
 				let villages = data.villages
 				, list_result = villages.map(function(vill_t){
-					if(!modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)
+					if((!modelDataService.getSelectedCharacter().getTribeRelations() || (!modelDataService.getSelectedCharacter().getTribeRelations().isEnemy(vill_t.tribe_id)
 							&& !modelDataService.getSelectedCharacter().getTribeRelations().isAlly(vill_t.tribe_id)
-							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(vill_t.tribe_id)
+							&& !modelDataService.getSelectedCharacter().getTribeRelations().isNAP(vill_t.tribe_id)))
 							&& vill_t.character_id != null
 							&& vill_t.character_id != modelDataService.getSelectedCharacter().getId()
 							&& vill_t.tribe_id != modelDataService.getSelectedCharacter().getTribeId()

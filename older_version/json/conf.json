@@ -1,10 +1,10 @@
 {
-    "h": 3600000,
-    "min": 60000,
-    "s": 1000,
+	"h": 3600000,
+	"min": 60000,
+	"s": 1000,
 	"LIMIT_COMMANDS_DEFENSE": 13,
 	"MAX_COMMANDS_FARM": 42,
-	"MIN_POINTS_FARM": 0,
+	"MIN_POINTS_FARM": 50,
 	"MAX_POINTS_FARM": 12000,
 	"MAP_CHUNCK_LEN": 15,
 	"TIME_CORRECTION_COMMAND": 1275,
@@ -25,7 +25,36 @@
 	"MIN_JOURNEY_TIME": 480000,
 	"FARM_TIME": 1800000,
 	"MIN_INTERVAL": 300000,
-"DBS": ["alert", "attack", "defense", "deposit", "farm", "headquarter", "medic", "recon", "recruit", "spy", "secondvillage", "map", "data", "log"],
-	"HOTKEY": {	"ALERT": "shift+l",	"ATTACK": "shift+a",	"DEFENSE": "shift+d",	"DEPOSIT": "shift+t",	"FARM": "shift+f",	"HEADQUARTER": "shift+h",	"MAIN": "shift+p",	"MEDIC": "shift+i",	"RECON": "shift+r",	"RECRUIT": "shift+e",	"SPY": "shift+s",	"SECONDVILLAGE": "shift+q",	"MAP": "shift+m",	"DATA": "shift+j"}
-	
+	"DBS": [
+		"alert",
+		"attack",
+		"defense",
+		"deposit",
+		"farm",
+		"headquarter",
+		"medic",
+		"recon",
+		"recruit",
+		"spy",
+		"secondvillage",
+		"map",
+		"data",
+		"log"
+	],
+	"HOTKEY": {
+		"ALERT": "shift+l",
+		"ATTACK": "shift+a",
+		"DEFENSE": "shift+d",
+		"DEPOSIT": "shift+t",
+		"FARM": "shift+f",
+		"HEADQUARTER": "shift+h",
+		"MAIN": "shift+p",
+		"MEDIC": "shift+i",
+		"RECON": "shift+r",
+		"RECRUIT": "shift+e",
+		"SPY": "shift+s",
+		"SECONDVILLAGE": "shift+q",
+		"MAP": "shift+m",
+		"DATA": "shift+j"
+	}
 }

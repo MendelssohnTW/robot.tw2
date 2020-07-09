@@ -1,58 +1,80 @@
-<table class="tbl-border-light tbl-big-header tbl-content tbl-striped robotTW2"
-	style="background: red;">
-	<colgroup>
-		<col width="165px">
-		<col width="58px">
-		<col width="*">
-	</colgroup>
-	<tbody>
-		<tr>
-			<td class="cell-right">
-				<div>
-					<label for="input-date">{{text_date}}</label><input id="input-date"
-						class="input-border inpd" type="date" value="{{date_init}}">
+<div class="schedule-top-container">
+
+
+	<ul class="unit-operate-slider">
+		<li class="unit-box" ng-repeat="unit_type in itemOrder" ng-show="opt_units[unit_type].own > 0">
+			<div>
+				<div class="unit-border unit-border-even">
+					<span ng-class="getClass(unit_type)"></span>
 				</div>
-				<div>
-					<label for="input-time">{{text_hour}}</label><input id="input-time"
-						class="input-border inpt" type="time" step="1" min="00:00:00"
-						max="23:59:59" value="{{hour_init}}">
+				<div class="unit-border box-input unit-border-even">
+					<input ng-disabled="enviarFull || opt_units[unit_type].own == 0" type="text" style="width: 98px;"
+						class="input-border" ng-model="opt_units[unit_type].value">
+					<!--<div style="margin: 10px; font-size: large; color: darkred;">{{opt_units[unit_type].own}}</div>-->
 				</div>
-				<div>
-					<label for="input-ms">{{text_ms}}</label><input id="input-ms"
-						class="input-border inputcreated" type="number" step="1" min="000"
-						max="999" value="{{ms_init}}">
-				</div>
-			</td>
-			<td class="cell-right"><label for="checkboxFull">{{text_check}}</label>
-				<div id="checkboxFull" class="checkbox">
-					<div tooltip tooltip-content="{{text_full + ' = ' + enviarFull}}"
-						switch-slider="" border="true" enabled="true" value="enviarFull"
-						vertical="false" size="'56x28'">
-						<div ng-class="{'box-border-dark box-filter': border}"
-							class="box-border-dark box-filter">
-							<div class="switch switch-56x28 switch-horizontal"
-								ng-class="{'switch-checked': value}">
-								<span class="size-26x26 switch-thumb"> <span
-									class="simple icon-26x26-switch-off"
-									ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
+			</div>
+		</li>
+	</ul>
+
+	<div class="schedule-container tbl-border-light tbl-big-header tbl-content tbl-striped robotTW2">
+		<div class="schedule-header">
+
+			<div class="schedule-item">
+				<label for="input-date">{{text_date}}</label>
+				<input id="input-date" class="input input-date" type="date" value="{{date_init}}">
+			</div>
+
+			<div class="schedule-item">
+				<label for="input-time">{{text_hour}}</label>
+				<input id="input-time" class="input input-time" type="time" step="1" min="00:00:00" max="23:59:59"
+					value="{{hour_init}}">
+			</div>
+
+			<div class="schedule-item">
+				<label for="input-ms">{{text_ms}}</label>
+				<input id="input-ms" class="input input-time" type="number" step="1" min="000" max="999" value="{{ms_init}}">
+			</div>
+
+			<div class="schedule-item">
+				<label for="checkboxFull">{{text_check}}</label>
+				<div id="checkboxFull">
+					<div tooltip tooltip-content="{{text_full + ' = ' + enviarFull}}" switch-slider="" border="true"
+						enabled="true" value="enviarFull" vertical="false" size="'56x28'">
+						<div ng-class="{'box-filter': border}" class="box-filter">
+							<div class="switch switch-56x28 switch-horizontal" ng-class="{'switch-checked': value}">
+								<span class="size-26x26 switch-thumb"> <span class="simple icon-26x26-switch-off"
+										ng-class="{'icon-26x26-switch-on': value; 'icon-26x26-switch-off': !value; 'icon-inactive': enabled == false}"></span>
 								</span>
 							</div>
 						</div>
 					</div>
-				</div></td>
-			<td class="cell-center"><div>
-					<a href="#" id="button-prog"
-						class="btn-orange btn-form btn-border no-padding btn-grey"
-						ng-click="sendAttack()" tooltip
-						tooltip-content="{{enviarFull ? text_prog_full : text_prog}}"
-						ng-class="{'btn-grey': (armyEmpty || targetIsNoobProtected || officerOffersVisible) && !enviarFull}"><span
-						class="icon"> <span
-							class="icon-26x26-domination icon-btn-fix"></span><span
-							id="span-text" class="text">{{schedule}}</span>
-					</span></a>
-				</div></td>
-		</tr>
+				</div>
+			</div>
 
-	</tbody>
-</table>
+			<div class="schedule-item">
+				<div class="time-variable-width multiline" ng-class="{'multiline': officerChangesDuration}">
+					<!-- ngIf: officerChangesDuration -->
+					<div class="text-center old" ng-if="officerChangesDuration"><span class="pop-in-fix" ng-visible="false"
+							style="visibility: hidden;">0</span>~{{arrivalInWithoutOfficers}}</div>
+					<!-- end ngIf: officerChangesDuration -->
+					<div class="text-center new"><span class="pop-in-fix" ng-visible="false"
+							style="visibility: hidden;">0</span>~{{arrivalIn}}</div>
+				</div>
+			</div>
 
+		</div>
+
+		<div class="schedule-item">
+			<a href="#" id="button-prog" class="btn-orange btn-form btn-border no-padding btn-grey" ng-click="sendAttack()"
+				tooltip tooltip-content="{{enviarFull ? text_prog_full : text_prog}}"
+				ng-class="{'btn-grey': (armyEmpty || targetIsNoobProtected || officerOffersVisible) && !enviarFull && unitsEmpty}">
+				<span class="icon">
+					<span class="icon-26x26-domination icon-btn-fix"></span>
+					<span id="span-text" class="text">{{schedule}}</span>
+				</span>
+			</a>
+		</div>
+
+	</div>
+
+</div>

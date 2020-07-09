@@ -3,30 +3,30 @@ define("robotTW2/services/User_Control", [
 	"robotTW2/conf",
 	"conf/conf",
 	"robotTW2/getJSON"
-	], function(
-			robotTW2,
-			conf,
-			conf_conf,
-			getJSON
-	){
+], function (
+	robotTW2,
+	conf,
+	conf_conf,
+	getJSON
+) {
 	return (function User_Control(
-			$rootScope,
-			socketService,
-			providers,
-			modelDataService,
-			$timeout
+		$rootScope,
+		socketService,
+		providers,
+		modelDataService,
+		$timeout
 	) {
 
 		var service = {}
-		, status = false
-		, user_control =  new getJSON("user_control")
+			, status = false
+			, user_control = new getJSON("user_control")
 
-		$timeout(function(){
+		$timeout(function () {
 			let name = robotTW2.services.modelDataService.getPlayer().getSelectedCharacter().getName()
-			, id = robotTW2.services.modelDataService.getPlayer().getSelectedCharacter().getId()
-			, world_id = robotTW2.services.modelDataService.getPlayer().getSelectedCharacter().getWorldId()
-			, server = world_id.slice(0,2)
-			, world = world_id.slice(2,4)
+				, id = robotTW2.services.modelDataService.getPlayer().getSelectedCharacter().getId()
+				, world_id = robotTW2.services.modelDataService.getPlayer().getSelectedCharacter().getWorldId()
+				, server = world_id.slice(0, 2)
+				, world = world_id.slice(2, 4)
 			status = true;
 			$rootScope.$broadcast("ready_users", true)
 			/*
@@ -48,23 +48,23 @@ define("robotTW2/services/User_Control", [
 			}
 			*/
 		}, 10000)
-		
-		service.getControl = function(){
+
+		service.getControl = function () {
 			return user_control
 		}
-		service.get = function(){
+		service.get = function () {
 			return status
 		}
-		
+
 		Object.setPrototypeOf(user_control, service);
-		
-		return	user_control
+
+		return user_control
 
 	})(
-			robotTW2.services.$rootScope,
-			robotTW2.services.socketService,
-			robotTW2.providers,
-			robotTW2.services.modelDataService,
-			robotTW2.services.$timeout
+		robotTW2.services.$rootScope,
+		robotTW2.services.socketService,
+		robotTW2.providers,
+		robotTW2.services.modelDataService,
+		robotTW2.services.$timeout
 	)
 })

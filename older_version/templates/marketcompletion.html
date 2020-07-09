@@ -1,0 +1,25 @@
+
+<table
+	class="tbl-border-light tbl-big-header tbl-content tbl-striped robotTW2"
+	style="background: red;">
+	<colgroup>
+		<col width="165px">
+		<col width="58px">
+		<col width="*">
+	</colgroup>
+	<tbody>
+		<tr>
+			<td class="cell-center"><div>
+					<a href="#" id="button-prog"
+						class="btn-orange btn-form btn-border no-padding btn-grey"
+						ng-class="{'btn-grey': merchants.free == 0 || (rangeSlider.wood.value == 0 && rangeSlider.clay.value == 0 && rangeSlider.iron.value == 0)}"
+						ng-click="sendMarket()"><span class="icon"> <span
+							class="icon-26x26-domination icon-btn-fix"></span><span
+							id="span-text" class="text">{{schedule}}</span>
+					</span></a>
+				</div></td>
+		</tr>
+
+	</tbody>
+</table>
+
